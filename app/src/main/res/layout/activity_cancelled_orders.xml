@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SFA_Activity.CancelledOrdersActivity"
+    tools:ignore="HardcodedText,SpUsage,ContentDescription">
+
+    <include layout="@layout/sfatoolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/canceledOrders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/basic"
+            android:padding="@dimen/C8dp"
+            android:text="Cancelled Orders"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="#FFF"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llCustomDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fromDateTV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/C10dp"
+                    android:layout_marginStart="@dimen/C10dp"
+                    android:layout_marginEnd="@dimen/C5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:gravity="center_vertical"
+                    android:hint="Select Start Date"
+                    android:padding="@dimen/C8dp"
+                    android:textSize="13sp"
+                    app:drawableEndCompat="@drawable/ic_baseline_date_range_24"
+                    app:drawableTint="@color/colorPrimaryDark" />
+
+
+                <TextView
+                    android:id="@+id/toDateTV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/C10dp"
+                    android:layout_marginStart="@dimen/C5dp"
+                    android:layout_marginEnd="@dimen/C5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:gravity="center_vertical"
+                    android:hint="Select End Date"
+                    android:padding="@dimen/C8dp"
+                    android:textSize="13sp"
+                    app:drawableRightCompat="@drawable/ic_baseline_date_range_24"
+                    app:drawableTint="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:id="@+id/showMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/C10dp"
+                    android:layout_marginStart="@dimen/C5dp"
+                    android:layout_marginEnd="@dimen/C10dp"
+                    android:background="@drawable/blue_bg_rounded"
+                    android:padding="@dimen/C5dp"
+                    android:src="@drawable/ic_baseline_expand_more_24" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingBottom="@dimen/C10dp"
+                android:scrollbars="none"
+                tools:listitem="@layout/item_cancelled_order" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/C15dp"
+            android:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/something_went_wrong" />
+
+            <TextView
+                android:id="@+id/error_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/C15dp"
+                android:gravity="center_horizontal"
+                android:text="Something went wrong"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressbar"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading_bar" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_records_found" />
+
+    </RelativeLayout>
+
+</LinearLayout>

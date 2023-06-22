@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SFA_Activity.Order_Category_Select">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/db1_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/sfatoolbar"></include>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_bg"
+                android:orientation="horizontal"
+                android:padding="@dimen/C3dp">
+
+                <TextView
+                    android:id="@+id/tvHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/basic"
+                    android:paddingLeft="@dimen/C5dp"
+                    android:text="Stock View"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="true"
+                    android:textColor="#FFF"
+                    android:textSize="18dp"
+
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llCustomDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/C10dp"
+                android:layout_marginRight="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tvStartDate"
+                    style="@style/TextStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/textbox_bg"
+                    android:drawableRight="@drawable/ic_baseline_date_range_24"
+                    android:drawableTint="@color/colorPrimaryDark"
+                    android:elevation="5dp"
+                    android:hint="Start Date"
+                    android:padding="@dimen/C8dp" />
+
+
+                <TextView
+                    android:id="@+id/tvEndDate"
+                    style="@style/TextStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/textbox_bg"
+                    android:drawableRight="@drawable/ic_baseline_date_range_24"
+                    android:drawableTint="@color/colorPrimaryDark"
+                    android:elevation="5dp"
+                    android:hint="End Date"
+                    android:padding="@dimen/C8dp" />
+
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/idStockDets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/C5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginStart="@dimen/C2dp"
+    android:layout_marginEnd="@dimen/C2dp"
+    app:cardCornerRadius="@dimen/C5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/C45dp"
+        android:weightSum="2"
+        android:layout_marginStart="@dimen/C2dp"
+        android:paddingTop="@dimen/C2dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sales_productName"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Curd"
+            android:paddingStart="@dimen/C7dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+        <EditText
+            android:id="@+id/edtPos_salesPrice"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/C40dp"
+            android:layout_weight="1"
+            android:hint="Enter Sales Amount"
+            android:textAlignment="center"
+            android:inputType="number"
+            android:maxLines="1"
+            android:backgroundTint="@color/grey_100"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

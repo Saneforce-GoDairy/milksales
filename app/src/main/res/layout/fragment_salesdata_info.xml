@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/headerTextStyle"
+            android:text="Service Outlets"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvTotalServiceOutlet"
+                style="@style/mediumTextStyle"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0"></TextView>
+
+            <TextView
+                android:id="@+id/tvExistServiceOutlet"
+                style="@style/mediumTextStyle"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0"></TextView>
+
+            <TextView
+                android:id="@+id/tvNewServiceOutlet"
+                style="@style/mediumTextStyle"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0"></TextView>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/mediumTextStyle"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Total"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                style="@style/mediumTextStyle"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Existing"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                style="@style/mediumTextStyle"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="New"
+                android:textStyle="bold"></TextView>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/pbServiceOutlet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"></ProgressBar>
+
+
+</RelativeLayout>

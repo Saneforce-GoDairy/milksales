@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/lodgJoin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/C20dp"
+        android:background="@drawable/hash_border"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/C10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextStyle"
+                android:text="Emp Code" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edt_ldg_JnEmp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C5dp"
+                    android:layout_weight="1"
+                    android:hint="Enter Emp Code"
+                    android:textColorHint="#C0C0C0"
+                    android:textSize="@dimen/C13dp" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:background="#C0C0C0"
+                    android:onClick="onGetEmpDetails"
+                    android:padding="8dp"
+                    android:text="Get"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:text="Name" />
+
+                    <TextView
+                        android:id="@+id/txtJNName"
+                        style="@style/TextStyle"
+                        android:textStyle="bold"
+                        android:text="" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:text="Designation" />
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:id="@+id/txtJNDesig"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:text="Department"
+                            android:layout_width="match_parent"
+                            android:textAlignment="textEnd"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:id="@+id/txtJNDept"
+                            android:layout_width="match_parent"
+                            android:textAlignment="textEnd"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:text="HQ"/>
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:id="@+id/txtJNHQ"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:text="Mobile"
+                            android:textAlignment="textEnd" />
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:id="@+id/txtJNMob"
+                            android:layout_width="match_parent"
+                            android:textAlignment="textEnd"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="@dimen/C10dp"
+                    android:background="@color/grey_300"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:layout_marginBottom="@dimen/C10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="Lodging Eligible"></TextView>
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:id="@+id/txtJNMyEli"
+                        android:text="Rs. 0.00"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

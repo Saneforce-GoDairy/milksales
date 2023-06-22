@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/hash_border"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lin_loc_spiner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/C5dp"
+        android:background="@drawable/item_border"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/local_enter_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/C8dp"
+            android:layout_weight="1"
+            android:hint="Select the Convenyance"
+            android:textSize="@dimen/C16dp" />
+
+        <ImageView
+            android:layout_width="@dimen/C20dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/C5dp"
+            android:src="@drawable/spin_down_arrow" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_allowance_dynamic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/C5dp"
+        android:orientation="vertical"
+        tools:context=".MainActivity" />
+
+    <LinearLayout
+        android:id="@+id/lin_fare_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enter_to"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_la_fare"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/C8dp"
+            android:layout_weight="1"
+            android:hint="Amount"
+            android:inputType="numberDecimal"
+            android:textColorHint="#C0C0C0"
+            android:textSize="@dimen/C14dp" />
+
+
+        <ImageView
+            android:id="@+id/la_attach_iamg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="-8dp"
+            android:padding="@dimen/C5dp"
+            android:src="@drawable/attach_files"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_prvw_lc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="-8dp"
+            android:padding="@dimen/C5dp"
+            android:src="@drawable/image_preview"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_lc_ukey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lcConv_gstLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/C5dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginStart="9dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GST Number: "
+                android:textColor="#000000"
+                android:textSize="12sp" />
+            <EditText
+                android:id="@+id/edt_lcConv_gst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="19"
+                android:paddingStart="4dp"
+                android:hint="Enter GST Number"
+                android:textColorHint="#C1C0C0"
+                android:textSize="12dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="29dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GST Amount: "
+                android:textColor="#000000"
+                android:textSize="12sp" />
+            <EditText
+                android:id="@+id/edt_lcConv_gst_amt"
+                android:layout_width="89dp"
+                android:layout_height="wrap_content"
+                android:hint="0.00"
+                android:paddingStart="@dimen/C4dp"
+                android:textColorHint="#C1C0C0"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+                android:textSize="12dp" />
+        </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/C5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="9dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GST Bill Number"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
+                <EditText
+                    android:id="@+id/edt_lcConv_gst_bno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter GST Bill Number"
+                    android:paddingStart="@dimen/C4dp"
+                    android:textColorHint="#C1C0C0"
+                    android:maxLength="30"
+                    android:textSize="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/lcRwID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/delete_lc"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_margin="@dimen/C8dp"
+            android:gravity="right"
+            android:onClick="onLCDelete"
+            android:src="@drawable/delete_cart" />
+    </LinearLayout>
+
+
+</LinearLayout>

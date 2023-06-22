@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/C30dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cbPayMode"
+            style="@style/TextStyle" />
+
+        <TextView
+            android:id="@+id/tvPayMode"
+            style="@style/TextStyle"
+            android:text="Cash" />
+    </LinearLayout>
+
+
+</LinearLayout>

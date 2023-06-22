@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity_Hap.TP_Approval_Status">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/custom_toolbar_help" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:textStyle="bold"
+                    android:text="PJP APPROVALS STATUS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_yellow"
+                    android:gravity="center"
+                    android:padding="@dimen/C10dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/C14dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/C10dp"
+            android:layout_marginTop="@dimen/C5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Name:"
+                android:layout_marginEnd="@dimen/C5dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/tpApprovalStatusName"
+                android:layout_width="@dimen/C40dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="Kumar"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints,UselessLeaf">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/C8dp"
+                android:elevation="@dimen/C8dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/C10dp"
+                    android:orientation="vertical">
+                    <!--                    <RelativeLayout-->
+                    <!--                        android:id="@+id/sf_namelayout"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginLeft="@dimen/C5dp"-->
+                    <!--                        android:visibility="visible">-->
+
+
+                    <!--                        <TextView-->
+                    <!--                            android:id="@+id/SfName"-->
+                    <!--                            style="@style/TextStyleOne"-->
+                    <!--                            android:text="-"-->
+                    <!--                            android:textColor="@android:color/black"-->
+                    <!--                            android:textSize="11sp"-->
+                    <!--                            android:textStyle="bold" />-->
+
+                    <!--                    </RelativeLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:orientation="vertical">
+<!--                            <TextView-->
+<!--                                android:id="@+id/name"-->
+<!--                                style="@style/TextStyleOne"-->
+<!--                                android:padding="@dimen/C3dp"-->
+<!--                                android:text="-"-->
+<!--                                android:textColor="@android:color/holo_green_dark"-->
+<!--                                android:textSize="12sp"-->
+<!--                                android:textStyle="bold" />-->
+                            <TextView
+                                android:id="@+id/date"
+                                style="@style/TextStyleOne"
+                                android:padding="@dimen/C5dp"
+                                android:text="-"
+                                android:textColor="@android:color/black"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/status_approved"
+                                android:layout_width="wrap_content"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="@dimen/C5dp"
+                                android:background="@drawable/button_dgreen"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="@dimen/C10dp"
+                                android:text="Approved"
+                                android:textStyle="bold"
+                                android:textSize="11sp"
+                                android:textAlignment="center"
+                                android:visibility="gone"
+                                android:textColor="@color/color_white" />
+                            <TextView
+                                android:id="@+id/status_rejected"
+                                android:layout_width="wrap_content"
+                                android:layout_height="22dp"
+                                android:background="@drawable/button_amber"
+                                android:paddingStart="@dimen/C10dp"
+                                android:paddingEnd="@dimen/C10dp"
+                                android:text="Rejected"
+                                android:textStyle="bold"
+                                android:textAllCaps="false"
+                                android:textSize="11sp"
+                                android:textAlignment="center"
+                                android:visibility="gone"
+                                android:textColor="@color/color_white" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_margin="@dimen/C5dp"
+                        android:background="@android:color/black" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/C7dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                style="@style/TextStyleOne"
+                                android:layout_weight="1"
+                                android:text="Work Type"
+                                android:textAllCaps="true"
+                                android:textColor="@color/dark_greys"
+                                android:textSize="11dp" />
+                            <TextView
+                                android:id="@+id/workType"
+                                style="@style/TextStyleOne"
+                                android:layout_weight="1"
+                                android:text="-"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                style="@style/TextStyleOne"
+                                android:layout_marginTop="@dimen/C10dp"
+                                android:text="HQ"
+                                android:textAllCaps="true"
+                                android:textColor="@color/dark_greys"
+                                android:textSize="11dp" />
+
+                            <TextView
+                                android:id="@+id/hq"
+                                style="@style/TextStyleOne"
+                                android:text="-"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                style="@style/TextStyleOne"
+                                android:layout_marginTop="@dimen/C10dp"
+                                android:text="Remarks"
+                                android:textAllCaps="true"
+                                android:textColor="@color/dark_greys"
+                                android:textSize="11dp" />
+
+                            <TextView
+                                android:id="@+id/remarks"
+                                style="@style/TextStyleOne"
+                                android:text="-"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/reasonLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:orientation="vertical">
+                            <TextView
+                                style="@style/TextStyleOne"
+                                android:layout_marginTop="@dimen/C10dp"
+                                android:text="Reason"
+                                android:textAllCaps="true"
+                                android:textColor="@color/dark_greys"
+                                android:textSize="11dp" />
+
+                            <TextView
+                                android:id="@+id/reason"
+                                style="@style/TextStyleOne"
+                                android:text="-"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/C7dp"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    style="@style/TextStyleOne"
+                                    android:textSize="13dp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/dark_greys"
+                                    android:text="Applied :" />
+                                <TextView
+                                    android:id="@+id/appliedDate"
+                                    style="@style/TextStyleOne"
+                                    android:text="-"
+                                    android:layout_marginLeft="@dimen/C5dp"
+                                    android:textColor="@color/dark_greys"
+                                    android:textSize="13dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/approvedDateLay"
+                                android:layout_width="wrap_content"
+                                android:visibility="gone"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/tvApprovedText"
+                                    style="@style/TextStyleOne"
+                                    android:textSize="13dp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/dark_greys"
+                                    android:text="Approved : " />
+                                <TextView
+                                    android:id="@+id/status_ApprovedDate"
+                                    style="@style/TextStyleOne"
+                                    android:layout_marginLeft="@dimen/C5dp"
+                                    android:text=""
+                                    android:textColor="@color/dark_greys"
+                                    android:textSize="13dp"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+<!--                            <LinearLayout-->
+<!--                                android:id="@+id/rejectedDateLay"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_marginTop="@dimen/C5dp"-->
+<!--                                android:visibility="gone"-->
+<!--                                android:layout_height="wrap_content">-->
+<!--                                <TextView-->
+<!--                                    style="@style/TextStyleOne"-->
+<!--                                    android:textSize="13dp"-->
+<!--                                    android:textStyle="bold"-->
+<!--                                    android:textColor="@color/dark_greys"-->
+<!--                                    android:text="Rejected : " />-->
+<!--                                <TextView-->
+<!--                                    android:id="@+id/status_RejectedDate"-->
+<!--                                    style="@style/TextStyleOne"-->
+<!--                                    android:layout_marginLeft="@dimen/C5dp"-->
+<!--                                    android:textColor="@color/dark_greys"-->
+<!--                                    android:textSize="13dp"-->
+<!--                                    android:textStyle="bold"/>-->
+<!--                            </LinearLayout>-->
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_marginRight="5dp">-->
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/tp_status_recyclerview"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                tools:listitem="@layout/tp_approval_status_layout"-->
+<!--                android:layout_marginBottom="60dp" />-->
+<!--        </LinearLayout>-->
+
+    </LinearLayout>
+
+    <include layout="@layout/back_arrow" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

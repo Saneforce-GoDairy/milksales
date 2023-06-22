@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/C5dp"
+    app:cardCornerRadius="@dimen/C5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C5dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="@dimen/C15dp"
+            android:layout_marginRight="@dimen/C15dp"
+            android:paddingStart="@dimen/C10dp"
+            android:paddingEnd="@dimen/C10dp"
+            android:background="@drawable/cardbutton"
+            android:hint="Enter the Reason"
+            android:textSize="@dimen/C15dp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

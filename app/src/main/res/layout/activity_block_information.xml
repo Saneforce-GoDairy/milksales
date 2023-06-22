@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity_Hap.Block_Information">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/C10dp"
+        android:layout_marginTop="@dimen/C30dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_warninghead" />
+        <TextView
+            android:id="@+id/txt_info"
+            style="@style/TextStyle"
+            android:text="Information"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/C10dp"
+        android:layout_marginTop="@dimen/C2dp"
+        android:layout_marginRight="@dimen/C15dp"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/txtMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="Your Device Date Setting may change. \n\n\nKindly set datetime setting to Automatic date and time"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/openDateTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C10dp"
+        android:background="@drawable/button_blueg"
+        android:padding="@dimen/C10dp"
+        android:text="Open Settings"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

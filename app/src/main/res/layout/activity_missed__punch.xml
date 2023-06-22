@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/custom_toolbar_help" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/C100dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:textStyle="bold"
+
+                        android:text="Missed Punch Entry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_yellow"
+                        android:gravity="center"
+                        android:padding="@dimen/C10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/C14dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/misseddatelayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/C5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Missed Punch Date" />
+
+                        <TextView
+                            android:id="@+id/misseddateselect"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginLeft="@dimen/C5dp"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/textbox_bg"
+                            android:elevation="10dp"
+                            android:gravity="start"
+                            android:hint="@string/selectmissed_date"
+                            android:padding="@dimen/C10dp" />
+
+                    </LinearLayout>
+
+
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Shift time" />
+
+                    <EditText
+                        android:id="@+id/missed_shift"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/textbox_bg"
+                        android:clickable="false"
+                        android:elevation="10dp"
+                        android:focusable="false"
+                        android:padding="@dimen/C10dp"
+                        android:textSize="@dimen/C13dp" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Check-in time" />
+
+
+                    <EditText
+                        android:id="@+id/missed_checkin"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/textbox_bg"
+                        android:clickable="false"
+                        android:elevation="10dp"
+                        android:focusable="false"
+                        android:padding="@dimen/C10dp"
+                        android:textSize="@dimen/C13dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Check-out time  and  Date" />
+
+
+                    <EditText
+                        android:id="@+id/missed_checkout"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/textbox_bg"
+                        android:clickable="false"
+                        android:elevation="10dp"
+                        android:focusable="false"
+                        android:hint="Select Time and Date"
+                        android:padding="@dimen/C10dp"
+                        android:textSize="@dimen/C13dp" />
+
+
+                    <LinearLayout
+                        android:id="@+id/lin_mode_trav"
+                        android:layout_width="match_parent"
+                        android:layout_margin="@dimen/C5dp"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:text="Mode of Travel " />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:layout_marginBottom="@dimen/C5dp"
+                            android:background="@drawable/round_white_backround"
+                            android:orientation="vertical"
+                            android:padding="@dimen/C3dp">
+
+                            <TextView
+                                android:id="@+id/txt_mode_travel"
+                                style="@style/TextStyle"
+                                android:hint="Mode of Travel" />
+
+
+                        </LinearLayout>
+                        <TextView
+                            style="@style/TextStyle"
+                            android:text="Started Km " />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txt_started_km"
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/C100dp"
+                                android:background="@drawable/round_white_backround"
+                                android:hint="Started km"
+                                android:padding="@dimen/C5dp" />
+
+                            <ImageView
+                                android:id="@+id/img_started_km"
+                                android:layout_width="@dimen/C80dp"
+                                android:layout_height="@dimen/C80dp"
+                                android:layout_marginLeft="@dimen/C20dp"
+                                android:rotation="90"></ImageView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:text="To Place" />
+
+                            <ImageView
+                                android:layout_width="@dimen/C8dp"
+                                android:layout_height="@dimen/C8dp"
+                                android:src="@drawable/mandatory" />
+
+                        </LinearLayout>
+                        <LinearLayout
+
+                            android:id="@+id/lin_to"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:background="@drawable/round_white_backround"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txt_to"
+                                style="@style/TextStyle" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:text="Closing Km " />
+
+                            <ImageView
+                                android:layout_width="@dimen/C8dp"
+                                android:layout_height="@dimen/C8dp"
+                                android:src="@drawable/mandatory" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <EditText
+                                    android:id="@+id/ended_km"
+                                    android:layout_width="@dimen/C100dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/round_white_backround"
+                                    android:hint="Ended km"
+                                    android:maxLength="10"
+                                    android:inputType="number"
+                                    android:padding="10dp"
+                                    android:textSize="13dp" />
+
+                                <TextView
+                                    android:id="@+id/txt_max"
+                                    style="@style/TextStyle" />
+
+                                <Button
+                                    android:id="@+id/btn_take_photo"
+                                    style="@style/ButtonStyle"
+                                    android:background="@drawable/button_blueg"
+                                    android:text="Photo"/>
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/img_ended_km"
+                                android:layout_width="@dimen/C80dp"
+                                android:layout_height="@dimen/C80dp"
+                                android:layout_marginLeft="@dimen/C20dp"
+                                android:rotation="90"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:text="Personal Km" />
+
+                            <ImageView
+                                android:layout_width="@dimen/C8dp"
+                                android:layout_height="@dimen/C8dp"
+                                android:src="@drawable/mandatory"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:layout_marginBottom="@dimen/C5dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <EditText
+                                    android:id="@+id/personal_ended_km"
+                                    android:layout_width="@dimen/C100dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/round_white_backround"
+                                    android:hint="Ended km"
+                                    android:inputType="number"
+                                    android:padding="10dp"
+                                    android:textSize="13dp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/C10dp"
+                        android:text="Reason " />
+
+                    <EditText
+                        android:id="@+id/reason_missed"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/C100dp"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:background="@drawable/textbox_bg"
+                        android:elevation="@dimen/C5dp"
+                        android:gravity="start"
+                        android:hint="Reason"
+                        android:padding="@dimen/C10dp"
+                        android:textColor="@color/grey_500"
+                        android:textSize="@dimen/C13dp" />
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#99ECEAEA"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            >
+            <Button
+                style="@style/ButtonStyle"
+                android:text="SUBMIT"
+                android:background="@drawable/button_blueg"
+                android:id="@+id/submit_missed"/>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imag_back"
+                android:layout_margin="@dimen/C5dp"
+                android:paddingLeft="@dimen/C8dp"
+                android:paddingRight="@dimen/C8dp"
+                android:src="@drawable/back_arrow"></ImageView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

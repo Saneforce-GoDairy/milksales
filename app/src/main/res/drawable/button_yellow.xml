@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <padding android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp" />
+    <corners android:topLeftRadius="10dp"
+        android:topRightRadius="10dp" />
+
+    <gradient
+        android:startColor="@color/colorPrimaryDark"
+        android:endColor="@color/colorPrimaryDark"
+        android:angle="-360" />
+<!--
+    <gradient
+        android:startColor="#5767C6"
+        android:endColor="#3949AB"
+        android:angle="-360" />-->
+<!--    <gradient-->
+<!--        android:startColor="#7CB342"-->
+<!--        android:endColor="#43A047"-->
+<!--        android:angle="-360" />-->
+<!--    <gradient-->
+<!--        android:startColor="#FF9800"-->
+<!--        android:endColor="#FF5722"-->
+<!--        android:angle="-360" />-->
+<!--    <gradient-->
+<!--        android:startColor="#03A9F4"-->
+<!--        android:endColor="#0273A6"-->
+<!--        android:angle="-360" />-->
+<!--    <gradient-->
+<!--        android:startColor="#009688"-->
+<!--        android:endColor="#057A6F"-->
+<!--        android:angle="-360" />-->
+<!--    <gradient-->
+<!--        android:startColor="#ff9819"-->
+<!--        android:endColor="#ff9819"-->
+<!--        android:angle="-360" />-->
+</shape>

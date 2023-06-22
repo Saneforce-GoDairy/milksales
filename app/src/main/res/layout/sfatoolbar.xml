@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="horizontal"
+    android:paddingBottom="5dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/AppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginLeft="@dimen/C3dp"
+            android:text="@string/milk_sales_daily"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/AppTitle"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="-14dp"
+            android:text="@string/tool_app_ver"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+    </LinearLayout>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/toolbar_ert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="@dimen/C3dp"
+        android:layout_marginRight="@dimen/C10dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="ERT"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:textSize="13sp" />
+    <TextView
+        android:id="@+id/toolbar_play_slip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="@dimen/C3dp"
+        android:layout_marginRight="@dimen/C10dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Payslip"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/toolbar_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="@dimen/C3dp"
+        android:layout_marginRight="@dimen/C5dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Help"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:visibility="gone" />
+    <ImageView
+        android:id="@+id/toolbar_home"
+        android:layout_width="@dimen/C30dp"
+        android:layout_height="@dimen/C30dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="@dimen/C3dp"
+        android:layout_marginRight="@dimen/C8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:padding="5dp"
+        android:src="@drawable/ic_home" />
+</LinearLayout>

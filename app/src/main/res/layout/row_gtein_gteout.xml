@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_plce"
+                style="@style/TextStyle"
+                android:text="Redhills" />
+
+            <TextView
+                android:id="@+id/txt_dte"
+                style="@style/TextStyle"
+                android:layout_weight="1"
+                android:text="13/02/2021"
+                android:textAlignment="textEnd" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:text="IN TIME" />
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="OUT TIME"
+                    android:textAlignment="textEnd" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_intme"
+                    style="@style/TextStyle"
+                    android:text="14:19:50"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_ottme"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="14:19:50"
+                    android:textAlignment="textEnd"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextStyle"
+                android:text="IN GEO" />
+
+            <TextView
+                android:id="@+id/txt_ingeo"
+                style="@style/TextStyle"
+                android:layout_weight="1"
+                android:text="13:0300404:80:2414582"
+                android:textAlignment="textEnd" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextStyle"
+                android:text="OUT GEO" />
+
+            <TextView
+                android:id="@+id/txt_otgeo"
+                style="@style/TextStyle"
+                android:layout_weight="1"
+                android:text="13:0300404:80:2414582"
+                android:textAlignment="textEnd" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:layout_margin="10dp"
+            android:background="#BFE0E0E0"></View>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

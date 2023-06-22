@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "641061977058",
+    "project_id": "milksales-779f0",
+    "storage_bucket": "milksales-779f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641061977058:android:980e4d38bda87a9cffd7bb",
+        "android_client_info": {
+          "package_name": "com.saneforce.milksales"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641061977058-78pfca5vfmgg346njbccih5aebs049l8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX33R50vw4UWyOyUoi0_4qGH8myb84Weg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641061977058-78pfca5vfmgg346njbccih5aebs049l8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Activity_Hap.Leave_Approval">
+
+        <include layout="@layout/custom_toolbar_help" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+      >
+
+                <TextView
+                    android:textStyle="bold"
+                    android:text="Tour Plan Approval"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_yellow"
+                    android:gravity="center"
+                    android:padding="@dimen/C10dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/C14dp" />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/C60dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/C8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Name " />
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Emp Code " />
+
+                        <TextView
+                            android:id="@+id/empcode"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="HQ" />
+
+                        <TextView
+                            android:id="@+id/hq"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Designation "/>
+
+                        <TextView
+                            android:id="@+id/designation"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Mobile " />
+
+                        <TextView
+                            android:id="@+id/mobilenumber"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Plan Date  " />
+
+                        <TextView
+                            android:id="@+id/plandate"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Work Type "/>
+
+                        <TextView
+                            android:id="@+id/worktype"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/routecaption"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Route  " />
+
+                        <TextView
+                            android:id="@+id/route"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:id="@+id/distributorcaption"
+                            android:text="Distributor " />
+
+                        <TextView
+                            android:id="@+id/distributor"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:id="@+id/jointworkcaption"
+                            android:text="Joint Work " />
+
+                        <TextView
+                            android:id="@+id/jointwork"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:id="@+id/tphqcaption"
+                            android:text="TP HQ " />
+
+                        <TextView
+                            android:id="@+id/tphq"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:id="@+id/ChillingCentercaption"
+                            android:text="Chilling Center " />
+
+                        <TextView
+                            android:id="@+id/ChillingCenter"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+
+                            android:text="Shift Type "
+                            android:id="@+id/shifttypecaption"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/shifttype"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/fromdatecaption"
+                            android:text="From Date "
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/fromdate"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/todatecaption"
+                            android:text="To Date "
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/todate"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/captionsremarks"
+                            android:text="Remarks "
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/edt_remarks"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="MOT" />
+
+                        <TextView
+                            android:id="@+id/motravel"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="DA Type" />
+
+                        <TextView
+                            android:id="@+id/daype"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="DA"/>
+
+                        <TextView
+                            android:id="@+id/DAllowance"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="From  Place"/>
+
+                        <TextView
+                            android:id="@+id/Fromplace"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="To  Place" />
+
+                        <TextView
+                            android:id="@+id/Toplace"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rejectonly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:textStyle="bold"
+                        android:text="@string/reason" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/C60dp"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:layout_marginBottom="@dimen/C10dp"
+                        android:background="@drawable/round_white_backround"
+                        android:gravity="start"
+                        android:hint="@string/txt_enter_reason"
+                        android:padding="5dp"
+                        android:textSize="@dimen/C12dp"
+                        android:visibility="visible" />
+                    <Button
+                        style="@style/ButtonStyle"
+                        android:layout_width="110dp"
+                        android:id="@+id/tp_rejectsave"
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:text="Save" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/Approvereject"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+                    <Button
+                        style="@style/DashboardButton"
+                        android:layout_weight="1"
+                        android:id="@+id/tpapprovebutton"
+                        android:fontFamily="@font/alegreya_sans_sc"
+                        android:background="@drawable/button_dgreen"
+                        android:textStyle="bold"
+                        android:text="Approve" />
+
+                    <Button
+                        android:id="@+id/tpreject"
+                        android:layout_weight="1"
+                        style="@style/DashboardButton"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/alegreya_sans_sc"
+                        android:background="@drawable/button_amber"
+                        android:text="Reject" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content">
+
+
+        <include layout="@layout/back_arrow"></include>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

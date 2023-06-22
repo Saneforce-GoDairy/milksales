@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:id="@+id/lodgJoin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/C20dp"
+    android:orientation="vertical"
+    android:background="@drawable/hash_border"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/C10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/C8dp"
+            android:layout_marginTop="@dimen/C8dp"
+            android:layout_marginRight="@dimen/C8dp"
+            android:text="Emp Code"
+            android:textAllCaps="true"
+            android:textColor="#000"
+            android:textSize="10sp"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edt_ldg_JnEmp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_weight="1"
+                android:hint="Enter Emp Code"
+                android:textColorHint="#C0C0C0"
+                android:textSize="@dimen/C13dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginRight="@dimen/C10dp"
+                android:background="#C0C0C0"
+                android:padding="8dp"
+                android:text="Get"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:onClick="onGetEmpDetails"
+                tools:ignore="RtlCompat" />
+        </LinearLayout>
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C8dp"
+                android:layout_marginRight="@dimen/C8dp"
+                android:text="Name"
+                android:textAllCaps="true"
+                android:textColor="#000"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/txtJNName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/C8dp"
+                android:paddingTop="@dimen/C1dp"
+                android:paddingRight="@dimen/C8dp"
+                android:paddingBottom="@dimen/C2dp"
+                android:text=""
+                android:textAllCaps="false"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C8dp"
+                    android:layout_marginRight="@dimen/C8dp"
+                    android:text="Designation"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/txtJNDesig"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/C8dp"
+                    android:paddingTop="@dimen/C1dp"
+                    android:paddingRight="@dimen/C8dp"
+                    android:paddingBottom="@dimen/C2dp"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C8dp"
+                    android:layout_marginRight="@dimen/C8dp"
+                    android:text="Department"
+                    android:textAlignment="textEnd"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/txtJNDept"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/C8dp"
+                    android:paddingTop="@dimen/C1dp"
+                    android:paddingRight="@dimen/C8dp"
+                    android:paddingBottom="@dimen/C2dp"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C8dp"
+                    android:layout_marginRight="@dimen/C8dp"
+                    android:text="HQ"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/txtJNHQ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/C8dp"
+                    android:paddingTop="@dimen/C1dp"
+                    android:paddingRight="@dimen/C8dp"
+                    android:paddingBottom="@dimen/C2dp"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C8dp"
+                    android:layout_marginRight="@dimen/C8dp"
+                    android:text="Mobile"
+                    android:textAlignment="textEnd"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/txtJNMob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/C8dp"
+                    android:paddingTop="@dimen/C1dp"
+                    android:paddingRight="@dimen/C8dp"
+                    android:paddingBottom="@dimen/C2dp"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/C10dp"
+                android:background="@color/grey_300"></View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/C10dp"
+                android:layout_marginRight="@dimen/C10dp"
+                android:layout_marginBottom="@dimen/C5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Lodging Eligible"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="10sp" ></TextView>
+
+                <TextView
+                    android:id="@+id/txtJNMyEli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs. 0.00"
+                    android:textColor="@android:color/black"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"></TextView>
+
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/ldg_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:layout_margin="@dimen/C8dp"
+        android:onClick="onLodingDelete"
+        android:src="@drawable/delete_cart" />
+</LinearLayout>

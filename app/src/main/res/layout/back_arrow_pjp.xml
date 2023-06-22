@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#99ECEAEA"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imag_back"
+            android:layout_margin="@dimen/C5dp"
+            android:paddingLeft="@dimen/C8dp"
+            android:paddingRight="@dimen/C8dp"
+            android:src="@drawable/back_arrow" />
+        <Button
+            android:layout_width="@dimen/C45dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:id="@+id/btnPjpApprove"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:padding="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="@dimen/C10dp"
+            android:fontFamily="@font/alegreya_sans_sc"
+            android:background="@drawable/button_dgreen"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:textStyle="bold"
+            android:text="Approve" />
+
+        <Button
+            android:layout_width="@dimen/C45dp"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:padding="0dp"
+            android:layout_marginEnd="@dimen/C10dp"
+            android:layout_gravity="center"
+            android:id="@+id/btnPjpReject"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:fontFamily="@font/alegreya_sans_sc"
+            android:background="@drawable/button_amber"
+            android:text="Reject" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

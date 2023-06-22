@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="5dp"
+    >
+
+    <Button
+        android:id="@+id/btn_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:textColor="#000000"
+        android:textSize="15dp">
+
+    </Button>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="10"
+        android:background="@android:color/transparent"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/tp_date_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/btn_date"
+        android:src="@mipmap/tp_date_icon"
+        android:visibility="gone" />
+
+</RelativeLayout>

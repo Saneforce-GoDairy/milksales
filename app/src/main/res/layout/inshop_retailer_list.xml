@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/C5dp"
+        android:layout_marginRight="@dimen/C5dp"
+        android:elevation="@dimen/C5dp"
+        app:cardCornerRadius="@dimen/C10dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:id="@+id/cdParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/C5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="@dimen/C20dp"-->
+<!--                        android:layout_height="@dimen/C20dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:src="@drawable/ic_baseline_shopping_cart_24"-->
+<!--                        android:visibility="gone" />-->
+
+                    <LinearLayout
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/bugetoutletno"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txIsRetNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="@dimen/C4dp"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/isRetailername"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/C10dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="A.M."
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/btnEditRet"
+                        android:layout_width="35dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentEnd="true"
+                        android:paddingLeft="@dimen/C5dp"
+                        android:paddingTop="@dimen/C5dp"
+                        android:paddingRight="@dimen/C5dp"
+                        android:paddingBottom="@dimen/C5dp"
+                        android:visibility="gone"
+                        android:src="@drawable/edit_small" />
+
+                   <!-- <TextView
+                        android:id="@+id/retailorCode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/C10dp"
+                        android:layout_weight="1"
+                        android:text="167892"
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14dp"
+                        android:visibility="gone" />-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/linDistance"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal">-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="@dimen/C15dp"-->
+<!--                            android:layout_height="@dimen/C15dp"-->
+<!--                            android:src="@drawable/ic_wlk_distance" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/txDistance"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:paddingLeft="@dimen/C2dp"-->
+<!--                            android:paddingTop="2dp"-->
+<!--                            android:paddingRight="@dimen/C10dp"-->
+<!--                            android:text="10m"-->
+<!--                            android:textSize="10sp"-->
+<!--                            android:textStyle="bold" />-->
+<!--                    </LinearLayout>-->
+
+                    <LinearLayout
+                        android:id="@+id/isIcAC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="@dimen/C5dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_shipment_cooler" />
+                    </LinearLayout>
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/icFreezer"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:visibility="gone">-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            android:layout_marginRight="@dimen/C5dp"-->
+<!--                            android:scaleType="centerCrop"-->
+<!--                            android:src="@drawable/ic_freezer"-->
+<!--                            android:tint="@color/colorPrimaryDark"-->
+<!--                            tools:ignore="UseAppTint" />-->
+<!--                    </LinearLayout>-->
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txISCustID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C30dp"
+
+                    android:textSize="12sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C30dp"
+                    android:layout_marginTop="2dp">
+
+
+
+                    <LinearLayout
+                        android:id="@+id/btnISCallMob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/icMob"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:src="@drawable/call_icon"
+                            app:tint="@color/colorPrimaryDark" />
+                        <TextView
+                            android:id="@+id/txISMobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_marginStart="@dimen/C3dp"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txISshopAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text=""
+                    android:layout_marginStart="@dimen/C30dp"
+                    android:layout_marginEnd="@dimen/C30dp"
+                    android:textSize="9sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_200"
+                    android:padding="@dimen/C5dp"
+                    android:layout_marginTop="@dimen/C5dp"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:layout_marginBottom="@dimen/C10dp">
+                    <LinearLayout
+                        android:id="@+id/isRetStaBdg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/round_status_blue">
+                    <TextView
+                        android:id="@+id/txISCustStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="@dimen/C2dp"
+                        android:text="DCO"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                    <Button
+                        android:id="@+id/btn_View"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="end"
+                        android:background="@drawable/button_blueg"
+                        android:padding="5dp"
+                        android:text="View"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+                </RelativeLayout>
+
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/llDataParent"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginBottom="@dimen/C10dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:visibility="gone">-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/llTdDataParent"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:visibility="visible">-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/tvDate"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="25dp"-->
+<!--                            android:fontFamily="sans-serif"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:text="09-06-2021"-->
+<!--                            android:textSize="12sp"-->
+<!--                            android:textStyle="bold" />-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:visibility="visible">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="0.5"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:ellipsize="end"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="1dp"-->
+<!--                                android:text=""-->
+<!--                                android:textSize="10sp"-->
+<!--                                android:textStyle="bold" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="25dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="1dp"-->
+<!--                                android:text="Ord"-->
+<!--                                android:textSize="10sp" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="25dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="1dp"-->
+<!--                                android:text="N.Q"-->
+<!--                                android:textSize="10sp" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="25dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="1dp"-->
+<!--                                android:text="Inv"-->
+<!--                                android:textSize="10sp" />-->
+
+
+<!--                            <TextView-->
+<!--                                android:layout_width="70dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingEnd="3dp"-->
+<!--                                android:text="Inv.Val"-->
+<!--                                android:textAlignment="textEnd"-->
+<!--                                android:textSize="10sp" />-->
+
+<!--                        </LinearLayout>-->
+
+<!--                        <androidx.recyclerview.widget.RecyclerView-->
+<!--                            android:id="@+id/rvTodayData"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:clickable="true"></androidx.recyclerview.widget.RecyclerView>-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="1dp"-->
+<!--                            android:background="@color/grey_500"-->
+<!--                            android:visibility="gone" />-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:visibility="visible">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="0.5"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:ellipsize="end"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="1dp"-->
+<!--                                android:text="Total"-->
+<!--                                android:textSize="11sp"-->
+<!--                                android:textStyle="bold" />-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/tvTodayTotOQty"-->
+<!--                                android:layout_width="25dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="1dp"-->
+<!--                                android:text="0"-->
+<!--                                android:textSize="11sp"-->
+<!--                                android:textStyle="bold" />-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/tvTodayTotNOQty"-->
+<!--                                android:layout_width="25dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="1dp"-->
+<!--                                android:text="0"-->
+<!--                                android:textSize="11sp"-->
+<!--                                android:textStyle="bold" />-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/tvTodayTotQty"-->
+<!--                                android:layout_width="25dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="1dp"-->
+<!--                                android:text="0"-->
+<!--                                android:textSize="11sp"-->
+<!--                                android:textStyle="bold" />-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/tvTodayTotVal"-->
+<!--                                android:layout_width="70dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingRight="3dp"-->
+<!--                                android:text="₹0.00"-->
+<!--                                android:textAlignment="textEnd"-->
+<!--                                android:textSize="11sp"-->
+<!--                                android:textStyle="bold">-->
+
+
+<!--                            </TextView>-->
+
+
+<!--                        </LinearLayout>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="2dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:visibility="visible">-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="1dp"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:background="@color/grey_500" />-->
+<!--                    </LinearLayout>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical">-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="25dp"-->
+<!--                            android:orientation="horizontal">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="25dp"-->
+<!--                                android:ellipsize="end"-->
+<!--                                android:gravity="center_vertical"-->
+<!--                                android:maxLines="1"-->
+<!--                                android:text=""-->
+<!--                                android:textSize="12sp"-->
+<!--                                android:textStyle="bold" />-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="130dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="center_vertical"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:orientation="horizontal">-->
+
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvLMFirst"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:layout_weight="1"-->
+<!--                                    android:text="Sep"-->
+<!--                                    android:textAlignment="center"-->
+<!--                                    android:textAllCaps="true"-->
+<!--                                    android:textColor="@color/colorPrimaryDark"-->
+<!--                                    android:textSize="11sp"-->
+<!--                                    android:textStyle="bold" />-->
+
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvLMSecond"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:layout_weight="1"-->
+<!--                                    android:text="Aug"-->
+<!--                                    android:textAlignment="center"-->
+<!--                                    android:textAllCaps="true"-->
+<!--                                    android:textColor="@color/black_80"-->
+<!--                                    android:textSize="11sp"-->
+<!--                                    android:textStyle="normal" />-->
+
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvLMThree"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:layout_weight="1"-->
+<!--                                    android:text="Jul"-->
+<!--                                    android:textAlignment="center"-->
+<!--                                    android:textAllCaps="true"-->
+<!--                                    android:textColor="@color/black_80"-->
+<!--                                    android:textSize="11sp"-->
+<!--                                    android:textStyle="normal" />-->
+<!--                            </LinearLayout>-->
+<!--                        </LinearLayout>-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:visibility="visible">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="40dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingLeft="3dp"-->
+<!--                                android:text="Inv"-->
+<!--                                android:textSize="10sp" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="80dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight="1"-->
+<!--                                android:background="@drawable/item_border"-->
+<!--                                android:fontFamily="sans-serif"-->
+<!--                                android:paddingRight="2dp"-->
+<!--                                android:text="Inv.Val"-->
+<!--                                android:textAlignment="textEnd"-->
+<!--                                android:textSize="10sp">-->
+
+
+<!--                            </TextView>-->
+
+
+<!--                        </LinearLayout>-->
+
+<!--                        <androidx.recyclerview.widget.RecyclerView-->
+<!--                            android:id="@+id/rvPreMnData"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:clickable="false" />-->
+
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="1dp"-->
+<!--                                android:background="@color/grey_500"-->
+<!--                                android:visibility="gone" />-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:visibility="visible">-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="0dp"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_weight="0.5"-->
+<!--                                    android:ellipsize="end"-->
+<!--                                    android:fontFamily="sans-serif"-->
+<!--                                    android:text="Total"-->
+<!--                                    android:textSize="11sp"-->
+<!--                                    android:textStyle="bold"-->
+<!--                                    android:visibility="gone" />-->
+
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvPreTotQty"-->
+<!--                                    android:layout_width="@dimen/C40dp"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:background="@drawable/item_border"-->
+<!--                                    android:fontFamily="sans-serif"-->
+<!--                                    android:paddingStart="3dp"-->
+<!--                                    android:text="0"-->
+<!--                                    android:textSize="11sp"-->
+<!--                                    android:textStyle="bold" />-->
+
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvPreTotVal"-->
+<!--                                    android:layout_width="80dp"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_weight="1"-->
+<!--                                    android:background="@drawable/item_border"-->
+<!--                                    android:fontFamily="sans-serif"-->
+<!--                                    android:paddingLeft="1dp"-->
+<!--                                    android:text="₹0.00"-->
+<!--                                    android:textAlignment="textEnd"-->
+<!--                                    android:textSize="11sp"-->
+<!--                                    android:textStyle="bold">-->
+
+
+<!--                                </TextView>-->
+
+
+<!--                            </LinearLayout>-->
+<!--                        </LinearLayout>-->
+<!--                    </LinearLayout>-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/llDistParent"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="-5dp"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:visibility="gone">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txDistName"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginLeft="@dimen/C10dp"-->
+<!--                        android:text="sg"-->
+<!--                        android:textColor="@color/colorPrimaryDark"-->
+<!--                        android:textSize="10sp" />-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_marginLeft="@dimen/C10dp"-->
+<!--                        android:id="@+id/llCallMob"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal">-->
+
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="13dp"-->
+<!--                            android:layout_height="13dp"-->
+<!--                            android:src="@drawable/call_icon"-->
+<!--                            app:tint="@color/colorPrimaryDark" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/tvDistPhone"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="tuououououououououououo"-->
+<!--                            android:textSize="9sp" />-->
+<!--                    </LinearLayout>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvDistAdd"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="sigps"-->
+<!--                        android:textSize="9sp" />-->
+
+<!--                </LinearLayout>-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="@dimen/C2dp"
+                    android:background="@color/grey_200" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C2dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/linDirection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/C15dp"
+                            android:layout_height="@dimen/C15dp"
+                            android:src="@drawable/ic_directions"
+                            app:tint="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/showDirection"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="@dimen/C2dp"
+                            android:paddingTop="2dp"
+                            android:paddingRight="@dimen/C10dp"
+                            android:text="Direction"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+<!--                    <Space-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1" />-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content">-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:src="@color/txt_template_color" />-->
+<!--                    </LinearLayout>-->
+                </LinearLayout>
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="4dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/bottom_border"-->
+<!--                    android:visibility="gone">-->
+
+<!--                </RelativeLayout>-->
+
+            </LinearLayout>
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/status"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/invoice"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content" />-->
+<!--        </LinearLayout>-->
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

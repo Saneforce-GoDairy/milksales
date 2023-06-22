@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/txt_type"
+            android:layout_width="@dimen/C90dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/C10dp"
+            android:text="Type"></TextView>
+
+
+        <TextView
+            android:id="@+id/txt_eligi"
+            android:layout_width="@dimen/C90dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/C10dp"
+            android:text="Eligibility"></TextView>
+
+        <TextView
+            android:id="@+id/txt_taken"
+            android:layout_width="@dimen/C90dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/C10dp"
+            android:text="Taken"></TextView>
+
+        <TextView
+            android:id="@+id/txt_availa"
+            android:layout_width="@dimen/C90dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/C10dp"
+            android:text="Available"></TextView>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity_Hap.Dashboard">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/C10dp">
+
+                <ImageView
+                    android:id="@+id/imag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:contentDescription="@string/todo"
+                    android:src="@mipmap/ic_so_launcher_foreground" />
+
+                <ImageView
+                    android:id="@+id/myQR"
+                    android:layout_width="@dimen/C30dp"
+                    android:layout_height="@dimen/C30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="15dp"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_baseline_qr_code_scanner_24"
+                    app:tint="@color/colorPrimaryDark" />
+            </RelativeLayout>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profile_image"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center_horizontal"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:srcCompat="@drawable/profile_img" />
+
+            <TextView
+                android:id="@+id/lblUserName"
+                style="@style/TextStyle"
+                android:layout_gravity="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lblEmail"
+                style="@style/TextStyle"
+                android:layout_gravity="center"
+                android:textSize="@dimen/C10dp"
+                android:textStyle="normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/lin_myday_plan"
+                    style="@style/DashboardButton"
+                    android:background="@drawable/g_sign"
+                    android:text="My day plan" />
+
+                <Button
+                    android:id="@+id/lin_check_in"
+                    style="@style/DashboardButton"
+                    android:background="@drawable/button_green"
+                    android:text="Check-In"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/lin_RecheckIn"
+                    style="@style/DashboardButton"
+                    android:background="@drawable/button_orange"
+                    android:text="Re-Call"
+                    android:visibility="gone" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/flxlayut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    app:alignContent="stretch"
+                    app:alignItems="stretch"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:showDivider="middle">
+
+
+                    <Button
+                        android:id="@+id/lin_request_status"
+                        style="@style/DashboardButton"
+                        android:background="@drawable/button_amber"
+                        android:text="Requests &amp; Status"
+                        app:layout_flexBasisPercent="47%" />
+
+                    <Button
+                        android:id="@+id/lin_report"
+                        style="@style/DashboardButton"
+                        android:background="@drawable/button_dblue"
+                        android:text="My DashBoard"
+                        app:layout_flexBasisPercent="47%" />
+
+                    <Button
+                        android:id="@+id/lin_onduty"
+                        style="@style/DashboardButton"
+                        android:background="@drawable/button_blue"
+                        android:text="On-Duty "
+                        app:layout_flexBasisPercent="47%" />
+
+                    <RelativeLayout
+                        android:id="@+id/rel_app"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/C5dp"
+                        app:layout_flexBasisPercent="47%">
+
+                        <Button
+                            android:id="@+id/lin_approvals"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/button_dgreen"
+                            android:padding="@dimen/C10dp"
+                            android:text="Approvals"
+                            android:textColor="@android:color/white" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/C100dp"
+                            android:layout_height="30dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/C10dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:id="@+id/approvalcount"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="right"
+                                android:background="@drawable/newcircle"
+                                android:elevation="@dimen/C10dp"
+                                android:gravity="center"
+                                android:textColor="@android:color/white"
+                                android:textSize="8sp"
+                                android:text="0"/>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/lin_ta_claim"
+                        style="@style/DashboardButton"
+                        android:background="@drawable/button_purple"
+                        android:text="TA &amp; Claim"
+                        app:layout_flexBasisPercent="47%" />
+
+                    <Button
+                        android:id="@+id/lin_extenden_shift"
+                        style="@style/DashboardButton"
+                        android:background="@drawable/button_orange"
+                        android:text="Extended Shift"
+                        app:layout_flexBasisPercent="47%" />
+
+                    <Button
+                        android:id="@+id/lin_tour_plan"
+                        style="@style/DashboardButton"
+                        android:background="@drawable/g_sign"
+                        android:text="Work Plan - PJP"
+                        app:layout_flexBasisPercent="47%" />
+
+
+                    <Button
+                        android:id="@+id/lin_sfa"
+                        style="@style/DashboardButton"
+                        android:background="@drawable/button_green"
+                        android:text="SFA"
+                        app:layout_flexBasisPercent="47%" />
+
+
+                    <Button
+                        android:id="@+id/lin_holiday_working"
+                        style="@style/DashboardButton"
+                        android:background="@drawable/button_green"
+                        android:text="Holiday Working"
+                        app:layout_flexBasisPercent="47%" />
+
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <Button
+                    android:id="@+id/lin_exit"
+                    style="@style/DashboardButton"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_check_out"
+                    android:text="Exit" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/app_ver" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
+</LinearLayout>

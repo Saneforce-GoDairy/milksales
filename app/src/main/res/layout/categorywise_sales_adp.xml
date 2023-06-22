@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/parent_layout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txCateName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:text="Milk"
+            android:textSize="11sp"
+            android:textColor="@color/grey_700"
+            android:paddingLeft="1dp"
+            android:background="@drawable/item_border"/>
+        <TextView
+            android:id="@+id/tvTodayOQty"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="0"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:paddingLeft="1dp"
+            android:background="@drawable/item_border"/>
+
+        <TextView
+        android:id="@+id/tvTodayNOQty"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="0"
+        android:textSize="11sp"
+        android:textStyle="bold"
+            android:paddingLeft="1dp"
+            android:background="@drawable/item_border"/>
+
+        <TextView
+            android:id="@+id/tvTodayQty"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="0"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:paddingLeft="1dp"
+            android:background="@drawable/item_border"/>
+
+
+        <TextView
+            android:id="@+id/tvTodayVal"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textAlignment="textEnd"
+            android:paddingEnd="@dimen/C3dp"
+            android:text="₹0.00"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:background="@drawable/item_border">
+
+
+        </TextView>
+
+
+    </LinearLayout>
+</LinearLayout>

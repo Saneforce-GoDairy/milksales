@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity_Hap.Help_Activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints,UselessLeaf">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C10dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/permission_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Help"
+                android:textColor="@android:color/black"
+                android:textSize="14dp"
+                android:textStyle="bold"></TextView>
+
+            <ImageView
+                android:id="@+id/Closebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/close"></ImageView>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/black" />
+
+
+        <LinearLayout
+            android:id="@+id/onlyquestion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/helpstatus"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="@dimen/C60dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/qanda"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="@dimen/C5dp"
+                android:text="Frequent Asked Question"
+                android:textColor="@color/lightBlueDark"
+                android:textSize="@dimen/C20dp"></TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="@dimen/C5dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/questionandanswerrecycler"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/C60dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/back_arrow"></include>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/C10dp"
+        app:cardCornerRadius="@dimen/C5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/C10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/parent_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/txtlable"
+                        style="@style/DashboardTextStyle"
+                        android:layout_weight="1"
+                        android:text="S No" />
+
+                    <TextView
+
+                        android:id="@+id/tvQpsSno"
+                        style="@style/DashboardTextStyleBold"
+                        android:text="19875"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        style="@style/DashboardTextStyle"
+                        android:layout_weight="1"
+                        android:text="Request No" />
+
+                    <TextView
+                        android:id="@+id/tvQPSReqNo"
+                        style="@style/DashboardTextStyleBold"
+                        android:text="54789245"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2dp">
+
+                    <TextView
+                        style="@style/DashboardTextStyle"
+                        android:layout_weight="1"
+                        android:text="Date" />
+
+                    <TextView
+                        android:id="@+id/tvBookingDate"
+                        style="@style/DashboardTextStyleBold"
+                        android:text="31.8.2021"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="MATERIAL DETAILS"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/grey_600"
+                    android:textSize="@dimen/C13dp"></TextView>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_400"></View>
+
+
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMaterials"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </ScrollView>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

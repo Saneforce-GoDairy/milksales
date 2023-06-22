@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <RadioGroup
+                    android:id="@+id/radio_HAPOth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+
+
+                    <RadioButton
+                        android:id="@+id/radio_HAP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="HAP" android:layout_marginEnd="@dimen/C20dp"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_OTH"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/C10dp"
+                        android:text="Others" />
+                </RadioGroup>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/btnDelete"
+                android:layout_width="@dimen/C30dp"
+                android:layout_height="@dimen/C30dp"
+                android:src="@drawable/delete_cart"
+                android:padding="@dimen/C5dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linGetEmpId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/edtGEmpid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Emp Code    "
+                android:textSize="13sp"
+                android:layout_marginStart="@dimen/C5dp"
+                android:layout_marginEnd="@dimen/C5dp"/>
+            <Button
+                android:id="@+id/btnGetEmp"
+                android:layout_width="@dimen/C40dp"
+                android:layout_height="28dp"
+                android:background="@color/background"
+                android:elevation="@dimen/C5dp"
+                android:padding="1dp"
+                android:text="Get"
+                android:textColor="@color/black"
+                android:textFontWeight="900"
+                android:textSize="12sp"
+                android:layout_gravity="center_vertical"
+                />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/txTrvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Name"
+            android:textSize="13sp"
+            android:layout_marginStart="@dimen/C5dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/txCmpName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Company Name"
+                android:textSize="13sp"
+                android:layout_marginStart="@dimen/C5dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/txTrvMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Mobile No"
+                android:textSize="13sp"
+                android:layout_marginStart="@dimen/C5dp"
+                />
+            <RadioGroup
+                android:id="@+id/radio_TrvGen"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_TrvGenM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/radio_TrvGenF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Female"
+                    android:layout_marginStart="@dimen/C10dp"
+                    android:layout_marginEnd="@dimen/C10dp"
+                    />
+            </RadioGroup>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/txTrvRemarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Remarks"
+                android:textSize="13sp"
+                android:layout_marginStart="@dimen/C5dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/grey_200"
+        android:layout_marginTop="@dimen/C5dp"
+        android:layout_marginBottom="@dimen/C5dp"
+        android:layout_marginStart="@dimen/C15dp"
+        android:layout_marginEnd="@dimen/C15dp"
+        />
+</LinearLayout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/C3dp">
+
+
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/tvDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text=""
+            style="@style/mediumTextStyle"
+            ></TextView>
+
+
+        <TextView
+            android:id="@+id/tvExisting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="20"
+            style="@style/mediumTextStyle"
+
+            ></TextView>
+
+        <TextView
+            android:id="@+id/tvNew"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="60"
+            style="@style/mediumTextStyle"
+
+            ></TextView>
+
+        <TextView
+            android:id="@+id/tvTotalLtrs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="100"
+            style="@style/mediumTextStyle"
+
+            ></TextView>
+
+
+        <TextView
+            android:id="@+id/tvNewOrderLtrs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="50"
+            style="@style/mediumTextStyle"
+
+            ></TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="1800"
+            style="@style/mediumTextStyle"
+
+            ></TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="1380"
+            style="@style/mediumTextStyle"
+
+            ></TextView>
+
+
+    </LinearLayout>
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0.5dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:background="@color/bg_color">-->
+
+<!--    </RelativeLayout>-->
+
+
+</RelativeLayout>

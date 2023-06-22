@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.TaApprovalDisplay">
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/custom_toolbar_help"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/C100dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#009688"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:orientation="vertical"
+                            android:padding="@dimen/C10dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:text="Date "
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/C17dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txt_date"
+                                style="@style/TextStyle"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/C15dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical"
+                            android:padding="@dimen/C10dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:text="Total"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/C17dp"
+                                android:textStyle="bold"></TextView>
+
+                            <TextView
+                                android:id="@+id/txt_amt"
+                                style="@style/TextStyle"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/C20dp"
+                                android:textStyle="bold"></TextView>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/C5dp">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/C5dp"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/C2dp">
+
+                                <TextView
+                                    android:id="@+id/txt_Name"
+                                    style="@style/TextStyle" />
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="-" />
+
+                                <TextView
+                                    android:id="@+id/txt_emp_id"
+                                    style="@style/TextStyle" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/C2dp"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="@dimen/C70dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/basic"
+                                    android:text="Name :"
+                                    android:textAllCaps="false"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/C10dp"
+                                    android:layout_weight="1"
+                                    tools:ignore="RtlCompat" />
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C2dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="@dimen/C100dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/basic"
+                                android:text="Employee Id"
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C2dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="@dimen/C100dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/basic"
+                                android:text="Name "
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C2dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width2"
+                                android:text="Headquater " />
+
+                            <TextView
+                                android:id="@+id/txt_hq"
+                                style="@style/TextStyle"
+                                android:layout_weight="1" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C2dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width2"
+                                android:text="Designation " />
+
+                            <TextView
+                                android:id="@+id/txt_desg"
+                                style="@style/TextStyle"
+                                android:layout_weight="1" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C2dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width2"
+                                android:text="Department " />
+
+                            <TextView
+                                android:id="@+id/txt_dep"
+                                style="@style/TextStyle"
+                                android:layout_weight="1" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C2dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width2"
+                                android:text="Mobile " />
+
+                            <TextView
+                                android:id="@+id/txt_moble"
+                                style="@style/TextStyle"
+                                android:layout_weight="1" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C2dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width2"
+                                android:text="Mode of Travel " />
+
+                            <TextView
+                                android:id="@+id/txt_mde"
+                                style="@style/TextStyle"
+                                android:layout_weight="1" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C2dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="@dimen/C100dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/basic"
+                                android:text="Travel Location :"
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/travel_loc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="@dimen/C10dp"
+                                android:layout_weight="1"
+                                android:baselineAligned="false"
+                                android:text=""
+                                tools:ignore="RtlCompat" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#009688"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/C10dp">
+
+                        <TextView
+                            android:layout_width="@dimen/header_width1"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:text="Allowance "
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/C15dp"
+                            android:textStyle="bold"></TextView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/C30dp"
+                            android:text="Amount"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/C15dp"
+                            android:textStyle="bold"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/C5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="DaApproval"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C5dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width1"
+                                android:layout_weight="3"
+                                android:text="Daily Allowance " />
+
+                            <TextView
+                                android:id="@+id/txt_da"
+                                style="@style/TextStyle"
+                                android:textAlignment="textStart"
+                                android:layout_width="@dimen/C100dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="TLApproval"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C5dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width1"
+                                android:layout_weight="3"
+                                android:text="Travel Location " />
+
+                            <TextView
+                                android:id="@+id/txt_tvrl_amt"
+                                style="@style/TextStyle"
+                                android:textAlignment="textStart"
+                                android:layout_width="@dimen/C100dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="FuelApproval"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C5dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width1"
+                                android:layout_weight="3"
+                                android:text="Fuel Allowance"/>
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:id="@+id/txt_tl"
+                                android:textAlignment="textStart"
+                                android:layout_width="@dimen/C100dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="LAApproval"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C5dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width1"
+                                android:layout_weight="3"
+                                android:text="Lodging Allowance"/>
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:id="@+id/txt_la"
+                                android:textAlignment="textStart"
+                                android:layout_width="@dimen/C100dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="LCApproval"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C5dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width1"
+                                android:layout_weight="3"
+                                android:text="Local Conveyance"/>
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:id="@+id/txt_lc"
+                                android:layout_width="@dimen/C100dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="OEApproval"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/C5dp">
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_width="@dimen/header_width1"
+                                android:layout_weight="3"
+                                android:text="Other Expense"/>
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:id="@+id/txt_oe"
+                                android:layout_width="@dimen/C100dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/rejectonly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:text="@string/reason"
+                    android:visibility="visible" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/C70dp"
+                    android:layout_marginTop="@dimen/C10dp"
+                    android:background="@drawable/round_white_backround"
+                    android:gravity="top"
+                    android:hint="@string/txt_enter_reason"
+                    android:padding="15dp"
+                    android:textSize="@dimen/C12dp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/L_rejectsave"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:background="@drawable/blue_txt_bg"
+                    android:gravity="center"
+                    android:padding="@dimen/C5dp"
+                    android:text="Send"
+                    android:textAlignment="center"
+                    android:textColor="@color/bg_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_accp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <Button
+                style="@style/DashboardButton"
+                android:layout_weight="1"
+                android:background="@color/GrandTotal"
+                android:onClick="onApproval"
+                android:text="Approve "/>
+
+            <Button
+                style="@style/DashboardButton"
+                android:layout_weight="1"
+                android:background="@color/color_red"
+                android:onClick="onReject"
+                android:text="Reject"/>
+
+
+        </LinearLayout>
+
+        <include layout="@layout/back_arrow"></include>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

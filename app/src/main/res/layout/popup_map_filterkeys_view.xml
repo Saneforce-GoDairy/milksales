@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="400dp"
+    android:layout_below="@+id/l1_app_config"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:background="#F1EDED"
+    android:visibility="visible">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rlay_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2196F3">
+
+            <TextView
+                android:id="@+id/tv_todayplan_popup_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center|left"
+                android:paddingLeft="15dp"
+                android:singleLine="true"
+                android:text="Keys"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                android:typeface="serif" />
+
+            <ImageView
+                android:id="@+id/iv_close_popup"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:paddingRight="10dp"
+                android:src="@drawable/plus"
+                android:tint="@color/white"
+                tools:ignore="UseAppTint" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_etMapKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlay_head">
+
+            <EditText
+                android:id="@+id/et_addMapKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/shape_user"
+                android:clickable="true"
+                android:hint="Add key here..."
+                android:padding="@dimen/C10dp"
+                android:searchIcon="@drawable/search" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/rlay_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_weight="1"
+                android:padding="@dimen/C15dp"
+                android:text="Save"
+                android:textColor="#000" />
+
+            <Button
+                android:id="@+id/close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/C5dp"
+                android:layout_weight="1"
+                android:padding="@dimen/C15dp"
+                android:text="Close"
+                android:textColor="#000" />
+
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/popup_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rlay_ok"
+            android:layout_below="@+id/rl_etMapKey"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#ffffff"
+            android:divider="#e4e2e2"
+            android:dividerHeight="1dp">
+
+        </ListView>
+
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <include layout="@layout/sfatoolbar"></include>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_bg"
+            android:orientation="vertical"
+            android:padding="@dimen/C8dp">
+
+            <TextView
+                android:id="@+id/headtext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/basic"
+                android:text="History Info"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="#FFF"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tvSales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/C10dp"
+                android:fontFamily="@font/basic"
+                android:text="Sales"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="#FFF"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/retailername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/C10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="7 Hills milk Centre"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C16dp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/llCustomDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/C10dp"
+            android:layout_marginRight="@dimen/C10dp"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tvStartDate"
+                style="@style/TextStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/textbox_bg"
+                android:drawableRight="@drawable/ic_baseline_date_range_24"
+                android:drawableTint="@color/colorPrimaryDark"
+                android:elevation="5dp"
+                android:hint="Select  Start Date"
+                android:padding="@dimen/C8dp" />
+
+
+            <TextView
+                android:id="@+id/tvEndDate"
+                style="@style/TextStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/textbox_bg"
+                android:drawableRight="@drawable/ic_baseline_date_range_24"
+                android:drawableTint="@color/colorPrimaryDark"
+                android:elevation="5dp"
+                android:hint="Select  End Date"
+                android:padding="@dimen/C8dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llHistoryParent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/C3dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C3dp"
+                android:layout_weight="0.8"
+                android:orientation="vertical">
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:visibility="visible">
+
+                    <com.google.android.material.appbar.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                        tools:ignore="MissingConstraints">
+
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tabs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/blue_bg"
+                            app:tabGravity="fill"
+                            app:tabIndicatorColor="@android:color/white"
+                            app:tabIndicatorHeight="3dp"
+                            app:tabMode="fixed" />
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/viewpager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white" />
+
+                    </com.google.android.material.appbar.AppBarLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+
+        android:id="@+id/llSalesParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnToday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/C5dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:padding="@dimen/C8dp"
+                android:text="Today"
+                android:textAlignment="center"
+                android:textColor="@color/white"></Button>
+
+            <Button
+                android:id="@+id/btnYesterday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/C5dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:padding="@dimen/C8dp"
+                android:text="Yesterday"
+                android:textAlignment="center"
+                android:textColor="@color/white"></Button>
+
+            <Button
+                android:id="@+id/btnCurrentMnth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/C5dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:padding="@dimen/C8dp"
+                android:text="Custom Date"
+                android:textAlignment="center"
+                android:textColor="@color/white"></Button>
+
+            <ImageView
+                android:id="@+id/ivMnthSelecter"
+                android:layout_width="@dimen/C30dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/C10dp"
+                android:padding="@dimen/C5dp"
+                android:src="@drawable/ic_baseline_date_range_24"
+                app:tint="@color/white"></ImageView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/C10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Opening"
+                android:textColor="@color/grey_600"
+                android:textSize="@dimen/C10dp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="Payment"
+                android:textColor="@color/grey_600"
+                android:textSize="@dimen/C10dp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="Outstanding"
+                android:textColor="@color/grey_600"
+                android:textSize="@dimen/C10dp"
+                android:textStyle="bold"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="₹ 1000"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/C12dp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="₹ 50000"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/C12dp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:id="@+id/tvOutstanding"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="₹ 10000"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/C12dp"
+                android:textStyle="bold"></TextView>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSelectDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/C10dp"
+            android:background="@drawable/blue_bg"
+            android:padding="@dimen/C8dp"
+            android:text="Today"
+            android:textColor="@color/white"></Button>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

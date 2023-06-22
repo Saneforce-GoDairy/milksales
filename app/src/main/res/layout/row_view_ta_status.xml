@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/C5dp"
+    android:padding="@dimen/C5dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ta_row_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_yellow"
+                android:padding="@dimen/C5dp">
+
+                <TextView
+                    android:id="@+id/ta_date"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/C12dp" />
+
+                <TextView
+                    android:id="@+id/ta_status"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/C12dp" />
+
+                <TextView
+                    android:id="@+id/ta_amount"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/C12dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/C5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/header_width1"
+                        android:layout_weight="3"
+                        android:text="Daily Allowance "
+                        android:textSize="@dimen/C12dp" />
+
+                    <TextView
+                        android:id="@+id/txt_da"
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/C100dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="@dimen/C12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/header_width1"
+                        android:layout_weight="3"
+                        android:text="Travel Location "
+                        android:textSize="@dimen/C12dp" />
+
+                    <TextView
+                        android:id="@+id/txt_tvrl_amt"
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/C100dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="@dimen/C12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/header_width1"
+                        android:layout_weight="3"
+                        android:text="Fuel Allowance"
+                        android:textSize="@dimen/C12dp" />
+
+                    <TextView
+                        android:id="@+id/txt_tl"
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/C100dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="@dimen/C12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/header_width1"
+                        android:layout_weight="3"
+                        android:text="Lodging Allowance"
+                        android:textSize="@dimen/C12dp" />
+
+                    <TextView
+                        android:id="@+id/txt_la"
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/C100dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="@dimen/C12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/header_width1"
+                        android:layout_weight="3"
+                        android:text="Local Conveyance"
+                        android:textSize="@dimen/C12dp" />
+
+                    <TextView
+                        android:id="@+id/txt_lc"
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/C100dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="@dimen/C12dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/header_width1"
+                        android:layout_weight="3"
+                        android:text="Other Expense"
+                        android:textSize="@dimen/C12dp" />
+
+                    <TextView
+                        android:id="@+id/txt_oe"
+                        style="@style/TextStyle"
+                        android:layout_width="@dimen/C100dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="@dimen/C12dp" />
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="80dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/button_blueg"
+                    android:elevation="@dimen/C5dp"
+                    android:padding="1dp"
+                    android:text="Cancel"
+                    android:textColor="@color/white"
+                    android:textFontWeight="900"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

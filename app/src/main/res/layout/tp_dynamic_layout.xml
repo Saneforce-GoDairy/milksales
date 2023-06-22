@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/worktypelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tpcaptions"
+            android:visibility="gone"
+            style="@style/TextStyle" />
+
+        <TextView
+            android:id="@+id/Textspinnerview"
+            style="@style/TextStyle"
+            android:layout_width="match_parent"
+            android:background="@drawable/round_white_backround"
+            android:padding="@dimen/C5dp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/edittextid"
+            style="@style/TextStyle"
+            android:layout_width="match_parent"
+            android:background="@drawable/round_white_backround"
+            android:padding="@dimen/C5dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/texttimepicker"
+            style="@style/TextStyle"
+            android:layout_width="match_parent"
+            android:background="@drawable/round_white_backround"
+            android:padding="@dimen/C5dp"
+            android:visibility="gone" />
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+</LinearLayout>

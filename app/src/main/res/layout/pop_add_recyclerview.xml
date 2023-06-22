@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C5dp"
+        app:cardBackgroundColor="@color/grey_50"
+        app:cardCornerRadius="@dimen/C5dp">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/C5dp">
+
+                <TextView
+                    android:id="@+id/etPopMaterial"
+                    style="@style/TextStyle"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:hint="Select the POP Material"
+                    android:textColorHint="@color/black" />
+
+                <ImageView
+                    android:layout_width="@dimen/C10dp"
+                    android:layout_height="@dimen/C10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="@dimen/C5dp"
+                    android:src="@drawable/spin_down_arrow"></ImageView>
+            </RelativeLayout>
+
+            <EditText
+                android:layout_gravity="center_vertical"
+                android:id="@+id/etQty"
+                style="@style/TextStyle"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:gravity="center"
+                android:hint="Qty"
+                android:inputType="number"
+                android:padding="@dimen/C5dp" />
+
+            <EditText
+                android:ellipsize="end"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/tvUOM"
+                style="@style/TextStyle"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:enabled="false"
+                android:hint="UOM"
+                android:inputType="number"
+                android:padding="@dimen/C5dp" />
+
+            <ImageView
+                android:id="@+id/rlDeletePOP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end"
+
+                android:src="@drawable/ic_baseline_close_24"
+                app:tint="@color/color_red"></ImageView>
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

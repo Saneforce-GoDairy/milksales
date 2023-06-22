@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:elevation="@dimen/C8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView
+            android:id="@+id/return_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:paddingHorizontal="8dp"
+            android:text="Sales Return ID"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/return_date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Return Date"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/return_value"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="8dp"
+            android:text="₹ 0.00"
+            android:textSize="13dp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

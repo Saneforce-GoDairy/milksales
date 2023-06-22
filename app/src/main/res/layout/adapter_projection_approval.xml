@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/C3dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:id="@+id/llParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/sno"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C12dp"></TextView>
+
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C12dp"></TextView>
+
+        <TextView
+            android:id="@+id/tvQty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C12dp"></TextView>
+
+
+        <Button
+            android:layout_marginRight="@dimen/C5dp"
+            android:id="@+id/btn_View"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="28dp"
+            android:background="@drawable/button_blueg"
+            android:elevation="@dimen/C5dp"
+            android:padding="1dp"
+            android:text="View"
+            android:textColor="@color/white"
+            android:textFontWeight="900"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/C3dp"
+        android:layout_below="@+id/llParent"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_200" />
+
+
+</RelativeLayout>

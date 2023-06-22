@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity_Hap.ImageCapture">
+    <FrameLayout
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+    <TextureView
+        android:id="@+id/ImagePreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+    <SurfaceView
+        android:id="@+id/PREVIEW"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/C40dp"
+        android:layout_marginBottom="@dimen/C40dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:id="@+id/button_switchCam"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:src="@drawable/flip_camera_w"
+            app:tint="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/button_flash"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_baseline_offline_bolt_24"
+            app:tint="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/button_WBalance"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_brightness"
+            app:tint="@color/colorPrimaryDark" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_brightness_2_24" />
+
+        <SeekBar
+            android:id="@+id/skBarBright"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:min="0"
+            android:max="100"
+            android:progress="50"
+            android:padding="0dp"
+            android:layout_margin="0dp"
+            />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:src="@drawable/ic_brightness"
+            app:tint="#FF9800" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/C50dp"
+            android:background="@color/grey_100"
+            android:orientation="horizontal"
+            android:padding="0dp"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/button_capture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="0dp"
+                android:background="@color/colorPrimaryDark"
+                android:padding="2dp"
+                android:text="Take Photo For TA"
+                android:textAllCaps="false"
+                android:textColor="#ffffff" />
+
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/lstMFlash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/awhite"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#B91C1C1C"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:paddingLeft="15dp"
+                android:text="Flash Mode Selection"
+                android:textColor="@android:color/white" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:src="@drawable/close_btn" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lstFlashMode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lstMWBalance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/awhite"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#B91C1C1C"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:paddingLeft="15dp"
+                android:text="White Balance Mode Selection"
+                android:textColor="@android:color/white" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:src="@drawable/close_btn" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lstWBalance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/ImgPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imgPreviewImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/C50dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/C50dp"
+            android:layout_alignParentBottom="true"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnRtPrv"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C10dp"
+                android:layout_marginBottom="@dimen/C5dp"
+                android:background="@drawable/button_red"
+                android:padding="@dimen/C10dp"
+                android:text="Retry"
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"></Space>
+
+            <Button
+                android:id="@+id/btnOkPrv"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C10dp"
+                android:layout_marginBottom="@dimen/C5dp"
+                android:background="@drawable/button_green"
+                android:padding="@dimen/C10dp"
+                android:text="Ok"
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

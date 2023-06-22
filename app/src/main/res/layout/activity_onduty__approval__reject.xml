@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/custom_toolbar_help"></include>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+ >
+
+                <TextView
+                    android:textStyle="bold"
+
+                    android:text="OnDuty Approval"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_yellow"
+                    android:gravity="center"
+                    android:padding="@dimen/C10dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/C14dp"/>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/C10dp"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:ignore="MissingConstraints">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Name " />
+
+                        <TextView
+                            android:id="@+id/name"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Applied Date " />
+
+                        <TextView
+                            android:id="@+id/applieddate"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Emp Code " />
+
+                        <TextView
+                            android:id="@+id/empcode"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="HQ" />
+
+                        <TextView
+                            android:id="@+id/hq"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Designation " />
+
+                        <TextView
+                            android:id="@+id/designation"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Mobile  " />
+
+                        <TextView
+                            android:id="@+id/mobilenumber"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="OD Type " />
+
+                        <TextView
+                            android:id="@+id/odtype"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Purpose of visit" />
+
+                        <TextView
+                            android:id="@+id/purposeofvisit"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="OD Location  " />
+
+                        <TextView
+                            android:id="@+id/odlocation"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Geo Check-in " />
+
+                        <TextView
+                            android:id="@+id/geocheckin"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Geo Check-out" />
+
+                        <TextView
+                            android:id="@+id/geocheckout"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Checkin" />
+
+                        <TextView
+                            android:id="@+id/checkin"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Check-out" />
+
+                        <TextView
+                            android:id="@+id/checkout"
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="@color/green" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/rejectonly"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:textStyle="bold"
+                        android:text="@string/reason" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/C60dp"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:layout_marginBottom="@dimen/C10dp"
+                        android:background="@drawable/round_white_backround"
+                        android:gravity="start"
+                        android:hint="@string/txt_enter_reason"
+                        android:padding="5dp"
+                        android:textSize="@dimen/C12dp"
+                        android:visibility="visible" />
+                    <Button
+                        style="@style/ButtonStyle"
+                        android:layout_width="110dp"
+                        android:id="@+id/OD_rejectsave"
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:text="Save" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/Approvereject"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+                    <Button
+                        style="@style/DashboardButton"
+                        android:layout_weight="1"
+                        android:id="@+id/Oapprovebutton"
+                        android:fontFamily="@font/alegreya_sans_sc"
+                        android:background="@drawable/button_dgreen"
+                        android:textStyle="bold"
+                        android:text="Approve" />
+
+                    <Button
+                        android:id="@+id/ODreject"
+                        android:layout_weight="1"
+                        style="@style/DashboardButton"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/alegreya_sans_sc"
+                        android:background="@drawable/button_amber"
+                        android:text="Reject" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <include layout="@layout/back_arrow"></include>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

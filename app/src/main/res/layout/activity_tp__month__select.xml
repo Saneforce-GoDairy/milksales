@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".Activity_Hap.Tp_Month_Select">
+
+        <include layout="@layout/custom_toolbar_help" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextStyle"
+                android:id="@+id/CurrentMoth"
+                android:layout_width="@dimen/header_date_width"
+                android:textAlignment="center"
+                android:background="@drawable/button_blueg"
+                android:text="Current Month"
+                android:padding="@dimen/C10dp"
+                android:textColor="@color/color_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/NextMonth"
+                style="@style/TextStyle"
+                android:layout_width="@dimen/header_date_width"
+                android:text="Next Month"
+                android:textAlignment="center"
+                android:padding="@dimen/C10dp"
+                android:background="@drawable/button_orange"
+                android:textColor="@color/color_white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <include layout="@layout/back_arrow"></include>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

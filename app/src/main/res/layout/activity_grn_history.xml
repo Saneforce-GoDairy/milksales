@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SFA_Activity.GrnHistory">
+
+
+    <LinearLayout
+        android:id="@+id/db1_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/sfatoolbar"></include>
+
+        <TextView
+            android:id="@+id/headtext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_bg"
+            android:fontFamily="@font/basic"
+            android:padding="@dimen/C8dp"
+            android:text="GRN History"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="#FFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/outlet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/C15dp"
+            android:text="Retailor"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_marginTop="@dimen/C10dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/llCustomDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/C10dp"
+            android:layout_marginRight="@dimen/C10dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/C10dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tvStartDate"
+                style="@style/TextStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/textbox_bg"
+                android:drawableRight="@drawable/ic_baseline_date_range_24"
+                android:drawableTint="@color/colorPrimaryDark"
+                android:elevation="5dp"
+                android:hint="Select  Start Date"
+                android:padding="@dimen/C8dp" />
+
+
+            <TextView
+                android:id="@+id/tvEndDate"
+                style="@style/TextStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/textbox_bg"
+                android:drawableRight="@drawable/ic_baseline_date_range_24"
+                android:drawableTint="@color/colorPrimaryDark"
+                android:elevation="5dp"
+                android:hint="Select  End Date"
+                android:padding="@dimen/C8dp" />
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/invoicerecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/C5dp"
+            android:layout_marginStart="@dimen/C7dp"
+            android:layout_marginEnd="@dimen/C7dp"
+            tools:listitem="@layout/grn_history_recycleritems"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+        <!--<androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGrnList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/C5dp"
+            android:layout_marginStart="@dimen/C10dp"
+            android:layout_marginEnd="@dimen/C10dp"/>
+
+        <androidx.cardview.widget.CardView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C5dp"
+            app:cardCornerRadius="@dimen/C5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivAddShoppingCart"
+                    android:layout_width="80dp"
+                    android:layout_height="@dimen/C80dp"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/C10dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/product_logo"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/C5dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="Invoice No: "
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/invoiceNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="sd"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginTop="@dimen/C3dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="Invoice Date: "
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/invoiceDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="sd"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/C20dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="Batch No: "
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/batchNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="sd"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/productname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="Prod name"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="@dimen/C3dp"/>
+
+                    <TextView
+                        android:id="@+id/tvProERPCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="Prod code"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="@dimen/C3dp"/>
+                    <TextView
+                        android:id="@+id/tvMRP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="MRP"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="@dimen/C3dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginTop="@dimen/C3dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="Manufacture Date: "
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/manufactureDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="sd"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/C20dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="Expiry Date: "
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/expiryDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="sd"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Invoice Items: "
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:layout_marginTop="@dimen/C3dp"/>
+                        <TextView
+                            android:id="@+id/invoiceItems"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="sd"
+                            android:layout_gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Order Quantity: "
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:layout_marginTop="@dimen/C3dp"/>
+                        <TextView
+                            android:id="@+id/orderQnty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="sd"
+                            android:layout_gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginTop="@dimen/C3dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="Received Quantity: "
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                            <EditText
+                                android:id="@+id/receivedQnty"
+                                android:layout_width="@dimen/C50dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text=""
+                                android:maxLength="5"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/C20dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="Damage Quantity: "
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/damageQnty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="sd"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>-->
+    </LinearLayout>
+    <!--<RelativeLayout
+        android:id="@+id/rlTakeOrder"
+        style="@style/BottomButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/C50dp"
+        android:layout_margin="@dimen/C5dp"
+        android:padding="@dimen/C5dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/ivCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/C5dp"
+            android:src="@drawable/ic_round_shopping_bag_24"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvCart"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/C45dp"
+            android:layout_toRightOf="@+id/ivCart"
+            android:gravity="center_vertical"
+            android:text="|"
+            android:textColor="@color/white"
+            android:visibility="gone">
+
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C3dp"
+            android:layout_toRightOf="@+id/tvCart"
+            android:orientation="vertical">
+
+            <TextView
+                android:textStyle="bold"
+                android:id="@+id/tvTotalItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Items : 0"
+                android:textColor="@color/white"
+                android:textSize="11sp">
+
+            </TextView>
+
+            <TextView
+                android:textStyle="bold"
+                android:id="@+id/tvTotalAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text=" ₹ 0"
+                android:textColor="@color/white"
+                android:textSize="13sp">
+
+            </TextView>
+
+
+        </LinearLayout>
+
+        <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+            android:id="@+id/takeorder"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="#00FFFFFF"
+            android:text="PROCEED"
+            android:textColor="@color/white"
+            android:theme="@style/BluePrimaryButton"
+            app:finalCornerAngle="50dp"
+            app:initialCornerAngle="0dp"
+            app:spinning_bar_color="#FFFFFFFF"
+            app:spinning_bar_padding="5dp"
+            app:spinning_bar_width="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/C15dp"
+            android:drawableTint="@color/white"
+            android:text="PROCEED"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </RelativeLayout>-->
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

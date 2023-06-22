@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints,UselessLeaf">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C8dp"
+            android:elevation="@dimen/C8dp"
+            app:cardCornerRadius="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/C12dp"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:id="@+id/sf_namelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/C5dp"
+                    android:visibility="gone">
+
+
+                    <TextView
+                        android:id="@+id/SfName"
+                        style="@style/TextStyleOne"
+                        android:text="-"
+                        android:textColor="@android:color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/ondutydate"
+                        style="@style/TextStyleOne"
+                        android:layout_weight="1"
+                        android:padding="@dimen/C7dp"
+                        android:text="-"
+                        android:textColor="@android:color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/OStatus"
+                        style="@style/TextStyleOne"
+                        android:padding="@dimen/C8dp"
+                        android:text="-"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_margin="@dimen/C5dp"
+                    android:background="@android:color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/C7dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/C7dp">
+
+                        <TextView
+                            style="@style/TextStyleOne"
+                            android:layout_weight="1"
+                            android:text="SHIFT / ONDUTY"
+                            android:textAllCaps="true"
+                            android:textColor="@color/dark_greys"
+                            android:textSize="11dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/type"
+                            style="@style/TextStyleOne"
+                            android:layout_weight="1"
+                            android:text="-"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/C10dp">
+
+                        <TextView
+                            style="@style/TextStyleOne"
+                            android:layout_weight="1"
+                            android:text="IN TIME"
+                            android:textAllCaps="true"
+                            android:textColor="@color/dark_greys"
+                            android:textSize="11dp" />
+
+                        <TextView
+                            style="@style/TextStyleOne"
+                            android:text="OUT TIME"
+                            android:textAllCaps="true"
+                            android:textColor="@color/dark_greys"
+                            android:textSize="11dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/C10dp">
+
+                        <TextView
+                            android:id="@+id/txt_in_time"
+                            style="@style/TextStyleOne"
+                            android:layout_weight="1"
+                            android:text="-"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txt_out_time"
+                            style="@style/TextStyleOne"
+                            android:text="-"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/TextStyleOne"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:text="Reason"
+                        android:textAllCaps="true"
+                        android:textColor="@color/dark_greys"
+                        android:textSize="11dp" />
+
+                    <TextView
+                        android:id="@+id/text_reason"
+                        style="@style/TextStyleOne"
+                        android:text="-"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/C7dp">
+
+                        <TextView
+                            android:id="@+id/applieddate"
+                            style="@style/TextStyleOne"
+                            android:layout_weight="1"
+                            android:text="-"
+                            android:textColor="@color/dark_greys"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/Papproved"
+                            style="@style/TextStyleOne"
+                            android:text="-"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/dark_greys"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

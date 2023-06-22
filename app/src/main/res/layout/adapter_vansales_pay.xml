@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:textColor="@color/green"
+            android:id="@+id/tvSNo"
+            style="@style/TextStyle"
+            android:layout_weight="1"
+            android:text="S.No"></TextView>
+
+        <TextView
+            android:textColor="@color/green"
+            android:id="@+id/tvInvNum"
+            style="@style/TextStyle"
+            android:layout_weight="1"
+            android:text="INV NO"></TextView>
+
+        <TextView
+            android:textColor="@color/green"
+            android:id="@+id/tvAmount"
+            style="@style/TextStyle"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="Amount"></TextView>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

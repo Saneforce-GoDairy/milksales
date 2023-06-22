@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/C10dp"
+        android:layout_marginRight="@dimen/C10dp"
+        android:layout_marginBottom="@dimen/C10dp"
+        android:background="@drawable/button_whitebg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/txtlable"
+                style="@style/DashboardTextStyle"
+                android:layout_weight="1"
+                android:text="POP Material" />
+
+            <TextView
+
+                android:id="@+id/tvPOPMaterial"
+                style="@style/DashboardTextStyleBold"
+                android:text="Arokya Coat"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                style="@style/DashboardTextStyle"
+                android:layout_weight="1"
+                android:text="Received Date" />
+
+            <TextView
+                android:id="@+id/tvReceivedDate"
+                style="@style/DashboardTextStyleBold"
+                android:text="54789245"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                style="@style/DashboardTextStyle"
+                android:layout_weight="1"
+                android:text="Status" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                style="@style/DashboardTextStyleBold"
+                android:text="31.8.2021"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="2dp">
+
+
+            <TextView
+
+                android:id="@+id/tvPhotoLabel"
+                style="@style/DashboardTextStyle"
+                android:text="Photo" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFiles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvPhotoLabel"
+                android:layout_marginTop="@dimen/C10dp"
+                android:orientation="horizontal"
+                android:padding="@dimen/C5dp"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+            <ImageView
+                android:id="@+id/ivQPSCaptureImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@id/ivQPSPreviewImg"
+                android:padding="@dimen/C5dp"
+                android:src="@drawable/ic_round_photo_camera_24"
+                app:tint="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:id="@+id/ivQPSPreviewImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@+id/btnComplete"
+                android:padding="@dimen/C5dp"
+                android:src="@drawable/image_preview_24"
+                android:visibility="gone"
+                app:tint="@color/colorPrimaryDark" />
+
+            <Button
+                android:id="@+id/btnComplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/blue_bg"
+                android:elevation="@dimen/C5dp"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:text="Complete"
+                android:textColor="@color/white" />
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/ivFileCount"
+                    android:layout_width="@dimen/C20dp"
+                    android:layout_height="@dimen/C20dp"
+                    android:background="@drawable/circle_bg"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/C3dp"
+                    android:text="5"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/C8dp"
+                    android:textStyle="bold|italic"
+                    app:tint="@color/colorPrimaryDark" />
+            </RelativeLayout>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle_bg"
+                android:padding="6dp"
+                android:text="3"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constrain_dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/custom_toolbar_help" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/C5dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_yellow"
+                        android:gravity="center"
+                        android:padding="@dimen/C10dp"
+                        android:textStyle="bold"
+
+                        android:textAllCaps="true"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/C14dp"
+                        android:text="Deviation Entry"
+                   />
+
+                        <TextView
+                            android:textSize="@dimen/C12dp"
+                            style="@style/TextStyle"
+                            android:text="Deviation" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_deviation_entry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/C8dp"
+                            android:background="@drawable/textbox_bg">
+
+                            <TextView
+                                android:id="@+id/deviation_type"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Deviation type"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/misseddatelayout"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/C5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textSize="@dimen/C12dp"
+                            style="@style/TextStyle"
+                            android:text="Date" />
+
+                        <EditText
+                            android:id="@+id/choose_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/C40dp"
+                            android:padding="@dimen/C8dp"
+                            android:background="@drawable/textbox_bg"
+                            android:clickable="false"
+                            android:elevation="5dp"
+                            android:focusable="false"
+                            android:hint="Select the Date"
+                            android:paddingLeft="@dimen/C5dp"
+                            android:textSize="@dimen/C13dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/C5dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textSize="@dimen/C12dp"
+                            style="@style/TextStyle"
+                            android:text="Remarks" />
+
+                        <EditText
+                            android:id="@+id/remarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/C100dp"
+                            android:padding="@dimen/C8dp"
+                            android:background="@drawable/textbox_bg"
+                            android:elevation="@dimen/C5dp"
+                            android:gravity="start"
+                            android:hint="Reason"
+                            android:textSize="@dimen/C13dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#99ECEAEA"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            >
+            <Button
+                style="@style/BottomButton"
+                android:id="@+id/deviation_submit"
+                android:text="SUBMIT" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imag_back"
+                android:layout_margin="@dimen/C5dp"
+                android:paddingLeft="@dimen/C8dp"
+                android:paddingRight="@dimen/C8dp"
+                android:src="@drawable/back_arrow"></ImageView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

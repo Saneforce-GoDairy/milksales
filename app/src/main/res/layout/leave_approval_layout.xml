@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+      >
+
+
+        <TextView
+            android:id="@+id/textviewname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="thirumalai" />
+
+        <TextView
+            android:id="@+id/textviewdate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2020-11-25" />
+
+        <TextView
+            android:id="@+id/leavedays"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text="2" />
+
+        <TextView
+            android:id="@+id/open"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/blue_txt_bg"
+            android:text="View"
+            android:padding="@dimen/C5dp"
+            android:textAlignment="center"
+            android:textColor="@color/color_white" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

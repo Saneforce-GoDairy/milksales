@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grid_view_items"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/C10dp"
+    android:paddingRight="@dimen/C3dp"
+    android:paddingTop="@dimen/C3dp"
+    android:paddingBottom="@dimen/C3dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/gridcolor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/cardbutton"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/C5dp"
+        android:paddingEnd="@dimen/C10dp">
+
+        <ImageView
+            android:id="@+id/ivCategoryIcon"
+            android:layout_width="@dimen/C30dp"
+            android:layout_height="@dimen/C30dp"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_baseline_shopping_cart_grey24" />
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Demo"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C10dp" />
+
+        <LinearLayout
+            android:id="@+id/undrCate"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</RelativeLayout>

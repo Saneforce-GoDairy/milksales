@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.FuleEntryActivity" android:orientation="vertical">
+    <include layout="@layout/custom_toolbar_help"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:padding="@dimen/C10dp"
+            android:text="Chauffer Entry"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/C14dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <androidx.cardview.widget.CardView
+        android:id="@+id/linear_bike"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C8dp"
+        app:cardCornerRadius="@dimen/C5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/C8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C12dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:text="Mode of Travel"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    />
+                <LinearLayout
+                    android:id="@+id/fule_MT_spnr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/C1dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:layout_marginBottom="@dimen/C5dp"
+                    android:background="@drawable/item_border"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+                    <TextView
+                        android:id="@+id/fule_MT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Select the mode of travel"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/C20dp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/C5dp"
+                        android:src="@drawable/spin_down_arrow" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C10dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:text="Type"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    />
+                <LinearLayout
+                    android:id="@+id/fule_Typ_spnr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/C1dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:layout_marginBottom="@dimen/C5dp"
+                    android:background="@drawable/item_border"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+                    <TextView
+                        android:id="@+id/fule_Typ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Select the type"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/C20dp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/C5dp"
+                        android:src="@drawable/spin_down_arrow" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/fule_From_ara"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C10dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:text="From Location"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginLeft="@dimen/C7dp"
+                    android:layout_marginRight="@dimen/C7dp"
+                    android:layout_marginBottom="@dimen/C5dp"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/fule_From"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Enter the from location"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:text="To Location"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    />
+                <LinearLayout
+                    android:id="@+id/fule_ToPlc_spnr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/C1dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:layout_marginBottom="@dimen/C5dp"
+                    android:background="@drawable/item_border"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/fule_ToPlc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Select the to location"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/C20dp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/C5dp"
+                        android:src="@drawable/spin_down_arrow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginLeft="@dimen/C7dp"
+                    android:layout_marginRight="@dimen/C7dp"
+                    android:layout_marginBottom="@dimen/C5dp"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/fule_ToPlcOth"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Enter the to location"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:text="Start KM"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/item_border"
+                    android:layout_marginLeft="@dimen/C8dp"
+                    android:layout_marginRight="@dimen/C8dp"
+                    android:layout_marginTop="@dimen/C5dp"
+                    >
+                    <EditText
+                        android:id="@+id/edt_km"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/txt"
+                        android:background="@null"
+                        android:digits="1234567890."
+                        android:maxLength="10"
+                        android:hint="Starting Km"
+                        android:inputType="number"
+                        android:padding="@dimen/C10dp"
+                        android:text=""
+                        android:layout_weight="1"
+                        android:textAllCaps="false"
+                        android:textColor="#515151"
+                        android:textSize="13sp" />
+
+
+                    <ImageView
+                        android:id="@+id/skm_img"
+                        android:layout_width="@dimen/C50dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/C8dp"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/skm_pic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/button_blueg"
+                        android:padding="@dimen/C5dp">
+
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:text="Photo"
+                            android:textColor="#fff"  />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/C8dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:layout_marginLeft="@dimen/C10dp"
+                    android:layout_marginRight="@dimen/C10dp"
+                    android:text="Closing KM"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/item_border"
+                    android:layout_marginLeft="@dimen/C8dp"
+                    android:layout_marginRight="@dimen/C8dp"
+                    android:layout_marginTop="@dimen/C5dp"
+                    >
+                    <EditText
+                        android:id="@+id/edt_ekm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/txt"
+                        android:background="@null"
+                        android:digits="1234567890."
+                        android:maxLength="10"
+                        android:hint="Starting Km"
+                        android:inputType="number"
+                        android:padding="@dimen/C10dp"
+                        android:text=""
+                        android:layout_weight="1"
+                        android:textAllCaps="false"
+                        android:textColor="#515151"
+                        android:textSize="13sp" />
+
+
+                    <ImageView
+                        android:id="@+id/ekm_img"
+                        android:layout_width="@dimen/C50dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/C8dp"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/ekm_pic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/button_blueg"
+                        android:padding="@dimen/C5dp"
+                        >
+
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:text="Photo"
+                            android:textColor="#fff"  />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/sndsubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_blueg"
+        android:padding="@dimen/C8dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/C10dp"
+        android:layout_marginLeft="@dimen/C8dp"
+        android:layout_marginRight="@dimen/C8dp"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:padding="@dimen/C5dp"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.saneforce.milksales">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <application
+        android:name=".SFA_Activity.HAPApp"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_so_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_so_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup"
+        tools:targetApi="n">
+        <activity
+            android:name=".SFA_Activity.AddNewDistributor"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.CancelledOrdersActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.SalesReturnHistoryActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.SalesReturnActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.GRN_Invoice"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.GRN_Print_Invoice_Activity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.GrnPendingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.GrnHistory"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.InshopViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.TP_Approval_Status"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Activity_Hap.TP_Approval_Details"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.LedgerHistoryActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.PrimaryOrderReportActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.ComplementaryInvoiceHistory"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.CompementaryInvoiceActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.PendingOrdersActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.POSStockLoadingActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false"
+            android:label="@string/title_activity_posstock_loading"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.ApprovalHistoryActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.PendingOutletsCategory"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Activity_Hap.ApproveOutletsDetailedActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.ApproveOutletsActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.POSViewEntryActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" /> <!-- <activity -->
+        <!-- android:name=".Activity_Hap.TP_Approval_Status" -->
+        <!-- android:exported="false" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <!-- <activity -->
+        <!-- android:name=".Activity_Hap.TP_Approval_Details" -->
+        <!-- android:exported="false" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <activity
+            android:name=".Activity_Hap.NewJoinEntry"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.NewJoineeApproval"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.NewJoineeApproval_Reject"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Invoice_Vansales_Select"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.POS_SalesEntryActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".SFA_Activity.InshopRetailerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.InshopOutletActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.InshopCheckoutActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.InshopCheckinActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.InshopActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.AdvanceReq"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.Advance_Status_Activity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Advance_Approval_Reject"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Advance_Approval"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.VanSalPaymentActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.PaymentActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.HistoryInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.MyTeamActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.PayLedgerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.FlightBooking_Approval_History"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.DashboardInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.MapDirectionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity_Hap.TACumulativeApproval" />
+        <activity android:name=".Activity.FuleEntryActivity" />
+        <activity android:name=".Activity_Hap.DaExceptionStatus" />
+        <activity android:name=".Activity_Hap.DaExceptionReject" />
+        <activity android:name=".Activity_Hap.DAExcApproval" />
+        <activity android:name=".SFA_Activity.SalesCallsActivity" />
+        <activity android:name=".SFA_Activity.SFADCRActivity" />
+        <activity
+            android:name=".Activity_Hap.TaFuelEdit"
+            android:theme="@style/AppTheme.Dialog" />
+        <activity android:name=".Activity.ModeOfTravel" />
+        <activity android:name=".Activity.TAViewStatus" />
+        <activity android:name=".Activity_Hap.ViewTAStatus" />
+        <activity android:name=".Activity_Hap.FlightTicketRequest" />
+        <activity android:name=".Activity_Hap.CateenToken" />
+        <activity android:name=".Common_Class.ToolBarMethod" />
+        <activity android:name=".Activity_Hap.foodExp" />
+        <activity android:name=".Activity_Hap.PayslipFtp" />
+        <activity android:name=".Activity_Hap.Leave_Cancel_Approval" />
+        <activity android:name=".Activity_Hap.Leave_Cancel_Approval_Reject" />
+        <activity android:name=".Activity_Hap.Deviation_Entry_Approval" />
+        <activity android:name=".Activity_Hap.Deviation_Approval_Reject" />
+        <activity android:name=".Activity_Hap.Holiday_Entry_Approval" />
+        <activity android:name=".Activity_Hap.Holiday_Approval_Reject" />
+        <activity android:name=".Activity_Hap.FlightBookingApproval" />
+        <activity android:name=".Activity_Hap.DaExceptionEntry" />
+        <activity android:name=".Activity.LodgingCliamActivity" />
+        <activity
+            android:name=".Activity.PDFActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dialogs" />
+        <activity
+            android:name=".Activity.PdfViewerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activity.FuelAllowance" />
+        <activity android:name=".Activity.TL_cliam_Apprval" />
+        <activity android:name=".Activity.OEClaimActivity" />
+        <activity android:name=".Activity.LocalConvenActivity" />
+        <activity android:name=".Activity.DAClaimActivity" />
+        <activity android:name=".SFA_Activity.Outet_Report_Details" />
+        <activity android:name=".SFA_Activity.Outlet_Report_View" />
+        <activity android:name=".SFA_Activity.Reports_Outler_Name" />
+        <activity
+            android:name=".SFA_Activity.ReportsListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.WebReportsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.OutletApprovListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.ProjectionApprovListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Outlet_Status_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.OutletApprovActiviy"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Reports_Distributor_Name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Order_Category_Select"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.ProjectionCategorySelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.StockAuditCategorySelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Grn_Category_Select"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.GrnListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.IndentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.POSActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.PrimaryOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.TodayPrimOrdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.PosHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.ProjectionHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Invoice_History"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.VanSalesOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.VanSalStockUnLoadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.VanSalStockLoadActivity"
+            android:screenOrientation="portrait" /> <!-- <activity -->
+        <!-- android:name=".SFA_Activity.VanSalPaymentActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <activity
+            android:name=".Activity_Hap.TAHistory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.VanStockViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.More_Info_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Dist_Locations"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Route_Product_Info"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Outlet_Info_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Dashboard_Route"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.VanSalesDashboardRoute"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Dashboard_View_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.SFA_Dashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.New_Outlet_Map_creations"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Dashboard_Order_Reports"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Offline_Sync_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Nearby_Outlets"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Print_Invoice_Activity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SFA_Activity.Lead_Activity" />
+        <activity
+            android:name=".Activity_Hap.SFA_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.AttachementActivity"
+            android:theme="@style/AppTheme.Dialogs" />
+        <activity
+            android:name=".Activity.TaApprovalDisplay"
+            android:label="@string/title_activity_ta_approval_display"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity_Hap.MapZoomIn"
+            android:theme="@style/AppTheme.Dialogs" /> <!-- <activity -->
+        <!-- android:name=".Activity_Hap.TravelAllowanceForm" -->
+        <!-- android:theme="@style/AppTheme.Dialog" /> -->
+        <activity
+            android:name=".Activity_Hap.QRCodeScanner"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.AllowancCapture"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.LeaveReasonStatus"
+            android:theme="@style/AppTheme.Dialog" />
+        <activity
+            android:name=".Activity_Hap.ERT"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.LeaveCancelRequestStatus"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.DeviationEntryStatus"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.HolidayEntryStatus"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.DeviationEntry"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.PrivacyPolicy"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.AllowanceActivityTwo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.EventCaptureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.OrderCategoryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".Activity_Hap.AddNewRetailer"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".Activity_Hap.SecondaryOrderActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".Activity_Hap.OrderDashBoard"
+            android:screenOrientation="portrait" /> <!-- <activity -->
+        <!-- android:name=".Activity.ApprovalViewActivity" -->
+        <!-- android:screenOrientation="portrait" /> -->
+        <activity
+            android:name=".Activity.TAClaimActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".Activity.TAClaimAwsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
+        <activity
+            android:name=".Activity.TAApprovalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.AllowanceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Block_Information"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.ImageCapture"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Checkin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Extendedshift_approval"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Onduty_approval"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Leave_Approval"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ProcPrimaryOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Reports"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Dashboard_Two"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Weekly_Off"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Missed_Punch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Permission_Request"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Leave_Request"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Leave_Dashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Approvals"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.Extended_Shift_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.WeekOff_Status_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.MissedPunch_Status_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.Leave_Status_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.FlightBooking_Status_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.Permission_Status_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.Onduty_Status_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Status_Activity.View_All_Status_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Tp_Mydayplan"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Tp_Calander"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Mydayplan_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Tp_Month_Select"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Tp_Approval"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.QPS_Approval"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Tp_Approval_Reject"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Leave_Approval_Reject"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Permission_Approval"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Permission_Approval_Reject"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Onduty_Approval_Reject"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Webview_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Missed_punch_Approval"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Missed_Punch_Approval_Reject"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Extended_Approval_Reject"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.ViewCartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.ReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.ViewReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.TimeOut"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.On_Duty_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Help_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.UpdateTaskActivity"
+            android:theme="@style/AppTheme.Dialog" />
+        <activity
+            android:name=".Activity_Hap.Dashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.ProductImageView"
+            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
+
+        <service
+            android:name=".common.SANGPSTracker"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".common.TimerService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".common.FileUploadService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
+
+        <activity
+            android:name=".Activity_Hap.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- <activity-alias -->
+        <!-- android:name=".DefaultLauncherAlias" -->
+        <!-- android:enabled="true" -->
+        <!-- android:icon="@mipmap/ic_launcher" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:targetActivity=".Activity_Hap.MainActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity-alias> -->
+        <!-- <activity-alias -->
+        <!-- android:name=".FFALauncherAlias" -->
+        <!-- android:enabled="false" -->
+        <!-- android:icon="@drawable/ic_ffa" -->
+        <!-- android:label="CheckIn" -->
+        <!-- android:targetActivity=".Activity_Hap.MainActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity-alias> -->
+        <!-- <activity-alias -->
+        <!-- android:name=".DistributorLauncherAlias" -->
+        <!-- android:enabled="false" -->
+        <!-- android:icon="@mipmap/ic_so_launcher" -->
+        <!-- android:label="HAP SFA" -->
+        <!-- android:targetActivity=".Activity_Hap.MainActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity-alias> -->
+        <activity
+            android:name=".Activity.ProcurementDashboardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.Invoice_Category_Select"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.CoolerInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.POPActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.QPSActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.OtherBrandActivity"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_so_launcher_foreground" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/black" /> <!-- Notification -->
+        <service
+            android:name=".PushNotification.MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service> <!-- Broadcast receiver declaration in manifest file and make sure to enable it -->
+        <receiver
+            android:name=".common.ConnectivityReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+
+                <!-- Intent filters for broadcast receiver -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".common.AlmReceiver"
+            android:enabled="true" />
+        <receiver android:name=".SFA_Activity.GeofenceBroadcastReceiver" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.saneforce.milksales"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

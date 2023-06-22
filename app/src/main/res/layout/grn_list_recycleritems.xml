@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/C5dp"
+        android:layout_marginRight="@dimen/C5dp"
+        app:cardUseCompatPadding="true">
+
+
+        <LinearLayout
+            android:id="@+id/row_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/C7dp">
+            <!-- <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="2"
+                 android:orientation="horizontal">
+                 <TextView
+                     android:id="@+id/grnNo"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginLeft="3dp"
+                     android:layout_weight="1"
+                     android:gravity="left"
+                     android:text="GRN120"
+                     android:textFontWeight="500"
+                     android:textColor="@color/black"
+                     android:textSize="13sp" />
+                 <TextView
+                     android:id="@+id/grnDate"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginLeft="3dp"
+                     android:layout_weight="1"
+                     android:gravity="right"
+                     android:text="2022/12/10"
+                     android:paddingRight="2dp"
+                     android:textColor="@color/black"
+                     android:textSize="13sp" />
+
+             </LinearLayout>
+
+                <TextView
+                    android:id="@+id/grnPONO"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:text="123456789-87654321"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/grnSuppName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:layout_weight="1"
+                    android:text="Deepam Agency"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="2"
+                 android:layout_marginTop="6dp"
+                 android:orientation="horizontal">
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:layout_marginStart="@dimen/C3dp"
+                     android:orientation="horizontal">
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="left"
+                         android:gravity="center"
+                         android:text="Amount: "
+                         android:textColor="@color/black"
+                         android:textSize="13sp" />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="left"
+                         android:gravity="left"
+                         android:text="Rs."
+                         android:textColor="@color/black"
+                         android:textSize="13sp" />
+                     <TextView
+                         android:id="@+id/billingAmount"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="left"
+                         android:gravity="left"
+                         android:text="1520.22"
+                         android:textColor="@color/black"
+                         android:textSize="13sp" />
+                 </LinearLayout>
+
+
+
+             </LinearLayout>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/billingId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="123654789"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/salesId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="987456321"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/billingDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1.1"
+                    android:gravity="center"
+                    android:text="2023-01-12"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:text="Amount: "
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:text="Rs."
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/billingAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:text="1520.22"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="right"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:id="@+id/statusPending"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingRight="25dp"
+                        android:gravity="right"
+                        android:visibility="gone"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="@dimen/C13dp"
+                            android:layout_height="@dimen/C13dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/pending" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="Pending Grn"
+                            android:textColor="@color/color_red"
+                            android:textSize="12sp"
+                            android:layout_marginStart="@dimen/C5dp"
+                            android:textFontWeight="500"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/statusComplete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingRight="25dp"
+                        android:gravity="right"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="@dimen/C13dp"
+                            android:layout_height="@dimen/C13dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_round_done_outline_24" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="Grn Received"
+                            android:textColor="@color/greentext"
+                            android:textSize="11sp"
+                            android:visibility="visible"
+                            android:layout_marginStart="@dimen/C5dp"
+                            android:textFontWeight="500"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

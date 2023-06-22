@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/C80dp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+
+        <include layout="@layout/custom_toolbar_help" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="0"
+                        android:textColor="@android:color/black"
+                        android:visibility="gone"></TextView>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+
+                <LinearLayout
+                    android:id="@+id/prm_linear_orders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="13dp"
+                        android:text="@string/from_date"
+                        android:textSize="16dp"
+                        android:textStyle="bold"></TextView>
+
+
+
+                    <EditText
+                        android:id="@+id/from_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:background="@drawable/textbox_bg"
+                        android:clickable="false"
+                        android:elevation="@dimen/C5dp"
+                        android:focusable="false"
+                        android:fontFamily="@font/poppins_regular"
+                        android:inputType="date"
+                        android:padding="@dimen/C8dp"
+                        android:textColor="@color/grey_500" />
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/prm_linear_reports"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="13dp"
+                        android:text="@string/to_date"
+                        android:textSize="16dp"
+                        android:textStyle="bold"></TextView>
+
+                    <EditText
+                        android:id="@+id/to_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:background="@drawable/textbox_bg"
+                        android:clickable="false"
+                        android:elevation="@dimen/C5dp"
+                        android:focusable="false"
+                        android:fontFamily="@font/poppins_regular"
+                        android:inputType="date"
+                        android:padding="@dimen/C8dp"
+                        android:textColor="@color/grey_500" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_margin="10dp"
+                android:background="@color/colorPrimary"></View>
+
+
+            <LinearLayout
+                android:id="@+id/row_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+
+                <LinearLayout
+                    android:layout_width="@dimen/header_width"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:layout_width="@dimen/header_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:text="Sno"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"></TextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/header_width1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="@dimen/header_width1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:text="OrderID"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="@dimen/header_width2"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/txt_date"
+                        android:layout_width="@dimen/header_width2"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:text="OrderDate"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="@dimen/header_width"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="@dimen/header_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:text="Value"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimary"></View>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/report_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/bottom_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_chainStyle="spread">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:padding="@dimen/C5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/image_product"
+                    android:layout_width="@dimen/header_date_width1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="Total : "
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/total_value"
+                    android:layout_width="@dimen/header_date_width1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:text="Proceed"></TextView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <include layout="@layout/back_arrow"></include>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

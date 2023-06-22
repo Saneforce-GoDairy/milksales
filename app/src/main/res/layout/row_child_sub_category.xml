@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/C10dp"
+        android:orientation="vertical"
+        android:tag="cards main container"
+        tools:ignore="MissingConstraints">
+
+        <androidx.cardview.widget.CardView
+            xmlns:card_view="https://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardBackgroundColor="#FFF"
+            card_view:cardCornerRadius="50dp"
+            tools:ignore="MissingConstraints">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="@dimen/C10dp"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/child_product_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/C10dp"
+                            android:text="SAN Honey-Almond Cold Cream 100gm"
+                            android:textColor="@android:color/black"
+                            android:textSize="13dp"></TextView>
+
+
+                        <TextView
+                            android:id="@+id/child_product_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="$25.25"
+                            android:textColor="@android:color/black"
+                            android:textSize="10dp">
+
+                        </TextView>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+
+                    android:layout_marginLeft="-50dp">
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="@dimen/C5dp">
+
+
+                        <Button
+                            android:id="@+id/edt_unit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/C15dp"
+                            android:layout_marginRight="@dimen/C10dp"
+                            android:background="@drawable/button_blueg"
+                            android:padding="@dimen/C5dp"
+                            android:text="box"
+                            android:textColor="@android:color/white" />
+
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="bottom">
+
+
+                            <LinearLayout
+                                android:layout_width="115dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/oval_background">
+
+
+                                <LinearLayout
+                                    android:id="@+id/image_minus"
+                                    android:layout_width="38dp"
+                                    android:layout_height="match_parent">
+
+                                    <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="10dp"
+                                        android:background="@drawable/minus"
+                                        android:gravity="center"></Button>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/disable_minus"
+                                    android:layout_width="38dp"
+                                    android:layout_height="match_parent">
+
+                                    <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="10dp"
+                                        android:background="@drawable/disable_minus"
+                                        android:gravity="center"></Button>
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/product_count_increment"
+                                    android:layout_width="50dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:background="@android:color/transparent"
+                                    android:inputType="number"
+                                    android:maxLength="3"
+                                    android:padding="5dp"
+                                    android:text="0"
+                                    android:visibility="gone"></TextView>
+
+
+                                <EditText
+                                    android:id="@+id/edt_product_count_inc_dec"
+                                    android:layout_width="35dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@android:color/transparent"
+                                    android:gravity="center"
+                                    android:inputType="number"
+                                    android:maxLength="3"
+                                    android:text="0"></EditText>
+
+
+                                <LinearLayout
+                                    android:id="@+id/image_plus"
+                                    android:layout_width="38dp"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center">
+
+                                    <Button
+                                        android:layout_width="13dp"
+                                        android:layout_height="10dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="8dp"
+                                        android:background="@drawable/plus"></Button>
+
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                   <!--     <LinearLayout
+                            android:id="@+id/linear_add"
+                            android:layout_width="106dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="@dimen/C13dp"
+                            android:background="@drawable/oval_background">
+
+
+                            <LinearLayout
+                                android:id="@+id/image_minus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <Button
+                                    android:layout_width="13dp"
+                                    android:layout_height="10dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="15dp"
+                                    android:background="@drawable/minus"
+                                    android:gravity="center"></Button>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/disable_minus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <Button
+                                    android:layout_width="13dp"
+                                    android:layout_height="10dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="15dp"
+                                    android:background="@drawable/disable_minus"
+                                    android:gravity="center"></Button>
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/product_count_increment"
+                                android:layout_width="50dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:padding="5dp"
+                                android:text="0"
+                                android:visibility="gone"></TextView>
+
+
+                            <EditText
+                                android:id="@+id/edt_product_count_inc_dec"
+                                android:layout_width="45dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:padding="5dp"
+                                android:text="0"></EditText>
+
+
+                            <LinearLayout
+                                android:id="@+id/image_plus"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <Button
+                                    android:layout_width="13dp"
+                                    android:layout_height="10dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/plus"
+                                    android:gravity="center"></Button>
+                            </LinearLayout>
+
+                        </LinearLayout>-->
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

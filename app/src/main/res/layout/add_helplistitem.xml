@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:padding="5dp">
+
+    <LinearLayout
+        android:id="@+id/onlyquestion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/textviewname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="thirumalai"
+            android:textColor="@color/lightBlueDark"
+            android:textSize="@dimen/C20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/qnada"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="visible"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="thirumalai"
+            android:textColor="@color/txt_color_black"
+            android:textSize="@dimen/C17dp" />
+
+        <TextView
+            android:id="@+id/answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="thirumalai"
+            android:textColor="@color/txt_color_black"
+            android:textSize="@dimen/C13dp" />
+    </LinearLayout>
+
+</LinearLayout>

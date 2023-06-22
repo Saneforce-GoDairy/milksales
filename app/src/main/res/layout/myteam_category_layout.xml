@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/llParentForms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C10dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llZSM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/C5dp"
+            android:paddingEnd="@dimen/C10dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/C30dp"
+                android:layout_marginTop="@dimen/C3dp"
+                android:gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_person_24" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="ZSM"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C14dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/C3dp"
+            android:background="@color/colorPrimaryDark"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/llRSM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/C10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/C5dp"
+            android:paddingEnd="@dimen/C10dp">
+
+            <ImageView
+                android:layout_width="@dimen/C30dp"
+                android:layout_height="@dimen/C30dp"
+                android:layout_marginTop="@dimen/C3dp"
+                android:gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_person_24" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="RSM"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C14dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/C3dp"
+            android:background="@color/colorPrimaryDark"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/llSDM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/C10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/C5dp"
+            android:paddingEnd="@dimen/C10dp">
+
+            <ImageView
+                android:layout_width="@dimen/C30dp"
+                android:layout_height="@dimen/C30dp"
+                android:layout_marginTop="@dimen/C3dp"
+                android:gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_person_24" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="SDM"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C14dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/C3dp"
+            android:background="@color/colorPrimaryDark"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/llSDE"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/C10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/C5dp"
+            android:paddingEnd="@dimen/C10dp">
+
+            <ImageView
+                android:layout_width="@dimen/C30dp"
+                android:layout_height="@dimen/C30dp"
+                android:layout_marginTop="@dimen/C3dp"
+                android:gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_person_24" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="SDE"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C14dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/C3dp"
+            android:background="@color/colorPrimaryDark"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/llAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/C10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/C5dp"
+            android:paddingEnd="@dimen/C10dp">
+
+            <ImageView
+                android:layout_width="@dimen/C30dp"
+                android:layout_height="@dimen/C30dp"
+                android:layout_marginTop="@dimen/C3dp"
+                android:gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_person_24" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="ALL"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C14dp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

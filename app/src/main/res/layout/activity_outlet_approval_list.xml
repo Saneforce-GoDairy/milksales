@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+
+        android:id="@+id/tool_header"
+        layout="@layout/sfatoolbar"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_bg"
+        android:orientation="horizontal"
+        android:padding="@dimen/C3dp">
+
+        <TextView
+            android:id="@+id/tvHeadText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/basic"
+            android:paddingLeft="@dimen/C5dp"
+            android:text="Outlet Creation Approval"
+            android:textAlignment="textStart"
+            android:textAllCaps="true"
+            android:textColor="#FFF"
+            android:textSize="18dp"
+
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvOutletSta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/C15dp"
+            android:paddingRight="@dimen/C5dp"
+            android:text="Outlet Status"
+            android:textAlignment="textStart"
+            android:textColor="#FFF"
+            android:textSize="13dp"
+            android:textStyle="bold"
+
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row_report"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/C40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/grey_300"
+        android:visibility="gone">
+
+
+        <TextView
+            android:id="@+id/txt_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/sno"
+            android:layout_weight="0.8"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C14dp"></TextView>
+
+
+        <TextView
+            android:id="@+id/Itemcount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:text="Des"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C14dp"></TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:text="Ho"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C14dp"></TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Applied Date"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C14dp"></TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Click Here"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C14dp"></TextView>
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOutletApprov"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

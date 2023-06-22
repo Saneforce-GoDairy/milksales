@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SFA_Activity.Dashboard_Route">
+
+    <LinearLayout
+        android:id="@+id/db1_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+
+            android:id="@+id/tool_header"
+            layout="@layout/sfatoolbar"></include>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:paddingLeft="@dimen/C5dp"
+            android:paddingRight="@dimen/C5dp">
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/C5dp"
+                android:text="My Team"
+                android:textAlignment="textStart"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:id="@+id/rvTeamCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+        <RelativeLayout
+
+            android:id="@+id/tabExplore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                >
+
+            </com.google.android.gms.maps.MapView>
+
+            <RelativeLayout
+
+                android:id="@+id/vwRetails"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/C150dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/C1dp"
+                android:layout_marginRight="@dimen/C1dp"
+                android:background="@color/white"
+                android:visibility="visible">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="25dp"
+                            android:layout_height="4dp"
+                            android:layout_margin="@dimen/C5dp"
+                            android:background="@color/grey_300"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginTop="@dimen/C2dp"
+                        android:layout_marginRight="@dimen/C5dp"
+                        android:layout_marginBottom="@dimen/C5dp"
+                        android:background="@drawable/hash_border">
+
+                        <ImageView
+                            android:layout_width="@dimen/C20dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/C3dp"
+                            android:src="@drawable/ic_search_icon"
+                            app:tint="@color/colorPrimaryDark" />
+
+                        <EditText
+                            android:id="@+id/txSearchRet"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:hint="Search"
+                            android:padding="@dimen/C5dp"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvTeamDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/C2dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</LinearLayout>
+

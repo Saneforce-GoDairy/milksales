@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/C50dp"
+    android:paddingEnd="@dimen/C30dp"
+    android:paddingTop="@dimen/C30dp"
+    android:layout_marginTop="@dimen/C50dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Challan No: "
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/challanNo"
+            android:layout_width="200dp"
+            android:layout_height="@dimen/C40dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:paddingStart="@dimen/C5dp"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Po No: "
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/poNo"
+            android:layout_width="200dp"
+            android:layout_height="@dimen/C40dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:paddingStart="@dimen/C5dp"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/C40dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:text="Dispatch Date: "
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/dispatchDate"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:paddingStart="@dimen/C5dp"
+            android:textSize="12sp"
+            android:text="errererer"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:drawableRight="@drawable/ic_baseline_date_range_24"
+            android:drawableTint="@color/colorPrimaryDark" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Received Location: "
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <EditText
+            android:id="@+id/edtRLoc"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:maxLength="50"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Received By: "
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <EditText
+            android:id="@+id/edtRBy"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:maxLength="50"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Authorized By: "
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <EditText
+            android:id="@+id/edtABy"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:maxLength="50"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Remarks: "
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <EditText
+            android:id="@+id/edtRemarks"
+            android:layout_width="140dp"
+            android:maxLines="2"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:inputType="textMultiLine"
+            android:maxLength="50"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Received Quantity: "
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:inputType="number"
+            android:maxLength="5"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/C50dp"
+        android:weightSum="2"
+        android:layout_marginBottom="@dimen/C100dp">
+
+
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/btngrnPopSubmit"
+        android:layout_width="@dimen/C50dp"
+        android:layout_height="35dp"
+        android:text="Submit"
+        android:layout_marginEnd="@dimen/C70dp"
+        android:layout_weight="1"
+        android:textAllCaps="false"
+        android:background="@drawable/bottom_button"
+        android:textColor="@color/white"/>
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/btngrnPopCancel"
+        android:layout_width="@dimen/C50dp"
+        android:layout_height="35dp"
+        android:text="Cancel"
+        android:layout_weight="1"
+        android:textAllCaps="false"
+        android:background="@drawable/button_red"
+        android:textColor="@color/white"/>
+    </LinearLayout>
+</LinearLayout>

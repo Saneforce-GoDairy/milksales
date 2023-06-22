@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_name"
+        android:fontFamily="@font/basic"
+        android:text="Name"
+        android:textAllCaps="false"
+        android:textColor="#333333"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_fAmt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_name"
+        android:fontFamily="@font/basic"
+        android:text="Rs. 00.00"
+        android:textAllCaps="false"
+        android:textColor="#737272"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_onDuty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_name"
+        android:fontFamily="@font/basic"
+        android:text="On Duty"
+        android:textAllCaps="false"
+        android:textColor="#737272"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txt_plant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_name"
+        android:fontFamily="@font/basic"
+        android:text="Plant"
+        android:textAllCaps="false"
+        android:textColor="#737272"
+        android:textSize="12sp" />
+</LinearLayout>

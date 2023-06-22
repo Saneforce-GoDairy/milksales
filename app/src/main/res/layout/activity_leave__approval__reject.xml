@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Activity_Hap.Leave_Approval_Reject">
+
+        <include layout="@layout/custom_toolbar_help"></include>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+          >
+
+                <TextView
+                    android:textStyle="bold"
+
+                    android:text="Leave Approval"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_yellow"
+                    android:gravity="center"
+                    android:padding="@dimen/C10dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/C14dp" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+     <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C10dp"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Name " />
+
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Emp Code " />
+
+                <TextView
+                    android:id="@+id/empcode"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="HQ" />
+
+                <TextView
+                    android:id="@+id/hq"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Designation " />
+
+                <TextView
+                    android:id="@+id/designation"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Mobile " />
+
+                <TextView
+                    android:id="@+id/mobilenumber"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Reason " />
+
+                <TextView
+                    android:id="@+id/leavereason"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Leave Type" />
+
+                <TextView
+                    android:id="@+id/leavetype"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="From Date  " />
+
+                <TextView
+                    android:id="@+id/fromdate"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="To Date " />
+
+                <TextView
+                    android:id="@+id/todate"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Leave Days " />
+
+                <TextView
+                    android:id="@+id/leavedays"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/rejectonly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="0dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:textStyle="bold"
+                        android:text="@string/reason" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/C70dp"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:background="@drawable/round_white_backround"
+                        android:gravity="top"
+                        android:hint="@string/txt_enter_reason"
+                        android:padding="15dp"
+                        android:textSize="@dimen/C12dp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/L_rejectsave"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/C5dp"
+                        android:background="@drawable/blue_txt_bg"
+                        android:gravity="center"
+                        android:padding="@dimen/C5dp"
+                        android:text="Save"
+                        android:textAlignment="center"
+                        android:textColor="@color/bg_color"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Approvereject"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:padding="15dp"
+
+                android:weightSum="4">
+
+                <TextView
+                    android:id="@+id/Lapprovebutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/button_dgreen"
+                    android:gravity="center"
+                    android:padding="@dimen/C5dp"
+                    android:text="Approve"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/Lreject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/button_amber"
+                    android:gravity="center"
+                    android:padding="@dimen/C5dp"
+                    android:text="Reject"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <include layout="@layout/back_arrow"></include>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

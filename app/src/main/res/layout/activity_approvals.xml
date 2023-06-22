@@ -1,0 +1,1377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/custom_toolbar_help" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar3"
+            android:layout_marginBottom="@dimen/C60dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_width="match_parent"
+                            android:background="@drawable/button_yellow"
+                            android:gravity="center"
+                            android:padding="@dimen/C10dp"
+                            android:text="My Approvals"
+                            android:textAllCaps="true"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvApprovals"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                        <LinearLayout
+                            android:id="@+id/lin_Advance_req"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="Advance Request"
+                                android:textSize="16sp"></TextView>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="23dp"
+                                    android:layout_height="23dp">
+
+                                    <TextView
+
+                                        android:id="@+id/txt_Advance_req_count"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:background="@drawable/circle"
+                                        android:gravity="center"
+                                        android:maxEms="2"
+                                        android:text="0"
+                                        android:textColor="@android:color/white"></TextView>
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:id="@+id/ivAdvArw"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/arrow_right" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <include
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_leave_req"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="Leave"
+                                android:textSize="16sp"></TextView>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="23dp"
+                                    android:layout_height="23dp">
+
+                                    <TextView
+
+                                        android:id="@+id/txt_leave_req_count"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:background="@drawable/circle"
+                                        android:gravity="center"
+                                        android:maxEms="2"
+                                        android:text="0"
+                                        android:textColor="@android:color/white"></TextView>
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:id="@+id/ivLvArw"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/arrow_right" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llLeave"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_qps"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+
+                            <TextView
+                                style="@style/TextStyle"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="QPS"
+                                android:textSize="16sp"></TextView>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="23dp"
+                                    android:layout_height="23dp">
+
+                                    <TextView
+                                        android:id="@+id/txt_qps_count"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:background="@drawable/circle"
+                                        android:gravity="center"
+                                        android:maxEms="2"
+                                        android:text="0"
+                                        android:textColor="@android:color/white"></TextView>
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/arrow_right" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <include
+                            layout="@layout/part_view"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_leave_cancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Leave Cancel"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_leave_cancel_req_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white" />
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivLvCancelArw"
+                                        layout="@layout/image_arrow"></include>
+
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llLvCancel"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_per_req"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+
+                                    android:text="Permission"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_per_req_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivPermissionArw"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llPermission"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_on_duty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+
+                                    android:text="On-Duty"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_on_duty_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivOnDutyArw"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llOnDuty"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_newjoin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+
+                                    android:text="New Joinee Entry"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_newjoin_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivNewjoinArw"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llNewJoin"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_miss_punch"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+
+                                    android:text="Missed Punch"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_miss_punch_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivMissPunchArw"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include
+
+                            android:id="@+id/llMissedPunch"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_ext_shift_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Extended Shift"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_week_off_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivXtndSft"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llExtndSft"
+                            layout="@layout/part_view"
+                            android:visibility="visible" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_FlightAppr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+
+                                    android:text="Flight Booking"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_FlightAppr_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivFlightApprArw"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llFlightAppr"
+                            layout="@layout/part_view" />
+                        <LinearLayout
+                            android:id="@+id/lin_travel_allow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Travel Allowance"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_trvl_all"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+
+                                        android:id="@+id/ivTrvlAllowArr"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llTrvlAlow"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_tour_plan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Work Plan-PJP"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_tour_plan"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivWrkPlanArw"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llWrkPln"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_DeviationApproval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Deviation Entry"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_deviation_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivDevEntryArw"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+
+                        <include
+                            android:id="@+id/llDevEntry"
+                            layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_holidayentryApproval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Holiday Entry"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_holiday_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include
+                                        android:id="@+id/ivHoliEntryArw"
+                                        layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include
+                            android:id="@+id/llHoliEntry"
+                            layout="@layout/part_view"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_daExp_entry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="@string/trv_exc_entry"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="23dp"
+                                        android:layout_height="23dp">
+
+                                        <TextView
+                                            android:id="@+id/txt_Exception_count"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/circle"
+                                            android:gravity="center"
+                                            android:maxEms="2"
+                                            android:text="0"
+                                            android:textColor="@android:color/white"></TextView>
+
+                                    </LinearLayout>
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_yellow"
+                            android:gravity="center"
+                            android:padding="@dimen/C10dp"
+                            android:text="Approval History"
+                            android:textAllCaps="true"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/C14dp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_Advance_sta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Advance Request"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_leav_sta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Leave"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+                        <LinearLayout
+                            android:id="@+id/lin_per_sta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Permission"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_duty_sta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="On-Duty"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_miss_sta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Missed Punch"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_weekoff"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Weekly-Off"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_ext_shift"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Extended Shift"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_travel_histry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Travel Allowance"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+                        <LinearLayout
+                            android:id="@+id/lin_pjp_histry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Work Plan-PJP"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view"
+                            android:visibility="gone"/>
+
+
+                        <LinearLayout
+                            android:id="@+id/lin_tp_histry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Tour Plan"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_leavecancel_histry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Leave Cancel"
+                                    android:textSize="16sp"></TextView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_productProjectionApproval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Product Projection"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+
+                        <include
+                            layout="@layout/part_view"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_leaveholidaystatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Holiday Entry"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_da_excep_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Travel Mode Exception"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+                        <include layout="@layout/part_view" />
+
+                        <LinearLayout
+                            android:id="@+id/lin_FlightApprHist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/C10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Flight Booking Approval History"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="horizontal">
+
+                                    <include layout="@layout/image_arrow" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <include layout="@layout/back_arrow"></include>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

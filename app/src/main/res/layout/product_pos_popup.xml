@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C5dp"
+        app:cardCornerRadius="@dimen/C5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C1dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/ivAddShoppingCart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_weight="3"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/product_logo">
+
+                </ImageView>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:id="@+id/productname"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/C30dp"
+                        android:text="AROKYA CAN FCM 1500ML"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/C13dp"
+                        android:textStyle="bold" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:inputType="number"
+                            android:text="@string/MRPCAP"
+                            android:textColor="@color/grey_800"
+                            android:visibility="visible" />
+
+
+                        <TextView
+                            android:id="@+id/Rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="@dimen/C10dp"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center_vertical"
+                            android:text="₹110.00"
+                            android:textColor="@color/txt_color_black"
+                            android:textSize="@dimen/C15dp"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/C30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:id="@+id/lblAddQty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_toLeftOf="@+id/Qty"
+                            android:gravity="center_vertical"
+                            android:text="Qty   "
+                            android:textColor="@color/grey_800" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/order_qty_backround">
+
+
+                            <EditText
+                                android:id="@+id/Qty"
+                                android:layout_width="90dp"
+                                android:layout_height="25dp"
+                                android:layout_alignParentRight="true"
+                                android:background="@color/white"
+                                android:gravity="center_vertical"
+                                android:hint="0"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:paddingLeft="@dimen/C5dp"
+                                android:paddingRight="@dimen/C5dp"
+                                android:text=""
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/C13dp"
+                                tools:ignore="RtlCompat" />
+
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/C30dp"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvOK"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_toLeftOf="@+id/Qty"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="OK"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C14dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvCancel"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="CANCEL"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C14dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

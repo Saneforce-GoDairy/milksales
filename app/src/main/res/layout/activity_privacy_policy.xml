@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity_Hap.PrivacyPolicy">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/C90dp"
+        android:orientation="vertical">
+
+        <include layout="@layout/custom_toolbar_help"></include>
+
+        <WebView
+            android:id="@+id/privacy_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/C90dp"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/C5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+       >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/C5dp"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/privacy_check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/C5dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/C5dp"
+                android:text="Please accept the Privacy Policy">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/submit_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Submit"
+            android:padding="@dimen/C5dp"
+            android:textColor="@color/white"
+            android:layout_margin="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/submit_disable_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Submit"
+            android:layout_margin="5dp"
+            android:padding="@dimen/C5dp"
+            android:textColor="@color/white"
+            android:background="#AE1A237E" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

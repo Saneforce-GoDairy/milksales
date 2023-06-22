@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_white_backround"
+    android:padding="10dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reject Reason"
+        android:id="@+id/txt_head"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:padding="4dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/round_rect_only_grey"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/txt_head"
+        android:id="@+id/lay_edt">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:hint="Type here"
+            android:id="@+id/edt_feed" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_below="@+id/lay_edt"
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_mud_round_rect"
+            android:padding="6dp"
+            android:id="@+id/lay_cancel"
+            android:layout_alignParentEnd="true"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    Cancel    "
+                android:textColor="#000"
+                android:layout_marginRight="3dp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_rect_red"
+            android:padding="6dp"
+            android:id="@+id/lay_yes"
+            android:layout_toLeftOf="@+id/lay_cancel"
+            android:layout_marginRight="6dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    Yes, to Reject    "
+                android:textColor="#fff"
+                android:layout_marginRight="3dp"/>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C5dp"
+        app:cardCornerRadius="@dimen/C10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/C3dp">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+
+                    android:id="@+id/row_report"
+                    android:layout_width="0dp"
+
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:id="@+id/txt_order"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="@dimen/sno"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="OrderID"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C13dp"></TextView>
+
+                        <TextView
+                            android:id="@+id/Itemcountinvoice"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/sno1"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="54"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C13dp"></TextView>
+
+
+                        <TextView
+                            android:id="@+id/txt_total"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/sno1"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Value"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C13dp"></TextView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/btnEditRet"
+                        android:layout_width="35dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/C3dp"
+                        android:src="@drawable/edit_small" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/sno">
+
+                    <ImageView
+                        android:id="@+id/ivDate"
+                        android:layout_width="@dimen/C10dp"
+                        android:layout_height="@dimen/C10dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_baseline_date_range_24"></ImageView>
+
+                    <TextView
+                        android:id="@+id/txt_date"
+                        android:layout_width="@dimen/header_width1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/C3dp"
+                        android:layout_toRightOf="@+id/ivDate"
+                        android:text="OrderDate"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/C13dp"></TextView>
+
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/tvCutOffTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/C2dp"
+                    android:layout_marginRight="@dimen/C3dp"
+                    android:gravity="end"
+                    android:textColor="@color/black"
+                    android:textSize="9sp"></TextView>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

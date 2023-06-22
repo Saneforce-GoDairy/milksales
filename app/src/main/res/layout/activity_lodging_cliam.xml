@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.LodgingCliamActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <include layout="@layout/custom_toolbar_help"></include>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/C100dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/linear_loadge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/C8dp"
+                    app:cardCornerRadius="@dimen/C5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                        >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:textStyle="bold"
+
+                                    android:text="Lodging Allowance"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/button_yellow"
+                                    android:gravity="center"
+                                    android:padding="@dimen/C10dp"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/color_white"
+                                    android:textSize="@dimen/C14dp">
+
+                                </TextView>
+
+                                <TextView
+                                    android:id="@+id/ldg_Add"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="+ Add"
+                                    android:textAllCaps="false"
+                                    android:textColor="#FFF"
+                                    android:textSize="12sp"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lodgContvw"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+
+
+                            >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="@dimen/C8dp"
+                                android:paddingTop="@dimen/C5dp"
+                                android:paddingRight="@dimen/C8dp">
+
+                                <TextView
+                                    style="@style/TextStyle"
+                                    android:text="Type" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ldg_typ_spiner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/C8dp"
+                                android:layout_marginRight="@dimen/C8dp"
+                                android:layout_marginBottom="@dimen/C5dp"
+                                android:background="@drawable/item_border"
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:id="@+id/ldg_typ"
+                                    style="@style/TextStyle"
+                                    android:layout_weight="1"
+                                    android:hint="Select the type of Lodging" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/C20dp"
+                                    android:layout_height="match_parent"
+                                    android:padding="@dimen/C5dp"
+                                    android:src="@drawable/spin_down_arrow" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/lodgCont"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/ldg_stayloc"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        style="@style/TextStyle"
+                                        android:text="Stay Location" />
+
+                                    <EditText
+                                        android:id="@+id/edt_stay_loc"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/C5dp"
+                                        android:layout_marginRight="@dimen/C8dp"
+                                        android:enabled="false"
+                                        android:hint="Enter Stay Location"
+                                        android:paddingTop="0dp"
+                                        android:textColorHint="#C0C0C0"
+                                        android:textSize="@dimen/C13dp" />
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ldg_stayDt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:orientation="horizontal"
+                                        tools:ignore="UselessParent">
+
+
+                                        <LinearLayout
+                                            android:id="@+id/prm_linear_orders"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                style="@style/TextStyle"
+                                                android:text="@string/from_date"></TextView>
+
+
+                                            <EditText
+                                                android:id="@+id/from_picker"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="5dp"
+                                                android:layout_marginTop="@dimen/C10dp"
+                                                android:background="@drawable/item_border"
+                                                android:focusable="false"
+                                                android:hint="Stay from date"
+                                                android:inputType="date"
+                                                android:padding="@dimen/C10dp"
+                                                android:textSize="@dimen/C13dp" />
+
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/prm_linear_reports"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="5dp"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                style="@style/TextStyle"
+                                                android:text="@string/to_date" />
+
+                                            <EditText
+                                                android:id="@+id/to_picker"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="5dp"
+                                                android:layout_marginTop="@dimen/C10dp"
+                                                android:background="@drawable/item_border"
+                                                android:focusable="false"
+                                                android:hint="Stay to date"
+                                                android:inputType="date"
+                                                android:padding="@dimen/C10dp"
+                                                android:textSize="@dimen/C13dp" />
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/total_days"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:visibility="gone">
+
+
+                                        <TextView
+                                            style="@style/TextStyle"
+                                            android:text="No of days : "></TextView>
+
+
+                                        <TextView
+                                            android:id="@+id/txt_stay_total"
+                                            style="@style/TextStyle"></TextView>
+
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/lodgJoin"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/C20dp"
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/C10dp"
+                                        android:orientation="horizontal"
+                                        android:paddingLeft="@dimen/C8dp"
+                                        android:paddingTop="@dimen/C5dp"
+                                        android:paddingRight="@dimen/C8dp">
+
+
+                                        <TextView
+                                            style="@style/TextStyle"
+                                            android:layout_weight="1"
+                                            android:text="Joined Person Details"
+                                            android:textAllCaps="true"></TextView>
+
+                                        <TextView
+                                            android:id="@+id/txt_joint_add"
+                                            style="@style/TextStyle"
+                                            android:text="+ Add"
+                                            android:textAllCaps="true"></TextView>
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/lin_join_person"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/C5dp"
+                                        android:layout_marginRight="@dimen/C5dp"
+                                        android:layout_marginBottom="@dimen/C5dp"
+                                        android:orientation="vertical"
+                                        android:visibility="gone"
+                                        tools:ignore="MissingPrefix"></LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/lin_stay_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:id="@+id/ldgEAra"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/C15dp"
+                                        android:layout_marginBottom="@dimen/C10dp"
+                                        android:orientation="vertical">
+
+                                        <LinearLayout
+                                            android:id="@+id/ldgMyEAra"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                style="@style/TextStyle"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Eligible"
+                                                android:textAllCaps="true" />
+
+                                            <TextView
+                                                android:id="@+id/txtMyEligi"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:paddingLeft="@dimen/C8dp"
+                                                android:paddingTop="@dimen/C1dp"
+                                                android:paddingRight="@dimen/C8dp"
+                                                android:paddingBottom="@dimen/C2dp"
+                                                android:text="Rs. 0.00"
+                                                android:textAlignment="textEnd"
+                                                android:textAllCaps="false"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/JNLdgEAra"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="@dimen/C8dp"
+                                                android:layout_marginRight="@dimen/C8dp"
+                                                android:layout_weight="1"
+                                                android:text="Join Stay Eligible"
+                                                android:textAllCaps="true"
+                                                android:textColor="#000"
+                                                android:textSize="10sp" />
+
+
+                                            <TextView
+                                                android:id="@+id/txtJNEligi"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:paddingLeft="@dimen/C8dp"
+                                                android:paddingTop="@dimen/C1dp"
+                                                android:paddingRight="@dimen/C8dp"
+                                                android:paddingBottom="@dimen/C2dp"
+                                                android:text="Rs. 0.00"
+                                                android:textAlignment="textEnd"
+                                                android:textAllCaps="false"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/drvldgEAra"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal"
+                                            android:visibility="gone"
+                                            android:weightSum="2">
+
+                                            <TextView
+
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="@dimen/C8dp"
+                                                android:layout_marginRight="@dimen/C8dp"
+                                                android:layout_weight="1"
+                                                android:text="Driver Lodging"
+                                                android:textAllCaps="true"
+                                                android:textColor="#000"
+                                                android:textSize="10sp" />
+
+                                            <TextView
+                                                android:id="@+id/txtDrvLgd"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:paddingLeft="@dimen/C8dp"
+                                                android:paddingTop="@dimen/C1dp"
+                                                android:paddingRight="@dimen/C8dp"
+                                                android:paddingBottom="@dimen/C2dp"
+                                                android:text="Rs. 0.00"
+                                                android:textAlignment="textEnd"
+                                                android:textAllCaps="false"
+                                                android:textSize="12sp"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+                                    </LinearLayout>
+
+                                    <View
+                                        android:id="@+id/bill_view"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_margin="@dimen/C10dp"
+                                        android:background="@color/grey_300"></View>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/C8dp"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="left"
+                                            android:orientation="vertical"
+                                            android:visibility="gone">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Total"
+                                                android:textAllCaps="true"
+                                                android:textColor="#000"
+                                                android:textSize="10sp" />
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/C10dp"
+                                                android:layout_weight="1"
+                                                android:text="Rs. 0.00"
+                                                android:textColor="#000"
+                                                android:textSize="13sp"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+
+                                            <LinearLayout
+                                                android:layout_width="@dimen/C100dp"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:id="@+id/lblHdBill"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:paddingLeft="@dimen/C5dp"
+                                                    android:text="Bill Amount"
+                                                    android:textAlignment="textStart"
+                                                    android:textAllCaps="true"
+                                                    android:textColor="#000"
+                                                    android:textSize="10sp" />
+
+
+                                                <EditText
+                                                    android:id="@+id/edt_ldg_bill"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:enabled="false"
+                                                    android:hint="0.00"
+                                                    android:inputType="number"
+                                                    android:maxLength="5"
+                                                    android:textColorHint="#C0C0C0"
+                                                    android:textSize="@dimen/C13dp"
+                                                    android:textStyle="bold" />
+
+                                            </LinearLayout>
+
+
+                                            <LinearLayout
+                                                android:id="@+id/lin_img_prv"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="bottom"
+                                                android:orientation="horizontal">
+
+                                                <ImageView
+                                                    android:id="@+id/lodg_attach"
+                                                    android:layout_width="@dimen/C40dp"
+                                                    android:layout_height="@dimen/C40dp"
+                                                    android:padding="@dimen/C2dp"
+                                                    android:src="@drawable/attach_files"
+                                                    android:visibility="gone" />
+
+
+                                                <ImageView
+                                                    android:id="@+id/lodg_preview"
+                                                    android:layout_width="@dimen/C40dp"
+                                                    android:layout_height="@dimen/C40dp"
+                                                    android:layout_marginLeft="@dimen/C2dp"
+                                                    android:padding="@dimen/C2dp"
+                                                    android:src="@drawable/image_preview" />
+
+                                            </LinearLayout>
+                                        </LinearLayout>
+
+                                        <TextView
+                                            android:id="@+id/log_ukey"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text=""
+                                            android:visibility="gone" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="right"
+                                            android:orientation="vertical">
+
+
+                                            <TextView
+                                                android:id="@+id/lblHdBln"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Balance"
+                                                android:textAllCaps="true"
+                                                android:textColor="#000"
+                                                android:textSize="10sp" />
+
+                                            <TextView
+                                                android:id="@+id/ldgWOBBal"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/C10dp"
+                                                android:text="Rs. 0.00"
+                                                android:textColor="#000"
+                                                android:textSize="13sp"
+                                                android:textStyle="bold" />
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_margin="@dimen/C10dp"
+                                        android:background="@color/grey_300"></View>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/C10dp"
+                                        android:layout_marginRight="@dimen/C10dp"
+                                        android:layout_marginBottom="@dimen/C5dp"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:text="Total"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/C15dp"
+                                            android:textStyle="bold"></TextView>
+
+                                        <TextView
+                                            android:id="@+id/lbl_ldg_eligi"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Rs. 0.00"
+                                            android:textColor="@android:color/holo_red_dark"
+                                            android:textSize="@dimen/C15dp"
+                                            android:textStyle="bold"></TextView>
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <include layout="@layout/back_arrow"></include>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

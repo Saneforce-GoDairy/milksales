@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:paddingVertical="@dimen/C8dp"
+        android:text="Set Title"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/C16dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/eT_Filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search Here..."
+        android:textSize="@dimen/C13dp"
+        android:paddingVertical="6dp"
+        android:paddingHorizontal="@dimen/C8dp"
+        android:textColor="@color/black"
+        android:drawableStart="@drawable/ic_search_icon"
+        android:drawablePadding="@dimen/C8dp"
+        android:singleLine="true"
+        android:inputType="text|textCapWords"
+        android:background="@drawable/pjp_borderbg"
+        android:layout_margin="@dimen/C8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:minHeight="300dp"
+        android:layout_height="0dp"
+        tools:listitem="@layout/common_list_item"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="@dimen/C10dp"
+        android:background="@drawable/button_blueg"
+        android:paddingVertical="@dimen/C8dp"
+        android:text="Close"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/C16dp"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

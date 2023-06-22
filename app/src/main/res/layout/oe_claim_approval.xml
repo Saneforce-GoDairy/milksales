@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/C8dp"
+    app:cardCornerRadius="@dimen/C5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lin_othr_spiner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/C5dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/other_enter_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/C8dp"
+                android:layout_weight="1"
+                android:hint="Select the Expense"
+                android:textSize="@dimen/C16dp" />
+
+            <ImageView
+                android:layout_width="@dimen/C20dp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/C5dp"
+                android:visibility="gone"
+                android:src="@drawable/spin_down_arrow" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_other_expense_dynamic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C5dp"
+            android:orientation="vertical"
+            tools:context=".MainActivity">
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txt_oe_ukey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_fare_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_to"
+            android:layout_margin="@dimen/C5dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/oe_fre_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/C8dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Enter Fare"
+                android:inputType="number"
+                android:textColorHint="#C0C0C0"
+                android:textSize="@dimen/C14dp" />
+
+            <ImageView
+                android:id="@+id/oe_attach_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/C5dp"
+                android:visibility="gone"
+                android:src="@drawable/attach_files" />
+
+            <ImageView
+                android:id="@+id/img_prvw_oe"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-8dp"
+                android:padding="@dimen/C5dp"
+                android:src="@drawable/image_preview"
+          />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grid_view_items"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/C10dp"
+    android:paddingTop="@dimen/C3dp"
+    android:paddingRight="@dimen/C3dp"
+    android:paddingBottom="@dimen/C3dp">
+
+    <LinearLayout
+        android:id="@+id/gridcolor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/cardbutton"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="@dimen/C8dp"
+            android:paddingEnd="@dimen/C8dp"
+            android:text="Demo"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:paddingTop="@dimen/C3dp"
+            android:paddingBottom="@dimen/C3dp"
+            android:paddingLeft="@dimen/C15dp"
+            android:paddingRight="@dimen/C15dp"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
