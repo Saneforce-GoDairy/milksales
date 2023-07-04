@@ -55,6 +55,7 @@ import com.saneforce.milksales.Interface.onListItemClick;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.SFA_Activity.Dashboard_Order_Reports;
 import com.saneforce.milksales.SFA_Activity.Dashboard_Route;
+import com.saneforce.milksales.SFA_Activity.FeedbackActivitySFA;
 import com.saneforce.milksales.SFA_Activity.GrnListActivity;
 import com.saneforce.milksales.SFA_Activity.HAPApp;
 import com.saneforce.milksales.SFA_Activity.InshopActivity;
@@ -230,6 +231,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Projection", "", "", "", R.drawable.ic_projection));
                     // menuList.add(new ListModel("", "Stock Audit", "", "", "", R.drawable.ic_stock_audit));
                     menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
+                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
 
                     if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.Distributor_Id)))
                         common_class.getDb_310Data(Constants.Distributor_List, this);
@@ -243,6 +245,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports));
                     menuList.add(new ListModel("", "Counter Sales", "", "", "", R.drawable.ic_outline_assignment_48));
                     menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
+                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
 //                    menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
 
 
@@ -257,6 +260,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports));
                     menuList.add(new ListModel("", "POS", "", "", "", R.drawable.ic_outline_assignment_48));
                     menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
+                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
 //                    menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
 
                     break;
@@ -384,6 +388,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
 //                        Toast.makeText(SFA_Activity.this,"Inshop clicked",Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SFA_Activity.this, InshopActivity.class));
+                        break;
+                    case "Feedback":
+                        startActivity(new Intent(SFA_Activity.this, FeedbackActivitySFA.class));
                         break;
 
                     default:

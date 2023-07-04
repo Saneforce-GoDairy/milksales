@@ -94,9 +94,7 @@ public class ApiRequest {
 
     public interface ApiRequestListener {
         void onSuccess(JSONObject object);
-
         void onError(String errorMsg);
-
         void onFailure(String errorMsg);
     }
 }

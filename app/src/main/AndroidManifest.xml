@@ -51,49 +51,56 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name=".SFA_Activity.AddNewDistributor"
-            android:screenOrientation="nosensor"
+            android:name=".SFA_Activity.FeedbackActivitySFA"
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SFA_Activity.AddNewDistributor"
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.CancelledOrdersActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.SalesReturnHistoryActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.SalesReturnActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.GRN_Invoice"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.GRN_Print_Invoice_Activity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -132,49 +139,49 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".SFA_Activity.LedgerHistoryActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.PrimaryOrderReportActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.ComplementaryInvoiceHistory"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.CompementaryInvoiceActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.PendingOrdersActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.POSStockLoadingActivity"
-            android:screenOrientation="nosensor"
             android:exported="false"
             android:label="@string/title_activity_posstock_loading"
+            android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -182,32 +189,32 @@
         </activity>
         <activity
             android:name=".SFA_Activity.ApprovalHistoryActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.PendingOutletsCategory"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".Activity_Hap.ApproveOutletsDetailedActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.ApproveOutletsActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

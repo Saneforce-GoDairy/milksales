@@ -103,7 +103,7 @@ public class ParentListAdapter extends RecyclerView.Adapter<ParentListAdapter.My
 
         Glide.with(activity)
                 .load(evenParent.get(position).getCatImage())
-                .error(R.drawable.no_prod)
+                .error(R.drawable.product_logo)
                 .into(holder.subProdcutImage);
 
         holder.subProdcutImage.setOnClickListener(new View.OnClickListener() {

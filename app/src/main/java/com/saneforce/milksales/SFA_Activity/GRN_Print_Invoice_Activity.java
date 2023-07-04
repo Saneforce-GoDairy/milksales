@@ -628,7 +628,7 @@ public class GRN_Print_Invoice_Activity extends AppCompatActivity implements Vie
 
     public void printBill() {
         try {
-            Bitmap logo = Printama.getBitmapFromVector(this, R.drawable.hap_logo);
+            Bitmap logo = Printama.getBitmapFromVector(this, R.drawable.product_logo);
             Printama.with(this).connect(printama -> {
 
                 printama.printImage(Printama.CENTER, logo, 140);

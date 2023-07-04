@@ -98,7 +98,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginRight="-15dp"
                                     android:layout_weight="1"
-                                    android:src="@drawable/hap_logo" />
+                                    android:src="@drawable/product_logo" />
 
                             </LinearLayout>
 
@@ -505,7 +505,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginRight="-15dp"
                                     android:layout_weight="1"
-                                    android:src="@drawable/hap_logo" />
+                                    android:src="@drawable/product_logo" />
 
                             </LinearLayout>
 
