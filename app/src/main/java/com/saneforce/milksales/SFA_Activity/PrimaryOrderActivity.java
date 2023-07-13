@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,10 +77,13 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -141,6 +145,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     LinearLayout llDistributor;
 
     boolean isSubmit = false;
+    int lastOrderedQty = 0;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -330,10 +335,45 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.POS_NETAMT_TAX)))
                 common_class.getDb_310Data(Constants.POS_NETAMT_TAX, this);
 
+            getLastOrderedQty();
 
         } catch (Exception e) {
             Log.v(TAG, " order oncreate: " + e.getMessage());
         }
+    }
+
+    private void getLastOrderedQty() {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_last_order_qty");
+        params.put("stockistCode", sharedCommonPref.getvalue(Constants.Distributor_Id));
+        Call<ResponseBody> call = apiInterface.universalAPIRequest(params, "");
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        if (response.body() == null) {
+                            return;
+                        }
+                        String result = response.body().string();
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            JSONArray array = jsonObject.getJSONArray("response");
+                            lastOrderedQty = array.getJSONObject(0).getInt("LastOrderQty");
+                            Toast.makeText(PrimaryOrderActivity.this, "Result" + lastOrderedQty, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Log.e("KnownError", e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.e("KnownError", t.getMessage());
+            }
+        });
     }
 
     @Override
