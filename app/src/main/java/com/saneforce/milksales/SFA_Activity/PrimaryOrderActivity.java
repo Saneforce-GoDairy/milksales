@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -361,7 +362,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                         if (jsonObject.getBoolean("success")) {
                             JSONArray array = jsonObject.getJSONArray("response");
                             lastOrderedQty = array.getJSONObject(0).getInt("LastOrderQty");
-                            Toast.makeText(PrimaryOrderActivity.this, "Result" + lastOrderedQty, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         Log.e("KnownError", e.getMessage());
@@ -731,7 +731,21 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    getACBalance(1);
+                                    if (lastOrderedQty > totalQty) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(PrimaryOrderActivity.this);
+                                        builder.setMessage(String.format("Last order quantity: %S\n\nYour current order quantity is lesser than the last ordered quantity", lastOrderedQty));
+                                        builder.setCancelable(false);
+                                        builder.setPositiveButton("PROCEED", (dialog, which) -> {
+                                            getACBalance(1);
+                                        });
+                                        builder.setNegativeButton("BACK", (dialog, which) -> {
+                                            dialog.dismiss();
+                                            ResetSubmitBtn(0);
+                                        });
+                                        builder.create().show();
+                                    } else {
+                                        getACBalance(1);
+                                    }
                                 }
                             }, 500);
 
@@ -1560,6 +1574,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             sharedCommonPref.save(Constants.CusSubGrpErp, myDataset.get(position).getCusSubGrpErp());
 
             getProductDetails();
+            getLastOrderedQty();
             // common_class.getProductDetails(this);
 
             // common_class.getDb_310Data(Constants.Primary_Product_List, this);
