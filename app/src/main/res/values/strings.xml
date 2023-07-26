@@ -154,5 +154,8 @@
     <string name="security_deposit_details_image">Security Deposit Details Image<font fgcolor='#E53935'> *</font></string>
     <string name="submit">SUBMIT</string>
 
-
+    <string name="pay_opt">Payment Option</string>
+    <string name="card_type">Card Type</string>
+    <string name="emi_banks">EMI Banks</string>
+    <string name="emi_card_name">Card Name</string>
 </resources>

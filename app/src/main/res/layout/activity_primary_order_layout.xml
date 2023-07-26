@@ -158,170 +158,186 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/C8dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/C8dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:id="@+id/llDistributor"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_marginBottom="@dimen/C3dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/outlet_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:drawableRight="@drawable/ic_round_arrow_drop_down_24"
+                            android:text="Hi! "
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+
+                        <ImageView
+                            android:id="@+id/ivDistSpinner"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/C5dp"
+                            android:src="@drawable/spin_down_arrow"
+                            android:visibility="gone"
+                            app:tint="@color/black" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/llDistributor"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/C3dp"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/outlet_name"
+                                android:id="@+id/tvDistId"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:drawableRight="@drawable/ic_round_arrow_drop_down_24"
-                                android:text="Hi! "
-                                android:textColor="@color/black"
-                                android:textSize="14sp"
+                                android:layout_marginTop="-3dp"
+                                android:fontFamily="sans-serif"
+                                android:text=""
+                                android:textColor="@color/txt_color_black"
+                                android:textSize="10sp"
                                 android:textStyle="bold" />
 
-
-                            <ImageView
-                                android:id="@+id/ivDistSpinner"
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:layout_marginRight="@dimen/C5dp"
-                                android:src="@drawable/spin_down_arrow"
-                                android:visibility="gone"
-                                app:tint="@color/black" />
-
-
+                            <TextView
+                                android:id="@+id/tvDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="sans-serif"
+                                android:text=""
+                                android:textColor="@color/txt_color_black"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <LinearLayout
+                            <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+                                android:id="@+id/btnRepeat"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tvDistId"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginTop="-3dp"
-                                    android:fontFamily="sans-serif"
-                                    android:text=""
-                                    android:textColor="@color/txt_color_black"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tvDate"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:fontFamily="sans-serif"
-                                    android:text=""
-                                    android:textColor="@color/txt_color_black"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <LinearLayout
-
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="@dimen/C10dp"
-                                android:orientation="horizontal">
-
-                                <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-                                    android:id="@+id/btnRepeat"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginStart="@dimen/C10dp"
-                                    android:background="@drawable/bottom_button"
-                                    android:letterSpacing="0.09"
-                                    android:paddingStart="15dp"
-                                    android:paddingEnd="15dp"
-                                    android:text="Repeat Order"
-                                    android:textAlignment="center"
-                                    android:textColor="@color/white"
-                                    android:textSize="11sp"
-                                    android:theme="@style/BluePrimaryButton"
-                                    app:finalCornerAngle="50dp"
-                                    app:initialCornerAngle="10dp"
-                                    app:spinning_bar_color="#FFFFFFFF"
-                                    app:spinning_bar_padding="5dp"
-                                    app:spinning_bar_width="5dp"
-                                    tools:ignore="RtlCompat" />
-                            </LinearLayout>
-
-
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/C10dp"
+                                android:background="@drawable/bottom_button"
+                                android:letterSpacing="0.09"
+                                android:paddingStart="15dp"
+                                android:paddingEnd="15dp"
+                                android:text="Repeat Order"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
+                                android:theme="@style/BluePrimaryButton"
+                                app:finalCornerAngle="50dp"
+                                app:initialCornerAngle="10dp"
+                                app:spinning_bar_color="#FFFFFFFF"
+                                app:spinning_bar_padding="5dp"
+                                app:spinning_bar_width="5dp"
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
 
 
                     </LinearLayout>
 
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:orientation="vertical">
+                        android:gravity="center_vertical|end"
+
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/tvACBal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="@dimen/C100dp"
+                            android:layout_height="wrap_content"
                             android:fontFamily="sans-serif"
-                            android:gravity="center_vertical"
-                            android:text="0.00"
+                            android:layout_gravity="end"
+                            android:gravity="end"
+                            android:text="₹ 0.00"
                             android:textAlignment="textEnd"
                             android:textColor="@color/colorPrimaryDark"
-                            android:textSize="21sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             tools:ignore="RtlCompat" />
 
-                        <LinearLayout
-                            android:id="@+id/btnRefACBal"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/payNowButton"
+                            android:layout_width="@dimen/C50dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:textAlignment="center"
+                            android:text="Pay"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/C12dp"
+                            android:background="@drawable/button_blueg"
+                            android:paddingHorizontal="@dimen/C10dp"
+                            android:layout_marginStart="8dp"/>
 
-                            <TextView
-                                android:id="@+id/tvCapACBal"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:fontFamily="sans-serif"
-                                android:gravity="center_vertical"
-                                android:text="Your AC Balance"
-                                android:textSize="9sp" />
-
-                            <ImageView
-                                android:layout_width="@dimen/C15dp"
-                                android:layout_height="@dimen/C15dp"
-                                android:src="@drawable/ic_baseline_refresh_24"
-                                app:tint="@color/black" />
-                        </LinearLayout>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnRefACBal"
+                        android:gravity="end"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvCapACBal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center_vertical"
+                            android:text="Your AC Balance"
+                            android:textSize="9sp" />
+
+                        <ImageView
+                            android:layout_width="@dimen/C15dp"
+                            android:layout_height="@dimen/C15dp"
+                            android:src="@drawable/ic_baseline_refresh_24"
+                            app:tint="@color/black" />
+                    </LinearLayout>
+
                 </LinearLayout>
-
-
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -1120,11 +1136,12 @@
                 android:textStyle="bold" />-->
             <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
                 android:id="@+id/takeorder"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="0dp"
+                android:gravity="end|center_vertical"
                 android:background="#00000000"
                 android:drawableTint="@color/white"
                 android:padding="@dimen/C5dp"

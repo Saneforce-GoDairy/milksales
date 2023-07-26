@@ -24,9 +24,12 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -756,4 +759,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Db_v310.php?")
     Call<ResponseBody> universalAPIRequest(@QueryMap Map<String, String> params, @Field("data") String data);
+
+    @POST("jfs/v1/app/authenticate")
+    Call<ResponseBody> authenticate(@Header("x-trace-id") String uniqueKey, @Body RequestBody jsonObject);
+
+    @POST("payments/jfs/v1/payments/intent")
+    Call<ResponseBody> MakeTransaction(@HeaderMap Map<String, String> headerMap, @Body RequestBody jsonObject);
 }

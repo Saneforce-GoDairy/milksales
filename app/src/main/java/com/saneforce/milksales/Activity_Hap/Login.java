@@ -78,6 +78,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -817,6 +818,10 @@ public class Login extends AppCompatActivity {
 
             SharedPreferences.Editor userEditor = UserDetails.edit();
             SharedPreferences.Editor cInEditor = CheckInDetails.edit();
+
+            Random random = new Random();
+            int uniqueKey = random.nextInt(999999999 - 111111111 + 1) + 111111111;
+            shared_common_pref.save("uniqueKey", String.valueOf(uniqueKey));
 
             if (response.getData().get(0).getLoginType() != null &&
                     response.getData().get(0).getLoginType().equals("Distributor")) {

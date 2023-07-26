@@ -51,6 +51,34 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".CCAvenue.StatusActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".CCAvenue.WebViewActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".CCAvenue.InitiatePaymentActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".JioMoney.PaymentWebView"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SFA_Activity.FeedbackActivitySFA"
             android:exported="false">
             <meta-data

@@ -15,6 +15,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -46,6 +47,7 @@ import com.google.gson.reflect.TypeToken;
 import com.saneforce.milksales.Activity_Hap.Dashboard;
 import com.saneforce.milksales.Activity_Hap.SFA_Activity;
 import com.saneforce.milksales.BuildConfig;
+import com.saneforce.milksales.CCAvenue.InitiatePaymentActivity;
 import com.saneforce.milksales.Common_Class.AlertDialogBox;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Common_Model;
@@ -58,6 +60,7 @@ import com.saneforce.milksales.Interface.LocationEvents;
 import com.saneforce.milksales.Interface.Master_Interface;
 import com.saneforce.milksales.Interface.UpdateResponseUI;
 import com.saneforce.milksales.Interface.onListItemClick;
+import com.saneforce.milksales.JioMoney.PaymentWebView;
 import com.saneforce.milksales.Model_Class.Datum;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.SFA_Adapter.RyclBrandListItemAdb;
@@ -147,6 +150,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
     boolean isSubmit = false;
     int lastOrderedQty = 0;
+    double lastOrderedAmount = 0;
+    TextView payNowButton;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -196,6 +201,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             llDistributor = findViewById(R.id.llDistributor);
             etCategoryItemSearch = findViewById(R.id.searchView);
             tvTimer = findViewById(R.id.tvTimer);
+
+            payNowButton = findViewById(R.id.payNowButton);
 
             LinearLayoutManager shrtgridlayManager = new LinearLayoutManager(this);
             shrtgridlayManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -338,6 +345,30 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             getLastOrderedQty();
 
+            // Todo: Select Payment Method
+            payNowButton.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Select one of the payment methods");
+                builder.setPositiveButton("JioMoney", (dialog, which) -> {
+                    Intent intent = new Intent(this, PaymentWebView.class);
+                    intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
+                    intent.putExtra("totalValues", 1000.00);
+                    startActivity(intent);
+                    dialog.dismiss();
+                });
+                builder.setNegativeButton("CCAvenue", (dialog, which) -> {
+                    Intent intent = new Intent(this, InitiatePaymentActivity.class);
+                    intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
+                    intent.putExtra("totalValues", 1000.00);
+                    startActivity(intent);
+                    dialog.dismiss();
+                });
+                builder.setNeutralButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+                builder.create().show();
+            });
+
         } catch (Exception e) {
             Log.v(TAG, " order oncreate: " + e.getMessage());
         }
@@ -362,6 +393,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                         if (jsonObject.getBoolean("success")) {
                             JSONArray array = jsonObject.getJSONArray("response");
                             lastOrderedQty = array.getJSONObject(0).getInt("LastOrderQty");
+                            lastOrderedAmount = array.getJSONObject(0).optDouble("LastOrderAmt");
                         }
                     } catch (Exception e) {
                         Log.e("KnownError", e.getMessage());
@@ -733,10 +765,30 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                 public void run() {
                                     if (lastOrderedQty > totalQty) {
                                         AlertDialog.Builder builder = new AlertDialog.Builder(PrimaryOrderActivity.this);
-                                        builder.setMessage(String.format("Last order quantity: %S\n\nYour current order quantity is lesser than the last ordered quantity", lastOrderedQty));
+                                        builder.setMessage(String.format("Last order quantity: %s\n\nYour current order quantity is lesser than the last ordered quantity", lastOrderedQty));
                                         builder.setCancelable(false);
                                         builder.setPositiveButton("PROCEED", (dialog, which) -> {
-                                            getACBalance(1);
+                                            if (lastOrderedAmount > totalvalues) {
+                                                AlertDialog.Builder builders = new AlertDialog.Builder(PrimaryOrderActivity.this);
+                                                String mMessage = String.format("<span style=\"color:#CC2311\">Last order amount: ₹ %s<br>current order amount is lesser than the last ordered amount</span>", lastOrderedAmount);
+                                                builders.setMessage(Html.fromHtml(mMessage));
+
+                                                builders.setCancelable(false);
+                                                builders.setPositiveButton("PROCEED", (dialog1, which1) -> {
+                                                    dialog1.dismiss();
+                                                    dialog.dismiss();
+                                                    getACBalance(1);
+                                                });
+                                                builders.setNegativeButton("BACK", (dialog1, which1) -> {
+                                                    dialog1.dismiss();
+                                                    dialog.dismiss();
+                                                    ResetSubmitBtn(0);
+                                                });
+                                                builders.create().show();
+                                            } else {
+                                                dialog.dismiss();
+                                                getACBalance(1);
+                                            }
                                         });
                                         builder.setNegativeButton("BACK", (dialog, which) -> {
                                             dialog.dismiss();
