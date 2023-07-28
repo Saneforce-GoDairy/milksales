@@ -153,6 +153,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     double lastOrderedAmount = 0;
     TextView payNowButton;
 
+    String PaymentMethod;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,6 +253,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             getACBalance(0);
 
             common_class.getDb_310Data(Constants.Primary_Shortage_List, this);
+            common_class.getDb_310Data(Constants.PaymentMethod, this);
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.LOC_PRIMARY_DATA)))
                 common_class.getDb_310Data(Constants.Primary_Product_List, this);
             else {
@@ -347,26 +350,21 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Select one of the payment methods");
-                builder.setPositiveButton("JioMoney", (dialog, which) -> {
-                    Intent intent = new Intent(this, PaymentWebView.class);
-                    intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
-                    intent.putExtra("totalValues", 1000.00);
-                    startActivity(intent);
-                    dialog.dismiss();
-                });
-                builder.setNegativeButton("CCAvenue", (dialog, which) -> {
+                if (PaymentMethod == null) {
+                    Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
+                } else if (PaymentMethod.equalsIgnoreCase("CC")) {
                     Intent intent = new Intent(this, InitiatePaymentActivity.class);
                     intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
-                    intent.putExtra("totalValues", 1000.00);
+                    intent.putExtra("totalValues", 1.00);
                     startActivity(intent);
-                    dialog.dismiss();
-                });
-                builder.setNeutralButton("Cancel", (dialog, which) -> {
-                    dialog.dismiss();
-                });
-                builder.create().show();
+                    finish();
+                } else if (PaymentMethod.equalsIgnoreCase("JM")) {
+                    Intent intent = new Intent(this, PaymentWebView.class);
+                    intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
+                    intent.putExtra("totalValues", 1.00);
+                    startActivity(intent);
+                    finish();
+                }
             });
 
         } catch (Exception e) {
@@ -765,12 +763,12 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                 public void run() {
                                     if (lastOrderedQty > totalQty) {
                                         AlertDialog.Builder builder = new AlertDialog.Builder(PrimaryOrderActivity.this);
-                                        builder.setMessage(String.format("Last order quantity: %s\n\nYour current order quantity is lesser than the last ordered quantity", lastOrderedQty));
+                                        builder.setMessage(String.format("Last order quantity: %s\n\nYour current order quantity is lesser than the last ordered quantity. Do you want to proceed?", lastOrderedQty));
                                         builder.setCancelable(false);
                                         builder.setPositiveButton("PROCEED", (dialog, which) -> {
                                             if (lastOrderedAmount > totalvalues) {
                                                 AlertDialog.Builder builders = new AlertDialog.Builder(PrimaryOrderActivity.this);
-                                                String mMessage = String.format("<span style=\"color:#CC2311\">Last order amount: ₹ %s<br>current order amount is lesser than the last ordered amount</span>", lastOrderedAmount);
+                                                String mMessage = String.format("<span style=\"color:#CC2311\">Last order amount: %s<br><br>Your current order amount is lesser than the last ordered amount. Do you want to proceed?</span>", common_class.formatCurrency(lastOrderedAmount));
                                                 builders.setMessage(Html.fromHtml(mMessage));
 
                                                 builders.setCancelable(false);
@@ -865,6 +863,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             HeadItem.put("Daywise_Remarks", "");
                             HeadItem.put("UKey", Ukey);
                             HeadItem.put("orderValue", formatter.format(totalvalues));
+                            HeadItem.put("lastOrderedAmount", formatter.format(lastOrderedAmount));
                             HeadItem.put("DataSF", Shared_Common_Pref.Sf_Code);
                             HeadItem.put("AppVer", BuildConfig.VERSION_NAME);
                             ActivityData.put("Activity_Report_Head", HeadItem);
@@ -1761,6 +1760,13 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     rvShortageData.setAdapter(ShortagelistItems);
                     //sharedCommonPref.save("ShortageData",apiDataResponse);
 
+                    break;
+                case Constants.PaymentMethod:
+                    JSONObject myObject = new JSONObject(apiDataResponse);
+                    if (myObject != null) {
+                        JSONObject me = myObject.optJSONObject("response");
+                        PaymentMethod = me.optString("PaymentGateway");
+                    }
                     break;
                 case Constants.PRIMARY_SCHEME:
                     JSONObject jsonObject = new JSONObject(apiDataResponse);

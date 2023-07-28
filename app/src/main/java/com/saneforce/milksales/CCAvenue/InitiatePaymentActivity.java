@@ -190,6 +190,7 @@ public class InitiatePaymentActivity extends AppCompatActivity {
             if (saveCard.isChecked())
                 intent.putExtra(AvenuesParams.SAVE_CARD, "Y");
             startActivity(intent);
+            finish();
         } else {
             showToast("Amount/Currency/Access code/Merchant Id & RSA key Url are mandatory."); //More validations can be added as per requirement.
         }
@@ -327,7 +328,7 @@ public class InitiatePaymentActivity extends AppCompatActivity {
             try {
                 // bind adapter to spinner
                 final Spinner payOpt = (Spinner) findViewById(R.id.payopt);
-                PayOptAdapter payOptAdapter = new PayOptAdapter(activity, android.R.layout.simple_spinner_item, payOptionList);
+                PayOptAdapter payOptAdapter = new PayOptAdapter(activity, R.layout.item_spinner, payOptionList);
                 payOpt.setAdapter(payOptAdapter);
 
                 //set a listener for selected items in the spinner
@@ -423,7 +424,7 @@ public class InitiatePaymentActivity extends AppCompatActivity {
                             }
 
                             Spinner emiOption = (Spinner) findViewById(R.id.emiBanks);
-                            EMIAdapter emiAdapter = new EMIAdapter(activity, android.R.layout.simple_spinner_item, emiOptionList);
+                            EMIAdapter emiAdapter = new EMIAdapter(activity, R.layout.item_spinner, emiOptionList);
                             emiOption.setAdapter(emiAdapter);
 
                             emiOption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -439,7 +440,7 @@ public class InitiatePaymentActivity extends AppCompatActivity {
                                     for (int i = 0; i < midProcessCards.length; i++)
                                         cardNameList.add(midProcessCards[i]);
                                     Spinner emiCardName = (Spinner) findViewById(R.id.emiCardName);
-                                    CardNameAdapter cardNameAdapter = new CardNameAdapter(activity, android.R.layout.simple_spinner_item, cardNameList);
+                                    CardNameAdapter cardNameAdapter = new CardNameAdapter(activity, R.layout.item_spinner, cardNameList);
                                     emiCardName.setAdapter(cardNameAdapter);
 
                                     emiCardName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -516,7 +517,7 @@ public class InitiatePaymentActivity extends AppCompatActivity {
                                 Spinner cardType = (Spinner) findViewById(R.id.cardtype);
                                 ArrayList<CardTypeDTO> data = cardsList.get(selectedPaymentOption);
                                 if (data != null) {
-                                    CardAdapter cardTypeAdapter = new CardAdapter(activity, android.R.layout.simple_spinner_item, data);
+                                    CardAdapter cardTypeAdapter = new CardAdapter(activity, R.layout.item_spinner, data);
                                     cardType.setAdapter(cardTypeAdapter);
 
                                     cardType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

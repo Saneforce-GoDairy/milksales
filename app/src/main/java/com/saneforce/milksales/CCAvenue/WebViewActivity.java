@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -35,6 +36,8 @@ public class WebViewActivity extends AppCompatActivity {
     String html, encVal;
     String vResponse;
     ProgressBar progressBar;
+    WebView webview;
+    boolean canGoBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +176,7 @@ public class WebViewActivity extends AppCompatActivity {
                 }
             }
 
-            final WebView webview = (WebView) findViewById(R.id.webview);
+            webview = findViewById(R.id.webview);
             webview.getSettings().setJavaScriptEnabled(true);
             webview.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
             webview.setWebViewClient(new WebViewClient() {
@@ -190,6 +193,7 @@ public class WebViewActivity extends AppCompatActivity {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                     super.onPageStarted(view, url, favicon);
+                    Log.e("sdkjhk", "url: " + url);
                     LoadingDialog.showLoadingDialog(WebViewActivity.this, "Loading...");
                 }
 
@@ -240,5 +244,17 @@ public class WebViewActivity extends AppCompatActivity {
                 showToast("Exception occured while opening webview.");
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (canGoBack) {
+            finish();
+        } else {
+            canGoBack = true;
+            Toast.makeText(this, "Press back button again to go back", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(() -> canGoBack = false, 500);
+        }
+
     }
 }

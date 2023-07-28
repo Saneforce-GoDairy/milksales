@@ -1,6 +1,7 @@
 package com.saneforce.milksales.SFA_Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,10 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
 
             }
 
+            if (mDate.getJSONObject(holder.getBindingAdapterPosition()).optDouble("Order_Value") < mDate.getJSONObject(holder.getBindingAdapterPosition()).optDouble("lastOrderedValue")) {
+                holder.lowOrder.setVisibility(View.VISIBLE);
+            }
+
 
             holder.linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,6 +121,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView txtOrderDate, txtOrderID, txtValue, Itemcountinvoice, tvCutoff;
         LinearLayout linearLayout, llEdit;
+        View lowOrder;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -127,6 +133,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
             Itemcountinvoice = itemView.findViewById(R.id.Itemcountinvoice);
             llEdit = itemView.findViewById(R.id.llEdit);
             tvCutoff = itemView.findViewById(R.id.tvCutOffTime);
+            lowOrder = itemView.findViewById(R.id.lowOrder);
 
 
         }

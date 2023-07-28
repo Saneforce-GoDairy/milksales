@@ -1,9 +1,12 @@
 package com.saneforce.milksales.Common_Class;
 
 public class Constants {
+    // Payment Method
+    public static final String PaymentMethod = "payment_method";
+
     // JioMoney
     public static final String merchantId = "100001000293397";
-    public static final String returnUrl = "http://rad.salesjump.in/server/MyResponse.php";
+    public static final String returnUrl = "https://lactalisindia.salesjump.in/server/MyResponse.php";
     public static final String secretCode = "951d51167e23fd7ab5d337382aeb985804d26a544a6c01b6a85056b614d537e6";
     public static final String clientId = "c7f20e6ae06583c6fbb0a38065946a77";
 
@@ -19,12 +22,10 @@ public class Constants {
     public static final String PARAMETER_SEP = "&";
     public static final String PARAMETER_EQUALS = "=";
     public static final String JSON_URL = "https://secure.ccavenue.com/transaction/transaction.do";
-    public static final String TRANS_URL = "https://test.ccavenue.com/transaction/initTrans";
-    public static final String RSA_URL = "https://test.ccavenue.com/transaction/getRSAKey";
-    //    public static final String REDIRECT_URL = "http://appssrimilk.salesjump.in/server/ccavResponseHandler.php";
-    public static final String REDIRECT_URL = "https://www.google.com";
-    //    public static final String CANCEL_URL = "http://appssrimilk.salesjump.in/server/ccavResponseHandler.php";
-    public static final String CANCEL_URL = "https://www.google.com";
+    public static final String TRANS_URL = "https://secure.ccavenue.com/transaction/initTrans";
+    public static final String RSA_URL = "https://secure.ccavenue.com/transaction/getRSAKey";
+    public static final String REDIRECT_URL = "https://lactalisindia.salesjump.in/server/ccavResponseHandler.php";
+    public static final String CANCEL_URL = "https://lactalisindia.salesjump.in/server/ccavResponseHandler.php";
 
     public static  final String RSM_CUTOFF_TIME="SFCutoff";
     public static final String Vansales_VehNo="Vansales_VehNo";

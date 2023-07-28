@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -114,7 +113,7 @@ public class PaymentWebView extends AppCompatActivity {
             object.put("purpose", 2);
             ApiInterface apiInterface = JioMoneyClient.getClient().create(ApiInterface.class);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), String.valueOf(object));
-            apiInterface.authenticate(uniqueKey, requestBody).enqueue(new Callback<ResponseBody>() {
+            apiInterface.authenticate(uniqueKey, requestBody).enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                     if (response.body() != null) {
@@ -229,7 +228,7 @@ public class PaymentWebView extends AppCompatActivity {
         headers.put("x-app-access-token", tokenValue);
         headers.put("x-appid-token", appIdentifierToken);
         ApiInterface apiInterface = JioMoneyClient.getClient().create(ApiInterface.class);
-        apiInterface.MakeTransaction(headers, requestBody).enqueue(new Callback<ResponseBody>() {
+        apiInterface.MakeTransaction(headers, requestBody).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.body() != null) {
@@ -274,14 +273,15 @@ public class PaymentWebView extends AppCompatActivity {
         progressDialog.setMessage("Saving Payment Details...");
         Map<String, String> params = new HashMap<>();
         params.put("axn", "save_payment_info");
-        params.put("uniqueKey", uniqueKey);
+        params.put("tid", id);
+        params.put("orderValue", String.valueOf(totalValues));
         params.put("Trans_Sl_No", Trans_Sl_No);
+        params.put("uniqueKey", uniqueKey);
         params.put("appAccessToken", appAccessToken);
         params.put("appIdToken", appIdToken);
-        params.put("id", id);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         // Todo: Saving Transaction info to DB
-        apiInterface.universalAPIRequest(params, "").enqueue(new Callback<ResponseBody>() {
+        apiInterface.universalAPIRequest(params, "").enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.body() != null) {

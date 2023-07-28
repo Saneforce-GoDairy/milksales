@@ -502,10 +502,14 @@
                 android:text="Save Card"
                 android:visibility="gone" />
 
-            <Button
+            <TextView
                 android:id="@+id/paybutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:background="@drawable/button_blueg"
+                android:layout_height="@dimen/C40dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="48dp"
                 android:onClick="onClick"
