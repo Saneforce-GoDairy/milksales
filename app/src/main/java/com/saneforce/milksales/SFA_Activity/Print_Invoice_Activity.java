@@ -364,8 +364,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                 phone = "Mobile:" + tvRetailorPhone.getText().toString();
 
             }
-            else if (sharedCommonPref.getvalue(Constants.FLAG).equals("Primary Order") || sharedCommonPref.getvalue(Constants.FLAG).equals("Secondary Order") ||
-                    sharedCommonPref.getvalue(Constants.FLAG).equals("POS INVOICE") || (sharedCommonPref.getvalue(Constants.FLAG).equals("PROJECTION"))) {
+            else if (sharedCommonPref.getvalue(Constants.FLAG).equals("Primary Order") || sharedCommonPref.getvalue(Constants.FLAG).equals("Secondary Order") || sharedCommonPref.getvalue(Constants.FLAG).equals("POS INVOICE") || (sharedCommonPref.getvalue(Constants.FLAG).equals("PROJECTION"))) {
                 findViewById(R.id.llCreateInvoice).setVisibility(View.GONE);
                 findViewById(R.id.llOutletParent).setVisibility(View.GONE);
                 tvDistAdd.setVisibility(View.VISIBLE);
@@ -2160,6 +2159,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                         try {
                             paidAmt = obj.getString("PaidAmount");
                         } catch (Exception e) {
+                            Log.e("jhbdreg", e.getMessage());
                         }
 
                         double taxAmt = 0.00, sTaxV = 0.0, SGSTAmt = 0.00, CGSTAmt = 0.00;
@@ -2202,11 +2202,11 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
 
                             }
                         } catch (Exception e) {
-
+                            Log.e("jhbdreg", e.getMessage());
                         }
-                        Order_Outlet_Filter.add(new Product_Details_Modal(obj.getString("Product_Code"), obj.getString("Product_Name"), obj.getString("MRP"), obj.getString("HSN_Code"), 1, "1",
-                                "1", "5", obj.getString("UOM"), 0, "0", obj.getDouble("Rate"), obj.getString("PTR"),
-                                obj.getInt("Quantity"), obj.getInt("qty"), obj.getDouble("value"), taxList, paidAmt, (taxAmt), sTaxV, SGSTAmt, CGSTAmt, obj.getString("ConversionFactor"), obj.getString("discount_price"), obj.getString("Offer_ProductCd"), obj.getString("Offer_ProductNm"), obj.getString("off_pro_unit")));
+                        Order_Outlet_Filter.add(new Product_Details_Modal(obj.getString("Product_Code"), obj.getString("Product_Name"), obj.optString("MRP"), obj.getString("HSN_Code"), 1, "1",
+                                "1", "5", obj.getString("UOM"), 0, "0", obj.getDouble("Rate"), obj.optString("PTR"),
+                                obj.getInt("Quantity"), obj.getInt("qty"), obj.getDouble("value"), taxList, paidAmt, (taxAmt), sTaxV, SGSTAmt, CGSTAmt, obj.getString("Conf_Fac"), obj.getString("discount_price"), obj.getString("Offer_ProductCd"), obj.getString("Offer_ProductNm"), obj.getString("off_pro_unit")));
 
 
                     }
@@ -2282,7 +2282,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
 
                             }
                         } catch (Exception e) {
-                            Log.d("ePrint",e.getMessage());
+                            Log.e("jhbdreg", e.getMessage());
 
                         }
 
@@ -2309,6 +2309,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                             tvDistributorName.setText("" + tvDistributorName.getText().toString());
 
                         } catch (Exception e) {
+                            Log.e("jhbdreg", e.getMessage());
 
                         }
 
@@ -2359,7 +2360,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
 
 
         } catch (Exception e) {
-            Log.e("PRINT:getData ", e.getMessage());
+            Log.e("jhbdreg", e.getMessage());
         }
     }
 }

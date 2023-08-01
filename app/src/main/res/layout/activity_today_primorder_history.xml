@@ -164,8 +164,7 @@
                 android:id="@+id/row_report"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/C40dp"
-                android:background="@drawable/blue_bg"
-                android:weightSum="3.3">
+                android:background="@drawable/blue_bg">
 
 
                 <TextView
@@ -186,7 +185,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
                     android:gravity="center"
                     android:text="Status"
                     android:textColor="@color/white"
@@ -197,7 +196,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
                     android:gravity="center"
                     android:text="Value"
                     android:textAlignment="center"

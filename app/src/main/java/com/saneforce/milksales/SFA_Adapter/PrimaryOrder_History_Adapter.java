@@ -68,6 +68,8 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
 
             if (mDate.getJSONObject(holder.getBindingAdapterPosition()).optDouble("Order_Value") < mDate.getJSONObject(holder.getBindingAdapterPosition()).optDouble("lastOrderedValue")) {
                 holder.lowOrder.setVisibility(View.VISIBLE);
+            } else {
+                holder.lowOrder.setVisibility(View.GONE);
             }
 
 

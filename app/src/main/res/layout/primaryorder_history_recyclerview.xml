@@ -35,7 +35,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
+
+                        <View
+                            android:layout_marginStart="5dp"
+                            android:layout_width="@dimen/C10dp"
+                            android:layout_height="@dimen/C10dp"
+                            android:background="@color/Exit"
+                            android:id="@+id/lowOrder"/>
 
 
                         <TextView
@@ -43,23 +51,23 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
-                            android:layout_marginLeft="@dimen/sno"
+                            android:layout_marginLeft="5dp"
                             android:layout_weight="1"
                             android:gravity="left"
                             android:text="OrderID"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/C13dp"></TextView>
+                            android:textSize="@dimen/C13dp"/>
 
                         <TextView
                             android:id="@+id/Itemcountinvoice"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/sno1"
-                            android:layout_weight="1"
+                            android:layout_weight="0.8"
                             android:gravity="center"
                             android:text="54"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/C13dp"></TextView>
+                            android:textSize="@dimen/C13dp"/>
 
 
                         <TextView
@@ -67,11 +75,11 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/sno1"
-                            android:layout_weight="1"
+                            android:layout_weight="0.8"
                             android:gravity="center"
                             android:text="Value"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/C13dp"></TextView>
+                            android:textSize="@dimen/C13dp"/>
                     </LinearLayout>
 
 
@@ -128,14 +136,6 @@
 
 
                 </RelativeLayout>
-
-                <View
-                    android:layout_width="@dimen/C10dp"
-                    android:layout_height="@dimen/C10dp"
-                    android:background="@color/Exit"
-                    android:visibility="gone"
-                    android:id="@+id/lowOrder"/>
-
 
                 <TextView
                     android:id="@+id/tvCutOffTime"
