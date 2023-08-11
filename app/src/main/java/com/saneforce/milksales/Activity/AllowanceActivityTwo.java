@@ -45,7 +45,7 @@ import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
 import com.saneforce.milksales.Activity_Hap.ERT;
 import com.saneforce.milksales.Activity_Hap.Help_Activity;
 import com.saneforce.milksales.Activity_Hap.Login;
-import com.saneforce.milksales.Activity_Hap.Mydayplan_Activity;
+import com.saneforce.milksales.Activity_Hap.MyDayPlanActivity;
 import com.saneforce.milksales.Activity_Hap.PayslipFtp;
 import com.saneforce.milksales.Activity_Hap.ProductImageView;
 import com.saneforce.milksales.Common_Class.CameraPermission;
@@ -537,7 +537,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 
                                 //if (!ClosingCon.equals("")) {
                                 if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null")) && Common_Class.GetDate() != ClosingDate) {
-                                    startActivity(new Intent(getApplicationContext(), Mydayplan_Activity.class));
+                                    startActivity(new Intent(getApplicationContext(), MyDayPlanActivity.class));
                                 } else {
                                     Intent takePhoto = new Intent(AllowanceActivityTwo.this, Login.class);
                                     startActivity(takePhoto);

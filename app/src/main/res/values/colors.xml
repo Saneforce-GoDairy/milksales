@@ -136,4 +136,9 @@
 
     <color name="black_80">#CC000000</color>
 
+    <!-- new ui -->
+    <color name="primaryDark">#2E3032</color>
+    <color name="primaryBlurLight">#89c7e4</color>
+
+
 </resources>

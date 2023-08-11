@@ -51,6 +51,12 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".Activity_Hap.CheckInActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_Hap.LoginHome"
+            android:exported="false" />
+        <activity
             android:name=".Activity.TestActivity"
             android:exported="false" />
         <activity
@@ -680,7 +686,7 @@
             android:name=".Activity_Hap.Tp_Calander"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity_Hap.Mydayplan_Activity"
+            android:name=".Activity_Hap.MyDayPlanActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity_Hap.Tp_Month_Select"

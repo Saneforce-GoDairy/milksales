@@ -158,4 +158,9 @@
     <string name="card_type">Card Type</string>
     <string name="emi_banks">EMI Banks</string>
     <string name="emi_card_name">Card Name</string>
+
+    <string name="diary_product_delivery_solutions">Diary Product \n Delivery Solutions</string>
+    <string name="continue_with_google">Continue with google</string>
+    <string name="request_amp_status"><![CDATA[Request & Status]]></string>
+    <string name="canteen_scan">Canteen Scan</string>
 </resources>

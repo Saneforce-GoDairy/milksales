@@ -284,7 +284,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     startActivity(closingIntet);
                     finish();
                 } else {
-                    startActivity(new Intent(this, Mydayplan_Activity.class));
+                    startActivity(new Intent(this, MyDayPlanActivity.class));
                 }
                 break;
 
