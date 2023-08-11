@@ -51,6 +51,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".Activity.TestActivity"
+            android:exported="false" />
+        <activity
             android:name=".CCAvenue.StatusActivity"
             android:exported="false">
             <meta-data
