@@ -43,7 +43,7 @@ public class LoginHome extends AppCompatActivity {
     }
 
     private void loadHome() {
-        Intent intent = new Intent(context, MyDayPlanActivity.class);
+        Intent intent = new Intent(context, Dashboard.class);
         startActivity(intent);
     }
 }

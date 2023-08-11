@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import com.saneforce.milksales.databinding.FragmentTodayBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class TodayFragment extends Fragment {
     private FragmentTodayBinding binding;
 
@@ -15,6 +19,9 @@ public class TodayFragment extends Fragment {
                              Bundle savedInstanceState) {
        binding = FragmentTodayBinding.inflate(inflater, container, false);
 
-        return binding.getRoot();
+       String todayDate = new SimpleDateFormat("dd-MM-yyy", Locale.getDefault()).format(new Date());
+
+       binding.date.setText(todayDate);
+       return binding.getRoot();
     }
 }

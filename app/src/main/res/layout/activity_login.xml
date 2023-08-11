@@ -1,15 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFEFE"
-    android:padding="20dp"
+    android:background="@color/white"
     tools:context=".Activity_Hap.Login">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="#1997CE"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_milk_cow_2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:gravity="end"
+            android:layout_marginTop="80dp"
+            android:textSize="25sp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/diary_product_delivery_solutions"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_btn_ios"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            app:tint="@color/black" />
+
+    </RelativeLayout>
+
     <ProgressBar
-        android:id="@+id/progressbar_login_activity"
+        android:id="@+id/progressbar"
         style="@android:style/Widget.Material.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,65 +61,111 @@
         android:id="@+id/login_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/C20dp"
+        android:layout_marginTop="50dp"
+        >
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
-            android:src="@mipmap/ic_so_launcher_foreground" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/logo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:text="Login to SalesJump"
-            android:textColor="#373737"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/user_email"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="25dp"
-            android:hint="Username / Email Address"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="10dp"
-            android:textColor="#373737" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/grey_500"
+                android:text="USER NAME"/>
 
-        <EditText
-            android:id="@+id/user_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_email"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="15dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingHorizontal="10dp"
-            android:textColor="#373737" />
+            <EditText
+                android:id="@+id/user_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Username / Email Address"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="5dp"
+                android:textColor="@color/black"
+                />
 
-        <Button
-            android:id="@+id/submit_button"
-            style="@style/RobotoButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/user_password"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/g_sign"
-            android:text="Login"
-            android:textAllCaps="true"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/grey_500"
+                android:text="PASSWORD"/>
+
+            <!--    <EditText-->
+            <!--        android:id="@+id/user_password"-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_marginTop="5dp"-->
+            <!--        android:hint="Password"-->
+            <!--        android:inputType="textPassword"-->
+            <!--        android:paddingHorizontal="5dp"-->
+            <!--        android:textColor="#373737" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:endIconMinSize="@dimen/C30dp"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/user_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:backgroundTint="#000000"
+                    android:textColor="@color/black"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_gravity="right"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Forget Password?"
+                android:inputType="textPassword"
+                android:paddingHorizontal="5dp"
+                android:textColor="#373737" />
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_password"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/button_blue1"
+                android:text="SIGN IN"
+                android:textAllCaps="true"
+                android:textColor="#FFFFFF"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:layout_marginBottom="0dp"
+                android:layout_alignParentBottom="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/sales_jump_logo"
+                    android:layout_centerHorizontal="true"/>
+
+            </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
+
+
 
 </RelativeLayout>

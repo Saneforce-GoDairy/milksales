@@ -75,11 +75,25 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/primaryDark"
-                    android:text="Lets get to work"/>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primaryDark"
+                        android:text="Lets get to work"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/C15dp"
+                        android:layout_height="@dimen/C15dp"
+                        android:layout_marginLeft="@dimen/C5dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/lets_work_hand_write_ic"/>
+                </LinearLayout>
 
                 <Button
                     android:layout_width="match_parent"

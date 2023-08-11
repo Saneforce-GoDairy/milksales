@@ -135,6 +135,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_dashboard__two);
+
             mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
             mShimmerViewContainer.startShimmer();
             db = new DatabaseHandler(this);
@@ -891,7 +892,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                     android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(Dashboard_Two.this).create();
                                     alertDialog.setTitle(HAPApp.Title);
                                     alertDialog.setMessage(Html.fromHtml(mMessage));
-                                    alertDialog.setCancelable(false);
+                                    alertDialog.setCancelable(true);
 
                                     TextView btnOthers = (TextView) view.findViewById(R.id.tvOthers);
                                     TextView btnWeekOFF = (TextView) view.findViewById(R.id.tvWeekOff);

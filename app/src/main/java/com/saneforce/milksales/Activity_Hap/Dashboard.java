@@ -97,7 +97,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        Get_MydayPlan(1, "check/mydayplan");
+     //   Get_MydayPlan(1, "check/mydayplan");
         getHapLocations();
         getHAPWorkTypes();
         shared_common_pref = new Shared_Common_Pref(this);

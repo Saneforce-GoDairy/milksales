@@ -18,18 +18,12 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,7 +32,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -70,6 +63,7 @@ import com.saneforce.milksales.common.FileUploadService;
 import com.saneforce.milksales.common.LocationReceiver;
 import com.saneforce.milksales.common.SANGPSTracker;
 import com.saneforce.milksales.common.TimerService;
+import com.saneforce.milksales.databinding.ActivityLoginBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,19 +79,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
+    private ActivityLoginBinding binding;
+    private final Context context = this;
     public static final String CheckInDetail = "CheckInDetail";
     public static final String MyPREFERENCES = "MyPrefs";
     private static final String TAG = "LoginActivity";
     private final static int RC_SIGN_IN = 1;
     private final static int RC_MYREPORTS = 2;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1001;
-    final Handler handler = new Handler();
-    EditText name, password;
-    Button btnLogin;
-    ImageView profileImage;
     String photo;
     String idToken, eMail, SUserID, SPwd, UserLastName, UserLastName1;
-    Button signInButton, ReportsButton, ExitButton;
     Shared_Common_Pref shared_common_pref;
     SharedPreferences UserDetails;
     SharedPreferences CheckInDetails;
@@ -107,8 +98,6 @@ public class Login extends AppCompatActivity {
     CameraPermission cameraPermission;
     Common_Class DT = new Common_Class();
     DatabaseHandler db;
-    ProgressBar progressBar;
-    RelativeLayout login_layout;
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -120,13 +109,13 @@ public class Login extends AppCompatActivity {
     private TimerService mTimerService;
     // Tracks the bound state of the service.
     private boolean mBound = false;
+
     private final ServiceConnection mServiceConection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
             mBound = true;
         }
-
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mLUService = null;
@@ -138,12 +127,14 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        onClick();
+
         db = new DatabaseHandler(this);
         shared_common_pref = new Shared_Common_Pref(this);
-
-        progressBar = findViewById(R.id.progressbar_login_activity);
-        login_layout = findViewById(R.id.login_layout);
 
         if (com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime().equalsIgnoreCase(shared_common_pref.getvalue(Constants.LOGIN_DATE))) {
             Shared_Common_Pref.LOGINTYPE = shared_common_pref.getvalue(Constants.LOGIN_TYPE);
@@ -151,7 +142,6 @@ public class Login extends AppCompatActivity {
             shared_common_pref.clear_pref(Constants.LOGIN_DATA);
             shared_common_pref.clear_pref(Constants.VAN_STOCK_LOADING);
         }
-
 
         JSONArray pendingPhotos = db.getAllPendingPhotos();
         if (pendingPhotos.length() > 0) {
@@ -177,15 +167,11 @@ public class Login extends AppCompatActivity {
                             Log.w(TAG, "Fetching FCM registration token failed", task.getException());
                             return;
                         }
-                        // Get new FCM registration token
                         deviceToken = task.getResult();
                         shared_common_pref.save(Shared_Common_Pref.Dv_ID, deviceToken);
-
                         Log.e("LoginActivity", deviceToken);
                     }
                 });
-
-
 
 /* mRegistrationBroadcastReceiver = new BroadcastReceiver() {
  @Override
@@ -212,14 +198,9 @@ public class Login extends AppCompatActivity {
  };*/
 
         //displayFirebaseRegId();
-
-        name = (EditText) findViewById(R.id.user_email);
-        password = (EditText) findViewById(R.id.user_password);
-        btnLogin = (Button) findViewById(R.id.submit_button);
-//        profileImage = (ImageView) findViewById(R.id.profile_image);
         UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
-        mProgress = new ProgressDialog(this);
+        mProgress = new ProgressDialog(context);
         String titleId = "Signing in...";
         mProgress.setTitle(titleId);
         mProgress.setMessage("Please Wait...");
@@ -229,7 +210,7 @@ public class Login extends AppCompatActivity {
         eMail = UserDetails.getString("email", "");
         UserLastName = UserDetails.getString("DesigNm", "");
         UserLastName1 = UserDetails.getString("DepteNm", "");
-        name.setText(eMail);
+        binding.userEmail.setText(eMail);
 
         cameraPermission = new CameraPermission(Login.this, getApplicationContext());
 
@@ -272,22 +253,6 @@ public class Login extends AppCompatActivity {
                 }
             }
         };
-
-        btnLogin.setOnClickListener(v -> {
-            String email = name.getText().toString().trim();
-            String Pwd = password.getText().toString().trim();
-            if (TextUtils.isEmpty(email)) {
-                Toast.makeText(this, "Email Address Required", Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(Pwd)) {
-                Toast.makeText(this, "Password Required", Toast.LENGTH_SHORT).show();
-            } else {
-                SUserID = email;
-                eMail = email;
-                SPwd = Pwd;
-                MakeInvisible();
-                login(1);
-            }
-        });
 
         /*signInButton = (Button) findViewById(R.id.sign_in_button);
 
@@ -449,16 +414,39 @@ public class Login extends AppCompatActivity {
 
     }
 
+    private void onClick() {
+        binding.back.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(0,0);
+        });
+
+        binding.submitButton.setOnClickListener(v -> {
+            String email = binding.userEmail.getText().toString().trim();
+            String Pwd = binding.userPassword.getText().toString().trim();
+            if (TextUtils.isEmpty(email)) {
+                Toast.makeText(this, "Email Address Required", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(Pwd)) {
+                Toast.makeText(this, "Password Required", Toast.LENGTH_SHORT).show();
+            } else {
+                SUserID = email;
+                eMail = email;
+                SPwd = Pwd;
+                MakeInvisible();
+                login(1);
+            }
+        });
+    }
+
     private void MakeInvisible() {
-        progressBar.setVisibility(View.VISIBLE);
-        login_layout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
-        login_layout.setVisibility(View.GONE);
+        binding.progressbar.setVisibility(View.VISIBLE);
+        binding.loginLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
+        binding.loginLayout.setVisibility(View.GONE);
     }
 
     private void MakeVisible() {
-        progressBar.setVisibility(View.GONE);
-        login_layout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
-        login_layout.setVisibility(View.VISIBLE);
+        binding.progressbar.setVisibility(View.GONE);
+        binding.loginLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
+        binding.loginLayout.setVisibility(View.VISIBLE);
     }
 
  /* private void displayFirebaseRegId() {
@@ -510,7 +498,7 @@ public class Login extends AppCompatActivity {
             //assert account != null;
             Log.d("LoginDetails", String.valueOf(account.getPhotoUrl()));
             idToken = account.getIdToken();
-            name.setText(account.getEmail());
+            binding.userEmail.setText(account.getEmail());
             profile = (account.getPhotoUrl());
             eMail = account.getEmail();
             UserLastName = account.getFamilyName().replace("- ", "")
@@ -519,7 +507,7 @@ public class Login extends AppCompatActivity {
                     .replace("/", "-");
             UserLastName1 = account.getDisplayName();
             try {
-                Glide.with(this).load(account.getPhotoUrl()).into(profileImage);
+                //Glide.with(this).load(account.getPhotoUrl()).into(profileImage);
                 photo = account.getPhotoUrl().toString();
                 shared_common_pref.save(Shared_Common_Pref.Profile, account.getPhotoUrl().toString());
             } catch (NullPointerException e) {
@@ -917,7 +905,7 @@ public class Login extends AppCompatActivity {
                         else
                             intent.putExtra("Mode", "CIN");
                     } else {
-                        intent = new Intent(Login.this, Dashboard.class);
+                        intent = new Intent(Login.this, MyDayPlanActivity.class);
                     }
                 } else {
                     intent = new Intent(Login.this, Dashboard_Two.class);
@@ -1084,8 +1072,6 @@ public class Login extends AppCompatActivity {
                         mLUService = new SANGPSTracker(getApplicationContext());
                     //mLUService.requestLocationUpdates();
                 } else {
-                    // Permission denied.
-                    //Snackbar snackbar =
                     Snackbar.make(
                                     findViewById(R.id.activity_main),
                                     R.string.permission_denied_explanation,
@@ -1109,5 +1095,4 @@ public class Login extends AppCompatActivity {
                 }
         }
     }
-
 }
