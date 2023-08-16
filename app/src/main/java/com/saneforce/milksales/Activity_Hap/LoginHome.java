@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.databinding.ActivityLoginHomeBinding;
 
 public class LoginHome extends AppCompatActivity {
@@ -32,6 +34,7 @@ public class LoginHome extends AppCompatActivity {
             Intent intent = new Intent(context, Login.class);
             startActivity(intent);
             overridePendingTransition(0,0);
+            finish();
         });
     }
 
@@ -45,5 +48,6 @@ public class LoginHome extends AppCompatActivity {
     private void loadHome() {
         Intent intent = new Intent(context, Dashboard.class);
         startActivity(intent);
+        finish();
     }
 }

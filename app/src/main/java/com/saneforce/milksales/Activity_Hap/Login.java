@@ -169,7 +169,6 @@ public class Login extends AppCompatActivity {
                         }
                         deviceToken = task.getResult();
                         shared_common_pref.save(Shared_Common_Pref.Dv_ID, deviceToken);
-                        Log.e("LoginActivity", deviceToken);
                     }
                 });
 
@@ -224,7 +223,6 @@ public class Login extends AppCompatActivity {
             Log.v("PERMISSION", "PERMISSION");
         }
 
-
         /*btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,7 +235,6 @@ public class Login extends AppCompatActivity {
                 }
             }
         });*/
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         //this is where we start the Auth state Listener to listen for whether the user is signed in or not
@@ -899,16 +896,16 @@ public class Login extends AppCompatActivity {
 
                 if (requestCode == RC_SIGN_IN) {
                     if (CheckIn == true) {
-                        intent = new Intent(Login.this, Dashboard_Two.class);
+                        intent = new Intent(context, Dashboard_Two.class);
                         if (Type == 1)
                             intent.putExtra("Mode", "extended");
                         else
                             intent.putExtra("Mode", "CIN");
                     } else {
-                        intent = new Intent(Login.this, MyDayPlanActivity.class);
+                        intent = new Intent(context, Dashboard.class);
                     }
                 } else {
-                    intent = new Intent(Login.this, Dashboard_Two.class);
+                    intent = new Intent(context, Dashboard_Two.class);
                     intent.putExtra("Mode", "RPT");
                 }
 

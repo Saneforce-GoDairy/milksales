@@ -1,6 +1,8 @@
 package com.saneforce.milksales.Activity_Hap;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,6 +14,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
+import com.saneforce.milksales.Common_Class.Constants;
+import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.databinding.ActivityCheckIn2Binding;
 import com.saneforce.milksales.fragments.GateInOutFragment;
 import com.saneforce.milksales.fragments.MonthlyFragment;
@@ -22,7 +26,9 @@ import java.util.Objects;
 public class CheckInActivity2 extends AppCompatActivity {
     private ActivityCheckIn2Binding binding;
     private final Context context = this;
-    MyViewPagerAdapter myViewPagerAdapter;
+    private MyViewPagerAdapter myViewPagerAdapter;
+    private SharedPreferences userDetails;
+    public static final String My_PREFERENCES = "MyPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,8 @@ public class CheckInActivity2 extends AppCompatActivity {
         binding = ActivityCheckIn2Binding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        userDetails = getSharedPreferences(My_PREFERENCES, MODE_PRIVATE);
 
         loadFragment();
         onClick();
@@ -67,6 +75,16 @@ public class CheckInActivity2 extends AppCompatActivity {
     }
 
     private void onClick() {
+        binding.checkInBtn.setOnClickListener(v -> {
+            String[] latlongs = userDetails.getString("HOLocation", "").split(":");
+            // String[] latlongs = "13.0299326:80.2414088".split(":");
+            Intent intent = new Intent(context, MapDirectionActivity.class);
+            intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+            intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+            intent.putExtra(Constants.DEST_NAME, "HOLocation");
+            intent.putExtra(Constants.NEW_OUTLET, "checkin");
+            startActivity(intent);
+        });
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

@@ -122,9 +122,6 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
     boolean ExpNeed = false;
     DatabaseHandler databaseHandler;
 
-    int totalTabs;
-
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +135,6 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
 
         initVariable();
         initOnClick();
-
 
         sharedCommonPref = new Shared_Common_Pref(this);
         shared_common_pref = new Shared_Common_Pref(this);
@@ -304,21 +300,20 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
                                 if (worktype_id.equalsIgnoreCase("43")) {
                                     common_class.CommonIntentwithFinish(Dashboard.class);
                                     shared_common_pref.save("worktype", worktype_id);
-
                                 } else if (ExpNeed) {
-                                    Intent intent = new Intent(context, Checkin.class);
+                                    Intent intent = new Intent(context, AllowanceActivity.class);
                                     intent.putExtra("My_Day_Plan", "One");
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    // Previous Code
-                                    //  common_class.CommonIntentwithFinish(Dashboard.class);
+                                      // Previous method submit success return Dashboard  home.
+                                      // common_class.CommonIntentwithFinish(Dashboard.class);
 
-                                    // New code
-                                    Intent intent = new Intent(context, CheckInActivity2.class);
-                                    intent.putExtra("My_Day_Plan", "One");
-                                    startActivity(intent);
-                                    finish();
+                                       // New code as per design
+                                       Intent intent = new Intent(context, CheckInActivity2.class);
+                                       intent.putExtra("My_Day_Plan", "One");
+                                       startActivity(intent);
+                                       finish();
                                 }
                                 Toast.makeText(context, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
                             }
