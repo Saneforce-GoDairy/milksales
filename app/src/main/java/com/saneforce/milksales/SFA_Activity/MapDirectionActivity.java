@@ -405,6 +405,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                             } else {
                                 Intent i = new Intent(this, Checkin.class);
                                 startActivity(i);
+                                overridePendingTransition(0,0);
                             }
                         } else {
                             common_class.showMsg(this, "Please Check-In your nearby HO Location");

@@ -78,7 +78,7 @@ public class HAPListItem extends RecyclerView.Adapter<HAPListItem.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            shift_time = itemView.findViewById(R.id.ShiftName);
+           // shift_time = itemView.findViewById(R.id.ShiftName);
             parentLayout = itemView.findViewById(R.id.parent_layout);
             //secondarylayout=itemView.findViewById(R.id.secondary_layout);
         }
