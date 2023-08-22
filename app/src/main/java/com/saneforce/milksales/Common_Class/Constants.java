@@ -23,7 +23,7 @@ public class Constants {
     public static final String PARAMETER_EQUALS = "=";
     public static final String JSON_URL = "https://secure.ccavenue.com/transaction/transaction.do";
     public static final String TRANS_URL = "https://secure.ccavenue.com/transaction/initTrans";
-    public static final String RSA_URL = "https://secure.ccavenue.com/transaction/getRSAKey";
+    public static final String RSA_URL = "https://lactalisindia.salesjump.in/server/GetRSA.php";
     public static final String REDIRECT_URL = "https://lactalisindia.salesjump.in/server/ccavResponseHandler.php";
     public static final String CANCEL_URL = "https://lactalisindia.salesjump.in/server/ccavResponseHandler.php";
 
