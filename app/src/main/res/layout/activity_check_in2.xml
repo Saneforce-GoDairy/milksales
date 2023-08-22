@@ -86,12 +86,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/primaryDark"
-                        android:text="Lets get to work"/>
+                        android:text="@string/lets_get_to_work"/>
 
                     <ImageView
                         android:layout_width="@dimen/C15dp"
                         android:layout_height="@dimen/C15dp"
-                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginStart="@dimen/C5dp"
+                        android:contentDescription="@null"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
                         android:src="@drawable/lets_work_hand_write_ic"/>
@@ -103,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/button_blue1"
-                    android:text="CLOCK IN"
+                    android:text="@string/check_in"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     />
@@ -123,17 +124,17 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Today"
+                    android:text="@string/today"
                     />
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Monthly"/>
+                    android:text="@string/monthly"/>
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Gate IN/OUT"/>
+                    android:text="@string/gate_in_out"/>
 
 
             </com.google.android.material.tabs.TabLayout>
@@ -158,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:text="Explore More"
+                    android:text="@string/explore_more"
                     android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/primaryDark"/>
 
@@ -191,7 +192,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Gate IN"
+                                android:text="@string/gate_in"
                                 android:textSize="15sp"
                                 android:clickable="false"
                                 android:textColor="#464749"
@@ -217,7 +218,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Gate OUT"
+                                android:text="@string/gate_out"
                                 android:textSize="15sp"
                                 android:textColor="#464749"
                                 android:fontFamily="@font/roboto_medium"
@@ -241,7 +242,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="SFA"
+                                android:text="@string/sfa"
                                 android:textSize="15sp"
                                 android:textColor="#464749"
                                 android:fontFamily="@font/roboto_medium"
@@ -273,7 +274,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TA &amp; Claim"
+                                android:text="@string/ta_amp_claim"
                                 android:gravity="center_horizontal"
                                 android:textSize="15sp"
                                 android:textColor="#464749"

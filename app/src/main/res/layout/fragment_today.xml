@@ -46,11 +46,11 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/check_in_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/primaryDark"
-                    android:text="-"
                     android:textSize="15sp" />
 
                 <TextView
@@ -63,11 +63,11 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/check_out_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/primaryDark"
-                    android:text="-"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -128,11 +128,12 @@
 
 
                 <TextView
+                    android:id="@+id/geo_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/primaryDark"
-                    android:text="-"
                     android:textSize="15sp" />
 
                 <LinearLayout
@@ -168,6 +169,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/geo_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

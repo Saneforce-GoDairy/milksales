@@ -2,16 +2,31 @@ package com.saneforce.milksales.Activity_Hap;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.text.Html;
 import android.util.Log;
+import android.util.Range;
 import android.view.View;
+import android.view.Window;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -19,22 +34,42 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.Camera;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ExposureState;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.saneforce.milksales.Activity.AllowanceActivityTwo;
 import com.saneforce.milksales.BuildConfig;
+import com.saneforce.milksales.Common_Class.AlertDialogBox;
+import com.saneforce.milksales.Common_Class.Constants;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
+import com.saneforce.milksales.Interface.AlertBox;
+import com.saneforce.milksales.Interface.ApiClient;
+import com.saneforce.milksales.Interface.ApiInterface;
+import com.saneforce.milksales.Interface.LocationEvents;
+import com.saneforce.milksales.Interface.OnImagePickListener;
 import com.saneforce.milksales.R;
+import com.saneforce.milksales.SFA_Activity.HAPApp;
+import com.saneforce.milksales.common.AlmReceiver;
+import com.saneforce.milksales.common.FileUploadService;
 import com.saneforce.milksales.common.LocationFinder;
+import com.saneforce.milksales.common.LocationReceiver;
+import com.saneforce.milksales.common.SANGPSTracker;
 import com.saneforce.milksales.databinding.ActivityImageCaptureBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,7 +81,9 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
-import androidx.camera.core.CameraSelector;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ImageCaptureActivity extends AppCompatActivity {
     private ActivityImageCaptureBinding binding;
@@ -62,12 +99,19 @@ public class ImageCaptureActivity extends AppCompatActivity {
     private final Common_Class COMMON_CLASS = new Common_Class();
     private com.saneforce.milksales.Common_Class.Common_Class COMMON_CLASS2;
     private Location mLocation;
-    private String mSfCodeUkey = "";
-    private String VistPurpose = "";
-    private String mMode ,mModeRetailorCapture, WrkType, onDutyPlcID, onDutyPlcNm;
+    private String mSfCodeUkey = "", placeName = "", VistPurpose = "", placeId = "";
+    private String mMode ,mModeRetailorCapture, WrkType, onDutyPlcID, onDutyPlcNm, imageFileName, vstPurpose;
+    private String responseStatus;
     private File file ;
     private String DIR;
     public static final String APP_DATA = "/.saneforce";
+    private Camera camera;
+    private static OnImagePickListener imagePickListener;
+    private Bitmap bitmap;
+    private Dialog submitDialog;
+    private SANGPSTracker mLUService;
+    private LocationReceiver myReceiver;
+    private boolean mBound = false;
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -78,7 +122,6 @@ public class ImageCaptureActivity extends AppCompatActivity {
             }
         }
     });
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +134,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
         intSharedPref();
         loadJsonObjectCommonClass();
         iniLocationFinder();
+        initSubmitDialog();
 
         mSfCodeUkey = USER_DETAILS.getString("Sfcode", "") + "-" + (new Date().getTime());
 
@@ -98,6 +142,14 @@ public class ImageCaptureActivity extends AppCompatActivity {
         cameraPermission();
         DIR = getExternalFilesDir("/").getPath() + "/" + ".saneforce/";
         createDirectory();
+    }
+
+    private void initSubmitDialog() {
+        submitDialog = new Dialog(context);
+        submitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        submitDialog.setContentView(R.layout.model_dialog_submit_checkin);
+        submitDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        submitDialog.setCancelable(false);
     }
 
     private void createDirectory() {
@@ -205,8 +257,13 @@ public class ImageCaptureActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-        binding.captureButton.setOnClickListener(view1 -> {
-
+        binding.retry.setOnClickListener(v -> {
+            startCamera(cameraFacing);
+            binding.imageView.setVisibility(View.GONE);
+            binding.imageOkRetryContainer.setVisibility(View.GONE);
+            binding.cameraFunctionContainer.setVisibility(View.VISIBLE);
+            binding.cameraPreview.setVisibility(View.VISIBLE);
+            binding.seekBarChangeBrightness.setVisibility(View.VISIBLE);
         });
         binding.back.setOnClickListener(v -> finish());
         binding.buttonFlash.setOnClickListener(v -> {
@@ -219,6 +276,395 @@ public class ImageCaptureActivity extends AppCompatActivity {
             }
             startCamera(cameraFacing);
         });
+        binding.seekBarChangeBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                ExposureState exposureState = camera.getCameraInfo().getExposureState();
+                if (!exposureState.isExposureCompensationSupported()) return;
+
+                Range<Integer> range = exposureState.getExposureCompensationRange();
+                if (range.contains(progress))
+                    camera.getCameraControl().setExposureCompensationIndex(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        binding.submit.setOnClickListener(v -> {
+            try {
+
+                imageFileName = file.getName();
+                Log.e("file_name", imageFileName);
+
+                if (mModeRetailorCapture == null){
+                    Intent intent = new Intent(context, FileUploadService.class);
+                    intent.putExtra("mFilePath", String.valueOf(file));
+                    intent.putExtra("SF", USER_DETAILS.getString("Sfcode", ""));
+                    intent.putExtra("FileName", imageFileName);
+                    intent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
+                    FileUploadService.enqueueWork(context, intent);
+                }
+                if (mModeRetailorCapture != null && mModeRetailorCapture.equals("NewRetailor")) {
+//                Intent mIntent = new Intent(this, AddNewRetailer.class);
+//                mIntent.putExtra("mFilePath", Uri.fromFile(file).toString());
+//                startActivity(mIntent);
+                    SHARED_COMMON_PREF.save(Constants.Retailor_FilePath, Uri.fromFile(file).toString());
+                    finish();
+                } else if (mMode.equalsIgnoreCase("PF")) {
+                    imagePickListener.OnImagePick(bitmap, imageFileName);
+                    finish();
+                } else {
+                    submitDialog.show();
+                /*if (mlocation != null) {
+                    mProgress.setMessage("Submiting Please Wait...");
+                    vwPreview.setVisibility(View.GONE);
+                    // imgPreview.setImageURI(Uri.fromFile(file));
+                    button.setVisibility(View.GONE);
+                    saveCheckIn();
+                } else {*/
+                    new LocationFinder(getApplication(), new LocationEvents() {
+                        @Override
+                        public void OnLocationRecived(Location location) {
+                            submitDialog.show();
+//                            mlocation = location;
+//                            mProgress.setMessage("Submiting Please Wait...");
+//                            vwPreview.setVisibility(View.GONE);
+//                            // imgPreview.setImageURI(Uri.fromFile(file));
+//                            button.setVisibility(View.GONE);
+                            saveCheckIn();
+                        }
+                    });
+                    //}
+                }
+            }catch (Exception e) {
+                Log.e("error", e.getMessage());
+            }
+        });
+    }
+
+    private void saveCheckIn() {
+        try {
+
+            Location location = mLocation;//Common_Class.location;//locationFinder.getLocation();
+            String CTime = COMMON_CLASS.GetDateTime(getApplicationContext(), "HH:mm:ss");
+            String CDate = COMMON_CLASS.GetDateTime(getApplicationContext(), "yyyy-MM-dd");
+            if (mMode.equalsIgnoreCase("onduty")) {
+                placeName = CHECKIN_INFO.getString("onDutyPlcNm");
+                placeId = CHECKIN_INFO.getString("onDutyPlcID");
+                if (CHECKIN_INFO.has("vstPurpose"))
+                    VistPurpose = CHECKIN_INFO.getString("vstPurpose");
+            }
+            CHECKIN_INFO.put("eDate", CDate + " " + CTime);
+            CHECKIN_INFO.put("eTime", CTime);
+            CHECKIN_INFO.put("UKey", mSfCodeUkey);
+            double lat = 0, lng = 0;
+            if (location != null) {
+                lat = location.getLatitude();
+                lng = location.getLongitude();
+            }
+            CHECKIN_INFO.put("lat", lat);
+            CHECKIN_INFO.put("long", lng);
+            CHECKIN_INFO.put("Lattitude", lat);
+            CHECKIN_INFO.put("Langitude", lng);
+
+            if (mMode.equalsIgnoreCase("onduty")) {
+                CHECKIN_INFO.put("PlcNm", placeName);
+                CHECKIN_INFO.put("PlcID", placeId);
+            } else {
+                CHECKIN_INFO.put("PlcNm", "");
+                CHECKIN_INFO.put("PlcID", "");
+            }
+            if (mMode.equalsIgnoreCase("holidayentry"))
+                CHECKIN_INFO.put("On_Duty_Flag", "1");
+            else
+                CHECKIN_INFO.put("On_Duty_Flag", "0");
+
+            String imagePath = getExternalFilesDir("/").getPath() + "/" + ".saneforce/" + "checkin_image" + ".jpg";
+
+            CHECKIN_INFO.put("iimgSrc", imagePath);
+            CHECKIN_INFO.put("slfy", imageFileName);
+            CHECKIN_INFO.put("Rmks", vstPurpose);
+            CHECKIN_INFO.put("vstRmks", VistPurpose);
+
+            Log.e("Image_Capture", imagePath);
+            Log.e("Image_Capture", imageFileName);
+
+
+            if (mMode.equalsIgnoreCase("CIN") || mMode.equalsIgnoreCase("onduty") || mMode.equalsIgnoreCase("holidayentry")) {
+
+                JSONArray jsonarray = new JSONArray();
+                JSONObject paramObject = new JSONObject();
+                paramObject.put("TP_Attendance", CHECKIN_INFO);
+                Log.e("CHECK_IN_DETAILS", String.valueOf(paramObject));
+
+                jsonarray.put(paramObject);
+
+
+                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save",
+                        USER_DETAILS.getString("Divcode", ""),
+                        USER_DETAILS.getString("Sfcode", ""), "", "", jsonarray.toString());
+
+                Log.v("PRINT_REQUEST", modelCall.request().toString());
+
+                modelCall.enqueue(new Callback<>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                        if (response.isSuccessful()) {
+
+                            JsonObject itm = response.body().getAsJsonObject();
+                            Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
+                            submitDialog.dismiss();
+                            responseStatus = itm.get("success").getAsString();
+                            if (responseStatus.equalsIgnoreCase("true")) {
+                                SharedPreferences.Editor editor = CHECKIN_DETAILS.edit();
+                                try {
+                                    if (mMode.equalsIgnoreCase("CIN")) {
+                                        editor.putString("Shift_Selected_Id", CHECKIN_INFO.getString("Shift_Selected_Id"));
+                                        editor.putString("Shift_Name", CHECKIN_INFO.getString("Shift_Name"));
+                                        editor.putString("ShiftStart", CHECKIN_INFO.getString("ShiftStart"));
+                                        editor.putString("ShiftEnd", CHECKIN_INFO.getString("ShiftEnd"));
+                                        editor.putString("ShiftCutOff", CHECKIN_INFO.getString("ShiftCutOff"));
+
+                                        long AlrmTime = COMMON_CLASS.getDate(CHECKIN_INFO.getString("ShiftEnd")).getTime();
+                                        sendAlarmNotify(1001, AlrmTime, HAPApp.Title, "Check-Out Alert !.");
+                                    }
+
+                                    if (mMode.equalsIgnoreCase("ONDuty")) {
+                                        SHARED_COMMON_PREF.save(Shared_Common_Pref.DAMode, true);
+
+                                        mLUService = new SANGPSTracker(context);
+                                        myReceiver = new LocationReceiver();
+                                        bindService(new Intent(context, SANGPSTracker.class), mServiceConection,
+                                                Context.BIND_AUTO_CREATE);
+                                        LocalBroadcastManager.getInstance(context).registerReceiver(myReceiver,
+                                                new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
+                                        mLUService.requestLocationUpdates();
+                                    }
+
+
+                                    if (CHECKIN_DETAILS.getString("FTime", "").equalsIgnoreCase(""))
+                                        editor.putString("FTime", CTime);
+                                    editor.putString("Logintime", CTime);
+
+                                    if (mMode.equalsIgnoreCase("onduty"))
+                                        editor.putString("On_Duty_Flag", "1");
+                                    else
+                                        editor.putString("On_Duty_Flag", "0");
+
+                                    editor.putInt("Type", 0);
+                                    editor.putBoolean("CheckIn", true);
+                                    editor.apply();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            String mMessage = "Your Check-In Submitted Successfully";
+                            try {
+                                mMessage = itm.get("Msg").getAsString();
+                            } catch (Exception e) {
+                            }
+
+                            AlertDialogBox.showDialog(context, HAPApp.Title, String.valueOf(Html.fromHtml(mMessage)), "Yes", "", false, new AlertBox() {
+                                @Override
+                                public void PositiveMethod(DialogInterface dialog, int id) {
+                                    if (responseStatus.equalsIgnoreCase("true")) {
+                                        Intent Dashboard = new Intent(context, Dashboard_Two.class);
+                                        Dashboard.putExtra("Mode", "CIN");
+                                        context.startActivity(Dashboard);
+                                    }
+                                    ((AppCompatActivity) context).finish();
+                                }
+
+                                @Override
+                                public void NegativeMethod(DialogInterface dialog, int id) {
+                                }
+                            });
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        submitDialog.dismiss();
+                        Log.d("HAP_receive", "");
+                    }
+                });
+            }
+            else if (mMode.equalsIgnoreCase("extended")) {
+                JSONArray jsonarray = new JSONArray();
+                JSONObject paramObject = new JSONObject();
+                paramObject.put("extended_entry", CHECKIN_INFO);
+                jsonarray.put(paramObject);
+                Log.e("CHECK_IN_DETAILS", String.valueOf(jsonarray));
+
+                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save",
+                        USER_DETAILS.getString("Divcode", ""),
+                        USER_DETAILS.getString("Sfcode", ""), "", "", jsonarray.toString());
+                modelCall.enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        submitDialog.dismiss();
+                        Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
+                        if (response.isSuccessful()) {
+                            JsonObject itm = response.body().getAsJsonObject();
+                            SharedPreferences.Editor editor = CHECKIN_DETAILS.edit();
+                            editor.putInt("Type", 1);
+                            editor.putBoolean("CheckIn", true);
+                            editor.apply();
+
+                            String mMessage = "Your Extended Submitted Successfully";
+                            try {
+                                mMessage = itm.get("Msg").getAsString();
+
+
+                            } catch (Exception e) {
+                            }
+
+                            new AlertDialog.Builder(context)
+                                    .setTitle(HAPApp.Title)
+                                    .setMessage(Html.fromHtml(mMessage))
+                                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                                        Intent Dashboard = new Intent(context, Dashboard_Two.class);
+                                        Dashboard.putExtra("Mode", "extended");
+                                        context.startActivity(Dashboard);
+                                        ((AppCompatActivity) context).finish();
+                                    })
+                                    .show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        submitDialog.dismiss();
+                        Log.d("HAP_receive", "");
+                    }
+                });
+            }
+            else {
+                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                String lMode = "get/logouttime";
+                if(mMode.equalsIgnoreCase("EXOUT")) {
+                    lMode = "get/Extendlogout";
+                }
+                Call<JsonObject> modelCall = apiInterface.JsonSave(lMode,
+                        USER_DETAILS.getString("Divcode", ""),
+                        USER_DETAILS.getString("Sfcode", ""), "", "", CHECKIN_INFO.toString());
+                modelCall.enqueue(new Callback<>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        submitDialog.dismiss();
+                        if (response.isSuccessful()) {
+                            Log.e("TOTAL_REPOSNEaaa", String.valueOf(response.body()));
+                            SharedPreferences.Editor loginsp = USER_DETAILS.edit();
+                            loginsp.putBoolean("Login", false);
+                            loginsp.apply();
+                            Boolean Login = USER_DETAILS.getBoolean("Login", false);
+                            SharedPreferences.Editor editor = CHECKIN_DETAILS.edit();
+                            editor.putString("Logintime", "");
+                            editor.putBoolean("CheckIn", false);
+                            editor.apply();
+                            SHARED_COMMON_PREF.clear_pref(Shared_Common_Pref.DAMode);
+
+                            Intent playIntent = new Intent(context, SANGPSTracker.class);
+                            stopService(playIntent);
+
+                            JsonObject itm = response.body().getAsJsonObject();
+                            String mMessage = "Your Check-Out Submitted Successfully<br><br>Check in Time  : " + CHECKIN_DETAILS.getString("FTime", "") + "<br>" +
+                                    "Check Out Time : " + CTime;
+
+                            try {
+                                mMessage = itm.get("Msg").getAsString();
+                            } catch (Exception e) {
+                            }
+
+                            AlertDialogBox.showDialog(context, HAPApp.Title, String.valueOf(Html.fromHtml(mMessage)), "Ok", "", false, new AlertBox() {
+                                @Override
+                                public void PositiveMethod(DialogInterface dialog, int id) {
+
+                                    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                                    Call<JsonArray> Callto = apiInterface.getDataArrayList("get/CLSExp",
+                                            USER_DETAILS.getString("Divcode", ""),
+                                            USER_DETAILS.getString("Sfcode", ""), CDate);
+
+                                    Log.v("DATE_REQUEST", Callto.request().toString());
+                                    Callto.enqueue(new Callback<>() {
+                                        @Override
+                                        public void onResponse(@NonNull Call<JsonArray> call, @NonNull Response<JsonArray> response) {
+                                            COMMON_CLASS2.clearLocData(ImageCaptureActivity.this);
+
+                                            SHARED_COMMON_PREF.clear_pref(Constants.DB_TWO_GET_MREPORTS);
+                                            SHARED_COMMON_PREF.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
+                                            SHARED_COMMON_PREF.clear_pref(Constants.DB_TWO_GET_NOTIFY);
+                                            SHARED_COMMON_PREF.clear_pref(Constants.LOGIN_DATA);
+
+                                            finishAffinity();
+                                            if (response.body().size() > 0) {
+                                                Intent takePhoto = new Intent(context, AllowanceActivityTwo.class);
+                                                takePhoto.putExtra("Mode", "COUT");
+                                                startActivity(takePhoto);
+                                            } else {
+                                                Intent Dashboard = new Intent(context, Login.class);
+                                                startActivity(Dashboard);
+                                                ((AppCompatActivity) context).finish();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(@NonNull Call<JsonArray> call, @NonNull Throwable t) {
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void NegativeMethod(DialogInterface dialog, int id) {
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        submitDialog.dismiss();
+                        Log.d("HAP_receive", "");
+                    }
+                });
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendAlarmNotify(int AlmID, long AlmTm, String NotifyTitle, String NotifyMsg) {
+        /*AlmTm=AlmTm.replaceAll(" ","-").replaceAll("/","-").replaceAll(":","-");
+        String[] sDts= AlmTm.split("-");
+        Calendar cal = Calendar.getInstance();
+        cal.set(sDts[0],sDts[1],sDts[2],sDts[3],sDts[4]);*/
+
+        Intent intent = new Intent(this, AlmReceiver.class);
+        intent.putExtra("ID", String.valueOf(AlmID));
+        intent.putExtra("Title", NotifyTitle);
+        intent.putExtra("Message", NotifyMsg);
+        PendingIntent pIntent = null;
+        // PendingIntent.getBroadcast(this.getApplicationContext(), AlmID, intent, 0);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            pIntent = PendingIntent.getBroadcast
+                    (this, 0, intent, PendingIntent.FLAG_MUTABLE);
+        } else {
+            pIntent = PendingIntent.getBroadcast
+                    (this, 0, intent,  PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+        }
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, AlmTm, pIntent);
     }
 
     public void startCamera(int cameraFacing) {
@@ -239,7 +685,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
                 cameraProvider.unbindAll();
 
-                Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
+                camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
 
                 binding.captureButton.setOnClickListener(view -> {
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -258,6 +704,8 @@ public class ImageCaptureActivity extends AppCompatActivity {
         }, ContextCompat.getMainExecutor(this));
     }
 
+
+
     public void takePicture(ImageCapture imageCapture) {
         file = new File(DIR, "checkin_image" + ".jpg");
 
@@ -267,31 +715,41 @@ public class ImageCaptureActivity extends AppCompatActivity {
             public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
                 runOnUiThread(() -> {
                    // Toast.makeText(context, "Image saved at: " + file.getPath(), Toast.LENGTH_SHORT).show();
-
                     file = new File(DIR, "checkin_image" + ".jpg");
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
                     binding.imageView.setImageBitmap(bitmap);
                     binding.imageView.setVisibility(View.VISIBLE);
+                    binding.imageOkRetryContainer.setVisibility(View.VISIBLE);
 
                     binding.cameraPreview.setVisibility(View.INVISIBLE);
+                    binding.cameraFunctionContainer.setVisibility(View.INVISIBLE);
+                    binding.seekBarChangeBrightness.setVisibility(View.GONE);
                 });
                 startCamera(cameraFacing);
             }
 
             @Override
             public void onError(@NonNull ImageCaptureException exception) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "Failed to save: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                runOnUiThread(() -> Toast.makeText(context, "Failed to save: " + exception.getMessage(), Toast.LENGTH_SHORT).show());
                 startCamera(cameraFacing);
             }
         });
     }
 
+    private final ServiceConnection mServiceConection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mLUService = null;
+            mBound = false;
+        }
+    };
 
     private void setFlashIcon(Camera camera) {
         if (camera.getCameraInfo().hasFlashUnit()) {
@@ -306,7 +764,6 @@ public class ImageCaptureActivity extends AppCompatActivity {
             runOnUiThread(() -> Toast.makeText(context, "Flash is not available currently", Toast.LENGTH_SHORT).show());
         }
     }
-
 
     private int aspectRatio(int width, int height) {
         double previewRatio = (double) Math.max(width, height) / Math.min(width, height);

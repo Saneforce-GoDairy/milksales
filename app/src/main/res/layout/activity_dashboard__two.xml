@@ -223,7 +223,7 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="4dp"
-                                android:background="@drawable/bottom_border"></RelativeLayout>
+                                android:background="@drawable/bottom_border"/>
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:layout_width="match_parent"
@@ -231,7 +231,7 @@
                                 android:layout_marginTop="@dimen/C2dp"
                                 android:layout_weight="1"
                                 android:background="@color/background"
-                                android:padding="5dp"></androidx.recyclerview.widget.RecyclerView>
+                                android:padding="5dp"/>
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -639,7 +639,6 @@
                                 android:layout_width="@dimen/C30dp"
                                 android:layout_height="@dimen/C30dp"
                                 android:layout_marginLeft="@dimen/C5dp"
-
                                 android:layout_marginTop="5dp" />
 
 
@@ -648,7 +647,6 @@
                                 android:layout_width="@dimen/C30dp"
                                 android:layout_height="@dimen/C30dp"
                                 android:layout_marginLeft="@dimen/C5dp"
-
                                 android:layout_marginTop="5dp" />
 
                             <TextView

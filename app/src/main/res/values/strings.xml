@@ -163,4 +163,14 @@
     <string name="continue_with_google">Continue with google</string>
     <string name="request_amp_status"><![CDATA[Request & Status]]></string>
     <string name="canteen_scan">Canteen Scan</string>
+    <string name="check_in">CHECK IN</string>
+    <string name="lets_get_to_work">Lets get to work</string>
+    <string name="today">Today</string>
+    <string name="monthly">Monthly</string>
+    <string name="gate_in_out">Gate IN/OUT</string>
+    <string name="explore_more">Explore More</string>
+    <string name="gate_in">Gate IN</string>
+    <string name="gate_out">Gate OUT</string>
+    <string name="sfa">SFA</string>
+    <string name="ta_amp_claim"><![CDATA[TA & Claim]]></string>
 </resources>

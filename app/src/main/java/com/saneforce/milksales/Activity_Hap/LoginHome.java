@@ -39,14 +39,14 @@ public class LoginHome extends AppCompatActivity {
     }
 
     private void sessionCheck() {
-        Boolean Login = SHARED_PREF.getBoolean("Login", false);
+        boolean Login = SHARED_PREF.getBoolean("Login", false);
         if (Login){
             loadHome();
         }
     }
 
     private void loadHome() {
-        Intent intent = new Intent(context, Dashboard.class);
+        Intent intent = new Intent(context, CheckInActivity2.class);
         startActivity(intent);
         finish();
     }

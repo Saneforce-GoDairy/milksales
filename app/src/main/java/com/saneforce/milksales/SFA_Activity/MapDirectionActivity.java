@@ -390,6 +390,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
                         if ((radius > 0 && distance() <= radius) || distance() < 200) {
                             String ETime = CheckInDetails.getString("CINEnd", "");
+                            Log.e("e_time", ETime);
                             if (!ETime.equalsIgnoreCase("")) {
                                 String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
                                 String SftId = CheckInDetails.getString("Shift_Selected_Id", "0");

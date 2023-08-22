@@ -29,6 +29,8 @@ public class CheckInActivity2 extends AppCompatActivity {
     private MyViewPagerAdapter myViewPagerAdapter;
     private SharedPreferences userDetails;
     public static final String My_PREFERENCES = "MyPrefs";
+    private String KEY_CHECK_IN_INFO = "CheckInDetail";
+    private SharedPreferences CHECK_IN_DETAILS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +43,26 @@ public class CheckInActivity2 extends AppCompatActivity {
 
         binding.userName.setText(userDetails.getString("SfName", ""));
 
+        loadSharedPref();
+        checkInMyDayPlan();
         loadFragment();
         onClick();
+    }
+
+    private void loadSharedPref() {
+        CHECK_IN_DETAILS = getSharedPreferences(KEY_CHECK_IN_INFO, Context.MODE_PRIVATE);
+    }
+
+    private void checkInMyDayPlan() {
+        String checkInTime = CHECK_IN_DETAILS.getString("CINEnd", "");
+
+        if (!checkInTime.equalsIgnoreCase("")) {
+           return;
+        }
+        Intent intent = new Intent(context, MyDayPlanActivity.class);
+        startActivity(intent);
+        overridePendingTransition(0,0);
+        finish();
     }
 
     private void loadFragment() {
