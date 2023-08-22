@@ -1195,7 +1195,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void PositiveMethod(DialogInterface dialog, int id) {
 
-                        Intent takePhoto = new Intent(Dashboard_Two.this, ImageCapture.class);
+                        Intent takePhoto = new Intent(Dashboard_Two.this, ImageCaptureActivity.class);
 
                         if(viewMode.equalsIgnoreCase("extended")){
                             takePhoto.putExtra("Mode", "EXOUT");

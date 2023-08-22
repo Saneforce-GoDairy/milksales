@@ -225,4 +225,11 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
+
+    <style name="MySeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">#E0E0E0</item>
+        <item name="android:progressTint">#1A97CF</item>
+        <item name="android:thumbTint">#1A97CF</item>
+    </style>
+
 </resources>

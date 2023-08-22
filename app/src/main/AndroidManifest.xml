@@ -35,6 +35,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
 
     <application
         android:name=".SFA_Activity.HAPApp"
@@ -611,10 +613,10 @@
             android:name=".Activity_Hap.Block_Information"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity_Hap.ImageCapture"
+            android:name=".Activity_Hap.ImageCaptureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity_Hap.Checkin"
+            android:name=".Activity_Hap.ShiftTimeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity_Hap.Extendedshift_approval"

@@ -39,6 +39,8 @@ public class CheckInActivity2 extends AppCompatActivity {
 
         userDetails = getSharedPreferences(My_PREFERENCES, MODE_PRIVATE);
 
+        binding.userName.setText(userDetails.getString("SfName", ""));
+
         loadFragment();
         onClick();
     }

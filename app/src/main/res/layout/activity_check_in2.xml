@@ -45,11 +45,13 @@
                         android:fontFamily="@font/poppins_semibold"/>
 
                     <TextView
+                        android:id="@+id/user_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:textColor="@color/primaryDark"
-                        android:text="Field Force"
+                        android:text=""
+                        android:hint="Username"
                         android:gravity="center"/>
                 </LinearLayout>
 

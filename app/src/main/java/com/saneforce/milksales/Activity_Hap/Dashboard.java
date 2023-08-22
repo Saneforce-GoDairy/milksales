@@ -239,7 +239,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         }
                     }
                     if (!ETime.equalsIgnoreCase("")) {
-                        Intent takePhoto = new Intent(context, ImageCapture.class);
+                        Intent takePhoto = new Intent(context, ImageCaptureActivity.class);
                         takePhoto.putExtra("Mode", "CIN");
                         takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
                         takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
@@ -249,7 +249,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         takePhoto.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
                         startActivity(takePhoto);
                     } else {
-                        Intent i = new Intent(context, Checkin.class);
+                        Intent i = new Intent(context, ShiftTimeActivity.class);
                         startActivity(i);
                     }
 
@@ -303,7 +303,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 AlertDialogBox.showDialog(Dashboard.this, HAPApp.Title, "Are you sure want to Check-in with Hoilday Entry", "YES", "NO", false, new AlertBox() {
                     @Override
                     public void PositiveMethod(DialogInterface dialog, int id) {
-                        common_class.CommonIntentwithoutFinishputextra(Checkin.class, "Mode", "holidayentry");
+                        common_class.CommonIntentwithoutFinishputextra(ShiftTimeActivity.class, "Mode", "holidayentry");
                     }
 
                     @Override
@@ -408,7 +408,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void PositiveMethod(DialogInterface dialog, int id) {
                                 dialog.dismiss();
-                                common_class.CommonIntentwithoutFinishputextra(Checkin.class, "Mode", "extended");
+                                common_class.CommonIntentwithoutFinishputextra(ShiftTimeActivity.class, "Mode", "extended");
                                 /*Intent intent = new Intent(getApplicationContext(), Checkin.class);
                                 Bundle extras = new Bundle();
                                 extras.putString("Extended_Flag", "extended");
@@ -577,7 +577,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                 @Override
                                 public void PositiveMethod(DialogInterface dialog, int id) {
                                     dialog.dismiss();
-                                    common_class.CommonIntentwithoutFinishputextra(Checkin.class, "Mode", "extended");
+                                    common_class.CommonIntentwithoutFinishputextra(ShiftTimeActivity.class, "Mode", "extended");
                                     /*Intent intent = new Intent(getApplicationContext(), Checkin.class);
                                     Bundle extras = new Bundle();
                                     extras.putString("Extended_Flag", "extended");

@@ -1,25 +1,19 @@
 package com.saneforce.milksales.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.saneforce.milksales.Activity_Hap.ImageCapture;
-import com.saneforce.milksales.Activity_Hap.MainActivity;
 import com.saneforce.milksales.R;
-import com.saneforce.milksales.SFA_Activity.HAPApp;
 import com.saneforce.milksales.databinding.ShiftListItemBinding;
 
 import java.text.ParseException;
@@ -34,6 +28,7 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
     private final String exData;
     int selectedPosition = -1;
     int lastSelectedPosition = -1;
+    private OnClickInterface onClickInterface;
 
     public ShiftTimeAdapter(JsonArray mShift_time, Context mContext, String checkflag, String OnDutyFlag, String exData) {
         this.mShift_time = mShift_time;
@@ -41,6 +36,12 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
         this.checkflag = checkflag;
         this.OnDutyFlag = OnDutyFlag;
         this.exData=exData;
+
+        try{
+            this.onClickInterface = ((OnClickInterface) mContext);
+        }catch (ClassCastException e){
+            throw new ClassCastException(e.getMessage());
+        }
     }
 
     @NonNull
@@ -52,10 +53,11 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder,  int position) {
         holder.binding.getRoot().setOnClickListener(v -> {
             lastSelectedPosition = selectedPosition;
 
+            Log.e("click_in", "clicked");
             selectedPosition = holder.getBindingAdapterPosition();
             notifyItemChanged(lastSelectedPosition);
             notifyItemChanged(selectedPosition);
@@ -64,6 +66,19 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
         if (selectedPosition == holder.getBindingAdapterPosition()) {
             holder.binding.card.setCardBackgroundColor(Color.parseColor("#DDEFF9"));
             holder.binding.card.setForeground(ContextCompat.getDrawable(mContext, R.drawable.border_blue_box));
+
+            JsonObject item = mShift_time.get(position).getAsJsonObject();
+            Intent intent = new Intent();
+            intent.putExtra("Mode", checkflag);
+            intent.putExtra("ShiftId", item.get("id").getAsString());
+            intent.putExtra("ShiftName", item.get("name").getAsString());
+            intent.putExtra("On_Duty_Flag", OnDutyFlag);
+            intent.putExtra("ShiftStart", item.getAsJsonObject("Sft_STime").get("date").getAsString());
+            intent.putExtra("ShiftEnd", item.getAsJsonObject("sft_ETime").get("date").getAsString());
+            intent.putExtra("ShiftCutOff", item.getAsJsonObject("ACutOff").get("date").getAsString());
+            intent.putExtra("data",exData);
+//          Intent takePhoto = new Intent(mContext, ImageCapture.class);
+            onClickInterface.onClickInterface(intent);
         } else {
             holder.binding.card.setCardBackgroundColor(Color.WHITE);
             holder.binding.card.setForeground(ContextCompat.getDrawable(mContext, R.drawable.border_gray_box));
@@ -84,32 +99,9 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
             throw new RuntimeException(e);
         }
 
-        holder.binding.card.setOnClickListener(view -> {
-            JsonObject itm1 = mShift_time.get(position).getAsJsonObject();
-            String mMessage = "Do you Want to Confirm This ShiftTime : <br /> <span style=\"color:#cc2311\">" + itm1.get("name").getAsString() + "</span>";
-
-            AlertDialog alertDialog = new AlertDialog.Builder(mContext)
-                    .setTitle(HAPApp.Title)
-                    .setMessage(Html.fromHtml(mMessage))
-                    .setPositiveButton("OK", (dialogInterface, i) -> {
-                        Intent takePhoto = new Intent(mContext, ImageCapture.class);
-
-                        takePhoto.putExtra("Mode", checkflag);
-                        takePhoto.putExtra("ShiftId", itm1.get("id").getAsString());
-                        takePhoto.putExtra("ShiftName", itm1.get("name").getAsString());
-                        takePhoto.putExtra("On_Duty_Flag", OnDutyFlag);
-                        takePhoto.putExtra("ShiftStart", itm1.getAsJsonObject("Sft_STime").get("date").getAsString());
-                        takePhoto.putExtra("ShiftEnd", itm1.getAsJsonObject("sft_ETime").get("date").getAsString());
-                        takePhoto.putExtra("ShiftCutOff", itm1.getAsJsonObject("ACutOff").get("date").getAsString());
-                        takePhoto.putExtra("data",exData);
-                        mContext.startActivity(takePhoto);
-                        ((AppCompatActivity) mContext).finish();
-                    })
-                    .setNegativeButton("Cancel", (dialogInterface, i) -> {
-                        // Do something
-                    })
-                    .show();
-        });
+//        holder.binding.card2.setOnClickListener(view -> {
+//
+//        });
     }
 
     @Override
@@ -124,5 +116,9 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    public interface OnClickInterface{
+        public void onClickInterface(Intent intent);
     }
 }

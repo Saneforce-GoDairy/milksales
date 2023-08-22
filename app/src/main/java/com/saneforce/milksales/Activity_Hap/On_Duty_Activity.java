@@ -789,7 +789,7 @@ public class On_Duty_Activity extends AppCompatActivity implements View.OnClickL
                 FileUploadService.enqueueWork(this, mIntent);
             }
             //saveAllowance
-            Intent intent = new Intent(getApplicationContext(), Checkin.class);
+            Intent intent = new Intent(getApplicationContext(), ShiftTimeActivity.class);
             Bundle extras = new Bundle();
             extras.putString("Mode", "onduty");
             extras.putString("data", jj.toString());

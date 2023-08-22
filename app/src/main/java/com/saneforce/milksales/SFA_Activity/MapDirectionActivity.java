@@ -1,6 +1,5 @@
 package com.saneforce.milksales.SFA_Activity;
 
-import static com.google.android.material.internal.ContextUtils.getActivity;
 import static com.saneforce.milksales.SFA_Activity.Nearby_Outlets.shared_common_pref;
 
 import android.Manifest;
@@ -46,10 +45,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.Task;
 import com.saneforce.milksales.Activity_Hap.AddNewRetailer;
-import com.saneforce.milksales.Activity_Hap.Checkin;
+import com.saneforce.milksales.Activity_Hap.ShiftTimeActivity;
 import com.saneforce.milksales.Activity_Hap.Dashboard;
 import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
-import com.saneforce.milksales.Activity_Hap.ImageCapture;
+import com.saneforce.milksales.Activity_Hap.ImageCaptureActivity;
 import com.saneforce.milksales.Activity_Hap.SFA_Activity;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Constants;
@@ -73,25 +72,24 @@ import java.util.Objects;
 
 public class MapDirectionActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
     private ActivityMapDirectionBinding binding;
-    private Context context = this;
+    private final Context context = this;
     private CircleOptions circleOptions;
     private static final int REQUEST_CODE = 101;
     static String googlePlacesData;
-    Location currentLocation;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    GoogleMap mGoogleMap;
-    TextView AddressTextview, ReachedOutlet;
-    ImageView imag_back;
-    Common_Class common_class;
-    String sb;
+    private Location currentLocation;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private GoogleMap mGoogleMap;
+    private TextView AddressTextview, ReachedOutlet;
+    private ImageView imag_back;
+    private Common_Class common_class;
+    private String sb;
     private Polyline mPolyline;
-    Marker currentLocationMarker;
+    private Marker currentLocationMarker;
     public static String TAG = "MapDirectionActivity";
     private String status = "";
-    SharedPreferences UserDetails, CheckInDetails;
-    com.saneforce.milksales.Activity_Hap.Common_Class DT = new com.saneforce.milksales.Activity_Hap.Common_Class();
+    private SharedPreferences UserDetails, CheckInDetails;
+    private com.saneforce.milksales.Activity_Hap.Common_Class DT = new com.saneforce.milksales.Activity_Hap.Common_Class();
     private double radius = 0.0;
-    BitmapDescriptor icon;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -101,6 +99,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             binding = ActivityMapDirectionBinding.inflate(getLayoutInflater());
             View view = binding.getRoot();
             setContentView(view);
+
+            setOnClick();
 
             status = getIntent().getStringExtra(Constants.NEW_OUTLET);
             status = status == null ? "" : status;
@@ -130,6 +130,11 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         }
     }
 
+    private void setOnClick() {
+        binding.back.setOnClickListener(v -> {
+            finish();
+        });
+    }
 
     public void openHome() {
         boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
@@ -393,7 +398,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                                 }
                             }
                             if (!ETime.equalsIgnoreCase("")) {
-                                Intent takePhoto = new Intent(this, ImageCapture.class);
+                                Intent takePhoto = new Intent(this, ImageCaptureActivity.class);
                                 takePhoto.putExtra("Mode", "CIN");
                                 takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
                                 takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
@@ -403,7 +408,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                                 takePhoto.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
                                 startActivity(takePhoto);
                             } else {
-                                Intent i = new Intent(this, Checkin.class);
+                                Intent i = new Intent(this, ShiftTimeActivity.class);
                                 startActivity(i);
                                 overridePendingTransition(0,0);
                             }
