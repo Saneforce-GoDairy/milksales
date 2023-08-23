@@ -628,7 +628,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                     UserDetails.getString("Divcode", ""),
                     UserDetails.getString("Sfcode", ""), "", "", null);
             Log.v("View_Request", rptCall.request().toString());
-            rptCall.enqueue(new Callback<JsonArray>() {
+            rptCall.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                     try {

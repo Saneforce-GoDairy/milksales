@@ -902,11 +902,13 @@ public class Login extends AppCompatActivity {
                         else
                             intent.putExtra("Mode", "CIN");
                     } else {
-                        intent = new Intent(context, Dashboard.class);
+                        intent = new Intent(context, CheckInActivity2.class);
+                        finish();
                     }
                 } else {
                     intent = new Intent(context, Dashboard_Two.class);
                     intent.putExtra("Mode", "RPT");
+                    finish();
                 }
 
                 String code = response.getData().get(0).getSfCode();

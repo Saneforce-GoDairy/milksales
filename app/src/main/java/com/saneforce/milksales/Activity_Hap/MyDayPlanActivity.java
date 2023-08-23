@@ -55,6 +55,8 @@ import com.saneforce.milksales.R;
 import com.saneforce.milksales.adapters.Joint_Work_Adapter;
 import com.saneforce.milksales.common.DatabaseHandler;
 import com.saneforce.milksales.databinding.ActivityMydayplanBinding;
+import com.saneforce.milksales.session.SessionHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +71,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.MasterSyncView, View.OnClickListener, Master_Interface {
+    private SessionHandler session;
     private ActivityMydayplanBinding binding;
     private final Context context = this;
     public static final String Name = "Allowance";
@@ -133,6 +136,7 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
         databaseHandler = new DatabaseHandler(context);
         UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
 
+        initSession();
         initVariable();
         initOnClick();
 
@@ -161,6 +165,9 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
         route_layout.setVisibility(View.GONE);
     }
 
+    private void initSession() {
+        session = new SessionHandler(getApplicationContext());
+    }
 
 
     public void getWorkTypes() {
@@ -295,6 +302,7 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
                     Callto.enqueue(new Callback<>() {
                         @Override
                         public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
+                            Log.e("my_res", response.body().toString());
                             common_class.ProgressdialogShow(2, "Tour  plan");
                             if (response.code() == 200 || response.code() == 201) {
                                 if (worktype_id.equalsIgnoreCase("43")) {
@@ -306,10 +314,8 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                      // Previous method submit success return Dashboard  home.
-                                      // common_class.CommonIntentwithFinish(Dashboard.class);
-
-                                       // New code as per design
+                                       String enabled = "true";
+                                       session.setMyDayPlanEnabled(enabled);
                                        Intent intent = new Intent(context, CheckInActivity2.class);
                                        intent.putExtra("My_Day_Plan", "One");
                                        startActivity(intent);
@@ -457,118 +463,6 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.submitbutton:
-                if (vali()) {
-                    Savejointwork = Jointworklistview;
-
-                    String jointwork = "";
-                    String jointworkname = "";
-                    for (int ii = 0; ii < Savejointwork.size(); ii++) {
-                        if (ii != 0) {
-                            jointwork = jointwork.concat(",");
-                            jointworkname = jointworkname.concat(",");
-                        }
-
-                        jointwork = jointwork.concat(Savejointwork.get(ii).getId());
-                        jointworkname = jointworkname.concat(Savejointwork.get(ii).getName());
-                    }
-
-                    common_class.ProgressdialogShow(1, "Tour  plan");
-
-                    JSONArray jsonarr = new JSONArray();
-                    JSONObject jsonarrplan = new JSONObject();
-                    String remarks = binding.editRemarks.getText().toString();
-                    try {
-                        JSONObject jsonobj = new JSONObject();
-                        jsonobj.put("worktype_code", addquote(worktype_id));
-                        jsonobj.put("dcr_activity_date", addquote(TpDate));
-                        jsonobj.put("worktype_name", addquote(binding.worktypeText.getText().toString()));
-                        jsonobj.put("Ekey", Common_Class.GetEkey());
-                        jsonobj.put("objective", addquote(remarks));
-                        jsonobj.put("Flag", addquote(Fieldworkflag));
-                        jsonobj.put("Button_Access", Worktype_Button);
-                        jsonobj.put("MOT", addquote(binding.txtMode.getText().toString()));
-                        jsonobj.put("DA_Type", addquote(binding.textDailyAllowance.getText().toString()));
-                        jsonobj.put("Driver_Allow", addquote((binding.dailyDriverAllowance.isChecked()) ? "1" : "0"));
-                        jsonobj.put("From_Place", addquote(binding.editBusForm.getText().toString()));
-                        jsonobj.put("To_Place", addquote(binding.editToAddress.getText().toString()));
-                        jsonobj.put("MOT_ID", addquote(modeId));
-                        jsonobj.put("To_Place_ID", addquote(toId));
-                        jsonobj.put("Mode_Travel_ID", addquote(startEnd));
-                        jsonobj.put("worked_with", addquote(jointworkname));
-                        jsonobj.put("jointWorkCode", addquote(jointwork));
-                        JSONArray personarray = new JSONArray();
-                        JSONObject ProductJson_Object;
-                        for (int z = 0; z < dynamicarray.size(); z++) {
-                            ProductJson_Object = new JSONObject();
-                            try {
-                                ProductJson_Object.put("Fld_ID", dynamicarray.get(z).getFld_ID());
-                                ProductJson_Object.put("Fld_Name", dynamicarray.get(z).getFld_Name());
-                                ProductJson_Object.put("Fld_Type", dynamicarray.get(z).getFld_Type());
-                                ProductJson_Object.put("Fld_Src_Name", dynamicarray.get(z).getFld_Src_Name());
-                                ProductJson_Object.put("Fld_Src_Field", dynamicarray.get(z).getFld_Src_Field());
-                                ProductJson_Object.put("Fld_Length", dynamicarray.get(z).getFld_Length());
-                                ProductJson_Object.put("Fld_Symbol", dynamicarray.get(z).getFld_Symbol());
-                                ProductJson_Object.put("Fld_Mandatory", dynamicarray.get(z).getFld_Mandatory());
-                                ProductJson_Object.put("Active_flag", dynamicarray.get(z).getActive_flag());
-                                ProductJson_Object.put("Control_id", dynamicarray.get(z).getControl_id());
-                                ProductJson_Object.put("Target_Form", dynamicarray.get(z).getTarget_Form());
-                                ProductJson_Object.put("Filter_Text", dynamicarray.get(z).getFilter_Text());
-                                ProductJson_Object.put("Filter_Value", dynamicarray.get(z).getFilter_Value());
-                                ProductJson_Object.put("Field_Col", dynamicarray.get(z).getField_Col());
-                                if (dynamicarray.get(z).getFld_Symbol().equals("D")) {
-                                    jsonobj.put("Worked_with_Code", dynamicarray.get(z).getFilter_Text());
-                                    jsonobj.put("Worked_with_Name", dynamicarray.get(z).getFilter_Value());
-                                } else if (dynamicarray.get(z).getFld_Symbol().equals("R")) {
-                                    jsonobj.put("RouteCode", dynamicarray.get(z).getFilter_Text());
-                                    jsonobj.put("RouteName", dynamicarray.get(z).getFilter_Value());
-                                }
-                                personarray.put(ProductJson_Object);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        jsonarrplan.put("Tp_Dayplan", jsonobj);
-                        jsonarrplan.put("Tp_DynamicValues", personarray);
-                        jsonarr.put(jsonarrplan);
-                        Map<String, String> QueryString = new HashMap<>();
-                        QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
-                        QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);
-                        QueryString.put("State_Code", Shared_Common_Pref.StateCode);
-                        QueryString.put("desig", "MGR");
-                        QueryString.put("axn", "save/dayplandynamic");
-
-                        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                        Call<Object> Callto = apiInterface.Tb_Mydayplannew(QueryString, jsonarr.toString());
-                        Callto.enqueue(new Callback<>() {
-                            @Override
-                            public void onResponse(Call<Object> call, Response<Object> response) {
-                                common_class.ProgressdialogShow(2, "Tour  plan");
-                                if (response.code() == 200 || response.code() == 201) {
-                                    if (worktype_id.equalsIgnoreCase("43")) {
-                                        common_class.CommonIntentwithFinish(Dashboard.class);
-                                        shared_common_pref.save("worktype", worktype_id);
-
-                                    } else if (ExpNeed) {
-                                        Intent intent = new Intent(context, AllowanceActivity.class);
-                                        intent.putExtra("My_Day_Plan", "One");
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        common_class.CommonIntentwithFinish(Dashboard.class);
-                                    }
-                                    Toast.makeText(context, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            @Override
-                            public void onFailure(Call<Object> call, Throwable t) {
-                                common_class.ProgressdialogShow(2, "Tour  plan");
-                                Log.e("Reponse TAG", "onFailure : " + t);
-                            }
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
                 break;
 
             case R.id.worktypelayout:

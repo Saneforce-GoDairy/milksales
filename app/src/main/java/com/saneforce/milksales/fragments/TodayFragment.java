@@ -67,7 +67,31 @@ public class TodayFragment extends Fragment {
 
         if (Common_Class.isNullOrEmpty(SHARED_COMMON_PREF.getvalue(Constants.DB_TWO_GET_DYREPORTS))) {
             String divisionCode = USER_DETAILS.getString("Divcode", "");
-            Log.e("dev__", divisionCode);
+            Log.e("dev_", divisionCode);
+
+            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            Call<JsonArray> rptCall = apiInterface.getDataArrayList("get/AttnDySty",
+                    USER_DETAILS.getString("Divcode", ""),
+                    USER_DETAILS.getString("Sfcode", ""), "", "", null);
+            Log.v("View_Request", rptCall.request().toString());
+            rptCall.enqueue(new Callback<>() {
+                @Override
+                public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                    try {
+                        assignDyReports(response.body());
+                        SHARED_COMMON_PREF.save(Constants.DB_TWO_GET_DYREPORTS, gson.toJson(response.body()));
+                    } catch (Exception e) {
+                        LoadingCnt++;
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<JsonArray> call, Throwable t) {
+                    Log.d("Tag", String.valueOf(t));
+                    LoadingCnt++;
+                }
+            });
         }else {
             Log.e("dev__", "h");
             Type userType = new TypeToken<JsonArray>() {

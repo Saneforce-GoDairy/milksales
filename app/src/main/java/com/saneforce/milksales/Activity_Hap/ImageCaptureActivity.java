@@ -68,6 +68,7 @@ import com.saneforce.milksales.common.LocationFinder;
 import com.saneforce.milksales.common.LocationReceiver;
 import com.saneforce.milksales.common.SANGPSTracker;
 import com.saneforce.milksales.databinding.ActivityImageCaptureBinding;
+import com.saneforce.milksales.session.SessionHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,6 +79,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
@@ -86,6 +88,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ImageCaptureActivity extends AppCompatActivity {
+    private SessionHandler session;
     private ActivityImageCaptureBinding binding;
     private final Context context = this;
     private final String KEY_MY_PREFE = "mypref";
@@ -142,6 +145,11 @@ public class ImageCaptureActivity extends AppCompatActivity {
         cameraPermission();
         DIR = getExternalFilesDir("/").getPath() + "/" + ".saneforce/";
         createDirectory();
+        initSession();
+    }
+
+    private void initSession() {
+        session = new SessionHandler(getApplicationContext());
     }
 
     private void initSubmitDialog() {
@@ -468,6 +476,14 @@ public class ImageCaptureActivity extends AppCompatActivity {
                                 }
                             }
                             String mMessage = "Your Check-In Submitted Successfully";
+
+                            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                            String mTimeStamp  = mDate +" "+mTime;
+
+
+                            session.setMyCheckIn("true", mTimeStamp);
+
                             try {
                                 mMessage = itm.get("Msg").getAsString();
                             } catch (Exception e) {
@@ -581,6 +597,8 @@ public class ImageCaptureActivity extends AppCompatActivity {
                             JsonObject itm = response.body().getAsJsonObject();
                             String mMessage = "Your Check-Out Submitted Successfully<br><br>Check in Time  : " + CHECKIN_DETAILS.getString("FTime", "") + "<br>" +
                                     "Check Out Time : " + CTime;
+
+                            session.setMyCheckIn("false", "");
 
                             try {
                                 mMessage = itm.get("Msg").getAsString();
