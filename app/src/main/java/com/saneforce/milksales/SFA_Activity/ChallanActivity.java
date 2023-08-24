@@ -1,6 +1,7 @@
 package com.saneforce.milksales.SFA_Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,30 +9,59 @@ import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.saneforce.milksales.Common_Class.Common_Class;
+import com.saneforce.milksales.Common_Class.CurrencyConverter;
 import com.saneforce.milksales.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class ChallanActivity extends AppCompatActivity {
-    ImageView toolbarHome;
-    PDFView pdfView;
-    Context context = this;
-
-    Paint paint = new Paint();
-    Canvas canvas;
 
     final int pageWidth = 595, pageHeight = 842;
     final float xMin = 20, xMax = pageWidth - 20;
     final float x = 40;
-    float y = 0;
+
+    ImageView toolbarHome, print, share;
+    PDFView pdfView;
+
+    Context context = this;
+
+    Paint paint;
+    Canvas canvas;
+    Common_Class common_class;
+
+    double amount = 88745.55;
+    String DocNo = "TEST0001", todayDate = "2023-08-18", customerCode = "654321", customerName = "RAGU M", ERP_CODE = "ERP_CODE", PAN = "ABCDE1234F";
+    String MODE1 = "Bank Copy (To be retained by Axis Bank Collecting Branch)";
+    String MODE2 = "Customer Copy (To be submitted by the Applicant to the Lactalis India Pvt Ltd)";
+
+    public static String[] Split(String text, int chunkSize, int maxLength) {
+        char[] data = text.toCharArray();
+        int len = Math.min(data.length, maxLength);
+        String[] result = new String[(len + chunkSize - 1) / chunkSize];
+        int linha = 0;
+        for (int i = 0; i < len; i += chunkSize) {
+            result[linha] = new String(data, i, Math.min(chunkSize, len - i));
+            linha++;
+        }
+        return result;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +70,18 @@ public class ChallanActivity extends AppCompatActivity {
 
         toolbarHome = findViewById(R.id.toolbar_home);
         pdfView = findViewById(R.id.pdfView);
+        print = findViewById(R.id.print);
+        share = findViewById(R.id.share);
 
-        createChallanPDF();
+        common_class = new Common_Class(this);
+
+        print.setOnClickListener(v -> createChallanPDF("print"));
+        share.setOnClickListener(v -> createChallanPDF("share"));
     }
 
-    private void createChallanPDF() {
+    private void createChallanPDF(String mode) {
+        float y = 0;
+        paint = new Paint();
         PdfDocument pdfDocument = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, 1).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
@@ -60,10 +97,13 @@ public class ChallanActivity extends AppCompatActivity {
 
         // ------------------------------------------------------------------------- Heading
 
-        y += 30;
-        drawTitleWithCenterAlign("Lactalis India Pvt Ltd", (float) pageWidth / 2, y);
+        y += 25;
+        drawBIGTitleWithCenterAlign("Lactalis India Pvt Ltd", (float) pageWidth / 2, y);
 
         y += 20;
+        drawTextWithCenterAlign(MODE1, (float) pageWidth / 2, y);
+
+        y += 15;
         drawHorizontalLine(xMin, y, xMax, y);
 
         // ------------------------------------------------------------------------- Receipt No
@@ -72,15 +112,13 @@ public class ChallanActivity extends AppCompatActivity {
         drawText("Receipt No: ", x, y);
         float temp1 = paint.measureText("Receipt No: ");
 
-        String docId = "9876543210";
-        drawTitle(docId, x + temp1 + 10, y);
-        float temp2 = paint.measureText(docId);
+        drawTitle(DocNo, x + temp1 + 10, y);
+        float temp2 = paint.measureText(DocNo);
 
         drawHorizontalLine(x + temp1 + 5, y + 5, x + temp1 + 15 + temp2, y + 5);
 
-        String date = "23/08/2023";
-        drawTextWithRightAlign(date, xMax - 25, y);
-        float temp = paint.measureText(date);
+        drawTextWithRightAlign(todayDate, xMax - 25, y);
+        float temp = paint.measureText(todayDate);
         drawHorizontalLine(xMax - 20, y + 5, xMax - 20 - temp - 5 - 5, y + 5);
 
         drawTextWithRightAlign("Date: ", xMax - 20 - temp - 15, y);
@@ -92,47 +130,40 @@ public class ChallanActivity extends AppCompatActivity {
         drawText(data, x, y);
         temp = paint.measureText(data);
 
-        String branchName = "My Branch";
-        drawText(branchName, x + temp + 15, y);
-        temp2 = paint.measureText(branchName);
-        drawRectangle(x + temp + 5, y - 20, x + temp + 15 + temp2 + 10, y + 10);
+        drawRectangle(x + temp + 5, y - 20, x + 350, y + 10);
 
         y += 25;
         drawHorizontalLine(xMin, y, xMax, y);
 
-        // ------------------------------------------------------------------------- Employee ID
+        // ------------------------------------------------------------------------- Customer Code
 
-        y += 40;
-        drawText("Employee ID: ", x, y);
-        String empId = "Employee ID";
-        drawText(empId, x + 110, y);
+        y += 30;
+        drawText("Customer Code: ", x, y);
+        drawText(customerCode, x + 110, y);
         drawRectangle(x + 100, y - 20, x + 350, y + 10);
 
-        // ------------------------------------------------------------------------- Employee Name
+        // ------------------------------------------------------------------------- Customer Name
 
         y += 40;
-        drawText("Employee Name: ", x, y);
-        String empName = "Employee Name";
-        drawText(empName, x + 110, y);
+        drawText("Customer Name: ", x, y);
+        drawText(customerName, x + 110, y);
         drawRectangle(x + 100, y - 20, x + 350, y + 10);
 
-        // ------------------------------------------------------------------------- Branch ID
+        // ------------------------------------------------------------------------- ERP Code
 
         y += 40;
-        drawText("Branch ID: ", x, y);
-        String branchId = "Branch ID";
-        drawText(branchId, x + 110, y);
+        drawText("ERP Code: ", x, y);
+        drawText(ERP_CODE, x + 110, y);
         drawRectangle(x + 100, y - 20, x + 350, y + 10);
 
-        // ------------------------------------------------------------------------- Branch Name
+        // ------------------------------------------------------------------------- PAN
 
         y += 40;
-        drawText("Branch Name: ", x, y);
-        String bName = "Branch Name";
-        drawText(bName, x + 110, y);
+        drawText("PAN: ", x, y);
+        drawText(PAN, x + 110, y);
         drawRectangle(x + 100, y - 20, x + 350, y + 10);
 
-        // -------------------------------------------------------------------------
+        // ------------------------------------------------------------------------- Denomination
 
         y += 30;
         drawHorizontalLine(xMin, y, xMax, y);
@@ -152,25 +183,27 @@ public class ChallanActivity extends AppCompatActivity {
         y += 10;
         drawHorizontalLine(x, y, xMax - 20, y);
 
+        drawHorizontalLine(x, tableStart, x, tableStart + 100);
+        drawHorizontalLine(xMax - 20, tableStart, xMax - 20, tableStart + 100);
+        drawHorizontalLine(amtColStart, tableStart, amtColStart, tableStart + 100);
+        drawHorizontalLine(totColStart, tableStart, totColStart, tableStart + 100);
 
-        drawHorizontalLine(x, tableStart, x, tableStart + 140);
-        drawHorizontalLine(xMax - 20, tableStart, xMax - 20, tableStart + 140);
-        drawHorizontalLine(amtColStart, tableStart, amtColStart, tableStart + 140);
-        drawHorizontalLine(totColStart, tableStart, totColStart, tableStart + 140);
-
-        y = tableStart + 140;
+        y = tableStart + 100;
         drawHorizontalLine(x, y, xMax - 20, y);
 
         // ------------------------------------------------------------------------- Amount in words
 
         y += 25;
-        drawText("Amount in words: ", x, y);
-        float amountSize = paint.measureText("Amount in words: ");
-        drawText("Five hundred rupees only", x + amountSize + 5, y);
+        String amtInWords = CurrencyConverter.convert(amount);
+        String[] line = Split(amtInWords, 90, amtInWords.length());
+        for (String s : line) {
+            drawText(s, x, y);
+            y = y + 20;
+        }
 
         // ------------------------------------------------------------------------- Depositor’s Sign
 
-        y += 35;
+        y += 15;
         drawText("Depositor’s Sign: ", x, y);
         float signSize = paint.measureText("Depositor’s Sign: ");
         drawHorizontalLine(x + signSize + 5, y + 5, x + signSize + 5 + 200, y + 5);
@@ -188,14 +221,25 @@ public class ChallanActivity extends AppCompatActivity {
         drawTitle("Bank Stamp", bankStampColStart + 10, y);
 
         y += 10;
+        float modeStart = y;
         drawHorizontalLine(x, y, xMax - 20, y);
 
-        drawHorizontalLine(x, table2Start, x, table2Start + 80);
-        drawHorizontalLine(xMax - 20, table2Start, xMax - 20, table2Start + 80);
-        drawHorizontalLine(bankStampColStart, table2Start, bankStampColStart, table2Start + 80);
+        y += 18;
+        drawText("Cash", x + 10, y);
 
-        y = table2Start + 80;
+        y += 10;
+        drawHorizontalLine(x, y, bankStampColStart, y);
+
+        y += 18;
+        drawText("Demand Draft", x + 10, y);
+
+        y += 10;
         drawHorizontalLine(x, y, xMax - 20, y);
+
+        drawHorizontalLine(x, table2Start, x, y);
+        drawHorizontalLine(x + 150, modeStart, x + 150, y);
+        drawHorizontalLine(xMax - 20, table2Start, xMax - 20, y);
+        drawHorizontalLine(bankStampColStart, table2Start, bankStampColStart, y);
 
         // ------------------------------------------------------------------------- For Bank Use
 
@@ -206,40 +250,61 @@ public class ChallanActivity extends AppCompatActivity {
         drawTitleWithCenterAlign("For Bank Use", bankStampColStart, y);
 
         y += 25;
-        drawText("Received Rs. _____________  (Rs. ______________________________________________________________________ )", x, y);
+        String amt = "Received: " + common_class.formatCurrency(amount) + " (" + CurrencyConverter.convert(amount) + ") on " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime()) + ".";
+        String[] lines = Split(amt, 90, amt.length());
+        for (String s : lines) {
+            drawText(s, x, y);
+            y = y + 20;
+        }
+
+        // ------------------------------------------------------------------------- For Bank Use
+
+        y += 15;
+        drawText("Cashier: ", x, y);
+        temp1 = paint.measureText("Cashier: ");
+        float cashierEnd = x + temp1 + 15 + 150;
+        drawHorizontalLine(x + temp1 + 5, y + 5, cashierEnd, y + 5);
+        drawText("Cashier’s Scroll No: ", cashierEnd + 10, y);
+        temp = paint.measureText("Cashier’s Scroll No: ");
+        drawHorizontalLine(cashierEnd + 10 + 5 + temp, y + 5, cashierEnd + 10 + 160 + temp, y + 5);
+
+        // ------------------------------------------------------------------------- Note
 
         y += 25;
-        drawText("on _______________ 2023", x, y);
+        drawBoldText("Note: To be accepted at the designated Axis Bank Branch", x, y);
 
-
-
-
+        // ------------------------------------------------------------------------- End of PDF
 
         pdfDocument.finishPage(page);
-        File pdfFile = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "test.pdf");
-        try {
-            pdfDocument.writeTo(new FileOutputStream(pdfFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String directory_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/files/";
+
+        String directory_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/files/challan/";
         File file = new File(directory_path);
         if (!file.exists()) {
             file.mkdirs();
         }
-        String targetPdf = directory_path + System.currentTimeMillis() + "MyChallan.pdf";
-        File filePath = new File(targetPdf);
+
+        File filePath = new File(directory_path + "MyChallan.pdf");
         try {
             pdfDocument.writeTo(new FileOutputStream(filePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
         pdfDocument.close();
-        Uri fileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", filePath);
-        pdfView.fromUri(fileUri).load();
 
-        //Intent intent = ShareCompat.IntentBuilder.from(this).setType("*/*").setStream(fileUri).setChooserTitle("Choose bar").createChooserIntent().addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        //startActivity(intent);
+        Uri fileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", filePath);
+
+        if (mode.equals("share")) {
+            Intent intent = ShareCompat.IntentBuilder.from(this).setType("*/*").setStream(fileUri).setChooserTitle("Choose bar").createChooserIntent().addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(intent);
+        } else if (mode.equals("print")) {
+            PrintDocumentAdapter printDocumentAdapter = new PdfDocumentAdapter(this, fileUri);
+            PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+            String jobName = getString(R.string.app_name) + " Document";
+            PrintAttributes.Builder builder = new PrintAttributes.Builder();
+            builder.setMediaSize(PrintAttributes.MediaSize.ISO_A4);
+            PrintAttributes printAttributes = builder.build();
+            printManager.print(jobName, printDocumentAdapter, printAttributes);
+        }
     }
 
     private void drawRectangle(float left, float top, float right, float bottom) {
@@ -259,6 +324,15 @@ public class ChallanActivity extends AppCompatActivity {
         canvas.drawText(string, x, y, paint);
     }
 
+    private void drawBIGTitleWithCenterAlign(String string, float x, float y) {
+        paint.reset();
+        paint.setTextSize(18);
+        paint.setColor(Color.BLACK);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setFakeBoldText(true);
+        canvas.drawText(string, x, y, paint);
+    }
+
     private void drawTitleWithCenterAlign(String string, float x, float y) {
         paint.reset();
         paint.setTextSize(14);
@@ -271,6 +345,16 @@ public class ChallanActivity extends AppCompatActivity {
     private void drawText(String string, float x, float y) {
         paint.reset();
         paint.setTextSize(12);
+        paint.setFakeBoldText(false);
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setColor(Color.BLACK);
+        canvas.drawText(string, x, y, paint);
+    }
+
+    private void drawBoldText(String string, float x, float y) {
+        paint.reset();
+        paint.setTextSize(12);
+        paint.setFakeBoldText(true);
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setColor(Color.BLACK);
         canvas.drawText(string, x, y, paint);
@@ -280,6 +364,7 @@ public class ChallanActivity extends AppCompatActivity {
         paint.reset();
         paint.setTextSize(12);
         paint.setColor(Color.BLACK);
+        paint.setFakeBoldText(false);
         paint.setTextAlign(Paint.Align.RIGHT);
         canvas.drawText(string, x, y, paint);
     }
@@ -288,6 +373,7 @@ public class ChallanActivity extends AppCompatActivity {
         paint.reset();
         paint.setTextSize(12);
         paint.setColor(Color.BLACK);
+        paint.setFakeBoldText(false);
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(string, x, y, paint);
     }

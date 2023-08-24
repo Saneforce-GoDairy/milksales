@@ -8,16 +8,41 @@
 
     <include layout="@layout/sfatoolbar" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
-        android:paddingVertical="6dp"
-        android:paddingHorizontal="12dp"
-        android:text="Challan"
-        android:textColor="@color/white"
-        android:textSize="@dimen/C18dp"
-        android:textStyle="bold" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="7dp"
+            android:text="Challan"
+            android:textColor="@color/white"
+            android:textSize="@dimen/C18dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/C12dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_round_print_24" />
+
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/C12dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_round_share_24" />
+
+    </LinearLayout>
 
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdfView"
