@@ -5,9 +5,9 @@ apply plugin: 'com.google.firebase.crashlytics'
 //4.x.x//primary--distri
 //6.x.x//start hsfa--checkin
 android {
-    compileSdkVersion 33
     defaultConfig {
         applicationId "com.saneforce.milksales"
+        compileSdk 33
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 3316

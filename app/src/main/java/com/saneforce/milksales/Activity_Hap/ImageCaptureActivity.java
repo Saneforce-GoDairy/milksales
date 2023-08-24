@@ -26,7 +26,9 @@ import android.util.Log;
 import android.util.Range;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -111,7 +113,8 @@ public class ImageCaptureActivity extends AppCompatActivity {
     private Camera camera;
     private static OnImagePickListener imagePickListener;
     private Bitmap bitmap;
-    private Dialog submitDialog;
+    private Dialog submitProgressDialog;
+    private Dialog checkInSuccessDialog;
     private SANGPSTracker mLUService;
     private LocationReceiver myReceiver;
     private boolean mBound = false;
@@ -137,7 +140,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
         intSharedPref();
         loadJsonObjectCommonClass();
         iniLocationFinder();
-        initSubmitDialog();
+        initCheckInSuccessDialog();
 
         mSfCodeUkey = USER_DETAILS.getString("Sfcode", "") + "-" + (new Date().getTime());
 
@@ -148,16 +151,42 @@ public class ImageCaptureActivity extends AppCompatActivity {
         initSession();
     }
 
+    private void initCheckInSuccessDialog() {
+        checkInSuccessDialog = new Dialog(context);
+        checkInSuccessDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        checkInSuccessDialog.setContentView(R.layout.model_dialog__checkin_success);
+        checkInSuccessDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        checkInSuccessDialog.setCancelable(false);
+
+        Button backBtn = checkInSuccessDialog.findViewById(R.id.close);
+        TextView mMessage = checkInSuccessDialog.findViewById(R.id.message);
+        backBtn.setEnabled(true);
+        mMessage.setEnabled(true);
+
+        backBtn.setOnClickListener(v -> {
+            checkInSuccessDialog.dismiss();
+            Intent Dashboard = new Intent(context, CheckInActivity2.class);
+            Dashboard.putExtra("Mode", "CIN");
+            context.startActivity(Dashboard);
+            finish();
+        });
+    }
+
     private void initSession() {
         session = new SessionHandler(getApplicationContext());
     }
 
-    private void initSubmitDialog() {
-        submitDialog = new Dialog(context);
-        submitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        submitDialog.setContentView(R.layout.model_dialog_submit_checkin);
-        submitDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        submitDialog.setCancelable(false);
+    private void initSubmitProgressDialog(String messge) {
+        submitProgressDialog = new Dialog(context);
+        submitProgressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        submitProgressDialog.setContentView(R.layout.model_dialog_submit_checkin);
+        submitProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        submitProgressDialog.setCancelable(false);
+
+        TextView textView = submitProgressDialog.findViewById(R.id.message1);
+        textView.setEnabled(true);
+        textView.setText(messge);
+        submitProgressDialog.show();
     }
 
     private void createDirectory() {
@@ -329,7 +358,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                     imagePickListener.OnImagePick(bitmap, imageFileName);
                     finish();
                 } else {
-                    submitDialog.show();
+                  //  submitDialog.show();
                 /*if (mlocation != null) {
                     mProgress.setMessage("Submiting Please Wait...");
                     vwPreview.setVisibility(View.GONE);
@@ -340,7 +369,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                     new LocationFinder(getApplication(), new LocationEvents() {
                         @Override
                         public void OnLocationRecived(Location location) {
-                            submitDialog.show();
+                          initSubmitProgressDialog("Check In upload please wait");
 //                            mlocation = location;
 //                            mProgress.setMessage("Submiting Please Wait...");
 //                            vwPreview.setVisibility(View.GONE);
@@ -430,7 +459,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
                             JsonObject itm = response.body().getAsJsonObject();
                             Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
-                            submitDialog.dismiss();
+                            submitProgressDialog.dismiss();
                             responseStatus = itm.get("success").getAsString();
                             if (responseStatus.equalsIgnoreCase("true")) {
                                 SharedPreferences.Editor editor = CHECKIN_DETAILS.edit();
@@ -486,31 +515,17 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
                             try {
                                 mMessage = itm.get("Msg").getAsString();
-                            } catch (Exception e) {
+                            } catch (Exception ignored) {
                             }
-
-                            AlertDialogBox.showDialog(context, HAPApp.Title, String.valueOf(Html.fromHtml(mMessage)), "Yes", "", false, new AlertBox() {
-                                @Override
-                                public void PositiveMethod(DialogInterface dialog, int id) {
                                     if (responseStatus.equalsIgnoreCase("true")) {
-                                        Intent Dashboard = new Intent(context, Dashboard_Two.class);
-                                        Dashboard.putExtra("Mode", "CIN");
-                                        context.startActivity(Dashboard);
+                                        checkInSuccessDialog.show();
                                     }
-                                    ((AppCompatActivity) context).finish();
                                 }
-
-                                @Override
-                                public void NegativeMethod(DialogInterface dialog, int id) {
-                                }
-                            });
-
-                        }
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        submitDialog.dismiss();
+                        submitProgressDialog.dismiss();
                         Log.d("HAP_receive", "");
                     }
                 });
@@ -528,8 +543,9 @@ public class ImageCaptureActivity extends AppCompatActivity {
                         USER_DETAILS.getString("Sfcode", ""), "", "", jsonarray.toString());
                 modelCall.enqueue(new Callback<JsonObject>() {
                     @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        submitDialog.dismiss();
+                    public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                        submitProgressDialog.dismiss();
+                        assert response.body() != null;
                         Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
                         if (response.isSuccessful()) {
                             JsonObject itm = response.body().getAsJsonObject();
@@ -543,7 +559,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                                 mMessage = itm.get("Msg").getAsString();
 
 
-                            } catch (Exception e) {
+                            } catch (Exception ignored) {
                             }
 
                             new AlertDialog.Builder(context)
@@ -561,12 +577,14 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        submitDialog.dismiss();
+                        submitProgressDialog.dismiss();
                         Log.d("HAP_receive", "");
                     }
                 });
             }
             else {
+                submitProgressDialog.dismiss();
+                initSubmitProgressDialog("Check Out Please wait");
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 String lMode = "get/logouttime";
                 if(mMode.equalsIgnoreCase("EXOUT")) {
@@ -578,7 +596,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                 modelCall.enqueue(new Callback<>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        submitDialog.dismiss();
+                        submitProgressDialog.dismiss();
                         if (response.isSuccessful()) {
                             Log.e("TOTAL_REPOSNEaaa", String.valueOf(response.body()));
                             SharedPreferences.Editor loginsp = USER_DETAILS.edit();
@@ -652,7 +670,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        submitDialog.dismiss();
+                        submitProgressDialog.dismiss();
                         Log.d("HAP_receive", "");
                     }
                 });

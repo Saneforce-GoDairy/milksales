@@ -256,6 +256,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
             Geocoder geo = new Geocoder(this.getApplicationContext(), Locale.getDefault());
             List<Address> addresses = geo.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+            assert addresses != null;
             if (addresses.isEmpty()) {
                 binding.currentLocationName.setText("Waiting for Location");
             }

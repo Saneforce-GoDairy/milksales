@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -35,6 +36,7 @@ import com.saneforce.milksales.session.User;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -73,6 +75,23 @@ public class CheckInActivity2 extends AppCompatActivity {
         checkInTimer();
         loadFragment();
         onClick();
+
+          new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(() -> {
+                            checkInTimer();
+                            Log.e("check_in_home", "Time counter : updated");
+                        });
+                    }
+                } catch (InterruptedException ignored) {
+                }
+            }
+        }.start();
+
     }
 
     private void checkInTimer() {
@@ -84,34 +103,30 @@ public class CheckInActivity2 extends AppCompatActivity {
             String checkInTimeStamp = user.getCheckInTimeStamp();
             Log.e("check_in_home", "Check in TimeStamp : " + checkInTimeStamp);
 
-            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            Date past = null;
+            SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+            Date d1;
+            Date d2;
+
+            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+            String mTimeDateFormat  = mDate +" "+mTime;
+
             try {
-                past = format.parse(checkInTimeStamp);
+                d1 = format.parse(checkInTimeStamp);
+                d2 = format.parse(mTimeDateFormat);
 
-                Date now = new Date();
-                long seconds = TimeUnit.MILLISECONDS.toSeconds(now.getTime() - past.getTime());
-                long minutes = TimeUnit.MILLISECONDS.toMinutes(now.getTime() - past.getTime());
-                long hours = TimeUnit.MILLISECONDS.toHours(now.getTime() - past.getTime());
-                long days = TimeUnit.MILLISECONDS.toDays(now.getTime() - past.getTime());
+                long diff = d2.getTime() - d1.getTime();
 
-//                if (seconds < 60) {
-//                    binding.checkInBtn.setText("CHECK OUT " + " (" + seconds + " seconds ago" + ")");
-//                } else if (minutes < 60) {
-//                    binding.checkInBtn.setText("CHECK OUT " + " (" + minutes + " minutes ago" + ")");
-//                } else if (hours < 24) {
-//                    binding.checkInBtn.setText("CHECK OUT " + " (" + hours + " hours ago" + ")");
-//                } else {
-//                    binding.checkInBtn.setText("CHECK OUT " + " (" + days + " days ago" + ")");
-//                }
+                long diffSeconds = diff / 1000 % 60;
+                long diffMinutes = diff / (60 * 1000) % 60;
+                long diffHours = diff / (60 * 60 * 1000) % 24;
+                long diffDays = diff / (24 * 60 * 60 * 1000);
 
-
-                binding.checkInBtn.setText("CHECK OUT (" + hours +":" +  minutes + ":" + seconds + ")");
+                binding.checkInBtn.setText("CHECK OUT (" + addZero(Math.toIntExact(diffHours)) +":" +  diffMinutes + ":" + diffSeconds + ")");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-          //  binding.checkInBtn.setText("CHECK OUT");
             final int sdk = android.os.Build.VERSION.SDK_INT;
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 binding.checkInBtn.setLayoutParams(params);
@@ -122,6 +137,11 @@ public class CheckInActivity2 extends AppCompatActivity {
             }
         }
     }
+    public String addZero(int number)
+    {
+        return number<=9?"0"+number:String.valueOf(number);
+    }
+
 
     private void initSession() {
         session = new SessionHandler(getApplicationContext());

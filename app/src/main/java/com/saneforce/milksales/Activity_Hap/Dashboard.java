@@ -197,12 +197,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         linSFA.setOnClickListener(this);
         getcountdetails();
         updateFlxlayout();
-
-//        Log.v("wrkType:",shared_common_pref.getvalue("worktype", ""));
-//        if (shared_common_pref.getvalue("worktype", "").equalsIgnoreCase("43")) {
-//            linCheckin.setVisibility(View.GONE);
-//            linReCheck.setVisibility(View.GONE);
-//        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -136,6 +137,13 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
         databaseHandler = new DatabaseHandler(context);
         UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
 
+        new Handler().postDelayed(() -> {
+            loadWorkTypes();
+            getWorkTypes();
+            Log.e("my_day_plan", "Handler : started now");
+        },500);
+
+
         initSession();
         initVariable();
         initOnClick();
@@ -155,8 +163,6 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
         loadWorkTypes();
         Get_MydayPlan(GetDateOnly());
         binding.jointWorkRecycler.setLayoutManager(new LinearLayoutManager(this));
-
-        getWorkTypes();
 
         distributors_layout.setVisibility(View.GONE);
         binding.chillingLayout.setVisibility(View.GONE);
@@ -1105,5 +1111,6 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
     protected void onResume() {
         super.onResume();
         getWorkTypes();
+        Log.e("my_day_plan", "Resumed : just now");
     }
 }
