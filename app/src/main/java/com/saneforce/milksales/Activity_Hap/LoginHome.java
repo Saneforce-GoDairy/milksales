@@ -14,7 +14,7 @@ public class LoginHome extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     private ActivityLoginHomeBinding binding;
     private final Context context = this;
-    SharedPreferences SHARED_PREF;
+    private SharedPreferences SHARED_PREF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

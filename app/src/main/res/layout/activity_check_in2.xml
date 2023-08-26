@@ -22,6 +22,7 @@
                 android:layout_marginTop="20dp">
 
                 <ImageView
+                    android:id="@+id/image_view_user_profile"
                     android:layout_width="@dimen/C40dp"
                     android:layout_height="@dimen/C40dp"
                     android:layout_centerVertical="true"
@@ -32,9 +33,10 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/image_view_user_profile"
+                    android:layout_marginStart="10dp"
                     android:orientation="vertical"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true">
+                    android:layout_centerVertical="true">
 
                     <TextView
                         android:id="@+id/user_name"
@@ -52,7 +54,7 @@
                         android:textColor="@color/primaryDark"
                         android:text=""
                         android:hint="Head Quarters_1"
-                        android:gravity="center"/>
+                        />
                 </LinearLayout>
 
                 <ImageView
@@ -107,6 +109,18 @@
                     android:text="@string/check_in"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
+                    android:visibility="gone"
+                    />
+
+                <Button
+                    android:id="@+id/my_day_plan_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_blue1"
+                    android:text="My Day Plan"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
                     />
             </LinearLayout>
 
@@ -152,101 +166,106 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:layout_below="@id/view_pager"
-                android:layout_margin="15dp">
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="@string/explore_more"
                     android:fontFamily="@font/roboto_medium"
-                    android:textColor="@color/primaryDark"/>
+                    android:text="@string/explore_more"
+                    android:textColor="@color/primaryDark"
+                    android:textSize="20sp" />
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginTop="10dp"
+                    android:orientation="vertical"
                     android:padding="15dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_horizontal">
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:orientation="vertical"
-                            android:gravity="center_horizontal">
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 android:clickable="false"
                                 android:contentDescription="@null"
-                                android:src="@drawable/gate_ic"/>
+                                android:src="@drawable/gate_ic" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/gate_in"
-                                android:textSize="15sp"
+                                android:layout_marginTop="10dp"
                                 android:clickable="false"
-                                android:textColor="#464749"
                                 android:fontFamily="@font/roboto_medium"
-                                android:layout_marginTop="10dp"/>
+                                android:text="@string/gate_in"
+                                android:textColor="#2E3032"
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:orientation="vertical"
                             android:layout_marginLeft="40dp"
                             android:layout_marginRight="40dp"
-                            android:gravity="center_horizontal">
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 android:contentDescription="@null"
-                                android:src="@drawable/gate_out_ic"/>
+                                android:src="@drawable/gate_out_ic" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/gate_out"
-                                android:textSize="15sp"
-                                android:textColor="#464749"
+                                android:layout_marginTop="10dp"
                                 android:fontFamily="@font/roboto_medium"
-                                android:layout_marginTop="10dp"/>
+                                android:text="@string/gate_out"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 
 
                         <LinearLayout
+                            android:id="@+id/sfa"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:orientation="vertical"
-                            android:gravity="center_horizontal">
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 android:contentDescription="@null"
-                                android:src="@drawable/users_gear_ic"/>
+                                android:src="@drawable/users_gear_ic" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/sfa"
-                                android:textSize="15sp"
-                                android:textColor="#464749"
+                                android:layout_marginTop="10dp"
                                 android:fontFamily="@font/roboto_medium"
-                                android:layout_marginTop="10dp"/>
+                                android:text="@string/sfa"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 
@@ -255,81 +274,84 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginTop="15dp"
                         android:gravity="center_horizontal"
-                        >
+                        android:orientation="horizontal">
+
                         <LinearLayout
+                            android:id="@+id/ta_claim"
                             android:layout_width="70dp"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center_horizontal">
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 android:contentDescription="@null"
-                                android:src="@drawable/file_invoice_doller_ic"/>
+                                android:src="@drawable/file_invoice_doller_ic" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/ta_amp_claim"
-                                android:gravity="center_horizontal"
-                                android:textSize="15sp"
-                                android:textColor="#464749"
+                                android:layout_marginTop="10dp"
                                 android:fontFamily="@font/roboto_medium"
-                                android:layout_marginTop="10dp"/>
+                                android:gravity="center_horizontal"
+                                android:text="@string/ta_amp_claim"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/leave_request_status"
                             android:layout_width="70dp"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_marginLeft="40dp"
                             android:layout_marginRight="40dp"
-                            android:gravity="center_horizontal">
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 android:contentDescription="@null"
-                                android:src="@drawable/request_status_ic"/>
+                                android:src="@drawable/request_status_ic" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/request_amp_status"
-                                android:gravity="center_horizontal"
-                                android:textSize="15sp"
-                                android:textColor="#464749"
+                                android:layout_marginTop="10dp"
                                 android:fontFamily="@font/roboto_medium"
-                                android:layout_marginTop="10dp"/>
+                                android:gravity="center_horizontal"
+                                android:text="@string/request_amp_status"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/canteen_scan"
                             android:layout_width="70dp"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center_horizontal">
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 android:contentDescription="@null"
-                                android:src="@drawable/canteen_scan_ic"/>
+                                android:src="@drawable/canteen_scan_ic" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto_medium"
                                 android:gravity="center_horizontal"
                                 android:text="@string/canteen_scan"
-                                android:textSize="15sp"
                                 android:textColor="#464749"
-                                android:fontFamily="@font/roboto_medium"
-                                android:layout_marginTop="10dp"/>
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 

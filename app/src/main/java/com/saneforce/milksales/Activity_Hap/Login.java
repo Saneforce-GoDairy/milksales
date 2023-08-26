@@ -87,17 +87,17 @@ public class Login extends AppCompatActivity {
     private final static int RC_SIGN_IN = 1;
     private final static int RC_MYREPORTS = 2;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1001;
-    String photo;
-    String idToken, eMail, SUserID, SPwd, UserLastName, UserLastName1;
-    Shared_Common_Pref shared_common_pref;
-    SharedPreferences UserDetails;
-    SharedPreferences CheckInDetails;
-    String deviceToken = "";
-    Uri profile;
-    ApiInterface apiInterface;
-    CameraPermission cameraPermission;
-    Common_Class DT = new Common_Class();
-    DatabaseHandler db;
+    private String photo;
+    private String idToken, eMail, SUserID, SPwd, UserLastName, UserLastName1;
+    private Shared_Common_Pref shared_common_pref;
+    private SharedPreferences UserDetails;
+    private SharedPreferences CheckInDetails;
+    private String deviceToken = "";
+    private Uri profile;
+    private ApiInterface apiInterface;
+    private CameraPermission cameraPermission;
+    private Common_Class DT = new Common_Class();
+    private DatabaseHandler db;
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -107,19 +107,15 @@ public class Login extends AppCompatActivity {
     private SANGPSTracker mLUService;
     private LocationReceiver myReceiver;
     private TimerService mTimerService;
-    // Tracks the bound state of the service.
-    private boolean mBound = false;
 
     private final ServiceConnection mServiceConection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
-            mBound = true;
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mLUService = null;
-            mBound = false;
         }
     };
 

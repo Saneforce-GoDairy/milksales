@@ -1,5 +1,7 @@
 package com.saneforce.milksales.Activity_Hap;
 
+import static com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -16,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
@@ -47,6 +50,7 @@ import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.common.util.concurrent.ListenableFuture;
@@ -77,6 +81,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -118,6 +123,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
     private SANGPSTracker mLUService;
     private LocationReceiver myReceiver;
     private boolean mBound = false;
+    private String mTime;
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -140,7 +146,6 @@ public class ImageCaptureActivity extends AppCompatActivity {
         intSharedPref();
         loadJsonObjectCommonClass();
         iniLocationFinder();
-        initCheckInSuccessDialog();
 
         mSfCodeUkey = USER_DETAILS.getString("Sfcode", "") + "-" + (new Date().getTime());
 
@@ -151,7 +156,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
         initSession();
     }
 
-    private void initCheckInSuccessDialog() {
+    private void initCheckInSuccessDialog(String time) {
         checkInSuccessDialog = new Dialog(context);
         checkInSuccessDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         checkInSuccessDialog.setContentView(R.layout.model_dialog__checkin_success);
@@ -160,8 +165,13 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
         Button backBtn = checkInSuccessDialog.findViewById(R.id.close);
         TextView mMessage = checkInSuccessDialog.findViewById(R.id.message);
+        TextView mCheckInTime = checkInSuccessDialog.findViewById(R.id.check_in_time);
         backBtn.setEnabled(true);
         mMessage.setEnabled(true);
+        mCheckInTime.setEnabled(true);
+
+        mCheckInTime.setText(mTime);
+        checkInSuccessDialog.show();
 
         backBtn.setOnClickListener(v -> {
             checkInSuccessDialog.dismiss();
@@ -461,6 +471,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                             Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
                             submitProgressDialog.dismiss();
                             responseStatus = itm.get("success").getAsString();
+                            Log.e("image_capture", "Check in server response : " + responseStatus);
                             if (responseStatus.equalsIgnoreCase("true")) {
                                 SharedPreferences.Editor editor = CHECKIN_DETAILS.edit();
                                 try {
@@ -487,19 +498,16 @@ public class ImageCaptureActivity extends AppCompatActivity {
                                         mLUService.requestLocationUpdates();
                                     }
 
-
                                     if (CHECKIN_DETAILS.getString("FTime", "").equalsIgnoreCase(""))
                                         editor.putString("FTime", CTime);
                                     editor.putString("Logintime", CTime);
-
                                     if (mMode.equalsIgnoreCase("onduty"))
                                         editor.putString("On_Duty_Flag", "1");
                                     else
                                         editor.putString("On_Duty_Flag", "0");
-
-                                    editor.putInt("Type", 0);
-                                    editor.putBoolean("CheckIn", true);
-                                    editor.apply();
+                                        editor.putInt("Type", 0);
+                                        editor.putBoolean("CheckIn", true);
+                                        editor.apply();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -507,7 +515,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                             String mMessage = "Your Check-In Submitted Successfully";
 
                             String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                            mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                             String mTimeStamp  = mDate +" "+mTime;
 
 
@@ -518,7 +526,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                             } catch (Exception ignored) {
                             }
                                     if (responseStatus.equalsIgnoreCase("true")) {
-                                        checkInSuccessDialog.show();
+                                        initCheckInSuccessDialog(mTime);
                                     }
                                 }
                     }
@@ -566,7 +574,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                                     .setTitle(HAPApp.Title)
                                     .setMessage(Html.fromHtml(mMessage))
                                     .setPositiveButton("OK", (dialogInterface, i) -> {
-                                        Intent Dashboard = new Intent(context, Dashboard_Two.class);
+                                        Intent Dashboard = new Intent(context, CheckInActivity2.class);
                                         Dashboard.putExtra("Mode", "extended");
                                         context.startActivity(Dashboard);
                                         ((AppCompatActivity) context).finish();
@@ -713,8 +721,10 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
                 Preview preview = new Preview.Builder().setTargetAspectRatio(aspectRatio).build();
 
-                ImageCapture imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                        .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
+                ImageCapture imageCapture = new ImageCapture.Builder()
+                                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                                 .setTargetRotation(getWindowManager()
+                                 .getDefaultDisplay().getRotation()).build();
 
                 CameraSelector cameraSelector = new CameraSelector.Builder()
                         .requireLensFacing(cameraFacing).build();
@@ -724,11 +734,7 @@ public class ImageCaptureActivity extends AppCompatActivity {
                 camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
 
                 binding.captureButton.setOnClickListener(view -> {
-                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        activityResultLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    } else {
                         takePicture(imageCapture);
-                    }
                 });
 
                 binding.buttonFlash.setOnClickListener(view -> setFlashIcon(camera));
@@ -741,20 +747,32 @@ public class ImageCaptureActivity extends AppCompatActivity {
     }
 
 
-
     public void takePicture(ImageCapture imageCapture) {
         file = new File(DIR, "checkin_image" + ".jpg");
-
         ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
         imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(), new ImageCapture.OnImageSavedCallback() {
             @Override
-            public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {
+            public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                 runOnUiThread(() -> {
                    // Toast.makeText(context, "Image saved at: " + file.getPath(), Toast.LENGTH_SHORT).show();
+                    Log.e("image_capture", "Captured image save path :" + file.getPath());
                     file = new File(DIR, "checkin_image" + ".jpg");
                     bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
-                    binding.imageView.setImageBitmap(bitmap);
+                    // automatic screen orientation require Android 13 above API 33
+                    // using Exif method
+                    ExifInterface exif = null;
+                    try {
+                        exif = new ExifInterface(file.getPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_UNDEFINED);
+                    Bitmap bmRotated = rotateBitmap(bitmap, orientation);
+
+                    binding.imageView.setImageBitmap(bmRotated);
+
                     binding.imageView.setVisibility(View.VISIBLE);
                     binding.imageOkRetryContainer.setVisibility(View.VISIBLE);
 
@@ -767,10 +785,53 @@ public class ImageCaptureActivity extends AppCompatActivity {
 
             @Override
             public void onError(@NonNull ImageCaptureException exception) {
-                runOnUiThread(() -> Toast.makeText(context, "Failed to save: " + exception.getMessage(), Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Log.e("image_capture", "Captured image save error :" + exception.getMessage()));
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        }
+        catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private final ServiceConnection mServiceConection = new ServiceConnection() {

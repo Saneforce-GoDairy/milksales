@@ -80,51 +80,51 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
     private final OnBackPressedDispatcher mOnBackPressedDispatcher =
             new OnBackPressedDispatcher(() -> startActivity(new Intent(getApplicationContext(), Dashboard.class)));
 
-    List<Common_Model> worktypelist = new ArrayList<>();
-    List<Common_Model> Route_Masterlist = new ArrayList<>();
-    List<Common_Model> FRoute_Master = new ArrayList<>();
-    LinearLayout worktypelayout, distributors_layout, route_layout;
-    List<Common_Model> distributor_master = new ArrayList<>();
-    List<Common_Model> getfieldforcehqlist = new ArrayList<>();
-    List<Common_Model> ChillingCenter_List = new ArrayList<>();
-    List<Common_Model> Shift_Typelist = new ArrayList<>();
-    List<Common_Model> Jointworklistview = new ArrayList<>();
-    List<Common_Model> Savejointwork = new ArrayList<>();
-    ArrayList<Tp_Dynamic_Modal> dynamicarray = new ArrayList<>();
+    private final List<Common_Model> worktypelist = new ArrayList<>();
+    private final List<Common_Model> Route_Masterlist = new ArrayList<>();
+    private final List<Common_Model> FRoute_Master = new ArrayList<>();
+    private LinearLayout worktypelayout, distributors_layout, route_layout;
+    private final List<Common_Model> distributor_master = new ArrayList<>();
+    private final List<Common_Model> getfieldforcehqlist = new ArrayList<>();
+    private final List<Common_Model> ChillingCenter_List = new ArrayList<>();
+    private final List<Common_Model> Shift_Typelist = new ArrayList<>();
+    private final List<Common_Model> Jointworklistview = new ArrayList<>();
+    private List<Common_Model> Savejointwork = new ArrayList<>();
+    private ArrayList<Tp_Dynamic_Modal> dynamicarray = new ArrayList<>();
 
-    ArrayList<Tp_Dynamic_Modal> Tp_dynamicArraylist = new ArrayList<>();
-    Type userType;
-    Shared_Common_Pref shared_common_pref;
-    Common_Class common_class;
-    Common_Model Model_Pojo;
-    List<ModeOfTravel> modelOfTravel;
-    List<Common_Model> modelTravelType = new ArrayList<>();
-    List<Common_Model> listOrderType = new ArrayList<>();
-    Common_Model mCommon_model_spinner;
-    Shared_Common_Pref sharedCommonPref;
+    private ArrayList<Tp_Dynamic_Modal> Tp_dynamicArraylist = new ArrayList<>();
+    private Type userType;
+    private Shared_Common_Pref shared_common_pref;
+    private Common_Class common_class;
+    private Common_Model Model_Pojo;
+    private List<ModeOfTravel> modelOfTravel;
+    private List<Common_Model> modelTravelType = new ArrayList<>();
+    private List<Common_Model> listOrderType = new ArrayList<>();
+    private Common_Model mCommon_model_spinner;
+    private Shared_Common_Pref sharedCommonPref;
 
-    Joint_Work_Adapter adapter;
-    MyDayPlanActivity.DynamicViewAdapter dynamicadapter;
+    private Joint_Work_Adapter adapter;
+    private MyDayPlanActivity.DynamicViewAdapter dynamicadapter;
 
-    CustomListViewDialog customDialog;
-    DatePickerDialog DatePickerDialog;
-    TimePickerDialog timePickerDialog;
+    private CustomListViewDialog customDialog;
+    private DatePickerDialog DatePickerDialog;
+    private TimePickerDialog timePickerDialog;
 
-    String TpDate, worktype_id = "", Worktype_Button = "",  Fieldworkflag = "", shifttypeid ,  modeVal = "", StartedKM = "";
-    String STRCode = "";
-    String DriverNeed = "false";
-    String DriverMode = "";
-    String modeTypeVale = "";
-    String mode = "";
-    String FromKm = "";
-    String ToKm = "";
-    String modeId = "", toId = "", startEnd = "";
+    private String TpDate, worktype_id = "", Worktype_Button = "",  Fieldworkflag = "", shifttypeid ,  modeVal = "", StartedKM = "";
+    private String STRCode = "";
+    private String DriverNeed = "false";
+    private String DriverMode = "";
+    private String modeTypeVale = "";
+    private String mode = "";
+    private String FromKm = "";
+    private String ToKm = "";
+    private String modeId = "", toId = "", startEnd = "";
 
     public static final String MY_PREFERENCES = "MyPrefs";
-    SharedPreferences UserDetails;
+    private SharedPreferences UserDetails;
 
     boolean ExpNeed = false;
-    DatabaseHandler databaseHandler;
+    private DatabaseHandler databaseHandler;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -147,6 +147,93 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
         initSession();
         initVariable();
         initOnClick();
+
+        /*   NOT USED NEW DESIGN
+
+        edt_remarks = findViewById(R.id.edt_remarks);
+        Dynamictpview = findViewById(R.id.Dynamictpview);
+        dynamicrecyclerview = findViewById(R.id.dynamicrecyclerview);
+        dynamicrecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        tourdate = findViewById(R.id.tourdate);
+        worktypelayout = findViewById(R.id.worktypelayout);
+        distributors_layout = findViewById(R.id.distributors_layout);
+        ModeTravel = findViewById(R.id.card_travel_mode);
+        card_Toplace = findViewById(R.id.card_Toplace);
+        Remarkscaption = findViewById(R.id.remarkscaption);
+        chillinglayout = findViewById(R.id.chillinglayout);
+        chilling_text = findViewById(R.id.chilling_text);
+        Procrumentlayout = findViewById(R.id.Procrumentlayout);
+        hqlayout = findViewById(R.id.hqlayout);
+        shiftypelayout = findViewById(R.id.shiftypelayout);
+        hq_text = findViewById(R.id.hq_text);
+        shift_type = findViewById(R.id.shift_type);
+        route_layout = findViewById(R.id.route_layout);
+        submitbutton = findViewById(R.id.submitbutton);
+        worktype_text = findViewById(R.id.worktype_text);
+        distributor_text = findViewById(R.id.distributor_text);
+        text_tour_plancount = findViewById(R.id.text_tour_plancount);
+        text_tour_plancount.setText("0");
+
+        jointwork_layout = findViewById(R.id.jointwork_layout);
+        jointwork_recycler = findViewById(R.id.jointwork_recycler);
+        jointwork_recycler.setLayoutManager(new LinearLayoutManager(this));
+
+           MdeTraval = findViewById(R.id.mode_of_travel);
+        DailyAll = findViewById(R.id.lin_daily);
+        frmPlace = findViewById(R.id.lin_from);
+        ToPlace = findViewById(R.id.lin_to_place);
+        GetEmpId = findViewById(R.id.GetEmpId);
+        empidedittext = findViewById(R.id.empidedittext);
+        BusTo = findViewById(R.id.lin_to_place);
+        GetEmpId.setOnClickListener(this);
+        submitbutton.setOnClickListener(this);
+        worktypelayout.setOnClickListener(this);
+        distributors_layout.setOnClickListener(this);
+        route_layout.setOnClickListener(this);
+        shiftypelayout.setOnClickListener(this);
+        hqlayout.setOnClickListener(this);
+        card_Toplace.setOnClickListener(this);
+        chillinglayout.setOnClickListener(this);
+        BusFrom = findViewById(R.id.edt_frm);
+        TextMode = findViewById(R.id.txt_mode);
+        TextToAddress = findViewById(R.id.edt_to);
+        CardDailyAllowance = findViewById(R.id.card_daily_allowance);
+        dailyAllowance = findViewById(R.id.text_daily_allowance);
+        driverAllowance = findViewById(R.id.da_driver_allowance);
+        linCheckdriver = findViewById(R.id.lin_check_driver);
+        ImageView backView = findViewById(R.id.imag_back);
+
+          backView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnBackPressedDispatcher.onBackPressed();
+            }
+        });
+        ModeTravel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modelTravelType.clear();
+                dynamicMode();
+            }
+        });
+
+
+        distributors_layout.setVisibility(View.GONE);
+        chillinglayout.setVisibility(View.GONE);
+        hqlayout.setVisibility(View.GONE);
+        shiftypelayout.setVisibility(View.GONE);
+        route_layout.setVisibility(View.GONE);
+
+
+        CardDailyAllowance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listOrderType.clear();
+                OrderType();
+            }
+        });
+
+         */
 
         sharedCommonPref = new Shared_Common_Pref(this);
         shared_common_pref = new Shared_Common_Pref(this);
@@ -308,27 +395,33 @@ public class MyDayPlanActivity extends AppCompatActivity implements Main_Model.M
                     Callto.enqueue(new Callback<>() {
                         @Override
                         public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
-                            Log.e("my_res", response.body().toString());
+                            Log.e("RESPONSE_FROM_SERVER", response.body().toString());
                             common_class.ProgressdialogShow(2, "Tour  plan");
                             if (response.code() == 200 || response.code() == 201) {
                                 if (worktype_id.equalsIgnoreCase("43")) {
-                                    common_class.CommonIntentwithFinish(Dashboard.class);
-                                    shared_common_pref.save("worktype", worktype_id);
-                                } else if (ExpNeed) {
+                                     /*
+                                       NEW DESIGN Previous code
+                                       common_class.CommonIntentwithFinish(Dashboard.class);
+                                     */
+                                    common_class.CommonIntentwithFinish(CheckInActivity2.class);
+                                    shared_common_pref.save("worktype",worktype_id);
+
+                                } else if (ExpNeed == true) {
                                     Intent intent = new Intent(context, AllowanceActivity.class);
                                     intent.putExtra("My_Day_Plan", "One");
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                       String enabled = "true";
-                                       session.setMyDayPlanEnabled(enabled);
-                                       Intent intent = new Intent(context, CheckInActivity2.class);
-                                       intent.putExtra("My_Day_Plan", "One");
-                                       startActivity(intent);
-                                       finish();
+                                    /*
+                                       NEW DESIGN Previous code
+                                       common_class.CommonIntentwithFinish(Dashboard.class);
+                                     */
+                                    common_class.CommonIntentwithFinish(CheckInActivity2.class);
                                 }
+
                                 Toast.makeText(context, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
                             }
+
                         }
                         @Override
                         public void onFailure(Call<Object> call, Throwable t) {
