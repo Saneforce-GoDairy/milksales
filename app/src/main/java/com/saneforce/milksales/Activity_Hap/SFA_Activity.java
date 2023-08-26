@@ -233,7 +233,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     // menuList.add(new ListModel("", "Stock Audit", "", "", "", R.drawable.ic_stock_audit));
                     menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
                     menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
-                    menuList.add(new ListModel("", "Challan", "", "", "", R.drawable.ic_baseline_feedback_24));
 
                     if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.Distributor_Id)))
                         common_class.getDb_310Data(Constants.Distributor_List, this);
@@ -393,9 +392,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case "Feedback":
                         startActivity(new Intent(SFA_Activity.this, FeedbackActivitySFA.class));
-                        break;
-                    case "Challan":
-                        startActivity(new Intent(SFA_Activity.this, ChallanActivity.class));
                         break;
 
                     default:

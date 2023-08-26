@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".SFA_Activity.ChallanActivity">
 
@@ -21,7 +22,7 @@
             android:layout_weight="1"
             android:paddingHorizontal="12dp"
             android:paddingVertical="7dp"
-            android:text="Challan"
+            android:text="Payment Info"
             android:textColor="@color/white"
             android:textSize="@dimen/C18dp"
             android:textStyle="bold" />
@@ -44,9 +45,134 @@
 
     </LinearLayout>
 
-    <com.github.barteksc.pdfviewer.PDFView
-        android:id="@+id/pdfView"
+    <TextView
+        style="@style/myText"
+        android:layout_marginHorizontal="@dimen/C12dp"
+        android:layout_marginTop="@dimen/C15dp"
+        android:text="Order Number"/>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/C10dp"
+        android:layout_marginHorizontal="@dimen/C10dp"
+        app:cardElevation="@dimen/C4dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/C4dp">
+
+        <TextView
+            android:id="@+id/invoiceNumberTV"
+            style="@style/myTitle"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginVertical="@dimen/C12dp"
+            android:text="Order Number"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        style="@style/myText"
+        android:layout_marginHorizontal="@dimen/C12dp"
+        android:layout_marginTop="@dimen/C15dp"
+        android:text="Payment Initiated on"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/C10dp"
+        android:layout_marginHorizontal="@dimen/C10dp"
+        app:cardElevation="@dimen/C4dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/C4dp">
+
+        <TextView
+            android:id="@+id/crDateTV"
+            style="@style/myTitle"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginVertical="@dimen/C12dp"
+            android:text="Payment Initiated on"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        style="@style/myText"
+        android:layout_marginHorizontal="@dimen/C12dp"
+        android:layout_marginTop="@dimen/C15dp"
+        android:text="Stockist Name"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/C10dp"
+        android:layout_marginHorizontal="@dimen/C10dp"
+        app:cardElevation="@dimen/C4dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/C4dp">
+
+        <TextView
+            android:id="@+id/stockistNameTV"
+            style="@style/myTitle"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginVertical="@dimen/C12dp"
+            android:text="Stockist Name"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        style="@style/myText"
+        android:layout_marginHorizontal="@dimen/C12dp"
+        android:layout_marginTop="@dimen/C15dp"
+        android:text="Order Amount"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/C10dp"
+        android:layout_marginHorizontal="@dimen/C10dp"
+        app:cardElevation="@dimen/C4dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/C4dp">
+
+        <TextView
+            android:id="@+id/amountTV"
+            style="@style/myTitle"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginVertical="@dimen/C12dp"
+            android:text="Order Amount"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        style="@style/myText"
+        android:layout_marginHorizontal="@dimen/C12dp"
+        android:layout_marginTop="@dimen/C15dp"
+        android:text="Payment Status"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/C10dp"
+        android:layout_marginHorizontal="@dimen/C10dp"
+        app:cardElevation="@dimen/C4dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/C4dp">
+
+        <TextView
+            android:id="@+id/statusTV"
+            style="@style/myTitle"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginVertical="@dimen/C12dp"
+            android:text="Payment Status"/>
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

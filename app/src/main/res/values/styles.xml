@@ -91,6 +91,21 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="myTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#3B3B3B</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/C14dp</item>
+    </style>
+
+    <style name="myText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#CC3B3B3B</item>
+        <item name="android:textSize">@dimen/C12dp</item>
+    </style>
+
 
     <style name="android.widget.TextView" parent="BottomButton">
         <item name="android:textColor">@android:color/white</item>

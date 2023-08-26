@@ -1,5 +1,6 @@
 package com.saneforce.milksales.SFA_Activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -13,32 +14,47 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
-import com.github.barteksc.pdfviewer.PDFView;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.CurrencyConverter;
+import com.saneforce.milksales.Interface.ApiClient;
+import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChallanActivity extends AppCompatActivity {
+
+    TextView invoiceNumberTV, crDateTV, stockistNameTV, amountTV, statusTV;
 
     final int pageWidth = 595, pageHeight = 842;
     final float xMin = 20, xMax = pageWidth - 20;
     final float x = 40;
 
     ImageView toolbarHome, print, share;
-    PDFView pdfView;
 
     Context context = this;
 
@@ -46,10 +62,8 @@ public class ChallanActivity extends AppCompatActivity {
     Canvas canvas;
     Common_Class common_class;
 
-    double amount = 88745.55;
-    String DocNo = "TEST0001", todayDate = "2023-08-18", customerCode = "654321", customerName = "RAGU M", ERP_CODE = "ERP_CODE", PAN = "ABCDE1234F";
-    String MODE1 = "Bank Copy (To be retained by Axis Bank Collecting Branch)";
-    String MODE2 = "Customer Copy (To be submitted by the Applicant to the Lactalis India Pvt Ltd)";
+    double amount = 0;
+    String invoice = "", DocNo = "", todayDate = "", customerCode = "", customerName = "", ERP_CODE = "", PAN = "", VERSION = "";
 
     public static String[] Split(String text, int chunkSize, int maxLength) {
         char[] data = text.toCharArray();
@@ -69,14 +83,115 @@ public class ChallanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_challan);
 
         toolbarHome = findViewById(R.id.toolbar_home);
-        pdfView = findViewById(R.id.pdfView);
         print = findViewById(R.id.print);
         share = findViewById(R.id.share);
+        invoiceNumberTV = findViewById(R.id.invoiceNumberTV);
+        crDateTV = findViewById(R.id.crDateTV);
+        stockistNameTV = findViewById(R.id.stockistNameTV);
+        amountTV = findViewById(R.id.amountTV);
+        statusTV = findViewById(R.id.statusTV);
 
         common_class = new Common_Class(this);
+        invoice = getIntent().getStringExtra("invoice");
 
-        print.setOnClickListener(v -> createChallanPDF("print"));
-        share.setOnClickListener(v -> createChallanPDF("share"));
+        print.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setCancelable(true);
+            builder.setMessage("Select challan type");
+            builder.setPositiveButton("Bank Copy", (dialog, which) -> {
+                VERSION = "Bank Copy (To be retained by Axis Bank Collecting Branch)";
+                createChallanPDF("print");
+            });
+            builder.setNegativeButton("Customer Copy", (dialog, which) -> {
+                VERSION = "Customer Copy (To be submitted by the Applicant to the Lactalis India Pvt Ltd)";
+                createChallanPDF("print");
+            });
+            builder.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
+            builder.create().show();
+        });
+        share.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setCancelable(true);
+            builder.setMessage("Select challan type");
+            builder.setPositiveButton("Bank Copy", (dialog, which) -> {
+                VERSION = "Bank Copy (To be retained by Axis Bank Collecting Branch)";
+                createChallanPDF("share");
+            });
+            builder.setNegativeButton("Customer Copy", (dialog, which) -> {
+                VERSION = "Customer Copy (To be submitted by the Applicant to the Lactalis India Pvt Ltd)";
+                createChallanPDF("share");
+            });
+            builder.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
+            builder.create().show();
+        });
+
+        getChallanData();
+    }
+
+    private void getChallanData() {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Creating challan");
+        progressDialog.show();
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_trans_info");
+        params.put("invoice", invoice);
+        Call<ResponseBody> call = apiInterface.getUniversalData(params);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        if (response.body() == null) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Response is Null", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        String result = response.body().string();
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            JSONObject object = jsonObject.getJSONObject("response");
+                            DocNo = object.getString("DocNo");
+                            todayDate = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+                            customerCode = object.getString("OutletId");
+                            customerName = object.getString("userName");
+                            amount = object.getDouble("CashAmt");
+                            ERP_CODE = object.getString("ERP_Code");
+                            PAN = object.getString("Pan");
+                            ShowStatus(object);
+                        } else {
+                            Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Error while parsing response: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context, "Response Not Success", Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Toast.makeText(context, "Response Failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void ShowStatus(JSONObject jsonObject) {
+        try {
+            invoiceNumberTV.setText(invoice);
+            crDateTV.setText(jsonObject.getString("Date"));
+            stockistNameTV.setText(customerName);
+            amountTV.setText(common_class.formatCurrency(amount));
+            if (amount == jsonObject.getDouble("DepositedAmt")) {
+                statusTV.setText("PAID");
+            } else {
+                statusTV.setText("PENDING");
+            }
+        } catch (JSONException ignored) { }
     }
 
     private void createChallanPDF(String mode) {
@@ -101,7 +216,7 @@ public class ChallanActivity extends AppCompatActivity {
         drawBIGTitleWithCenterAlign("Lactalis India Pvt Ltd", (float) pageWidth / 2, y);
 
         y += 20;
-        drawTextWithCenterAlign(MODE1, (float) pageWidth / 2, y);
+        drawTextWithCenterAlign(VERSION, (float) pageWidth / 2, y);
 
         y += 15;
         drawHorizontalLine(xMin, y, xMax, y);
