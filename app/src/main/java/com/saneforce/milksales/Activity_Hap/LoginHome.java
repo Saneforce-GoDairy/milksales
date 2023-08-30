@@ -46,7 +46,7 @@ public class LoginHome extends AppCompatActivity {
     }
 
     private void loadHome() {
-        Intent intent = new Intent(context, CheckInActivity2.class);
+        Intent intent = new Intent(context, Dashboard.class);
         startActivity(intent);
         finish();
     }

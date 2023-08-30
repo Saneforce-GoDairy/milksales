@@ -898,7 +898,7 @@ public class Login extends AppCompatActivity {
                         else
                             intent.putExtra("Mode", "CIN");
                     } else {
-                        intent = new Intent(context, CheckInActivity2.class);
+                        intent = new Intent(context, Dashboard.class);
                         finish();
                     }
                 } else {

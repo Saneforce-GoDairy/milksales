@@ -383,13 +383,13 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
                 customDialog.show();
                 Log.e("Work_Type_List", String.valueOf(worktypelist));
                 break;
-            case R.id.chilling_layout:
-                customDialog = new CustomListViewDialog(Tp_Mydayplan.this, ChillingCenter_List, 6);
-                Window chillwindow = customDialog.getWindow();
-                chillwindow.setGravity(Gravity.CENTER);
-                chillwindow.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-                customDialog.show();
-                break;
+//            case R.id.chilling_layout:
+//                customDialog = new CustomListViewDialog(Tp_Mydayplan.this, ChillingCenter_List, 6);
+//                Window chillwindow = customDialog.getWindow();
+//                chillwindow.setGravity(Gravity.CENTER);
+//                chillwindow.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//                customDialog.show();
+//                break;
             case R.id.GetEmpId:
                 if (empidedittext.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(this, "Enter the EMP_Id", Toast.LENGTH_SHORT).show();

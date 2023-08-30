@@ -27,15 +27,21 @@ import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.ImageCapture;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -58,17 +64,24 @@ import com.saneforce.milksales.adapters.OffersAdapter;
 import com.saneforce.milksales.common.AlmReceiver;
 import com.saneforce.milksales.common.DatabaseHandler;
 import com.saneforce.milksales.common.SANGPSTracker;
+import com.saneforce.milksales.databinding.ActivityDashboardTwoBinding;
+import com.saneforce.milksales.fragments.GateInOutFragment;
+import com.saneforce.milksales.fragments.MonthlyFragment;
+import com.saneforce.milksales.fragments.TodayFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -76,30 +89,32 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Dashboard_Two extends AppCompatActivity implements View.OnClickListener/*, Main_Model.MasterSyncView*/ {
+    private ActivityDashboardTwoBinding binding;
+    private Context context = this;
     private static String Tag = "HAP_Check-In";
     SharedPreferences CheckInDetails;
     SharedPreferences UserDetails;
     public static final String CheckInDetail = "CheckInDetail";
     public static final String UserDetail = "MyPrefs";
-    String[] mns = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    private final String[] mns = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-    Shared_Common_Pref mShared_common_pref;
-    GateEntryQREvents GateEvents;
+    private Shared_Common_Pref mShared_common_pref;
+    private GateEntryQREvents GateEvents;
     private RecyclerView recyclerView;
     private HomeRptRecyler mAdapter;
-    String viewMode = "", sSFType = "", mPriod = "0";
+    private String viewMode = "", sSFType = "", mPriod = "0";
     int cModMnth = 1;
-    Button viewButton;
-    Button StActivity, cardview3, cardview4, cardView5, btnCheckout, btnApprovals, btnExit;
-    String AllowancePrefernce = "";
-    ImageView btMyQR,btnCloseOffer;
-    LinearLayout linOffer;
+    private Button viewButton;
+    private Button StActivity, cardview3, cardview4, cardView5, btnCheckout, btnApprovals, btnExit;
+    private String AllowancePrefernce = "";
+    private ImageView btMyQR,btnCloseOffer;
+    private LinearLayout linOffer;
     public static final String mypreference = "mypref";
     public static final String Name = "Allowance";
     public static final String MOT = "ModeOfTravel";
     public static final String SKM = "Started_km";
 
-    String PrivacyScreen = "", ModeOfTravel = "";
+    private String PrivacyScreen = "", ModeOfTravel = "";
     SharedPreferences sharedpreferences;
 
     public static final String hapLocation = "hpLoc";
@@ -111,30 +126,55 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     public static final String modeToKm = "SharedToKmsss";
     public static final String StartedKm = "StartedKMsss";
 
-    RecyclerView mRecyclerView,ryclOffers;
+    private RecyclerView mRecyclerView,ryclOffers;
     /*String Mode = "Bus";*/
-    Button btnGateIn, btnGateOut;
-    ImageView mvPrvMn, mvNxtMn;
-    GateAdapter gateAdap;
-    CardView cardGateDet;
-    String dashMdeCnt = "";
-    String datefrmt = "";
-    TextView TxtEmpId, txDesgName, txHQName, txDeptName, txRptName,tvapprCnt,lblSlideNo;
+    private Button btnGateIn, btnGateOut;
+    private ImageView mvPrvMn, mvNxtMn;
+    private GateAdapter gateAdap;
+    private CardView cardGateDet;
+    private String dashMdeCnt = "";
+    private String datefrmt = "";
+    private TextView TxtEmpId, txDesgName, txHQName, txDeptName, txRptName,tvapprCnt,lblSlideNo;
 
-    Common_Class DT = new Common_Class();
+    private Common_Class DT = new Common_Class();
     private ShimmerFrameLayout mShimmerViewContainer;
     int LoadingCnt = 0;
-    String TAG = "Dashboard_Two:LOG ";
-    DatabaseHandler db;
+    private String TAG = "Dashboard_Two:LOG ";
+    private DatabaseHandler db;
     private String key;
-    Gson gson;
+    private Gson gson;
     private String checkInUrl = "";
+    private MyViewPagerAdapter myViewPagerAdapter;
+    String timerTime;
+    String timerDate;
+    CircleImageView ivCheckIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_dashboard__two);
+            binding = ActivityDashboardTwoBinding.inflate(getLayoutInflater());
+            View view = binding.getRoot();
+            setContentView(view);
+
+            loadFragment();
+            onClick2();
+
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        while (!isInterrupted()) {
+                            Thread.sleep(1000);
+                            runOnUiThread(() -> {
+                                checkInTimer();
+                                Log.e("check_in_home", "Time counter : updated");
+                            });
+                        }
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            }.start();
 
             mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
             mShimmerViewContainer.startShimmer();
@@ -237,7 +277,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 }
             });
 
-            TextView txUserName = findViewById(R.id.txUserName);
+            TextView txUserName = findViewById(R.id.user_name);
             String sUName = UserDetails.getString("SfName", "");
             txUserName.setText("HI! " + sUName);
             sSFType = UserDetails.getString("Sf_Type", "");
@@ -280,7 +320,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
 
             StActivity = findViewById(R.id.StActivity);
-            btnCheckout = findViewById(R.id.btnCheckout);
+            btnCheckout = findViewById(R.id.check_out_btn);
             btnExit = findViewById(R.id.btnExit);
 
             cardview3.setOnClickListener(this);
@@ -382,6 +422,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         }
         getNotify();
         getDyReports();
+        checkInTimer();
         getMnthReports(0);
         GetMissedPunch();
         getcountdetails();
@@ -391,6 +432,100 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 linOffer.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void checkInTimer() {
+
+
+
+        String checkInTimeStamp = timerDate + " " + timerTime;
+//            String checkInDateStamp = fItm.get("").getAsString();
+        Log.e("check_in_home", "Check in TimeStamp : " + checkInTimeStamp);
+
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        Date d1;
+        Date d2;
+
+        String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        String mTimeDateFormat  = mDate +" "+mTime;
+
+        try {
+            d1 = format.parse(checkInTimeStamp);
+            d2 = format.parse(mTimeDateFormat);
+
+            long diff = d2.getTime() - d1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            binding.checkOutBtn.setText("CHECK OUT (" + addZero(Math.toIntExact(diffHours)) +":" +  addZero(Math.toIntExact(diffMinutes)) + ":" + diffSeconds + ")");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }    }
+
+    public String addZero(int number)
+    {
+        return number<=9?"0"+number:String.valueOf(number);
+    }
+
+    private void onClick2() {
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                binding.viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                Objects.requireNonNull(binding.tabLayout.getTabAt(position)).select();
+            }
+        });
+    }
+
+    private void loadFragment() {
+        myViewPagerAdapter = new MyViewPagerAdapter(this);
+        binding.viewPager.setAdapter(myViewPagerAdapter);
+    }
+
+    public static class MyViewPagerAdapter  extends FragmentStateAdapter {
+        public MyViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position){
+                case 0:
+                    return new TodayFragment();
+                case 1:
+                    return new MonthlyFragment();
+                case 2:
+                    return new GateInOutFragment();
+                default:
+                    return new TodayFragment();
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 3;
+        }
     }
 
     private void getOfferNotify() {
@@ -628,7 +763,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                     UserDetails.getString("Divcode", ""),
                     UserDetails.getString("Sfcode", ""), "", "", null);
             Log.v("View_Request", rptCall.request().toString());
-            rptCall.enqueue(new Callback<>() {
+            rptCall.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                     try {
@@ -681,24 +816,30 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
             txDyDet.setText(fItm.get("AttDtNm").getAsString() + "   " + fItm.get("AttDate").getAsString());
 
-            CircleImageView ivCheckIn = findViewById(R.id.ivCheckIn);
+            ivCheckIn = findViewById(R.id.image_view_user_profile);
             CircleImageView ivCheckOut = findViewById(R.id.iv_checkout);
             checkInUrl = ApiClient.BASE_URL.replaceAll("server/", "");
             checkInUrl = checkInUrl + fItm.get("ImgName").getAsString();
 
-            if (Common_Class.isNullOrEmpty(fItm.get("ImgName").getAsString()))
-                ivCheckIn.setVisibility(View.GONE);
-            else {
-                ivCheckIn.setVisibility(View.VISIBLE);
-                Glide.with(Dashboard_Two.this)
-                        .load(checkInUrl)
-                        .into(ivCheckIn);
-            }
+            Log.e("image_capture", checkInUrl);
+
+            Glide.with(Dashboard_Two.this)
+                    .load(checkInUrl)
+                    .into(binding.imageViewUserProfile);
+
+//            if (Common_Class.isNullOrEmpty(fItm.get("ImgName").getAsString()))
+//                ivCheckIn.setVisibility(View.GONE);
+//            else {
+//                ivCheckIn.setVisibility(View.VISIBLE);
+//                Glide.with(Dashboard_Two.this)
+//                        .load(checkInUrl)
+//                        .into(ivCheckIn);
+//            }
 
             try {
                 Glide.with(Dashboard_Two.this)
                         .load(ApiClient.BASE_URL.replaceAll("server/", "") + fItm.get("EImgName").getAsString())
-                        .into(ivCheckOut);
+                        .into(binding.imageViewUserProfile);
             } catch (Exception e) {
 
             }
@@ -730,6 +871,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             mShared_common_pref.save(Constants.LOGIN_DATE, com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime());
             JsonArray dyRpt = new JsonArray();
             JsonObject newItem = new JsonObject();
+
+            timerTime = fItm.get("AttTm").getAsString();
+            timerDate = fItm.get("AttDate").getAsString().replaceAll("/", "-");
             newItem.addProperty("name", "Shift");
             newItem.addProperty("value", fItm.get("SFT_Name").getAsString());
             newItem.addProperty("Link", false);
@@ -892,7 +1036,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                     android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(Dashboard_Two.this).create();
                                     alertDialog.setTitle(HAPApp.Title);
                                     alertDialog.setMessage(Html.fromHtml(mMessage));
-                                    alertDialog.setCancelable(true);
+                                    alertDialog.setCancelable(false);
 
                                     TextView btnOthers = (TextView) view.findViewById(R.id.tvOthers);
                                     TextView btnWeekOFF = (TextView) view.findViewById(R.id.tvWeekOff);
@@ -969,49 +1113,49 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                         .show();*/
                                 }
                                 else if(itm.get("WKFlg").getAsInt() == 3){
-                                    LayoutInflater inflater = LayoutInflater.from(Dashboard_Two.this);
-
-                                    final View view = inflater.inflate(R.layout.dashboard_deviation_dialog, null);
-                                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(Dashboard_Two.this).create();
-                                    alertDialog.setTitle(HAPApp.Title);
-                                    alertDialog.setMessage(Html.fromHtml(mMessage));
-                                    alertDialog.setCancelable(false);
-
-                                    TextView btnOthers = (TextView) view.findViewById(R.id.tvOthers);
-                                    TextView btnDeviation = (TextView) view.findViewById(R.id.tvDeviation);
-                                    TextView btnNwJoin = (TextView) view.findViewById(R.id.tvNwJoin);
-                                    TextView btnWeekOFF = (TextView) view.findViewById(R.id.tvWeekOff);
-
-                                    btnOthers.setVisibility(View.GONE);
-                                    btnDeviation.setVisibility(View.GONE);
-
-                                    btnNwJoin.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            alertDialog.dismiss();
-                                            JsonObject mItem = WKItems.get(0).getAsJsonObject();
-                                            Intent iLeave = new Intent(Dashboard_Two.this, NewJoinEntry.class);
-                                            iLeave.putExtra("EDt", mItem.get("EDt").getAsString());
-                                            Dashboard_Two.this.startActivity(iLeave);
-
-                                            ((AppCompatActivity) Dashboard_Two.this).finish();
-                                        }
-                                    });
-
-                                    btnWeekOFF.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            alertDialog.dismiss();
-                                            JsonObject mItem = WKItems.get(0).getAsJsonObject();
-                                            Intent iWeekOff = new Intent(Dashboard_Two.this, Weekly_Off.class);
-                                            iWeekOff.putExtra("EDt", mItem.get("EDt").getAsString());
-                                            Dashboard_Two.this.startActivity(iWeekOff);
-                                            ((AppCompatActivity) Dashboard_Two.this).finish();
-                                        }
-                                    });
-
-                                    alertDialog.setView(view);
-                                    alertDialog.show();
+//                                    LayoutInflater inflater = LayoutInflater.from(Dashboard_Two.this);
+//
+//                                    final View view = inflater.inflate(R.layout.dashboard_deviation_dialog, null);
+//                                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(Dashboard_Two.this).create();
+//                                    alertDialog.setTitle(HAPApp.Title);
+//                                    alertDialog.setMessage(Html.fromHtml(mMessage));
+//                                    alertDialog.setCancelable(false);
+//
+//                                    TextView btnOthers = (TextView) view.findViewById(R.id.tvOthers);
+//                                    TextView btnDeviation = (TextView) view.findViewById(R.id.tvDeviation);
+//                                    TextView btnNwJoin = (TextView) view.findViewById(R.id.tvNwJoin);
+//                                    TextView btnWeekOFF = (TextView) view.findViewById(R.id.tvWeekOff);
+//
+//                                    btnOthers.setVisibility(View.GONE);
+//                                    btnDeviation.setVisibility(View.GONE);
+//
+//                                    btnNwJoin.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            alertDialog.dismiss();
+//                                            JsonObject mItem = WKItems.get(0).getAsJsonObject();
+//                                            Intent iLeave = new Intent(Dashboard_Two.this, NewJoinEntry.class);
+//                                            iLeave.putExtra("EDt", mItem.get("EDt").getAsString());
+//                                            Dashboard_Two.this.startActivity(iLeave);
+//
+//                                            ((AppCompatActivity) Dashboard_Two.this).finish();
+//                                        }
+//                                    });
+//
+//                                    btnWeekOFF.setOnClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            alertDialog.dismiss();
+//                                            JsonObject mItem = WKItems.get(0).getAsJsonObject();
+//                                            Intent iWeekOff = new Intent(Dashboard_Two.this, Weekly_Off.class);
+//                                            iWeekOff.putExtra("EDt", mItem.get("EDt").getAsString());
+//                                            Dashboard_Two.this.startActivity(iWeekOff);
+//                                            ((AppCompatActivity) Dashboard_Two.this).finish();
+//                                        }
+//                                    });
+//
+//                                    alertDialog.setView(view);
+//                                    alertDialog.show();
                                 }
                                 else {
                                     AlertDialog alertDialog = new AlertDialog.Builder(Dashboard_Two.this)
@@ -1190,12 +1334,13 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 stopService(playIntent);
                 finishAffinity();
                 break;
-            case R.id.btnCheckout:
+            case R.id.check_out_btn:
                 AlertDialogBox.showDialog(Dashboard_Two.this, HAPApp.Title, "Do you want to Checkout?", "Yes", "No", false, new AlertBox() {
                     @Override
                     public void PositiveMethod(DialogInterface dialog, int id) {
 
-                        Intent takePhoto = new Intent(Dashboard_Two.this, ImageCaptureActivity.class);
+                     //   Intent takePhoto = new Intent(Dashboard_Two.this, ImageCapture.class);
+                        Intent takePhoto = new Intent(Dashboard_Two.this, CameraxActivity.class);
 
                         if(viewMode.equalsIgnoreCase("extended")){
                             takePhoto.putExtra("Mode", "EXOUT");
@@ -1282,8 +1427,19 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
+
+//        loadProfileImage();
+
         GetMissedPunch();
         Log.v("LOG_IN_LOCATION", "ONRESTART");
+    }
+
+    private void loadProfileImage() {
+        Glide.with(Dashboard_Two.this)
+                .load(checkInUrl)
+                .into(binding.ivCheckIn);
+
+        Log.e("image_capture", checkInUrl);
     }
 
     public void getcountdetails() {
@@ -1330,7 +1486,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-               // common_class.ProgressdialogShow(2, "");
+                // common_class.ProgressdialogShow(2, "");
             }
         });
 

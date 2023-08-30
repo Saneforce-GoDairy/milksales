@@ -9,42 +9,56 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonArray;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
+import com.saneforce.milksales.R;
+import com.saneforce.milksales.adapters.ShiftListItem;
 import com.saneforce.milksales.adapters.ShiftTimeAdapter;
-import com.saneforce.milksales.databinding.ActivityTimeShiftBinding;
+import com.saneforce.milksales.databinding.ActivityCheckinBinding;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.saneforce.milksales.Activity_Hap.Leave_Request.CheckInfo;
-public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAdapter.OnClickInterface {
-    private ActivityTimeShiftBinding binding;
-    private final Context context = this;
-    private static final String Tag = "HAP_Check-In";
+
+public class Checkin extends AppCompatActivity implements ShiftTimeAdapter.OnClickInterface{
+    private ActivityCheckinBinding binding;
+    private Context context = this;
+    private static String Tag = "HAP_Check-In";
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences CheckInDetails;
     public static final String spCheckIn = "CheckInDetail";
     public static final String MyPREFERENCES = "MyPrefs";
-    private JsonArray ShiftItems = new JsonArray();
+   // private JsonArray ShiftItems = new JsonArray();
+   //  private RecyclerView recyclerView;
+   // private ShiftListItem mAdapter;
     private String ODFlag, onDutyPlcID, onDutyPlcNm, vstPurpose, Check_Flag, onDutyFlag, DutyAlp = "0", DutyType = "",exData="";
+    private Intent intent;
     public static final String mypreference = "mypref";
     private String mode, shiftId, shiftName, onDutyFlag1, shiftStart, shiftEnd, shiftCutOff, data;
-
+    private JsonArray ShiftItems = new JsonArray();
+    /*  ShiftDuty*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTimeShiftBinding.inflate(getLayoutInflater());
+        binding = ActivityCheckinBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         onClick();
+
+        /*  Previous design code
 
         ObjectAnimator textColorAnim;
         textColorAnim = ObjectAnimator.ofInt(binding.toolBar.toolbarErt, "textColor", Color.WHITE, Color.TRANSPARENT);
@@ -53,31 +67,48 @@ public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAda
         textColorAnim.setRepeatCount(ValueAnimator.INFINITE);
         textColorAnim.setRepeatMode(ValueAnimator.REVERSE);
         textColorAnim.start();
+         */
 
-        binding.toolBar.toolbarErt.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ERT.class)));
-        binding.toolBar.toolbarPlaySlip.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PayslipFtp.class)));
-        binding.toolBar.toolbarHelp.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Help_Activity.class)));
-        binding.toolBar.toolbarHome.setOnClickListener(v -> {
-            SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
-            boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
-
-            if (CheckIn) {
-                Intent Dashboard = new Intent(getApplicationContext(), Dashboard_Two.class);
-                Dashboard.putExtra("Mode", "CIN");
-                startActivity(Dashboard);
-            } else
-                startActivity(new Intent(getApplicationContext(), Dashboard.class));
+        binding.toolBar.toolbarErt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ERT.class));
+            }
+        });
+        binding.toolBar.toolbarPlaySlip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), PayslipFtp.class));
+            }
+        });
+        binding.toolBar.toolbarHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Help_Activity.class));
+            }
+        });
+        binding.toolBar.toolbarHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
+                Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
+                if (CheckIn == true) {
+                    Intent Dashboard = new Intent(getApplicationContext(), Dashboard_Two.class);
+                    Dashboard.putExtra("Mode", "CIN");
+                    startActivity(Dashboard);
+                } else
+                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
+            }
         });
 
         Check_Flag = "CIN";
-        SharedPreferences sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         if (sharedPreferences.contains("ShiftDuty")) {
             DutyAlp = sharedPreferences.getString("ShiftDuty", "0");
         }
-
         SharedPreferences CheckInDetails = getSharedPreferences(spCheckIn, MODE_PRIVATE);
         String SFTID = CheckInDetails.getString("Shift_Selected_Id", "");
-        Intent intent = getIntent();
+        intent = getIntent();
         Bundle bundle = intent.getExtras();
         onDutyFlag = "0";
         if (bundle != null) {
@@ -100,7 +131,7 @@ public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAda
             }
         }
         if (SFTID != "") {
-            Intent takePhoto = new Intent(context, ImageCaptureActivity.class);
+            Intent takePhoto = new Intent(this, CameraxActivity.class);
             takePhoto.putExtra("Mode", Check_Flag);
             takePhoto.putExtra("ShiftId", SFTID);
             takePhoto.putExtra("On_Duty_Flag", onDutyFlag);
@@ -122,7 +153,7 @@ public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAda
         String Dcode = (shared.getString("Divcode", "null"));
         if (!DutyAlp.equals("0")) {
             Log.v("KARTHIC_DUTY_1","1");
-            Intent takePhoto = new Intent(context, ImageCaptureActivity.class);
+            Intent takePhoto = new Intent(this, CameraxActivity.class);
             takePhoto.putExtra("Mode", Check_Flag);
             takePhoto.putExtra("ShiftId", SFTID);
             takePhoto.putExtra("On_Duty_Flag", onDutyFlag);
@@ -143,7 +174,7 @@ public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAda
                 spinnerValue("get/Shift_timing", Dcode, Scode);
             } else {
                 Log.v("KARTHIC_DUTY_1","3");
-                Intent takePhoto = new Intent(context, ImageCaptureActivity.class);
+                Intent takePhoto = new Intent(this, CameraxActivity.class);
                 takePhoto.putExtra("Mode", Check_Flag);
                 takePhoto.putExtra("ShiftId", SFTID);
                 takePhoto.putExtra("On_Duty_Flag", onDutyFlag);
@@ -160,6 +191,7 @@ public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAda
                 finish();
             }
         }
+
     }
 
     private void onClick() {
@@ -173,7 +205,7 @@ public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAda
                     + "ShiftCutOff : " + shiftCutOff + "\n"
                     + "data : " + data + "\n");
 
-            Intent intent = new Intent(context, ImageCaptureActivity.class);
+            Intent intent = new Intent(context, CameraxActivity.class);
             intent.putExtra("Mode", mode);
             intent.putExtra("ShiftId", shiftId);
             intent.putExtra("ShiftName", shiftName);
@@ -191,13 +223,23 @@ public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAda
     }
 
     public void SetShitItems() {
+
         ShiftTimeAdapter mAdapter = new ShiftTimeAdapter(ShiftItems, context, Check_Flag, onDutyFlag, exData);
-       // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         binding.recyclerView.setLayoutManager(gridLayoutManager);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
+
+        // Previous design code
+        /*
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mAdapter = new ShiftListItem(ShiftItems, this, Check_Flag, onDutyFlag,exData);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+         */
     }
 
     private void spinnerValue(String a, String dc, String sc) {
@@ -224,13 +266,33 @@ public class ShiftTimeActivity extends AppCompatActivity implements ShiftTimeAda
 
     @Override
     public void onClickInterface(Intent intent) {
-         mode = intent.getStringExtra("Mode");
-         shiftId = intent.getStringExtra("ShiftId");
-         shiftName = intent.getStringExtra("ShiftName");
-         onDutyFlag1 = intent.getStringExtra("On_Duty_Flag");
-         shiftStart = intent.getStringExtra("ShiftStart");
-         shiftEnd = intent.getStringExtra("ShiftEnd");
-         shiftCutOff = intent.getStringExtra("ShiftCutOff");
-         data = intent.getStringExtra("data");
+        mode = intent.getStringExtra("Mode");
+        shiftId = intent.getStringExtra("ShiftId");
+        shiftName = intent.getStringExtra("ShiftName");
+        onDutyFlag1 = intent.getStringExtra("On_Duty_Flag");
+        shiftStart = intent.getStringExtra("ShiftStart");
+        shiftEnd = intent.getStringExtra("ShiftEnd");
+        shiftCutOff = intent.getStringExtra("ShiftCutOff");
+        data = intent.getStringExtra("data");
     }
+
+        // Previous design code
+        /*
+    private void spinnerValue(String a, String dc, String sc) {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<JsonArray> shiftCall = apiInterface.getDataArrayList(a, dc, sc);
+        shiftCall.enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                Log.e("ShiftTime", String.valueOf(response.body()));
+                ShiftItems = response.body();
+                SetShitItems();
+            }
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+
+            }
+        });
+    }
+         */
 }

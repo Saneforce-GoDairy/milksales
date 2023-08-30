@@ -84,7 +84,7 @@ public class CateenToken extends AppCompatActivity {
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent frmCanteen = new Intent(CateenToken.this, ImageCaptureActivity.class);
+                Intent frmCanteen = new Intent(CateenToken.this, ImageCapture.class);
                 frmCanteen.putExtra("Mode", "PF");
                 startActivity(frmCanteen);
                 //finish();

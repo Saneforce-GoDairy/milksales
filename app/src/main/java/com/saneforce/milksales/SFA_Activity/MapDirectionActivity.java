@@ -45,10 +45,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.Task;
 import com.saneforce.milksales.Activity_Hap.AddNewRetailer;
-import com.saneforce.milksales.Activity_Hap.ShiftTimeActivity;
+import com.saneforce.milksales.Activity_Hap.CameraxActivity;
+import com.saneforce.milksales.Activity_Hap.Checkin;
 import com.saneforce.milksales.Activity_Hap.Dashboard;
 import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
-import com.saneforce.milksales.Activity_Hap.ImageCaptureActivity;
 import com.saneforce.milksales.Activity_Hap.SFA_Activity;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Constants;
@@ -400,7 +400,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                                 }
                             }
                             if (!ETime.equalsIgnoreCase("")) {
-                                Intent takePhoto = new Intent(this, ImageCaptureActivity.class);
+                                Intent takePhoto = new Intent(this, CameraxActivity.class);
                                 takePhoto.putExtra("Mode", "CIN");
                                 takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
                                 takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
@@ -410,7 +410,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                                 takePhoto.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
                                 startActivity(takePhoto);
                             } else {
-                                Intent i = new Intent(this, ShiftTimeActivity.class);
+                                Intent i = new Intent(this, Checkin.class);
                                 startActivity(i);
                                 overridePendingTransition(0,0);
                             }

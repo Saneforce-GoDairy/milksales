@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activity_Hap.CheckInActivity2">
+    android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -101,6 +100,18 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/loading_btn"
+                    android:text="Loading"
+                    android:textAllCaps="true"
+                    android:textColor="#11658E"
+
+                    />
+
+                <Button
                     android:id="@+id/check_in_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -121,6 +132,19 @@
                     android:text="My Day Plan"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
+                    android:visibility="gone"
+                    />
+
+                <Button
+                    android:id="@+id/check_out_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_check_out1"
+                    android:text="CHECK_OUT"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
                     />
             </LinearLayout>
 

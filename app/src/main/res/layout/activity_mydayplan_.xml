@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:visibility="visible"
@@ -185,10 +186,10 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/toolbar3"
@@ -305,7 +306,7 @@
                                 android:visibility="gone">
 
                                 <LinearLayout
-                                    android:id="@+id/hq_layout"
+                                    android:id="@+id/hqlayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
@@ -326,7 +327,7 @@
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:id="@+id/chilling_layout"
+                                    android:id="@+id/chillinglayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
@@ -346,7 +347,7 @@
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:id="@+id/shift_type_layout"
+                                    android:id="@+id/shiftypelayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
@@ -435,7 +436,7 @@
                         android:orientation="vertical">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/dynamic_recyclerview"
+                            android:id="@+id/dynamicrecyclerview"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="@dimen/C5dp" />
@@ -445,7 +446,7 @@
 
 
                     <LinearLayout
-                        android:id="@+id/joint_work_layout"
+                        android:id="@+id/jointwork_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/C5dp"
@@ -471,7 +472,7 @@
                                 android:background="@drawable/circle">
 
                                 <TextView
-                                    android:id="@+id/text_tour_plan_count"
+                                    android:id="@+id/text_tour_plancount"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:maxEms="2"
@@ -504,7 +505,7 @@
                                     android:padding="5dp">
 
                                     <EditText
-                                        android:id="@+id/emp_id_edit_text"
+                                        android:id="@+id/empidedittext"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:background="@null"
@@ -515,7 +516,7 @@
                                 </LinearLayout>
 
                                 <Button
-                                    android:id="@+id/get_emp_id_btn"
+                                    android:id="@+id/GetEmpId"
                                     android:layout_width="70dp"
                                     android:layout_height="match_parent"
                                     android:background="@drawable/button_blueg"
@@ -531,7 +532,7 @@
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/joint_work_recycler"
+                            android:id="@+id/jointwork_recycler"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/C5dp" />
@@ -601,7 +602,7 @@
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:id="@+id/lin_daily_all"
+                                    android:id="@+id/lin_daily"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
@@ -657,7 +658,7 @@
                                         android:visibility="gone">
 
                                         <CheckBox
-                                            android:id="@+id/daily_driver_allowance"
+                                            android:id="@+id/da_driver_allowance"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="@dimen/C10dp"
@@ -705,7 +706,7 @@
                                             app:cardUseCompatPadding="true">
 
                                             <EditText
-                                                android:id="@+id/edit_bus_form"
+                                                android:id="@+id/edt_frm"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:background="@null"
@@ -721,7 +722,7 @@
                                     </LinearLayout>
 
                                     <LinearLayout
-                                        android:id="@+id/bus_to"
+                                        android:id="@+id/lin_to_place"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:orientation="vertical">
@@ -738,7 +739,7 @@
                                             android:textStyle="bold" />
 
                                         <androidx.cardview.widget.CardView
-                                            android:id="@+id/card_to_place"
+                                            android:id="@+id/card_Toplace"
                                             android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_below="@+id/card_to_hq"
@@ -750,7 +751,7 @@
                                             app:cardUseCompatPadding="true">
 
                                             <TextView
-                                                android:id="@+id/edit_to_address"
+                                                android:id="@+id/edt_to"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:background="@null"
@@ -783,7 +784,7 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edit_remarks"
+                        android:id="@+id/edt_remarks"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/C100dp"
                         android:layout_marginLeft="@dimen/C5dp"
@@ -804,7 +805,7 @@
                         android:visibility="gone" />
 
                     <Button
-                        android:id="@+id/submit_button"
+                        android:id="@+id/submitbutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/C4dp"
@@ -819,8 +820,6 @@
                         app:cornerRadius="@dimen/C4dp">
 
                     </Button>
-
-                    <include layout="@layout/back_arrow"></include>
                 </LinearLayout>
 
 
@@ -828,6 +827,11 @@
 
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
+
+    <include
+        layout="@layout/back_arrow"
+        android:visibility="gone"
+        tools:visibility="gone"></include>
 
 
 </RelativeLayout>

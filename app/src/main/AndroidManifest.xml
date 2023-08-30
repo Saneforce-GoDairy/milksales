@@ -35,8 +35,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
 
     <application
         android:name=".SFA_Activity.HAPApp"
@@ -53,7 +56,14 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name=".Activity_Hap.CheckInActivity2"
+            android:name=".Activity_Hap.CameraxActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_Hap.ImageCapture"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity_Hap.Checkin"
             android:exported="false" />
         <activity
             android:name=".Activity_Hap.LoginHome"
@@ -688,7 +698,7 @@
             android:name=".Activity_Hap.Tp_Calander"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity_Hap.MyDayPlanActivity"
+            android:name=".Activity_Hap.Mydayplan_Activity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity_Hap.Tp_Month_Select"

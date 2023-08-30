@@ -14,7 +14,11 @@
         android:orientation="vertical"
         android:layout_marginBottom="@dimen/C5dp"
         android:layout_weight="1">
-        <include layout="@layout/custom_toolbar_help"></include>
+
+        <include
+            android:visibility="gone"
+            layout="@layout/custom_toolbar_help"></include>
+
         <LinearLayout
             android:id="@+id/vwlblHead"
             android:layout_width="match_parent"

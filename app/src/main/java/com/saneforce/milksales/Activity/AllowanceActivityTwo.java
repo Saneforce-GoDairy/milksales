@@ -45,7 +45,7 @@ import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
 import com.saneforce.milksales.Activity_Hap.ERT;
 import com.saneforce.milksales.Activity_Hap.Help_Activity;
 import com.saneforce.milksales.Activity_Hap.Login;
-import com.saneforce.milksales.Activity_Hap.MyDayPlanActivity;
+import com.saneforce.milksales.Activity_Hap.Mydayplan_Activity;
 import com.saneforce.milksales.Activity_Hap.PayslipFtp;
 import com.saneforce.milksales.Activity_Hap.ProductImageView;
 import com.saneforce.milksales.Common_Class.CameraPermission;
@@ -226,7 +226,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-              if (EndedEditText.getText().toString() != null && !EndedEditText.getText().toString().isEmpty() && !EndedEditText.getText().toString().equals("null")) {
+                if (EndedEditText.getText().toString() != null && !EndedEditText.getText().toString().isEmpty() && !EndedEditText.getText().toString().equals("null")) {
                     endKm = Integer.parseInt(EndedEditText.getText().toString());
                     totalPM = Integer.valueOf((EndedEditText.getText().toString())) - Integer.valueOf((TextStartedKm.getText().toString()));
                     if(totalPM<0) totalPM=0;
@@ -537,7 +537,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 
                                 //if (!ClosingCon.equals("")) {
                                 if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null")) && Common_Class.GetDate() != ClosingDate) {
-                                    startActivity(new Intent(getApplicationContext(), MyDayPlanActivity.class));
+                                    startActivity(new Intent(getApplicationContext(), Mydayplan_Activity.class));
                                 } else {
                                     Intent takePhoto = new Intent(AllowanceActivityTwo.this, Login.class);
                                     startActivity(takePhoto);
