@@ -551,6 +551,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         if (type == -1) {
             worktype_text.setText(myDataset.get(position).getName());
             worktype_id = String.valueOf(myDataset.get(position).getId());
+            Log.e("workin", "OnclickMasterType ="  + worktype_id);
             Log.e("FIELD_WORK", myDataset.get(position).getFlag());
             Log.e("Button_Access", myDataset.get(position).getCheckouttime());
             Fieldworkflag = myDataset.get(position).getFlag();
@@ -795,6 +796,27 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     String PlInv = jItem.optString("Place_Involved");
                     boolean tExpNeed = (PlInv.equalsIgnoreCase("Y"));
                     Common_Model item = new Common_Model(id, name, flag, ETabs, tExpNeed);
+
+                    Log.e("workin", "loadWorkTypes ="  + id);
+
+                    /* Previous desgin
+                       worktype_id
+
+                    @Override
+                    public void OnclickMasterType(java.util.List<Common_Model> myDataset, int position, int type) {
+                        customDialog.dismiss();
+                        if (type == -1) {
+                            worktype_text.setText(myDataset.get(position).getName());
+                            ------- >   worktype_id = String.valueOf(myDataset.get(position).getId());
+
+                       ----------------------------------------------------------------------------------
+
+                       New design added this line
+
+                            ------- >   worktype_id = id;
+                     */
+
+                    worktype_id = id;
                     worktypelist.add(item);
 
                     binding.spinnerWorkType.setPrompt(name);

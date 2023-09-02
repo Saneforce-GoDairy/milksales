@@ -305,7 +305,9 @@ public class CameraxActivity extends AppCompatActivity {
     }
 
     private void saveImgPreview() {
+        if(file==null) return;
         imageFileName = file.getName();
+
         Intent mIntent = new Intent(this, FileUploadService.class);
         mIntent.putExtra("mFilePath", String.valueOf(file));
         mIntent.putExtra("SF", UserDetails.getString("Sfcode", ""));

@@ -22,14 +22,36 @@
 
     </Button>
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="10"
-        android:background="@android:color/transparent"
-        android:textStyle="bold" />
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <TextView
+          android:id="@+id/month"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="10dp"
+          android:text="Mon"
+
+          android:maxLength="3"
+          android:background="@android:color/transparent"
+          android:textStyle="bold"
+          />
+
+      <TextView
+          android:id="@+id/date"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="10dp"
+          android:layout_gravity="center_horizontal"
+          android:text="10"
+
+          android:background="@android:color/transparent"
+          android:textStyle="bold" />
+  </LinearLayout>
+
+
 
     <ImageView
         android:id="@+id/tp_date_icon"
