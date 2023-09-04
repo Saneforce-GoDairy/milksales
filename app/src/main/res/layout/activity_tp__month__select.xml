@@ -10,6 +10,12 @@
 
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+    <RelativeLayout
+
         android:id="@+id/top1"
         android:layout_width="match_parent"
         android:layout_height="50dp">
@@ -87,38 +93,39 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:id="@+id/current_month_btn"
+                android:id="@+id/current_month_btn1"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:background="@drawable/custom_back_btn"
                 android:layout_marginEnd="@dimen/C20dp">
 
                 <ImageView
-                    android:id="@+id/current_arrow"
-                    style="@style/TextStyle"
+                    android:id="@+id/current_month_arrow_img"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/monthly_back_arrow"
-                    android:textColor="@color/color_white"
-                    app:tint="@color/grey_500" />
+                    android:src="@drawable/monthly_back_arrow_white"
+                    app:tint="@color/white"
+                    android:scaleX="-1"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/next_month_btn"
+                android:id="@+id/next_month_btn1"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:background="@drawable/custom_back_btn">
+                >
 
                 <ImageView
+                    android:id="@+id/next_month_arrow_img"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/custom_back_btn"
-                    android:src="@drawable/monthly_back_arrow_white"
-                    android:scaleX="1"/>
+                    android:src="@drawable/tp_current_month_enabled_arrow"
+                    android:scaleX="-1"
+                    app:tint="#979797" />
 
             </RelativeLayout>
 
@@ -230,6 +237,116 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
                 />
+
+            <LinearLayout
+                android:id="@+id/main_container_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp"
+                android:visibility="gone">
+                <LinearLayout
+                    android:id="@+id/container_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/C20dp"
+                    android:layout_marginRight="@dimen/C20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/grey_600"
+                        android:text="WORK TYPE"/>
+
+                    <RelativeLayout
+                        android:id="@+id/work_type_rel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:layout_below="@+id/txt"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/work_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Select"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:scaleX="-1"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/back_btn_ios"/>
+
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:background="#CACACA" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/C20dp"
+                    android:layout_marginRight="@dimen/C20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/grey_600"
+                        android:text="REMARKS"/>
+
+                    <RelativeLayout
+                        android:id="@+id/card_travel_mode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:layout_below="@+id/txt"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/txt_mode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Select"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:scaleX="-1"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/back_btn_ios"/>
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
@@ -244,7 +361,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textColor="@color/white"
-                android:layout_marginTop="@dimen/C15dp"
+                android:layout_marginTop="@dimen/C40dp"
                 android:layout_gravity="bottom"
                 android:layout_marginStart="@dimen/C20dp"
                 android:layout_marginEnd="@dimen/C20dp"
@@ -440,5 +557,5 @@
 
     </LinearLayout>
     <include android:visibility="gone" layout="@layout/back_arrow"></include>
-
+    </RelativeLayout>
 </RelativeLayout>

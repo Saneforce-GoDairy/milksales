@@ -2,11 +2,15 @@ package com.saneforce.milksales.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -15,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.saneforce.milksales.Model_Class.Tp_View_Master;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.common.TourPlan;
+import com.saneforce.milksales.databinding.CalendarItemBinding;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +36,9 @@ public class TourPlanAdapter extends RecyclerView.Adapter<TourPlanAdapter.ViewHo
     private final int year;
     private String mMonthNumeric;
 
+    int selectedPosition = -1;
+    int lastSelectedPosition = -1;
+
     public TourPlanAdapter (Context context, int month, int year, ArrayList<TourPlan> tourlist)
     {
         this.context = context;
@@ -42,20 +50,47 @@ public class TourPlanAdapter extends RecyclerView.Adapter<TourPlanAdapter.ViewHo
     @NonNull
     @Override
     public TourPlanAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.calendar_item, parent, false);
-        return new ViewHolder(v);
+        CalendarItemBinding binding = CalendarItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+
+        if (selectedPosition == holder.getBindingAdapterPosition()) {
+            holder.binding.colorGrey.setVisibility(View.GONE);
+            final int sdk = Build.VERSION.SDK_INT;
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                holder.mDateLayout.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+            } else {
+                holder.mDateLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
+            }
+
+            holder.mMonth.setTextColor(Color.BLACK);
+            holder.mDate.setTextColor(Color.WHITE);
+
+        } else {
+            final int sdk = Build.VERSION.SDK_INT;
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                holder.mDateLayout.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_disabled) );
+            } else {
+                holder.mDateLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_disabled));
+            }
+            holder.mMonth.setTextColor(Color.GRAY);
+            holder.mDate.setTextColor(Color.GRAY);
+        }
+
+
         TourPlan tourPlan = tourlist.get(position);
         String[] date = tourPlan.getDay_month().split("-");
 
         holder.mDate.setText(date[0]);
 
         if (date[1].equals("GREY")) {
-            holder.mDate.setTextColor(Color.LTGRAY);
-            holder.mDate.setEnabled(false);
+          //  holder.mDate.setTextColor(Color.LTGRAY);
+          //  holder.mDate.setEnabled(false);
+            holder.binding.colorGrey.setVisibility(View.VISIBLE);
         }
         if (date[1].equals("GREEN")) {
             holder.mDate.setTextColor(ContextCompat.getColor(context, R.color.subExpHeader));
@@ -130,6 +165,29 @@ public class TourPlanAdapter extends RecyclerView.Adapter<TourPlanAdapter.ViewHo
 
 
           holder.mMonth.setText(goal);
+
+        holder.binding.getRoot().setOnClickListener(v -> {
+            lastSelectedPosition = selectedPosition;
+            selectedPosition = holder.getBindingAdapterPosition();
+            notifyItemChanged(lastSelectedPosition);
+            notifyItemChanged(selectedPosition);
+        });
+
+//        holder.mDateLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (date[1].equals("GREY")) {
+//                    holder.mDate.setTextColor(Color.LTGRAY);
+//                    Log.e(TAG, "This is gray");
+//                }
+//
+//                if (date[1].equals("WHITE")){
+//                    Log.e(TAG, "This is not gray");
+//                    holder.mDate.setEnabled(true);
+//                    holder.mDate.setTextColor(Color.WHITE);
+//                }
+//            }
+//        });
     }
 
     public String CheckTp_View(int a) {
@@ -170,12 +228,17 @@ public class TourPlanAdapter extends RecyclerView.Adapter<TourPlanAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
+        CalendarItemBinding binding;
         TextView mDate, mMonth;
-        public ViewHolder(final View itemView)
+        RelativeLayout mLayout, mDateLayout;
+        public ViewHolder(CalendarItemBinding binding)
         {
-            super(itemView);
-            mDate = itemView.findViewById(R.id.date);
-            mMonth = itemView.findViewById(R.id.month);
+            super(binding.getRoot());
+            this.binding = binding;
+            mDate = binding.date;
+            mMonth = binding.month;
+            mLayout = binding.layout1;
+            mDateLayout = binding.dateLayout;
         }
     }
 }

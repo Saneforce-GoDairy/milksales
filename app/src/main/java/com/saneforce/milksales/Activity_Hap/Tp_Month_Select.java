@@ -154,27 +154,41 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         textColorAnim.start();
 
 
+        binding.currentMonthBtn1.setOnClickListener(v -> {
 
+            // Primary button enable logic
+            final int sdk = android.os.Build.VERSION.SDK_INT;
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthBtn1.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+            } else {
+                binding.currentMonthBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
+            }
 
-        // New design code
-        binding.currentMonthBtn.setOnClickListener(v -> {
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
 
-//            final int sdk = android.os.Build.VERSION.SDK_INT;
-//            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-//                binding.currentMonthBtn.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.custom_back_btn) );
-//            } else {
-//                binding.currentMonthBtn.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_back_btn));
-//            }
-//
-//            binding.currentArrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.monthly_back_arrow_white));
-//            binding.currentArrow.setScaleX(-1);
-//
-//            // next month
-//            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-//                binding.nextMonthBtn.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.custom_back_btn_white) );
-//            } else {
-//                binding.nextMonthBtn.setBackground(ContextCompat.getDrawable(context, R.drawable.custom_back_btn_white));
-//            }
+            // Secondary button disable logic logic
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthBtn1.setBackgroundDrawable(null);
+            } else {
+                binding.nextMonthBtn1.setBackground(null);
+            }
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.monthly_back_arrow_white));
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                binding.nextMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.monthly_back_arrow_white));
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+
+            binding.nextMonthArrowImg.setScaleX(1);
+            binding.currentMonthArrowImg.setScaleX(1);
 
 
             SelectedMonth = CM;
@@ -203,10 +217,39 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
             binding.month.setText(currrentmonth);
             tourPlanList.clear();
             getDateList(CM, year);
-        });
 
-        binding.nextMonthBtn.setOnClickListener(v -> {
-            //   SelectedMonth = NM;
+        });
+        binding.nextMonthBtn1.setOnClickListener(v -> {
+
+            final int sdk = Build.VERSION.SDK_INT;
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthBtn1.setBackgroundDrawable(null);
+            } else {
+                binding.currentMonthBtn1.setBackground(null);
+            }
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthBtn1.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+            } else {
+                binding.nextMonthBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
+            }
+
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.currentMonthArrowImg.setScaleX(1);
+            } else {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.currentMonthArrowImg.setScaleX(1);
+            }
+
 
             // Initialize calendar
             Calendar calendar = Calendar.getInstance();
@@ -231,7 +274,15 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
             // setText
             binding.month.setText(nextmonth);
             tourPlanList.clear();
+
+
             getDateList(NM, year);
+        });
+        binding.submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.mainContainer2.setVisibility(View.VISIBLE);
+            }
         });
 
         imgHome.setOnClickListener(v -> {
@@ -243,8 +294,6 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
                 startActivity(Dashboard);
             } else
                 startActivity(new Intent(getApplicationContext(), Dashboard.class));
-
-
         });
         txtHelp.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Help_Activity.class)));
         txtErt.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ERT.class)));
@@ -261,15 +310,11 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(getApplicationContext(), Dashboard.class));
 
         });
+
         binding.back.setOnClickListener(v -> mOnBackPressedDispatcher.onBackPressed());
 
-
-        // NextMonth.setText(nextmonth);
-
-        // get "Local" country calendar based date and time
         _calendar = Calendar.getInstance(Locale.getDefault());
 
-        // get current year
         if (SelectedMonth == 12 || SelectedMonth == 0) {
             SelectedMonth = 0;
             if (SelectedMonth == 12) {
@@ -297,6 +342,10 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
 
         GetTp_List();
         initRecyclerView();
+
+        /*
+           Load current month
+         */
 
         SelectedMonth = CM;
 
@@ -334,8 +383,6 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
 
         dateFormat = new SimpleDateFormat("MMM");
         mCurrentDateString = dateFormat.format(mCalendar.getTime());
-
-        //     holder.mDate.setText(mCurrentDateString);
 
         int trailingSpaces = 0;
         int daysInPrevMonth = 0;
@@ -418,16 +465,12 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
 
         for (String member : list){
-            Log.i("Member name: ", member);
+            Log.i(TAG, "Number Of Events Per Month : " + member);
             TourPlan tourPlan = new TourPlan();
             tourPlan.setDay_month(member);
             tourPlanList.add(tourPlan);
-
             mTpMonthAdapter.notifyDataSetChanged();
         }
-
-
-
     }
 
     private void initRecyclerView() {
@@ -512,10 +555,6 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
                     adapter = new GridCellAdapter(getApplicationContext(), R.id.date, month, year, (ArrayList<Tp_View_Master>) Tp_View_Master);
                     adapter.notifyDataSetChanged();
                     calendarView.setAdapter(adapter);
-
-                    // new design code
-                  //  getDateList(month, year);
-
                     nDialog.dismiss();
                 }
 
@@ -529,9 +568,6 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
                 adapter = new GridCellAdapter(getApplicationContext(), R.id.date, SelectedMonth + 1, year, (ArrayList<Tp_View_Master>) Tp_View_Master);
                 adapter.notifyDataSetChanged();
                 calendarView.setAdapter(adapter);
-
-                // new design code
-             //   getDateList(SelectedMonth + 1, year);
             } catch (Exception e) {
                 Log.v("TP CALENDER:local", e.getMessage());
 
@@ -563,15 +599,12 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-
     }
 
     @Override
     public void update(int value, int pos) {
-
     }
 
-    // ///////////////////////////////////////////////////////////////////////////////////////
     // Inner Class
     public class GridCellAdapter extends BaseAdapter implements View.OnClickListener {
         private final Context _context;
@@ -603,7 +636,6 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
             this.Tp_View_Master = new ArrayList<>();
             this.Tp_View_Master = Tp_View_Master;
             this.list = new ArrayList<>();
-
 
             Calendar calendar = Calendar.getInstance();
 
@@ -742,13 +774,9 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
             gridcell = row.findViewById(R.id.date);
             iv_icon = row.findViewById(R.id.tp_date_icon);
 
-
             // ACCOUNT FOR SPACING
-
             String[] day_color = list.get(position).split("-");
-
             Log.e("THE_DAY_COLOR", String.valueOf(day_color[0]));
-
 
             String theday = day_color[0];
             String themonth = day_color[2];
@@ -789,10 +817,8 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
                     String TourMonth = theyear + "-" + month + "-" + theday;
                     Log.e("Grid_Selected_Date", theday + "-" + themonth + "-" + theyear + day_color[1]);
                     common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
-
                 }
             });
-
             return row;
         }
 
@@ -803,7 +829,6 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
             Log.e("Selected date", date_month_year);
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
-
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -826,7 +851,6 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
                         } else {
                             bflag = "1";
                         }
-
                     }
                 }
             }
@@ -836,11 +860,9 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         private void setCurrentDayOfMonth(int currentDayOfMonth) {
             this.currentDayOfMonth = currentDayOfMonth;
         }
-
         public void setCurrentWeekDay(int currentWeekDay) {
             this.currentWeekDay = currentWeekDay;
         }
-
         public int getCurrentWeekDay() {
             return currentWeekDay;
         }
