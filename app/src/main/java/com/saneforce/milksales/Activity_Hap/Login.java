@@ -80,6 +80,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -109,6 +110,7 @@ public class Login extends AppCompatActivity {
     DatabaseHandler db;
     ProgressBar progressBar;
     RelativeLayout login_layout;
+    String baseURL = "";
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -168,7 +170,6 @@ public class Login extends AppCompatActivity {
             }
         }
 
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -274,106 +275,36 @@ public class Login extends AppCompatActivity {
         };
 
         btnLogin.setOnClickListener(v -> {
-            String email = name.getText().toString().trim();
-            String Pwd = password.getText().toString().trim();
-            if (TextUtils.isEmpty(email)) {
+            SUserID = name.getText().toString().trim();
+            eMail = name.getText().toString().trim();
+            SPwd = password.getText().toString().trim();
+            if (TextUtils.isEmpty(eMail)) {
                 Toast.makeText(this, "Email Address Required", Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(Pwd)) {
+            } else if (TextUtils.isEmpty(SPwd)) {
                 Toast.makeText(this, "Password Required", Toast.LENGTH_SHORT).show();
+            } else if (eMail.contains("-")) {
+                if (shared_common_pref.getvalue("base_url").isEmpty()) {
+                    String code = eMail.split("-")[0].toUpperCase();
+                    Log.e("login_info", "Company Code: " + code);
+                    getBaseURL(code);
+                } else {
+                    MakeInvisible();
+                    ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
+                    Log.e("login_info", "Base URL: " + shared_common_pref.getvalue("base_url"));
+                    login(1);
+                }
             } else {
-                SUserID = email;
-                eMail = email;
-                SPwd = Pwd;
                 MakeInvisible();
                 login(1);
             }
         });
-
-        /*signInButton = (Button) findViewById(R.id.sign_in_button);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.web_client_id))
-                .requestEmail()
-                .build();
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                mLUService = new SANGPSTracker(Login.this);
-                myReceiver = new LocationReceiver();
-                // Bind to the service. If the service is in foreground mode, this signals to the service
-                // that since this activity is in the foreground, the service can exit foreground mode.
-
-                Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
-                if (DAMode == true) {
-
-                    if (isMyServiceRunning(SANGPSTracker.class) == false) {
-                        try {
-                            bindService(new Intent(getApplicationContext(), SANGPSTracker.class), mServiceConection,
-                                    Context.BIND_AUTO_CREATE);
-                            LocalBroadcastManager.getInstance(getApplication()).registerReceiver(myReceiver,
-                                    new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
-                            mLUService.requestLocationUpdates();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                Login.this.startActivityForResult(signInIntent, RC_SIGN_IN);
-
-            }
-        });
-
-        ReportsButton = (Button) findViewById(R.id.btnReport);
-        ReportsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                startActivityForResult(signInIntent, RC_MYREPORTS);
-            }
-        });
-        ExitButton = (Button) findViewById(R.id.btnExit);
-        ExitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shared_common_pref.clear_pref(Constants.LOGIN_DATA);
-                SharedPreferences.Editor editor = UserDetails.edit();
-                editor.putBoolean("Login", false);
-                editor.apply();
-                CheckInDetails.edit().clear().commit();
-                finishAffinity();
-            }
-        });*/
- /*
- if(UserDetails.getString("Sfcode", "")!="") {
- Call<JsonArray> Callto = apiInterface.getDataArrayList("get/Signout_Check",
- UserDetails.getString("Divcode", ""),
- UserDetails.getString("Sfcode", ""));
- Callto.enqueue(new Callback<JsonArray>() {
-
- @Override
- public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-
- }
-
- @Override
- public void onFailure(Call<JsonArray> call, Throwable t) {
-
- }
- });
- }*/
 
         Boolean Login = UserDetails.getBoolean("Login", false);
         Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
         Intent inten = new Intent(this, TimerService.class);
         startService(inten);
         if (Login == true || CheckIn == true) {
+            ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
             /*PERMISSION REQUEST*/
             if (cameraPermission.checkPermission()) {
 
@@ -446,6 +377,37 @@ public class Login extends AppCompatActivity {
                 }
             }
         }
+
+    }
+
+    private void getBaseURL(String code) {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getBaseConfig();
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.body() != null) {
+                    try {
+                        String body = response.body().string();
+                        JSONObject object = new JSONObject(body);
+                        if (object.has(code)) {
+                            baseURL = object.getJSONObject(code).getString("base_url");
+                            ApiClient.ChangeBaseURL(baseURL);
+                            Log.e("login_info", "New Base URL: " + baseURL);
+                        }
+                        MakeInvisible();
+                        login(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
+            }
+        });
 
     }
 
@@ -684,6 +646,7 @@ public class Login extends AppCompatActivity {
                 eMail="harishbabu.bh@hap.in";
                 eMail="ciadmin@hap.in";
 */
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 Call<Model> modelCall = apiInterface.login("get/GoogleLogin", eMail, SUserID, SPwd, BuildConfig.VERSION_NAME, deviceToken);
                 modelCall.enqueue(new Callback<Model>() {
                     @Override
@@ -810,6 +773,11 @@ public class Login extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     void assignLoginData(Model response, int requestCode) {
+
+        if (!baseURL.isEmpty()) {
+            shared_common_pref.save(Constants.base_url, baseURL);
+            Log.e("login_info", "Saved to SharedPreference: " + baseURL);
+        }
         try {
 
             shared_common_pref.save(Constants.LOGIN_DATE, com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime());

@@ -765,4 +765,7 @@ public interface ApiInterface {
 
     @POST("payments/jfs/v1/payments/intent")
     Call<ResponseBody> MakeTransaction(@HeaderMap Map<String, String> headerMap, @Body RequestBody jsonObject);
+
+    @GET(ApiClient.CONFIG_URL)
+    Call<ResponseBody> getBaseConfig();
 }

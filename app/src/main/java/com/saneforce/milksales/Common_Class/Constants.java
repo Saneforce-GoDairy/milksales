@@ -1,6 +1,8 @@
 package com.saneforce.milksales.Common_Class;
 
 public class Constants {
+    public static final String base_url = "base_url";
+
     // Payment Method
     public static final String PaymentMethod = "payment_method";
 

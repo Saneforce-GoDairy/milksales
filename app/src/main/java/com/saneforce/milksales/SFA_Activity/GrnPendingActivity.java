@@ -187,7 +187,7 @@ public class GrnPendingActivity extends AppCompatActivity implements UpdateRespo
 
 
             Log.d("savehjj","ghkj"+jObj.toString());
-            ApiInterface apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
+            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Log.v("api",apiInterface.toString());
             Call<JsonObject> responseBodyCall =apiInterface.GRNSave(SF_code,div, jObj.toString());
             Log.v("divcodepos",SF_code+"   "+div );
