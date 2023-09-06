@@ -99,7 +99,7 @@ import retrofit2.Response;
 
 public class Tp_Month_Select extends AppCompatActivity implements View.OnClickListener, UpdateUi , Master_Interface {
     private ActivityTpMonthSelectBinding binding;
-    private Context context = this;
+    private final Context context = this;
     private static final String TAG = "Month Plan";
 
     private TextView currentMonth, CurrentMoth, NextMonth;
@@ -295,7 +295,6 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
 
             binding.nextMonthArrowImg.setScaleX(1);
             binding.currentMonthArrowImg.setScaleX(1);
-
 
             SelectedMonth = CM;
 

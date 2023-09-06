@@ -1106,7 +1106,6 @@ public class ImageCapture extends AppCompatActivity implements CameraActivity.Ca
 
     private boolean setExposureCompensation(int exposureCompensation) {
 
-
         Camera camera = fragment.getCamera();
         Camera.Parameters params = camera.getParameters();
 

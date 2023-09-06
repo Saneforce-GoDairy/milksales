@@ -472,6 +472,31 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     }
 
     private void onClick2() {
+        binding.taClaim.setOnClickListener(v -> {
+            Shared_Common_Pref.TravelAllowance = 0;
+            startActivity(new Intent(context, TAClaimActivity.class)); //Travel_Allowance
+        });
+        binding.sfa.setOnClickListener(v -> {
+            startActivity(new Intent(context, SFA_Activity.class));
+        });
+        binding.canteenScan.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CateenToken.class);
+            startActivity(intent);
+        });
+
+        binding.gateIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.gateOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
