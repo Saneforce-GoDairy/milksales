@@ -106,21 +106,18 @@ public class CameraxActivity extends AppCompatActivity {
     private Context context = this;
     private static final String TAG = "ImageCapture";
 
-    Button button;
-    String imagePath;
-    String imageFileName;
+    private Button button;
+    private String imagePath, imageFileName;
     private ProgressDialog mProgress;
     private File file;
 
-    SharedPreferences sharedpreferences;
-    JSONObject CheckInInf;
-    Shared_Common_Pref mShared_common_pref;
-    SharedPreferences CheckInDetails;
-    SharedPreferences UserDetails;
-    Common_Class DT = new Common_Class();
-    String VistPurpose = "";
-    String sStatus, mMode, mModeRetailorCapture, WrkType, onDutyPlcID, onDutyPlcNm, vstPurpose, UserInfo = "MyPrefs", imagvalue = "", mypreference = "mypref", PlaceId = "", PlaceName = "";
-    com.saneforce.milksales.Common_Class.Common_Class common_class;
+    private JSONObject CheckInInf;
+    private Shared_Common_Pref mShared_common_pref;
+    private SharedPreferences CheckInDetails, UserDetails, sharedpreferences;
+    private Common_Class DT = new Common_Class();
+    private String VistPurpose = "", UKey = "", DIR, onDutyPlcID, onDutyPlcNm, vstPurpose, PlaceId = "", PlaceName = "";
+    private String sStatus, mMode, mModeRetailorCapture, WrkType, UserInfo = "MyPrefs", imagvalue = "", mypreference = "mypref";
+    private com.saneforce.milksales.Common_Class.Common_Class common_class;
 
     public static final String sCheckInDetail = "CheckInDetail";
     public static final String sUserDetail = "MyPrefs";
@@ -128,17 +125,12 @@ public class CameraxActivity extends AppCompatActivity {
     private SANGPSTracker mLUService;
     private boolean mBound = false;
     private LocationReceiver myReceiver;
-    Location mlocation;
-    String UKey = "";
+    private Location mlocation;
 
-    private String DIR;
     public static final String APP_DATA = "/.saneforce";
     private Camera camera;
     private Bitmap bitmap;
-    private Dialog submitProgressDialog;
-    private Dialog checkInSuccessDialog;
-
-    private String mTime;
+    private Dialog submitProgressDialog, checkInSuccessDialog;
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -149,7 +141,6 @@ public class CameraxActivity extends AppCompatActivity {
             }
         }
     });
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,12 +229,10 @@ public class CameraxActivity extends AppCompatActivity {
             Log.v("PERMISSION_NOT", "PERMISSION_NOT");
         } else {
             Log.v("PERMISSION", "PERMISSION");
-      //      startCamera(0, 0, dpWidth, dpHeight, "front", false, false, false, "1", false, false, true);
+      //  startCamera(0, 0, dpWidth, dpHeight, "front", false, false, false, "1", false, false, true);
 
         }
         button = (Button) findViewById(R.id.button_capture);
-
-
     }
 
     private void createDirectory() {
@@ -256,12 +245,7 @@ public class CameraxActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-        binding.submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveImgPreview();
-            }
-        });
+        binding.submit.setOnClickListener(v -> saveImgPreview());
         binding.retry.setOnClickListener(v -> {
             startCamera(cameraFacing);
             binding.imageView.setVisibility(View.GONE);
