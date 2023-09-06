@@ -4,22 +4,165 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".SFA_Activity.New_Outlet_Map_creations">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/top1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_btn_ios"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/C20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check IN"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/primaryDark"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="17sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/top2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/C30dp"
+        android:layout_marginEnd="@dimen/C30dp"
+        android:layout_marginTop="60dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/check_in_enabled_location"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginTop="140dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/map_border"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/C10dp"
+            android:layout_marginStart="@dimen/C20dp"
+            android:layout_marginEnd="@dimen/C20dp"
+            android:layout_marginBottom="195dp">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/myMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.9"
+                tools:context=".SFA_Activity.New_Outlet_Map_creations" />
+
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/C30dp"
+            android:layout_marginStart="@dimen/C20dp"
+            android:layout_marginEnd="@dimen/C20dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/current_location_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textColor="@color/primaryDark"
+                    android:layout_marginBottom="@dimen/C10dp"/>
+
+                <TextView
+                    android:id="@+id/current_address_full"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="#969696"
+                    android:layout_marginBottom="@dimen/C10dp"
+                    android:fontFamily="@font/roboto"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/C20dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/C15dp"
+                        android:layout_height="@dimen/C15dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/triangle_warning"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/secondary_orange"
+                        android:layout_marginStart="@dimen/C5dp"
+                        android:text="Move towards fencing radius to Check IN"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/tvStartDirection"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/C20dp"
+            android:layout_marginEnd="@dimen/C20dp"
+            android:layout_marginBottom="@dimen/C30dp"
+            android:background="@drawable/button_blue1"
+            android:text="CONFIRM LOCATION" />
+
+    </RelativeLayout>
+
 
         <include
+            android:visibility="gone"
             android:id="@+id/tool_header"
             layout="@layout/custom_toolbar_help"></include>
 
-
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/blue_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="MissingConstraints">
 
@@ -47,21 +190,5 @@
 
         </LinearLayout>
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/myMap"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.9"
-            tools:context=".SFA_Activity.New_Outlet_Map_creations" />
-
-        <TextView
-            android:id="@+id/tvStartDirection"
-            style="@style/BottomButton"
-            android:text="Start" />
-
-
-    </LinearLayout>
 
 </FrameLayout>

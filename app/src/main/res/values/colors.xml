@@ -46,6 +46,7 @@
     <color name="background">#dddddd</color>
 
     <color name="white">#fff</color>
+    <color name="monthly_arrow">#979797</color>
     <color name="awhite">#A8FFFFFF</color>
     <color name="a80white">#40FFFFFF</color>
 
@@ -135,5 +136,11 @@
     <color name="Exit">#d34836</color>
 
     <color name="black_80">#CC000000</color>
+
+    <!-- new ui -->
+    <color name="primaryDark">#2E3032</color>
+    <color name="primaryBlurLight">#89c7e4</color>
+    <color name="secondary_orange">#DA600C</color>
+
 
 </resources>

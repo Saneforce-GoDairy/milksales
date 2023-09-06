@@ -30,11 +30,11 @@ import static com.saneforce.milksales.Activity_Hap.Leave_Request.CheckInfo;
 
 public class Checkin_type2 extends AppCompatActivity {
 
-    Location currentLocation;
-    FusedLocationProviderClient fusedLocationProviderClient;
+    private Location currentLocation;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
-    String lat;
-    String log;
+    private String lat;
+    private String log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,29 +42,13 @@ public class Checkin_type2 extends AppCompatActivity {
         setContentView(R.layout.activity_checkin_type2);
         TextView txtHelp = findViewById(R.id.toolbar_help);
         ImageView imgHome = findViewById(R.id.toolbar_home);
-        txtHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Help_Activity.class));
-            }
-        });
+        txtHelp.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Help_Activity.class)));
 
         TextView txtErt = findViewById(R.id.toolbar_ert);
         TextView txtPlaySlip = findViewById(R.id.toolbar_play_slip);
 
-        txtErt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ERT.class));
-            }
-        });
-        txtPlaySlip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PayslipFtp.class));
-            }
-        });
-
+        txtErt.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ERT.class)));
+        txtPlaySlip.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PayslipFtp.class)));
 
         ObjectAnimator textColorAnim;
         textColorAnim = ObjectAnimator.ofInt(txtErt, "textColor", Color.WHITE, Color.TRANSPARENT);
@@ -88,8 +72,6 @@ public class Checkin_type2 extends AppCompatActivity {
         });
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
-
-
     }
 
     private void fetchLastLocation() {
@@ -101,23 +83,16 @@ public class Checkin_type2 extends AppCompatActivity {
         }
 
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
+        task.addOnSuccessListener(location -> {
 
-                if (location !=null){
-                    currentLocation = location;
-                    Toast.makeText(getApplicationContext(),currentLocation.getLatitude()+""+currentLocation.getLongitude(),Toast.LENGTH_SHORT).show();
-                    LatLng latLng =new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
-                    lat=String.valueOf(currentLocation.getLatitude());
-                    log=String.valueOf(currentLocation.getLongitude());
-
-                }
-
+            if (location !=null){
+                currentLocation = location;
+                Toast.makeText(getApplicationContext(),currentLocation.getLatitude()+""+currentLocation.getLongitude(),Toast.LENGTH_SHORT).show();
+                LatLng latLng =new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+                lat=String.valueOf(currentLocation.getLatitude());
+                log=String.valueOf(currentLocation.getLongitude());
             }
         });
-
-
     }
  }
 

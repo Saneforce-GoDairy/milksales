@@ -14,17 +14,9 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_so_launcher_foreground" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading_please_wait"
-            android:textColor="#101010"
-            android:textStyle="bold" />
-
+            android:layout_width="@dimen/C150dp"
+            android:layout_height="60dp"
+            android:src="@drawable/sales_jump_logo1" />
 
     </LinearLayout>
 

@@ -111,7 +111,7 @@ public class ShiftListItem extends RecyclerView.Adapter<ShiftListItem.ViewHolder
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            shift_time = itemView.findViewById(R.id.ShiftName);
+            shift_time = itemView.findViewById(R.id.shift_name);
             parentLayout = itemView.findViewById(R.id.parent_layout);
             //secondarylayout=itemView.findViewById(R.id.secondary_layout);
         }

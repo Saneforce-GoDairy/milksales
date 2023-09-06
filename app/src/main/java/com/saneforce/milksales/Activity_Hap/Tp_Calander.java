@@ -54,6 +54,7 @@ import retrofit2.Response;
 
 public class Tp_Calander extends AppCompatActivity implements View.OnClickListener, UpdateUi {
     private Button selectedDayMonthYearButton;
+    @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat(
             "dd-MMM-yyyy");
     private TextView currentMonth;
@@ -66,46 +67,31 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
     private Calendar _calendar;
     private int month, year;
     private static final String dateTemplate = "MMMM yyyy";
-    String flag = "abc";
-
-    ApiInterface apiService;
-    ImageView backarow;
-    Shared_Common_Pref shared_common_pref;
-    Common_Class common_class;
-    List<Tp_View_Master> Tp_View_Master = new ArrayList<>();
-    Type userType;
+    private String flag = "abc";
+    private Shared_Common_Pref shared_common_pref;
+    private Common_Class common_class;
+    private List<Tp_View_Master> Tp_View_Master = new ArrayList<>();
+    private Type userType;
     int SelectedMonth;
-    Gson gson;
-    ProgressDialog nDialog;
+    private Gson gson;
+    private ProgressDialog nDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tp_clander);
+
         TextView txtHelp = findViewById(R.id.toolbar_help);
         ImageView imgHome = findViewById(R.id.toolbar_home);
-        txtHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Help_Activity.class));
-            }
-        });
+
+        txtHelp.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Help_Activity.class)));
 
         TextView txtErt = findViewById(R.id.toolbar_ert);
         TextView txtPlaySlip = findViewById(R.id.toolbar_play_slip);
 
-        txtErt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ERT.class));
-            }
-        });
-        txtPlaySlip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PayslipFtp.class));
-            }
-        });
+        txtErt.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ERT.class)));
+        txtPlaySlip.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PayslipFtp.class)));
+
         ObjectAnimator textColorAnim;
         textColorAnim = ObjectAnimator.ofInt(txtErt, "textColor", Color.WHITE, Color.TRANSPARENT);
         textColorAnim.setDuration(500);
@@ -113,20 +99,19 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         textColorAnim.setRepeatCount(ValueAnimator.INFINITE);
         textColorAnim.setRepeatMode(ValueAnimator.REVERSE);
         textColorAnim.start();
-        imgHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
-                Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
-                if (CheckIn == true) {
-                    Intent Dashboard = new Intent(getApplicationContext(), Dashboard_Two.class);
-                    Dashboard.putExtra("Mode", "CIN");
-                    startActivity(Dashboard);
-                } else
-                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
 
-            }
+        imgHome.setOnClickListener(v -> {
+            SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
+            boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
+            if (CheckIn) {
+                Intent Dashboard = new Intent(getApplicationContext(), Dashboard_Two.class);
+                Dashboard.putExtra("Mode", "CIN");
+                startActivity(Dashboard);
+            } else
+                startActivity(new Intent(getApplicationContext(), Dashboard.class));
+
         });
+
         shared_common_pref = new Shared_Common_Pref(this);
         common_class = new Common_Class(this);
         currentMonth = this.findViewById(R.id.title);
@@ -139,6 +124,7 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         SelectedMonth = Integer.parseInt(common_class.getintentValues("Monthselection"));
         Log.e("MONTH_SELECTion", common_class.getintentValues("Monthselection"));
         _calendar = Calendar.getInstance(Locale.getDefault());
+
         if (SelectedMonth == 12 || SelectedMonth == 0) {
             SelectedMonth = 0;
             if (SelectedMonth == 12) {
@@ -156,22 +142,14 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         }
         currentMonth.setText(common_class.GetMonthname(Integer.parseInt(common_class.getintentValues("Monthselection"))) + "   " + year);
 
-        // backarow.setOnClickListener(this);
         nDialog = new ProgressDialog(Tp_Calander.this);
         nDialog.setMessage("Loading.......");
         nDialog.setTitle("Tour Plan");
         nDialog.setIndeterminate(false);
         nDialog.setCancelable(true);
         nDialog.show();
-        goback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnBackPressedDispatcher.onBackPressed();
-            }
-        });
+        goback.setOnClickListener(v -> mOnBackPressedDispatcher.onBackPressed());
         GetTp_List();
-
-
     }
 
 
@@ -225,8 +203,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         } catch (Exception e) {
             Log.v("TP CALENDER:", e.getMessage());
         }
-
-
     }
 
     private void setGridCellAdapterToDate(int month, int year) {
@@ -239,7 +215,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.imag_back:
                 common_class.CommonIntentwithFinish(Tp_Month_Select.class);
@@ -537,8 +512,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         public int getCurrentWeekDay() {
             return currentWeekDay;
         }
-
-
     }
 
     private final OnBackPressedDispatcher mOnBackPressedDispatcher =
@@ -550,7 +523,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                     } else {
                         common_class.CommonIntentwithFinish(Tp_Month_Select.class);
                     }
-
                 }
             });
 

@@ -3,11 +3,15 @@ package com.saneforce.milksales.SFA_Activity;
 import static com.saneforce.milksales.SFA_Activity.Nearby_Outlets.shared_common_pref;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -20,17 +24,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -39,23 +43,21 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.saneforce.milksales.Activity_Hap.AddNewRetailer;
+import com.saneforce.milksales.Activity_Hap.CameraxActivity;
 import com.saneforce.milksales.Activity_Hap.Checkin;
 import com.saneforce.milksales.Activity_Hap.Dashboard;
 import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
-import com.saneforce.milksales.Activity_Hap.ImageCapture;
 import com.saneforce.milksales.Activity_Hap.SFA_Activity;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Constants;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
-import com.saneforce.milksales.Interface.LocationEvents;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.common.LocationFinder;
+import com.saneforce.milksales.databinding.ActivityMapDirectionBinding;
 
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,37 +68,48 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MapDirectionActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
+    private ActivityMapDirectionBinding binding;
+    private final Context context = this;
+    private CircleOptions circleOptions;
     private static final int REQUEST_CODE = 101;
     static String googlePlacesData;
-    Location currentLocation;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    GoogleMap mGoogleMap;
-    TextView AddressTextview, ReachedOutlet;
-    ImageView imag_back;
-    Common_Class common_class;
-    String sb;
+    private Location currentLocation;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private GoogleMap mGoogleMap;
+    private TextView AddressTextview, ReachedOutlet;
+    private ImageView imag_back;
+    private Common_Class common_class;
+    private String sb;
     private Polyline mPolyline;
-    Marker currentLocationMarker;
+    private Marker currentLocationMarker;
     public static String TAG = "MapDirectionActivity";
-    private String status = "", CheckInfo = "CheckInDetail", UserInfo = "MyPrefs";
-    SharedPreferences UserDetails, CheckInDetails;
-    com.saneforce.milksales.Activity_Hap.Common_Class DT = new com.saneforce.milksales.Activity_Hap.Common_Class();
+    private String status = "";
+    private SharedPreferences UserDetails, CheckInDetails;
+    private com.saneforce.milksales.Activity_Hap.Common_Class DT = new com.saneforce.milksales.Activity_Hap.Common_Class();
     private double radius = 0.0;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_map_direction);
-            // geofencingClient = LocationServices.getGeofencingClient(this);
+            binding = ActivityMapDirectionBinding.inflate(getLayoutInflater());
+            View view = binding.getRoot();
+            setContentView(view);
+
+            setOnClick();
+
             status = getIntent().getStringExtra(Constants.NEW_OUTLET);
             status = status == null ? "" : status;
 
             common_class = new Common_Class(this);
-            CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
-            UserDetails = getSharedPreferences(UserInfo, Context.MODE_PRIVATE);
+            String checkInfo = "CheckInDetail";
+            String userInfo = "MyPrefs";
+            CheckInDetails = getSharedPreferences(checkInfo, Context.MODE_PRIVATE);
+            UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
 
             AddressTextview = findViewById(R.id.AddressTextview);
             ReachedOutlet = findViewById(R.id.tvStartDirection);
@@ -106,70 +119,58 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
             if (status.equalsIgnoreCase("GEO"))
                 ReachedOutlet.setText("Get Direction");
-//                ReachedOutlet.setVisibility(View.GONE);
-
 
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
             // getDirection();
             ImageView ivToolbarHome = findViewById(R.id.toolbar_home);
             ivToolbarHome.setOnClickListener(this);
             //  common_class.gotoHomeScreen(this, ivToolbarHome);
-
         } catch (Exception e) {
-            Log.v(TAG + "onCreate:", e.getMessage());
+            Log.v(TAG + "onCreate:", Objects.requireNonNull(e.getMessage()));
         }
-
     }
 
+    private void setOnClick() {
+        binding.back.setOnClickListener(v -> {
+            finish();
+        });
+    }
 
     public void openHome() {
-        Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
+        boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
 
-        if (CheckIn == true) {
+        if (CheckIn) {
             if (status.equalsIgnoreCase("GEO")) {
                 Intent Dashboard = new Intent(MapDirectionActivity.this, Dashboard_Two.class);
                 Dashboard.putExtra("Mode", "CIN");
                 startActivity(Dashboard);
             } else {
                 common_class.CommonIntentwithoutFinish(SFA_Activity.class);
-
             }
         } else {
             startActivity(new Intent(getApplicationContext(), Dashboard.class));
         }
-
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        new LocationFinder(getApplication(), new LocationEvents() {
-            @Override
-            public void OnLocationRecived(Location location) {
-                try {
-                    // clocation=location;
-                    currentLocation = location;
-                    Shared_Common_Pref.Outletlat = currentLocation.getLatitude();
-                    Shared_Common_Pref.Outletlong = currentLocation.getLongitude();
-                    fetchLocation();
-                    DownloadTask downloadTask = new DownloadTask();
-                    // Start downloading json data from Google Directions API
-                    //downloadTask.execute(getIntent().getStringExtra(Constants.MAP_ROUTE));
-                    String url = common_class.getDirectionsUrl(getIntent().getStringExtra(Constants.DEST_LAT) + "," +
-                            getIntent().getStringExtra(Constants.DEST_LNG), MapDirectionActivity.this);
-
-                    downloadTask.execute(url);
-                } catch (Exception e) {
-                    Log.v(TAG, e.getMessage());
-                }
-
-
+        new LocationFinder(getApplication(), location -> {
+            try {
+                currentLocation = location;
+                Shared_Common_Pref.Outletlat = currentLocation.getLatitude();
+                Shared_Common_Pref.Outletlong = currentLocation.getLongitude();
+                fetchLocation();
+                DownloadTask downloadTask = new DownloadTask();
+                String url = common_class.getDirectionsUrl(getIntent().getStringExtra(Constants.DEST_LAT) + "," +
+                        getIntent().getStringExtra(Constants.DEST_LNG), MapDirectionActivity.this);
+                downloadTask.execute(url);
+            } catch (Exception e) {
+                Log.v(TAG, e.getMessage());
             }
         });
-
     }
-
 
     private void fetchLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -179,43 +180,45 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             return;
         }
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                try {
-                    if (location != null) {
-                        currentLocation = location;
-                        Shared_Common_Pref.Outletlat = currentLocation.getLatitude();
-                        Shared_Common_Pref.Outletlong = currentLocation.getLongitude();
-                        Shared_Common_Pref.OutletAddress = getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude());
-                        // Toast.makeText(getApplicationContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+        task.addOnSuccessListener(location -> {
+            try {
+                if (location != null) {
+                    currentLocation = location;
+                    Shared_Common_Pref.Outletlat = currentLocation.getLatitude();
+                    Shared_Common_Pref.Outletlong = currentLocation.getLongitude();
+                    Shared_Common_Pref.OutletAddress = getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude());
 
-                        if (status.equalsIgnoreCase("GEO"))
-                            AddressTextview.setText("" + getCompleteAddressString(Double.parseDouble(getIntent().getStringExtra(Constants.DEST_LAT))
-                                    , Double.valueOf(getIntent().getStringExtra(Constants.DEST_LNG))));
+                    if (status.equalsIgnoreCase("GEO"))
+                        AddressTextview.setText("" + getCompleteAddressString(Double.parseDouble(getIntent().getStringExtra(Constants.DEST_LAT))
+                                , Double.valueOf(getIntent().getStringExtra(Constants.DEST_LNG))));
 
-                        else
-                            AddressTextview.setText("" + getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
-
-                        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
-                        assert supportMapFragment != null;
-                        supportMapFragment.getMapAsync(MapDirectionActivity.this);
-                    }
-                } catch (Exception e) {
+                    else
+                        AddressTextview.setText("" + getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
+                    assert supportMapFragment != null;
+                    supportMapFragment.getMapAsync(MapDirectionActivity.this);
                 }
+            } catch (Exception ignored) {
             }
-
         });
     }
 
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         try {
             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             mGoogleMap = googleMap;
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            //  Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude())));
 
             Double laty = Shared_Common_Pref.Outletlat;
             Double lngy = Shared_Common_Pref.Outletlong;
@@ -236,21 +239,33 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
             else
                 AddressTextview.setText("" + getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
-
+                binding.currentAddressFull.setText(""+ getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
 
             if (currentLocationMarker != null)
                 currentLocationMarker.remove();
 
             if (!status.equalsIgnoreCase("GEO"))
                 currentLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
-                        .title(("your location")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-
+                        .title(("your location")).icon(bitmapDescriptorFromVector(context, R.drawable.map_marker_blue)));
             distance();
         } catch (Exception e) {
             Log.v(TAG, e.getMessage());
         }
 
+        try {
+
+            Geocoder geo = new Geocoder(this.getApplicationContext(), Locale.getDefault());
+            List<Address> addresses = geo.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+            assert addresses != null;
+            if (addresses.isEmpty()) {
+                binding.currentLocationName.setText("Waiting for Location");
+            }
+            else {
+                binding.currentLocationName.setText(addresses.get(0).getFeatureName() + ", " + addresses.get(0).getLocality() +", " + addresses.get(0).getAdminArea() + ", " + addresses.get(0).getCountryName());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         //new
         //  mMap = googleMap;
@@ -327,17 +342,16 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zaragoza, 6));
 
         //new
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    fetchLocation();
-                }
-                break;
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                fetchLocation();
+            }
         }
     }
 
@@ -354,9 +368,6 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
                 strAdd = strReturnedAddress.toString();
-                //Log.w("My Current loction address", strReturnedAddress.toString());
-            } else {
-                // Log.w("My Current loction address", "No Address returned!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -376,11 +387,11 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                     break;
                 case R.id.tvStartDirection:
                     if (ReachedOutlet.getText().toString().contains("Check-In")) {
-
                         Log.v("distance", ":" + distance() + ":Radius:" + radius);
 
                         if ((radius > 0 && distance() <= radius) || distance() < 200) {
                             String ETime = CheckInDetails.getString("CINEnd", "");
+                            Log.e("e_time", ETime);
                             if (!ETime.equalsIgnoreCase("")) {
                                 String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
                                 String SftId = CheckInDetails.getString("Shift_Selected_Id", "0");
@@ -389,7 +400,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                                 }
                             }
                             if (!ETime.equalsIgnoreCase("")) {
-                                Intent takePhoto = new Intent(this, ImageCapture.class);
+                                Intent takePhoto = new Intent(this, CameraxActivity.class);
                                 takePhoto.putExtra("Mode", "CIN");
                                 takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
                                 takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
@@ -401,6 +412,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                             } else {
                                 Intent i = new Intent(this, Checkin.class);
                                 startActivity(i);
+                                overridePendingTransition(0,0);
                             }
                         } else {
                             common_class.showMsg(this, "Please Check-In your nearby HO Location");
@@ -408,7 +420,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                     } else if (ReachedOutlet.getText().toString().toLowerCase(Locale.ROOT).contains("get direction")) {
                         try {
                             shared_common_pref.save(Constants.DEST_NAME, getIntent().getStringExtra(Constants.DEST_NAME));
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
                         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + getIntent().getStringExtra(Constants.DEST_LAT) + "," + getIntent().getStringExtra(Constants.DEST_LNG) + "&mode=l");
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -420,35 +432,43 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                             new findPlaceDetail().execute();
                     }
                     break;
-
             }
         } catch (Exception e) {
-            Log.v(TAG, e.getMessage());
+            Log.v(TAG, Objects.requireNonNull(e.getMessage()));
         }
     }
 
-    private void drawCircle(LatLng point) {
-
+    private void drawCircleGreen(LatLng point) {
         String val = UserDetails.getString("radius", "");
         if (!Common_Class.isNullOrEmpty(val) && !val.equalsIgnoreCase("null"))
             radius = Double.parseDouble(val) * 1000;
-
-        // Instantiating CircleOptions to draw a circle around the marker
-        CircleOptions circleOptions = new CircleOptions();
-        // Specifying the center of the circle
-        circleOptions.center(point);
-        // Radius of the circle
-        circleOptions.radius(radius <= 0 ? 200 : radius);
-        // Border color of the circle
-        circleOptions.strokeColor(Color.RED);
-        // Fill color of the circle
-        circleOptions.fillColor(0x1AFF0000);
-        // Border width of the circle
-        circleOptions.strokeWidth(1);
-        // Adding the circle to the GoogleMap
-        mGoogleMap.addCircle(circleOptions);
+       if (circleOptions != null){
+           return;
+       }
+           circleOptions = new CircleOptions();
+           circleOptions.center(point);
+           circleOptions.radius(radius <= 0 ? 200 : radius);
+           circleOptions.strokeColor(Color.parseColor("#00e600"));
+           circleOptions.fillColor(Color.parseColor("#1F00E600")); // #e9f9ec  #00e600 7A 7F
+           circleOptions.strokeWidth(1);
+           mGoogleMap.addCircle(circleOptions);
+    }
 
 
+    private void drawCircle(LatLng point) {
+        String val = UserDetails.getString("radius", "");
+        if (!Common_Class.isNullOrEmpty(val) && !val.equalsIgnoreCase("null"))
+            radius = Double.parseDouble(val) * 1000;
+        if (circleOptions != null){
+            return;
+        }
+            circleOptions = new CircleOptions();
+            circleOptions.center(point);
+            circleOptions.radius(radius <= 0 ? 200 : radius);
+            circleOptions.strokeColor(Color.RED);
+            circleOptions.fillColor(0x1AFF0000);
+            circleOptions.strokeWidth(1);
+            mGoogleMap.addCircle(circleOptions);
     }
 
     @Override
@@ -459,7 +479,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         }
     }
 
-
+    @SuppressLint("SetTextI18n")
     double distance() {
         Location startPoint = new Location("point A");
         startPoint.setLatitude(currentLocation.getLatitude());
@@ -472,7 +492,13 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
         if (status != null && status.equalsIgnoreCase("checkin")) {
             ReachedOutlet.setText("Check-In ");
-            drawCircle(new LatLng(endPoint.getLatitude(), endPoint.getLongitude()));
+
+
+            if ((radius > 0 && startPoint.distanceTo(endPoint) <= radius) || startPoint.distanceTo(endPoint) < 200) {
+                drawCircleGreen(new LatLng(endPoint.getLatitude(), endPoint.getLongitude()));
+            }else {
+                drawCircle(new LatLng(endPoint.getLatitude(), endPoint.getLongitude()));
+            }
 
         } else if (distance > 200 || (status != null && status.equalsIgnoreCase("new") )|| status.toLowerCase(Locale.ROOT).contains("geo")) {
             ReachedOutlet.setText("Get Direction");
@@ -533,7 +559,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         return data;
     }
 
-    public class DownloadUrl {
+    public static class DownloadUrl {
 
         public String readUrl(String strUrl) throws IOException {
             String data = "";
@@ -567,14 +593,15 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             } catch (Exception e) {
                 Log.d("Exception", e.toString());
             } finally {
+                assert iStream != null;
                 iStream.close();
                 urlConnection.disconnect();
             }
             return data;
         }
-
     }
 
+    @SuppressLint("StaticFieldLeak")
     class findPlaceDetail extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -598,13 +625,13 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             Shared_Common_Pref.Outler_AddFlag = "1";
             intent.putExtra(Constants.PLACE_ID, googlePlacesData);
             startActivity(intent);
-
         }
     }
 
     /**
      * A class to download data from Google Directions URL
      */
+    @SuppressLint("StaticFieldLeak")
     private class DownloadTask extends AsyncTask<String, Void, String> {
 
         // Downloading data in non-ui thread
@@ -640,8 +667,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     /**
      * A class to parse the Google Directions in JSON format
      */
+    @SuppressLint("StaticFieldLeak")
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-
         // Parsing the data in non-ui thread
         @Override
         protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
@@ -688,9 +715,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
                         LatLng latLng = new LatLng(lat, lng);
                     }
-
                     // Adding all the points in the route to LineOptions
-
                     if (!status.equalsIgnoreCase("GEO")) {
                         lineOptions.addAll(points);
                         lineOptions.width(8);
@@ -712,19 +737,16 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                     Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
                             .title(getIntent().getStringExtra(Constants.DEST_NAME)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
-
                     if (distance() > 200) {
                         LatLngBounds.Builder builder = new LatLngBounds.Builder();
                         builder.include(currentLatLng);
                         builder.include(latLng);
                         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
                     }
-
                 } else
                     Toast.makeText(getApplicationContext(), "No route is found", Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
-
     }
 }

@@ -1,20 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Activity_Hap.Checkin"
-    android:layout_weight="3">
+    android:background="@color/white">
 
-    <include layout="@layout/custom_toolbar_help"/>
+    <RelativeLayout
+        android:id="@+id/top1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_btn_ios"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/C20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check IN"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/primaryDark"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="17sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/top2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/C30dp"
+        android:layout_marginEnd="@dimen/C30dp"
+        android:layout_marginTop="60dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/check_in_enabled_shift_time"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+
+    <include
+        android:visibility="gone"
+        android:id="@+id/tool_bar"
+        layout="@layout/custom_toolbar_help"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="140dp"
+        android:layout_marginStart="@dimen/C20dp"
+        android:layout_marginEnd="@dimen/C20dp"/>
 
+    <Button
+        android:id="@+id/confirm_shift"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/C20dp"
+        android:layout_marginEnd="@dimen/C20dp"
+        android:layout_marginBottom="@dimen/C30dp"
+        android:background="@drawable/button_blue1"
+        android:text="CONFIRM SHIFT" />
 
-</LinearLayout>
+</FrameLayout>

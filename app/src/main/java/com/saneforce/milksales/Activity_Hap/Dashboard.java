@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,10 +15,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.camera.core.ImageCapture;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -36,6 +45,10 @@ import com.saneforce.milksales.SFA_Activity.HAPApp;
 import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.common.DatabaseHandler;
 import com.saneforce.milksales.common.SANGPSTracker;
+import com.saneforce.milksales.databinding.ActivityDashboardBinding;
+import com.saneforce.milksales.fragments.GateInOutFragment;
+import com.saneforce.milksales.fragments.MonthlyFragment;
+import com.saneforce.milksales.fragments.TodayFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,12 +56,15 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener {
+    private ActivityDashboardBinding binding;
+    private Context context = this;
     private static String Tag = "HAP_Check-In";
     SharedPreferences CheckInDetails;
     SharedPreferences UserDetails;
@@ -56,7 +72,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     public static final String CheckInDetail = "CheckInDetail";
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String mypreference = "mypref";
-   // TextView username;
+    // TextView username;
     TextView lblUserName, lblEmail;
     Button linMyday, linCheckin, linApprovals, linRequstStaus, linReport, linOnDuty, linSFA, linTaClaim, linExtShift,
             linTourPlan, linExit, lin_check_in, linHolidayWorking, linReCheck;
@@ -73,18 +89,24 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     Integer ClosingKm = 0;
 
 
-
     com.saneforce.milksales.Activity_Hap.Common_Class DT = new com.saneforce.milksales.Activity_Hap.Common_Class();
     DatabaseHandler db;
+
+    private MyViewPagerAdapter myViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        binding = ActivityDashboardBinding.inflate(getLayoutInflater());
+        View view  = binding.getRoot();
+        setContentView(view);
+
+        onClick2();
+        loadFragment();
 
         db = new DatabaseHandler(this);
         //username = findViewById(R.id.username);
-        lblUserName = (TextView) findViewById(R.id.lblUserName);
+        lblUserName = (TextView) findViewById(R.id.user_name);
         lblEmail = (TextView) findViewById(R.id.lblEmail);
         profilePic = findViewById(R.id.profile_image);
         linReCheck = findViewById(R.id.lin_RecheckIn);
@@ -92,6 +114,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         linCheckin = findViewById(R.id.lin_check_in);
         linMyday = findViewById(R.id.lin_myday_plan);
+
         linHolidayWorking = findViewById(R.id.lin_holiday_working);
 
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
@@ -122,18 +145,22 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             Glide.with(this).load(Profile).into(profilePic);
         } catch (Exception e) {
         }
-        //Glide.with(this).load(Uri.parse((UserDetails.getString("url", "")))).into(profilePic);
+        Glide.with(this).load(Uri.parse((UserDetails.getString("url", "")))).into(profilePic);
 
         //profilePic.setImageURI(Uri.parse((UserDetails.getString("url", ""))));
 
         btMyQR = findViewById(R.id.myQR);
         linMyday.setVisibility(View.GONE);
 
+        Log.e("Dashboard", "sSFType :" + sSFType);
+
+
         if (sSFType.equals("1")) {
             linMyday.setVisibility(View.VISIBLE);
             linHolidayWorking.setVisibility(View.GONE);
             linCheckin.setVisibility(View.GONE);
         }
+
 
         linRequstStaus = (findViewById(R.id.lin_request_status));
         linReport = (findViewById(R.id.lin_report));
@@ -199,11 +226,177 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         getcountdetails();
         updateFlxlayout();
 
-//        Log.v("wrkType:",shared_common_pref.getvalue("worktype", ""));
-//        if (shared_common_pref.getvalue("worktype", "").equalsIgnoreCase("43")) {
-//            linCheckin.setVisibility(View.GONE);
-//            linReCheck.setVisibility(View.GONE);
-//        }
+        Log.v("wrkType:",shared_common_pref.getvalue("worktype", ""));
+        if (shared_common_pref.getvalue("worktype", "").equalsIgnoreCase("43")) {
+            linCheckin.setVisibility(View.GONE);
+            linReCheck.setVisibility(View.GONE);
+        }
+    }
+
+    private void onClick2() {
+        binding.linCheckIn.setOnClickListener(v -> {
+            int val = UserDetails.getInt("checkRadius", 0);
+            Log.v("CHECKIN:", "" + val);
+            if (/*sSFType.equals("0")*/UserDetails.getInt("checkRadius", 0) == 1) {
+                String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
+                //  String[] latlongs = "13.0299326:80.2414088".split(":");
+
+                Intent intent = new Intent(Dashboard.this, MapDirectionActivity.class);
+                intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+                intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+                intent.putExtra(Constants.DEST_NAME, "HOLocation");
+                intent.putExtra(Constants.NEW_OUTLET, "checkin");
+                startActivity(intent);
+            } else {
+
+                String ETime = CheckInDetails.getString("CINEnd", "");
+                if (!ETime.equalsIgnoreCase("")) {
+                    String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
+                    String SftId = CheckInDetails.getString("Shift_Selected_Id", "0");
+                    if (DT.GetCurrDateTime(this).getTime() >= DT.getDate(CutOFFDt).getTime() || SftId == "0") {
+                        ETime = "";
+                    }
+                }
+                if (!ETime.equalsIgnoreCase("")) {
+                    Intent takePhoto = new Intent(this, CameraxActivity.class);
+                    takePhoto.putExtra("Mode", "CIN");
+                    takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
+                    takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
+                    takePhoto.putExtra("On_Duty_Flag", CheckInDetails.getString("On_Duty_Flag", "0"));
+                    takePhoto.putExtra("On_Duty_Flag", CheckInDetails.getString("On_Duty_Flag", "0"));
+                    takePhoto.putExtra("ShiftStart", CheckInDetails.getString("ShiftStart", "0"));
+                    takePhoto.putExtra("ShiftEnd", CheckInDetails.getString("ShiftEnd", "0"));
+                    takePhoto.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
+                    startActivity(takePhoto);
+                } else {
+                    Intent i = new Intent(this, Checkin.class);
+                    startActivity(i);
+                }
+
+            }
+        });
+        binding.linMydayPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ClosingKm == 1) {
+                    Intent closingIntet = new Intent(context, AllowanceActivityTwo.class);
+                    closingIntet.putExtra("Cls_con", "cls");
+                    closingIntet.putExtra("Cls_dte", ClosingDate);
+                    startActivity(closingIntet);
+                    finish();
+                } else {
+                    startActivity(new Intent(context, Mydayplan_Activity.class));
+                }
+            }
+        });
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                binding.viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                Objects.requireNonNull(binding.tabLayout.getTabAt(position)).select();
+            }
+        });
+
+        binding.leaveRequestStatus.setOnClickListener(v -> {
+            startActivity(new Intent(context, Leave_Dashboard.class));
+        });
+        binding.taClaim.setOnClickListener(v -> {
+            Shared_Common_Pref.TravelAllowance = 0;
+            startActivity(new Intent(context, TAClaimActivity.class)); //Travel_Allowance
+        });
+        binding.sfa.setOnClickListener(v -> {
+            startActivity(new Intent(context, SFA_Activity.class));
+        });
+        binding.canteenScan.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CateenToken.class);
+            startActivity(intent);
+        });
+
+        binding.gateIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.gateOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.menuBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(context, binding.menuBar);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.month_plan);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu1:
+                                Intent intent = new Intent(context, Tp_Month_Select.class);
+                                startActivity(intent);
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+            }
+        });
+    }
+
+    private void loadFragment() {
+        myViewPagerAdapter = new MyViewPagerAdapter(this);
+        binding.viewPager.setAdapter(myViewPagerAdapter);
+    }
+
+    public static class MyViewPagerAdapter  extends FragmentStateAdapter {
+        public MyViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position){
+                case 0:
+                    return new TodayFragment();
+                case 1:
+                    return new MonthlyFragment();
+                case 2:
+                    return new GateInOutFragment();
+                default:
+                    return new TodayFragment();
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 3;
+        }
     }
 
     @Override
@@ -217,11 +410,20 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         switch (view.getId()) {
 
             case R.id.lin_check_in:
+                /*
+                      Dashboard --> Checkin Btn --> Map --> Selfie --> Submit checkin
+
+                 */
+                   /*
+                      PREVIOUS CODE - OLD DESIGN
+
                 int val = UserDetails.getInt("checkRadius", 0);
                 Log.v("CHECKIN:", "" + val);
-                if (/*sSFType.equals("0")*/UserDetails.getInt("checkRadius", 0) == 1) {
-                    String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
-                    //  String[] latlongs = "13.0299326:80.2414088".split(":");
+                if (UserDetails.getInt("checkRadius", 0) == 1) {
+
+
+
+                        String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
 
                     Intent intent = new Intent(Dashboard.this, MapDirectionActivity.class);
                     intent.putExtra(Constants.DEST_LAT, latlongs[0]);
@@ -240,7 +442,41 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         }
                     }
                     if (!ETime.equalsIgnoreCase("")) {
-                        Intent takePhoto = new Intent(this, ImageCapture.class);
+                        Intent takePhoto = new Intent(this, CameraxActivity.class);
+                        takePhoto.putExtra("Mode", "CIN");
+                        takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
+                        takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
+                        takePhoto.putExtra("On_Duty_Flag", CheckInDetails.getString("On_Duty_Flag", "0"));
+                        takePhoto.putExtra("ShiftStart", CheckInDetails.getString("ShiftStart", "0"));
+                        takePhoto.putExtra("ShiftEnd", CheckInDetails.getString("ShiftEnd", "0"));
+                        takePhoto.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
+                        startActivity(takePhoto);
+
+
+                    String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
+
+                    Intent intent = new Intent(Dashboard.this, MapDirectionActivity.class);
+                    intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+                    intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+                    intent.putExtra(Constants.DEST_NAME, "HOLocation");
+                    intent.putExtra(Constants.NEW_OUTLET, "checkin");
+                    startActivity(intent);
+
+
+                } else {
+
+                    String ETime = CheckInDetails.getString("CINEnd", "");
+                    if (!ETime.equalsIgnoreCase("")) {
+                        String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
+                        String SftId = CheckInDetails.getString("Shift_Selected_Id", "0");
+                        if (DT.GetCurrDateTime(this).getTime() >= DT.getDate(CutOFFDt).getTime() || SftId == "0") {
+                            ETime = "";
+                        }
+                    }
+
+
+                    if (!ETime.equalsIgnoreCase("")) {
+                        Intent takePhoto = new Intent(this, CameraxActivity.class);
                         takePhoto.putExtra("Mode", "CIN");
                         takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
                         takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
@@ -254,7 +490,31 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         startActivity(i);
                     }
 
-                }
+                     */
+
+                    /*
+                            Select shift time. per day only once.
+                            Dashboard -->My day plan Btn --> Select shift time --> Dashboard
+                            if above done :-
+                                   VISIBLE : Checkin Btn;
+                                   GONE : My day plan Btn;
+                       */
+
+                  String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
+                     Intent intent = new Intent(Dashboard.this, MapDirectionActivity.class);
+                     intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+                     intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+                     intent.putExtra(Constants.DEST_NAME, "HOLocation");
+                     intent.putExtra(Constants.NEW_OUTLET, "checkin");
+
+                     intent.putExtra("Mode", "CIN");
+                     intent.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
+                     intent.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
+                     intent.putExtra("On_Duty_Flag", CheckInDetails.getString("On_Duty_Flag", "0"));
+                     intent.putExtra("ShiftStart", CheckInDetails.getString("ShiftStart", "0"));
+                     intent.putExtra("ShiftEnd", CheckInDetails.getString("ShiftEnd", "0"));
+                     intent.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
+                  startActivity(intent);
                 break;
 
             case R.id.lin_request_status:

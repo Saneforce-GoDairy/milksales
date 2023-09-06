@@ -1,14 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#666666">
+        <RelativeLayout
+            android:id="@+id/top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/C50dp"
+            android:layout_marginTop="20dp"
+            android:background="#666666">
+
+            <ImageView
+                android:layout_width="@dimen/C40dp"
+                android:layout_height="@dimen/C40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/person_placeholder_1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Head Quarters_1"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_semibold"/>
+
+            <ImageView
+                android:layout_width="@dimen/C40dp"
+                android:layout_height="@dimen/C40dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/nav_toggle"
+                android:layout_marginRight="10dp"/>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/top"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lets get to work"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_blue_grey"
+                android:text="CLOCK IN"
+                android:textAllCaps="true"
+                android:textColor="#808080"
+                />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_alignParentBottom="true"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="430dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/rounded_dialog_top_right_left"/>
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/my_day_plan_icon"
+                android:layout_centerHorizontal="true"/>
+
+            <LinearLayout
+                android:id="@+id/header2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="120dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="My Day Plan"
+                    />
+
+                <TextView
+                    android:id="@+id/my_day_plan_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/grey_600"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="(28/08/2023)"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/C16dp"
+                android:orientation="vertical"
+                android:layout_below="@id/header2"
+                android:layout_marginTop="@dimen/C16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="WORK TYPE"
+                    android:textColor="@color/grey_600"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_work_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey_600"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C20dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="REMARKS"
+                    android:textColor="@color/grey_600"
+                    android:textSize="13sp"/>
+
+                <EditText
+                    android:id="@+id/edit_remarks1"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:background="@drawable/edit_text_border_radius_grey"
+                    android:hint="Type....."
+                    android:gravity="start"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp"
+                    />
+
+                <Button
+                    android:id="@+id/submit_button1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_password"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/button_blue1"
+                    android:text="SUBMIT"
+                    android:textAllCaps="true"
+                    android:textColor="#FFFFFF"
+                    />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/toolbar3"
@@ -647,7 +828,10 @@
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
-    <include layout="@layout/back_arrow"></include>
+    <include
+        layout="@layout/back_arrow"
+        android:visibility="gone"
+        tools:visibility="gone"></include>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

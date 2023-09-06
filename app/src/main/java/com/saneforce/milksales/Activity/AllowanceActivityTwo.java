@@ -226,7 +226,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-              if (EndedEditText.getText().toString() != null && !EndedEditText.getText().toString().isEmpty() && !EndedEditText.getText().toString().equals("null")) {
+                if (EndedEditText.getText().toString() != null && !EndedEditText.getText().toString().isEmpty() && !EndedEditText.getText().toString().equals("null")) {
                     endKm = Integer.parseInt(EndedEditText.getText().toString());
                     totalPM = Integer.valueOf((EndedEditText.getText().toString())) - Integer.valueOf((TextStartedKm.getText().toString()));
                     if(totalPM<0) totalPM=0;

@@ -20,7 +20,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.WriterException;
-import com.saneforce.milksales.Interface.OnImagePickListener;
 import com.saneforce.milksales.R;
 
 import java.io.ByteArrayOutputStream;
@@ -91,15 +90,15 @@ public class CateenToken extends AppCompatActivity {
                 //finish();
             }
         });
-        ImageCapture.setOnImagePickListener(new OnImagePickListener() {
-            @Override
-            public void OnImagePick(Bitmap image, String FileName) {
-                imgProfile.setImageBitmap(image);
-                SharedPreferences.Editor editor = UserDetails.edit();
-                editor.putString("Profile", String.valueOf(FileName));
-                editor.apply();
-            }
-        });
+//        ImageCapture.setOnImagePickListener(new OnImagePickListener() {
+//            @Override
+//            public void OnImagePick(Bitmap image, String FileName) {
+//                imgProfile.setImageBitmap(image);
+//                SharedPreferences.Editor editor = UserDetails.edit();
+//                editor.putString("Profile", String.valueOf(FileName));
+//                editor.apply();
+//            }
+//        });
         imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/sfProfile.jpg";
         file = new File(imagePath);
         try {
