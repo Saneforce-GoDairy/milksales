@@ -40,6 +40,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.saneforce.milksales.Activity.Util.UpdateUi;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Common_Model;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
@@ -162,8 +163,11 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         ModeTravel = findViewById(R.id.card_travel_mode);
         card_Toplace = findViewById(R.id.card_Toplace);
         Remarkscaption = findViewById(R.id.remarkscaption);
+        chillinglayout = findViewById(R.id.chillinglayout);
         chilling_text = findViewById(R.id.chilling_text);
         Procrumentlayout = findViewById(R.id.Procrumentlayout);
+        hqlayout = findViewById(R.id.hqlayout);
+        shiftypelayout = findViewById(R.id.shiftypelayout);
         hq_text = findViewById(R.id.hq_text);
         shift_type = findViewById(R.id.shift_type);
         route_layout = findViewById(R.id.route_layout);
@@ -383,13 +387,13 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
                 customDialog.show();
                 Log.e("Work_Type_List", String.valueOf(worktypelist));
                 break;
-//            case R.id.chilling_layout:
-//                customDialog = new CustomListViewDialog(Tp_Mydayplan.this, ChillingCenter_List, 6);
-//                Window chillwindow = customDialog.getWindow();
-//                chillwindow.setGravity(Gravity.CENTER);
-//                chillwindow.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-//                customDialog.show();
-//                break;
+            case R.id.chillinglayout:
+                customDialog = new CustomListViewDialog(Tp_Mydayplan.this, ChillingCenter_List, 6);
+                Window chillwindow = customDialog.getWindow();
+                chillwindow.setGravity(Gravity.CENTER);
+                chillwindow.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                customDialog.show();
+                break;
             case R.id.GetEmpId:
                 if (empidedittext.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(this, "Enter the EMP_Id", Toast.LENGTH_SHORT).show();
