@@ -630,12 +630,6 @@
             android:name=".Activity_Hap.Block_Information"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activity_Hap.ImageCaptureActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activity_Hap.ShiftTimeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activity_Hap.Extendedshift_approval"
             android:screenOrientation="portrait" />
         <activity

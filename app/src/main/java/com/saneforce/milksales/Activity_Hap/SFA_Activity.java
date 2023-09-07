@@ -892,7 +892,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        Log.v("CHECKING", "CHECKING");
+        if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.CHECKIN_TYPE)) {
+            finish();
+        }
     }
 
     private void getOfferNotify() {

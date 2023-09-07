@@ -283,9 +283,7 @@ public class Login extends AppCompatActivity {
         startService(inten);
         if (Login == true || CheckIn == true) {
             ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
-            /*PERMISSION REQUEST*/
             if (cameraPermission.checkPermission()) {
-
                 Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
                 if (DAMode == true) {
                     if (isMyServiceRunning(SANGPSTracker.class) == false) {
@@ -750,6 +748,10 @@ public class Login extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     void assignLoginData(Model response, int requestCode) {
+        if (!baseURL.isEmpty()) {
+            shared_common_pref.save(Constants.base_url, baseURL);
+            Log.e("login_info", "Saved to SharedPreference: " + baseURL);
+        }
         try {
 
             shared_common_pref.save(Constants.LOGIN_DATE, com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime());
