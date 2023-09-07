@@ -44,6 +44,7 @@ public class TodayFragment extends Fragment {
     public static final String KEY_USER_DETAIL = "MyPrefs";
     private Gson gson;
     private int LoadingCnt = 0;
+    private String mTest = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

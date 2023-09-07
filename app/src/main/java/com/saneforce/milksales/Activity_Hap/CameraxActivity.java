@@ -253,7 +253,7 @@ public class CameraxActivity extends AppCompatActivity {
             binding.imageView.setVisibility(View.GONE);
             binding.imageOkRetryContainer.setVisibility(View.GONE);
             binding.cameraFunctionContainer.setVisibility(View.VISIBLE);
-            binding.cameraPreview.setVisibility(View.VISIBLE);
+              binding.cameraPreview.setVisibility(View.VISIBLE);
             binding.seekBarChangeBrightness.setVisibility(View.VISIBLE);
         });
         binding.back.setOnClickListener(v -> finish());
