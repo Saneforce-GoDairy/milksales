@@ -1,5 +1,6 @@
 package com.saneforce.milksales.Activity_Hap;
 
+import static android.app.PendingIntent.getActivity;
 import static com.saneforce.milksales.Activity_Hap.ImageCapture.imagePickListener;
 
 import android.Manifest;
@@ -131,6 +132,7 @@ public class CameraxActivity extends AppCompatActivity {
     private Camera camera;
     private Bitmap bitmap;
     private Dialog submitProgressDialog, checkInSuccessDialog;
+    private String capturedImageName;
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -427,7 +429,14 @@ public class CameraxActivity extends AppCompatActivity {
 
 
     public void takePicture(androidx.camera.core.ImageCapture imageCapture) {
-        file = new File(DIR, "checkin_image" + ".jpg");
+
+        UserDetails = getSharedPreferences(UserInfo, Context.MODE_PRIVATE);
+        String SF_Code=UserDetails.getString("Sfcode","");
+
+        long tsLong = System.currentTimeMillis() / 1000;
+        capturedImageName = SF_Code +"_"+Long.toString(tsLong) + ".jpg";
+
+        file = new File(DIR, capturedImageName);
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
         imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(), new androidx.camera.core.ImageCapture.OnImageSavedCallback() {
             @Override
@@ -435,7 +444,7 @@ public class CameraxActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     // Toast.makeText(context, "Image saved at: " + file.getPath(), Toast.LENGTH_SHORT).show();
                     Log.e("image_capture", "Captured image save path :" + file.getPath());
-                    file = new File(DIR, "checkin_image" + ".jpg");
+                    file = new File(DIR, capturedImageName);
                     bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
                     // automatic screen orientation require Android 13 above API 33
@@ -854,7 +863,6 @@ public class CameraxActivity extends AppCompatActivity {
 
 //            Log.e("Image_Capture", imagePath);
 //            Log.e("Image_Capture", imageFileName);
-
 
             if (mMode.equalsIgnoreCase("CIN") || mMode.equalsIgnoreCase("onduty") || mMode.equalsIgnoreCase("holidayentry")) {
                 initSubmitProgressDialog("Check in please wait.");

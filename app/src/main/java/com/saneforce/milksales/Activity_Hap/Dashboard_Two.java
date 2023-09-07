@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.camera.core.ImageCapture;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -472,6 +474,56 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     }
 
     private void onClick2() {
+        binding.taClaim.setOnClickListener(v -> {
+            Shared_Common_Pref.TravelAllowance = 0;
+            startActivity(new Intent(context, TAClaimActivity.class)); //Travel_Allowance
+        });
+        binding.sfa.setOnClickListener(v -> {
+            startActivity(new Intent(context, SFA_Activity.class));
+        });
+        binding.canteenScan.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CateenToken.class);
+            startActivity(intent);
+        });
+
+        binding.gateIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.gateOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.menuBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(context, binding.menuBar);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.month_plan);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu1:
+                                Intent intent = new Intent(context, Tp_Month_Select.class);
+                                startActivity(intent);
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+            }
+        });
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -823,9 +875,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
             Log.e("image_capture", checkInUrl);
 
-            Glide.with(Dashboard_Two.this)
-                    .load(checkInUrl)
-                    .into(binding.imageViewUserProfile);
+//            Glide.with(Dashboard_Two.this)
+//                    .load(checkInUrl)
+//                    .into(binding.imageViewUserProfile);
 
 //            if (Common_Class.isNullOrEmpty(fItm.get("ImgName").getAsString()))
 //                ivCheckIn.setVisibility(View.GONE);
@@ -838,7 +890,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
             try {
                 Glide.with(Dashboard_Two.this)
-                        .load(ApiClient.BASE_URL.replaceAll("server/", "") + fItm.get("EImgName").getAsString())
+                        .load(checkInUrl)
                         .into(binding.imageViewUserProfile);
             } catch (Exception e) {
 

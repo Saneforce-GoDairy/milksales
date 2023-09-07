@@ -61,6 +61,7 @@
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/menu_bar"
                     android:layout_width="@dimen/C40dp"
                     android:layout_height="@dimen/C40dp"
                     android:contentDescription="@null"

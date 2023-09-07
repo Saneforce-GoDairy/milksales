@@ -183,11 +183,15 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/user_profile"
             android:layout_width="@dimen/C40dp"
             android:layout_height="@dimen/C40dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/person_placeholder_0"
-            android:layout_margin="@dimen/C15dp" />
+            android:layout_marginStart="@dimen/C15dp"
+            android:layout_marginTop="@dimen/C15dp"
+            android:layout_marginEnd="@dimen/C15dp"
+            android:layout_marginBottom="@dimen/C15dp"
+            android:src="@drawable/person_placeholder_0" />
     </RelativeLayout>
 
 </RelativeLayout>
