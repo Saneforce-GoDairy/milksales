@@ -135,7 +135,8 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
     private SimpleDateFormat dateFormat;
     private int daysInMonth;
     private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private final int[] daysOfMonth = {31,         28,         31,      30,     31,    30,     31,      31,         30,         31,       30,          31};
+ //                                    0            1,          2,       3,      4,     5,      6,       7,          8,          9,       10           11
     private static final int DAY_OFFSET = 1;
     private int currentDayOfMonth;
     private TextView num_events_per_day;
@@ -296,35 +297,21 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
             binding.nextMonthArrowImg.setScaleX(1);
             binding.currentMonthArrowImg.setScaleX(1);
 
-            SelectedMonth = CM;
-
-            // Initialize calendar
-            Calendar calendar = Calendar.getInstance();
-            CM = calendar.get(Calendar.MONTH);
-            CY = calendar.get(Calendar.YEAR);
-            NM = calendar.get(Calendar.MONTH) + 1;
-
-            // Get current month
-            String currrentmonth = common_class.GetMonthname(CM) + "   " + CY;
-
-            // Get next month
-            String nextmonth = "";
-            if (CM == 11) {
-                CY = CY + 1;
-                nextmonth = common_class.GetMonthname(NM) + "   " + CY;
-            } else
-                nextmonth = common_class.GetMonthname(NM) + "   " + CY;
-
-            Log.e(TAG, common_class.GetMonthname(calendar.get(Calendar.MONTH)));
-            Log.e(TAG, String.valueOf(calendar.get(Calendar.MONTH)));
-
-            // setText
-            binding.month.setText(currrentmonth);
-            tourPlanList.clear();
-            getDateList(CM, year);
+           loadCurrentMonth();
 
         });
         binding.nextMonthBtn1.setOnClickListener(v -> {
+
+            int size1 = tourPlanList.size();
+            if (size1 > 0) {
+                for (int i = 0; i < size1; i++) {
+                    tourPlanList.remove(0);
+                }
+
+                mTpMonthAdapter.notifyItemRangeRemoved(0, size1);
+            }
+
+            list.clear();
 
             final int sdk = Build.VERSION.SDK_INT;
             if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
@@ -378,10 +365,19 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
 
             // setText
             binding.month.setText(nextmonth);
-            tourPlanList.clear();
+
+            int size = tourPlanList.size();
+            if (size > 0) {
+                for (int i = 0; i < size; i++) {
+                    tourPlanList.remove(0);
+                }
+
+                mTpMonthAdapter.notifyItemRangeRemoved(0, size);
+            }
 
 
-            getDateList(NM, year);
+            getDateList(false, NM, year);
+
         });
         binding.submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -402,6 +398,22 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
 
                 if (vali()) {
                     Tp_Submit("0");
+                }
+            }
+        });
+
+        binding.test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "Clear : Clicked");
+
+                int size = tourPlanList.size();
+                if (size > 0) {
+                    for (int i = 0; i < size; i++) {
+                        tourPlanList.remove(0);
+                    }
+
+                    mTpMonthAdapter.notifyItemRangeRemoved(0, size);
                 }
             }
         });
@@ -464,36 +476,7 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         GetTp_List();
         initRecyclerView();
 
-        /*
-           Load current month
-         */
-
-        SelectedMonth = CM;
-
-        // Initialize calendar
-        Calendar calendar = Calendar.getInstance();
-        CM = calendar.get(Calendar.MONTH);
-        CY = calendar.get(Calendar.YEAR);
-        NM = calendar.get(Calendar.MONTH) + 1;
-
-        // Get current month
-        String currrentmonth = common_class.GetMonthname(CM) + "   " + CY;
-
-        // Get next month
-        String nextmonth = "";
-        if (CM == 11) {
-            CY = CY + 1;
-            nextmonth = common_class.GetMonthname(NM) + "   " + CY;
-        } else
-            nextmonth = common_class.GetMonthname(NM) + "   " + CY;
-
-        Log.e(TAG, common_class.GetMonthname(calendar.get(Calendar.MONTH)));
-        Log.e(TAG, String.valueOf(calendar.get(Calendar.MONTH)));
-
-        binding.month.setText(currrentmonth);
-        binding.yearIn.setText(String.valueOf(year));
-        tourPlanList.clear();
-        getDateList(CM + 1, year);
+        loadCurrentMonth();
 
         // Previous code hide xml
         progressbar = findViewById(R.id.progressbar);
@@ -581,6 +564,46 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         }
 
         Get_MydayPlan(common_class.getintentValues("TourDate"));
+    }
+
+    private void loadCurrentMonth() {
+        list.clear();
+        SelectedMonth = CM;
+
+        // Initialize calendar
+        Calendar calendar = Calendar.getInstance();
+        CM = calendar.get(Calendar.MONTH);
+        CY = calendar.get(Calendar.YEAR);
+        NM = calendar.get(Calendar.MONTH) + 1;
+
+        // Get current month
+        String currrentmonth = common_class.GetMonthname(CM) + "   " + CY;
+
+        // Get next month
+        String nextmonth = "";
+        if (CM == 11) {
+            CY = CY + 1;
+            nextmonth = common_class.GetMonthname(NM) + "   " + CY;
+        } else
+            nextmonth = common_class.GetMonthname(NM) + "   " + CY;
+
+        Log.e(TAG, common_class.GetMonthname(calendar.get(Calendar.MONTH)));
+        Log.e(TAG, String.valueOf(calendar.get(Calendar.MONTH)));
+
+        binding.month.setText(currrentmonth);
+        binding.yearIn.setText(String.valueOf(year));
+        tourPlanList.clear();
+
+        /*
+            1 indicate current month
+            0 indicate next month
+
+                 true or false
+     */
+
+        int result = CM;
+
+        getDateList(true, result, year);
     }
 
 //    @Override
@@ -1605,7 +1628,9 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    private void getDateList(int month, int year) {
+    private void getDateList(boolean selected_month, int month, int year) {
+
+        Log.e(TAG, String.valueOf(month));
         Calendar calendar = Calendar.getInstance();
         setCurrentDayOfMonth(calendar.get(Calendar.DAY_OF_MONTH));
         setCurrentWeekDay(calendar.get(Calendar.DAY_OF_WEEK));
@@ -1621,86 +1646,91 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         int nextMonth = 0;
         int nextYear = 0;
 
-        int currentMonth = month - 1;
-        daysInMonth = getNumberOfDaysOfMonth(currentMonth);
+            daysInMonth = getNumberOfDaysOfMonth(month);
 
-        // Gregorian Calendar : MINUS 1, set to FIRST OF MONTH
-        GregorianCalendar cal = new GregorianCalendar(year, currentMonth, 1);
+            // Gregorian Calendar : MINUS 1, set to FIRST OF MONTH
+            GregorianCalendar cal = new GregorianCalendar(year, month, 1);
 
-        if (currentMonth == 11) {
-            prevMonth = currentMonth - 1;
-            daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
-            nextMonth = 0;
-            prevYear = year;
-            nextYear = year + 1;
-        } else if (currentMonth == 0) {
-            prevMonth = 11;
-            prevYear = year - 1;
-            nextYear = year;
-            daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
-            nextMonth = 1;
-        } else {
-            prevMonth = currentMonth - 1;
-            nextMonth = currentMonth + 1;
-            nextYear = year;
-            prevYear = year;
-            daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
-        }
+            if (month == 11) {
+                prevMonth = month - 1;
+                daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
+                nextMonth = 0;
+                prevYear = year;
+                nextYear = year + 1;
+            } else if (month == 0) {
+                prevMonth = 11;
+                prevYear = year - 1;
+                nextYear = year;
+                daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
+                nextMonth = 1;
+            }
 
-        int currentWeekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        trailingSpaces = currentWeekDay;
+            int currentWeekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            trailingSpaces = currentWeekDay;
 
-        if (cal.isLeapYear(cal.get(Calendar.YEAR)) && month == 1) {
-            ++daysInMonth;
-        }
+            if (cal.isLeapYear(cal.get(Calendar.YEAR)) && month == 1) {
+                ++daysInMonth;
+            }
 
-        // Trailing Month days
+            // Trailing Month days
 //        for (int i = 0; i < trailingSpaces; i++) {
 //            list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-" + getMonthAsString(prevMonth) + "-" + prevYear);
 //        }
 
-        // Current Month Days
-        for (int i = 1; i <= daysInMonth; i++) {
-            if (CheckTp_View(i).equals("1") || CheckTp_View(i).equals("3")) {
-                Log.e("getCurrentDayOfMonth", String.valueOf(i) + "-BLUE" + "-" + mCurrentDateString + "-" + year + "  " + getMonthAsString(currentMonth) + "DATE " + getCurrentDayOfMonth() + "-" + getMonthAsString(currentMonth) + "=" + year);
-                if (CheckTp_View(i).equals("1")) {
-                    Log.e("PENDING_COLOR", CheckTp_View(i));
-                    list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + year);
-                } else {
-                    Log.e("APPROVED_COLOR", CheckTp_View(i));
-                    list.add(String.valueOf(i) + "-GREEN" + "-" + getMonthAsString(currentMonth) + "-" + year);
-                }
+            // Current Month Days
+            for (int i = 1; i <= daysInMonth; i++) {
+                if (CheckTp_View(i).equals("1") || CheckTp_View(i).equals("3")) {
+                    Log.e("getCurrentDayOfMonth", String.valueOf(i) + "-BLUE" + "-" + mCurrentDateString + "-" + year + "  " + getMonthAsString(month) + "DATE " + getCurrentDayOfMonth() + "-" + getMonthAsString(month) + "=" + year);
+                    if (CheckTp_View(i).equals("1")) {
+                        Log.e("PENDING_COLOR", CheckTp_View(i));
+                        list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(month) + "-" + year);
+                    } else {
+                        Log.e("APPROVED_COLOR", CheckTp_View(i));
+                        list.add(String.valueOf(i) + "-GREEN" + "-" + getMonthAsString(month) + "-" + year);
+                    }
                    /* if (getMonthAsString(currentMonth).equals(curentDateString)) {
                         list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                         Log.d("getCurrentDayOfMonth11", String.valueOf(i) + "-BLUE" + "-" + curentDateString + "-" + yy + "  " + getMonthAsString(currentMonth));
                     } else {
                         list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                     }*/
-            } else {
-                list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + year);
+                } else {
+                    list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(month) + "-" + year);
+                }
+
+                Log.e("DAY_of_month", String.valueOf(list.get(i - 1)));
             }
 
-            Log.e("DAY_of_month", String.valueOf(list.get(i - 1)));
-        }
+//        // Leading Month days
+//        for (int i = 0; i < list.size() % 7; i++) {
+//            list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
+//        }
+            for (int i = 0; i < list.size(); i++) {
+                Log.e("DAYCOLOR", String.valueOf(list.get(i)));
+                Log.e("Days_In_A month", String.valueOf(daysInMonth));
+            }
 
-        // Leading Month days
-        for (int i = 0; i < list.size() % 7; i++) {
-            list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
-        }
-        for (int i = 0; i < list.size(); i++) {
-            Log.e("DAYCOLOR", String.valueOf(list.get(i)));
-            Log.e("Days_In_A month", String.valueOf(daysInMonth));
-        }
+            eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
 
-        eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
+            // clear current month
+            // binding.recyclerView.setAdapter(null);
 
-        for (String member : list){
-            Log.i(TAG, "Number Of Events Per Month : " + member);
-            TourPlan tourPlan = new TourPlan();
-            tourPlan.setDay_month(member);
-            tourPlanList.add(tourPlan);
-            mTpMonthAdapter.notifyDataSetChanged();
-        }
+
+
+            for (String member : list){
+                Log.i(TAG, "Number Of Events Per Month : " + member);
+                TourPlan tourPlan = new TourPlan();
+                tourPlan.setDay_month(member);
+                tourPlanList.add(tourPlan);
+
+
+                mTpMonthAdapter.notifyDataSetChanged();
+            }
+
+
+        Log.e(TAG, "Selected month: CM " + month);
+
+
     }
 
     private void initRecyclerView() {
@@ -1709,6 +1739,7 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setItemViewCacheSize(20);
+        binding.recyclerView.setAdapter(null);
         binding.recyclerView.setAdapter(mTpMonthAdapter);
     }
 
@@ -2140,13 +2171,13 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
             int nextYear = 0;
 
             int currentMonth = mm - 1;
-            daysInMonth = getNumberOfDaysOfMonth(currentMonth);
+        //    daysInMonth = getNumberOfDaysOfMonth(currentMonth);
             // Gregorian Calendar : MINUS 1, set to FIRST OF MONTH
             GregorianCalendar cal = new GregorianCalendar(yy, currentMonth, 1);
 
             if (currentMonth == 11) {
                 prevMonth = currentMonth - 1;
-                daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
+             //   daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
                 nextMonth = 0;
                 prevYear = yy;
                 nextYear = yy + 1;
@@ -2154,14 +2185,14 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
                 prevMonth = 11;
                 prevYear = yy - 1;
                 nextYear = yy;
-                daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
+         //       daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
                 nextMonth = 1;
             } else {
                 prevMonth = currentMonth - 1;
                 nextMonth = currentMonth + 1;
                 nextYear = yy;
                 prevYear = yy;
-                daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
+           //     daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
             }
 
             int currentWeekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;

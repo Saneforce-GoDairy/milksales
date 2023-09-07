@@ -12,11 +12,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.saneforce.milksales.Activity_Hap.Common_Class;
+import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
 import com.saneforce.milksales.Common_Class.Constants;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
@@ -115,6 +118,12 @@ public class TodayFragment extends Fragment {
 
             binding.checkOutTime.setText(fItm.get("ET").getAsString());
             binding.geoOut.setText(fItm.get("GeoOut").getAsString());
+
+          String  checkInUrl =  fItm.get("ImgName").getAsString();
+                    Glide.with(requireContext())
+                    .load(ApiClient.BASE_URL.replaceAll("server/", "") + fItm.get("EImgName").getAsString())
+                            .apply(RequestOptions.circleCropTransform())
+                    .into(binding.userProfile);
         }catch (Exception ignored) {
 
         }
