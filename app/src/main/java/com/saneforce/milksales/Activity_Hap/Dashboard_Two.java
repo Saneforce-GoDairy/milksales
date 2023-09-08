@@ -4,6 +4,7 @@ package com.saneforce.milksales.Activity_Hap;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -16,7 +17,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.camera.core.ImageCapture;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -92,33 +91,17 @@ import retrofit2.Response;
 
 public class Dashboard_Two extends AppCompatActivity implements View.OnClickListener/*, Main_Model.MasterSyncView*/ {
     private ActivityDashboardTwoBinding binding;
-    private Context context = this;
-    private static String Tag = "HAP_Check-In";
-    SharedPreferences CheckInDetails;
-    SharedPreferences UserDetails;
-    public static final String CheckInDetail = "CheckInDetail";
-    public static final String UserDetail = "MyPrefs";
-    private final String[] mns = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    private final Context context = this;
+    private SharedPreferences CheckInDetails, UserDetails, sharedpreferences;
 
     private Shared_Common_Pref mShared_common_pref;
     private GateEntryQREvents GateEvents;
-    private RecyclerView recyclerView;
-    private HomeRptRecyler mAdapter;
-    private String viewMode = "", sSFType = "", mPriod = "0";
+    private Common_Class DT = new Common_Class();
+
     int cModMnth = 1;
-    private Button viewButton;
-    private Button StActivity, cardview3, cardview4, cardView5, btnCheckout, btnApprovals, btnExit;
-    private String AllowancePrefernce = "";
-    private ImageView btMyQR,btnCloseOffer;
-    private LinearLayout linOffer;
-    public static final String mypreference = "mypref";
-    public static final String Name = "Allowance";
-    public static final String MOT = "ModeOfTravel";
-    public static final String SKM = "Started_km";
+    int LoadingCnt = 0;
 
-    private String PrivacyScreen = "", ModeOfTravel = "";
-    SharedPreferences sharedpreferences;
-
+    private static final String Tag = "HAP_Check-In";
     public static final String hapLocation = "hpLoc";
     public static final String otherLocation = "othLoc";
     public static final String visitPurpose = "vstPur";
@@ -127,29 +110,39 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     public static final String modeFromKm = "SharedFromKmsss";
     public static final String modeToKm = "SharedToKmsss";
     public static final String StartedKm = "StartedKMsss";
-
-    private RecyclerView mRecyclerView,ryclOffers;
-    /*String Mode = "Bus";*/
-    private Button btnGateIn, btnGateOut;
-    private ImageView mvPrvMn, mvNxtMn;
-    private GateAdapter gateAdap;
-    private CardView cardGateDet;
+    public static final String CheckInDetail = "CheckInDetail";
+    public static final String UserDetail = "MyPrefs";
+    public static final String mypreference = "mypref";
+    public static final String Name = "Allowance";
+    public static final String MOT = "ModeOfTravel";
+    public static final String SKM = "Started_km";
+    private final String[] mns = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    private final String AllowancePrefernce = "";
+    private String viewMode = "", sSFType = "", mPriod = "0";
+    private final String PrivacyScreen = "";
+    private final String ModeOfTravel = "";
     private String dashMdeCnt = "";
     private String datefrmt = "";
+    private final String TAG = "Dashboard_Two";
+    private String checkInUrl = "";
+    private String timerDate, key, timerTime;
+
+    private Button StActivity, cardview3, cardview4, cardView5, btnCheckout, btnApprovals, btnExit, viewButton;
+    private Button btnGateIn, btnGateOut;
+    private RecyclerView recyclerView, mRecyclerView,ryclOffers;
+    private ImageView btMyQR,btnCloseOffer, mvPrvMn, mvNxtMn;
+    private CircleImageView ivCheckIn;
+    private LinearLayout linOffer;
+    private CardView cardGateDet;
     private TextView TxtEmpId, txDesgName, txHQName, txDeptName, txRptName,tvapprCnt,lblSlideNo;
 
-    private Common_Class DT = new Common_Class();
     private ShimmerFrameLayout mShimmerViewContainer;
-    int LoadingCnt = 0;
-    private String TAG = "Dashboard_Two:LOG ";
-    private DatabaseHandler db;
-    private String key;
     private Gson gson;
-    private String checkInUrl = "";
+
+    private DatabaseHandler db;
     private MyViewPagerAdapter myViewPagerAdapter;
-    String timerTime;
-    String timerDate;
-    CircleImageView ivCheckIn;
+    private HomeRptRecyler mAdapter;
+    private GateAdapter gateAdap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +163,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                             Thread.sleep(1000);
                             runOnUiThread(() -> {
                                 checkInTimer();
-                                Log.e("check_in_home", "Time counter : updated");
+                                Log.e(TAG, "Time counter : updated");
                             });
                         }
                     } catch (InterruptedException ignored) {
@@ -183,14 +176,13 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             db = new DatabaseHandler(this);
             gson = new Gson();
 
-
             mShared_common_pref = new Shared_Common_Pref(this);
             mShared_common_pref.save("Dashboard", "one");
             sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
 
             if (sharedpreferences.contains("SharedMode")) {
                 dashMdeCnt = sharedpreferences.getString("SharedMode", "");
-                Log.e("Privacypolicy_MODE", dashMdeCnt);
+                Log.e(TAG,"Privacypolicy_MODE : " + dashMdeCnt);
             }
 
             datefrmt = com.saneforce.milksales.Common_Class.Common_Class.GetDateOnly();
@@ -199,12 +191,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             btMyQR = findViewById(R.id.myQR);
             TextView txtHelp = findViewById(R.id.toolbar_help);
             ImageView imgHome = findViewById(R.id.toolbar_home);
-            txtHelp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), Help_Activity.class));
-                }
-            });
+            txtHelp.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Help_Activity.class)));
 
             CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
             UserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
@@ -232,37 +219,20 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
             TextView txtErt = findViewById(R.id.toolbar_ert);
             TextView txtPlaySlip = findViewById(R.id.toolbar_play_slip);
-            txtErt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), ERT.class));
-                }
-            });
-            txtPlaySlip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), PayslipFtp.class));
-                }
+            txtErt.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ERT.class)));
+            txtPlaySlip.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PayslipFtp.class)));
+
+            btMyQR.setOnClickListener(v -> {
+                Intent intent = new Intent(context, CateenToken.class);
+                startActivity(intent);
             });
 
-            btMyQR.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Dashboard_Two.this, CateenToken.class);
-                    startActivity(intent);
-                }
-            });
             Calendar c = Calendar.getInstance();
             SimpleDateFormat dpln = new SimpleDateFormat("yyyy-MM-dd");
             String plantime = dpln.format(c.getTime());
 
             gatevalue(plantime);
-            QRCodeScanner.bindEvents(new GateEntryQREvents() {
-                @Override
-                public void RefreshGateEntrys() {
-                    gatevalue(plantime);
-                }
-            });
+            QRCodeScanner.bindEvents(() -> gatevalue(plantime));
             ObjectAnimator textColorAnim;
             textColorAnim = ObjectAnimator.ofInt(txtErt, "textColor", Color.WHITE, Color.TRANSPARENT);
             textColorAnim.setDuration(500);
@@ -271,12 +241,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             textColorAnim.setRepeatMode(ValueAnimator.REVERSE);
             textColorAnim.start();
 
-            imgHome.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!viewMode.equalsIgnoreCase("CIN"))
-                        startActivity(new Intent(getApplicationContext(), Dashboard.class));
-                }
+            imgHome.setOnClickListener(v -> {
+                if (!viewMode.equalsIgnoreCase("CIN"))
+                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
             });
 
             TextView txUserName = findViewById(R.id.user_name);
@@ -292,25 +259,20 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             mPriod = "0";
             mvNxtMn = findViewById(R.id.nxtMn);
             mvPrvMn = findViewById(R.id.prvMn);
-            mvNxtMn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mPriod == "-1") {
-                        mPriod = "0";
-                        getMnthReports(0);
-                    }
+            mvNxtMn.setOnClickListener(v -> {
+                if (mPriod == "-1") {
+                    mPriod = "0";
+                    getMnthReports(0);
                 }
             });
 
-            mvPrvMn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mPriod == "0") {
-                        mPriod = "-1";
-                        getMnthReports(-1);
-                    }
+            mvPrvMn.setOnClickListener(v -> {
+                if (mPriod == "0") {
+                    mPriod = "-1";
+                    getMnthReports(-1);
                 }
             });
+
             cardGateDet = findViewById(R.id.cardGateDet);
             btnGateIn = findViewById(R.id.btn_gate_in);
             btnGateOut = findViewById(R.id.btn_gate_out);
@@ -318,8 +280,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             mRecyclerView = findViewById(R.id.gate_recycle);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(layoutManager);
-            //mRecyclerView.stopScroll();
-
 
             StActivity = findViewById(R.id.StActivity);
             btnCheckout = findViewById(R.id.check_out_btn);
@@ -428,21 +388,12 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         getMnthReports(0);
         GetMissedPunch();
         getcountdetails();
-        btnCloseOffer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                linOffer.setVisibility(View.GONE);
-            }
-        });
+        btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
     }
 
     private void checkInTimer() {
-
-
-
         String checkInTimeStamp = timerDate + " " + timerTime;
-//            String checkInDateStamp = fItm.get("").getAsString();
-        Log.e("check_in_home", "Check in TimeStamp : " + checkInTimeStamp);
+        Log.e(TAG, "Check in TimeStamp : " + checkInTimeStamp);
 
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
         Date d1;
@@ -493,36 +444,27 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        binding.gateOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.gateOut.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
-        binding.menuBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(context, binding.menuBar);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.month_plan);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menu1:
-                                Intent intent = new Intent(context, Tp_Month_Select.class);
-                                startActivity(intent);
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                //displaying the popup
-                popup.show();
-            }
+        binding.leaveRequestStatus.setOnClickListener(v -> startActivity(new Intent(context, Leave_Dashboard.class)));
+
+        binding.menuBar.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(context, binding.menuBar);
+            popup.inflate(R.menu.month_plan);
+            popup.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.tour_plan:
+                        Intent intent = new Intent(context, Tp_Month_Select.class);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.logout:
+                        Toast.makeText(context, "Can't logout. Please check-out", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return false;
+            });
+            popup.show();
         });
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -593,21 +535,18 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                     try {
                         JsonArray res = response.body();
-                        Log.d("getOfferNotify", String.valueOf(response.body()));
-                        //  Log.d("NotifyMsg", response.body().toString());
+                        Log.d(TAG, "getOfferNotify" + response.body());
                         JSONArray sArr=new JSONArray(String.valueOf(response.body()));
                         assignOffGetNotify(sArr);
                         mShared_common_pref.save(Constants.DB_SFWish_NOTIFY, gson.toJson(response.body()));
-                    } catch (Exception e) {
-
+                    } catch (Exception ignored) {
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<JsonArray> call, Throwable t) {
 
-                    Log.d("Tag", String.valueOf(t));
+                    Log.d(TAG, String.valueOf(t));
                 }
             });
 
@@ -656,7 +595,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             });
             ryclOffers.setAdapter(TyplistItems);
@@ -687,15 +625,12 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                         //  Log.d("NotifyMsg", response.body().toString());
                         assignGetNotify(res);
                         mShared_common_pref.save(Constants.DB_TWO_GET_NOTIFY, gson.toJson(response.body()));
-                    } catch (Exception e) {
-
+                    } catch (Exception ignored) {
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<JsonArray> call, Throwable t) {
-
                     Log.d(Tag, String.valueOf(t));
                 }
             });
@@ -706,7 +641,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             assignGetNotify(arr);
         }
     }
-
 
     void assignGetNotify(JsonArray res) {
         TextView txt = findViewById(R.id.MRQtxt);
@@ -756,7 +690,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                     assignMnthReports(response.body(), m);
                     mShared_common_pref.save(Constants.DB_TWO_GET_MREPORTS+"_"+mns[fmn - 1], gson.toJson(response.body()));
-
                 }
 
                 @Override
@@ -776,8 +709,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
     private void assignMnthReports(JsonArray res, int m) {
         try {
-//            JsonArray res = response.body();
-//            Log.d(TAG + "getMnthReports", String.valueOf(response.body()));
             JsonArray dyRpt = new JsonArray();
             for (int il = 0; il < res.size(); il++) {
                 JsonObject Itm = res.get(il).getAsJsonObject();
@@ -790,25 +721,20 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 dyRpt.add(newItem);
             }
 
-            recyclerView = (RecyclerView) findViewById(R.id.Rv_MnRpt);
+            recyclerView = findViewById(R.id.Rv_MnRpt);
             mAdapter = new HomeRptRecyler(dyRpt, Dashboard_Two.this);
 
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(mAdapter);
-            // Log.d(Tag, String.valueOf(res));
             LoadingCnt++;
             hideShimmer();
-        } catch (Exception e) {
-
+        } catch (Exception ignored) {
         }
-
     }
 
     private void getDyReports() {
-
-        // appendDS = appendDS + "&divisionCode=" + userData.divisionCode + "&sfCode=" + sSF + "&rSF=" + userData.sfCode + "&State_Code=" + userData.State_Code;
         if (Common_Class.isNullOrEmpty(mShared_common_pref.getvalue(Constants.DB_TWO_GET_DYREPORTS))) {
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Call<JsonArray> rptCall = apiInterface.getDataArrayList("get/AttnDySty",
@@ -822,11 +748,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                         assignDyReports(response.body());
                         mShared_common_pref.save(Constants.DB_TWO_GET_DYREPORTS, gson.toJson(response.body()));
                     } catch (Exception e) {
-
                         LoadingCnt++;
                         hideShimmer();
                     }
-
                 }
 
                 @Override
@@ -843,18 +767,12 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             assignDyReports(arr);
         }
         ImageView backView = findViewById(R.id.imag_back);
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnBackPressedDispatcher.onBackPressed();
-            }
-        });
+        backView.setOnClickListener(v -> mOnBackPressedDispatcher.onBackPressed());
     }
 
     private void assignDyReports(JsonArray res) {
         try {
-            // JsonArray res = response.body();
-            //  Log.v(TAG + "getDyReports", res.toString());
+            Log.v(TAG + "getDyReports", res.toString());
             if (res.size() < 1) {
                 Toast.makeText(getApplicationContext(), "No Records Today", Toast.LENGTH_LONG).show();
 
@@ -864,8 +782,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             }
             JsonObject fItm = res.get(0).getAsJsonObject();
             TextView txDyDet = findViewById(R.id.lTDyTx);
-            //  txDyDet.setText(Html.fromHtml(fItm.get("AttDate").getAsString() + "<br><small>" + fItm.get("AttDtNm").getAsString() + "</small>"));
-
             txDyDet.setText(fItm.get("AttDtNm").getAsString() + "   " + fItm.get("AttDate").getAsString());
 
             ivCheckIn = findViewById(R.id.image_view_user_profile);
@@ -873,7 +789,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             checkInUrl = ApiClient.BASE_URL.replaceAll("server/", "");
             checkInUrl = checkInUrl + fItm.get("ImgName").getAsString();
 
-            Log.e("image_capture", checkInUrl);
+            Log.e(TAG, "image_capture : " + checkInUrl);
 
 //            Glide.with(Dashboard_Two.this)
 //                    .load(checkInUrl)
@@ -888,14 +804,13 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 //                        .into(ivCheckIn);
 //            }
 
-            try {
-                Glide.with(Dashboard_Two.this)
-                        .load(checkInUrl)
-                        .into(binding.imageViewUserProfile);
-            } catch (Exception e) {
-
-            }
-
+//            try {
+//                Glide.with(Dashboard_Two.this)
+//                        .load(checkInUrl)
+//                        .into(binding.imageViewUserProfile);
+//            } catch (Exception e) {
+//
+//            }
 
             ivCheckIn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -915,7 +830,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                         intent.putExtra("ImageUrl", ApiClient.BASE_URL.replaceAll("server/", "") + fItm.get("EImgName").getAsString());
                         startActivity(intent);
                     }
-
                 }
             });
 
@@ -1020,7 +934,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(Dashboard_Two.this, "There is no back action", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "There is no back action", Toast.LENGTH_LONG).show();
     }
 
     private final OnBackPressedDispatcher mOnBackPressedDispatcher =
@@ -1046,9 +960,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     try {
-
-
-                        Log.d(TAG + "GetMissedPunch", String.valueOf(response.body()));
+                        Log.d(TAG , "GetMissedPunch :" + String.valueOf(response.body()));
                         JsonObject itm = response.body().getAsJsonObject();
                         String mMessage = "";
 
@@ -1073,7 +985,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                         }
                                     })
                                     .show();
-
                         }
                         else {
 
@@ -1105,7 +1016,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                             iLeave.putExtra("EDt", mItem.get("EDt").getAsString());
                                             Dashboard_Two.this.startActivity(iLeave);
 
-                                            ((AppCompatActivity) Dashboard_Two.this).finish();
+                                            Dashboard_Two.this.finish();
                                         }
                                     });
 
@@ -1117,7 +1028,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                             Intent iWeekOff = new Intent(Dashboard_Two.this, Weekly_Off.class);
                                             iWeekOff.putExtra("EDt", mItem.get("EDt").getAsString());
                                             Dashboard_Two.this.startActivity(iWeekOff);
-                                            ((AppCompatActivity) Dashboard_Two.this).finish();
+                                            Dashboard_Two.this.finish();
                                         }
                                     });
 
@@ -1129,11 +1040,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                             Intent iLeave = new Intent(Dashboard_Two.this, DeviationEntry.class);
                                             iLeave.putExtra("EDt", mItem.get("EDt").getAsString());
                                             Dashboard_Two.this.startActivity(iLeave);
-
-                                            ((AppCompatActivity) Dashboard_Two.this).finish();
+                                            Dashboard_Two.this.finish();
                                         }
                                     });
-
                                     alertDialog.setView(view);
                                     alertDialog.show();
 
@@ -1210,35 +1119,29 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 //                                    alertDialog.show();
                                 }
                                 else {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(Dashboard_Two.this)
+                                    new AlertDialog.Builder(Dashboard_Two.this)
                                             .setTitle(HAPApp.Title)
                                             .setMessage(Html.fromHtml(mMessage))
                                             .setCancelable(false)
                                             .setPositiveButton("Others", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
-
-
                                                     JsonObject mItem = WKItems.get(0).getAsJsonObject();
                                                     Intent iLeave = new Intent(Dashboard_Two.this, Leave_Request.class);
                                                     iLeave.putExtra("EDt", mItem.get("EDt").getAsString());
                                                     Dashboard_Two.this.startActivity(iLeave);
-
-                                                    ((AppCompatActivity) Dashboard_Two.this).finish();
+                                                    Dashboard_Two.this.finish();
                                                 }
                                             })
                                             .show();
                                 }
                             }
-
                             getOfferNotify();
                         }
                     } catch (Exception e) {
                         LoadingCnt++;
                         hideShimmer();
                     }
-
-
                 }
 
                 @Override
@@ -1248,10 +1151,11 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 }
 
             });
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         Intent intent = null;
@@ -1284,26 +1188,20 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                         .setTitle(HAPApp.Title)
                         .setMessage(Html.fromHtml("Are you sure to start your Today Activity Now ?"))
                         .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                        .setPositiveButton("Yes", (dialogInterface, i) -> {
 
 
-                                Intent aIntent;
-                                String sDeptType = UserDetails.getString("DeptType", "");
-                                Log.d("DeptType", sDeptType);
+                            Intent aIntent;
+                            String sDeptType = UserDetails.getString("DeptType", "");
+                            Log.d(TAG, "DeptType : " + sDeptType);
 
-                                mShared_common_pref.save("ActivityStart", "true");
-                                if (sDeptType.equalsIgnoreCase("1")) {
+                            mShared_common_pref.save("ActivityStart", "true");
+                            if (sDeptType.equalsIgnoreCase("1")) {
 //                                    aIntent = new Intent(getApplicationContext(), ProcurementDashboardActivity.class);
 //                                    startActivity(aIntent);
-
-                                    startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
-
-
-                                } else {
-
-                                    startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
+                                startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
+                            } else {
+                                startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
 
 //                                    JSONObject jParam = new JSONObject();
 //                                    try {
@@ -1342,26 +1240,21 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 //                                                }
 //                                            });
 //                                    if (jsonArray.length() > 0) {
-                                    // startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
-                                    //}
-                                    /*Shared_Common_Pref.Sync_Flag = "0";
-                                    com.hap.checkinproc.Common_Class.Common_Class common_class = new com.hap.checkinproc.Common_Class.Common_Class(Dashboard_Two.this);
+                                // startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
+                                //}
+                                /*Shared_Common_Pref.Sync_Flag = "0";
+                                com.hap.checkinproc.Common_Class.Common_Class common_class = new com.hap.checkinproc.Common_Class.Common_Class(Dashboard_Two.this);
 
 //                                    if (common_class.checkValueStore(Dashboard_Two.this, Retailer_OutletList)) {
 //                                        startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
 //                                    } else {
-                                    common_class.getDataFromApi(Distributor_List, Dashboard_Two.this, false);
-                                    // }*/
+                                common_class.getDataFromApi(Distributor_List, Dashboard_Two.this, false);
+                                // }*/
 
 
-                                }
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
+                        .setNegativeButton("No", (dialogInterface, i) -> {
                         })
                         .show();
                 break;
@@ -1479,19 +1372,8 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-
-//        loadProfileImage();
-
         GetMissedPunch();
         Log.v("LOG_IN_LOCATION", "ONRESTART");
-    }
-
-    private void loadProfileImage() {
-        Glide.with(Dashboard_Two.this)
-                .load(checkInUrl)
-                .into(binding.ivCheckIn);
-
-        Log.e("image_capture", checkInUrl);
     }
 
     public void getcountdetails() {
@@ -1553,7 +1435,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 try {
                     JsonArray jsonArray = response.body();
-                    Log.d(TAG + "gatevalue", String.valueOf(response.body()));
+                    Log.d(TAG ,"gatevalue : " + String.valueOf(response.body()));
 
                     gateAdap = new GateAdapter(Dashboard_Two.this, jsonArray);
                     mRecyclerView.setAdapter(gateAdap);
@@ -1565,8 +1447,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
                 }
 */
-                } catch (Exception e) {
-
+                } catch (Exception ignored) {
                 }
             }
 
@@ -1575,8 +1456,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
             }
         });
-
-
     }
 
     public void sendAlarmNotify(int AlmID, long AlmTm, String NotifyTitle, String NotifyMsg) {

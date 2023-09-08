@@ -1075,7 +1075,6 @@ public class CameraxActivity extends AppCompatActivity {
                                         @Override
                                         public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                                             common_class.clearLocData(CameraxActivity.this);
-
                                             mShared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
                                             mShared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
                                             mShared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);

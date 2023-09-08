@@ -65,32 +65,30 @@ import retrofit2.Response;
 public class Dashboard extends AppCompatActivity implements View.OnClickListener {
     private ActivityDashboardBinding binding;
     private Context context = this;
-    private static String Tag = "HAP_Check-In";
-    SharedPreferences CheckInDetails;
-    SharedPreferences UserDetails;
 
     public static final String CheckInDetail = "CheckInDetail";
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String mypreference = "mypref";
-    // TextView username;
-    TextView lblUserName, lblEmail;
-    Button linMyday, linCheckin, linApprovals, linRequstStaus, linReport, linOnDuty, linSFA, linTaClaim, linExtShift,
-            linTourPlan, linExit, lin_check_in, linHolidayWorking, linReCheck;
-    Integer type, OTFlg = 0;
-    Common_Class common_class;
-    TextView approvalcount;
-    Shared_Common_Pref shared_common_pref;
-    String imageProfile = "", sSFType = "";
-    String onDuty = "", ClosingDate = "";
-    ImageView profilePic, btMyQR;
-    SharedPreferences.Editor editors;
-    SharedPreferences sharedpreferences;
-    RelativeLayout mRelApproval;
-    Integer ClosingKm = 0;
+    private static String Tag = "HAP_Check-In";
+    private String imageProfile = "", sSFType = "";
+    private String onDuty = "", ClosingDate = "";
 
+    private Integer ClosingKm = 0;
+    private Integer type, OTFlg = 0;
 
-    com.saneforce.milksales.Activity_Hap.Common_Class DT = new com.saneforce.milksales.Activity_Hap.Common_Class();
-    DatabaseHandler db;
+    private RelativeLayout mRelApproval;
+    private ImageView profilePic, btMyQR;
+    private TextView lblUserName, lblEmail;
+    private TextView approvalcount;
+    private Button linMyday, linCheckin, linApprovals, linRequstStaus, linReport, linOnDuty, linSFA;
+    private Button linTourPlan, linExit, lin_check_in, linHolidayWorking, linReCheck, linTaClaim, linExtShift;
+
+    private SharedPreferences.Editor editors;
+    private SharedPreferences CheckInDetails, UserDetails, sharedpreferences;
+    private Common_Class common_class;
+    private Shared_Common_Pref shared_common_pref;
+    private com.saneforce.milksales.Activity_Hap.Common_Class DT = new com.saneforce.milksales.Activity_Hap.Common_Class();
+    private DatabaseHandler db;
 
     private MyViewPagerAdapter myViewPagerAdapter;
 
@@ -104,7 +102,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         onClick2();
         loadFragment();
 
-        db = new DatabaseHandler(this);
+        db = new DatabaseHandler(context);
         //username = findViewById(R.id.username);
         lblUserName = (TextView) findViewById(R.id.user_name);
         lblEmail = (TextView) findViewById(R.id.lblEmail);
@@ -123,11 +121,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         Get_MydayPlan(1, "check/mydayplan");
         getHapLocations();
         getHAPWorkTypes();
-        shared_common_pref = new Shared_Common_Pref(this);
+        shared_common_pref = new Shared_Common_Pref(context);
 
         type = (UserDetails.getInt("CheckCount", 0));
 
-        common_class = new Common_Class(this);
+        common_class = new Common_Class(context);
 
         String eMail = UserDetails.getString("email", "");
         String sSFName = UserDetails.getString("SfName", "");
@@ -142,10 +140,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         lblEmail.setText(eMail);
         try {
             Uri Profile = Uri.parse(shared_common_pref.getvalue(Shared_Common_Pref.Profile));
-            Glide.with(this).load(Profile).into(profilePic);
+            Glide.with(context).load(Profile).into(profilePic);
         } catch (Exception e) {
         }
-        Glide.with(this).load(Uri.parse((UserDetails.getString("url", "")))).into(profilePic);
+        Glide.with(context).load(Uri.parse((UserDetails.getString("url", "")))).into(profilePic);
 
         //profilePic.setImageURI(Uri.parse((UserDetails.getString("url", ""))));
 
@@ -202,12 +200,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             mRelApproval.setVisibility(View.VISIBLE);
         }
 
-        btMyQR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Dashboard.this, CateenToken.class);
-                startActivity(intent);
-            }
+        btMyQR.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CateenToken.class);
+            startActivity(intent);
         });
 
         linMyday.setOnClickListener(this);
@@ -241,7 +236,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
                 //  String[] latlongs = "13.0299326:80.2414088".split(":");
 
-                Intent intent = new Intent(Dashboard.this, MapDirectionActivity.class);
+                Intent intent = new Intent(context, MapDirectionActivity.class);
                 intent.putExtra(Constants.DEST_LAT, latlongs[0]);
                 intent.putExtra(Constants.DEST_LNG, latlongs[1]);
                 intent.putExtra(Constants.DEST_NAME, "HOLocation");
@@ -253,12 +248,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 if (!ETime.equalsIgnoreCase("")) {
                     String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
                     String SftId = CheckInDetails.getString("Shift_Selected_Id", "0");
-                    if (DT.GetCurrDateTime(this).getTime() >= DT.getDate(CutOFFDt).getTime() || SftId == "0") {
+                    if (DT.GetCurrDateTime(context).getTime() >= DT.getDate(CutOFFDt).getTime() || SftId == "0") {
                         ETime = "";
                     }
                 }
                 if (!ETime.equalsIgnoreCase("")) {
-                    Intent takePhoto = new Intent(this, CameraxActivity.class);
+                    Intent takePhoto = new Intent(context, CameraxActivity.class);
                     takePhoto.putExtra("Mode", "CIN");
                     takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
                     takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
@@ -269,24 +264,21 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     takePhoto.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
                     startActivity(takePhoto);
                 } else {
-                    Intent i = new Intent(this, Checkin.class);
+                    Intent i = new Intent(context, Checkin.class);
                     startActivity(i);
                 }
 
             }
         });
-        binding.linMydayPlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ClosingKm == 1) {
-                    Intent closingIntet = new Intent(context, AllowanceActivityTwo.class);
-                    closingIntet.putExtra("Cls_con", "cls");
-                    closingIntet.putExtra("Cls_dte", ClosingDate);
-                    startActivity(closingIntet);
-                    finish();
-                } else {
-                    startActivity(new Intent(context, Mydayplan_Activity.class));
-                }
+        binding.linMydayPlan.setOnClickListener(v -> {
+            if (ClosingKm == 1) {
+                Intent closingIntet = new Intent(context, AllowanceActivityTwo.class);
+                closingIntet.putExtra("Cls_con", "cls");
+                closingIntet.putExtra("Cls_dte", ClosingDate);
+                startActivity(closingIntet);
+                finish();
+            } else {
+                startActivity(new Intent(context, Mydayplan_Activity.class));
             }
         });
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -313,9 +305,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             }
         });
 
-        binding.leaveRequestStatus.setOnClickListener(v -> {
-            startActivity(new Intent(context, Leave_Dashboard.class));
-        });
+        binding.leaveRequestStatus.setOnClickListener(v -> startActivity(new Intent(context, Leave_Dashboard.class)));
         binding.taClaim.setOnClickListener(v -> {
             Shared_Common_Pref.TravelAllowance = 0;
             startActivity(new Intent(context, TAClaimActivity.class)); //Travel_Allowance
@@ -328,43 +318,35 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         });
 
-        binding.gateIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.gateIn.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
-        binding.gateOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.gateOut.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
-        binding.menuBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(context, binding.menuBar);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.month_plan);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menu1:
-                                Intent intent = new Intent(context, Tp_Month_Select.class);
-                                startActivity(intent);
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                //displaying the popup
-                popup.show();
-            }
+        binding.menuBar.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(context, binding.menuBar);
+            popup.inflate(R.menu.month_plan);
+            popup.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.tour_plan:
+                        Intent intent = new Intent(context, Tp_Month_Select.class);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.logout:
+                        common_class.clearLocData(Dashboard.this);
+                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
+                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
+                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
+                        shared_common_pref.clear_pref(Constants.LOGIN_DATA);
+                        finishAffinity();
+
+                        Intent Dashboard = new Intent(context, Login.class);
+                        startActivity(Dashboard);
+                        break;
+                }
+                return false;
+            });
+            popup.show();
         });
     }
 
@@ -401,7 +383,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(Dashboard.this, "There is no back action", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "There is no back action", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -501,7 +483,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                        */
 
                   String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
-                     Intent intent = new Intent(Dashboard.this, MapDirectionActivity.class);
+                     Intent intent = new Intent(context, MapDirectionActivity.class);
                      intent.putExtra(Constants.DEST_LAT, latlongs[0]);
                      intent.putExtra(Constants.DEST_LNG, latlongs[1]);
                      intent.putExtra(Constants.DEST_NAME, "HOLocation");
@@ -518,38 +500,38 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 break;
 
             case R.id.lin_request_status:
-                startActivity(new Intent(this, Leave_Dashboard.class));
+                startActivity(new Intent(context, Leave_Dashboard.class));
                 break;
 
             case R.id.lin_ta_claim:
                 Shared_Common_Pref.TravelAllowance = 0;
-                startActivity(new Intent(this, TAClaimActivity.class)); //Travel_Allowance
+                startActivity(new Intent(context, TAClaimActivity.class)); //Travel_Allowance
                 break;
 
             case R.id.lin_report:
-                Intent Dashboard = new Intent(this, Dashboard_Two.class);
+                Intent Dashboard = new Intent(context, Dashboard_Two.class);
                 Dashboard.putExtra("Mode", "RPT");
                 startActivity(Dashboard);
                 break;
 
             case R.id.lin_approvals:
                 Shared_Common_Pref.TravelAllowance = 1;
-                startActivity(new Intent(this, Approvals.class));
+                startActivity(new Intent(context, Approvals.class));
                 break;
             case R.id.lin_myday_plan:
                 if (ClosingKm == 1) {
-                    Intent closingIntet = new Intent(this, AllowanceActivityTwo.class);
+                    Intent closingIntet = new Intent(context, AllowanceActivityTwo.class);
                     closingIntet.putExtra("Cls_con", "cls");
                     closingIntet.putExtra("Cls_dte", ClosingDate);
                     startActivity(closingIntet);
                     finish();
                 } else {
-                    startActivity(new Intent(this, Mydayplan_Activity.class));
+                    startActivity(new Intent(context, Mydayplan_Activity.class));
                 }
                 break;
 
             case R.id.lin_RecheckIn:
-                Intent recall = new Intent(this, AllowanceActivity.class);
+                Intent recall = new Intent(context, AllowanceActivity.class);
                 recall.putExtra("Recall", "Recall");
                 startActivity(recall);
                 break;
@@ -557,11 +539,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
             case R.id.lin_tour_plan:
                 Shared_Common_Pref.Tp_Approvalflag = "0";
-                startActivity(new Intent(this, Tp_Month_Select.class));
+                startActivity(new Intent(context, Tp_Month_Select.class));
 
                 break;
             case R.id.lin_holiday_working:
-                AlertDialogBox.showDialog(Dashboard.this, HAPApp.Title, "Are you sure want to Check-in with Hoilday Entry", "YES", "NO", false, new AlertBox() {
+                AlertDialogBox.showDialog(context, HAPApp.Title, "Are you sure want to Check-in with Hoilday Entry", "YES", "NO", false, new AlertBox() {
                     @Override
                     public void PositiveMethod(DialogInterface dialog, int id) {
                         common_class.CommonIntentwithoutFinishputextra(Checkin.class, "Mode", "holidayentry");
@@ -576,14 +558,14 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             case R.id.lin_onduty:
 
                 // startActivity(new Intent(this, On_Duty_Activity.class));
-                Intent oDutyInt = new Intent(this, On_Duty_Activity.class);
+                Intent oDutyInt = new Intent(context, On_Duty_Activity.class);
                 oDutyInt.putExtra("Onduty", onDuty);
                 startActivity(oDutyInt);
 
                 break;
 
             case R.id.lin_sfa:
-                startActivity(new Intent(this, SFA_Activity.class));
+                startActivity(new Intent(context, SFA_Activity.class));
                 break;
             case R.id.lin_exit:
                 shared_common_pref.clear_pref(Constants.LOGIN_DATA);
@@ -591,7 +573,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 editor.putBoolean("Login", false);
                 editor.apply();
                 CheckInDetails.edit().clear().commit();
-                Intent playIntent = new Intent(this, SANGPSTracker.class);
+                Intent playIntent = new Intent(context, SANGPSTracker.class);
                 stopService(playIntent);
                 finishAffinity();
 
@@ -654,7 +636,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     String success = jsonObject.getString("success");
                     String Msg = jsonObject.getString("msg");
                     if (!Msg.equals("")) {
-                        AlertDialogBox.showDialog(Dashboard.this, HAPApp.Title, Msg, "OK", "", false, new AlertBox() {
+                        AlertDialogBox.showDialog(context, HAPApp.Title, Msg, "OK", "", false, new AlertBox() {
                             @Override
                             public void PositiveMethod(DialogInterface dialog, int id) {
                                 dialog.dismiss();
@@ -666,7 +648,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                             }
                         });
                     } else {
-                        AlertDialogBox.showDialog(Dashboard.this, HAPApp.Title, "Do you want to check-in with Extended Shift?", "YES", "NO", false, new AlertBox() {
+                        AlertDialogBox.showDialog(context, HAPApp.Title, "Do you want to check-in with Extended Shift?", "YES", "NO", false, new AlertBox() {
                             @Override
                             public void PositiveMethod(DialogInterface dialog, int id) {
                                 dialog.dismiss();
@@ -762,7 +744,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     ClosingDate = jsonObject.getString("CheckEndDT");
                     /* *********  Missing KM Auto Asking ******* */
                     if (ClosingKm == 1) {
-                        Intent closingIntet = new Intent(Dashboard.this, AllowanceActivityTwo.class);
+                        Intent closingIntet = new Intent(context, AllowanceActivityTwo.class);
                         closingIntet.putExtra("Cls_con", "cls");
                         closingIntet.putExtra("Cls_dte", ClosingDate);
                         startActivity(closingIntet);
@@ -792,7 +774,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         if (jsoncc.length() > 0) {
 
                             if (jsoncc.getJSONObject(0).getInt("Cnt") < 1) {
-                                Intent intent = new Intent(Dashboard.this, AllowanceActivity.class);
+                                Intent intent = new Intent(context, AllowanceActivity.class);
                                 intent.putExtra("My_Day_Plan", "One");
                                 startActivity(intent);
                             } else {
@@ -825,7 +807,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         String success = jsonObject.getString("success");
                         String Msg = jsonObject.getString("msg");
                         if (!Msg.equals("")) {
-                            AlertDialogBox.showDialog(Dashboard.this, HAPApp.Title, Msg, "OK", "", false, new AlertBox() {
+                            AlertDialogBox.showDialog(context, HAPApp.Title, Msg, "OK", "", false, new AlertBox() {
                                 @Override
                                 public void PositiveMethod(DialogInterface dialog, int id) {
                                     dialog.dismiss();
@@ -837,7 +819,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                 }
                             });
                         } else {
-                            AlertDialogBox.showDialog(Dashboard.this, HAPApp.Title, Msg, "YES", "NO", false, new AlertBox() {
+                            AlertDialogBox.showDialog(context, HAPApp.Title, Msg, "YES", "NO", false, new AlertBox() {
                                 @Override
                                 public void PositiveMethod(DialogInterface dialog, int id) {
                                     dialog.dismiss();
@@ -896,7 +878,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     //jsonObject.getString("leave"))
                     Log.e("TOTAl_COUNT", String.valueOf(Integer.parseInt(jsonObject.getString("leave")) + Integer.parseInt(jsonObject.getString("Permission")) + Integer.parseInt(jsonObject.getString("vwOnduty")) + Integer.parseInt(jsonObject.getString("vwmissedpunch")) + Integer.parseInt(jsonObject.getString("TountPlanCount")) + Integer.parseInt(jsonObject.getString("vwExtended"))));
                     //count = count +
-
                     Shared_Common_Pref.TotalCountApproval = jsonObject.getInt("leave") + jsonObject.getInt("Permission") +
                             jsonObject.getInt("vwOnduty") + jsonObject.getInt("vwmissedpunch") +
                             jsonObject.getInt("vwExtended") + jsonObject.getInt("TountPlanCount") +
@@ -909,7 +890,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
@@ -917,14 +897,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 common_class.ProgressdialogShow(2, "");
             }
         });
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //Get_MydayPlan(1, "check/mydayplan");
-
         Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
         if (CheckIn == true) {
             Shared_Common_Pref.Sf_Code = UserDetails.getString("Sfcode", "");
@@ -942,12 +919,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
                 } else {
                     Shared_Common_Pref.Sync_Flag = "0";
-                    aIntent = new Intent(Dashboard.this, SFA_Activity.class);
+                    aIntent = new Intent(context, SFA_Activity.class);
                 }
                 startActivity(aIntent);
                 finish();
             } else {
-                Intent Dashboard = new Intent(Dashboard.this, Dashboard_Two.class);
+                Intent Dashboard = new Intent(context, Dashboard_Two.class);
                 Dashboard.putExtra("Mode", "CIN");
                 startActivity(Dashboard);
                 finish();

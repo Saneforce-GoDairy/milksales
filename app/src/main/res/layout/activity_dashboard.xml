@@ -58,16 +58,23 @@
                         />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/menu_bar"
+                <FrameLayout
+                    android:id="@+id/imageButton"
                     android:layout_width="@dimen/C40dp"
                     android:layout_height="@dimen/C40dp"
-                    android:contentDescription="@null"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/nav_toggle"
-                    android:layout_marginEnd="10dp"/>
+                    android:layout_marginEnd="10dp"
+                    android:foreground="?android:attr/selectableItemBackground" >
 
+                    <ImageView
+                        android:id="@+id/menu_bar"
+                        android:layout_width="@dimen/C40dp"
+                        android:layout_height="@dimen/C40dp"
+                        android:src="@drawable/nav_toggle"
+                        android:contentDescription="@null" />
+
+                </FrameLayout>
 
             </RelativeLayout>
 

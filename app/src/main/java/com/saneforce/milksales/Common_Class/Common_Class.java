@@ -1690,7 +1690,6 @@ public class Common_Class {
         sharedCommonPref.clear_pref(Constants.RETAIL_CLASS);
         sharedCommonPref.clear_pref(Constants.Freezer_Status);
         sharedCommonPref.clear_pref(Constants.Freezer_capacity);
-
     }
 
 
