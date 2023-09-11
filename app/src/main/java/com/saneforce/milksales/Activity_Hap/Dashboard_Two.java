@@ -40,7 +40,6 @@ import androidx.recyclerview.widget.SnapHelper;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.common.reflect.TypeToken;
@@ -58,6 +57,7 @@ import com.saneforce.milksales.Interface.GateEntryQREvents;
 import com.saneforce.milksales.Interface.onListItemClick;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.SFA_Activity.HAPApp;
+import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.Status_Activity.View_All_Status_Activity;
 import com.saneforce.milksales.adapters.GateAdapter;
 import com.saneforce.milksales.adapters.HomeRptRecyler;
@@ -389,6 +389,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         GetMissedPunch();
         getcountdetails();
         btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
+
     }
 
     private void checkInTimer() {
@@ -437,12 +438,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         });
 
-        binding.gateIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.gateIn.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
         binding.gateOut.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
@@ -924,6 +920,25 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(mAdapter);
             LoadingCnt++;
+
+            //=====================================================
+            // Storing data into SharedPreferences
+
+
+            JsonObject jsonObject = dyRpt.get(4).getAsJsonObject();
+            String tag = jsonObject.get("name").getAsString();
+            String value = jsonObject.get("value").getAsString();
+            String[] latlongs = value.split(",");
+
+//            Intent intent = new Intent(context, MapDirectionActivity.class);
+//            intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+//            intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+//
+//            intent.putExtra(Constants.DEST_NAME, tag);
+//            intent.putExtra(Constants.NEW_OUTLET, "GEO");
+//            startActivity(intent);
+            Log.e("lat__", tag);
+
             hideShimmer();
 
         } catch (Exception e) {
