@@ -1,13 +1,19 @@
 package com.saneforce.milksales.SFA_Activity;
 
+import static android.Manifest.permission.MANAGE_EXTERNAL_STORAGE;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.print.PrintAttributes;
@@ -20,7 +26,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ShareCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.saneforce.milksales.Common_Class.Common_Class;
@@ -48,12 +56,10 @@ import retrofit2.Response;
 
 public class ChallanActivity extends AppCompatActivity {
 
-    TextView invoiceNumberTV, crDateTV, stockistNameTV, amountTV, statusTV;
-
     final int pageWidth = 595, pageHeight = 842;
     final float xMin = 20, xMax = pageWidth - 20;
     final float x = 40;
-
+    TextView invoiceNumberTV, crDateTV, stockistNameTV, amountTV, statusTV;
     ImageView toolbarHome, print, share;
 
     Context context = this;
@@ -95,6 +101,10 @@ public class ChallanActivity extends AppCompatActivity {
         invoice = getIntent().getStringExtra("invoice");
 
         print.setOnClickListener(v -> {
+            if (!isStoragePermissionEnabled()) {
+                Toast.makeText(context, "Please provide storage permission to print", Toast.LENGTH_SHORT).show();
+                return;
+            }
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setCancelable(true);
             builder.setMessage("Select challan type");
@@ -110,6 +120,10 @@ public class ChallanActivity extends AppCompatActivity {
             builder.create().show();
         });
         share.setOnClickListener(v -> {
+            if (!isStoragePermissionEnabled()) {
+                Toast.makeText(context, "Please provide storage permission to share", Toast.LENGTH_SHORT).show();
+                return;
+            }
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setCancelable(true);
             builder.setMessage("Select challan type");
@@ -126,6 +140,19 @@ public class ChallanActivity extends AppCompatActivity {
         });
 
         getChallanData();
+    }
+
+    private boolean isStoragePermissionEnabled() {
+        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)) {
+                ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE}, 1);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 1);
+            }
+        }
+        return false;
     }
 
     private void getChallanData() {
@@ -191,7 +218,8 @@ public class ChallanActivity extends AppCompatActivity {
             } else {
                 statusTV.setText("PENDING");
             }
-        } catch (JSONException ignored) { }
+        } catch (JSONException ignored) {
+        }
     }
 
     private void createChallanPDF(String mode) {
@@ -398,7 +426,7 @@ public class ChallanActivity extends AppCompatActivity {
             file.mkdirs();
         }
 
-        File filePath = new File(directory_path + "MyChallan.pdf");
+        File filePath = new File(directory_path + System.currentTimeMillis() + ".pdf");
         try {
             pdfDocument.writeTo(new FileOutputStream(filePath));
         } catch (IOException e) {
@@ -498,5 +526,11 @@ public class ChallanActivity extends AppCompatActivity {
         paint.setStrokeWidth(1);
         paint.setColor(Color.LTGRAY);
         canvas.drawLine(startX, startY, stopX, stopY, paint);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        isStoragePermissionEnabled();
     }
 }

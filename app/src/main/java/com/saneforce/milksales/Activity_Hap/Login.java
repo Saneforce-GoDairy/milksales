@@ -369,6 +369,7 @@ public class Login extends AppCompatActivity {
                         if (object.has(code)) {
                             baseURL = object.getJSONObject(code).getString("base_url");
                             ApiClient.ChangeBaseURL(baseURL);
+                            shared_common_pref.save("base_url",baseURL);
                             Log.e("login_info", "New Base URL: " + baseURL);
                         }
                         MakeInvisible();
@@ -591,6 +592,8 @@ public class Login extends AppCompatActivity {
 
     public void login(int requestCode) {
         try {
+
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Gson gson = new Gson();
             if (!Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.LOGIN_DATA))) {
                 String loginData = shared_common_pref.getvalue(Constants.LOGIN_DATA);
