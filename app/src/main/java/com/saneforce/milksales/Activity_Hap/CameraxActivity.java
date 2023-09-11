@@ -253,7 +253,7 @@ public class CameraxActivity extends AppCompatActivity {
             binding.imageView.setVisibility(View.GONE);
             binding.imageOkRetryContainer.setVisibility(View.GONE);
             binding.cameraFunctionContainer.setVisibility(View.VISIBLE);
-            binding.cameraPreview.setVisibility(View.VISIBLE);
+              binding.cameraPreview.setVisibility(View.VISIBLE);
             binding.seekBarChangeBrightness.setVisibility(View.VISIBLE);
         });
         binding.back.setOnClickListener(v -> finish());
@@ -1075,7 +1075,6 @@ public class CameraxActivity extends AppCompatActivity {
                                         @Override
                                         public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                                             common_class.clearLocData(CameraxActivity.this);
-
                                             mShared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
                                             mShared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
                                             mShared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
