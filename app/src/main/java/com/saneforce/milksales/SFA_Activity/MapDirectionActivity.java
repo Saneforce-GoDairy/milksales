@@ -388,8 +388,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                 case R.id.tvStartDirection:
                     if (ReachedOutlet.getText().toString().contains("Check-In")) {
                         Log.v("distance", ":" + distance() + ":Radius:" + radius);
-
-                        if ((radius > 0 && distance() <= radius) || distance() < 200) {
+                        if ((radius > 0 && distance() <= radius) || distance() < 200 || UserDetails.getInt("checkRadius", 0) == 0) {
                             String ETime = CheckInDetails.getString("CINEnd", "");
                             Log.e("e_time", ETime);
                             if (!ETime.equalsIgnoreCase("")) {

@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
+import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.databinding.ActivityLoginHomeBinding;
 
 public class LoginHome extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
+    private Shared_Common_Pref shared_common_pref;
     private ActivityLoginHomeBinding binding;
     private final Context context = this;
     private SharedPreferences SHARED_PREF;
@@ -24,7 +27,11 @@ public class LoginHome extends AppCompatActivity {
         setContentView(view);
 
         SHARED_PREF = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        shared_common_pref = new Shared_Common_Pref(this);
 
+        if (!shared_common_pref.getvalue("base_url").isEmpty()) {
+            ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
+        }
         onClick();
         sessionCheck();
     }
