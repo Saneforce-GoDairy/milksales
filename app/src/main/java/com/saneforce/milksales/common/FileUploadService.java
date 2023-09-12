@@ -2,6 +2,7 @@ package com.saneforce.milksales.common;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -9,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.saneforce.milksales.Common_Class.Constants;
+import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Common_Class.Util;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
@@ -32,12 +37,16 @@ import okhttp3.MediaType;
 public class FileUploadService extends JobIntentService {
     private static final String TAG = "FileUploadService: ";
     Disposable mDisposable;
+    private SharedPreferences UserDetails;
 
     static TransferUtility transferUtility;
     // Reference to the utility class
     static Util util;
 
     String mFilePath,mSF,FileName,Mode;
+    public static final String MyPREFERENCES = "MyPrefs";
+
+
     /**
      * Unique job ID for this service.
      */
@@ -110,6 +119,16 @@ public class FileUploadService extends JobIntentService {
         catch (Exception e){
             Log.e(TAG,e.getMessage());
         }
+
+        String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/" + FileName;
+
+        UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor userEditor = UserDetails.edit();
+
+        userEditor.putString("Profile", mBasePath);
+        userEditor.apply();
+
+        Log.i("profile_url", mBasePath);
     }
     @Override
     protected void onHandleWork(@NonNull Intent intent) {

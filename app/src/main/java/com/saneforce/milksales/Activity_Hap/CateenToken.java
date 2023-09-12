@@ -162,9 +162,9 @@ public class CateenToken extends AppCompatActivity {
 
             Bitmap bitmap = null;
             try {
-// Download Image from URL
+                  // Download Image from URL
                 InputStream input = new java.net.URL(imageURL).openStream();
-// Decode Bitmap
+                  // Decode Bitmap
                 bitmap = BitmapFactory.decodeStream(input);
             } catch (Exception e) {
                 e.printStackTrace();

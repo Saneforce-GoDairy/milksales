@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:background="@color/black"
     tools:ignore="MissingConstraints">
 
     <com.cuneytayyildiz.gestureimageview.GestureImageView
@@ -14,7 +15,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/C8dp"
+    android:padding="@dimen/C15dp"
     android:onClick="CloseActivity"
     android:background="@color/color_red"
     android:layout_alignParentBottom="true"
