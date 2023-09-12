@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -843,6 +844,17 @@ public class CameraxActivity extends AppCompatActivity {
             CheckInInf.put("long", lng);
             CheckInInf.put("Lattitude", lat);
             CheckInInf.put("Langitude", lng);
+
+            // Get Address
+            Address address = common_class.getAddressFromLatLong(context, lat, lng);
+            StringBuilder fullAddress = new StringBuilder();
+            for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                fullAddress.append(address.getAddressLine(i)).append("\n");
+            }
+            CheckInInf.put("address", fullAddress.toString().trim());
+            CheckInInf.put("locality", address.getLocality().trim());
+            CheckInInf.put("postalCode", address.getPostalCode().trim());
+            Log.e("fullAddress", fullAddress.toString().trim());
 
             if (mMode.equalsIgnoreCase("onduty")) {
                 CheckInInf.put("PlcNm", PlaceName);

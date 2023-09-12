@@ -183,6 +183,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     display_customer_photo.setImageBitmap(image);
                     display_customer_photo.setVisibility(View.VISIBLE);
                     uploadImage(customer_photo_name, customer_photo_url);
+
+                    // Todo: Upload Image to S3
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "milk_selfie");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -614,6 +617,13 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         }
 
         PrepareDropdownLists();
+
+        // Todo: Get Image From S3
+        common_class.getImageFromS3Bucket(context, "key", "MGR23_1694523049.jpg", "milk_selfie");
+        common_class.setOnDownloadImage((key, bmp) -> {
+            display_customer_photo.setImageBitmap(bmp);
+            display_customer_photo.setVisibility(View.VISIBLE);
+        });
     }
 
     private void PrepareStateList() {

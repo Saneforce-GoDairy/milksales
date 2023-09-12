@@ -177,9 +177,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="205dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/fragment_card"
-                android:layout_marginLeft="@dimen/C15dp"
-                android:layout_marginRight="@dimen/C15dp"
                 android:id="@+id/view_pager"
                 android:layout_below="@id/tab_layout"/>
 

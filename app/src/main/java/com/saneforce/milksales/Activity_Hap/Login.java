@@ -263,17 +263,11 @@ public class Login extends AppCompatActivity {
             } else if (TextUtils.isEmpty(SPwd)) {
                 Toast.makeText(this, "Password Required", Toast.LENGTH_SHORT).show();
             } else if (eMail.contains("-")) {
-                if (shared_common_pref.getvalue("base_url").isEmpty()) {
-                    String code = eMail.split("-")[0].toUpperCase();
-                    Log.e("login_info", "Company Code: " + code);
-                    getBaseURL(code);
-                } else {
-                    MakeInvisible();
-                    ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
-                    Log.e("login_info", "Base URL: " + shared_common_pref.getvalue("base_url"));
-                    login(1);
-                }
+                String code = eMail.split("-")[0].toUpperCase();
+                Log.e("login_info", "Company Code: " + code);
+                getBaseURL(code);
             } else {
+                ApiClient.ChangeBaseURL(ApiClient.DEFAULT_BASE_URL);
                 MakeInvisible();
                 login(1);
             }
@@ -372,7 +366,6 @@ public class Login extends AppCompatActivity {
                             baseURL = object.getJSONObject(code).getString("base_url");
                             ApiClient.ChangeBaseURL(baseURL);
                             shared_common_pref.save("base_url",baseURL);
-                            Log.e("login_info", "New Base URL: " + baseURL);
                         }
                         MakeInvisible();
                         login(1);
@@ -594,7 +587,6 @@ public class Login extends AppCompatActivity {
 
     public void login(int requestCode) {
         try {
-
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Gson gson = new Gson();
             if (!Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.LOGIN_DATA))) {
@@ -639,6 +631,7 @@ public class Login extends AppCompatActivity {
                                     try {
                                         Gson gson = new Gson();
                                         assignLoginData(response.body(), requestCode);
+                                        shared_common_pref.save(Constants.base_url, baseURL);
                                         shared_common_pref.save(Constants.LOGIN_DATA, gson.toJson(response.body()));
                                         Model model = new Model();
                                         model = response.body();
@@ -753,10 +746,6 @@ public class Login extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     void assignLoginData(Model response, int requestCode) {
-        if (!baseURL.isEmpty()) {
-            shared_common_pref.save(Constants.base_url, baseURL);
-            Log.e("login_info", "Saved to SharedPreference: " + baseURL);
-        }
         try {
 
             shared_common_pref.save(Constants.LOGIN_DATE, com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime());
