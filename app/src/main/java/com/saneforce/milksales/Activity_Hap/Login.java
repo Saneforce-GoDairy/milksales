@@ -153,7 +153,9 @@ public class Login extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
+        if (!shared_common_pref.getvalue("base_url").isEmpty()) {
+            ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
+        }
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
