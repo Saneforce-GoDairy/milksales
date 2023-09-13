@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -197,6 +198,14 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                     SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
                     assert supportMapFragment != null;
                     supportMapFragment.getMapAsync(MapDirectionActivity.this);
+                    //---------
+                    /*
+                       SFA_Activity -> MyTeamActivity -> ViewMap Direction Purpose
+                     */
+                    
+                    SupportMapFragment supportMapFragment1 = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.my_team_map);
+                    assert supportMapFragment1 != null;
+                    supportMapFragment1.getMapAsync(MapDirectionActivity.this);
                 }
             } catch (Exception ignored) {
             }
@@ -493,7 +502,6 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         if (status != null && status.equalsIgnoreCase("checkin")) {
             ReachedOutlet.setText("Check-In ");
 
-
             if ((radius > 0 && startPoint.distanceTo(endPoint) <= radius) || startPoint.distanceTo(endPoint) < 200) {
                 drawCircleGreen(new LatLng(endPoint.getLatitude(), endPoint.getLongitude()));
             }else {
@@ -504,6 +512,13 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             ReachedOutlet.setText("Get Direction");
         } else {
             ReachedOutlet.setText("Create Outlet");
+
+            //---------
+            /*
+              SFA_Activity -> MyTeamActivity -> ViewMap Direction Purpose
+            */
+            binding.mainMapContainer.setVisibility(View.GONE);
+            binding.myTeamMap.setVisibility(View.VISIBLE);
         }
 
         return distance;

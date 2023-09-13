@@ -398,7 +398,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
 
 
-        String mProfileUrl = UserDetails.getString("Profile", "");
+        mProfileUrl = UserDetails.getString("Profile", "");
 
         Glide.with(this.context)
                 .load(mProfileUrl)
@@ -824,12 +824,11 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 //
 //            }
 
-//            profileImageView.setOnClickListener(v -> {
-//                Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
-//                intent.putExtra("ImageUrl", mProfileUrl);
-//                startActivity(intent);
-//
-//            });
+            profileImageView.setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
+                intent.putExtra("ImageUrl", mProfileUrl);
+                startActivity(intent);
+            });
 
             ivCheckOut.setOnClickListener(new View.OnClickListener() {
                 @Override
