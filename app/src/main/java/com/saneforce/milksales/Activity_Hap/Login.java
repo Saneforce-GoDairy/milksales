@@ -74,6 +74,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,6 +99,7 @@ public class Login extends AppCompatActivity {
     private CameraPermission cameraPermission;
     private Common_Class DT = new Common_Class();
     private DatabaseHandler db;
+    String baseURL = "";
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -127,8 +129,6 @@ public class Login extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        onClick();
-
         db = new DatabaseHandler(this);
         shared_common_pref = new Shared_Common_Pref(this);
 
@@ -153,7 +153,9 @@ public class Login extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
+        if (!shared_common_pref.getvalue("base_url").isEmpty()) {
+            ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
+        }
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -247,94 +249,37 @@ public class Login extends AppCompatActivity {
             }
         };
 
-        /*signInButton = (Button) findViewById(R.id.sign_in_button);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.web_client_id))
-                .requestEmail()
-                .build();
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                mLUService = new SANGPSTracker(Login.this);
-                myReceiver = new LocationReceiver();
-                // Bind to the service. If the service is in foreground mode, this signals to the service
-                // that since this activity is in the foreground, the service can exit foreground mode.
-
-                Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
-                if (DAMode == true) {
-
-                    if (isMyServiceRunning(SANGPSTracker.class) == false) {
-                        try {
-                            bindService(new Intent(getApplicationContext(), SANGPSTracker.class), mServiceConection,
-                                    Context.BIND_AUTO_CREATE);
-                            LocalBroadcastManager.getInstance(getApplication()).registerReceiver(myReceiver,
-                                    new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
-                            mLUService.requestLocationUpdates();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                Login.this.startActivityForResult(signInIntent, RC_SIGN_IN);
-
-            }
+        binding.back.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(0,0);
         });
 
-        ReportsButton = (Button) findViewById(R.id.btnReport);
-        ReportsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                startActivityForResult(signInIntent, RC_MYREPORTS);
+        binding.submitButton.setOnClickListener(v -> {
+            SUserID = binding.userEmail.getText().toString().trim();
+            eMail = binding.userEmail.getText().toString().trim();
+            SPwd = binding.userPassword.getText().toString().trim();
+            if (TextUtils.isEmpty(eMail)) {
+                Toast.makeText(this, "Email Address Required", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(SPwd)) {
+                Toast.makeText(this, "Password Required", Toast.LENGTH_SHORT).show();
+            } else if (eMail.contains("-")) {
+                String code = eMail.split("-")[0].toUpperCase();
+                Log.e("login_info", "Company Code: " + code);
+                getBaseURL(code);
+            } else {
+                ApiClient.ChangeBaseURL(ApiClient.DEFAULT_BASE_URL);
+                MakeInvisible();
+                login(1);
             }
         });
-        ExitButton = (Button) findViewById(R.id.btnExit);
-        ExitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shared_common_pref.clear_pref(Constants.LOGIN_DATA);
-                SharedPreferences.Editor editor = UserDetails.edit();
-                editor.putBoolean("Login", false);
-                editor.apply();
-                CheckInDetails.edit().clear().commit();
-                finishAffinity();
-            }
-        });*/
- /*
- if(UserDetails.getString("Sfcode", "")!="") {
- Call<JsonArray> Callto = apiInterface.getDataArrayList("get/Signout_Check",
- UserDetails.getString("Divcode", ""),
- UserDetails.getString("Sfcode", ""));
- Callto.enqueue(new Callback<JsonArray>() {
-
- @Override
- public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-
- }
-
- @Override
- public void onFailure(Call<JsonArray> call, Throwable t) {
-
- }
- });
- }*/
 
         Boolean Login = UserDetails.getBoolean("Login", false);
         Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
         Intent inten = new Intent(this, TimerService.class);
         startService(inten);
         if (Login == true || CheckIn == true) {
-            /*PERMISSION REQUEST*/
+            ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
             if (cameraPermission.checkPermission()) {
-
                 Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
                 if (DAMode == true) {
                     if (isMyServiceRunning(SANGPSTracker.class) == false) {
@@ -407,27 +352,35 @@ public class Login extends AppCompatActivity {
 
     }
 
-    private void onClick() {
-        binding.back.setOnClickListener(v -> {
-            finish();
-            overridePendingTransition(0,0);
-        });
+    private void getBaseURL(String code) {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getBaseConfig();
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.body() != null) {
+                    try {
+                        String body = response.body().string();
+                        JSONObject object = new JSONObject(body);
+                        if (object.has(code)) {
+                            baseURL = object.getJSONObject(code).getString("base_url");
+                            ApiClient.ChangeBaseURL(baseURL);
+                            shared_common_pref.save("base_url",baseURL);
+                        }
+                        MakeInvisible();
+                        login(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
-        binding.submitButton.setOnClickListener(v -> {
-            String email = binding.userEmail.getText().toString().trim();
-            String Pwd = binding.userPassword.getText().toString().trim();
-            if (TextUtils.isEmpty(email)) {
-                Toast.makeText(this, "Email Address Required", Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(Pwd)) {
-                Toast.makeText(this, "Password Required", Toast.LENGTH_SHORT).show();
-            } else {
-                SUserID = email;
-                eMail = email;
-                SPwd = Pwd;
-                MakeInvisible();
-                login(1);
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
             }
         });
+
     }
 
     private void MakeInvisible() {
@@ -634,6 +587,7 @@ public class Login extends AppCompatActivity {
 
     public void login(int requestCode) {
         try {
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Gson gson = new Gson();
             if (!Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.LOGIN_DATA))) {
                 String loginData = shared_common_pref.getvalue(Constants.LOGIN_DATA);
@@ -677,6 +631,7 @@ public class Login extends AppCompatActivity {
                                     try {
                                         Gson gson = new Gson();
                                         assignLoginData(response.body(), requestCode);
+                                        shared_common_pref.save(Constants.base_url, baseURL);
                                         shared_common_pref.save(Constants.LOGIN_DATA, gson.toJson(response.body()));
                                         Model model = new Model();
                                         model = response.body();

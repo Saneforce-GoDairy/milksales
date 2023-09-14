@@ -8,26 +8,13 @@ import java.util.List;
 
 public class Product_Details_Modal {
 
+    double TaxPer;
+    double PSGST;
+    double PCGST;
+
     @SerializedName("Package")
     @Expose
     private String Package;
-
-    public String getTransSlNo() {
-        return transSlNo;
-    }
-
-    public void setTransSlNo(String transSlNo) {
-        this.transSlNo = transSlNo;
-    }
-
-
-    public String getProdDetails() {
-        return prodDetails;
-    }
-
-    public void setProdDetails(String prodDetails) {
-        this.prodDetails = prodDetails;
-    }
 
     @SerializedName("PDetails")
     @Expose
@@ -41,6 +28,463 @@ public class Product_Details_Modal {
     @Expose
     private String slno;
 
+    @SerializedName("Order_Date")
+    @Expose
+    private String EntryDate;
+
+    @SerializedName("OrderNo")
+    @Expose
+    private String orderno;
+
+    @SerializedName("Bar_Code")
+    @Expose
+    private String Bar_Code;
+
+    @SerializedName("MRP")
+    @Expose
+    private String MRP;
+
+    @SerializedName("PTR")
+    @Expose
+    private String PTR;
+
+    @SerializedName("POP_UOM")
+    @Expose
+    private String UOM;
+
+    @SerializedName("id")
+    @Expose
+    private String id;
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    @SerializedName("HSNCode")
+    @Expose
+    private String HSNCode;
+
+    private String sku;
+    private double price;
+
+    @SerializedName("Product_Cat_Code")
+    @Expose
+    private Integer productCatCode;
+
+    @SerializedName("PCode")
+    @Expose
+    private String pcode;
+
+    @SerializedName("Product_Grp_Code")
+    @Expose
+    private Integer Product_Grp_Code;
+
+    @SerializedName("RateEdit")
+    @Expose
+    private Integer RateEdit;
+
+    @SerializedName("row_num")
+    @Expose
+    private String rowNum;
+
+    @SerializedName("Product_Sale_Unit")
+    @Expose
+    private String productSaleUnit;
+
+    @SerializedName("product_unit")
+    @Expose
+    private String productUnit;
+
+    @SerializedName("BatchNo")
+    @Expose
+    private String batchNo = "";
+
+    @SerializedName("Unit_code")
+    @Expose
+    private String unitCode;
+
+    private String plant = "";
+    private String plantId = "";
+    private String saveMode = "";
+    private int cr;
+    private int Dr;
+    private int RateEdited = 0;
+    private int Bal;
+    private double crAmt, DrAmt, BalAmt;
+
+    @SerializedName("ERP_Code")
+    @Expose
+    private String ERP_Code;
+
+    @SerializedName("Default_UOMQty")
+    @Expose
+    private double defaultUOMQty;
+
+    @SerializedName("Default_UOM")
+    @Expose
+    private String defaultUOM;
+
+    @SerializedName("Default_UOM_Name")
+    @Expose
+    private String Default_UOM_Name;
+
+    @SerializedName("Rate")
+    @Expose
+    private Double Rate;
+
+    @SerializedName("Margin")
+    @Expose
+    private Double Margin;
+
+    @SerializedName("MarginTyp")
+    @Expose
+    private Double MarginTyp;
+
+    @SerializedName("RateTyp")
+    @Expose
+    private Double RateTyp;
+
+    @SerializedName("BillRate")
+    @Expose
+    private Double BillRate;
+
+    @SerializedName("SBRate")
+    @Expose
+    private Double SBRate;
+
+    @SerializedName("Amount")
+    @Expose
+    private Double Amount;
+
+    @SerializedName("Qty")
+    @Expose
+    private Integer Qty;
+
+    @SerializedName("PImage")
+    @Expose
+    private String PImage;
+
+    @SerializedName("ConversionFactor")
+    @Expose
+    private String ConversionFactor;
+
+    @SerializedName("counterValue")
+    @Expose
+    private String value;
+
+    //    @SerializedName("ConversionFactor")
+//    @Expose
+    private int onHand;
+    //    @SerializedName("ConversionFactor")
+//    @Expose
+    private String MATNR;
+    private String SA_UOM;
+
+    @SerializedName("CGST")
+    @Expose
+    private Double CGST;
+
+    @SerializedName("SGST")
+    @Expose
+    private Double SGST;
+
+    @SerializedName("Balance")
+    @Expose
+    private Integer Balance;
+
+    @SerializedName("CheckStock")
+    @Expose
+    private Integer CheckStock;
+
+    @SerializedName("Multiple_UOM")
+    @Expose
+    private String Multiple_UOM;
+
+    @SerializedName("Multiple_Qty")
+    @Expose
+    private Integer Multiple_Qty;
+
+    @SerializedName("UOMList")
+    @Expose
+    private List<UOM> UOMList = new ArrayList<>();
+
+    private List<Product_Details_Modal> productDetailsModal = new ArrayList<>();
+    private String UOM_Id;
+    private String UOM_Nm;
+    private String mfg = "";
+    private String exp = "";
+    private String remarks = "";
+
+    @SerializedName("IGST")
+    @Expose
+    private Double IGST;
+
+    @SerializedName("free")
+    @Expose
+    private String free;
+
+    @SerializedName("free_val")
+    @Expose
+    private String free_val;
+
+    @SerializedName("discount")
+    @Expose
+    private double discount;
+
+    @SerializedName("discount_value")
+    @Expose
+    private String discount_value;
+
+    @SerializedName("replace_qty")
+    @Expose
+    private String replace_qty;
+
+    @SerializedName("replace_value")
+    @Expose
+    private String replace_value;
+
+    @SerializedName("discount_type")
+    @Expose
+    private String discount_type;
+
+    @SerializedName("Scheme")
+    @Expose
+    private String scheme;
+
+    @SerializedName("RegularQty")
+    @Expose
+    private Integer RegularQty;
+
+    @SerializedName("orderQty")
+    @Expose
+    private Integer orderQty;
+
+    @SerializedName("bookingDate")
+    @Expose
+    private String bookingDate;
+
+    @SerializedName("popMaterial")
+    @Expose
+    private String popMaterial;
+
+    @SerializedName("tax")
+    @Expose
+    private double tax;
+
+    @SerializedName("Off_Pro_code")
+    @Expose
+    private String Off_Pro_code;
+
+    @SerializedName("Off_Pro_name")
+    @Expose
+    private String Off_Pro_name;
+
+    @SerializedName("Tax_Type")
+    @Expose
+    private String Tax_Type;
+
+    @SerializedName("Tax_Id")
+    @Expose
+    private String Tax_Id;
+
+    @SerializedName("Tax_Val")
+    @Expose
+    private double Tax_Val;
+
+    @SerializedName("TotalVal")
+    @Expose
+    private Float total;
+
+    private double Tax_Amt;
+
+    @SerializedName("Off_Pro_Unit")
+    @Expose
+    private String Off_Pro_Unit;
+
+    @SerializedName("PaidAmount")
+    @Expose
+    private String PaidAmount;
+
+    private double CnvQty;
+
+    @SerializedName("GRN_No")
+    @Expose
+    private String grnNo = "";
+
+    @SerializedName("GRN_Date")
+    @Expose
+    private String grnDate = "";
+
+    @SerializedName("Po_No")
+    @Expose
+    private String pono = "";
+
+    @SerializedName("Supp_Name")
+    @Expose
+    private String suppName = "";
+
+    @SerializedName("Net_Tot_Value")
+    @Expose
+    private Double grnTotal = 0.0;
+
+    public Product_Details_Modal(double cnvQty, String UOM_Nm) {
+        this.CnvQty = cnvQty;
+        this.UOM_Nm = UOM_Nm;
+    }
+
+
+    // "Cr": 23,
+//         "Dr": 0,
+//         "Bal": 23
+    public Product_Details_Modal(String id, int cr, int Dr, int Balance) {
+        this.id = id;
+        this.cr = cr;
+        this.Dr = Dr;
+        this.Balance = Balance;
+    }
+
+    public Product_Details_Modal(String UOM_Nm, int Qty, int Multiple_Qty) {
+        this.UOM_Nm = UOM_Nm;
+        this.Qty = Qty;
+        this.Multiple_Qty = Multiple_Qty;
+    }
+
+    public Product_Details_Modal(String id, String name, String value) {
+        this.name = name;
+        this.value = value;
+        this.id = id;
+    }
+
+    public Product_Details_Modal(String id, String name) {
+        this.name = name;
+        this.id = id;
+    }
+
+
+    public Product_Details_Modal(Float total) {
+        this.total = total;
+//        this.EntryDate=entryDate;
+    }
+
+    public Product_Details_Modal(String id, String name, String mMRP, String mHSNCode, Integer productCatCode, String rowNum, String productSaleUnit, String productUnit,
+                                 String unitCode, double defaultUOMQty, String defaultUOM, Double Rate, String mPTR, Integer Qty,
+                                 Integer RegularQty, Double Amount, List<Product_Details_Modal> productDetailsModal, String PaidAmount, double tax, double mTaxPer, double mSGST, double mCGST, String mConv, String mFree, String off_Pro_code, String off_Pro_name, String off_Pro_Unit) {
+        this.id = id;
+        this.name = name;
+        this.productCatCode = productCatCode;
+        this.rowNum = rowNum;
+        this.productSaleUnit = productSaleUnit;
+        this.productUnit = productUnit;
+        this.unitCode = unitCode;
+        this.defaultUOMQty = defaultUOMQty;
+        this.defaultUOM = defaultUOM;
+        this.Rate = Rate;
+        this.Qty = Qty;
+        this.RegularQty = RegularQty;
+        this.Amount = Amount;
+        this.productDetailsModal = productDetailsModal;
+        this.PaidAmount = PaidAmount;
+        this.tax = tax;
+        this.HSNCode = mHSNCode;
+        this.TaxPer = mTaxPer;
+        this.PSGST = mSGST;
+        this.PCGST = mCGST;
+        this.MRP = mMRP;
+        this.PTR = mPTR;
+        this.ConversionFactor = mConv;
+        this.free = mFree;
+        this.Off_Pro_code = off_Pro_code;
+        this.Off_Pro_name = off_Pro_name;
+        this.Off_Pro_Unit = off_Pro_Unit;
+    }
+
+    public Product_Details_Modal(String id, String name, Integer productCatCode, String rowNum, String productSaleUnit, String productUnit,
+                                 String unitCode, double defaultUOMQty, String defaultUOM, Double Rate, Integer Qty,
+                                 Integer RegularQty, Double Amount, List<Product_Details_Modal> productDetailsModal, String PaidAmount, double tax) {
+        this.id = id;
+        this.name = name;
+        this.productCatCode = productCatCode;
+        this.rowNum = rowNum;
+        this.productSaleUnit = productSaleUnit;
+        this.productUnit = productUnit;
+        this.unitCode = unitCode;
+        this.defaultUOMQty = defaultUOMQty;
+        this.defaultUOM = defaultUOM;
+        this.Rate = Rate;
+        this.Qty = Qty;
+        this.RegularQty = RegularQty;
+        this.Amount = Amount;
+        this.productDetailsModal = productDetailsModal;
+        this.PaidAmount = PaidAmount;
+        this.tax = tax;
+    }
+
+    public Product_Details_Modal(String id, String name, String sku, double price, int Qty, double amount, String scheme) {
+        this.id = id;
+        this.name = name;
+        this.sku = sku;
+        this.price = price;
+        this.Qty = Qty;
+        this.scheme = scheme;
+        this.Amount = amount;
+    }
+
+    public Product_Details_Modal(String Tax_Id, String Tax_Type, double Tax_Val, double Tax_Amt) {
+        this.Tax_Val = Tax_Val;
+        this.Tax_Type = Tax_Type;
+        this.Tax_Id = Tax_Id;
+        this.Tax_Amt = Tax_Amt;
+
+    }
+
+    public Product_Details_Modal(String Tax_Type, double Tax_Amt) {
+
+        this.Tax_Type = Tax_Type;
+
+        this.Tax_Amt = Tax_Amt;
+
+    }
+
+    public Product_Details_Modal(String id, String name, String bookingDate, int Qty, String UOM) {
+        this.id = id;
+        this.name = name;
+        this.bookingDate = bookingDate;
+        this.Qty = Qty;
+        this.UOM = UOM;
+
+    }
+
+    public Product_Details_Modal(String id, String scheme, String free, double discount, String discount_type, String Package
+            , double tax, String off_Pro_code, String off_Pro_name, String off_Pro_Unit) {
+        this.id = id;
+        this.scheme = scheme;
+        this.free = free;
+        this.discount = discount;
+        this.discount_type = discount_type;
+        this.Package = Package;
+        this.tax = tax;
+        this.Off_Pro_code = off_Pro_code;
+        this.Off_Pro_name = off_Pro_name;
+        this.Off_Pro_Unit = off_Pro_Unit;
+
+    }
+
+    public String getTransSlNo() {
+        return transSlNo;
+    }
+
+    public void setTransSlNo(String transSlNo) {
+        this.transSlNo = transSlNo;
+    }
+
+    public String getProdDetails() {
+        return prodDetails;
+    }
+
+    public void setProdDetails(String prodDetails) {
+        this.prodDetails = prodDetails;
+    }
+
     public String getSlno() {
         return slno;
     }
@@ -48,10 +492,6 @@ public class Product_Details_Modal {
     public void setSlno(String slno) {
         this.slno = slno;
     }
-
-    @SerializedName("Order_Date")
-    @Expose
-    private String EntryDate;
 
     public String getEntryDate() {
         return EntryDate;
@@ -69,43 +509,6 @@ public class Product_Details_Modal {
         this.orderno = orderno;
     }
 
-    @SerializedName("OrderNo")
-    @Expose
-    private String orderno;
-
-    @SerializedName("Bar_Code")
-    @Expose
-    private String Bar_Code;
-    @SerializedName("MRP")
-    @Expose
-    private String MRP;
-
-    @SerializedName("PTR")
-    @Expose
-    private String PTR;
-    @SerializedName("POP_UOM")
-    @Expose
-    private String UOM;
-    @SerializedName("id")
-    @Expose
-    private String id;
-    @SerializedName("name")
-    @Expose
-    private String name;
-
-    @SerializedName("HSNCode")
-    @Expose
-    private String HSNCode;
-    double TaxPer;
-    double PSGST;
-    double PCGST;
-
-    private String sku;
-    private double price;
-    @SerializedName("Product_Cat_Code")
-    @Expose
-    private Integer productCatCode;
-
     public String getPcode() {
         return pcode;
     }
@@ -113,41 +516,6 @@ public class Product_Details_Modal {
     public void setPcode(String pcode) {
         this.pcode = pcode;
     }
-
-    @SerializedName("PCode")
-    @Expose
-    private String pcode;
-
-    @SerializedName("Product_Grp_Code")
-    @Expose
-    private Integer Product_Grp_Code;
-
-    @SerializedName("RateEdit")
-    @Expose
-    private Integer RateEdit;
-    @SerializedName("row_num")
-    @Expose
-    private String rowNum;
-    @SerializedName("Product_Sale_Unit")
-    @Expose
-    private String productSaleUnit;
-    @SerializedName("product_unit")
-    @Expose
-    private String productUnit;
-    @SerializedName("BatchNo")
-    @Expose
-    private String batchNo = "";
-    @SerializedName("Unit_code")
-    @Expose
-    private String unitCode;
-
-    private String plant = "";
-    private String plantId = "";
-
-    private String saveMode = "";
-    private int cr;
-    private int Dr;
-    private int RateEdited=0;
 
     public int getCr() {
         return cr;
@@ -189,9 +557,6 @@ public class Product_Details_Modal {
         DrAmt = drAmt;
     }
 
-    private int Bal;
-    private double crAmt,DrAmt,BalAmt;
-
     public String getERP_Code() {
         return ERP_Code;
     }
@@ -223,70 +588,11 @@ public class Product_Details_Modal {
     public void setPCGST(double PCGST) {
         this.PCGST = PCGST;
     }
-    @SerializedName("ERP_Code")
-    @Expose
-    private String ERP_Code;
-
-    @SerializedName("Default_UOMQty")
-    @Expose
-    private double defaultUOMQty;
-    @SerializedName("Default_UOM")
-    @Expose
-    private String defaultUOM;
-
-    @SerializedName("Default_UOM_Name")
-    @Expose
-    private String Default_UOM_Name;
-
-    @SerializedName("Rate")
-    @Expose
-    private Double Rate;
-
-
-
-    @SerializedName("Margin")
-    @Expose
-    private Double Margin;
-
-    @SerializedName("MarginTyp")
-    @Expose
-    private Double MarginTyp;
-
-    @SerializedName("RateTyp")
-    @Expose
-    private Double RateTyp;
 
     public Double getBillRate() {
         return BillRate;
     }
 
-    @SerializedName("BillRate")
-    @Expose
-    private Double BillRate;
-
-    @SerializedName("SBRate")
-    @Expose
-    private Double SBRate;
-
-    @SerializedName("Amount")
-    @Expose
-    private Double Amount;
-
-    @SerializedName("Qty")
-    @Expose
-    private Integer Qty;
-
-    @SerializedName("PImage")
-    @Expose
-    private String PImage;
-
-    @SerializedName("ConversionFactor")
-    @Expose
-    private String ConversionFactor;
-
-    @SerializedName("counterValue")
-    @Expose
-    private String value;
     public Double getMargin() {
         return Margin;
     }
@@ -298,6 +604,7 @@ public class Product_Details_Modal {
     public Double getMarginTyp() {
         return MarginTyp;
     }
+
     public void setMarginTyp(Double marginTyp) {
         MarginTyp = marginTyp;
     }
@@ -326,13 +633,6 @@ public class Product_Details_Modal {
         this.MATNR = MATNR;
     }
 
-    //    @SerializedName("ConversionFactor")
-//    @Expose
-    private int onHand;
-    //    @SerializedName("ConversionFactor")
-//    @Expose
-    private String MATNR;
-
     public String getSA_UOM() {
         return SA_UOM;
     }
@@ -340,83 +640,6 @@ public class Product_Details_Modal {
     public void setSA_UOM(String SA_UOM) {
         this.SA_UOM = SA_UOM;
     }
-
-    private String SA_UOM;
-
-
-    @SerializedName("CGST")
-    @Expose
-    private Double CGST;
-    @SerializedName("SGST")
-    @Expose
-    private Double SGST;
-
-    @SerializedName("Balance")
-    @Expose
-    private Integer Balance;
-
-    @SerializedName("CheckStock")
-    @Expose
-    private Integer CheckStock;
-
-
-    @SerializedName("Multiple_UOM")
-    @Expose
-    private String Multiple_UOM;
-
-    @SerializedName("Multiple_Qty")
-    @Expose
-    private Integer Multiple_Qty;
-
-    @SerializedName("UOMList")
-    @Expose
-    private List<UOM> UOMList = new ArrayList<>();
-    private List<Product_Details_Modal> productDetailsModal = new ArrayList<>();
-
-    private String UOM_Id;
-    private String UOM_Nm;
-
-    public Product_Details_Modal(double cnvQty, String UOM_Nm) {
-        this.CnvQty = cnvQty;
-        this.UOM_Nm = UOM_Nm;
-    }
-
-    // "Cr": 23,
-//         "Dr": 0,
-//         "Bal": 23
-    public Product_Details_Modal(String id, int cr, int Dr, int Balance) {
-        this.id = id;
-        this.cr = cr;
-        this.Dr = Dr;
-        this.Balance = Balance;
-    }
-
-    public Product_Details_Modal(String UOM_Nm, int Qty, int Multiple_Qty) {
-        this.UOM_Nm = UOM_Nm;
-        this.Qty = Qty;
-        this.Multiple_Qty = Multiple_Qty;
-    }
-
-    public Product_Details_Modal(String id, String name, String value){
-        this.name = name;
-        this.value = value;
-        this.id = id;
-    }
-
-    public Product_Details_Modal(String id, String name){
-        this.name = name;
-        this.id = id;
-    }
-
-    public Product_Details_Modal( Float total){
-        this.total = total;
-//        this.EntryDate=entryDate;
-    }
-
-
-    private String mfg = "";
-    private String exp = "";
-    private String remarks = "";
 
     public String getExp() {
         return exp;
@@ -474,7 +697,6 @@ public class Product_Details_Modal {
         this.CGST = CGST;
     }
 
-
     public Double getSGST() {
         return SGST;
     }
@@ -491,7 +713,6 @@ public class Product_Details_Modal {
         this.IGST = IGST;
     }
 
-
     public String getHSNCode() {
         return HSNCode;
     }
@@ -499,15 +720,6 @@ public class Product_Details_Modal {
     public void setHSNCode(String HSNCode) {
         this.HSNCode = HSNCode;
     }
-
-    @SerializedName("IGST")
-    @Expose
-    private Double IGST;
-
-
-    @SerializedName("free")
-    @Expose
-    private String free;
 
     public String getFree_val() {
         return free_val;
@@ -517,32 +729,9 @@ public class Product_Details_Modal {
         this.free_val = free_val;
     }
 
-    @SerializedName("free_val")
-    @Expose
-    private String free_val;
-
-
-    @SerializedName("discount")
-    @Expose
-    private double discount;
-
-
-    @SerializedName("discount_value")
-    @Expose
-    private String discount_value;
-
     public String getReplace_qty() {
         return replace_qty;
     }
-
-
-    @SerializedName("replace_qty")
-    @Expose
-    private String replace_qty;
-
-    @SerializedName("replace_value")
-    @Expose
-    private String replace_value;
 
     public void setReplace_qty(String replace_qty) {
         this.replace_qty = replace_qty;
@@ -555,6 +744,7 @@ public class Product_Details_Modal {
     public void setReplace_value(String replace_value) {
         this.replace_value = replace_value;
     }
+
     public String getDiscount_type() {
         return discount_type;
     }
@@ -563,60 +753,6 @@ public class Product_Details_Modal {
         this.discount_type = discount_type;
     }
 
-    @SerializedName("discount_type")
-    @Expose
-    private String discount_type;
-
-
-    @SerializedName("Scheme")
-    @Expose
-    private String scheme;
-
-    @SerializedName("RegularQty")
-    @Expose
-    private Integer RegularQty;
-    @SerializedName("orderQty")
-    @Expose
-    private Integer orderQty;
-
-
-    @SerializedName("bookingDate")
-    @Expose
-    private String bookingDate;
-
-    @SerializedName("popMaterial")
-    @Expose
-    private String popMaterial;
-
-    @SerializedName("tax")
-    @Expose
-    private double tax;
-
-    @SerializedName("Off_Pro_code")
-    @Expose
-    private String Off_Pro_code;
-    @SerializedName("Off_Pro_name")
-    @Expose
-    private String Off_Pro_name;
-
-    @SerializedName("Tax_Type")
-    @Expose
-    private String Tax_Type;
-
-    @SerializedName("Tax_Id")
-    @Expose
-    private String Tax_Id;
-
-    @SerializedName("Tax_Val")
-    @Expose
-    private double Tax_Val;
-
-
-
-    @SerializedName("TotalVal")
-    @Expose
-    private Float total;
-
     public Float getTotal() {
         return total;
     }
@@ -624,6 +760,7 @@ public class Product_Details_Modal {
     public void setTotal(Float total) {
         this.total = total;
     }
+
     public String getTax_Id() {
         return Tax_Id;
     }
@@ -639,8 +776,6 @@ public class Product_Details_Modal {
     public void setTax_Amt(double tax_Amt) {
         Tax_Amt = tax_Amt;
     }
-
-    private double Tax_Amt;
 
     public String getDiscount_value() {
         return discount_value;
@@ -666,7 +801,6 @@ public class Product_Details_Modal {
         this.tax = tax;
     }
 
-
     public String getOff_Pro_code() {
         return Off_Pro_code;
     }
@@ -691,124 +825,12 @@ public class Product_Details_Modal {
         Off_Pro_Unit = off_Pro_Unit;
     }
 
-    @SerializedName("Off_Pro_Unit")
-    @Expose
-    private String Off_Pro_Unit;
-    @SerializedName("PaidAmount")
-    @Expose
-    private String PaidAmount;
-    private double CnvQty;
-
-
-    public Product_Details_Modal(String id, String name,String mMRP,String mHSNCode, Integer productCatCode, String rowNum, String productSaleUnit, String productUnit,
-                                 String unitCode, double defaultUOMQty, String defaultUOM, Double Rate, String mPTR, Integer Qty,
-                                 Integer RegularQty, Double Amount, List<Product_Details_Modal> productDetailsModal, String PaidAmount, double tax,double mTaxPer,double mSGST,double mCGST,String mConv,String mFree,String off_Pro_code, String off_Pro_name, String off_Pro_Unit) {
-        this.id = id;
-        this.name = name;
-        this.productCatCode = productCatCode;
-        this.rowNum = rowNum;
-        this.productSaleUnit = productSaleUnit;
-        this.productUnit = productUnit;
-        this.unitCode = unitCode;
-        this.defaultUOMQty = defaultUOMQty;
-        this.defaultUOM = defaultUOM;
-        this.Rate = Rate;
-        this.Qty = Qty;
-        this.RegularQty = RegularQty;
-        this.Amount = Amount;
-        this.productDetailsModal = productDetailsModal;
-        this.PaidAmount = PaidAmount;
-        this.tax = tax;
-        this.HSNCode=mHSNCode;
-        this.TaxPer=mTaxPer;
-        this.PSGST=mSGST;
-        this.PCGST=mCGST;
-        this.MRP=mMRP;
-        this.PTR=mPTR;
-        this.ConversionFactor=mConv;
-        this.free=mFree;
-        this.Off_Pro_code = off_Pro_code;
-        this.Off_Pro_name = off_Pro_name;
-        this.Off_Pro_Unit = off_Pro_Unit;
-    }
-    public Product_Details_Modal(String id, String name, Integer productCatCode, String rowNum, String productSaleUnit, String productUnit,
-                                 String unitCode, double defaultUOMQty, String defaultUOM, Double Rate, Integer Qty,
-                                 Integer RegularQty, Double Amount, List<Product_Details_Modal> productDetailsModal, String PaidAmount, double tax) {
-        this.id = id;
-        this.name = name;
-        this.productCatCode = productCatCode;
-        this.rowNum = rowNum;
-        this.productSaleUnit = productSaleUnit;
-        this.productUnit = productUnit;
-        this.unitCode = unitCode;
-        this.defaultUOMQty = defaultUOMQty;
-        this.defaultUOM = defaultUOM;
-        this.Rate = Rate;
-        this.Qty = Qty;
-        this.RegularQty = RegularQty;
-        this.Amount = Amount;
-        this.productDetailsModal = productDetailsModal;
-        this.PaidAmount = PaidAmount;
-        this.tax = tax;
-    }
-
-    public Product_Details_Modal(String id, String name, String sku, double price, int Qty, double amount, String scheme) {
-        this.id = id;
-        this.name = name;
-        this.sku = sku;
-        this.price = price;
-        this.Qty = Qty;
-        this.scheme = scheme;
-        this.Amount = amount;
-    }
-
-
     public List<Product_Details_Modal> getProductDetailsModal() {
         return productDetailsModal;
     }
 
     public void setProductDetailsModal(List<Product_Details_Modal> productDetailsModal) {
         this.productDetailsModal = productDetailsModal;
-    }
-
-    public Product_Details_Modal(String Tax_Id, String Tax_Type, double Tax_Val, double Tax_Amt) {
-        this.Tax_Val = Tax_Val;
-        this.Tax_Type = Tax_Type;
-        this.Tax_Id = Tax_Id;
-        this.Tax_Amt = Tax_Amt;
-
-    }
-
-    public Product_Details_Modal(String Tax_Type, double Tax_Amt) {
-
-        this.Tax_Type = Tax_Type;
-
-        this.Tax_Amt = Tax_Amt;
-
-    }
-
-    public Product_Details_Modal(String id, String name, String bookingDate, int Qty, String UOM) {
-        this.id = id;
-        this.name = name;
-        this.bookingDate = bookingDate;
-        this.Qty = Qty;
-        this.UOM = UOM;
-
-    }
-
-    public Product_Details_Modal(String id, String scheme, String free, double discount, String discount_type, String Package
-            , double tax, String off_Pro_code, String off_Pro_name, String off_Pro_Unit) {
-        this.id = id;
-        this.scheme = scheme;
-        this.free = free;
-        this.discount = discount;
-        this.discount_type = discount_type;
-        this.Package = Package;
-        this.tax = tax;
-        this.Off_Pro_code = off_Pro_code;
-        this.Off_Pro_name = off_Pro_name;
-        this.Off_Pro_Unit = off_Pro_Unit;
-
     }
 
     public double getDiscount() {
@@ -818,7 +840,6 @@ public class Product_Details_Modal {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
-
 
     public String getBookingDate() {
         return bookingDate;
@@ -836,7 +857,6 @@ public class Product_Details_Modal {
         this.popMaterial = popMaterial;
     }
 
-
     public String getFree() {
         return free;
     }
@@ -844,7 +864,6 @@ public class Product_Details_Modal {
     public void setFree(String free) {
         this.free = free;
     }
-
 
     public Integer getRegularQty() {
         return RegularQty;
@@ -854,20 +873,20 @@ public class Product_Details_Modal {
         RegularQty = regularQty;
     }
 
-    public void setAmount(Double amount) {
-        Amount = amount;
-    }
-
     public Double getAmount() {
         return Amount;
     }
 
-    public void setQty(Integer qty) {
-        Qty = qty;
+    public void setAmount(Double amount) {
+        Amount = amount;
     }
 
     public Integer getQty() {
         return Qty;
+    }
+
+    public void setQty(Integer qty) {
+        Qty = qty;
     }
 
     public String getId() {
@@ -882,16 +901,16 @@ public class Product_Details_Modal {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Double getRate() {
         return Rate;
     }
 
     public void setRate(Double rate) {
         Rate = rate;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Integer getProductCatCode() {
@@ -1026,11 +1045,9 @@ public class Product_Details_Modal {
         this.value = value;
     }
 
-
     public String getentryValue() {
         return value;
     }
-
 
     public String getPaidAmount() {
         return PaidAmount;
@@ -1184,6 +1201,45 @@ public class Product_Details_Modal {
         BalAmt = balAmt;
     }
 
+    public String getGrnNo() {
+        return grnNo;
+    }
+
+    public void setGrnNo(String grnNo) {
+        this.grnNo = grnNo;
+    }
+
+    public String getGrnDate() {
+        return grnDate;
+    }
+
+    public void setGrnDate(String grnDate) {
+        this.grnDate = grnDate;
+    }
+
+    public String getPono() {
+        return pono;
+    }
+
+    public void setPono(String pono) {
+        this.pono = pono;
+    }
+
+    public String getSuppName() {
+        return suppName;
+    }
+
+    public void setSuppName(String suppName) {
+        this.suppName = suppName;
+    }
+
+    public Double getGrnTotal() {
+        return grnTotal;
+    }
+
+    public void setGrnTotal(Double grnTotal) {
+        this.grnTotal = grnTotal;
+    }
 
     public class UOM {
         @SerializedName("CnvQty")
@@ -1245,66 +1301,6 @@ public class Product_Details_Modal {
 
 
     }
-
-    public String getGrnNo() {
-        return grnNo;
-    }
-
-    public void setGrnNo(String grnNo) {
-        this.grnNo = grnNo;
-    }
-
-    @SerializedName("GRN_No")
-    @Expose
-    private String grnNo = "";
-
-    public String getGrnDate() {
-        return grnDate;
-    }
-
-    public void setGrnDate(String grnDate) {
-        this.grnDate = grnDate;
-    }
-
-    @SerializedName("GRN_Date")
-    @Expose
-    private String grnDate = "";
-
-    public String getPono() {
-        return pono;
-    }
-
-    public void setPono(String pono) {
-        this.pono = pono;
-    }
-
-    @SerializedName("Po_No")
-    @Expose
-    private String pono = "";
-
-    public String getSuppName() {
-        return suppName;
-    }
-
-    public void setSuppName(String suppName) {
-        this.suppName = suppName;
-    }
-
-    @SerializedName("Supp_Name")
-    @Expose
-    private String suppName = "";
-
-    public Double getGrnTotal() {
-        return grnTotal;
-    }
-
-    public void setGrnTotal(Double grnTotal) {
-        this.grnTotal = grnTotal;
-    }
-
-    @SerializedName("Net_Tot_Value")
-    @Expose
-    private Double grnTotal = 0.0;
 
 
 }

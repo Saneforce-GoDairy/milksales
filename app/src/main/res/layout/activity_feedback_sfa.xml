@@ -9,17 +9,218 @@
 
     <include layout="@layout/sfatoolbar"/>
 
-    <TextView
-        android:id="@+id/headtext"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/C40dp"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_vertical"
+            android:text="Feedback Form"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_baseline_power_settings_new_24"
+            android:visibility="gone"
+            app:tint="@color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/blue_bg"
-        android:fontFamily="@font/basic"
-        android:padding="@dimen/C8dp"
-        android:text="Feedback"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginTop="@dimen/C16dp"
+            android:fontFamily="@font/roboto"
+            android:text="1. Is the delivery of the material as per your order?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C16dp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/C15dp"
+            android:layout_marginTop="@dimen/C8dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/deliveryYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="Yes"
+                android:textColor="@color/black" />
+
+            <RadioButton
+                android:id="@+id/deliveryNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/C20dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:checked="true"
+                android:text="No"
+                android:textColor="@color/black" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginTop="@dimen/C16dp"
+            android:fontFamily="@font/roboto"
+            android:text="2. Is there any issue you would like to report?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C16dp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/C15dp"
+            android:layout_marginTop="@dimen/C8dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/issueYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="Yes"
+                android:textColor="@color/black" />
+
+            <RadioButton
+                android:id="@+id/issueNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/C20dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:checked="true"
+                android:text="No"
+                android:textColor="@color/black" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginTop="@dimen/C16dp"
+            android:fontFamily="@font/roboto"
+            android:text="3. Is there any Material Damage / Expired?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C16dp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/C15dp"
+            android:layout_marginTop="@dimen/C8dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/damageYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="Yes"
+                android:textColor="@color/black" />
+
+            <RadioButton
+                android:id="@+id/damageNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/C20dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:checked="true"
+                android:text="No"
+                android:textColor="@color/black" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/C12dp"
+            android:layout_marginTop="@dimen/C16dp"
+            android:fontFamily="@font/roboto"
+            android:text="4. For any other information/ to share your feedback here"
+            android:textColor="@color/black"
+            android:textSize="@dimen/C16dp" />
+
+        <EditText
+            android:id="@+id/feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C12dp"
+            android:background="@drawable/edit_text_border"
+            android:gravity="start"
+            android:hint="Tell something..."
+            android:minLines="4"
+            android:padding="@dimen/C12dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/C12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/cardbutton"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/C12dp"
+        android:textStyle="bold"
+        android:paddingVertical="8dp"
+        android:text="Submit"
         android:textAllCaps="true"
-        android:textColor="#FFF"
-        android:textSize="18dp"
-        android:textStyle="bold" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/C16dp" />
 
 </LinearLayout>

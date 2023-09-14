@@ -19,7 +19,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -38,6 +42,10 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -68,6 +76,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -78,9 +87,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import id.zelory.compressor.Compressor;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -110,6 +121,11 @@ public class Common_Class {
     SharedPreferences UserDetails;
     public static final String UserDetail = "MyPrefs";
     public int brandPos = 0, grpPos = 0, categoryPos = 0;
+    OnDownloadImage onDownloadImage;
+
+    public void setOnDownloadImage(OnDownloadImage onDownloadImage) {
+        this.onDownloadImage = onDownloadImage;
+    }
 
     public void CommonIntentwithFinish(Class classname) {
         intent = new Intent(activity, classname);
@@ -1768,6 +1784,113 @@ public class Common_Class {
 
     public double formatDecimalToTwoDecimal(double amount) {
         return Double.parseDouble(new DecimalFormat("0.00").format(amount));
+    }
+
+    public Address getAddressFromLatLong(Context context, double LATITUDE, double LONGITUDE) {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                return addresses.get(0);
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Map Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
+
+    public static void uploadToS3Bucket(Context context, String mFilePath, String FileName,String Mode) {
+        try{
+            Util util = new Util();
+            TransferUtility transferUtility = util.getTransferUtility(context);
+            File file = new File(mFilePath);
+            if (mFilePath.contains(".png") || mFilePath.contains(".jpg") || mFilePath.contains(".jpeg")) {
+                file = new Compressor(context).compressToFile(new File(mFilePath));
+            } else {
+                file = new File(mFilePath);
+            }
+            TransferObserver uploadObserver = transferUtility.upload("happic",Mode+"/" + FileName , file);
+            ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Uploading...");
+            progressDialog.show();
+            uploadObserver.setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if (TransferState.COMPLETED == state) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, "File uploaded successfully", Toast.LENGTH_SHORT).show();
+                    } else if (TransferState.FAILED == state) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
+                    int percentDone = (int) percentDonef;
+                    progressDialog.setMessage("Uploading (" + percentDone + "%)");
+                }
+
+                @Override
+                public void onError(int id, Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            });
+        }
+        catch (Exception e){
+            Log.e("exjhbdbf",e.getMessage());
+        }
+    }
+
+    public void getImageFromS3Bucket(Context context, String key, String FileName,String Mode) {
+        try{
+            String[] names = FileName.split("\\.");
+            String extension = names[names.length - 1];
+            final File file = File.createTempFile(FileName, extension);
+            Util util = new Util();
+            TransferUtility transferUtility = util.getTransferUtility(context);
+            TransferObserver downloadObserver = transferUtility.download("happic",Mode+"/" + FileName, file);
+            downloadObserver.setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if (TransferState.COMPLETED == state) {
+                        Bitmap bmp= BitmapFactory.decodeFile(file.getAbsolutePath());
+                        if (onDownloadImage != null) {
+                            onDownloadImage.onDownload(key, bmp);
+                        }
+                    } else if (TransferState.FAILED == state) {
+                        if (onDownloadImage != null) {
+                            onDownloadImage.onDownload(key, null);
+                        }
+                    }
+                }
+
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
+                    int percentDone = (int) percentDonef;
+                }
+
+                @Override
+                public void onError(int id, Exception ex) {
+                    if (onDownloadImage != null) {
+                        onDownloadImage.onDownload(key, null);
+                    }
+                }
+            });
+        }
+        catch (Exception e){
+            if (onDownloadImage != null) {
+                onDownloadImage.onDownload(key, null);
+            }
+        }
+    }
+
+    public interface OnDownloadImage {
+        void onDownload(String key, Bitmap bmp);
     }
 
 

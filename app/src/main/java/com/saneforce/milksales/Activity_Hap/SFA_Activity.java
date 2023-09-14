@@ -53,6 +53,7 @@ import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.Interface.UpdateResponseUI;
 import com.saneforce.milksales.Interface.onListItemClick;
 import com.saneforce.milksales.R;
+import com.saneforce.milksales.SFA_Activity.ChallanActivity;
 import com.saneforce.milksales.SFA_Activity.Dashboard_Order_Reports;
 import com.saneforce.milksales.SFA_Activity.Dashboard_Route;
 import com.saneforce.milksales.SFA_Activity.FeedbackActivitySFA;
@@ -812,7 +813,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        Log.v("CHECKING", "CHECKING");
+        if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.CHECKIN_TYPE)) {
+            finish();
+        }
     }
 
     private void getOfferNotify() {

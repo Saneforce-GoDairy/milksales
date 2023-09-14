@@ -39,11 +39,11 @@
                         android:orientation="horizontal">
 
                         <View
-                            android:layout_marginStart="5dp"
+                            android:id="@+id/lowOrder"
                             android:layout_width="@dimen/C10dp"
                             android:layout_height="@dimen/C10dp"
-                            android:background="@color/Exit"
-                            android:id="@+id/lowOrder"/>
+                            android:layout_marginStart="5dp"
+                            android:background="@color/Exit" />
 
 
                         <TextView
@@ -56,7 +56,7 @@
                             android:gravity="left"
                             android:text="OrderID"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/C13dp"/>
+                            android:textSize="@dimen/C13dp" />
 
                         <TextView
                             android:id="@+id/Itemcountinvoice"
@@ -67,7 +67,7 @@
                             android:gravity="center"
                             android:text="54"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/C13dp"/>
+                            android:textSize="@dimen/C13dp" />
 
 
                         <TextView
@@ -79,7 +79,7 @@
                             android:gravity="center"
                             android:text="Value"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/C13dp"/>
+                            android:textSize="@dimen/C13dp" />
                     </LinearLayout>
 
 
@@ -150,6 +150,18 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/payNow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="5dp"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/button_green"
+                android:paddingHorizontal="@dimen/C15dp"
+                android:paddingVertical="4dp"
+                android:text="Pay Now"
+                android:textColor="@color/white" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

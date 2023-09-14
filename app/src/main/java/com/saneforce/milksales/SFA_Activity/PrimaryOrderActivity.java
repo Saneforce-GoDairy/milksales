@@ -2121,6 +2121,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                 holder.tvDefUOM.setText("" + ProductItem.getProductUnit());
 
+//                holder.tvUomName
+
                 holder.llFreeProd.setVisibility(View.GONE);
                 if (ProductItem.getOff_Pro_name()!=null) {
                     if (!(ProductItem.getOff_Pro_name().equalsIgnoreCase(ProductItem.getName())))

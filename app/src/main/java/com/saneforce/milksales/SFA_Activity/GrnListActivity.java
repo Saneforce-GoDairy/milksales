@@ -140,7 +140,7 @@ public class GrnListActivity extends AppCompatActivity
         try {
             jObj.put("SFCode", Shared_Common_Pref.Sf_Code);
 
-            ApiInterface apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
+            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Log.v("api",apiInterface.toString());
             Call<JsonObject> responseBodyCall =apiInterface.GRNSync(jObj.toString());
             Log.v("divcodepos",Shared_Common_Pref.Sf_Code);
