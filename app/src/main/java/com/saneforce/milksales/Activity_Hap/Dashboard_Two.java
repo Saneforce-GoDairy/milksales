@@ -309,7 +309,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             StActivity.setVisibility(View.VISIBLE);
 
             if (UserDetails.getInt("CheckCount", 0) <= 0) {
-                approval.setVisibility(View.GONE);
+                approval.setVisibility(View.INVISIBLE);
                 tvapprCnt.setVisibility(View.GONE);
             } else {
                 approval.setVisibility(View.VISIBLE);

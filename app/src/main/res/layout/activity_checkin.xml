@@ -66,6 +66,7 @@
 
     <Button
         android:id="@+id/confirm_shift"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:textColor="@color/white"

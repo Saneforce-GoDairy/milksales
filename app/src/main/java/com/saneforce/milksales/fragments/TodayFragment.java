@@ -228,12 +228,23 @@ public class TodayFragment extends Fragment {
             }
             fItm = res.get(0).getAsJsonObject();
 
-            Log.e("check_in_time", fItm.get("GeoIn").getAsString());
-            binding.checkInTime.setText(fItm.get("AttTm").getAsString());
-            binding.geoIn.setText(fItm.get("GeoIn").getAsString());
+            String checkInTimeStr = fItm.get("GeoIn").getAsString();
+            if (!checkInTimeStr.isEmpty() && !checkInTimeStr.equals("00:00:00")) {
+                binding.geoIn.setText(fItm.get("GeoIn").getAsString());
+                binding.checkInTime.setText(fItm.get("AttTm").getAsString());
+                binding.geoInView.setVisibility(View.VISIBLE);
+            } else {
+                binding.geoInView.setVisibility(View.GONE);
+            }
 
-            binding.checkOutTime.setText(fItm.get("ET").getAsString());
-            binding.geoOut.setText(fItm.get("GeoOut").getAsString());
+            String checkOutTimeStr = fItm.get("ET").getAsString();
+            if (!checkInTimeStr.isEmpty() && !checkOutTimeStr.equals("00:00:00")) {
+                binding.geoOut.setText(fItm.get("GeoOut").getAsString());
+                binding.checkOutTime.setText(checkOutTimeStr);
+                binding.geoOutView.setVisibility(View.VISIBLE);
+            } else {
+                binding.geoOutView.setVisibility(View.GONE);
+            }
 
           String  checkInUrl =  fItm.get("ImgName").getAsString();
                     Glide.with(requireContext())

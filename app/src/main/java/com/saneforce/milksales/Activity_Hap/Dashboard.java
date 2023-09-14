@@ -212,7 +212,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         approvalcount = findViewById(R.id.approvalcount);
 
         if (UserDetails.getInt("CheckCount", 0) <= 0) {
-            approval.setVisibility(View.GONE);
+            approval.setVisibility(View.INVISIBLE);
 //            approvalcount.setVisibility(View.GONE);
         } else {
             approval.setVisibility(View.VISIBLE);

@@ -127,12 +127,14 @@
                         android:layout_height="@dimen/C15dp"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
+                        android:visibility="invisible"
                         android:src="@drawable/triangle_warning"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
+                        android:visibility="invisible"
                         android:textColor="@color/secondary_orange"
                         android:layout_marginStart="@dimen/C5dp"
                         android:text="Move towards fencing radius to Check IN"/>
@@ -145,6 +147,7 @@
 
         <Button
             android:id="@+id/tvStartDirection"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:textColor="@color/white"
