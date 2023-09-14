@@ -273,8 +273,8 @@
                                     android:background="@null"
                                     android:layout_marginStart="15dp"
                                     android:layout_marginTop="10dp"
+                                    android:hint="Type Here..."
                                     android:layout_marginBottom="15dp"
-                                    android:text="Select HQ"
                                     android:textAllCaps="false"
                                     android:fontFamily="@font/roboto_medium"
                                     android:textSize="13sp" />
@@ -349,7 +349,7 @@
                                     android:layout_marginStart="15dp"
                                     android:layout_marginBottom="15dp"
                                     android:paddingBottom="10dp"
-                                    android:text="Type"
+                                    android:hint="Select..."
                                     android:textAllCaps="false"
                                     android:textColor="@color/black"
                                     android:fontFamily="@font/roboto_medium"
@@ -430,10 +430,8 @@
                                         android:layout_marginStart="15dp"
                                         android:layout_marginTop="10dp"
                                         android:layout_marginBottom="15dp"
-                                        android:textColorHint="@color/black"
                                         android:inputType="number"
-                                        android:hint="Type"
-                                        android:textAllCaps="false"
+                                        android:hint="Type Here..."
                                         android:fontFamily="@font/roboto_medium"
                                         android:textSize="13sp" />
 
@@ -445,14 +443,15 @@
                                         android:layout_alignParentEnd="true">
 
                                         <RelativeLayout
-                                            android:background="@drawable/place_holder_back_box"
                                             android:layout_width="40dp"
                                             android:layout_height="40dp"
                                             android:layout_marginEnd="10dp">
                                             <ImageView
+                                                android:id="@+id/bikeImage"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:padding="1dp"
+                                                android:scaleType="centerCrop"
                                                 android:src="@drawable/person_placeholder_0"
                                                 />
                                         </RelativeLayout>

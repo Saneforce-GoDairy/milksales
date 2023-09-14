@@ -36,15 +36,18 @@ public class HAPApp extends Application {
     private BroadcastReceiver mNetworkReceiver;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
+    public static final String CheckInDetail = "CheckInDetail";
     public static String CurrencySymbol =  "₹";//₹B$
     public static String MRPCap = "MRP";//₹B$
     public static String MyAppID = "com.saneforce.milksales";
     public static String Title = "Milk Sales";
     public static String StockCheck = "1";//₹B$
-    SharedPreferences UserDetails;
+    SharedPreferences UserDetails, CheckInDetails;
     public static Boolean ProductsLoaded = false;
     SharedPreferences CommUserDetails;
     public static final String UserDetail = "MyPrefs";
+    public static final String MyPREFERENCES = "MyPrefs";
+    Shared_Common_Pref shared_common_pref;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -66,7 +69,14 @@ public class HAPApp extends Application {
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activeActivity = activity;
                 Log.e("ActivityName", activeActivity.getClass().getSimpleName());
+
                 CommUserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+                UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
+                if (UserDetails.getBoolean("Login", false) || CheckInDetails.getBoolean("CheckIn", false)) {
+                    shared_common_pref = new Shared_Common_Pref(activity);
+                    ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
+                }
                 try
                 {
                     if(!CommUserDetails.getString("Sfcode","").equalsIgnoreCase("")) {

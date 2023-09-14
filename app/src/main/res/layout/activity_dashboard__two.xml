@@ -212,12 +212,13 @@
                     android:layout_height="200dp"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:padding="15dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -300,10 +301,9 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:gravity="center_horizontal"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -359,7 +359,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/canteen_scan"
+                            android:id="@+id/approval"
                             android:layout_width="70dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -377,7 +377,7 @@
                                 android:layout_marginTop="10dp"
                                 android:fontFamily="@font/roboto_medium"
                                 android:gravity="center_horizontal"
-                                android:text="@string/canteen_scan"
+                                android:text="Approvals"
                                 android:textColor="#464749"
                                 android:textSize="13sp" />
 

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +82,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     private ImageView profilePic, btMyQR;
     private TextView lblUserName, lblEmail;
     private TextView approvalcount;
+    LinearLayout approval;
     private Button linMyday, linCheckin, linApprovals, linRequstStaus, linReport, linOnDuty, linSFA;
     private Button linTourPlan, linExit, lin_check_in, linHolidayWorking, linReCheck, linTaClaim, linExtShift;
 
@@ -198,7 +200,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             linCheckin.setVisibility(View.GONE);
         }
 
-        linApprovals = findViewById(R.id.lin_approvals);
+        approval = findViewById(R.id.approval);
         linTaClaim = (findViewById(R.id.lin_ta_claim));
         linExtShift = (findViewById(R.id.lin_extenden_shift));
         linExtShift.setVisibility(View.GONE);
@@ -210,10 +212,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         approvalcount = findViewById(R.id.approvalcount);
 
         if (UserDetails.getInt("CheckCount", 0) <= 0) {
-            mRelApproval.setVisibility(View.GONE);
-            approvalcount.setVisibility(View.GONE);
+            approval.setVisibility(View.GONE);
+//            approvalcount.setVisibility(View.GONE);
         } else {
-            mRelApproval.setVisibility(View.VISIBLE);
+            approval.setVisibility(View.VISIBLE);
         }
 
         btMyQR.setOnClickListener(v -> {
@@ -226,7 +228,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         linRequstStaus.setOnClickListener(this);
         linReport.setOnClickListener(this);
         linOnDuty.setOnClickListener(this);
-        linApprovals.setOnClickListener(this);
+        approval.setOnClickListener(this);
         linTaClaim.setOnClickListener(this);
         linExtShift.setOnClickListener(this);
         linTourPlan.setOnClickListener(this);
@@ -329,10 +331,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.sfa.setOnClickListener(v -> {
             startActivity(new Intent(context, SFA_Activity.class));
         });
-        binding.canteenScan.setOnClickListener(v -> {
+        /*binding.canteenScan.setOnClickListener(v -> {
             Intent intent = new Intent(context, CateenToken.class);
             startActivity(intent);
-        });
+        });*/
 
         binding.gateIn.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
@@ -530,7 +532,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 startActivity(Dashboard);
                 break;
 
-            case R.id.lin_approvals:
+            case R.id.approval:
                 Shared_Common_Pref.TravelAllowance = 1;
                 startActivity(new Intent(context, Approvals.class));
                 break;

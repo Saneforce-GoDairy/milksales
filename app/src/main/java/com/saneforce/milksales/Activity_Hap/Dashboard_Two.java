@@ -129,6 +129,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     private final String TAG = "Dashboard_Two";
     private String checkInUrl = "";
     private String timerDate, key, timerTime;
+    LinearLayout approval;
 
     private Button StActivity, cardview3, cardview4, cardView5, btnCheckout, btnApprovals, btnExit, viewButton;
     private Button btnGateIn, btnGateOut;
@@ -262,6 +263,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             cardview4 = findViewById(R.id.btn_da_exp_entry);
             cardView5 = findViewById(R.id.cardview5);
             btnApprovals = findViewById(R.id.approvals);
+            approval = findViewById(R.id.approval);
             tvapprCnt = findViewById(R.id.approvalcount);
             mPriod = "0";
             mvNxtMn = findViewById(R.id.nxtMn);
@@ -300,17 +302,17 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             btnExit.setOnClickListener(this);
             btnGateIn.setOnClickListener(this);
             btnGateOut.setOnClickListener(this);
-            btnApprovals.setOnClickListener(this);
+            approval.setOnClickListener(this);
             btnGateIn.setVisibility(View.GONE);
             btnGateOut.setVisibility(View.GONE);
             cardGateDet.setVisibility(View.GONE);
             StActivity.setVisibility(View.VISIBLE);
 
             if (UserDetails.getInt("CheckCount", 0) <= 0) {
-                btnApprovals.setVisibility(View.GONE);
+                approval.setVisibility(View.GONE);
                 tvapprCnt.setVisibility(View.GONE);
             } else {
-                btnApprovals.setVisibility(View.VISIBLE);
+                approval.setVisibility(View.VISIBLE);
                 tvapprCnt.setVisibility(View.VISIBLE);
             }
             btnExit.setVisibility(View.GONE);
@@ -448,10 +450,10 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         binding.sfa.setOnClickListener(v -> {
             startActivity(new Intent(context, SFA_Activity.class));
         });
-        binding.canteenScan.setOnClickListener(v -> {
+        /*binding.canteenScan.setOnClickListener(v -> {
             Intent intent = new Intent(context, CateenToken.class);
             startActivity(intent);
-        });
+        });*/
 
         binding.gateIn.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
@@ -1197,7 +1199,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             case R.id.cardview5:
                 intent = new Intent(this, Reports.class);
                 break;
-            case R.id.approvals:
+            case R.id.approval:
                 Shared_Common_Pref.TravelAllowance = 1;
                 intent = new Intent(this, Approvals.class);
                 break;
