@@ -16,17 +16,17 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-            <TextView
-                android:id="@+id/title"
-                android:padding="@dimen/C7dp"
-                android:background="@drawable/button_blueg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="November"
-                android:textAlignment="center"
-                android:textColor="@color/color_white"
-                android:textSize="18dip"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/title"
+            android:padding="@dimen/C7dp"
+            android:background="@drawable/button_blueg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="November"
+            android:textAlignment="center"
+            android:textColor="@color/color_white"
+            android:textSize="18dip"
+            android:textStyle="bold" />
 
 
         <LinearLayout

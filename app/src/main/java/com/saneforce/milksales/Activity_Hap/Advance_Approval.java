@@ -153,6 +153,7 @@ public class Advance_Approval extends AppCompatActivity {
                             intent.putExtra("Purpose", item.getString("AdvPurp"));
                             intent.putExtra("Amount", item.getString("AdvAmt"));
                             intent.putExtra("Sf_Code",item.getString("SF"));
+                            intent.putExtra("AdvSettle",item.getString("AdvSettle"));
                             startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -559,9 +559,9 @@
                                     android:id="@+id/tpapprovebutton"
                                     style="@style/DashboardButton"
                                     android:layout_weight="1"
-                                    android:background="@drawable/button_dgreen"
+                                    android:background="@drawable/button_blue1"
                                     android:fontFamily="@font/alegreya_sans_sc"
-                                    android:text="Approve"
+                                    android:text="Submit"
                                     android:textStyle="bold" />
 
                                 <Button

@@ -210,6 +210,27 @@
 
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="Settlement Date" />
+
+                <TextView
+                    android:id="@+id/advance_settlement_date"
+                    style="@style/TextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/green" />
+
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

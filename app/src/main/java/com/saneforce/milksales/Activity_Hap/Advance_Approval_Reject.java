@@ -39,7 +39,7 @@ import retrofit2.Response;
 
 public class Advance_Approval_Reject extends AppCompatActivity implements View.OnClickListener {
     TextView name, empcode, hq, mobilenumber, designation, AdvLoc, leavereason, leavetype,
-            fromdate, todate, AdvAmt, tpapprovebutton, Lreject, L_rejectsave;
+            fromdate, todate, AdvAmt, tpapprovebutton, Lreject, L_rejectsave, txtSettlement;
     String Sf_Code, Tour_plan_Date, LeaveId;
     Shared_Common_Pref shared_common_pref;
     Common_Class common_class;
@@ -116,6 +116,7 @@ public class Advance_Approval_Reject extends AppCompatActivity implements View.O
         rejectonly = findViewById(R.id.rejectonly);
         L_rejectsave = findViewById(R.id.L_rejectsave);
         Lreject = findViewById(R.id.Lreject);
+        txtSettlement = findViewById(R.id.advance_settlement_date);
         shared_common_pref = new Shared_Common_Pref(this);
         common_class = new Common_Class(this);
         leavereason = findViewById(R.id.leavereason);
@@ -141,6 +142,7 @@ public class Advance_Approval_Reject extends AppCompatActivity implements View.O
         AdvLoc.setText(":" + i.getExtras().getString("Loc"));
         leavereason.setText(":" + i.getExtras().getString("Purpose"));
         AdvAmt.setText(":" + i.getExtras().getString("Amount"));
+        txtSettlement.setText(":" + i.getExtras().getString("AdvSettle"));
         Sf_Code = i.getExtras().getString("Sf_Code");
         LeaveId = i.getExtras().getString("eID");
         ImageView backView = findViewById(R.id.imag_back);

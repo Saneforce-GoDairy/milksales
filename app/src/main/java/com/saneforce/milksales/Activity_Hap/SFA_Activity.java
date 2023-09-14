@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -53,7 +54,6 @@ import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.Interface.UpdateResponseUI;
 import com.saneforce.milksales.Interface.onListItemClick;
 import com.saneforce.milksales.R;
-import com.saneforce.milksales.SFA_Activity.ChallanActivity;
 import com.saneforce.milksales.SFA_Activity.Dashboard_Order_Reports;
 import com.saneforce.milksales.SFA_Activity.Dashboard_Route;
 import com.saneforce.milksales.SFA_Activity.FeedbackActivitySFA;
@@ -80,6 +80,7 @@ import com.saneforce.milksales.adapters.OffersAdapter;
 import com.saneforce.milksales.common.DatabaseHandler;
 import com.saneforce.milksales.common.LocationReceiver;
 import com.saneforce.milksales.common.SANGPSTracker;
+import com.saneforce.milksales.databinding.ActivitySfactivityBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -102,6 +103,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SFA_Activity extends AppCompatActivity implements View.OnClickListener, UpdateResponseUI /*,Main_Model.MasterSyncView*/ {
+    private ActivitySfactivityBinding binding;
     LinearLayout Lin_Route, Lin_Lead, Lin_Dashboard, Logout, SyncButon, linorders;
     Gson gson;
     private SANGPSTracker mLUService;
@@ -135,7 +137,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sfactivity);
+        binding = ActivitySfactivityBinding.inflate(getLayoutInflater());
+        View view1 = binding.getRoot();
+        setContentView(view1);
+
         db = new DatabaseHandler(this);
         sharedCommonPref = new Shared_Common_Pref(SFA_Activity.this);
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
@@ -166,6 +171,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         sfa_date = tvDate.getText().toString();
         String sUName = UserDetails.getString("SfName", "");
         tvUserName.setText("HI! " + sUName);
+        binding.userName.setText("HI! " + sUName);
         tvUpdTime.setText("Last Updated On : " + updateTime);
 
         common_class.getProductDetails(this);
@@ -197,49 +203,49 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             ivProcureSync.setVisibility(View.GONE);
             switch (sharedCommonPref.getvalue(Constants.LOGIN_TYPE)) {
                 case Constants.CHECKIN_TYPE:
-                    menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_outline_add_chart_48));
-                    menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_outline_assignment_48));
+                    menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_primary_order_sf));
+                    menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
                     // menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
-                    menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_baseline_storefront_24));
+                    menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
                     if (UserDetails.getString("Sfcode", "").equals("MGR8171")) {
                         menuList.add(new ListModel("", "Approve Outlets", "", "", "", R.drawable.ic_approve_outlets));
                     }
-                    menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_outline_near_me_24));
-                    menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports));
-                    menuList.add(new ListModel("", "Distributor", "", "", "", R.drawable.ic_franchise));
-                    menuList.add(new ListModel("", "My Team", "", "", "", R.drawable.ic_baseline_groups_24));
-                    menuList.add(new ListModel("", "Projection", "", "", "", R.drawable.ic_projection));
+                    menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
+                    menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
+                    menuList.add(new ListModel("", "Distributor", "", "", "", R.drawable.ic_distributor_sf));
+                    menuList.add(new ListModel("", "My Team", "", "", "", R.drawable.ic_my_team_sf));
+                    menuList.add(new ListModel("", "Projection", "", "", "", R.drawable.ic_projection_sf));
                     // menuList.add(new ListModel("", "Stock Audit", "", "", "", R.drawable.ic_stock_audit));
-                    menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
-                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
+                    menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop_sf));
+                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_feedback_sf));
                     if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.Distributor_Id)))
                         common_class.getDb_310Data(Constants.Distributor_List, this);
                     break;
 
                 case Constants.DISTRIBUTER_TYPE:
-                    menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_outline_add_chart_48));
-                    menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_outline_assignment_48));
+                    menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_projection_sf));
+                    menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
                     menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
-                    menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_baseline_storefront_24));
-                    menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_outline_near_me_24));
-                    menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports));
+                    menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
+                    menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
+                    menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
                     menuList.add(new ListModel("", "Counter Sales", "", "", "", R.drawable.ic_outline_assignment_48));
                     menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
-                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
+                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_feedback_sf));
 //                  menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
                     common_class.getPOSProduct(this);
                     common_class.getDataFromApi(Constants.Retailer_OutletList, this, false);
                     break;
 
                 default:
-                    menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_outline_assignment_48));
+                    menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
                     menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
-                    menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_baseline_storefront_24));
-                    menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_outline_near_me_24));
-                    menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports));
+                    menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
+                    menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
+                    menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
                     menuList.add(new ListModel("", "POS", "", "", "", R.drawable.ic_outline_assignment_48));
                     menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
-                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
+                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_feedback_sf));
 //                  menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
                     break;
             }
@@ -292,7 +298,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     }
 
     void setMenuAdapter() {
-        RecyclerView.LayoutManager manager = new GridLayoutManager(this, 4);
+        RecyclerView.LayoutManager manager = new GridLayoutManager(this, 3);
         rvMenu.setLayoutManager(manager);
 
         menuAdapter = new MenuAdapter(this, menuList, new AdapterOnClick() {
