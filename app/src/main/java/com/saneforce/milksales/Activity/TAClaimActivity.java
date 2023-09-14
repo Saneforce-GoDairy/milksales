@@ -2523,9 +2523,11 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                                     fuelAmount.setText("₹" + fuelAmt);
 
                                     TextTotalAmount.setText("₹" + new DecimalFormat("##0.00").format(fuelAmt));
-                                } else {
+                                }
+                                if (start != 0 && end == 0) {
                                     btn_sub.setVisibility(View.GONE);
                                     buttonSave.setVisibility(View.GONE);
+
                                 }
                             }
                         }

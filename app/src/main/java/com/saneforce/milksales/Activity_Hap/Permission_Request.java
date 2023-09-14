@@ -740,6 +740,7 @@ public class Permission_Request extends AppCompatActivity implements View.OnClic
             shiftToDate = shiftToDate.substring(9, 14);*/
         } else if (type == 10) {
             PermissionHours.setText(myDataset.get(position).getName());
+            hrsCurr.setText(myDataset.get(position).getName());
             StringPremissonEntry = myDataset.get(position).getName();
             ToTimeData();
         }

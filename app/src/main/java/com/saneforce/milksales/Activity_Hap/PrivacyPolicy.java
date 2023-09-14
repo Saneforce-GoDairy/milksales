@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.R;
 
 public class PrivacyPolicy extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class PrivacyPolicy extends AppCompatActivity {
             sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
             /*webView*/
             privacyWebView = (WebView) findViewById(R.id.privacy_webview);
-            privacyWebView.loadUrl("https://hap.sanfmcg.com/Privacy.html");
+            privacyWebView.loadUrl(ApiClient.DEFAULT_BASE_URL + "Privacy.html");
 
             if (sharedpreferences.contains(Name)) {
                 PrivacyScreen = sharedpreferences.getString(Name, "");
