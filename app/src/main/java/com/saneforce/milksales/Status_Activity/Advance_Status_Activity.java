@@ -104,7 +104,9 @@ public class Advance_Status_Activity extends AppCompatActivity {
         gson = new Gson();
 
 
-        AMOD = String.valueOf(getIntent().getSerializableExtra("AMod"));
+        if (getIntent().hasExtra("AMod")) {
+            AMOD = getIntent().getStringExtra("AMod");
+        }
 
         getAdvancetatus();
 
@@ -122,7 +124,12 @@ public class Advance_Status_Activity extends AppCompatActivity {
         String routemaster = " {\"orderBy\":\"[\\\"name asc\\\"]\",\"desig\":\"mgr\"}";
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         common_class.ProgressdialogShow(1, "Leave Status");
-        Call<JsonArray> mCall = apiInterface.getDataArrayList("GetAdvance_Status", Shared_Common_Pref.Div_Code, Shared_Common_Pref.Sf_Code, Shared_Common_Pref.Sf_Code, Shared_Common_Pref.StateCode, "", routemaster);
+        Call<JsonArray> mCall;
+        if (AMOD.equals("1")) {
+            mCall = apiInterface.getDataArrayList("GetAdvance_Status_AMOD", Shared_Common_Pref.Div_Code, Shared_Common_Pref.Sf_Code, Shared_Common_Pref.Sf_Code, Shared_Common_Pref.StateCode, "", routemaster);
+        } else {
+            mCall = apiInterface.getDataArrayList("GetAdvance_Status", Shared_Common_Pref.Div_Code, Shared_Common_Pref.Sf_Code, Shared_Common_Pref.Sf_Code, Shared_Common_Pref.StateCode, "", routemaster);
+        }
         mCall.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {

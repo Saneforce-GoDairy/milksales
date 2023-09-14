@@ -7,11 +7,15 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
+    // Constant URLs
     public static final String CONFIG_URL = "https://lactalisindia.salesjump.in/server/milk_url_config.json";
-    public static String DEFAULT_BASE_URL = "https://lactalisindia.salesjump.in/";
+    public static final String DEFAULT_BASE_URL = "https://lactalisindia.salesjump.in/";
+
+    // Base URL
     public static String BASE_URL = "https://lactalisindia.salesjump.in/server/";
     private static Retrofit retrofit = null;
 
+    // Initialize Retrofit
     public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -23,6 +27,7 @@ public class ApiClient {
         return retrofit;
     }
 
+    // Re-Initialize Retrofit
     public static void ChangeBaseURL(String BaseURL) {
         BASE_URL = BaseURL + "server/";
         retrofit = new Retrofit.Builder()

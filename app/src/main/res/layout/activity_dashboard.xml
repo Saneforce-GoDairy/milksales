@@ -352,7 +352,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/canteen_scan"
+                            android:id="@+id/approval"
                             android:layout_width="70dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -370,7 +370,7 @@
                                 android:layout_marginTop="10dp"
                                 android:fontFamily="@font/roboto_medium"
                                 android:gravity="center_horizontal"
-                                android:text="@string/canteen_scan"
+                                android:text="Approvals"
                                 android:textColor="#464749"
                                 android:textSize="13sp" />
 
@@ -457,18 +457,18 @@
                         android:layout_marginBottom="15dp"
                         android:orientation="vertical">
 
-<!--                        <Button-->
-<!--                            android:id="@+id/lin_myday_plan"-->
-<!--                            style="@style/DashboardButton"-->
-<!--                            android:background="@drawable/g_sign"-->
-<!--                            android:text="My day plan" />-->
+                        <!--                        <Button-->
+                        <!--                            android:id="@+id/lin_myday_plan"-->
+                        <!--                            style="@style/DashboardButton"-->
+                        <!--                            android:background="@drawable/g_sign"-->
+                        <!--                            android:text="My day plan" />-->
 
-<!--                        <Button-->
-<!--                            android:id="@+id/lin_check_in"-->
-<!--                            style="@style/DashboardButton"-->
-<!--                            android:background="@drawable/button_green"-->
-<!--                            android:text="Check-In"-->
-<!--                            android:visibility="gone" />-->
+                        <!--                        <Button-->
+                        <!--                            android:id="@+id/lin_check_in"-->
+                        <!--                            style="@style/DashboardButton"-->
+                        <!--                            android:background="@drawable/button_green"-->
+                        <!--                            android:text="Check-In"-->
+                        <!--                            android:visibility="gone" />-->
 
                         <Button
                             android:id="@+id/lin_RecheckIn"

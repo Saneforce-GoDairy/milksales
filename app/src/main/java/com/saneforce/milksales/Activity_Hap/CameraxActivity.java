@@ -118,7 +118,7 @@ public class CameraxActivity extends AppCompatActivity {
     private SharedPreferences CheckInDetails, UserDetails, sharedpreferences;
     private Common_Class DT = new Common_Class();
     private String VistPurpose = "", UKey = "", DIR, onDutyPlcID, onDutyPlcNm, vstPurpose, PlaceId = "", PlaceName = "";
-    private String sStatus, mMode, mModeRetailorCapture, WrkType, UserInfo = "MyPrefs", imagvalue = "", mypreference = "mypref";
+    private String sStatus, mMode="", mModeRetailorCapture, WrkType, UserInfo = "MyPrefs", imagvalue = "", mypreference = "mypref";
     private com.saneforce.milksales.Common_Class.Common_Class common_class;
 
     public static final String sCheckInDetail = "CheckInDetail";
