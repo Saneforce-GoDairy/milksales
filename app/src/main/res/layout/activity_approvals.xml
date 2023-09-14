@@ -82,7 +82,7 @@
                                     android:layout_height="23dp">
 
                                     <TextView
-
+                                        android:visibility="gone"
                                         android:id="@+id/txt_Advance_req_count"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
@@ -134,7 +134,7 @@
                                     android:layout_height="23dp">
 
                                     <TextView
-
+                                        android:visibility="gone"
                                         android:id="@+id/txt_leave_req_count"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
@@ -243,6 +243,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_leave_cancel_req_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -297,6 +298,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_per_req_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -350,6 +352,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_on_duty_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -403,6 +406,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_newjoin_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -456,6 +460,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_miss_punch_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -511,6 +516,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_week_off_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -566,6 +572,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_FlightAppr_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -618,6 +625,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_trvl_all"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -672,6 +680,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_tour_plan"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -725,6 +734,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_deviation_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -779,6 +789,7 @@
                                         android:layout_height="23dp">
 
                                         <TextView
+                                            android:visibility="gone"
                                             android:id="@+id/txt_holiday_count"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
@@ -1040,7 +1051,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/C10dp"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"

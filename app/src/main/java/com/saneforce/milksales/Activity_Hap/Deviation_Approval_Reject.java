@@ -32,7 +32,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -128,7 +132,14 @@ public class Deviation_Approval_Reject extends AppCompatActivity implements View
         designation.setText(":" + i.getExtras().getString("Designation"));
         mobilenumber.setText(":" + i.getExtras().getString("MobileNumber"));
         Dreason.setText(":" + i.getExtras().getString("Reason"));
-        deviationdate.setText(":" + i.getExtras().getString("deviation_date"));
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        try {
+            Date date = inputDateFormat.parse(i.getExtras().getString("deviation_date"));
+            deviationdate.setText(":" + outputDateFormat.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         deviationtype.setText(":" + i.getExtras().getString("deviation_type"));
         Sf_Code = i.getExtras().getString("Sf_Code");
         deviation_id = i.getExtras().getString("deviation_id");

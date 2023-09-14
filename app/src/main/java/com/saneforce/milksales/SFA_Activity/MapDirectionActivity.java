@@ -249,6 +249,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             else
                 AddressTextview.setText("" + getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
                 binding.currentAddressFull.setText(""+ getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                binding.tvStartDirection.setVisibility(View.VISIBLE);
 
             if (currentLocationMarker != null)
                 currentLocationMarker.remove();

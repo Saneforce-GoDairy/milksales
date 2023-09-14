@@ -69,20 +69,18 @@ public class HAPApp extends Application {
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activeActivity = activity;
                 Log.e("ActivityName", activeActivity.getClass().getSimpleName());
-
                 CommUserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
                 UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                 CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
-                if (UserDetails.getBoolean("Login", false) || CheckInDetails.getBoolean("CheckIn", false)) {
-                    shared_common_pref = new Shared_Common_Pref(activity);
+                shared_common_pref = new Shared_Common_Pref(activeActivity);
+                if (!shared_common_pref.getvalue("base_url").isEmpty()) {
                     ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
                 }
-                try
-                {
-                    if(!CommUserDetails.getString("Sfcode","").equalsIgnoreCase("")) {
+                try {
+                    if (!CommUserDetails.getString("Sfcode", "").equalsIgnoreCase("")) {
                         startService(new Intent(activeActivity, TimerService.class));
                     }
-                }catch (Exception e){}
+                } catch (Exception ignored) { }
                 Shared_Common_Pref.Sf_Code = CommUserDetails.getString("Sfcode", "");
                 Shared_Common_Pref.Sf_Name = CommUserDetails.getString("SfName", "");
                 Shared_Common_Pref.Div_Code = CommUserDetails.getString("Divcode", "");

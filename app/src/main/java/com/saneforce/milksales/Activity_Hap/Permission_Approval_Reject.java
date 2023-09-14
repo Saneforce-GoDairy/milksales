@@ -32,7 +32,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -131,7 +137,14 @@ public class Permission_Approval_Reject extends Activity implements View.OnClick
         designation.setText(i.getExtras().getString("Designation"));
         mobilenumber.setText(i.getExtras().getString("MobileNumber"));
         Preason.setText(i.getExtras().getString("Reason"));
-        applieddate.setText(i.getExtras().getString("permissiondate"));
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        try {
+            Date date = inputDateFormat.parse(i.getExtras().getString("permissiondate"));
+            applieddate.setText(outputDateFormat.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         phours.setText(i.getExtras().getString("NoofHours"));
         fromtime.setText(i.getExtras().getString("fromtime"));
         totime.setText(i.getExtras().getString("totime"));

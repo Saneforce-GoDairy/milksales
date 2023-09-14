@@ -171,7 +171,8 @@ public class Permission_Request extends AppCompatActivity implements View.OnClic
         AvlHrs=TotHrs-tknHrs;
         hrsAvail.setText(String.valueOf(AvlHrs));
         takenHrs.setText(String.valueOf(tknHrs));
-
+        clickedDate = new SimpleDateFormat("dd-MM-yyy").format(Calendar.getInstance().getTime());
+        AvalaibilityHours();
         permsissionDate = (EditText) findViewById(R.id.permission_date);
         permsissionDate.setInputType(InputType.TYPE_NULL);
         permsissionDate.setOnClickListener(new View.OnClickListener() {

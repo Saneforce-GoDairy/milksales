@@ -256,6 +256,7 @@ public class CameraxActivity extends AppCompatActivity {
             binding.cameraFunctionContainer.setVisibility(View.VISIBLE);
               binding.cameraPreview.setVisibility(View.VISIBLE);
             binding.seekBarChangeBrightness.setVisibility(View.VISIBLE);
+            binding.submit.setVisibility(View.GONE);
         });
         binding.back.setOnClickListener(v -> finish());
         binding.buttonFlash.setOnClickListener(v -> {
@@ -461,6 +462,7 @@ public class CameraxActivity extends AppCompatActivity {
                     Bitmap bmRotated = rotateBitmap(bitmap, orientation);
 
                     binding.imageView.setImageBitmap(bmRotated);
+                    binding.submit.setVisibility(View.VISIBLE);
 
                     binding.imageView.setVisibility(View.VISIBLE);
                     binding.imageOkRetryContainer.setVisibility(View.VISIBLE);

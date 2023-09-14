@@ -274,6 +274,7 @@ public class Checkin extends AppCompatActivity implements ShiftTimeAdapter.OnCli
         shiftEnd = intent.getStringExtra("ShiftEnd");
         shiftCutOff = intent.getStringExtra("ShiftCutOff");
         data = intent.getStringExtra("data");
+        binding.confirmShift.setVisibility(View.VISIBLE);
     }
 
         // Previous design code

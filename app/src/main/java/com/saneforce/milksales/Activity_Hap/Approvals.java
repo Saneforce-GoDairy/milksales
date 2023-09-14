@@ -269,91 +269,97 @@ public class Approvals extends AppCompatActivity implements View.OnClickListener
                     if (Integer.parseInt(jsonObject.getString("leave")) < 1) {
                         countLeaveRequest.setVisibility(View.GONE);
                         findViewById(R.id.ivLvArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llLeave).setVisibility(View.GONE);
-//                        LeaveRequest.setVisibility(View.GONE);
+                    } else {
+                        countLeaveRequest.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivLvArw).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("Newjoin")) < 1) {
                         txt_newjoin_count.setVisibility(View.GONE);
                         findViewById(R.id.ivNewjoinArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llLeave).setVisibility(View.GONE);
-//                        LeaveRequest.setVisibility(View.GONE);
+                    } else {
+                        txt_newjoin_count.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivNewjoinArw).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("Advance")) < 1) {
                         txt_Advance_req_count.setVisibility(View.GONE);
                         findViewById(R.id.ivAdvArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llLeave).setVisibility(View.GONE);
-//                        LeaveRequest.setVisibility(View.GONE);
+                    } else {
+                        txt_Advance_req_count.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivAdvArw).setVisibility(View.VISIBLE);
                     }
-
                     if (Integer.parseInt(jsonObject.getString("FlightAppr")) < 1) {
                         countFlightAppr.setVisibility(View.GONE);
                         findViewById(R.id.ivFlightApprArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llPermission).setVisibility(View.GONE);
-//                        PermissionRequest.setVisibility(View.GONE);
+                    } else {
+                        countFlightAppr.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivFlightApprArw).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("Permission")) < 1) {
                         countPermissionRequest.setVisibility(View.GONE);
                         findViewById(R.id.ivPermissionArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llPermission).setVisibility(View.GONE);
-//                        PermissionRequest.setVisibility(View.GONE);
+                    } else {
+                        countPermissionRequest.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivPermissionArw).setVisibility(View.VISIBLE);
                     }
-
                     if (Integer.parseInt(jsonObject.getString("vwOnduty")) < 1) {
                         countOnDuty.setVisibility(View.GONE);
                         findViewById(R.id.ivOnDutyArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llOnDuty).setVisibility(View.GONE);
-//                        OnDuty.setVisibility(View.GONE);
+                    } else {
+                        countOnDuty.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivOnDutyArw).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("ExpList")) < 1) {
                         countTravelAllowance.setVisibility(View.GONE);
                         findViewById(R.id.ivTrvlAllowArr).setVisibility(View.GONE);
-
-//                        findViewById(R.id.llTrvlAlow).setVisibility(View.GONE);
-//                        TravelAllowance.setVisibility(View.GONE);
+                    } else {
+                        countTravelAllowance.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivTrvlAllowArr).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("vwmissedpunch")) < 1) {
                         countMissedPunch.setVisibility(View.GONE);
                         findViewById(R.id.ivMissPunchArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llMissedPunch).setVisibility(View.GONE);
-//                        MissedPunch.setVisibility(View.GONE);
+                    } else {
+                        countMissedPunch.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivMissPunchArw).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("TountPlanCount")) < 1) {
                         countTourPlan.setVisibility(View.GONE);
                         findViewById(R.id.ivWrkPlanArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llWrkPln).setVisibility(View.GONE);
-//                        TourPlan.setVisibility(View.GONE);
+                    } else {
+                        countTourPlan.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivWrkPlanArw).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("vwExtended")) < 1) {
                         extendedcount.setVisibility(View.GONE);
                         findViewById(R.id.ivXtndSft).setVisibility(View.GONE);
-//                        findViewById(R.id.llExtndSft).setVisibility(View.GONE);
-//                        ExtendedShift.setVisibility(View.GONE);
+                    } else {
+                        extendedcount.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivXtndSft).setVisibility(View.VISIBLE);
                     }
-
                     if (Integer.parseInt(jsonObject.getString("HolidayCount")) < 1) {
                         txt_holiday_count.setVisibility(View.GONE);
                         findViewById(R.id.ivHoliEntryArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llHoliEntry).setVisibility(View.GONE);
-//                        lin_holidayentryApproval.setVisibility(View.GONE);
+                    } else {
+                        txt_holiday_count.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivHoliEntryArw).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("DeviationC")) < 1) {
                         txt_deviation_count.setVisibility(View.GONE);
                         findViewById(R.id.ivDevEntryArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llDevEntry).setVisibility(View.GONE);
-//                        lin_DeviationApproval.setVisibility(View.GONE);
+                    } else {
+                        txt_deviation_count.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivDevEntryArw).setVisibility(View.VISIBLE);
                     }
                     if (Integer.parseInt(jsonObject.getString("CancelLeave")) < 1) {
                         txt_leavecancel_count.setVisibility(View.GONE);
                         findViewById(R.id.ivLvCancelArw).setVisibility(View.GONE);
-//                        findViewById(R.id.llLvCancel).setVisibility(View.GONE);
-//                        linLeaveCancel.setVisibility(View.GONE);
+                    } else {
+                        txt_leavecancel_count.setVisibility(View.VISIBLE);
+                        findViewById(R.id.ivLvCancelArw).setVisibility(View.VISIBLE);
                     }
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
