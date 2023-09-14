@@ -664,7 +664,9 @@ public class ImageCapture extends AppCompatActivity implements CameraActivity.Ca
 
                 finish();
             } else if (mMode.equalsIgnoreCase("PF")) {
+                Log.e(TAG, "Capture profile image");
                 imagePickListener.OnImagePick(bitmap, imageFileName);
+                String debug = "test";
                 finish();
             } else {
                 mProgress = new ProgressDialog(this);

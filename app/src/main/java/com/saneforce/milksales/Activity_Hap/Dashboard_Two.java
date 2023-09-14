@@ -41,6 +41,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.common.reflect.TypeToken;
@@ -58,6 +60,7 @@ import com.saneforce.milksales.Interface.GateEntryQREvents;
 import com.saneforce.milksales.Interface.onListItemClick;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.SFA_Activity.HAPApp;
+import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.Status_Activity.View_All_Status_Activity;
 import com.saneforce.milksales.adapters.GateAdapter;
 import com.saneforce.milksales.adapters.HomeRptRecyler;
@@ -143,6 +146,8 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     private MyViewPagerAdapter myViewPagerAdapter;
     private HomeRptRecyler mAdapter;
     private GateAdapter gateAdap;
+    private String mProfileUrl;
+    private ImageView profileImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +207,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             txDesgName = findViewById(R.id.txDesgName);
             txDeptName = findViewById(R.id.txDeptName);
             txRptName = findViewById(R.id.txRptName);
+            profileImageView = findViewById(R.id.profile_image_view);
             txHQName.setText(UserDetails.getString("DesigNm", ""));
 
             gson = new Gson();
@@ -249,6 +255,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             TextView txUserName = findViewById(R.id.user_name);
             String sUName = UserDetails.getString("SfName", "");
             txUserName.setText("HI! " + sUName);
+
             sSFType = UserDetails.getString("Sf_Type", "");
             Log.d("CINDetails", CheckInDetails.toString());
             cardview3 = findViewById(R.id.cardview3);
@@ -389,6 +396,15 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         GetMissedPunch();
         getcountdetails();
         btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
+
+
+        mProfileUrl = UserDetails.getString("Profile", "");
+
+        Glide.with(this.context)
+                .load(mProfileUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(profileImageView);
     }
 
     private void checkInTimer() {
@@ -437,12 +453,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         });
 
-        binding.gateIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.gateIn.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
         binding.gateOut.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
@@ -784,7 +795,8 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             TextView txDyDet = findViewById(R.id.lTDyTx);
             txDyDet.setText(fItm.get("AttDtNm").getAsString() + "   " + fItm.get("AttDate").getAsString());
 
-            ivCheckIn = findViewById(R.id.image_view_user_profile);
+           // ivCheckIn = findViewById(R.id.image_view_user_profile);
+
             CircleImageView ivCheckOut = findViewById(R.id.iv_checkout);
             checkInUrl = ApiClient.BASE_URL.replaceAll("server/", "");
             checkInUrl = checkInUrl + fItm.get("ImgName").getAsString();
@@ -812,14 +824,10 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 //
 //            }
 
-            ivCheckIn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
-                    intent.putExtra("ImageUrl", checkInUrl);
-                    startActivity(intent);
-
-                }
+            profileImageView.setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
+                intent.putExtra("ImageUrl", mProfileUrl);
+                startActivity(intent);
             });
 
             ivCheckOut.setOnClickListener(new View.OnClickListener() {
@@ -832,7 +840,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                     }
                 }
             });
-
 
             mShared_common_pref.save(Constants.LOGIN_DATE, com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime());
             JsonArray dyRpt = new JsonArray();
@@ -924,6 +931,25 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(mAdapter);
             LoadingCnt++;
+
+            //=====================================================
+            // Storing data into SharedPreferences
+
+
+            JsonObject jsonObject = dyRpt.get(4).getAsJsonObject();
+            String tag = jsonObject.get("name").getAsString();
+            String value = jsonObject.get("value").getAsString();
+            String[] latlongs = value.split(",");
+
+//            Intent intent = new Intent(context, MapDirectionActivity.class);
+//            intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+//            intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+//
+//            intent.putExtra(Constants.DEST_NAME, tag);
+//            intent.putExtra(Constants.NEW_OUTLET, "GEO");
+//            startActivity(intent);
+            Log.e("lat__", tag);
+
             hideShimmer();
 
         } catch (Exception e) {

@@ -8,6 +8,11 @@
     tools:context=".SFA_Activity.New_Outlet_Map_creations">
 
     <RelativeLayout
+        android:id="@+id/main_map_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
         android:id="@+id/top1"
         android:layout_width="match_parent"
         android:layout_height="50dp">
@@ -48,7 +53,6 @@
             android:layout_centerVertical="true" />
 
     </RelativeLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -190,5 +194,15 @@
 
         </LinearLayout>
 
+    </RelativeLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/my_team_map"
+        android:visibility="gone"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.9"
+        tools:context=".SFA_Activity.New_Outlet_Map_creations" />
 
 </FrameLayout>

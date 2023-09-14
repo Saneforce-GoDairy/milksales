@@ -32,6 +32,7 @@ import com.google.gson.JsonObject;
 import com.saneforce.milksales.Activity_Hap.Block_Information;
 import com.saneforce.milksales.Activity_Hap.Common_Class;
 import com.saneforce.milksales.Activity_Hap.Login;
+import com.saneforce.milksales.Activity_Hap.LoginHome;
 import com.saneforce.milksales.Common_Class.Constants;
 import com.saneforce.milksales.Common_Class.LocationServices;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
@@ -549,7 +550,7 @@ public class TimerService extends Service {
                             sharedCommonPref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
                             sharedCommonPref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
                             sharedCommonPref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
-                            Intent nwScr = new Intent(context, Login.class);
+                            Intent nwScr = new Intent(context, LoginHome.class);
                             nwScr.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(nwScr);
                             /*window.localStorage.removeItem("Sfift_End_Time");

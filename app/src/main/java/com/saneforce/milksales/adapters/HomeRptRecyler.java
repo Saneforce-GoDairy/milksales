@@ -48,13 +48,13 @@ public class HomeRptRecyler extends RecyclerView.Adapter<HomeRptRecyler.ViewHold
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.homerptrecyler, parent, false);
         HomeRptRecyler.ViewHolder holder = new HomeRptRecyler.ViewHolder(view);
         return holder;
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        try {
 
+        Log.e("adaptor__", "Working");
+        try {
             Log.v("VALUE_HOME_REPORT", mArrayList.toString());
             Log.v("Lat_Long_Vi", latLong);
             JsonObject itm = mArrayList.get(position).getAsJsonObject();
@@ -124,7 +124,8 @@ public class HomeRptRecyler extends RecyclerView.Adapter<HomeRptRecyler.ViewHold
                 @Override
                 public void onClick(View v) {
                     try {
-                        if (itm.get("name").getAsString().equalsIgnoreCase("Geo In") || itm.get("name").getAsString().equalsIgnoreCase("Geo Out")) {
+                        if (itm.get("name").getAsString().equalsIgnoreCase("Geo In") ||
+                                itm.get("name").getAsString().equalsIgnoreCase("Geo Out")) {
                             navigateMapDir(itm.get("value").getAsString(), itm.get("name").getAsString());
 
 //                            Intent intent = new Intent(mContext, Webview_Activity.class);

@@ -121,6 +121,7 @@
                         android:src="@drawable/view_arrow" />
 
                     <TextView
+                        android:id="@+id/view_geo_in"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="View"
@@ -163,6 +164,7 @@
                         android:src="@drawable/view_arrow" />
 
                     <TextView
+                        android:id="@+id/view_geo_out"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="View"

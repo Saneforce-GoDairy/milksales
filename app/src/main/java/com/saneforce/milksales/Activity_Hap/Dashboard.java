@@ -24,6 +24,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -105,7 +107,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         //username = findViewById(R.id.username);
         lblUserName = (TextView) findViewById(R.id.user_name);
         lblEmail = (TextView) findViewById(R.id.lblEmail);
-        profilePic = findViewById(R.id.profile_image);
+        profilePic = findViewById(R.id.image_view_user_profile);
         linReCheck = findViewById(R.id.lin_RecheckIn);
 
 
@@ -130,6 +132,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         String sSFName = UserDetails.getString("SfName", "");
         sSFType = UserDetails.getString("Sf_Type", "");
         OTFlg = UserDetails.getInt("OTFlg", 0);
+        String mProfileImage = UserDetails.getString("Profile", "");
 
         mRelApproval = findViewById(R.id.rel_app);
 
@@ -137,12 +140,26 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         lblUserName.setText(sSFName);
         lblEmail.setText(eMail);
-        try {
-            Uri Profile = Uri.parse(shared_common_pref.getvalue(Shared_Common_Pref.Profile));
-            Glide.with(context).load(Profile).into(profilePic);
-        } catch (Exception e) {
-        }
-        Glide.with(context).load(Uri.parse((UserDetails.getString("url", "")))).into(profilePic);
+
+        Glide.with(this.context)
+                .load(mProfileImage)
+                .apply(RequestOptions.circleCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(profilePic);
+
+        profilePic.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
+            intent.putExtra("ImageUrl", mProfileImage);
+            startActivity(intent);
+
+        });
+
+//        try {
+//            Uri Profile = Uri.parse(shared_common_pref.getvalue(Shared_Common_Pref.Profile));
+//            Glide.with(context).load(Profile).into(profilePic);
+//        } catch (Exception e) {
+//        }
+//        Glide.with(context).load(Uri.parse((UserDetails.getString("url", "")))).into(profilePic);
 
         //profilePic.setImageURI(Uri.parse((UserDetails.getString("url", ""))));
 

@@ -1,6 +1,7 @@
 package com.saneforce.milksales.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -24,12 +28,16 @@ import com.saneforce.milksales.Common_Class.Constants;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
+import com.saneforce.milksales.R;
+import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
+import com.saneforce.milksales.adapters.HomeRptRecyler;
 import com.saneforce.milksales.databinding.FragmentTodayBinding;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -44,6 +52,12 @@ public class TodayFragment extends Fragment {
     public static final String KEY_USER_DETAIL = "MyPrefs";
     private static final String TAG = "TodayFragment";
     private Gson gson;
+    JsonObject fItm;
+    private Shared_Common_Pref mShared_common_pref;
+    private String timerTime,timerDate;
+    private SharedPreferences UserDetails;
+    public static final String UserDetail = "MyPrefs";
+    private String viewMode = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,10 +65,116 @@ public class TodayFragment extends Fragment {
         binding = FragmentTodayBinding.inflate(inflater, container, false);
 
         gson = new Gson();
+        mShared_common_pref = new Shared_Common_Pref(getActivity());
+        UserDetails = getActivity().getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+
         initSharedPref();
         loadTodayCheckInReport();
+        onClick();
 
         return binding.getRoot();
+    }
+
+    private void onClick() {
+        binding.viewGeoIn.setOnClickListener(v -> openMap());
+        binding.viewGeoOut.setOnClickListener(v -> openMap());
+    }
+
+    private void openMap() {
+        mShared_common_pref.save(Constants.LOGIN_DATE, com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime());
+        JsonArray dyRpt = new JsonArray();
+        JsonObject newItem = new JsonObject();
+
+        timerTime = fItm.get("AttTm").getAsString();
+        timerDate = fItm.get("AttDate").getAsString().replaceAll("/", "-");
+        newItem.addProperty("name", "Shift");
+        newItem.addProperty("value", fItm.get("SFT_Name").getAsString());
+        newItem.addProperty("Link", false);
+        newItem.addProperty("color", "#333333");
+        dyRpt.add(newItem);
+        newItem = new JsonObject();
+        newItem.addProperty("name", "Status");
+        newItem.addProperty("value", fItm.get("DayStatus").getAsString());
+        newItem.addProperty("color", fItm.get("StaColor").getAsString());
+        dyRpt.add(newItem);
+
+        if (!fItm.get("HQNm").getAsString().equalsIgnoreCase("")) {
+            newItem = new JsonObject();
+            newItem.addProperty("name", "Location");
+            newItem.addProperty("value", fItm.get("HQNm").getAsString());
+            newItem.addProperty("color", fItm.get("StaColor").getAsString());
+            newItem.addProperty("type", "geo");
+            dyRpt.add(newItem);
+        }
+        newItem = new JsonObject();
+        newItem.addProperty("name", "Check-In");
+        newItem.addProperty("value", fItm.get("AttTm").getAsString());
+        newItem.addProperty("color", "#333333");
+        dyRpt.add(newItem);
+        if (!fItm.get("ET").isJsonNull()) {
+            newItem = new JsonObject();
+            newItem.addProperty("name", "Last Check-Out");
+            newItem.addProperty("value", fItm.get("ET").getAsString());
+            newItem.addProperty("color", "#333333");
+            dyRpt.add(newItem);
+        }
+        newItem = new JsonObject();
+        newItem.addProperty("name", "Geo In");
+        newItem.addProperty("value", fItm.get("GeoIn").getAsString());
+        newItem.addProperty("color", "#333333");
+        newItem.addProperty("type", "geo");
+        dyRpt.add(newItem);
+
+        newItem = new JsonObject();
+        newItem.addProperty("name", "Geo Out");
+        newItem.addProperty("value", fItm.get("GeoOut").getAsString());//"<a href=\"https://www.google.com/maps?q="+fItm.get("GeoOut").getAsString()+"\">"+fItm.get("GeoOut").getAsString()+"</a>");
+        newItem.addProperty("color", "#333333");
+        newItem.addProperty("type", "geo");
+        dyRpt.add(newItem);
+
+        Integer OTFlg = UserDetails.getInt("OTFlg", 0);
+        if (OTFlg==1 && viewMode.equalsIgnoreCase("extended")) {
+            newItem = new JsonObject();
+            newItem.addProperty("name", "Extended Start");
+            newItem.addProperty("value", fItm.get("ExtStartTtime").getAsString());//"<a href=\"https://www.google.com/maps?q="+fItm.get("GeoOut").getAsString()+"\">"+fItm.get("GeoOut").getAsString()+"</a>");
+            newItem.addProperty("color", "#333333");
+            /*newItem.addProperty("type", "geo");*/
+            dyRpt.add(newItem);
+
+            newItem = new JsonObject();
+            newItem.addProperty("name", "Extended End");
+            newItem.addProperty("value", fItm.get("ExtEndtime").getAsString());//"<a href=\"https://www.google.com/maps?q="+fItm.get("GeoOut").getAsString()+"\">"+fItm.get("GeoOut").getAsString()+"</a>");
+            newItem.addProperty("color", "#333333");
+            /*newItem.addProperty("type", "geo");*/
+            dyRpt.add(newItem);
+
+            newItem = new JsonObject();
+            newItem.addProperty("name", "Ext.Geo In");
+            newItem.addProperty("value", fItm.get("Extin").getAsString());
+            newItem.addProperty("color", "#333333");
+            newItem.addProperty("type", "geo");
+            dyRpt.add(newItem);
+
+            newItem = new JsonObject();
+            newItem.addProperty("name", "Ext.Geo Out");
+            newItem.addProperty("value", fItm.get("Extout").getAsString());//"<a href=\"https://www.google.com/maps?q="+fItm.get("GeoOut").getAsString()+"\">"+fItm.get("GeoOut").getAsString()+"</a>");
+            newItem.addProperty("color", "#333333");
+            newItem.addProperty("type", "geo");
+            dyRpt.add(newItem);
+        }
+
+        JsonObject jsonObject = dyRpt.get(4).getAsJsonObject();
+        String tag = jsonObject.get("name").getAsString();
+        String value = jsonObject.get("value").getAsString();
+        String[] latlongs = value.split(",");
+
+        Intent intent = new Intent(getContext(), MapDirectionActivity.class);
+        intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+        intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+
+        intent.putExtra(Constants.DEST_NAME, tag);
+        intent.putExtra(Constants.NEW_OUTLET, "GEO");
+        startActivity(intent);
     }
 
     private void initSharedPref() {
@@ -106,7 +226,7 @@ public class TodayFragment extends Fragment {
             if (res.size() < 1){
                 Toast.makeText(getContext(), "No Records Today", Toast.LENGTH_LONG).show();
             }
-            JsonObject fItm = res.get(0).getAsJsonObject();
+            fItm = res.get(0).getAsJsonObject();
 
             Log.e("check_in_time", fItm.get("GeoIn").getAsString());
             binding.checkInTime.setText(fItm.get("AttTm").getAsString());
@@ -123,5 +243,10 @@ public class TodayFragment extends Fragment {
         }catch (Exception ignored) {
 
         }
+
+        Glide.with(requireContext())
+                .load(ApiClient.BASE_URL.replaceAll("server/", "") + fItm.get("ImgName").getAsString())
+                .apply(RequestOptions.circleCropTransform())
+                .into(binding.userProfile);
     }
 }

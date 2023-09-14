@@ -104,43 +104,33 @@ import retrofit2.Response;
 public class SFA_Activity extends AppCompatActivity implements View.OnClickListener, UpdateResponseUI /*,Main_Model.MasterSyncView*/ {
     LinearLayout Lin_Route, Lin_Lead, Lin_Dashboard, Logout, SyncButon, linorders;
     Gson gson;
-
     private SANGPSTracker mLUService;
     private LocationReceiver myReceiver;
     private boolean mBound = false;
-
     public static final String UserDetail = "MyPrefs";
-    Common_Class common_class;
-    Shared_Common_Pref sharedCommonPref;
-    SharedPreferences UserDetails;
-    SharedPreferences CheckInDetails;
+    private Common_Class common_class;
+    private Shared_Common_Pref sharedCommonPref;
+    private SharedPreferences UserDetails;
+    private SharedPreferences CheckInDetails;
     public static final String CheckInDetail = "CheckInDetail";
-    DatabaseHandler db;
-
-    ImageView ivLogout, ivCalendar, ivProcureSync,btnCloseOffer;
-
-    LinearLayout llGridParent,linOffer;
-
-    OutletDashboardInfoAdapter cumulativeInfoAdapter;
+    private DatabaseHandler db;
+    private ImageView ivLogout, ivCalendar, ivProcureSync,btnCloseOffer;
+    private LinearLayout llGridParent,linOffer;
+    private OutletDashboardInfoAdapter cumulativeInfoAdapter;
     private List<Cumulative_Order_Model> cumulative_order_modelList = new ArrayList<>();
-    RecyclerView recyclerView;
-    TextView tvServiceOutlet, tvUniverseOutlet, tvNewSerOutlet, tvTotSerOutlet, tvExistSerOutlet, tvDate, tvTodayCalls, tvProCalls,
+    private RecyclerView recyclerView;
+    private TextView tvServiceOutlet, tvUniverseOutlet, tvNewSerOutlet, tvTotSerOutlet, tvExistSerOutlet, tvDate, tvTodayCalls, tvProCalls,
             tvCumTodayCalls, tvNewTodayCalls, tvCumProCalls, tvNewProCalls, tvAvgNewCalls, tvAvgTodayCalls, tvAvgCumCalls, tvUserName,
             tvPrimOrder, tvNoOrder, tvTotalValOrder, tvUpdTime, lblSlideNo;
     private DatePickerDialog fromDatePickerDialog;
-
     public static String sfa_date = "";
-
-    MenuAdapter menuAdapter;
-    RecyclerView rvMenu, rvPrimOrd, ryclOffers;
+    private MenuAdapter menuAdapter;
+    private RecyclerView rvMenu, rvPrimOrd, ryclOffers;
     private List<ListModel> menuList = new ArrayList<>();
-    NumberFormat formatter = new DecimalFormat("##0.00");
-
+    private NumberFormat formatter = new DecimalFormat("##0.00");
     public static String updateTime = "";
-    ApiInterface apiService;
-
+    private ApiInterface apiService;
     int menuItem = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +143,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         common_class = new Common_Class(this);
         gson = new Gson();
         apiService = ApiClient.getClient().create(ApiInterface.class);
-
 
         linOffer=findViewById(R.id.linOffer);
         linOffer.setVisibility(View.GONE);
@@ -169,14 +158,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             sharedCommonPref.clear_pref(Constants.DB_Offer_NOTIFY);
         }
 
-        btnCloseOffer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                linOffer.setVisibility(View.GONE);
-            }
-        });
+        btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
         ivLogout.setImageResource(R.drawable.ic_baseline_logout_24);
-
 
         tvDate.setText("" + Common_Class.GetDatewothouttime());
 
@@ -200,7 +183,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.cvCalls).setVisibility(View.GONE);
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.Distributor_Id)))
                 common_class.getDb_310Data(Constants.Distributor_List, this);
-
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.PROCUR_MENU)))
                 callDynamicmenu();
             else {
@@ -210,8 +192,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 menuList = gson.fromJson(sharedCommonPref.getvalue(Constants.PROCUR_MENU), userType);
                 setMenuAdapter();
             }
-
-
         }
         else {
             ivProcureSync.setVisibility(View.GONE);
@@ -224,7 +204,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     if (UserDetails.getString("Sfcode", "").equals("MGR8171")) {
                         menuList.add(new ListModel("", "Approve Outlets", "", "", "", R.drawable.ic_approve_outlets));
                     }
-
                     menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_outline_near_me_24));
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports));
                     menuList.add(new ListModel("", "Distributor", "", "", "", R.drawable.ic_franchise));
@@ -233,10 +212,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     // menuList.add(new ListModel("", "Stock Audit", "", "", "", R.drawable.ic_stock_audit));
                     menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
                     menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
-
                     if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.Distributor_Id)))
                         common_class.getDb_310Data(Constants.Distributor_List, this);
                     break;
+
                 case Constants.DISTRIBUTER_TYPE:
                     menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_outline_add_chart_48));
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_outline_assignment_48));
@@ -247,12 +226,11 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Counter Sales", "", "", "", R.drawable.ic_outline_assignment_48));
                     menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
                     menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
-//                    menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
-
-
+//                  menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
                     common_class.getPOSProduct(this);
                     common_class.getDataFromApi(Constants.Retailer_OutletList, this, false);
                     break;
+
                 default:
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_outline_assignment_48));
                     menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
@@ -262,15 +240,12 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "POS", "", "", "", R.drawable.ic_outline_assignment_48));
                     menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
                     menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_baseline_feedback_24));
-//                    menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
-
+//                  menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
                     break;
             }
             setMenuAdapter();
         }
-
         getNotify();
-
     }
 
     private void getNotify() {
@@ -319,7 +294,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     void setMenuAdapter() {
         RecyclerView.LayoutManager manager = new GridLayoutManager(this, 4);
         rvMenu.setLayoutManager(manager);
-        //  rvMenu.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
         menuAdapter = new MenuAdapter(this, menuList, new AdapterOnClick() {
             @Override
             public void onIntentClick(int pos) {
@@ -329,15 +304,19 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("menu", "menu");
                         startActivity(intent);
                         break;
+
                     case "GRN":
                         common_class.CommonIntentwithNEwTask(GrnListActivity.class);
                         break;
+
                     case "Counter Sales":
                         common_class.CommonIntentwithNEwTask(POSActivity.class);
                         break;
+
                     case "Primary Order":
                         common_class.getDb_310Data(Constants.PrimaryTAXList, SFA_Activity.this);
                         break;
+
                     case "Secondary Order":
                         sharedCommonPref.save(Shared_Common_Pref.DCRMode, "SC");
                         startActivity(new Intent(SFA_Activity.this, Dashboard_Route.class));
@@ -355,41 +334,49 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                         startActivity(new Intent(SFA_Activity.this, VanSalesDashboardRoute.class));
 
                         break;
+
                     case "Outlets":
                         common_class.CommonIntentwithNEwTask(Outlet_Info_Activity.class);
                         break;
+
                     case "Distributor":
                         common_class.CommonIntentwithNEwTask(Reports_Distributor_Name.class);
                         break;
+
                     case "Approve Outlets":
                         common_class.CommonIntentwithNEwTask(PendingOutletsCategory.class);
                         break;
+
                     case "Franchise":
                         common_class.CommonIntentwithNEwTask(Reports_Distributor_Name.class);
                         break;
+
                     case "Reports":
                         common_class.CommonIntentwithNEwTask(ReportsListActivity.class);
                         // common_class.CommonIntentwithNEwTask(Reports_Outler_Name.class);
-
                         break;
+
                     case "My Team":
                         common_class.CommonIntentwithNEwTask(MyTeamActivity.class);
                         break;
+
                     case "Projection":
                         getProjectionProductDetails(SFA_Activity.this);
                         break;
+
                     case "Stock Audit":
                         getStockAuditDetails(SFA_Activity.this);
                         break;
+
                     case "Sync":
                         saveFormData(-1);
                         common_class.ProgressdialogShow(1, "");
                         break;
-                    case "Inshop":
 
-//                        Toast.makeText(SFA_Activity.this,"Inshop clicked",Toast.LENGTH_SHORT).show();
+                    case "Inshop":
                         startActivity(new Intent(SFA_Activity.this, InshopActivity.class));
                         break;
+
                     case "Feedback":
                         startActivity(new Intent(SFA_Activity.this, FeedbackActivitySFA.class));
                         break;
@@ -399,14 +386,11 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                             saveFormData(pos);
                         else
                             navigateFormScreen(pos);
-
-
                 }
                 overridePendingTransition(R.anim.in, R.anim.out);
             }
         });
         rvMenu.setAdapter(menuAdapter);
-
     }
 
     void navigateFormScreen(int pos) {
@@ -415,13 +399,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         ii.putExtra("frmid", menuList.get(pos).getFormid());
         ii.putExtra("frmname", menuList.get(pos).getFormName());
         startActivity(ii);
-
     }
 
     private void saveFormData(int pos) {
         try {
-
-
             ArrayList<Common_Model> formList = new ArrayList<>();
 
             for (int i = 0; i < menuList.size(); i++) {
@@ -430,11 +411,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             }
 
             formList.add(new Common_Model("New Farmer", "2"));
-
             formList.add(new Common_Model("Existing Farmer", "3"));
             formList.add(new Common_Model("Competitor Activity", "12"));
             formList.add(new Common_Model("General Activities", "8"));
-
 
             if (formList.size() == menuItem) {
                 common_class.ProgressdialogShow(0, "");
@@ -445,24 +424,17 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 return;
             } else {
                 String formid = formList.get(menuItem).getName();
-
                 JSONObject json = new JSONObject();
-
                 json.put("slno", formList.get(menuItem).getId());
-
                 String formname = formList.get(menuItem).getName();
-
-
                 Log.v("printing_sf_code", json.toString());
                 Call<ResponseBody> approval = apiService.getView(json.toString());
-
 
                 approval.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
                             Log.v("procure:" + formname + ":" + formid + ":", response.body().byteStream() + "");
-
                             InputStreamReader ip = null;
                             StringBuilder is = new StringBuilder();
                             String line = null;
@@ -473,19 +445,12 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                                 while ((line = bf.readLine()) != null) {
                                     is.append(line);
                                 }
-
                                 sharedCommonPref.save(formname, is.toString());
-
-                                //   Log.v("PROC:" + formList.get(menuItem).getName() + ":", sharedCommonPref.getvalue(formid));
                                 menuItem = menuItem + 1;
                                 saveFormData(pos);
-//
                                 Log.v("sizeCheck:", "" + formList.size() + ":current:" + menuItem);
-
-
                             } catch (Exception e) {
                                 common_class.ProgressdialogShow(0, "");
-
                             }
                         }
                     }
@@ -493,17 +458,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         common_class.ProgressdialogShow(0, "");
-
                     }
                 });
-
-
             }
-
-
-            //  }
         } catch (Exception e) {
-
         }
     }
 
@@ -530,7 +488,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onFailure(Call<JsonArray> call, Throwable t) {
-
                         Log.v("Projec_Product_List_ex", t.getMessage());
                         t.printStackTrace();
                     }
@@ -545,7 +502,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onFailure(Call<JsonArray> call, Throwable t) {
-
                         Log.v("Projec_Product_List_ex", t.getMessage());
                         t.printStackTrace();
                     }
@@ -560,7 +516,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onFailure(Call<JsonArray> call, Throwable t) {
-
                         Log.v("Projec_Product_List_ex", t.getMessage());
                         t.printStackTrace();
                     }
@@ -571,15 +526,12 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                         Log.v("Projec_Product_List", response.body().toString());
                         db.deleteMasterData(Constants.Projection_Product_List);
                         db.addMasterData(Constants.Projection_Product_List, response.body());
-
                         common_class.CommonIntentwithNEwTask(ProjectionCategorySelectActivity.class);
-
                     }
 
                     @Override
                     public void onFailure(Call<JsonArray> call, Throwable t) {
                         Log.v("Projec_Product_fail", t.getMessage());
-
                     }
                 });
             } catch (Exception e) {
@@ -587,23 +539,13 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
-
     }
 
     public void getStockAuditDetails(Activity activity) {
-
         if (common_class.isNetworkAvailable(activity)) {
             UserDetails = activity.getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
-
             DatabaseHandler db = new DatabaseHandler(activity);
-            //  Map<String, String> jParam = new HashMap<>();
-
-            //  JSONObject jParam = new JSONObject();
             try {
-//                jParam.put("SF", UserDetails.getString("Sfcode", ""));
-//                jParam.put("Stk", sharedCommonPref.getvalue(Constants.Distributor_Id));
-//                // jParam.put("outletId", Shared_Common_Pref.OutletCode);
-//                jParam.put("div", UserDetails.getString("Divcode", ""));
                 ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
                 service.getStockAudit("get/auditprodgroup", UserDetails.getString("Divcode", "")).enqueue(new Callback<JsonArray>() {
                     @Override
@@ -633,7 +575,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onFailure(Call<JsonArray> call, Throwable t) {
-
                     }
                 });
                 service.getStockAudit("get/auditprodcate", UserDetails.getString("Divcode", "")).enqueue(new Callback<JsonArray>() {
@@ -657,13 +598,11 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                         db.addMasterData(Constants.StockAudit_Product_List, response.body());
 
                         common_class.CommonIntentwithNEwTask(StockAuditCategorySelectActivity.class);
-
                     }
 
                     @Override
                     public void onFailure(Call<JsonArray> call, Throwable t) {
                         Log.v("Projec_Product_fail", t.getMessage());
-
                     }
                 });
             } catch (Exception e) {
@@ -671,7 +610,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
-
     }
 
     private void setOnClickListener() {
@@ -684,20 +622,15 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         Logout.setOnClickListener(this);
         ivLogout.setOnClickListener(this);
         ivProcureSync.setOnClickListener(this);
-
     }
 
     private void getCumulativeDataFromAPI(String response) {
 
         try {
             JSONObject jsonObject = new JSONObject(response);
-
             if (jsonObject.getBoolean("success")) {
-
                 JSONArray jsonArray = jsonObject.getJSONArray("Data");
-
                 int todayCall = 0, cumTodayCall = 0, newTodayCall = 0, proCall = 0, cumProCall = 0, newProCall = 0;
-
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
 
@@ -722,7 +655,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     tvAvgCumCalls.setText("" + (cumTodayCall + cumProCall) / 2);
                 if (newTodayCall > 0 || newProCall > 0)
                     tvAvgNewCalls.setText("" + (newTodayCall + newProCall) / 2);
-
             }
         } catch (Exception e) {
             Log.v("fail>>", e.getMessage());
@@ -748,19 +680,15 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     }
                 });
-
             } else {
                 common_class.showMsg(this, "Please check your internet connection");
             }
         } catch (Exception e) {
             Log.v("fail>>", e.getMessage());
-
-
         }
     }
 
     public void init() {
-//visitData
         tvTodayCalls = findViewById(R.id.tvTodayCalls);
         tvCumTodayCalls = findViewById(R.id.tvCumTodayCalls);
         tvNewTodayCalls = findViewById(R.id.tvNewTodayCalls);
@@ -773,13 +701,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         tvAvgCumCalls = findViewById(R.id.tvAvgCumCalls);
         tvAvgNewCalls = findViewById(R.id.tvAvgNewCalls);
 
-
-        //outlet
-
         ivCalendar = (ImageView) findViewById(R.id.ivSFACalendar);
         tvDate = (TextView) findViewById(R.id.tvSFADate);
         ivProcureSync = (ImageView) findViewById(R.id.ivProcureSync);
-
 
         tvServiceOutlet = (TextView) findViewById(R.id.tvServiceOutlet);
         tvUniverseOutlet = (TextView) findViewById(R.id.tvUniverseOutlet);
@@ -807,11 +731,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         tvUpdTime = findViewById(R.id.tvUpdTime);
         rvPrimOrd = findViewById(R.id.rvPrimOrder);
 
-
         Shared_Common_Pref.Sf_Code = UserDetails.getString("Sfcode", "");
         Shared_Common_Pref.Div_Code = UserDetails.getString("Divcode", "");
-
-
     }
 
     @Override
@@ -820,7 +741,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             case R.id.ivProcureSync:
                 saveFormData(-1);
                 common_class.ProgressdialogShow(1, "");
-
                 break;
 
             case R.id.linorders:
@@ -830,33 +750,33 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             case R.id.ivSFACalendar:
                 Calendar newCalendar = Calendar.getInstance();
                 fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         int month = monthOfYear + 1;
                         tvDate.setText("" + year + "-" + month + "-" + dayOfMonth);
                         sfa_date = tvDate.getText().toString();
                         showDashboardData();
-
                     }
                 }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
                 fromDatePickerDialog.show();
-
                 break;
+
             case R.id.Lin_Dashboard:
                 common_class.CommonIntentwithNEwTask(SFA_Dashboard.class);
                 break;
+
             case R.id.Lin_Lead:
                 common_class.CommonIntentwithNEwTask(Lead_Activity.class);
                 break;
+
             case R.id.toolbar_home:
                 AlertDialogBox.showDialog(SFA_Activity.this, HAPApp.Title, "Are You Sure Want to Logout?", "OK", "Cancel", false, new AlertBox() {
                     @Override
                     public void PositiveMethod(DialogInterface dialog, int id) {
                         sharedCommonPref.save("ActivityStart", "false");
-
-                        Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
+                        boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
                         sharedCommonPref.clear_pref(Constants.Distributor_name);
                         sharedCommonPref.clear_pref(Constants.Distributor_Id);
+
                         if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.CHECKIN_TYPE) && CheckIn) {
                             Intent intent = new Intent(SFA_Activity.this, Dashboard_Two.class);
                             intent.putExtra("Mode", "CIN");
@@ -878,6 +798,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 break;
+
             case R.id.Lin_Route:
                 sharedCommonPref.save(sharedCommonPref.DCRMode, "");
                 common_class.CommonIntentwithNEwTask(Dashboard_Route.class);
@@ -918,12 +839,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     } catch (Exception e) {
 
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<JsonArray> call, Throwable t) {
-
                     Log.d("Tag", String.valueOf(t));
                 }
             });
@@ -974,12 +893,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             });
             ryclOffers.setAdapter(TyplistItems);
             linOffer.setVisibility(View.VISIBLE);
-
             sharedCommonPref.save(Constants.DB_OfferShownOn,Common_Class.GetDatewothouttime());
         }
     }
@@ -988,7 +905,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         //common_class.getDb_310Data(Constants.SERVICEOUTLET, this);
         common_class.getDb_310Data(Constants.OUTLET_SUMMARY, this);
         common_class.getDb_310Data(Constants.SFA_DASHBOARD, this);
-
     }
 
     @Override
@@ -1006,39 +922,28 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject obj = arr.getJSONObject(i);
                                 stkList.add(new Product_Details_Modal(obj.getString("PCode"), obj.getInt("Cr"), obj.getInt("Dr"), (obj.getInt("Bal"))));
                             }
-
                             sharedCommonPref.save(Constants.VAN_STOCK_LOADING, gson.toJson(stkList));
-
                         }
-
                         Log.v(key, apiDataResponse);
                         break;
+
                     case GroupFilter:
                         Log.v(key, apiDataResponse);
 
                         JSONObject filterObj = new JSONObject(apiDataResponse);
-
                         JSONObject obj1 = new JSONObject();
                         obj1.put("name", "All");
                         obj1.put("GroupCode", "All");
-
                         JSONArray arr1 = new JSONArray();
-
                         arr1.put(obj1);
 
                         if (filterObj.getBoolean("success")) {
-
-
                             for (int i = 0; i < filterObj.getJSONArray("Data").length(); i++)
                                 arr1.put(filterObj.getJSONArray("Data").getJSONObject(i));
-
-
                         }
 
                         rvPrimOrd.setAdapter(new RyclBrandListItemAdb(arr1, this, new onListItemClick() {
-
                             @Override
-
                             public void onItemClick(JSONObject item) {
                                 try {
                                     getPrimaryData(item.getString("GroupCode"));
@@ -1046,26 +951,22 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                                     Log.v("primHist:", e.getMessage());
                                 }
                             }
-
                         }));
-
-
                         break;
-                    case Constants.PRIMARY_DASHBOARD:
 
+                    case Constants.PRIMARY_DASHBOARD:
                         Log.v(key + ":", apiDataResponse);
                         JSONObject obj = new JSONObject(apiDataResponse);
                         if (obj.getBoolean("success")) {
                             updateTime = Common_Class.GetDate();
                             tvUpdTime.setText("Last Updated On : " + updateTime);
                             JSONArray arr = obj.getJSONArray("Data");
-
                             tvPrimOrder.setText("" + arr.getJSONObject(0).getInt("Ordr"));
                             tvNoOrder.setText("" + arr.getJSONObject(0).getInt("NoOrdr"));
                             tvTotalValOrder.setText("" + formatter.format(arr.getJSONObject(0).getDouble("Val")));
-
                         }
                         break;
+
                     case Constants.PrimaryTAXList:
                         sharedCommonPref.save(Constants.PrimaryTAXList, apiDataResponse);
                         if (UserDetails.getString("DeptType", "").equalsIgnoreCase("1"))
@@ -1078,6 +979,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     case Constants.CUMULATIVEDATA:
                         getCumulativeDataFromAPI(apiDataResponse);
                         break;
+
                     case Constants.SERVICEOUTLET:
                         JSONObject jsonObject = new JSONObject(apiDataResponse);
                         if (jsonObject.getBoolean("success")) {
@@ -1087,7 +989,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                                 tvNewSerOutlet.setText("" + jsonArray.getJSONObject(i).getInt("newcnt"));
                                 tvExistSerOutlet.setText("" +
                                         (jsonArray.getJSONObject(i).getInt("totalcnt") - jsonArray.getJSONObject(i).getInt("newcnt")));
-
                             }
                         }
                         break;
@@ -1095,20 +996,17 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     case Constants.OUTLET_SUMMARY:
                         JSONObject outletObj = new JSONObject(apiDataResponse);
                         if (outletObj.getBoolean("success")) {
-
                             JSONArray jsonArray = outletObj.getJSONArray("Data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 tvServiceOutlet.setText("" + jsonArray.getJSONObject(i).getInt("ServiceOutlets"));
                                 tvUniverseOutlet.setText("" + jsonArray.getJSONObject(i).getInt("UniverseOutlets"));
-
                             }
                         }
-
                         break;
+
                     case Constants.SFA_DASHBOARD:
                         JSONObject sfaObj = new JSONObject(apiDataResponse);
                         if (sfaObj.getBoolean("success")) {
-
                             JSONArray jsonArray = sfaObj.getJSONArray("Data");
                             cumulative_order_modelList.clear();
 
@@ -1116,30 +1014,19 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                 cumulative_order_modelList.add(new Cumulative_Order_Model(jsonObject1.getString("Doc_Special_SName"),
                                         jsonObject1.getInt("cnt")));
-
-
                             }
-
 
                             cumulativeInfoAdapter = new OutletDashboardInfoAdapter(SFA_Activity.this,
                                     cumulative_order_modelList);
-
                             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-                            //layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                             recyclerView.setLayoutManager(layoutManager);
-
-
                             recyclerView.setAdapter(cumulativeInfoAdapter);
-
-
                         }
                         break;
-
                 }
             }
         } catch (Exception e) {
             Log.v(key + "Ex:", e.getMessage());
-
         }
     }
 
@@ -1153,7 +1040,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         JSONObject json = new JSONObject();
         try {
             json.put("div", UserDetails.getString("Divcode", ""));
-
             Log.v("printing_sf_code", json.toString());
             Call<ResponseBody> approval = apiService.getMenu(json.toString());
 
@@ -1184,13 +1070,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                                 menuList.add(new ListModel(jj.getString("Frm_ID"), jj.getString("Frm_Name"), jj.getString("Frm_Table"), jj.getString("Targt_Frm"), jj.getString("Frm_Type"), R.drawable.ic_outline_assignment_48));
                             }
                             //  menuList.add(new ListModel("", "Sync", "", "", "", R.drawable.ic_round_sync_24));
-
-
                             sharedCommonPref.save(Constants.PROCUR_MENU, gson.toJson(menuList));
-
                             setMenuAdapter();
-
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
 
                     }
@@ -1198,11 +1080,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
                 }
             });
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -1244,12 +1125,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 } catch (Exception e) {
                     Log.e("adaptergetView: ", e.getMessage());
                 }
-
-
             } catch (Exception e) {
             }
-
-
         }
 
         @Override
@@ -1258,10 +1135,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-
             TextView tvDesc, tvValue;
             ProgressBar pbVisitCount;
-
             public MyViewHolder(View view) {
                 super(view);
                 tvDesc = view.findViewById(R.id.tvDesc);
@@ -1269,8 +1144,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 pbVisitCount = view.findViewById(R.id.pbVisitCount);
             }
         }
-
-
     }
 
     public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> {
@@ -1320,10 +1193,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 }
 
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
-
-
         }
 
         @Override
@@ -1332,21 +1203,16 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-
             TextView tvName;
             ImageView ivIcon;
             LinearLayout llParent;
-
             public MyViewHolder(View view) {
                 super(view);
                 tvName = view.findViewById(R.id.tvMenuName);
                 ivIcon = view.findViewById(R.id.ivMenuIcon);
                 llParent = view.findViewById(R.id.llMenu);
-
             }
         }
-
-
     }
 
 

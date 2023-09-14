@@ -879,7 +879,10 @@ public class Login extends AppCompatActivity {
                 String SFHQCode = response.getData().get(0).getHQCode();
                 String SFHQLoc = response.getData().get(0).getHOLocation();
                 int THrsPerm = response.getData().get(0).getTHrsPerm();
-                String mProfile = response.getData().get(0).getProfile();
+
+                String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/";
+
+                String mProfile = mBasePath + response.getData().get(0).getProfile();
                 String mProfPath = response.getData().get(0).getProfPath();
                 Integer OTFlg = response.getData().get(0).getOTFlg();
                 Integer Flight = response.getData().get(0).getFlightAllowed();

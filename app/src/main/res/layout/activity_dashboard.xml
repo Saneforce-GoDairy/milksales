@@ -29,6 +29,8 @@
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
                     android:layout_marginStart="10dp"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/person_placeholder_0" />
 
                 <LinearLayout
