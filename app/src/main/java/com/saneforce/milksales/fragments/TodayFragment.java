@@ -231,6 +231,7 @@ public class TodayFragment extends Fragment {
             String checkInTimeStr = fItm.get("GeoIn").getAsString();
             if (!checkInTimeStr.isEmpty() && !checkInTimeStr.equals("00:00:00")) {
                 binding.geoIn.setText(fItm.get("GeoIn").getAsString());
+                binding.shiftTime.setText(fItm.get("SFT_Name").getAsString());
                 binding.checkInTime.setText(fItm.get("AttTm").getAsString());
                 binding.geoInView.setVisibility(View.VISIBLE);
             } else {
