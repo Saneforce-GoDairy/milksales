@@ -106,6 +106,11 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             status = getIntent().getStringExtra(Constants.NEW_OUTLET);
             status = status == null ? "" : status;
 
+            if (status.equals("GEO")){
+                binding.mainMapContainer.setVisibility(View.GONE);
+                binding.myTeamMap.setVisibility(View.VISIBLE);
+            }
+
             common_class = new Common_Class(this);
             String checkInfo = "CheckInDetail";
             String userInfo = "MyPrefs";
@@ -499,6 +504,11 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         endPoint.setLongitude(Double.parseDouble(getIntent().getStringExtra(Constants.DEST_LNG)));
         double distance = startPoint.distanceTo(endPoint);
 
+        if (status.equals("GEO")){
+            binding.mainMapContainer.setVisibility(View.GONE);
+            binding.myTeamMap.setVisibility(View.VISIBLE);
+        }
+
         if (status != null && status.equalsIgnoreCase("checkin")) {
             ReachedOutlet.setText("Check-In ");
 
@@ -520,6 +530,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             binding.mainMapContainer.setVisibility(View.GONE);
             binding.myTeamMap.setVisibility(View.VISIBLE);
         }
+
+
 
         return distance;
     }

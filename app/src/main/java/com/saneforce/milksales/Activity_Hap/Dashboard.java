@@ -143,11 +143,35 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         lblUserName.setText(sSFName);
         lblEmail.setText(eMail);
 
-        Glide.with(this.context)
-                .load(mProfileImage)
-                .apply(RequestOptions.circleCropTransform())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(profilePic);
+        int mCount = 0;
+
+        for (int i = 0; i<mProfileImage.length(); i++){
+            if(mProfileImage.charAt(i) != ' ')
+                mCount++;
+        }
+
+
+
+        /*
+        if profile pic not available setImage Placeholder
+              -->  else set the valid profile pic url
+
+                Not valid url : https://lactalisindia.salesjump.in/SalesForce_Profile_Img/
+                Valid url : https://lactalisindia.salesjump.in/SalesForce_Profile_Img/MGR0008_1694517133.jpg
+         */
+        if (mCount == 58){
+            Glide.with(this.context)
+                    .load(R.drawable.person_placeholder_0)
+                    .apply(RequestOptions.circleCropTransform())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(profilePic);
+        }else { // Valid image url Example
+            Glide.with(this.context)
+                    .load(mProfileImage)
+                    .apply(RequestOptions.circleCropTransform())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(profilePic);
+        }
 
         profilePic.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
@@ -386,8 +410,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     return new TodayFragment();
                 case 1:
                     return new MonthlyFragment();
-                case 2:
-                    return new GateInOutFragment();
+//                case 2:
+//                    return new GateInOutFragment();
                 default:
                     return new TodayFragment();
             }
@@ -395,7 +419,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         @Override
         public int getItemCount() {
-            return 3;
+            return 2;
         }
     }
 

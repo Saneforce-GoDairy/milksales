@@ -399,8 +399,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         getcountdetails();
         btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
 
-
         mProfileUrl = UserDetails.getString("Profile", "");
+
+
 
         Glide.with(this.context)
                 .load(mProfileUrl)
@@ -797,7 +798,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             TextView txDyDet = findViewById(R.id.lTDyTx);
             txDyDet.setText(fItm.get("AttDtNm").getAsString() + "   " + fItm.get("AttDate").getAsString());
 
-           // ivCheckIn = findViewById(R.id.image_view_user_profile);
 
             CircleImageView ivCheckOut = findViewById(R.id.iv_checkout);
             checkInUrl = ApiClient.BASE_URL.replaceAll("server/", "");

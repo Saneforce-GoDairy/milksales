@@ -4,13 +4,13 @@ Important configuration
     https://lactalisindia.salesjump.in/server/db_new_activity.php?axn=save/dynamictp
  
  2, Login 
-    Username : testso1
+    Username : srim-testso1
     Password : test
 
-    Username : sanmilk
+    Username : srim-sanmilk
     Password : milk
 
-    Username : 7825812260
+    Username : srim-7825812260
     Password : srimilk
  
  3, New figma design

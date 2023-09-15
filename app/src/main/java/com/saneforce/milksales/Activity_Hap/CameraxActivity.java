@@ -152,6 +152,16 @@ public class CameraxActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        String intentMode = getIntent().getStringExtra("Mode");
+
+        if (intentMode.equals("COUT")){
+            binding.headerText.setText("Check Out");
+        }
+
+        if (intentMode.equals("EXOUT")){
+            binding.headerText.setText("Check Out");
+        }
+
         onClick();
         cameraPermission();
         DIR = getExternalFilesDir("/").getPath() + "/" + ".saneforce/";
