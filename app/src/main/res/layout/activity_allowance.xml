@@ -214,6 +214,8 @@
 
 
                     <TextView
+                        android:visibility="gone"
+                        android:id="@+id/travelLocationText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
@@ -228,7 +230,7 @@
                         android:layout_marginTop="@dimen/C20dp"
                         android:background="@drawable/travel_plan_grey_box"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
 
                         <LinearLayout
@@ -386,7 +388,7 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <!--<LinearLayout
                         android:id="@+id/bike_mode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -500,10 +502,10 @@
                             </LinearLayout>
                         </RelativeLayout>
 
-                    </LinearLayout>
+                    </LinearLayout>-->
 
 
-                    <LinearLayout
+                    <!--<LinearLayout
                         android:id="@+id/reason_photo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -542,7 +544,7 @@
                         </androidx.cardview.widget.CardView>
 
 
-                    </LinearLayout>
+                    </LinearLayout>-->
                 </LinearLayout>
 
             </LinearLayout>

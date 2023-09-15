@@ -959,7 +959,7 @@ public class CameraxActivity extends AppCompatActivity {
                                 public void PositiveMethod(DialogInterface dialog, int id) {
                                     if (sStatus.equalsIgnoreCase("true")) {
                                         Intent Dashboard = new Intent(CameraxActivity.this, Dashboard_Two.class);
-
+                                        Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         Dashboard.putExtra("Mode", "CIN");
                                         CameraxActivity.this.startActivity(Dashboard);
                                     }
@@ -1021,6 +1021,7 @@ public class CameraxActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Intent Dashboard = new Intent(CameraxActivity.this, Dashboard_Two.class);
+                                            Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             Dashboard.putExtra("Mode", "extended");
                                             CameraxActivity.this.startActivity(Dashboard);
                                             ((AppCompatActivity) CameraxActivity.this).finish();
@@ -1097,11 +1098,13 @@ public class CameraxActivity extends AppCompatActivity {
                                             finishAffinity();
                                             if (response.body().size() > 0) {
                                                 Intent takePhoto = new Intent(CameraxActivity.this, AllowanceActivityTwo.class);
+                                                takePhoto.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 takePhoto.putExtra("Mode", "COUT");
                                                 startActivity(takePhoto);
                                             } else {
 
                                                 Intent Dashboard = new Intent(CameraxActivity.this, Login.class);
+                                                Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 startActivity(Dashboard);
 
                                                 ((AppCompatActivity) CameraxActivity.this).finish();

@@ -73,8 +73,8 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
             intent.putExtra("ShiftId", item.get("id").getAsString());
             intent.putExtra("ShiftName", item.get("name").getAsString());
             intent.putExtra("On_Duty_Flag", OnDutyFlag);
-            intent.putExtra("ShiftStart", item.getAsJsonObject("Sft_STime").get("date").getAsString());
-            intent.putExtra("ShiftEnd", item.getAsJsonObject("sft_ETime").get("date").getAsString());
+            intent.putExtra("ShiftStart", item.get("Sft_STime").getAsString());
+            intent.putExtra("ShiftEnd", item.get("sft_ETime").getAsString());
             intent.putExtra("ShiftCutOff", item.getAsJsonObject("ACutOff").get("date").getAsString());
             intent.putExtra("data",exData);
 //          Intent takePhoto = new Intent(mContext, ImageCapture.class);
@@ -84,24 +84,10 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
             holder.binding.card.setForeground(ContextCompat.getDrawable(mContext, R.drawable.border_gray_box));
         }
 
-        JsonObject jsonObject = mShift_time.get(position).getAsJsonObject();
-        holder.binding.shiftName.setText(jsonObject.get("name").getAsString());
-
-        String startTime = jsonObject.getAsJsonObject("Sft_STime").get("date").getAsString().substring(11);
-        String endTime = jsonObject.getAsJsonObject("sft_ETime").get("date").getAsString().substring(11);
-
-        final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-        try {
-            final Date startTimeObject = sdf.parse(startTime);
-            final Date endTimeObject = sdf.parse(endTime);
-            holder.binding.shiftTime.setText(new SimpleDateFormat("K:mm").format(startTimeObject) + "  -  "+new SimpleDateFormat("K:mm").format(endTimeObject));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-//        holder.binding.card2.setOnClickListener(view -> {
-//
-//        });
+        holder.binding.shiftName.setText(mShift_time.get(position).getAsJsonObject().get("name").getAsString());
+        String sTime = mShift_time.get(position).getAsJsonObject().get("Sft_STime").getAsString();
+        String eTime = mShift_time.get(position).getAsJsonObject().get("sft_ETime").getAsString();
+        holder.binding.shiftTime.setText(sTime + " - " + eTime);
     }
 
     @Override

@@ -224,7 +224,7 @@ public class TodayFragment extends Fragment {
     private void assignDyReports(JsonArray res) {
         try {
             if (res.size() < 1){
-                Toast.makeText(getContext(), "No Records Today", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "No Records Today", Toast.LENGTH_LONG).show();
             }
             fItm = res.get(0).getAsJsonObject();
 

@@ -80,7 +80,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     private RelativeLayout mRelApproval;
     private ImageView profilePic, btMyQR;
-    private TextView lblUserName, lblEmail;
+    private TextView lblUserName, head_quarters, lblEmail;
     private TextView approvalcount;
     LinearLayout approval;
     private Button linMyday, linCheckin, linApprovals, linRequstStaus, linReport, linOnDuty, linSFA;
@@ -108,6 +108,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         db = new DatabaseHandler(context);
         //username = findViewById(R.id.username);
         lblUserName = (TextView) findViewById(R.id.user_name);
+        head_quarters = (TextView) findViewById(R.id.head_quarters);
         lblEmail = (TextView) findViewById(R.id.lblEmail);
         profilePic = findViewById(R.id.image_view_user_profile);
         linReCheck = findViewById(R.id.lin_RecheckIn);
@@ -132,6 +133,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         String eMail = UserDetails.getString("email", "");
         String sSFName = UserDetails.getString("SfName", "");
+        String SFDesig = UserDetails.getString("SFDesig", "");
         sSFType = UserDetails.getString("Sf_Type", "");
         OTFlg = UserDetails.getInt("OTFlg", 0);
         String mProfileImage = UserDetails.getString("Profile", "");
@@ -141,6 +143,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         imageProfile = UserDetails.getString("url", "");
 
         lblUserName.setText(sSFName);
+        head_quarters.setText(SFDesig);
         lblEmail.setText(eMail);
 
         Glide.with(this.context)
@@ -336,9 +339,17 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         });*/
 
-        binding.gateIn.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
+        binding.gateIn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, QRCodeScanner.class);
+            intent.putExtra("Name", "GateIn");
+            startActivity(intent);
+        });
 
-        binding.gateOut.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
+        binding.gateOut.setOnClickListener(v -> {
+            Intent intent = new Intent(this, QRCodeScanner.class);
+            intent.putExtra("Name", "GateOut");
+            startActivity(intent);
+        });
 
         binding.menuBar.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(context, binding.menuBar);
@@ -401,7 +412,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(context, "There is no back action", Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "There is no back action", Toast.LENGTH_LONG).show();
     }
 
     @Override

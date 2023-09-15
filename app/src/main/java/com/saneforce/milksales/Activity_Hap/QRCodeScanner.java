@@ -206,7 +206,7 @@ public class QRCodeScanner extends AppCompatActivity {
                                             });
                                         }
                                     } else {
-                                        AlertDialogBox.showDialog(QRCodeScanner.this, HAPApp.Title, String.valueOf(Html.fromHtml("Provide a Valid QR Code<br>Need Update QR Data<br>Scan Detail<br>Mode:"+arrSplit[3]+"<br>Data : <br> "+intentData)), "OK", "", false, new AlertBox() {
+                                        AlertDialogBox.showDialog(QRCodeScanner.this, HAPApp.Title, String.valueOf(Html.fromHtml("Provide a Valid QR Code<br>Need Update QR Data<br>Scan Detail<br>Data : <br> "+intentData)), "OK", "", false, new AlertBox() {
                                             @Override
                                             public void PositiveMethod(DialogInterface dialog, int id) {
                                                 dialog.dismiss();

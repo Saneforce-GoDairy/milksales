@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.saneforce.milksales.Activity_Hap.Approvals;
 import com.saneforce.milksales.Activity_Hap.Dashboard;
 import com.saneforce.milksales.Activity_Hap.ERT;
 import com.saneforce.milksales.Activity_Hap.Help_Activity;
@@ -112,7 +113,7 @@ public class Leave_Status_Activity extends AppCompatActivity {
         backView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnBackPressedDispatcher.onBackPressed();
+                common_class.CommonIntentwithFinish(Approvals.class);
             }
         });
     }

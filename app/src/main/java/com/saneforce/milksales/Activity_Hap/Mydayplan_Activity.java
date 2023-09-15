@@ -1074,7 +1074,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                         }*/
 
                     } else {
-                        Toast.makeText(Mydayplan_Activity.this, "Tour Plan not Done", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Mydayplan_Activity.this, "Tour Plan not Done", Toast.LENGTH_SHORT).show();
                     }
                     common_class.ProgressdialogShow(2, "Tour plan");
 
