@@ -33,6 +33,9 @@ import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.adapters.HomeRptRecyler;
 import com.saneforce.milksales.databinding.FragmentTodayBinding;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -233,6 +236,13 @@ public class TodayFragment extends Fragment {
                 binding.geoIn.setText(fItm.get("GeoIn").getAsString());
                 binding.shiftTime.setText(fItm.get("SFT_Name").getAsString());
                 binding.checkInTime.setText(fItm.get("AttTm").getAsString());
+
+                String arriveStatus = fItm.get("Status").getAsString();
+
+                if (arriveStatus.equals("Late")){
+                    binding.status.setText(arriveStatus);
+                }
+
                 binding.geoInView.setVisibility(View.VISIBLE);
             } else {
                 binding.geoInView.setVisibility(View.GONE);
