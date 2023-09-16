@@ -517,8 +517,8 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
             QueryString.put("sfCode", Sf_Code);
             QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);
             QueryString.put("State_Code", Shared_Common_Pref.StateCode);
-            QueryString.put("Approval_MGR", Shared_Common_Pref.Tp_Approvalflag);
-            QueryString.put("desig", "MGR");
+            QueryString.put("Approval_MGR", Shared_Common_Pref.Tp_Approvalflag); // Todo: Tp_Approvalflag
+            QueryString.put("desig", shared_common_pref.getvalue(Shared_Common_Pref.SF_DESIG));
             Log.e("QueryString", String.valueOf(QueryString));
             Log.e("QueryString_SF", Sf_Code);
             Log.e("QueryString_DV", Shared_Common_Pref.Div_Code);

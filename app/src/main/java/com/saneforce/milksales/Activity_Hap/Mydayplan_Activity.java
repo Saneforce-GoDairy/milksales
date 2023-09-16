@@ -785,6 +785,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         db = new DatabaseHandler(this);
         try {
             JSONArray HAPLoca = db.getMasterData("HAPWorkTypes");
+            List<String> list = new ArrayList<>();
+            list.add("Select");
             if (HAPLoca != null) {
                 for (int li = 0; li < HAPLoca.length(); li++) {
                     JSONObject jItem = HAPLoca.getJSONObject(li);
@@ -820,14 +822,11 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     worktypelist.add(item);
 
                     binding.spinnerWorkType.setPrompt(name);
-
-                    List<String> list = new ArrayList<>();
-                    list.add("Select");
                     list.add(name);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, list);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    binding.spinnerWorkType.setAdapter(adapter);
                 }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, list);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                binding.spinnerWorkType.setAdapter(adapter);
             }
         } catch (JSONException e) {
             e.printStackTrace();

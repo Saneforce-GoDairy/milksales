@@ -19,6 +19,7 @@ import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.saneforce.milksales.Common_Class.Common_Class;
+import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.R;
 
 import java.util.Calendar;
@@ -116,9 +117,11 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.CurrentMoth:
+                Shared_Common_Pref.Tp_Approvalflag = "0";
                 common_class.CommonIntentwithoutFinishputextra(Tp_Calander.class, "Monthselection", String.valueOf(CM));
                 break;
             case R.id.NextMonth:
+                Shared_Common_Pref.Tp_Approvalflag = "0";
                 common_class.CommonIntentwithoutFinishputextra(Tp_Calander.class, "Monthselection", String.valueOf(NM));
 
                 break;

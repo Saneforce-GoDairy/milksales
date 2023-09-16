@@ -254,6 +254,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             });
 
             TextView txUserName = findViewById(R.id.user_name);
+            TextView head_quarters = findViewById(R.id.head_quarters);
+            String SFDesig = UserDetails.getString("SFDesig", "");
+            head_quarters.setText(SFDesig);
             String sUName = UserDetails.getString("SfName", "");
             txUserName.setText("HI! " + sUName);
 
@@ -456,9 +459,17 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         });*/
 
-        binding.gateIn.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
+        binding.gateIn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, QRCodeScanner.class);
+            intent.putExtra("Name", "GateIn");
+            startActivity(intent);
+        });
 
-        binding.gateOut.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
+        binding.gateOut.setOnClickListener(v -> {
+            Intent intent = new Intent(this, QRCodeScanner.class);
+            intent.putExtra("Name", "GateOut");
+            startActivity(intent);
+        });
 
         binding.leaveRequestStatus.setOnClickListener(v -> startActivity(new Intent(context, Leave_Dashboard.class)));
 

@@ -80,7 +80,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AllowanceActivityTwo extends AppCompatActivity implements Master_Interface {
-
     static TransferUtility transferUtility;
     // Reference to the utility class
     static Util util;
@@ -100,10 +99,8 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                     //startActivity(new Intent(getApplicationContext(), Dashboard.class));
                 }
             });
-    TextView TextModeTravel, TextStartedKm, TextMaxKm, TextToPlace, TextCloseDate, TextDtTrv,tottrv_km,totclm_km;
-    ImageView StartedKmImage, EndedKmImage;
+    TextView TextModeTravel, /*TextStartedKm,*/ /*TextMaxKm,*/ TextToPlace, TextCloseDate, TextDtTrv/*tottrv_km,totclm_km*/;
     CircularProgressButton submitAllowance;
-    EditText EndedEditText, PersonalKmEdit, ReasonMode;
     Integer stKM = 0, endKm = 0, personalKM = 0, StratKm = 0, maxKM = 0, TotalKm = 0, totalPM = 0, StartedKM = 0;
     SharedPreferences CheckInDetails, sharedpreferences, UserDetails;
     Shared_Common_Pref shared_common_pref;
@@ -111,7 +108,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
     String Photo_Name = "", imageConvert = "", StartedKm = "", EndedImage = "", CheckInfo = "CheckInDetail",
             UserInfo = "MyPrefs", MOT = "ModeOfTravel", Name = "Allowance", mypreference = "mypref", StrToCode = "",
             toPlace = "", ImageStart = "", Hq = "", ClosingCon = "", ClosingDate = "";
-    LinearLayout linToPlace, takeEndedPhoto, vwlblHead;
+    LinearLayout linToPlace, /*takeEndedPhoto,*/ vwlblHead;
     CustomListViewDialog customDialog;
     Common_Model mCommon_model_spinner;
     Common_Class common_class;
@@ -135,19 +132,19 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
         vwlblHead = findViewById(R.id.vwlblHead);
         TextDtTrv = findViewById(R.id.DtTrv);
         TextCloseDate = findViewById(R.id.closing_date);
-        TextStartedKm = findViewById(R.id.txt_started_km);
-        TextMaxKm = findViewById(R.id.txt_max);
-        StartedKmImage = findViewById(R.id.img_started_km);
-        EndedEditText = findViewById(R.id.ended_km);
-        EndedKmImage = findViewById(R.id.img_ended_km);
-        takeEndedPhoto = findViewById(R.id.btn_take_photo);
+        //TextStartedKm = findViewById(R.id.txt_started_km);
+        //TextMaxKm = findViewById(R.id.txt_max);
+        //StartedKmImage = findViewById(R.id.img_started_km);
+        //EndedEditText = findViewById(R.id.ended_km);
+        //EndedKmImage = findViewById(R.id.img_ended_km);
+        //takeEndedPhoto = findViewById(R.id.btn_take_photo);
         submitAllowance = findViewById(R.id.submit_allowance);
-        PersonalKmEdit = findViewById(R.id.personal_ended_km);
+        //PersonalKmEdit = findViewById(R.id.personal_ended_km);
         linToPlace = findViewById(R.id.lin_to);
         TextToPlace = findViewById(R.id.txt_to);
-        ReasonMode = findViewById(R.id.reason_mode);
-        tottrv_km = findViewById(R.id.tottrv_km);
-        totclm_km = findViewById(R.id.totclm_km);
+        //ReasonMode = findViewById(R.id.reason_mode);
+        //tottrv_km = findViewById(R.id.tottrv_km);
+        //totclm_km = findViewById(R.id.totclm_km);
         shared_common_pref = new Shared_Common_Pref(this);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         common_class = new Common_Class(this);
@@ -183,7 +180,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
         BusToValue();
 
 
-        EndedEditText.addTextChangedListener(new TextWatcher() {
+        /*EndedEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -206,10 +203,10 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                     if(sPerKM.equals("")) sPerKM="0";
                     int perPM = Integer.valueOf(sPerKM);
                     if(perPM<0) perPM=0;
-                    tottrv_km.setText(String.valueOf(totalPM));
+                    //tottrv_km.setText(String.valueOf(totalPM));
                     int clmKM=totalPM-perPM;
                     if(clmKM<0) clmKM=0;
-                    totclm_km.setText(String.valueOf(clmKM));
+                    //totclm_km.setText(String.valueOf(clmKM));
 
                 }
             }
@@ -235,10 +232,10 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                     if(sPerKM.equals("")) sPerKM="0";
                     int perPM = Integer.valueOf(sPerKM);
                     if(perPM<0) perPM=0;
-                    tottrv_km.setText(String.valueOf(totalPM));
+                    //tottrv_km.setText(String.valueOf(totalPM));
                     int clmKM=totalPM-perPM;
                     if(clmKM<0) clmKM=0;
-                    totclm_km.setText(String.valueOf(clmKM));
+                    //totclm_km.setText(String.valueOf(clmKM));
 
                 }
             }
@@ -267,10 +264,10 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                     startActivity(intent);
                 }
             });
-        }
+        }*/
 
 
-        takeEndedPhoto.setOnClickListener(new View.OnClickListener() {
+        /*takeEndedPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -301,7 +298,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                 }
 
             }
-        });
+        });*/
 
 
         submitAllowance.setOnClickListener(new View.OnClickListener() {
@@ -312,59 +309,56 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (EndedEditText.getText().toString().matches("")) {
-                            Toast.makeText(AllowanceActivityTwo.this, "Choose End Km", Toast.LENGTH_SHORT).show();
-                            ResetSubmitBtn(0);
-                            return;
-                        } else if (imageConvert.matches("")) { //if (EndedImage.matches("") && ((ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) )
-                            Toast.makeText(AllowanceActivityTwo.this, "Choose End photo", Toast.LENGTH_SHORT).show();
-                            ResetSubmitBtn(0);
-                            return;
-                        } else {
-                            try {
-                                stKM = Integer.valueOf(TextStartedKm.getText().toString());
-                            } catch (NumberFormatException ex) { // handle your exception
+                        if (mlocation != null) {
+                            common_class.ProgressdialogShow(1, "Submitting Please wait...");
+                            if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) {
+                                submitData(ClosingDate);
+                            } else {
+                                submitData(Common_Class.GetDate());
                             }
-                            endKm = Integer.valueOf(EndedEditText.getText().toString());
-                            String pkm=PersonalKmEdit.getText().toString();
-                            if(pkm.equals("")) pkm="0";
-                            personalKM = Integer.valueOf(pkm);
-
-                            if (stKM < endKm) {
-                                if (((endKm-StartedKM)-personalKM)>maxKM) {
-                                    Toast.makeText(AllowanceActivityTwo.this, "KM Limit is Exceeded", Toast.LENGTH_SHORT).show();
-                                    ResetSubmitBtn(0);
-                                    return;
-                                }
-                                if (mlocation != null) {
+                        } else {
+                            common_class.ProgressdialogShow(1, "Getting location please wait...");
+                            new LocationFinder(getApplication(), new LocationEvents() {
+                                @Override
+                                public void OnLocationRecived(Location location) {
+                                    mlocation = location;
+//                                if (!ClosingDate.equals("")) {
                                     common_class.ProgressdialogShow(1, "Submitting Please wait...");
                                     if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) {
                                         submitData(ClosingDate);
                                     } else {
                                         submitData(Common_Class.GetDate());
                                     }
-                                } else {
-                                    common_class.ProgressdialogShow(1, "Getting location please wait...");
-                                    new LocationFinder(getApplication(), new LocationEvents() {
-                                        @Override
-                                        public void OnLocationRecived(Location location) {
-                                            mlocation = location;
-//                                if (!ClosingDate.equals("")) {
-                                            common_class.ProgressdialogShow(1, "Submitting Please wait...");
-                                            if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) {
-                                                submitData(ClosingDate);
-                                            } else {
-                                                submitData(Common_Class.GetDate());
-                                            }
-                                        }
-                                    });
                                 }
+                            });
+                        }
+                        /*if (imageConvert.matches("")) { //if (EndedImage.matches("") && ((ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) )
+                            Toast.makeText(AllowanceActivityTwo.this, "Choose End photo", Toast.LENGTH_SHORT).show();
+                            ResetSubmitBtn(0);
+                            return;
+                        } else {
+                            *//*try {
+                                stKM = Integer.valueOf(TextStartedKm.getText().toString());
+                            } catch (NumberFormatException ex) { // handle your exception
+                            }
+                            endKm = Integer.valueOf(EndedEditText.getText().toString());
+                            String pkm=PersonalKmEdit.getText().toString();
+                            if(pkm.equals("")) pkm="0";
+                            personalKM = Integer.valueOf(pkm);*//*
+
+                            *//*if (stKM < endKm) {
+                                if (((endKm-StartedKM)-personalKM)>maxKM) {
+                                    Toast.makeText(AllowanceActivityTwo.this, "KM Limit is Exceeded", Toast.LENGTH_SHORT).show();
+                                    ResetSubmitBtn(0);
+                                    return;
+                                }
+
                             } else {
                                 ResetSubmitBtn(0);
                                 Toast.makeText(AllowanceActivityTwo.this, "Should be greater then Started Km", Toast.LENGTH_SHORT).show();
 
-                            }
-                        }
+                            }*//*
+                        }*/
                     }
                 }, 100);
             }
@@ -420,7 +414,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                                     Photo_Name = FileName;
                                     imageConvert = path;
                                     EndedImage = "file://" + path;
-                                    EndedKmImage.setImageBitmap(image);
+                                    //EndedKmImage.setImageBitmap(image);
 
 
                                 }
@@ -465,13 +459,13 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
     /*Submit*/
     public void submitData(String date) {
 
-        Log.e("PERSONAL_KM", PersonalKmEdit.getText().toString());
+        //Log.e("PERSONAL_KM", PersonalKmEdit.getText().toString());
 
-        if (PersonalKmEdit.getText().toString().equals("")) {
+        /*if (PersonalKmEdit.getText().toString().equals("")) {
 
         } else {
             personalKM = Integer.valueOf(PersonalKmEdit.getText().toString());
-        }
+        }*/
 
         try {
 
@@ -483,15 +477,15 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 //            FileUploadService.enqueueWork(this, mIntent);
 
             JSONObject jj = new JSONObject();
-            jj.put("km", EndedEditText.getText().toString());
-            jj.put("rmk", ReasonMode.getText().toString());
-            jj.put("pkm", personalKM);
+            jj.put("km", 0);
+            jj.put("rmk", "");
+            jj.put("pkm", 0);
             jj.put("mod", "11");
             jj.put("sf", shared_common_pref.getvalue(Shared_Common_Pref.Sf_Code));
             jj.put("div", shared_common_pref.getvalue(Shared_Common_Pref.Div_Code));
             jj.put("url", Photo_Name);
             jj.put("from", "");
-            jj.put("to", TextToPlace.getText().toString());
+            jj.put("to", "");
             jj.put("to_code", StrToCode);
             jj.put("fare", "");
             jj.put("Activity_Date", date);
@@ -715,24 +709,24 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                             for (int i = 0; i < jsnArValue.length(); i++) {
                                 JSONObject json_oo = jsnArValue.getJSONObject(i);
                                 TextModeTravel.setText(json_oo.getString("MOT_Name"));
-                                TextStartedKm.setText(json_oo.getString("Start_Km"));
-                                Glide.with(getApplicationContext())
+                                //TextStartedKm.setText(json_oo.getString("Start_Km"));
+                                /*Glide.with(getApplicationContext())
                                         .load(json_oo.getString("start_Photo"))
-                                        .into(StartedKmImage);
+                                        .into(StartedKmImage);*/
 
 
                                 maxKM = json_oo.getInt("Maxkm");
                                 Hq = json_oo.getString("dailyAllowance");
 
-                                TextMaxKm.setText("Maximum km : " + maxKM);
-                                TextMaxKm.setVisibility(View.GONE);
+                                //TextMaxKm.setText("Maximum km : " + maxKM);
+                                //TextMaxKm.setVisibility(View.GONE);
                                 StratKm = Integer.valueOf(json_oo.getString("Start_Km"));
 
                                 StartedKM = Integer.valueOf(json_oo.getString("Start_Km"));
                                 ImageStart = json_oo.getString("start_Photo");
                                 String[] FilNMs = ImageStart.split("/");
                                 String[] imgDet = FilNMs[FilNMs.length - 1].split("[.]");
-                                DownloadPhoto(StartedKmImage, imgDet[0], imgDet[1]);
+                                //DownloadPhoto(StartedKmImage, imgDet[0], imgDet[1]);
 
                                 StrToCode = json_oo.getString("To_Place_Id");
                                 TextToPlace.setText(json_oo.getString("To_Place"));
@@ -740,7 +734,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 
                                 /* EndedEditText.setFilters(new InputFilter[]{new Common_Class.InputFilterMinMax(1, TotalKm)});*/
 
-                                if (!json_oo.getString("start_Photo").matches("")) {
+                                /*if (!json_oo.getString("start_Photo").matches("")) {
                                     StartedKmImage.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -753,7 +747,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                                             startActivity(intent);
                                         }
                                     });
-                                }
+                                }*/
                             }
                         }
                     } catch (Exception e) {

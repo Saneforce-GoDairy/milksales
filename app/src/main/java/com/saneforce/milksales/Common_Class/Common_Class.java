@@ -1786,7 +1786,7 @@ public class Common_Class {
         return Double.parseDouble(new DecimalFormat("0.00").format(amount));
     }
 
-    public Address getAddressFromLatLong(Context context, double LATITUDE, double LONGITUDE) {
+    public static Address getAddressFromLatLong(Context context, double LATITUDE, double LONGITUDE) {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
