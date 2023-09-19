@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
+
             <RelativeLayout
                 android:id="@+id/top"
                 android:layout_width="match_parent"
@@ -213,15 +214,98 @@
                     android:layout_height="200dp"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
                     android:padding="15dp">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
                         android:orientation="horizontal">
 
+                        <LinearLayout
+                            android:id="@+id/leave_request_status"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/request_status_ic" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto_medium"
+                                android:gravity="center_horizontal"
+                                android:text="@string/request_amp_status"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ta_claim"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/file_invoice_doller_ic" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto_medium"
+                                android:gravity="center_horizontal"
+                                android:text="@string/ta_amp_claim"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/sfa"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/users_gear_ic" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/sfa"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
                         <LinearLayout
                             android:id="@+id/gate_in"
                             android:layout_width="70dp"
@@ -273,92 +357,6 @@
                                 android:textSize="13sp" />
 
                         </LinearLayout>
-
-
-                        <LinearLayout
-                            android:id="@+id/sfa"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/users_gear_ic" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:fontFamily="@font/roboto_medium"
-                                android:text="@string/sfa"
-                                android:textColor="#464749"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:id="@+id/ta_claim"
-                            android:layout_width="70dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/file_invoice_doller_ic" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:fontFamily="@font/roboto_medium"
-                                android:gravity="center_horizontal"
-                                android:text="@string/ta_amp_claim"
-                                android:textColor="#464749"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/leave_request_status"
-                            android:layout_width="70dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginRight="40dp"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/request_status_ic" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:fontFamily="@font/roboto_medium"
-                                android:gravity="center_horizontal"
-                                android:text="@string/request_amp_status"
-                                android:textColor="#464749"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
-
                         <LinearLayout
                             android:id="@+id/approval"
                             android:layout_width="70dp"

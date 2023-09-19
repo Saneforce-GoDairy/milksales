@@ -22,8 +22,10 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import com.saneforce.milksales.Activity_Hap.Common_Class;
 import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
+import com.saneforce.milksales.Activity_Hap.Login;
 import com.saneforce.milksales.Common_Class.Constants;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
@@ -224,6 +226,7 @@ public class TodayFragment extends Fragment {
         }
     }
 
+
     private void assignDyReports(JsonArray res) {
         try {
             if (res.size() < 1){
@@ -231,10 +234,27 @@ public class TodayFragment extends Fragment {
             }
             fItm = res.get(0).getAsJsonObject();
 
+
             String checkInTimeStr = fItm.get("GeoIn").getAsString();
             if (!checkInTimeStr.isEmpty() && !checkInTimeStr.equals("00:00:00")) {
+                // Shift start time
+                JsonObject shiftStartTimeJsonObject = fItm.getAsJsonObject("Shft");
+                String ShiftStartTime = shiftStartTimeJsonObject.get("date").getAsString();
+
+                // Shift start time
+                JsonObject shiftEndTimeJsonObject = fItm.getAsJsonObject("ShftE");
+                String ShiftEndTime = shiftEndTimeJsonObject.get("date").getAsString();
+
+                Date date = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").parse(ShiftStartTime);
+                String newDate = new SimpleDateFormat("h:mm a").format(date);
+
+                Date date2 = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").parse(ShiftEndTime);
+                String newDate2 = new SimpleDateFormat("h:mm a").format(date2);
+
+                binding.shiftTime.setText(newDate + " - " + newDate2);
+
+
                 binding.geoIn.setText(fItm.get("GeoIn").getAsString());
-                binding.shiftTime.setText(fItm.get("SFT_Name").getAsString());
                 binding.checkInTime.setText(fItm.get("AttTm").getAsString());
 
                 String arriveStatus = fItm.get("Status").getAsString();
