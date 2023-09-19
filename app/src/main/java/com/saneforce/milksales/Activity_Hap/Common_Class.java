@@ -225,8 +225,31 @@ public class Common_Class {
 
     }
 
+    public int getHourNew(String dateInString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(dateInString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return c.get(Calendar.HOUR_OF_DAY);
+
+    }
+
     public int getMinute(String dateInString) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(dateInString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return c.get(Calendar.MINUTE);
+    }
+
+    public int getMinuteNew(String dateInString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
         Calendar c = Calendar.getInstance();
         try {
             c.setTime(sdf.parse(dateInString));

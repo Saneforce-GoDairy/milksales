@@ -1,5 +1,8 @@
 package com.saneforce.milksales.fragments;
 
+import static com.saneforce.milksales.Activity_Hap.Login.MyPREFERENCES;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -48,6 +51,7 @@ public class MonthlyFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentMonthlyBinding.inflate(inflater, container, false);
 
+        UserDetails = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         mShared_common_pref = new Shared_Common_Pref(getActivity());
         gson = new Gson();
         getMnthReports(0);

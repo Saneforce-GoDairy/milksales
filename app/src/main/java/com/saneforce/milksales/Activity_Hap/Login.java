@@ -281,6 +281,7 @@ public class Login extends AppCompatActivity {
             ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
             if (cameraPermission.checkPermission()) {
                 Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
+                DAMode = true;
                 if (DAMode == true) {
                     if (isMyServiceRunning(SANGPSTracker.class) == false) {
                         try {
@@ -747,6 +748,15 @@ public class Login extends AppCompatActivity {
     @SuppressLint("NewApi")
     void assignLoginData(Model response, int requestCode) {
         try {
+
+            if (isMyServiceRunning(SANGPSTracker.class) == false) {
+                try {
+                    Intent playIntent = new Intent(this, SANGPSTracker.class);
+                    bindService(playIntent, mServiceConection, Context.BIND_AUTO_CREATE);
+                    startService(playIntent);
+                } catch (Exception e) {
+                }
+            }
 
             shared_common_pref.save(Constants.LOGIN_DATE, com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime());
 

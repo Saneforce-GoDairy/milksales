@@ -23,6 +23,7 @@ import com.saneforce.milksales.Activity_Hap.Dashboard;
 import com.saneforce.milksales.Activity_Hap.ERT;
 import com.saneforce.milksales.Activity_Hap.Help_Activity;
 import com.saneforce.milksales.Activity_Hap.LeaveReasonStatus;
+import com.saneforce.milksales.Activity_Hap.Leave_Dashboard;
 import com.saneforce.milksales.Activity_Hap.PayslipFtp;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
@@ -116,7 +117,11 @@ public class Advance_Status_Activity extends AppCompatActivity {
         backView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                common_class.CommonIntentwithFinish(Approvals.class);
+                if (AMOD.equals("1")) {
+                    common_class.CommonIntentwithFinish(Approvals.class);
+                } else {
+                    common_class.CommonIntentwithFinish(Leave_Dashboard.class);
+                }
             }
         });
     }

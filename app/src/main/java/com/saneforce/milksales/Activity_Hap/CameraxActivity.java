@@ -2,6 +2,7 @@ package com.saneforce.milksales.Activity_Hap;
 
 import static android.app.PendingIntent.getActivity;
 import static com.saneforce.milksales.Activity_Hap.ImageCapture.imagePickListener;
+import static com.saneforce.milksales.SFA_Activity.HAPApp.sendOFFlineLocations;
 
 import android.Manifest;
 import android.app.AlarmManager;
@@ -836,6 +837,8 @@ public class CameraxActivity extends AppCompatActivity {
     }
 
     private void saveCheckIn() {
+        
+        
         try {
 
             Location location = mlocation;//Common_Class.location;//locationFinder.getLocation();
@@ -854,6 +857,11 @@ public class CameraxActivity extends AppCompatActivity {
             if (location != null) {
                 lat = location.getLatitude();
                 lng = location.getLongitude();
+            }
+            if (lat == 0 || lng == 0) {
+                Toast.makeText(context, "Please wait, searching location...", Toast.LENGTH_SHORT).show();
+                new LocationFinder(getApplication(), loc -> mlocation = loc);
+                return;
             }
             CheckInInf.put("lat", lat);
             CheckInInf.put("long", lng);
@@ -1055,6 +1063,7 @@ public class CameraxActivity extends AppCompatActivity {
                         });
                     }
                     else {
+                        sendOFFlineLocations();
                         initSubmitProgressDialog("Check out please wait.");
                         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                         String lMode = "get/logouttime";
