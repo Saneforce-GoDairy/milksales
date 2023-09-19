@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.MonthlyFragment">
 
     <RelativeLayout
@@ -13,9 +14,238 @@
         android:layout_marginLeft="@dimen/C15dp"
         android:layout_marginRight="@dimen/C15dp">
     <TextView
+        android:id="@+id/view_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Monthly fragment"
-        android:layout_centerInParent="true"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/C10dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="View All"
+        android:textColor="#1997CE"
+        android:textSize="16sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_all"
+            android:gravity="center_vertical">
+            <GridLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/C10dp"
+                android:layout_marginEnd="@dimen/C10dp"
+                android:layout_gravity="center_horizontal"
+                android:columnCount="3"
+                android:orientation="horizontal"
+                android:rowCount="4" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/C10dp"
+                            android:layout_gravity="left"
+                            android:layout_weight="1"
+                            android:background="@drawable/monthly_box_grey"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#1997CE"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="Permission"
+                                android:layout_marginTop="@dimen/C8dp"
+                                android:textColor="#2E3032"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+
+                        <!-- Column 2 -->
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/C10dp"
+                            android:layout_marginStart="@dimen/C5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/monthly_box_grey"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#1997CE"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Leave"
+                                android:fontFamily="@font/roboto_medium"
+                                android:layout_marginTop="@dimen/C8dp"
+                                android:textColor="#2E3032"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <!-- Column 3 -->
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/C10dp"
+                            android:layout_gravity="right"
+                            android:background="@drawable/monthly_box_grey"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/late"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#1997CE"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Late"
+                                android:fontFamily="@font/roboto_medium"
+                                android:layout_marginTop="@dimen/C8dp"
+                                android:textColor="#2E3032"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/C10dp"
+                            android:layout_gravity="left"
+                            android:layout_weight="1"
+                            android:background="@drawable/monthly_box_grey"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#1997CE"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Early Arrival"
+                                android:fontFamily="@font/roboto_medium"
+                                android:layout_marginTop="@dimen/C8dp"
+                                android:textColor="#2E3032"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+
+                        <!-- Column 2 -->
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/C10dp"
+                            android:layout_marginStart="@dimen/C5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/monthly_box_grey"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/missed_punch"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#1997CE"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Missed Punch"
+                                android:fontFamily="@font/roboto_medium"
+                                android:layout_marginTop="@dimen/C8dp"
+                                android:textColor="#2E3032"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <!-- Column 3 -->
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/C10dp"
+                            android:layout_gravity="right"
+                            android:background="@drawable/monthly_box_grey"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/weekly_off"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#1997CE"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/weekly_off_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Weekly off"
+                                android:fontFamily="@font/roboto_medium"
+                                android:layout_marginTop="@dimen/C8dp"
+                                android:textColor="#2E3032"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+                <!-- Row 4 -->
+
+            </GridLayout>
+        </RelativeLayout>
+
+
+
     </RelativeLayout>
 </RelativeLayout>
