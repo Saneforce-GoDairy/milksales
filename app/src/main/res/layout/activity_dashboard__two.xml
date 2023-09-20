@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,13 +74,13 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/menu_bar"
+                    android:id="@+id/notification"
                     android:layout_width="@dimen/C40dp"
                     android:layout_height="@dimen/C40dp"
                     android:contentDescription="@null"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/nav_toggle"
+                    android:src="@drawable/ic_notification2"
                     android:layout_marginEnd="10dp"/>
 
 
@@ -185,7 +196,7 @@
 
             <androidx.viewpager2.widget.ViewPager2
                 android:layout_width="match_parent"
-                android:layout_height="215dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:id="@+id/view_pager"
                 android:layout_below="@id/tab_layout"/>
@@ -211,7 +222,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     android:padding="15dp">
@@ -359,6 +370,90 @@
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/approval"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/canteen_scan_ic" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto_medium"
+                                android:gravity="center_horizontal"
+                                android:text="Approvals"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:id="@+id/pjp"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:clickable="false"
+                                android:contentDescription="@null"
+                                android:src="@drawable/calendar_pjp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:clickable="false"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="PJP"
+                                android:textColor="#2E3032"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:visibility="invisible"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/gate_out_ic" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/gate_out"
+                                android:textColor="#464749"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="invisible"
                             android:layout_width="70dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
@@ -1375,5 +1470,6 @@
         <include layout="@layout/back_arrow"></include>
 
     </LinearLayout>
-
-</RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

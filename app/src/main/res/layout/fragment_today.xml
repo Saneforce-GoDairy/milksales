@@ -173,7 +173,7 @@
                         android:layout_height="wrap_content"
                         android:text="View"
                         android:textSize="15sp"
-                        android:layout_marginLeft="@dimen/C5dp"
+                        android:layout_marginStart="@dimen/C5dp"
                         android:fontFamily="@font/roboto_medium"
                         android:textColor="@color/primaryBlurLight" />
 
@@ -184,6 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:maxLines="1"
                     android:textColor="@color/primaryDark"
                     android:text="-"
                     android:textSize="15sp" />
@@ -208,7 +209,7 @@
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/C15dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
