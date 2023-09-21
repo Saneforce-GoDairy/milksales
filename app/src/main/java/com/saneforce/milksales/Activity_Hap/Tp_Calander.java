@@ -1,7 +1,10 @@
 package com.saneforce.milksales.Activity_Hap;
 
+import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING;
 import static com.saneforce.milksales.Activity_Hap.Leave_Request.CheckInfo;
 
+import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -27,6 +30,9 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,6 +44,11 @@ import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.Model_Class.Tp_View_Master;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.databinding.TpClanderBinding;
+import com.saneforce.milksales.fragments.GateInOutFragment;
+import com.saneforce.milksales.fragments.MonthlyFragment;
+import com.saneforce.milksales.fragments.TodayFragment;
+import com.saneforce.milksales.fragments.tour_plan.CurrentMonthFragment;
+import com.saneforce.milksales.fragments.tour_plan.NextMonthFragment;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -84,6 +95,7 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
     int NM;
 
     private Context context = this;
+    private MyViewPagerAdapter myViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +115,7 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         checkApprovalFlag();
         getCurrentMonthAndNextMonth(); // CM , NM
         getCurrentYear(); // yyyy
+        loadFragment();
 
         SelectedMonth = CM;
         currentMonth.setText(common_class.GetMonthname(CM));
@@ -111,7 +124,52 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         // Load tour plan
         progressDialog.show();
         GetTp_List();
+
+        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+
+                if (state == SCROLL_STATE_DRAGGING && binding.viewPager.getCurrentItem() == 0) {
+                    binding.viewPager.setUserInputEnabled(false);
+                } else {
+                    binding.viewPager.setUserInputEnabled(true);
+                }
+            }
+        });
     }
+
+    private void loadFragment() {
+        myViewPagerAdapter = new MyViewPagerAdapter(this);
+        binding.viewPager.setAdapter(myViewPagerAdapter);
+    }
+
+    public static class MyViewPagerAdapter  extends FragmentStateAdapter {
+        public MyViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position){
+                case 0:
+                    return new CurrentMonthFragment();
+                case 1:
+                    return new NextMonthFragment();
+
+                default:
+                    return new CurrentMonthFragment();
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
+    }
+
+
 
     private void getCurrentYear() {
         _calendar = Calendar.getInstance(Locale.getDefault());
@@ -173,41 +231,76 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
     private void initOnClick() {
         binding.currentMonthBtn1.setOnClickListener(v -> {
 
+            binding.viewPager.setCurrentItem(0);
+            currentMonth.setText(common_class.GetMonthname(CM));
+
             // Primary button enable logic
             final int sdk = android.os.Build.VERSION.SDK_INT;
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                binding.currentMonthBtn1.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+                binding.currentMonthBtn1.setBackgroundDrawable(null);
             } else {
-                binding.currentMonthBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
+                binding.currentMonthBtn1.setBackground(null);
+            }
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthBtn1.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+            } else {
+                binding.nextMonthBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
             }
 
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
-                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
             } else {
                 binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
-                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
-            }
-
-            // Secondary button disable logic logic
-            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                binding.nextMonthBtn1.setBackgroundDrawable(null);
-            } else {
-                binding.nextMonthBtn1.setBackground(null);
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
             }
 
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 binding.nextMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.monthly_back_arrow_white));
-                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
             } else {
                 binding.nextMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.monthly_back_arrow_white));
-                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
             }
 
             binding.nextMonthArrowImg.setScaleX(1);
             binding.currentMonthArrowImg.setScaleX(1);
 
             GetTp_List();
+        });
+        binding.nextMonthBtn1.setOnClickListener(v -> {
+            binding.viewPager.setCurrentItem(1);
+            currentMonth.setText(common_class.GetMonthname(NM));
+
+                        final int sdk = Build.VERSION.SDK_INT;
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthBtn1.setBackgroundDrawable(null);
+            } else {
+                binding.nextMonthBtn1.setBackground(null);
+            }
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthBtn1.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+            } else {
+                binding.currentMonthBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
+            }
+
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.currentMonthArrowImg.setScaleX(1);
+            } else {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.currentMonthArrowImg.setScaleX(1);
+            }
         });
 
 //        binding.nextMonthBtn1.setOnClickListener(v -> {

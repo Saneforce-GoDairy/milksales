@@ -98,7 +98,6 @@
                     android:id="@+id/current_month_btn1"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:background="@drawable/custom_back_btn"
                     android:layout_marginEnd="@dimen/C20dp">
 
                     <ImageView
@@ -108,7 +107,7 @@
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/monthly_back_arrow_white"
-                        app:tint="@color/white"
+                        app:tint="#979797"
                         android:scaleX="-1"/>
 
                 </RelativeLayout>
@@ -117,6 +116,7 @@
                     android:id="@+id/next_month_btn1"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    android:background="@drawable/custom_back_btn"
                     >
 
                     <ImageView
@@ -127,7 +127,7 @@
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/tp_current_month_enabled_arrow"
                         android:scaleX="-1"
-                        app:tint="#979797" />
+                        app:tint="@color/white" />
 
                 </RelativeLayout>
 
@@ -136,7 +136,23 @@
 
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/C100dp">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/view_pager"
+                android:layout_below="@id/tab_layout"/>
+
+        </LinearLayout>
+
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -169,7 +185,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Sun"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:fontFamily="@font/roboto_medium"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -177,7 +195,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Mon"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:fontFamily="@font/roboto_medium"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -185,7 +205,10 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Tue"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:fontFamily="@font/roboto_medium"
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:layout_width="0dp"
@@ -193,7 +216,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="wed"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:fontFamily="@font/roboto_medium"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -201,7 +226,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Thu"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:fontFamily="@font/roboto_medium"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -209,7 +236,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Fri"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:fontFamily="@font/roboto_medium"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -217,7 +246,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Sat"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:fontFamily="@font/roboto_medium"
+                android:textStyle="bold"/>
 
 
         </LinearLayout>

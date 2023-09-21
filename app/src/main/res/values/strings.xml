@@ -174,4 +174,6 @@
     <string name="sfa">SFA</string>
     <string name="ta_amp_claim"><![CDATA[TA & Claim]]></string>
     <string name="close">CLOSE</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
