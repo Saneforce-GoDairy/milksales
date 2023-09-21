@@ -436,8 +436,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     return new TodayFragment();
                 case 1:
                     return new MonthlyFragment();
-//                case 2:
-//                    return new GateInOutFragment();
+                case 2:
+                    return new GateInOutFragment();
                 default:
                     return new TodayFragment();
             }
@@ -445,7 +445,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         @Override
         public int getItemCount() {
-            return 2;
+            return 3;
         }
     }
 

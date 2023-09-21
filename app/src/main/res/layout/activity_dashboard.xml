@@ -150,7 +150,7 @@
             </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
-                android:layout_width="200dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lin_clock_in"
                 android:layout_marginTop="30dp"
@@ -163,13 +163,17 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/today"
-                    />
+                    android:text="@string/today" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/monthly"/>
+                    android:text="@string/monthly" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gate_in_out" />
 
             </com.google.android.material.tabs.TabLayout>
 

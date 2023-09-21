@@ -235,10 +235,10 @@ public class Permission_Request extends AppCompatActivity implements View.OnClic
 
                                     StringFromTinme = clickedDate+" "+ String.format("%02d:%02d:00", sHour, sMinute);
                                     Date fTime=DT.getDate(StringFromTinme);
-                                    int sftFHour=DT.getHour(shiftFromDate); int sftFMinute=DT.getMinute(shiftFromDate);
+                                    int sftFHour=DT.getHourNew(shiftFromDate); int sftFMinute=DT.getMinuteNew(shiftFromDate);
                                     String sTime = clickedDate+" "+ String.format("%02d:%02d:00", sftFHour, sftFMinute);
                                     Date sftSTime=DT.getDate(sTime);
-                                    int sftTHour=DT.getHour(shiftToDate); int sftTMinute=DT.getMinute(shiftToDate);
+                                    int sftTHour=DT.getHourNew(shiftToDate); int sftTMinute=DT.getMinuteNew(shiftToDate);
                                     String sETime = clickedDate+" "+ String.format("%02d:%02d:00", sftTHour, sftTMinute);
                                     Date sftETime=DT.getDate(sETime);
                                     if(sftFHour>sftTHour){
@@ -727,8 +727,8 @@ public class Permission_Request extends AppCompatActivity implements View.OnClic
             shiftTypeId = myDataset.get(position).getId();
             JSONObject item=myDataset.get(position).getJSONObject();
             try {
-                shiftFromDate=item.getJSONObject("Sft_STime").getString("date");
-                shiftToDate=item.getJSONObject("sft_ETime").getString("date");
+                shiftFromDate=item.getString("Sft_STime");
+                shiftToDate=item.getString("sft_ETime");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
