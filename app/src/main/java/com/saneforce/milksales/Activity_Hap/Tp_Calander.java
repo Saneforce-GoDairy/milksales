@@ -760,7 +760,7 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                     if (Shared_Common_Pref.Tp_Approvalflag.equals("1")) {
                         common_class.CommonIntentwithFinish(Tp_Approval.class);
                     } else {
-                        common_class.CommonIntentwithFinish(Tp_Month_Select.class);
+                        common_class.CommonIntentwithFinish(Dashboard.class);
                     }
 
                 }
