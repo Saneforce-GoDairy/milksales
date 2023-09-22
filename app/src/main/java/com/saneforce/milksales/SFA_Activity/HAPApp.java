@@ -31,23 +31,27 @@ import retrofit2.Response;
 
 public class HAPApp extends Application {
 
-    private ApiComponent mApiComponent;
+    public static final String CheckInDetail = "CheckInDetail";
+    public static final String UserDetail = "MyPrefs";
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String hoursFormat = "12"; // 24
+
     public static Activity activeActivity;
+    public static String CurrencySymbol = "₹"; // ₹ B $
+    public static String MRPCap = "MRP"; // ₹ B $
+    public static String MyAppID = "com.saneforce.milksales";
+    public static String Title = "Milk Sales";
+    public static String StockCheck = "1"; // ₹ B $
+    public static Boolean ProductsLoaded = false;
+
+    SharedPreferences UserDetails, CheckInDetails;
+    SharedPreferences CommUserDetails;
+    Shared_Common_Pref shared_common_pref;
+
+    private ApiComponent mApiComponent;
     private BroadcastReceiver mNetworkReceiver;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
-    public static final String CheckInDetail = "CheckInDetail";
-    public static String CurrencySymbol =  "₹";//₹B$
-    public static String MRPCap = "MRP";//₹B$
-    public static String MyAppID = "com.saneforce.milksales";
-    public static String Title = "Milk Sales";
-    public static String StockCheck = "1";//₹B$
-    SharedPreferences UserDetails, CheckInDetails;
-    public static Boolean ProductsLoaded = false;
-    SharedPreferences CommUserDetails;
-    public static final String UserDetail = "MyPrefs";
-    public static final String MyPREFERENCES = "MyPrefs";
-    Shared_Common_Pref shared_common_pref;
     @Override
     public void onCreate() {
         super.onCreate();

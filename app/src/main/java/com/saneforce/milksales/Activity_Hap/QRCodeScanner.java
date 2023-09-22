@@ -1,7 +1,10 @@
 package com.saneforce.milksales.Activity_Hap;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -294,7 +297,19 @@ public class QRCodeScanner extends AppCompatActivity {
                             public void PositiveMethod(DialogInterface dialog, int id) {
                                 dialog.dismiss();
                                 mGateEntryQREvents.RefreshGateEntrys();
-                                QRCodeScanner.this.finish();
+                                SharedPreferences CheckInDetails = getSharedPreferences("CheckInDetail", Context.MODE_PRIVATE);
+                                boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
+                                if (CheckIn) {
+                                    Intent Dashboard = new Intent(getApplicationContext(), Dashboard_Two.class);
+                                    Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    Dashboard.putExtra("Mode", "CIN");
+                                    startActivity(Dashboard);
+                                } else {
+                                    Intent intent = new Intent(getApplicationContext(), Dashboard.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                }
+                                finish();
                             }
 
                             @Override

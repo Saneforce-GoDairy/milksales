@@ -251,10 +251,15 @@ public class DeviationEntry extends AppCompatActivity implements Master_Interfac
 
         if (CheckIn == true) {
             Intent Dashboard = new Intent(DeviationEntry.this, Dashboard_Two.class);
+            Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             Dashboard.putExtra("Mode", "CIN");
             startActivity(Dashboard);
-        } else
-            startActivity(new Intent(getApplicationContext(), Dashboard.class));
+        } else {
+            Intent intent = new Intent(this, Dashboard.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        finish();
     }
     public void MaxMinDate() {
 
