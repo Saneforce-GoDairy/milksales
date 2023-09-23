@@ -9,9 +9,11 @@ import android.os.Bundle;
 import java.text.SimpleDateFormat;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +42,7 @@ import com.saneforce.milksales.R;
 import com.saneforce.milksales.databinding.CalendarItemBinding;
 import com.saneforce.milksales.databinding.FragmentCurrentMonthBinding;
 import com.saneforce.milksales.databinding.FragmentTodayBinding;
+import com.saneforce.milksales.databinding.TourPlanExploreItemBinding;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -71,7 +75,9 @@ public class CurrentMonthFragment extends Fragment {
     private ProgressDialog progressDialog;
     private Calendar _calendar;
     private RecyclerView.Adapter adapter2;
+    private RecyclerView.Adapter adapter3;
     private Context context ;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -139,25 +145,36 @@ public class CurrentMonthFragment extends Fragment {
             mCall.enqueue(new Callback<Object>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
-                    // locationList=response.body();
-                    Log.e("GetCurrentMonth_Values", String.valueOf(response.body().toString()));
-                    Log.e("TAG_TP_RESPONSE", "response Tp_View: " + new Gson().toJson(response.body()));
-                    userType = new TypeToken<ArrayList<Tp_View_Master>>() {
-                    }.getType();
+
+                    userType = new TypeToken<ArrayList<Tp_View_Master>>() {}.getType();
+
+                    //------------ Server response
                     Tp_View_Master = gson.fromJson(new Gson().toJson(response.body()), userType);
                     month = SelectedMonth + 1;
+
+                    //------------- Gridview
                     adapter = new GridCellAdapter(getContext(), R.id.date, month, year, (ArrayList<Tp_View_Master>) Tp_View_Master);
                     adapter.notifyDataSetChanged();
                     binding.gridcalander.setAdapter(adapter);
 
-                    //--------------
+                    //-------------- RecyclerView
                     adapter2 = new PostAdapter(getActivity(),  R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
-
                     binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
                     binding.recyclerView.setHasFixedSize(true);
                     binding.recyclerView.setItemViewCacheSize(20);
                     adapter.notifyDataSetChanged();
                     binding.recyclerView.setAdapter(adapter2);
+
+                    //--------------- Tour plan RecyclerView Plan explore view
+                    adapter3 = new TourPlanExploreAdapter(getActivity(), (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
+                    binding.recyclerviewExplore.setLayoutManager(new LinearLayoutManager(getContext()));
+                    //binding.recyclerviewExplore.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+                    binding.recyclerviewExplore.addItemDecoration(new DividerItemDecoration(requireContext(), 0));
+                    binding.recyclerviewExplore.setHasFixedSize(true);
+                    binding.recyclerviewExplore.setItemViewCacheSize(20);
+                    adapter.notifyDataSetChanged();
+                    binding.recyclerviewExplore.setAdapter(adapter3);
+
                     progressDialog.dismiss();
                 }
 
@@ -167,29 +184,107 @@ public class CurrentMonthFragment extends Fragment {
                 }
             });
 
-            try {
-                adapter = new GridCellAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
-                adapter.notifyDataSetChanged();
-                binding.gridcalander.setAdapter(adapter);
-
-                //--------------
-                adapter2 = new PostAdapter(getActivity(),  R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
-
-                binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
-                binding.recyclerView.setHasFixedSize(true);
-                binding.recyclerView.setItemViewCacheSize(20);
-                adapter.notifyDataSetChanged();
-                binding.recyclerView.setAdapter(adapter2);
-            } catch (Exception ignored) {
-            }
+//            try {
+//                adapter = new GridCellAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
+//                adapter.notifyDataSetChanged();
+//                binding.gridcalander.setAdapter(adapter);
+//
+//                //--------------
+//                adapter2 = new PostAdapter(getActivity(),  R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
+//
+//                binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
+//                binding.recyclerView.setHasFixedSize(true);
+//                binding.recyclerView.setItemViewCacheSize(20);
+//                adapter.notifyDataSetChanged();
+//                binding.recyclerView.setAdapter(adapter2);
+//            } catch (Exception ignored) {
+//            }
         } catch (Exception ignored) {
+        }
+    }
+
+    public class TourPlanExploreAdapter extends RecyclerView.Adapter<TourPlanExploreAdapter.ViewHolder>{
+        private final Context context;
+        private ArrayList<Tp_View_Master> tpViewMasterArrayList;
+
+        public TourPlanExploreAdapter(Context context, ArrayList<Tp_View_Master> tpViewMasterArrayList){
+            this.context = context;
+            this.tpViewMasterArrayList = tpViewMasterArrayList;
+        }
+
+        @NonNull
+        @Override
+        public TourPlanExploreAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            TourPlanExploreItemBinding binding = TourPlanExploreItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull TourPlanExploreAdapter.ViewHolder holder, int position) {
+            if (tpViewMasterArrayList != null){
+
+                Tp_View_Master tpViewMaster = tpViewMasterArrayList.get(position);
+
+                holder.mWorkType.setText(tpViewMaster.getWorktypeName());
+                holder.mRemarks.setText(tpViewMaster.getRemarks());
+                holder.mDate.setText(tpViewMaster.getDate());
+
+                if (tpViewMaster.getWorktypeName().equals("Field Work")){
+                    holder.mCardView.setCardBackgroundColor(Color.parseColor("#F9E7DB"));
+                }
+
+                if (tpViewMaster.getWorktypeName().equals("Joint Work")){
+                    holder.mCardView.setCardBackgroundColor(Color.parseColor("#FFDCF0FA"));
+                }
+
+                if (tpViewMaster.getWorktypeName().equals("Training day")){
+                    holder.mCardView.setCardBackgroundColor(Color.parseColor("#FFF8D1FF"));
+                }
+
+            }else {
+                Toast.makeText(context, "Empty tp arraylist", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public long getItemId(int position){
+            return position;
+        }
+
+        @Override
+        public int getItemViewType(int position){
+            return position;
+        }
+
+        @Override
+        public int getItemCount() {
+            return tpViewMasterArrayList.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder
+        {
+            private TourPlanExploreItemBinding binding;
+            private TextView mWorkType, mRemarks, mDate;
+            private CardView mCardView;
+
+            public ViewHolder(TourPlanExploreItemBinding binding)
+            {
+                super(binding.getRoot());
+                this.binding = binding;
+
+                mWorkType = binding.workType;
+                mRemarks = binding.remarks;
+                mDate = binding.date;
+                mCardView = binding.cardLayout;
+            }
         }
     }
 
     public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         private final Context context;
         private final List<String> list;
-        private ArrayList<Tp_View_Master> Tp_View_Master;
+        private ArrayList<Tp_View_Master> tpViewMasterArrayList;
         private static final int DAY_OFFSET = 1;
         private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -206,9 +301,9 @@ public class CurrentMonthFragment extends Fragment {
         int selectedPosition = -1;
         int lastSelectedPosition = -1;
 
-        public PostAdapter(Context context, int textViewResourceId, int month, int year, ArrayList<Tp_View_Master> Tp_View_Master) {
+        public PostAdapter(Context context, int textViewResourceId, int month, int year, ArrayList<Tp_View_Master> tpViewMasterArrayList) {
             this.context = context;
-            this.Tp_View_Master = Tp_View_Master;
+            this.tpViewMasterArrayList = tpViewMasterArrayList;
             this.list = new ArrayList<>();
 
             Calendar calendar = Calendar.getInstance();
@@ -252,6 +347,7 @@ public class CurrentMonthFragment extends Fragment {
 
             });
 
+
             if (selectedPosition == holder.getBindingAdapterPosition()) {
              //   holder.binding.colorGrey.setVisibility(View.GONE);
                 final int sdk = Build.VERSION.SDK_INT;
@@ -269,7 +365,7 @@ public class CurrentMonthFragment extends Fragment {
                 } else {
                     holder.mDateLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_disabled));
                 }
-                holder.mDate.setTextColor(Color.GRAY);
+                holder.mDate.setTextColor(Color.BLACK);
             }
 
             String[] day_color = list.get(position).split("-");
@@ -296,7 +392,8 @@ public class CurrentMonthFragment extends Fragment {
                 holder.mDate.setEnabled(false);
             }
             if (day_color[1].equals("GREEN")) {
-                holder.mDate.setTextColor(getResources().getColor(R.color.subExpHeader));
+              //  holder.mDate.setTextColor(getResources().getColor(R.color.subExpHeader));
+                holder.mTourPlanCircle.setVisibility(View.VISIBLE);
             }
             if (day_color[1].equals("BLUE")) {
                 // iv_icon.setVisibility(View.VISIBLE);
@@ -316,6 +413,18 @@ public class CurrentMonthFragment extends Fragment {
 //                common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
 //
 //            });
+
+           if (tpViewMasterArrayList != null){
+
+               for (int i = 0; tpViewMasterArrayList.size() > i; i++ ){
+                   Log.e("nn_", String.valueOf(tpViewMasterArrayList.get(i).getRemarks()));
+               }
+
+           }else {
+               Toast.makeText(context, "Empty dp arraylist", Toast.LENGTH_SHORT).show();
+           }
+
+           String debug = "";
 
         }
 
@@ -339,6 +448,7 @@ public class CurrentMonthFragment extends Fragment {
             private CalendarItemBinding binding;
             private TextView mDate;
             private RelativeLayout mDateLayout;
+            private CardView mTourPlanCircle;
 
             public ViewHolder(CalendarItemBinding binding)
             {
@@ -347,6 +457,8 @@ public class CurrentMonthFragment extends Fragment {
 
                 mDate = binding.date;
                 mDateLayout = binding.dateLayout;
+                mTourPlanCircle = binding.color;
+
             }
         }
 

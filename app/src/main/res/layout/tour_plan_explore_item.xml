@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_layout"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginTop="7dp"
+    android:layout_marginStart="7dp"
+    android:layout_marginEnd="7dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/C20dp"
+    app:cardBackgroundColor="#F8D1FF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_centerVertical="true"
+          android:layout_marginStart="@dimen/C20dp">
+
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+              <TextView
+                  android:id="@+id/work_type"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:hint="Work type"
+                  android:textColorHint="@color/black"
+                  android:textColor="@color/black"
+                  android:fontFamily="@font/roboto_medium"
+                  android:textStyle="bold"/>
+
+              <TextView
+                  android:id="@+id/remarks"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="10dp"
+                  android:hint="Remarks"
+                  android:textColor="@color/grey_600"
+                  android:textColorHint="@color/grey_600"
+                  android:fontFamily="@font/roboto_medium"
+                  android:textStyle="bold"/>
+          </LinearLayout>
+
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentEnd="true"
+              android:layout_marginRight="@dimen/C20dp"
+              android:orientation="vertical">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="center_vertical"
+                  android:orientation="horizontal">
+
+                  <ImageView
+                      android:layout_width="10dp"
+                      android:layout_height="match_parent"
+                      android:src="@drawable/ic_pencil"/>
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginStart="5dp"
+                      android:hint="Edit"
+                      android:textColor="@color/black"
+                      android:textColorHint="@color/black"
+                      android:fontFamily="@font/roboto_medium"
+                      android:textStyle="bold"/>
+
+              </LinearLayout>
+
+
+              <TextView
+                  android:id="@+id/date"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="10dp"
+                  android:hint="DD/MM/YYYY"
+                  android:textColorHint="@color/grey_600"
+                  android:textColor="@color/grey_600"
+                  android:fontFamily="@font/roboto_medium"
+                  android:textStyle="bold"/>
+          </LinearLayout>
+
+      </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

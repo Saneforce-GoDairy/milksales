@@ -254,6 +254,7 @@ public class Tp_View_Master {
         this.submitStatus = submitStatus;
     }
 
-
-
+    public String getDate() {
+        return date;
+    }
 }
