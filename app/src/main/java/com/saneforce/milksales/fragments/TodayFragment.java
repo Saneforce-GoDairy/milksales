@@ -3,6 +3,7 @@ package com.saneforce.milksales.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.R;
+import com.saneforce.milksales.SFA_Activity.HAPApp;
 import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.adapters.HomeRptRecyler;
 import com.saneforce.milksales.databinding.FragmentTodayBinding;
@@ -257,9 +259,13 @@ public class TodayFragment extends Fragment {
                 binding.checkInTime.setText(fItm.get("AttTm").getAsString());
 
                 String arriveStatus = fItm.get("Status").getAsString();
-
-                if (arriveStatus.equals("Late")){
+                String StaColor = fItm.get("StaColor").getAsString();
+                if (!arriveStatus.equals("")){
                     binding.status.setText(arriveStatus);
+                    binding.status.setTextColor(Color.parseColor(StaColor));
+                } else {
+                    binding.status.setText("-");
+                    binding.status.setTextColor(getResources().getColor(R.color.greyColor));
                 }
 
                 binding.geoInView.setVisibility(View.VISIBLE);

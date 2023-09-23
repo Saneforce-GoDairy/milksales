@@ -1069,8 +1069,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                             Intent iLeave = new Intent(Dashboard_Two.this, Leave_Request.class);
                                             iLeave.putExtra("EDt", mItem.get("EDt").getAsString());
                                             Dashboard_Two.this.startActivity(iLeave);
-
-                                            Dashboard_Two.this.finish();
                                         }
                                     });
 
@@ -1082,7 +1080,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                             Intent iWeekOff = new Intent(Dashboard_Two.this, Weekly_Off.class);
                                             iWeekOff.putExtra("EDt", mItem.get("EDt").getAsString());
                                             Dashboard_Two.this.startActivity(iWeekOff);
-                                            Dashboard_Two.this.finish();
                                         }
                                     });
 
@@ -1094,7 +1091,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                             Intent iLeave = new Intent(Dashboard_Two.this, DeviationEntry.class);
                                             iLeave.putExtra("EDt", mItem.get("EDt").getAsString());
                                             Dashboard_Two.this.startActivity(iLeave);
-                                            Dashboard_Two.this.finish();
                                         }
                                     });
                                     alertDialog.setView(view);

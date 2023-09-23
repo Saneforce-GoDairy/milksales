@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    >
+    android:layout_height="match_parent"
+    tools:context=".fragments.TodayFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="235dp"
-        tools:context=".fragments.TodayFragment"
-        android:background="@drawable/fragment_card"
-        android:layout_marginLeft="@dimen/C15dp"
-        android:layout_marginRight="@dimen/C15dp">
+        android:layout_marginHorizontal="@dimen/C15dp"
+        android:background="@drawable/fragment_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,8 +25,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date"
                     android:fontFamily="@font/roboto_medium"
+                    android:text="Date"
                     android:textColor="#737779"
                     android:textSize="15sp" />
 
@@ -37,16 +35,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/primaryDark"
                     android:text=""
+                    android:textColor="@color/primaryDark"
                     android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Check IN time"
                     android:fontFamily="@font/roboto_medium"
+                    android:text="Check IN time"
                     android:textColor="#737779"
                     android:textSize="15sp" />
 
@@ -62,8 +60,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/C10dp"
-                    android:text="Check OUT time"
                     android:fontFamily="@font/roboto_medium"
+                    android:text="Check OUT time"
                     android:textColor="#737779"
                     android:textSize="15sp" />
 
@@ -86,8 +84,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Shift time"
                     android:fontFamily="@font/roboto_medium"
+                    android:text="Shift time"
                     android:textColor="#737779"
                     android:textSize="15sp" />
 
@@ -101,17 +99,17 @@
 
                 <LinearLayout
                     android:id="@+id/geoInView"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Geo IN"
                         android:fontFamily="@font/roboto_medium"
+                        android:text="Geo IN"
                         android:textColor="#737779"
                         android:textSize="15sp" />
 
@@ -126,11 +124,11 @@
                         android:id="@+id/view_geo_in"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="View"
-                        android:textSize="15sp"
                         android:layout_marginLeft="@dimen/C5dp"
                         android:fontFamily="@font/roboto_medium"
-                        android:textColor="@color/primaryBlurLight" />
+                        android:text="View"
+                        android:textColor="@color/primaryBlurLight"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -139,24 +137,24 @@
                     android:id="@+id/geo_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:layout_marginTop="10dp"
+                    android:maxLines="1"
                     android:textColor="@color/primaryDark"
                     android:textSize="15sp" />
 
                 <LinearLayout
                     android:id="@+id/geoOutView"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Geo OUT"
                         android:fontFamily="@font/roboto_medium"
+                        android:text="Geo OUT"
                         android:textColor="#737779"
                         android:textSize="15sp" />
 
@@ -171,11 +169,11 @@
                         android:id="@+id/view_geo_out"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="View"
-                        android:textSize="15sp"
-                        android:layout_marginStart="@dimen/C5dp"
+                        android:layout_marginLeft="@dimen/C5dp"
                         android:fontFamily="@font/roboto_medium"
-                        android:textColor="@color/primaryBlurLight" />
+                        android:text="View"
+                        android:textColor="@color/primaryBlurLight"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -184,9 +182,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:maxLines="1"
-                    android:textColor="@color/primaryDark"
                     android:text="-"
+                    android:textColor="@color/primaryDark"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -206,29 +203,30 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/C15dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginStart="15dp"
+            android:paddingBottom="15dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
+                android:text="Status:"
                 android:textColor="#737779"
-                android:textSize="15sp"
-                android:text="Status :" />
-
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/roboto_medium"
-                android:textSize="15sp"
                 android:text=""
-                android:textColor="#FF0000"/>
+                android:textSize="15sp" />
+
         </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

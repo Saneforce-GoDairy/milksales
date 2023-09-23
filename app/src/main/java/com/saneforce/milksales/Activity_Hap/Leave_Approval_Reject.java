@@ -19,11 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedDispatcher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.saneforce.milksales.Common_Class.Common_Class;
+import com.saneforce.milksales.Common_Class.MyProgressDialog;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
@@ -52,6 +54,9 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
     private WebView wv1;
     Intent i;
 
+    MyProgressDialog myProgressDialog;
+    Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +72,8 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
         });
         TextView txtErt = findViewById(R.id.toolbar_ert);
         TextView txtPlaySlip = findViewById(R.id.toolbar_play_slip);
+
+        myProgressDialog = new MyProgressDialog(context);
 
         txtErt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +159,11 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
 
 
     private void SendtpApproval(String Name, int flag) {
+        if (flag == 1) {
+            myProgressDialog.show("", "Approving", false);
+        } else {
+            myProgressDialog.show("", "Rejecting", false);
+        }
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "dcr/save");
         QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
@@ -178,33 +190,26 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
         jsonArray.put(jsonObject);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> mCall = apiInterface.DCRSave(QueryString, jsonArray.toString());
-        //Log.e("Log_TpQuerySTring", QueryString.toString());
-        Log.e("Log_Tp_SELECT", jsonArray.toString());
-
-        mCall.enqueue(new Callback<JsonObject>() {
+        mCall.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                // locationList=response.body();
-                Log.e("TAG_TP_RESPONSE", "response Tp_View: " + new Gson().toJson(response.body()));
-                try {
-                    common_class.CommonIntentwithFinish(Leave_Approval.class);
-                    JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.body() != null) {
                     if (flag == 1) {
                         Toast.makeText(getApplicationContext(), "Leave  Approved Successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Leave Rejected  Successfully", Toast.LENGTH_SHORT).show();
-
                     }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    common_class.CommonIntentwithFinish(Leave_Approval.class);
+                } else {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
+                myProgressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                myProgressDialog.dismiss();
+                Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

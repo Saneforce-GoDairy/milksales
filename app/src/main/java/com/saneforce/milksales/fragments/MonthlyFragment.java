@@ -3,6 +3,7 @@ package com.saneforce.milksales.fragments;
 import static com.saneforce.milksales.Activity_Hap.Login.MyPREFERENCES;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.R;
+import com.saneforce.milksales.Status_Activity.View_All_Status_Activity;
 import com.saneforce.milksales.adapters.HomeRptRecyler;
 import com.saneforce.milksales.databinding.FragmentMonthlyBinding;
 
@@ -55,6 +57,14 @@ public class MonthlyFragment extends Fragment {
         mShared_common_pref = new Shared_Common_Pref(getActivity());
         gson = new Gson();
         getMnthReports(0);
+
+        binding.viewAll.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), View_All_Status_Activity.class);
+            intent.putExtra("Priod", 0);
+            intent.putExtra("Status", "");
+            intent.putExtra("name", "View All Status");
+            startActivity(intent);
+        });
 
         return binding.getRoot();
     }
