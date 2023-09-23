@@ -85,6 +85,7 @@ public class Tp_Month_Select extends AppCompatActivity implements View.OnClickLi
         CurrentMoth = findViewById(R.id.CurrentMoth);
         NextMonth = findViewById(R.id.NextMonth);
         common_class = new Common_Class(this);
+
         Calendar cal = Calendar.getInstance();
 
         CM = cal.get(Calendar.MONTH);

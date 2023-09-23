@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -56,6 +57,7 @@ import com.saneforce.milksales.Model_Class.Tp_Dynamic_Modal;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.adapters.Joint_Work_Adapter;
 import com.saneforce.milksales.common.DatabaseHandler;
+import com.saneforce.milksales.databinding.ActivityTpMydayplanBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,67 +78,108 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.MasterSyncView, View.OnClickListener, Master_Interface {
-    List<Common_Model> worktypelist = new ArrayList<>();
-    List<Common_Model> Route_Masterlist = new ArrayList<>();
-    List<Common_Model> FRoute_Master = new ArrayList<>();
-    LinearLayout worktypelayout, distributors_layout, route_layout;
-    List<Common_Model> distributor_master = new ArrayList<>();
-    List<Common_Model> getfieldforcehqlist = new ArrayList<>();
-    List<Common_Model> ChillingCenter_List = new ArrayList<>();
-    List<Common_Model> Shift_Typelist = new ArrayList<>();
-    List<Common_Model> Jointworklistview = new ArrayList<>();
-    List<Common_Model> Savejointwork = new ArrayList<>();
+    private ActivityTpMydayplanBinding binding;
+    private Context context = this;
+    private final List<Common_Model> worktypelist = new ArrayList<>();
+    private final List<Common_Model> Route_Masterlist = new ArrayList<>();
+    private final List<Common_Model> FRoute_Master = new ArrayList<>();
+    private LinearLayout worktypelayout, distributors_layout, route_layout;
+    private final List<Common_Model> distributor_master = new ArrayList<>();
+    private final List<Common_Model> getfieldforcehqlist = new ArrayList<>();
+    private final List<Common_Model> ChillingCenter_List = new ArrayList<>();
+    private final List<Common_Model> Shift_Typelist = new ArrayList<>();
+    private final List<Common_Model> Jointworklistview = new ArrayList<>();
+    private List<Common_Model> Savejointwork = new ArrayList<>();
     private Main_Model.presenter presenter;
-    DatePickerDialog DatePickerDialog;
-    TimePickerDialog timePickerDialog;
-    ArrayList<Tp_Dynamic_Modal> Tp_dynamicArraylist = new ArrayList<>();
-    Gson gson;
-    Type userType;
-    EditText edt_remarks, empidedittext;
-    Shared_Common_Pref shared_common_pref;
-    Common_Class common_class;
-    String worktype_id, Worktype_Button = "", Fieldworkflag = "", hqid, shifttypeid, Chilling_Id;
-    Button submitbutton, GetEmpId;
-    CustomListViewDialog customDialog;
-    ProgressBar progressbar;
+    private DatePickerDialog DatePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    private final ArrayList<Tp_Dynamic_Modal> Tp_dynamicArraylist = new ArrayList<>();
+    private Gson gson;
+    private Type userType;
+    private EditText edt_remarks, empidedittext;
+    private Shared_Common_Pref shared_common_pref;
+    private Common_Class common_class;
+    private String worktype_id, Worktype_Button = "", Fieldworkflag = "", hqid, shifttypeid, Chilling_Id;
+    private Button submitbutton, GetEmpId;
+    private CustomListViewDialog customDialog;
+    private ProgressBar progressbar;
     boolean ExpNeed = false;
-    TextView worktype_text, Sf_name, distributor_text, route_text, text_tour_plancount, hq_text, shift_type, chilling_text, Remarkscaption;
-    TextView tourdate, txtOthPlc;
-    Common_Model Model_Pojo;
-    LinearLayout BusTo, jointwork_layout, hqlayout, shiftypelayout, Procrumentlayout, chillinglayout;
-    RecyclerView jointwork_recycler;
-    CardView ModeTravel, card_Toplace, CardDailyAllowance, card_from, CardOthPlc;
-    EditText BusFrom, reason;
+    private TextView worktype_text, Sf_name, distributor_text, route_text, text_tour_plancount, hq_text, shift_type, chilling_text, Remarkscaption;
+    private TextView tourdate, txtOthPlc;
+    private Common_Model Model_Pojo;
+    private LinearLayout BusTo, jointwork_layout, hqlayout, shiftypelayout, Procrumentlayout, chillinglayout;
+    private RecyclerView jointwork_recycler;
+    private CardView ModeTravel, card_Toplace, CardDailyAllowance, card_from, CardOthPlc;
+    private EditText BusFrom, reason;
     public static final String Name = "Allowance";
     public static final String MOT = "ModeOfTravel";
-    String STRCode = "", DM = "", DriverNeed = "false", DriverMode = "", modeTypeVale = "", mode = "", imageURI = "", modeVal = "", StartedKM = "", FromKm = "", ToKm = "", Fare = "", strDailyAllowance = "", strDriverAllowance = "", StToEnd = "", StrID = "";
+    private String STRCode = "", DM = "", DriverNeed = "false", DriverMode = "", modeTypeVale = "", mode = "", imageURI = "", modeVal = "", StartedKM = "", FromKm = "", ToKm = "", Fare = "", strDailyAllowance = "", strDriverAllowance = "", StToEnd = "", StrID = "";
     private ArrayList<String> travelTypeList;
-    CheckBox driverAllowance;
-    List<ModeOfTravel> modelOfTravel;
-    List<Common_Model> modelTravelType = new ArrayList<>();
-    TextView TextMode, TextToAddress, dailyAllowance;
-    LinearLayout linCheckdriver, vwExpTravel;
-    List<Common_Model> listOrderType = new ArrayList<>();
-    Common_Model mCommon_model_spinner;
-    String modeId = "", toId = "", startEnd = "";
-    LinearLayout MdeTraval, DailyAll, frmPlace, ToPlace, Approvereject, rejectonly;
+    private CheckBox driverAllowance;
+    private List<ModeOfTravel> modelOfTravel;
+    private final List<Common_Model> modelTravelType = new ArrayList<>();
+    private TextView TextMode, TextToAddress, dailyAllowance;
+    private LinearLayout linCheckdriver, vwExpTravel;
+    private final List<Common_Model> listOrderType = new ArrayList<>();
+    private Common_Model mCommon_model_spinner;
+    private String modeId = "", toId = "", startEnd = "";
+    private ImageView backView;
+    private LinearLayout MdeTraval, DailyAll, frmPlace, ToPlace, Approvereject, rejectonly;
     int jcountglobal = 0;
-    Joint_Work_Adapter adapter;
-    LinearLayout Dynamictpview;
-    RecyclerView dynamicrecyclerview;
-    ArrayList<Tp_Dynamic_Modal> dynamicarray = new ArrayList<>();
-    DynamicViewAdapter dynamicadapter;
-    Button tpapprovebutton, tp_rejectsave, tpreject;
-
-    DatabaseHandler db;
+    private Joint_Work_Adapter adapter;
+    private LinearLayout Dynamictpview;
+    private RecyclerView dynamicrecyclerview;
+    private ArrayList<Tp_Dynamic_Modal> dynamicarray = new ArrayList<>();
+    private DynamicViewAdapter dynamicadapter;
+    private Button tpapprovebutton, tp_rejectsave, tpreject;
+    private DatabaseHandler db;
+    private List<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tp__mydayplan);
-        progressbar = findViewById(R.id.progressbar);
+        binding = ActivityTpMydayplanBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        initializeCommonClass();
+        initVariable();
+        setOnClick();
+
+        String[] TP_Dt = common_class.getintentValues("TourDate").split("-");
+        //tourdate.setText(TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0]);
+        binding.planDate.setText(TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0]);
+        text_tour_plancount.setText("0");
+
+        loadWorkTypes();
+
+        dynamicrecyclerview.setLayoutManager(new LinearLayoutManager(context));
+        jointwork_recycler.setLayoutManager(new LinearLayoutManager(context));
+
+        if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
+            submitbutton.setText("Submit");
+            submitbutton.setVisibility(View.VISIBLE);
+            Sf_name.setVisibility(View.GONE);
+            Approvereject.setVisibility(View.GONE);
+        } else {
+            submitbutton.setText("Edit");
+            submitbutton.setVisibility(View.GONE);
+            Sf_name.setText("" + Shared_Common_Pref.Tp_Sf_name);
+            Sf_name.setVisibility(View.VISIBLE);
+            Approvereject.setVisibility(View.VISIBLE);
+
+        }
+        Get_MydayPlan(common_class.getintentValues("TourDate"));
+    }
+
+    private void initializeCommonClass() {
         shared_common_pref = new Shared_Common_Pref(this);
         common_class = new Common_Class(this);
+        gson = new Gson();
+    }
+
+    private void initVariable() {
+        progressbar = findViewById(R.id.progressbar);
         Approvereject = findViewById(R.id.Approvereject);
         rejectonly = findViewById(R.id.rejectonly);
         tp_rejectsave = findViewById(R.id.tp_rejectsave);
@@ -149,14 +192,8 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         vwExpTravel = findViewById(R.id.vwExpTravel);
         CardOthPlc = findViewById(R.id.CardOthPlc);
         txtOthPlc = findViewById(R.id.txtOthPlc);
-
         dynamicrecyclerview = findViewById(R.id.dynamicrecyclerview);
-        dynamicrecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        gson = new Gson();
         tourdate = findViewById(R.id.tourdate);
-        String[] TP_Dt = common_class.getintentValues("TourDate").split("-");
-        tourdate.setText(TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0]);
-
         route_text = findViewById(R.id.route_text);
         worktypelayout = findViewById(R.id.worktypelayout);
         distributors_layout = findViewById(R.id.distributors_layout);
@@ -175,16 +212,8 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         worktype_text = findViewById(R.id.worktype_text);
         distributor_text = findViewById(R.id.distributor_text);
         text_tour_plancount = findViewById(R.id.text_tour_plancount);
-        text_tour_plancount.setText("0");
-
-//        presenter = new MasterSync_Implementations(this, new Master_Sync_View());
-//        presenter.requestDataFromServer();
-        loadWorkTypes();
         jointwork_layout = findViewById(R.id.jointwork_layout);
         jointwork_recycler = findViewById(R.id.jointwork_recycler);
-        jointwork_recycler.setLayoutManager(new LinearLayoutManager(this));
-
-        // joint_work_Recyclerview = findViewById(R.id.joint_work_listlt);
         MdeTraval = findViewById(R.id.mode_of_travel);
         DailyAll = findViewById(R.id.lin_daily);
         frmPlace = findViewById(R.id.lin_from);
@@ -192,11 +221,6 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         GetEmpId = findViewById(R.id.GetEmpId);
         empidedittext = (EditText) findViewById(R.id.empidedittext);
         BusTo = findViewById(R.id.lin_to_place);
-        GetEmpId.setOnClickListener(this);
-        tpapprovebutton.setOnClickListener(this);
-        submitbutton.setOnClickListener(this);
-        worktypelayout.setOnClickListener(this);
-        card_Toplace.setOnClickListener(this);
         BusFrom = findViewById(R.id.edt_frm);
         TextMode = findViewById(R.id.txt_mode);
         TextToAddress = findViewById(R.id.edt_to);
@@ -204,46 +228,26 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         dailyAllowance = findViewById(R.id.text_daily_allowance);
         driverAllowance = findViewById(R.id.da_driver_allowance);
         linCheckdriver = findViewById(R.id.lin_check_driver);
-        ImageView backView = findViewById(R.id.imag_back);
+        backView = findViewById(R.id.imag_back);
+    }
+    private void setOnClick() {
+        backView.setOnClickListener(v -> mOnBackPressedDispatcher.onBackPressed());
+        ModeTravel.setOnClickListener(v -> {
+            modelTravelType.clear();
+            dynamicMode();
+        });
+        CardDailyAllowance.setOnClickListener(v -> {
+            listOrderType.clear();
+            OrderType();
+        });
+
+        GetEmpId.setOnClickListener(this);
+        tpapprovebutton.setOnClickListener(this);
+        submitbutton.setOnClickListener(this);
+        worktypelayout.setOnClickListener(this);
+        card_Toplace.setOnClickListener(this);
         tpreject.setOnClickListener(this);
         tp_rejectsave.setOnClickListener(this);
-        if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
-            submitbutton.setText("Submit");
-            submitbutton.setVisibility(View.VISIBLE);
-            Sf_name.setVisibility(View.GONE);
-            Approvereject.setVisibility(View.GONE);
-        } else {
-            submitbutton.setText("Edit");
-            submitbutton.setVisibility(View.GONE);
-            Sf_name.setText("" + Shared_Common_Pref.Tp_Sf_name);
-            Sf_name.setVisibility(View.VISIBLE);
-            Approvereject.setVisibility(View.VISIBLE);
-
-        }
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnBackPressedDispatcher.onBackPressed();
-            }
-        });
-        ModeTravel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modelTravelType.clear();
-                dynamicMode();
-            }
-        });
-
-        CardDailyAllowance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listOrderType.clear();
-                OrderType();
-            }
-        });
-
-        Get_MydayPlan(common_class.getintentValues("TourDate"));
-
     }
 
     @Override
@@ -426,10 +430,60 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
     }
 
     private void Tp_Submit(String Submit_Flag) {
-        if(worktype_id==null){
+
+
+        int workTypeIdPosition =binding.spinnerWorkType.getSelectedItemPosition();
+
+
+
+//       switch (workTypeIdPosition){
+//           case 0:
+//               finalWorkTypeIdPosition = 1; // 1 position not selected valid item
+//               break;
+//
+//           case 1:
+//               finalWorkTypeIdPosition = 1;
+//               break;
+//
+//           case 2:
+//               finalWorkTypeIdPosition = 2;
+//               break;
+//
+//           case 3:
+//               finalWorkTypeIdPosition = 3;
+//               break;
+//
+//           case 4:
+//               finalWorkTypeIdPosition = 5;
+//               break;
+//
+//           case 5:
+//               finalWorkTypeIdPosition = 6;
+//               break;
+//
+//           case 6:
+//               finalWorkTypeIdPosition = 7;
+//               break;
+//
+//           case 7:
+//               finalWorkTypeIdPosition = 8;
+//               break;
+//       }
+
+        String check = String.valueOf(workTypeIdPosition);
+
+        if(check.equals("0")){
             Toast.makeText(this, "Work Type Not Selected", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        String workType = binding.spinnerWorkType.getSelectedItem().toString();
+
+        if (workType.isEmpty() || workType.equals("Select")){
+            Toast.makeText(this, "Select work type", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Savejointwork = Jointworklistview;
         Log.e("Savejointwork_SIZE", String.valueOf(Savejointwork.size()));
         String jointwork = "";
@@ -452,11 +506,11 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         String remarks = edt_remarks.getText().toString();
         try {
             JSONObject jsonobj = new JSONObject();
-            jsonobj.put("worktype_code", addquote(worktype_id));
+            jsonobj.put("worktype_code", addquote(String.valueOf(workTypeIdPosition)));
             jsonobj.put("Tour_Date", addquote(common_class.getintentValues("TourDate")));
-            jsonobj.put("worktype_name", addquote(worktype_text.getText().toString()));
+            jsonobj.put("worktype_name",  addquote(workType));
             jsonobj.put("Ekey", Common_Class.GetEkey());
-            jsonobj.put("objective", addquote(remarks));
+            jsonobj.put("objective",  addquote(remarks));
             jsonobj.put("Flag", addquote(Fieldworkflag));
             jsonobj.put("Button_Access", Worktype_Button);
             jsonobj.put("MOT", addquote(TextMode.getText().toString()));
@@ -698,20 +752,32 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
 
     public void loadWorkTypes() {
         db = new DatabaseHandler(this);
+        String id = null;
+        String name = null;
+        list.add("Select");
         try {
             JSONArray HAPLoca = db.getMasterData("HAPWorkTypes");
             if (HAPLoca != null) {
                 for (int li = 0; li < HAPLoca.length(); li++) {
                     JSONObject jItem = HAPLoca.getJSONObject(li);
-                    String id = String.valueOf(jItem.optInt("id"));
-                    String name = jItem.optString("name");
+                     id = String.valueOf(jItem.optInt("id"));
+                     name = jItem.optString("name");
                     String flag = jItem.optString("FWFlg");
                     String ETabs = jItem.optString("ETabs");
                     String PlInv = jItem.optString("Place_Involved");
                     boolean tExpNeed = (PlInv.equalsIgnoreCase("Y") ? true : false);
                     Common_Model item = new Common_Model(id, name, flag, ETabs, tExpNeed);
                     worktypelist.add(item);
+
+                    worktype_id = id;
+                    binding.spinnerWorkType.setPrompt(name);
+                    list.add(name);
                 }
+
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, list);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                binding.spinnerWorkType.setAdapter(adapter);
             }
         } catch (JSONException e) {
             e.printStackTrace();

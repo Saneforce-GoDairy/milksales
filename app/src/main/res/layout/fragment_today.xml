@@ -169,11 +169,11 @@
                         android:id="@+id/view_geo_out"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/C5dp"
-                        android:fontFamily="@font/roboto_medium"
                         android:text="View"
-                        android:textColor="@color/primaryBlurLight"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:layout_marginStart="@dimen/C5dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/primaryBlurLight" />
 
                 </LinearLayout>
 
@@ -182,6 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:maxLines="1"
                     android:text="-"
                     android:textColor="@color/primaryDark"
                     android:textSize="15sp" />

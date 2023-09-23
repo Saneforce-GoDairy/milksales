@@ -375,31 +375,46 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         });
 
-        binding.menuBar.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(context, binding.menuBar);
-            popup.inflate(R.menu.month_plan);
-            popup.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.tour_plan:
-                        Intent intent = new Intent(context, Tp_Month_Select.class);
-                        startActivity(intent);
-                        break;
+        binding.notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                    case R.id.logout:
-                        common_class.clearLocData(Dashboard.this);
-                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
-                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
-                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
-                        shared_common_pref.clear_pref(Constants.LOGIN_DATA);
-                        finishAffinity();
+//        binding.menuBar.setOnClickListener(v -> {
+//            PopupMenu popup = new PopupMenu(context, binding.menuBar);
+//            popup.inflate(R.menu.month_plan);
+//            popup.setOnMenuItemClickListener(item -> {
+//                switch (item.getItemId()) {
+//                    case R.id.tour_plan:
+//                        Intent intent = new Intent(context, Tp_Month_Select.class);
+//                        startActivity(intent);
+//                        break;
+//
+//                    case R.id.logout:
+//                        common_class.clearLocData(Dashboard.this);
+//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
+//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
+//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
+//                        shared_common_pref.clear_pref(Constants.LOGIN_DATA);
+//                        finishAffinity();
+//
+//                        Intent Dashboard = new Intent(context, Login.class);
+//                        startActivity(Dashboard);
+//                        break;
+//                }
+//                return false;
+//            });
+//            popup.show();
+//        });
 
-                        Intent Dashboard = new Intent(context, Login.class);
-                        startActivity(Dashboard);
-                        break;
-                }
-                return false;
-            });
-            popup.show();
+        binding.pjp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Tp_Calander.class);
+                startActivity(intent);
+            }
         });
     }
 

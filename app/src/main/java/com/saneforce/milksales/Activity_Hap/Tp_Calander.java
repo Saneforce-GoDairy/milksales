@@ -1,7 +1,10 @@
 package com.saneforce.milksales.Activity_Hap;
 
+import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING;
 import static com.saneforce.milksales.Activity_Hap.Leave_Request.CheckInfo;
 
+import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -11,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +29,10 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,6 +43,12 @@ import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.Model_Class.Tp_View_Master;
 import com.saneforce.milksales.R;
+import com.saneforce.milksales.databinding.TpClanderBinding;
+import com.saneforce.milksales.fragments.GateInOutFragment;
+import com.saneforce.milksales.fragments.MonthlyFragment;
+import com.saneforce.milksales.fragments.TodayFragment;
+import com.saneforce.milksales.fragments.tour_plan.CurrentMonthFragment;
+import com.saneforce.milksales.fragments.tour_plan.NextMonthFragment;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -53,91 +67,111 @@ import retrofit2.Response;
 
 
 public class Tp_Calander extends AppCompatActivity implements View.OnClickListener, UpdateUi {
+    private TpClanderBinding binding;
     private Button selectedDayMonthYearButton;
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat(
             "dd-MMM-yyyy");
-    private TextView currentMonth;
     public Button btnsubmit;
-    public ImageView goback;
-    private RelativeLayout prevMonth;
-    private RelativeLayout nextMonth;
+    public ImageView goback, backarow, imgHome;
+    private RelativeLayout prevMonth, nextMonth;
     private GridView calendarView;
     private Tp_Calander.GridCellAdapter adapter;
     private Calendar _calendar;
     private int month, year;
     private static final String dateTemplate = "MMMM yyyy";
-    String flag = "abc";
-
-    ApiInterface apiService;
-    ImageView backarow;
-    Shared_Common_Pref shared_common_pref;
-    Common_Class common_class;
-    List<Tp_View_Master> Tp_View_Master = new ArrayList<>();
-    Type userType;
+    private String flag = "abc";
+    private ApiInterface apiService;
+    private Shared_Common_Pref shared_common_pref;
+    private Common_Class common_class;
+    private List<Tp_View_Master> Tp_View_Master = new ArrayList<>();
+    private Type userType;
     int SelectedMonth;
-    Gson gson;
-    ProgressDialog nDialog;
+    private Gson gson;
+    private ProgressDialog progressDialog;
+    private TextView txtHelp, txtErt, txtPlaySlip, currentMonth, CurrentYear;
+
+    // get current month / next month
+    int CM, CY;
+    int NM;
+
+    private Context context = this;
+    private MyViewPagerAdapter myViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tp_clander);
-        TextView txtHelp = findViewById(R.id.toolbar_help);
-        ImageView imgHome = findViewById(R.id.toolbar_home);
-        txtHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Help_Activity.class));
-            }
-        });
+        binding = TpClanderBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        TextView txtErt = findViewById(R.id.toolbar_ert);
-        TextView txtPlaySlip = findViewById(R.id.toolbar_play_slip);
-
-        txtErt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ERT.class));
-            }
-        });
-        txtPlaySlip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PayslipFtp.class));
-            }
-        });
-        ObjectAnimator textColorAnim;
-        textColorAnim = ObjectAnimator.ofInt(txtErt, "textColor", Color.WHITE, Color.TRANSPARENT);
-        textColorAnim.setDuration(500);
-        textColorAnim.setEvaluator(new ArgbEvaluator());
-        textColorAnim.setRepeatCount(ValueAnimator.INFINITE);
-        textColorAnim.setRepeatMode(ValueAnimator.REVERSE);
-        textColorAnim.start();
-        imgHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
-                Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
-                if (CheckIn == true) {
-                    Intent Dashboard = new Intent(getApplicationContext(), Dashboard_Two.class);
-                    Dashboard.putExtra("Mode", "CIN");
-                    startActivity(Dashboard);
-                } else
-                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
-
-            }
-        });
         shared_common_pref = new Shared_Common_Pref(this);
         common_class = new Common_Class(this);
-        currentMonth = this.findViewById(R.id.title);
-        goback = this.findViewById(R.id.imag_back);
         gson = new Gson();
-        btnsubmit = findViewById(R.id.btnsubmit);
-        btnsubmit.setOnClickListener(this);
-        common_class.getintentValues("Monthselection");
-        calendarView = this.findViewById(R.id.gridcalander);
-        SelectedMonth = Integer.parseInt(common_class.getintentValues("Monthselection"));
-        Log.e("MONTH_SELECTion", common_class.getintentValues("Monthselection"));
+
+        initVariable();
+        initOnClick();
+        initAnimation();
+        initProgressbar();
+        checkApprovalFlag();
+        getCurrentMonthAndNextMonth(); // CM , NM
+        getCurrentYear(); // yyyy
+        loadFragment();
+
+        SelectedMonth = CM;
+        currentMonth.setText(common_class.GetMonthname(CM));
+        CurrentYear.setText(String.valueOf(year));
+
+        // Load tour plan
+        progressDialog.show();
+        GetTp_List();
+
+        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+
+                if (state == SCROLL_STATE_DRAGGING && binding.viewPager.getCurrentItem() == 0) {
+                    binding.viewPager.setUserInputEnabled(false);
+                } else {
+                    binding.viewPager.setUserInputEnabled(true);
+                }
+            }
+        });
+    }
+
+    private void loadFragment() {
+        myViewPagerAdapter = new MyViewPagerAdapter(this);
+        binding.viewPager.setAdapter(myViewPagerAdapter);
+    }
+
+    public static class MyViewPagerAdapter  extends FragmentStateAdapter {
+        public MyViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position){
+                case 0:
+                    return new CurrentMonthFragment();
+                case 1:
+                    return new NextMonthFragment();
+
+                default:
+                    return new CurrentMonthFragment();
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
+    }
+
+
+
+    private void getCurrentYear() {
         _calendar = Calendar.getInstance(Locale.getDefault());
         if (SelectedMonth == 12 || SelectedMonth == 0) {
             SelectedMonth = 0;
@@ -149,31 +183,209 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         } else {
             year = _calendar.get(Calendar.YEAR);
         }
+    }
+
+    private void getCurrentMonthAndNextMonth() {
+        Calendar cal = Calendar.getInstance();
+        CM = cal.get(Calendar.MONTH);
+        CY = cal.get(Calendar.YEAR);
+        NM = cal.get(Calendar.MONTH) + 1;
+        String currrentmonth = common_class.GetMonthname(CM) + "   " + CY;
+        String nextmonth = "";
+        if (CM == 11) {
+            CY = CY + 1;
+            nextmonth = common_class.GetMonthname(NM) + "   " + CY;
+        } else
+            nextmonth = common_class.GetMonthname(NM) + "   " + CY;
+
+        Log.d("month_", "Current Month :" + CM);
+        Log.d("month_", "Next Month :" + NM);
+    }
+
+    private void checkApprovalFlag() {
         if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
             btnsubmit.setVisibility(View.GONE);
         } else {
             btnsubmit.setVisibility(View.GONE);
         }
-        currentMonth.setText(common_class.GetMonthname(Integer.parseInt(common_class.getintentValues("Monthselection"))) + "   " + year);
-
-        // backarow.setOnClickListener(this);
-        nDialog = new ProgressDialog(Tp_Calander.this);
-        nDialog.setMessage("Loading.......");
-        nDialog.setTitle("Tour Plan");
-        nDialog.setIndeterminate(false);
-        nDialog.setCancelable(true);
-        nDialog.show();
-        goback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnBackPressedDispatcher.onBackPressed();
-            }
-        });
-        GetTp_List();
-
-
     }
 
+    private void initProgressbar() {
+        progressDialog = new ProgressDialog(Tp_Calander.this);
+        progressDialog.setMessage("Loading.......");
+        progressDialog.setTitle("Tour Plan");
+        progressDialog.setIndeterminate(false);
+        progressDialog.setCancelable(true);
+    }
+
+    private void initAnimation() {
+        ObjectAnimator textColorAnim;
+        textColorAnim = ObjectAnimator.ofInt(txtErt, "textColor", Color.WHITE, Color.TRANSPARENT);
+        textColorAnim.setDuration(500);
+        textColorAnim.setEvaluator(new ArgbEvaluator());
+        textColorAnim.setRepeatCount(ValueAnimator.INFINITE);
+        textColorAnim.setRepeatMode(ValueAnimator.REVERSE);
+        textColorAnim.start();
+    }
+
+    private void initOnClick() {
+        binding.currentMonthBtn1.setOnClickListener(v -> {
+
+            binding.viewPager.setCurrentItem(0);
+            currentMonth.setText(common_class.GetMonthname(CM));
+
+            // Primary button enable logic
+            final int sdk = android.os.Build.VERSION.SDK_INT;
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthBtn1.setBackgroundDrawable(null);
+            } else {
+                binding.currentMonthBtn1.setBackground(null);
+            }
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthBtn1.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+            } else {
+                binding.nextMonthBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
+            }
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.monthly_back_arrow_white));
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                binding.nextMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.monthly_back_arrow_white));
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+
+            binding.nextMonthArrowImg.setScaleX(1);
+            binding.currentMonthArrowImg.setScaleX(1);
+
+            GetTp_List();
+        });
+        binding.nextMonthBtn1.setOnClickListener(v -> {
+            binding.viewPager.setCurrentItem(1);
+            currentMonth.setText(common_class.GetMonthname(NM));
+
+                        final int sdk = Build.VERSION.SDK_INT;
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthBtn1.setBackgroundDrawable(null);
+            } else {
+                binding.nextMonthBtn1.setBackground(null);
+            }
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthBtn1.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+            } else {
+                binding.currentMonthBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
+            }
+
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+
+            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.currentMonthArrowImg.setScaleX(1);
+            } else {
+                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                binding.currentMonthArrowImg.setScaleX(1);
+            }
+        });
+
+//        binding.nextMonthBtn1.setOnClickListener(v -> {
+//
+//            int size1 = tourPlanList.size();
+//            if (size1 > 0) {
+//                for (int i = 0; i < size1; i++) {
+//                    tourPlanList.remove(0);
+//                }
+//
+//                mTpMonthAdapter.notifyItemRangeRemoved(0, size1);
+//            }
+//
+//            list.clear();
+//
+//            final int sdk = Build.VERSION.SDK_INT;
+//            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+//                binding.currentMonthBtn1.setBackgroundDrawable(null);
+//            } else {
+//                binding.currentMonthBtn1.setBackground(null);
+//            }
+//
+//            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+//                binding.nextMonthBtn1.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
+//            } else {
+//                binding.nextMonthBtn1.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
+//            }
+//
+//            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+//                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+//            } else {
+//                binding.nextMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+//            }
+//
+//            if(sdk < Build.VERSION_CODES.JELLY_BEAN) {
+//                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+//                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+//                binding.currentMonthArrowImg.setScaleX(1);
+//            } else {
+//                binding.currentMonthArrowImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.tp_current_month_enabled_arrow));
+//                binding.currentMonthArrowImg.setColorFilter(ContextCompat.getColor(context, R.color.monthly_arrow), android.graphics.PorterDuff.Mode.SRC_IN);
+//                binding.currentMonthArrowImg.setScaleX(1);
+//            }
+//
+//            int size = tourPlanList.size();
+//            if (size > 0) {
+//                for (int i = 0; i < size; i++) {
+//                    tourPlanList.remove(0);
+//                }
+//
+//                mTpMonthAdapter.notifyItemRangeRemoved(0, size);
+//            }
+//
+//
+//        });
+
+        txtHelp.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Help_Activity.class)));
+        txtErt.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ERT.class)));
+        txtPlaySlip.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PayslipFtp.class)));
+        imgHome.setOnClickListener(v -> {
+            SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
+            boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
+            if (CheckIn) {
+                Intent Dashboard = new Intent(getApplicationContext(), Dashboard_Two.class);
+                Dashboard.putExtra("Mode", "CIN");
+                startActivity(Dashboard);
+            } else
+                startActivity(new Intent(getApplicationContext(), Dashboard.class));
+
+        });
+        goback.setOnClickListener(v -> mOnBackPressedDispatcher.onBackPressed());
+        btnsubmit.setOnClickListener(this);
+    }
+
+    private void initVariable() {
+        txtHelp = findViewById(R.id.toolbar_help);
+        imgHome = findViewById(R.id.toolbar_home);
+        txtErt = findViewById(R.id.toolbar_ert);
+        txtPlaySlip = findViewById(R.id.toolbar_play_slip);
+        currentMonth = this.findViewById(R.id.month);
+        goback = this.findViewById(R.id.imag_back);
+        btnsubmit = findViewById(R.id.btnsubmit);
+        calendarView = this.findViewById(R.id.gridcalander);
+        CurrentYear = findViewById(R.id.year_in);
+    }
 
     public void GetTp_List() {
         try {
@@ -205,12 +417,12 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                     adapter.notifyDataSetChanged();
                     calendarView.setAdapter(adapter);
 
-                    nDialog.dismiss();
+                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    nDialog.dismiss();
+                    progressDialog.dismiss();
                 }
             });
 
@@ -548,7 +760,7 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                     if (Shared_Common_Pref.Tp_Approvalflag.equals("1")) {
                         common_class.CommonIntentwithFinish(Tp_Approval.class);
                     } else {
-                        common_class.CommonIntentwithFinish(Tp_Month_Select.class);
+                        common_class.CommonIntentwithFinish(Dashboard.class);
                     }
 
                 }

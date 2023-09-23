@@ -473,24 +473,39 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
         binding.leaveRequestStatus.setOnClickListener(v -> startActivity(new Intent(context, Leave_Dashboard.class)));
 
-        binding.menuBar.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(context, binding.menuBar);
-            popup.inflate(R.menu.month_plan);
-            popup.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.tour_plan:
-                        Intent intent = new Intent(context, Tp_Month_Select.class);
-                        startActivity(intent);
-                        break;
-
-                    case R.id.logout:
-                        Toast.makeText(context, "Can't logout. Please check-out", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return false;
-            });
-            popup.show();
+        binding.notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
         });
+
+        binding.pjp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Tp_Calander.class);
+                startActivity(intent);
+            }
+        });
+
+//        binding.menuBar.setOnClickListener(v -> {
+//            PopupMenu popup = new PopupMenu(context, binding.menuBar);
+//            popup.inflate(R.menu.month_plan);
+//            popup.setOnMenuItemClickListener(item -> {
+//                switch (item.getItemId()) {
+//                    case R.id.tour_plan:
+//                        Intent intent = new Intent(context, Tp_Month_Select.class);
+//                        startActivity(intent);
+//                        break;
+//
+//                    case R.id.logout:
+//                        Toast.makeText(context, "Can't logout. Please check-out", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//                return false;
+//            });
+//            popup.show();
+//        });
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
