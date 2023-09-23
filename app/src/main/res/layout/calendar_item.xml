@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:background="@color/white"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/btn_date"
@@ -23,19 +23,30 @@
     <RelativeLayout
         android:id="@+id/date_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/C40dp"
+        android:layout_height="@dimen/C50dp"
         android:padding="10dp">
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="10"
-        android:textColor="@color/grey_500"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/roboto_medium"/>
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/roboto_medium"
+            android:text="10"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/color_"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            app:cardCornerRadius="@dimen/C50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/date"
+            app:cardBackgroundColor="@color/grey_600"
+            android:elevation="0dp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
