@@ -47,12 +47,14 @@ public class MonthlyFragment extends Fragment {
     private final String[] mns = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     private SharedPreferences CheckInDetails, UserDetails, sharedpreferences;
     private Gson gson;
+    Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMonthlyBinding.inflate(inflater, container, false);
 
+        context = getContext();
         UserDetails = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         mShared_common_pref = new Shared_Common_Pref(getActivity());
         gson = new Gson();
@@ -64,6 +66,46 @@ public class MonthlyFragment extends Fragment {
             intent.putExtra("Status", "");
             intent.putExtra("name", "View All Status");
             startActivity(intent);
+        });
+
+        binding.permissionLL.setOnClickListener(v -> {
+            Intent intent = new Intent(context, View_All_Status_Activity.class);
+            intent.putExtra("Priod", 0);
+            intent.putExtra("Status", "Permission");
+            intent.putExtra("name", "View Permission Status");
+            context.startActivity(intent);
+        });
+
+        binding.LeaveLL.setOnClickListener(v -> {
+            // Todo: Leave
+        });
+
+        binding.lateLL.setOnClickListener(v -> {
+            Intent intent = new Intent(context, View_All_Status_Activity.class);
+            intent.putExtra("Priod", 0);
+            intent.putExtra("Status", "Late");
+            intent.putExtra("name", "View Late Status");
+            context.startActivity(intent);
+        });
+
+        binding.earlyArrivalLL.setOnClickListener(v -> {
+            // Todo: Early Arrival
+        });
+
+        binding.missedPunchLL.setOnClickListener(v -> {
+            Intent intent = new Intent(context, View_All_Status_Activity.class);
+            intent.putExtra("Priod", 0);
+            intent.putExtra("Status", "Missed Punch");
+            intent.putExtra("name", "View Missed Punch Status");
+            context.startActivity(intent);
+        });
+
+        binding.weeklyOffLL.setOnClickListener(v -> {
+            Intent intent = new Intent(context, View_All_Status_Activity.class);
+            intent.putExtra("Priod", 0);
+            intent.putExtra("Status", "Weekly off");
+            intent.putExtra("name", "View Weekly off Status");
+            context.startActivity(intent);
         });
 
         return binding.getRoot();

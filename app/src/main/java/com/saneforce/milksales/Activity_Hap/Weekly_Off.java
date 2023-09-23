@@ -107,14 +107,17 @@ public class Weekly_Off extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
                 CheckIn = CheckInDetails.getBoolean("CheckIn", false);
-                if (CheckIn == true) {
-                    Intent Dashboard = new Intent(getApplicationContext(), Dashboard_Two.class);
+                if (CheckIn) {
+                    Intent Dashboard = new Intent(Weekly_Off.this, Dashboard_Two.class);
+                    Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     Dashboard.putExtra("Mode", "CIN");
                     startActivity(Dashboard);
-                } else
-                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
-
-
+                } else {
+                    Intent intent = new Intent(Weekly_Off.this, Dashboard.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                finish();
             }
         });
         eText = (EditText) findViewById(R.id.week_off_date);

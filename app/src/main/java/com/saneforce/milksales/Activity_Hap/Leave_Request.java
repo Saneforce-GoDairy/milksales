@@ -508,13 +508,17 @@ public class Leave_Request extends AppCompatActivity implements View.OnClickList
         Shared_Common_Pref.Div_Code = UserDetails.getString("Divcode", "");
         Shared_Common_Pref.StateCode = UserDetails.getString("State_Code", "");
         Log.d(Tag, String.valueOf(CheckIn));
-
-        if (CheckIn == true) {
+        if (CheckIn) {
             Intent Dashboard = new Intent(Leave_Request.this, Dashboard_Two.class);
+            Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             Dashboard.putExtra("Mode", "CIN");
             startActivity(Dashboard);
-        } else
-            startActivity(new Intent(getApplicationContext(), Dashboard.class));
+        } else {
+            Intent intent = new Intent(Leave_Request.this, Dashboard.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        finish();
     }
 
     public void difference() {

@@ -248,8 +248,7 @@ public class DeviationEntry extends AppCompatActivity implements Master_Interfac
         Shared_Common_Pref.Sf_Name = UserDetails.getString("SfName", "");
         Shared_Common_Pref.Div_Code = UserDetails.getString("Divcode", "");
         Shared_Common_Pref.StateCode = UserDetails.getString("State_Code", "");
-
-        if (CheckIn == true) {
+        if (CheckIn) {
             Intent Dashboard = new Intent(DeviationEntry.this, Dashboard_Two.class);
             Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             Dashboard.putExtra("Mode", "CIN");
