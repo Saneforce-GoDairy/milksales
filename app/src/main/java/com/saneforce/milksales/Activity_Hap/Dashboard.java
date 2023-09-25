@@ -106,14 +106,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         loadFragment();
 
         db = new DatabaseHandler(context);
-        //username = findViewById(R.id.username);
         lblUserName = (TextView) findViewById(R.id.user_name);
         head_quarters = (TextView) findViewById(R.id.head_quarters);
         lblEmail = (TextView) findViewById(R.id.lblEmail);
         profilePic = findViewById(R.id.image_view_user_profile);
         linReCheck = findViewById(R.id.lin_RecheckIn);
-
-
         linCheckin = findViewById(R.id.lin_check_in);
         linMyday = findViewById(R.id.lin_myday_plan);
 
@@ -153,28 +150,27 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 mCount++;
         }
 
+        String last3;
+        if (mProfileImage == null || mProfileImage.length() < 4) {
+            last3 = mProfileImage;
+        } else {
+            last3 = mProfileImage.substring(mProfileImage.length() - 4);
+        }
 
-
-        /*
-        if profile pic not available setImage Placeholder
-              -->  else set the valid profile pic url
-
-                Not valid url : https://lactalisindia.salesjump.in/SalesForce_Profile_Img/
-                Valid url : https://lactalisindia.salesjump.in/SalesForce_Profile_Img/MGR0008_1694517133.jpg
-         */
-        if (mCount == 58){
+        if (last3.equals("null")){
             Glide.with(this.context)
                     .load(R.drawable.person_placeholder_0)
                     .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(profilePic);
-        }else { // Valid image url Example
+        }else {
             Glide.with(this.context)
                     .load(mProfileImage)
                     .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(profilePic);
         }
+
 
         profilePic.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
@@ -375,12 +371,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         });
 
-        binding.notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.notification.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
         binding.logout.setOnClickListener(v -> {
                     common_class.clearLocData(Dashboard.this);

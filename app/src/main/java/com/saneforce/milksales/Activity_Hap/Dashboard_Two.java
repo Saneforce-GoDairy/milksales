@@ -259,6 +259,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             head_quarters.setText(SFDesig);
             String sUName = UserDetails.getString("SfName", "");
             txUserName.setText("HI! " + sUName);
+            binding.headQuarters.setText(SFDesig);
 
             sSFType = UserDetails.getString("Sf_Type", "");
             Log.d("CINDetails", CheckInDetails.toString());

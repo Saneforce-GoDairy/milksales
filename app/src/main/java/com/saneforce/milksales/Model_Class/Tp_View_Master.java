@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Tp_View_Master {
+    @SerializedName("color")
+    private String color;
     @SerializedName("date")
     @Expose
     private String date;
@@ -69,6 +71,14 @@ public class Tp_View_Master {
     @SerializedName("Driver_Allow")
     @Expose
     private String driverAllow;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     public String getmOT() {
         return mOT;
