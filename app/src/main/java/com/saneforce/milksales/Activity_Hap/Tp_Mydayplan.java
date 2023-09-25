@@ -72,6 +72,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -432,7 +433,7 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
     private void Tp_Submit(String Submit_Flag) {
 
 
-        int workTypeIdPosition =binding.spinnerWorkType.getSelectedItemPosition();
+        int workTypeIdPosition = binding.spinnerWorkType.getSelectedItemPosition();
 
 
 
@@ -679,7 +680,7 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
 
     @Override
     public void onBackPressed() {
-
+        mOnBackPressedDispatcher.onBackPressed();
     }
 
     private void GetJsonData(String jsonResponse, String type) {
@@ -821,6 +822,13 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
                         edt_remarks.setText(String.valueOf(jsoncc.getJSONObject(0).get("remarks")));
                         Fieldworkflag = String.valueOf(jsoncc.getJSONObject(0).get("Worktype_Flag"));
                         worktype_text.setText(String.valueOf(jsoncc.getJSONObject(0).get("worktype_name")));
+
+                        for (int i = 0; i < worktypelist.size(); i++) {
+                            if (worktypelist.get(i).getId().equals(worktype_id)) {
+                                binding.spinnerWorkType.setSelection(i + 1);
+                                break;
+                            }
+                        }
                         modeId = String.valueOf(jsoncc.getJSONObject(0).get("Mot_ID"));
                         STRCode = String.valueOf(jsoncc.getJSONObject(0).get("To_Place_ID"));
                         toId = String.valueOf(jsoncc.getJSONObject(0).get("To_Place_ID"));
