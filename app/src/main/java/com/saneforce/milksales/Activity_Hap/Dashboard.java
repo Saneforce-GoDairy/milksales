@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -56,6 +61,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -95,6 +102,22 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     private MyViewPagerAdapter myViewPagerAdapter;
 
+    ArrayList courseImg = new ArrayList<>(Arrays.asList(
+            R.drawable.request_status_ic,
+            R.drawable.file_invoice_doller_ic,
+            R.drawable.users_gear_ic, R.drawable.gate_ic,
+            R.drawable.gate_out_ic, R.drawable.calendar_pjp,
+            R.drawable.canteen_scan_ic));
+
+    ArrayList courseName = new ArrayList<>(Arrays.asList(
+            "Request @ status",
+            "TA & Claim",
+            "SFA",
+            "Gate IN",
+            "Gate OUT",
+            "PJP",
+            "Approvals"));
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +127,19 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         onClick2();
         loadFragment();
+
+        // Setting the layout as linear
+        // layout for vertical orientation
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        binding.exploreMore.setLayoutManager(new GridLayoutManager(context, 3));
+        binding.exploreMore.setHasFixedSize(true);
+        binding.exploreMore.setItemViewCacheSize(20);
+
+        // Sending reference and data to Adapter
+        Adapter adapter6 = new Adapter(context, courseImg, courseName);
+
+        // Setting Adapter to RecyclerView
+        binding.exploreMore.setAdapter(adapter6);
 
         db = new DatabaseHandler(context);
         lblUserName = (TextView) findViewById(R.id.user_name);
@@ -266,6 +302,58 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         if (shared_common_pref.getvalue("worktype", "").equalsIgnoreCase("43")) {
             linCheckin.setVisibility(View.GONE);
             linReCheck.setVisibility(View.GONE);
+        }
+    }
+
+    public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+        ArrayList courseImg, courseName;
+        Context context;
+
+        // Constructor for initialization
+        public Adapter(Context context, ArrayList courseImg, ArrayList courseName) {
+            this.context = context;
+            this.courseImg = courseImg;
+            this.courseName = courseName;
+        }
+
+        @NonNull
+        @Override
+        public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // Inflating the Layout(Instantiates list_item.xml
+            // layout file into View object)
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_dash_explore_more_item, parent, false);
+
+            // Passing view to ViewHolder
+            Adapter.ViewHolder viewHolder = new Adapter.ViewHolder(view);
+            return viewHolder;
+        }
+
+        // Binding data to the into specified position
+        @Override
+        public void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position) {
+            // TypeCast Object to int type
+            int res = (int) courseImg.get(position);
+            holder.images.setImageResource(res);
+            holder.text.setText((String) courseName.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            // Returns number of items
+            // currently available in Adapter
+            return courseImg.size();
+        }
+
+        // Initializing the Views
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView images;
+            TextView text;
+
+            public ViewHolder(View view) {
+                super(view);
+                images = (ImageView) view.findViewById(R.id.image);
+                text = (TextView) view.findViewById(R.id.name);
+            }
         }
     }
 
