@@ -423,6 +423,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.pjp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Shared_Common_Pref.Tp_Approvalflag = "0";
                 Intent intent = new Intent(context, Tp_Calander.class);
                 startActivity(intent);
             }
