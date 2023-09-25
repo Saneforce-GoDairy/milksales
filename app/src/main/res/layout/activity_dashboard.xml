@@ -63,23 +63,38 @@
                         />
                 </LinearLayout>
 
-                <FrameLayout
-                    android:id="@+id/imageButton"
-                    android:layout_width="@dimen/C40dp"
-                    android:layout_height="@dimen/C40dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp"
-                    android:foreground="?android:attr/selectableItemBackground" >
+                    android:layout_marginEnd="10dp">
 
-                    <ImageView
-                        android:id="@+id/notification"
+                    <FrameLayout
+                        android:id="@+id/imageButton"
                         android:layout_width="@dimen/C40dp"
                         android:layout_height="@dimen/C40dp"
-                        android:src="@drawable/ic_notification2"
+                        android:foreground="?android:attr/selectableItemBackground" >
+
+                        <ImageView
+                            android:id="@+id/notification"
+                            android:layout_width="@dimen/C40dp"
+                            android:layout_height="@dimen/C40dp"
+                            android:src="@drawable/ic_notification2"
+                            android:contentDescription="@null" />
+
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/logout"
+                        android:layout_width="@dimen/C40dp"
+                        android:layout_height="@dimen/C40dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_logout"
                         android:contentDescription="@null" />
 
-                </FrameLayout>
+                </LinearLayout>
 
             </RelativeLayout>
 

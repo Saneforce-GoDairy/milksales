@@ -382,6 +382,17 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             }
         });
 
+        binding.logout.setOnClickListener(v -> {
+                    common_class.clearLocData(Dashboard.this);
+                    shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
+                    shared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
+                    shared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
+                    shared_common_pref.clear_pref(Constants.LOGIN_DATA);
+                    finishAffinity();
+                    Intent Dashboard = new Intent(context, Login.class);
+                    startActivity(Dashboard);
+        });
+
 //        binding.menuBar.setOnClickListener(v -> {
 //            PopupMenu popup = new PopupMenu(context, binding.menuBar);
 //            popup.inflate(R.menu.month_plan);

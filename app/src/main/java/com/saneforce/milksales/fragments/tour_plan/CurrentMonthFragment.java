@@ -6,21 +6,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import java.text.SimpleDateFormat;
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -28,10 +15,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.saneforce.milksales.Activity_Hap.Tp_Calander;
 import com.saneforce.milksales.Activity_Hap.Tp_Mydayplan;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
@@ -41,23 +34,20 @@ import com.saneforce.milksales.Model_Class.Tp_View_Master;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.databinding.CalendarItemBinding;
 import com.saneforce.milksales.databinding.FragmentCurrentMonthBinding;
-import com.saneforce.milksales.databinding.FragmentTodayBinding;
 import com.saneforce.milksales.databinding.TourPlanExploreItemBinding;
-
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import java.util.GregorianCalendar;
-import java.util.Date;
-import java.text.ParseException;
-import java.util.Locale;
-import java.util.Objects;
 
 public class CurrentMonthFragment extends Fragment {
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat(
@@ -95,7 +85,7 @@ public class CurrentMonthFragment extends Fragment {
 
         // Load tour plan
         progressDialog.show();
-        GetTp_List();
+        GetTpList();
 
         return binding.getRoot();
     }
@@ -128,9 +118,8 @@ public class CurrentMonthFragment extends Fragment {
             nextmonth = common_class.GetMonthname(NM) + "   " + CY;
     }
 
-    public void GetTp_List() {
+    public void GetTpList() {
         try {
-            Log.e("ERROR_CONTROL", String.valueOf(SelectedMonth));
             int SM = SelectedMonth + 1;
             String Tp_Object = "{\"tableName\":\"vwTourPlan\",\"coloumns\":\"[\\\"date\\\",\\\"remarks\\\",\\\"worktype_code\\\",\\\"worktype_name\\\",\\\"RouteCode\\\",\\\"RouteName\\\",\\\"Worked_with_Code\\\",\\\"Worked_with_Name\\\",\\\"JointWork_Name\\\"]\",\"orderBy\":\"[\\\"name asc\\\"]\",\"desig\":\"mgr\"}";
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -140,14 +129,15 @@ public class CurrentMonthFragment extends Fragment {
             } else {
                 Sf_Code = Shared_Common_Pref.Tp_SFCode;
             }
-            Log.e("FIELDFORCE_SF", Sf_Code);
+
             Call<Object> mCall = apiInterface.GettpRespnse(Shared_Common_Pref.Div_Code, Sf_Code, Sf_Code, Shared_Common_Pref.StateCode, String.valueOf(SM), String.valueOf(year), Tp_Object);
-            mCall.enqueue(new Callback<Object>() {
+            mCall.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
+                    progressDialog.dismiss();
 
-                    userType = new TypeToken<ArrayList<Tp_View_Master>>() {}.getType();
-
+                    userType = new TypeToken<ArrayList<Tp_View_Master>>() {
+                    }.getType();
                     //------------ Server response
                     Tp_View_Master = gson.fromJson(new Gson().toJson(response.body()), userType);
                     month = SelectedMonth + 1;
@@ -158,7 +148,7 @@ public class CurrentMonthFragment extends Fragment {
                     binding.gridcalander.setAdapter(adapter);
 
                     //-------------- RecyclerView
-                    adapter2 = new PostAdapter(getActivity(),  R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
+                    adapter2 = new PostAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
                     binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
                     binding.recyclerView.setHasFixedSize(true);
                     binding.recyclerView.setItemViewCacheSize(20);
@@ -168,14 +158,11 @@ public class CurrentMonthFragment extends Fragment {
                     //--------------- Tour plan RecyclerView Plan explore view
                     adapter3 = new TourPlanExploreAdapter(getActivity(), (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
                     binding.recyclerviewExplore.setLayoutManager(new LinearLayoutManager(getContext()));
-                    //binding.recyclerviewExplore.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
                     binding.recyclerviewExplore.addItemDecoration(new DividerItemDecoration(requireContext(), 0));
                     binding.recyclerviewExplore.setHasFixedSize(true);
                     binding.recyclerviewExplore.setItemViewCacheSize(20);
-                    adapter.notifyDataSetChanged();
                     binding.recyclerviewExplore.setAdapter(adapter3);
-
-                    progressDialog.dismiss();
+                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -183,22 +170,6 @@ public class CurrentMonthFragment extends Fragment {
                     progressDialog.dismiss();
                 }
             });
-
-//            try {
-//                adapter = new GridCellAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
-//                adapter.notifyDataSetChanged();
-//                binding.gridcalander.setAdapter(adapter);
-//
-//                //--------------
-//                adapter2 = new PostAdapter(getActivity(),  R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
-//
-//                binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
-//                binding.recyclerView.setHasFixedSize(true);
-//                binding.recyclerView.setItemViewCacheSize(20);
-//                adapter.notifyDataSetChanged();
-//                binding.recyclerView.setAdapter(adapter2);
-//            } catch (Exception ignored) {
-//            }
         } catch (Exception ignored) {
         }
     }
@@ -241,7 +212,6 @@ public class CurrentMonthFragment extends Fragment {
                 if (tpViewMaster.getWorktypeName().equals("Training day")){
                     holder.mCardView.setCardBackgroundColor(Color.parseColor("#FFF8D1FF"));
                 }
-
             }else {
                 Toast.makeText(context, "Empty tp arraylist", Toast.LENGTH_SHORT).show();
             }
@@ -321,16 +291,12 @@ public class CurrentMonthFragment extends Fragment {
         @NonNull
         @Override
         public PostAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            view = inflater.from(context).inflate(R.layout.calendar_item,parent,false);
             CalendarItemBinding binding = CalendarItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-
             return new ViewHolder(binding);
         }
 
         @Override
         public void onBindViewHolder(@NonNull PostAdapter.ViewHolder holder, int position) {
-
             holder.binding.getRoot().setOnClickListener(v -> {
                 lastSelectedPosition = selectedPosition;
                 selectedPosition = holder.getBindingAdapterPosition();
@@ -344,12 +310,9 @@ public class CurrentMonthFragment extends Fragment {
                 int month = SelectedMonth + 1;
                 String TourMonth = theyear1 + "-" + month + "-" + theday1;
                 common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
-
             });
 
-
             if (selectedPosition == holder.getBindingAdapterPosition()) {
-             //   holder.binding.colorGrey.setVisibility(View.GONE);
                 final int sdk = Build.VERSION.SDK_INT;
                 if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     holder.mDateLayout.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg) );
@@ -369,9 +332,7 @@ public class CurrentMonthFragment extends Fragment {
             }
 
             String[] day_color = list.get(position).split("-");
-
             Log.e("day_color", String.valueOf(day_color[0]));
-
             String theday = day_color[0];
             String themonth = day_color[2];
             String theyear = day_color[3];
@@ -386,46 +347,24 @@ public class CurrentMonthFragment extends Fragment {
             // Set the Day GridCell
             holder.mDate.setText(theday);
             holder.mDate.setTag(theday + "-" + themonth + "-" + theyear);
-            Log.e("ALL_DATE", theday + "-" + themonth + "-" + theyear + day_color[1]);
             if (day_color[1].equals("GREY")) {
                 holder.mDate.setTextColor(Color.LTGRAY);
                 holder.mDate.setEnabled(false);
             }
             if (day_color[1].equals("GREEN")) {
-              //  holder.mDate.setTextColor(getResources().getColor(R.color.subExpHeader));
                 holder.mTourPlanCircle.setVisibility(View.VISIBLE);
             }
             if (day_color[1].equals("BLUE")) {
-                // iv_icon.setVisibility(View.VISIBLE);
                 holder.mDate.setTextColor(getResources().getColor(R.color.Pending_yellow));
-                //gridcell.setBackgroundResource(R.drawable.grid_dateshape);
             }
 
-//            holder.mDate.setOnClickListener(v -> {
-//                String[] day_color1 = list.get(position).split("-");
-//                Log.e("THE_DAY_COLOR", String.valueOf(day_color1[0]));
-//                String theday1 = day_color1[0];
-//                String themonth1 = day_color1[2];
-//                String theyear1 = day_color1[3];
-//                int month = SelectedMonth + 1;
-//                String TourMonth = theyear1 + "-" + month + "-" + theday1;
-//                Log.e("Grid_Selected_Date", theday1 + "-" + themonth1 + "-" + theyear1 + day_color1[1]);
-//                common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
-//
-//            });
-
            if (tpViewMasterArrayList != null){
-
                for (int i = 0; tpViewMasterArrayList.size() > i; i++ ){
                    Log.e("nn_", String.valueOf(tpViewMasterArrayList.get(i).getRemarks()));
                }
-
            }else {
                Toast.makeText(context, "Empty dp arraylist", Toast.LENGTH_SHORT).show();
            }
-
-           String debug = "";
-
         }
 
         @Override
@@ -495,13 +434,11 @@ public class CurrentMonthFragment extends Fragment {
                         } else {
                             bflag = "1";
                         }
-
                     }
                 }
             }
             return bflag;
         }
-
 
         @SuppressLint("WrongConstant")
         private void printMonth(int mm, int yy) {
@@ -560,8 +497,6 @@ public class CurrentMonthFragment extends Fragment {
                         Log.e("APPROVED_COLOR", CheckTp_View(i));
                         list.add(String.valueOf(i) + "-GREEN" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                     }
-
-
                    /* if (getMonthAsString(currentMonth).equals(curentDateString)) {
                         list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                         Log.d("getCurrentDayOfMonth11", String.valueOf(i) + "-BLUE" + "-" + curentDateString + "-" + yy + "  " + getMonthAsString(currentMonth));
@@ -577,7 +512,7 @@ public class CurrentMonthFragment extends Fragment {
 
             // Leading Month days
             for (int i = 0; i < list.size() % 7; i++) {
-                list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
+                list.add(i + 1 + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
             }
             for (int i = 0; i < list.size(); i++) {
                 Log.e("DAYCOLOR", String.valueOf(list.get(i)));
@@ -604,10 +539,10 @@ public class CurrentMonthFragment extends Fragment {
         private TextView gridcell;
         private ImageView iv_icon;
         private TextView num_events_per_day;
-        String  curentDateString;
+        private String  curentDateString;
         private Calendar selectedDate;
         private final HashMap<String, Integer> eventsPerMonthMap;
-        SimpleDateFormat df;
+        private SimpleDateFormat df;
 
         public GridCellAdapter(Context context, int textViewResourceId, int month, int year, ArrayList<Tp_View_Master> Tp_View_Master) {
             super();
@@ -702,8 +637,6 @@ public class CurrentMonthFragment extends Fragment {
                         Log.e("APPROVED_COLOR", CheckTp_View(i));
                         list.add(String.valueOf(i) + "-GREEN" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                     }
-
-
                    /* if (getMonthAsString(currentMonth).equals(curentDateString)) {
                         list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                         Log.d("getCurrentDayOfMonth11", String.valueOf(i) + "-BLUE" + "-" + curentDateString + "-" + yy + "  " + getMonthAsString(currentMonth));
@@ -751,13 +684,10 @@ public class CurrentMonthFragment extends Fragment {
             iv_icon = row.findViewById(R.id.tp_date_icon);
 
 
-            // ACCOUNT FOR SPACING
-
+            // for spacing
             String[] day_color = list.get(position).split("-");
 
             Log.e("THE_DAY_COLOR", String.valueOf(day_color[0]));
-
-
             String theday = day_color[0];
             String themonth = day_color[2];
             String theyear = day_color[3];
@@ -781,37 +711,30 @@ public class CurrentMonthFragment extends Fragment {
                 gridcell.setTextColor(getResources().getColor(R.color.subExpHeader));
             }
             if (day_color[1].equals("BLUE")) {
-                // iv_icon.setVisibility(View.VISIBLE);
                 gridcell.setTextColor(getResources().getColor(R.color.Pending_yellow));
-                //gridcell.setBackgroundResource(R.drawable.grid_dateshape);
             }
             int in = 0;
-            gridcell.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String[] day_color = list.get(position).split("-");
-                    Log.e("THE_DAY_COLOR", String.valueOf(day_color[0]));
-                    String theday = day_color[0];
-                    String themonth = day_color[2];
-                    String theyear = day_color[3];
-                    int month = SelectedMonth + 1;
-                    String TourMonth = theyear + "-" + month + "-" + theday;
-                    Log.e("Grid_Selected_Date", theday + "-" + themonth + "-" + theyear + day_color[1]);
-                    common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
+            gridcell.setOnClickListener(v -> {
+                String[] day_color1 = list.get(position).split("-");
+                Log.e("THE_DAY_COLOR", String.valueOf(day_color1[0]));
+                String theday1 = day_color1[0];
+                String themonth1 = day_color1[2];
+                String theyear1 = day_color1[3];
+                int month = SelectedMonth + 1;
+                String TourMonth = theyear1 + "-" + month + "-" + theday1;
+                Log.e("Grid_Selected_Date", theday1 + "-" + themonth1 + "-" + theyear1 + day_color1[1]);
+                common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
 
-                }
             });
-
             return row;
         }
 
         @Override
         public void onClick(View view) {
             String date_month_year = (String) view.getTag();
-            //selectedDayMonthYearButton.setText("Selected: " + date_month_year);
             Log.e("Selected date", date_month_year);
             try {
-                Date parsedDate = dateFormatter.parse(date_month_year);
+                dateFormatter.parse(date_month_year);
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -825,8 +748,6 @@ public class CurrentMonthFragment extends Fragment {
         public String CheckTp_View(int a) {
             String bflag = "0";
             if (Tp_View_Master != null) {
-
-
                 for (int i = 0; Tp_View_Master.size() > i; i++) {
                     if (a == Tp_View_Master.get(i).getDayofcout()) {
                         Log.v("SUBMIT_STATUS", String.valueOf(Tp_View_Master.get(i).getSubmitStatus() + "DAY" + Tp_View_Master.get(i).getDayofcout()));
@@ -835,7 +756,6 @@ public class CurrentMonthFragment extends Fragment {
                         } else {
                             bflag = "1";
                         }
-
                     }
                 }
             }
@@ -853,8 +773,6 @@ public class CurrentMonthFragment extends Fragment {
         public int getCurrentWeekDay() {
             return currentWeekDay;
         }
-
-
     }
 
     private void initProgressbar() {
@@ -864,5 +782,4 @@ public class CurrentMonthFragment extends Fragment {
         progressDialog.setIndeterminate(false);
         progressDialog.setCancelable(true);
     }
-
 }
