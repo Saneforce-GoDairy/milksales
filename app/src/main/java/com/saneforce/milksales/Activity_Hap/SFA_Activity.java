@@ -35,6 +35,9 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -87,8 +90,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -170,9 +176,26 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
         sfa_date = tvDate.getText().toString();
         String sUName = UserDetails.getString("SfName", "");
-        tvUserName.setText("HI! " + sUName);
-        binding.userName.setText("HI! " + sUName);
+        String SFDesig = UserDetails.getString("SFDesig", "");
+        String mProfileUrl = UserDetails.getString("Profile", "");
+
+        tvUserName.setText(sUName);
+        binding.userName.setText(sUName);
+        binding.designation.setText(SFDesig );
         tvUpdTime.setText("Last Updated On : " + updateTime);
+
+        new Thread(() -> {
+            try {
+                URLConnection connection = new URL(mProfileUrl).openConnection();
+                String contentType = connection.getHeaderField("Content-Type");
+                boolean image = contentType.startsWith("image/");
+                if (image){
+                    loadImage(mProfileUrl);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         common_class.getProductDetails(this);
         getNoOrderRemarks();
@@ -252,6 +275,14 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             setMenuAdapter();
         }
         getNotify();
+    }
+
+    private void loadImage(String mProfileImage){
+        Glide.with(this)
+                .load(mProfileImage)
+                .apply(RequestOptions.circleCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.profileImg);
     }
 
     private void getNotify() {

@@ -61,6 +61,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -102,15 +105,15 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     private MyViewPagerAdapter myViewPagerAdapter;
 
-    ArrayList courseImg = new ArrayList<>(Arrays.asList(
+    ArrayList exploreImage = new ArrayList<>(Arrays.asList(
             R.drawable.request_status_ic,
             R.drawable.file_invoice_doller_ic,
             R.drawable.users_gear_ic, R.drawable.gate_ic,
             R.drawable.gate_out_ic, R.drawable.calendar_pjp,
             R.drawable.canteen_scan_ic));
 
-    ArrayList courseName = new ArrayList<>(Arrays.asList(
-            "Request @ status",
+    ArrayList exploreName = new ArrayList<>(Arrays.asList(
+            "Request & status",
             "TA & Claim",
             "SFA",
             "Gate IN",
@@ -127,19 +130,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         onClick2();
         loadFragment();
-
-        // Setting the layout as linear
-        // layout for vertical orientation
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        binding.exploreMore.setLayoutManager(new GridLayoutManager(context, 3));
-        binding.exploreMore.setHasFixedSize(true);
-        binding.exploreMore.setItemViewCacheSize(20);
-
-        // Sending reference and data to Adapter
-        Adapter adapter6 = new Adapter(context, courseImg, courseName);
-
-        // Setting Adapter to RecyclerView
-        binding.exploreMore.setAdapter(adapter6);
+        loadExploreGrid();
 
         db = new DatabaseHandler(context);
         lblUserName = (TextView) findViewById(R.id.user_name);
@@ -186,27 +177,25 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 mCount++;
         }
 
-        String last3;
-        if (mProfileImage == null || mProfileImage.length() < 4) {
-            last3 = mProfileImage;
-        } else {
-            last3 = mProfileImage.substring(mProfileImage.length() - 4);
-        }
+//        String last3;
+//        if (mProfileImage == null || mProfileImage.length() < 4) {
+//            last3 = mProfileImage;
+//        } else {
+//            last3 = mProfileImage.substring(mProfileImage.length() - 4);
+//        }
 
-        if (last3.equals("null")){
-            Glide.with(this.context)
-                    .load(R.drawable.person_placeholder_0)
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(profilePic);
-        }else {
-            Glide.with(this.context)
-                    .load(mProfileImage)
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(profilePic);
-        }
-
+        new Thread(() -> {
+            try {
+                URLConnection connection = new URL(mProfileImage).openConnection();
+                String contentType = connection.getHeaderField("Content-Type");
+                boolean image = contentType.startsWith("image/");
+                if (image){
+                    loadImage(mProfileImage);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         profilePic.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
@@ -305,54 +294,102 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    private void loadImage(String mProfileImage) {
+        Glide.with(this.context)
+                .load(mProfileImage)
+                .apply(RequestOptions.circleCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(profilePic);
+    }
+
+    private void loadExploreGrid() {
+        binding.exploreMore.setLayoutManager(new GridLayoutManager(context, 3));
+        binding.exploreMore.setHasFixedSize(true);
+        binding.exploreMore.setItemViewCacheSize(20);
+        Adapter adapter6 = new Adapter(context, exploreImage, exploreName);
+        binding.exploreMore.setAdapter(adapter6);
+    }
+
     public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        ArrayList courseImg, courseName;
+        ArrayList exploreImage, exploreName;
         Context context;
 
-        // Constructor for initialization
         public Adapter(Context context, ArrayList courseImg, ArrayList courseName) {
             this.context = context;
-            this.courseImg = courseImg;
-            this.courseName = courseName;
+            this.exploreImage = courseImg;
+            this.exploreName = courseName;
         }
 
         @NonNull
         @Override
         public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Inflating the Layout(Instantiates list_item.xml
-            // layout file into View object)
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_dash_explore_more_item, parent, false);
-
-            // Passing view to ViewHolder
             Adapter.ViewHolder viewHolder = new Adapter.ViewHolder(view);
             return viewHolder;
         }
 
-        // Binding data to the into specified position
         @Override
         public void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position) {
-            // TypeCast Object to int type
-            int res = (int) courseImg.get(position);
+            int res = (int) exploreImage.get(position);
             holder.images.setImageResource(res);
-            holder.text.setText((String) courseName.get(position));
+            holder.text.setText((String) exploreName.get(position));
+
+            holder.layout.setOnClickListener(v -> {
+                switch (position){
+                    case 0:
+                        startActivity(new Intent(context, Leave_Dashboard.class));
+                        break;
+
+                    case 1:
+                        Shared_Common_Pref.TravelAllowance = 0;
+                        startActivity(new Intent(context, TAClaimActivity.class));
+                        break;
+
+                    case 2:
+                        startActivity(new Intent(context, SFA_Activity.class));
+                        break;
+
+                    case 3:
+                        Intent intent = new Intent(context, QRCodeScanner.class);
+                        intent.putExtra("Name", "GateIn");
+                        startActivity(intent);
+                        break;
+
+                    case 4:
+                        Intent intent1 = new Intent(context, QRCodeScanner.class);
+                        intent1.putExtra("Name", "GateOut");
+                        startActivity(intent1);
+                        break;
+
+                    case 5:
+                        Shared_Common_Pref.Tp_Approvalflag = "0";
+                        Intent intent5 = new Intent(context, Tp_Calander.class);
+                        startActivity(intent5);
+                        break;
+
+                    case 6:
+                        Shared_Common_Pref.TravelAllowance = 1;
+                        startActivity(new Intent(context, Approvals.class));
+                        break;
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            // Returns number of items
-            // currently available in Adapter
-            return courseImg.size();
+            return exploreImage.size();
         }
 
-        // Initializing the Views
         public class ViewHolder extends RecyclerView.ViewHolder {
             ImageView images;
             TextView text;
+            RelativeLayout layout;
 
             public ViewHolder(View view) {
                 super(view);
-                images = (ImageView) view.findViewById(R.id.image);
-                text = (TextView) view.findViewById(R.id.name);
+                images = view.findViewById(R.id.image);
+                text = view.findViewById(R.id.name);
+                layout = view.findViewById(R.id.layout);
             }
         }
     }

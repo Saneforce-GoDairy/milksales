@@ -8,225 +8,415 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="235dp"
-        android:layout_marginHorizontal="@dimen/C15dp"
-        android:background="@drawable/fragment_card">
+        android:layout_marginHorizontal="@dimen/C15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="@dimen/C15dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Date"
-                    android:textColor="#737779"
-                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textStyle="bold"
                     android:text=""
-                    android:textColor="@color/primaryDark"
+                    android:textColor="#000000"
                     android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Check IN time"
-                    android:textColor="#737779"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="15dp">
+                    <TextView
+                        android:id="@+id/shift_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:hint=""
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/grey_600"
+                        android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/check_in_time"
-                    android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true">
+
+                        <ImageView
+                            android:layout_width="17dp"
+                            android:layout_height="17dp"
+                            android:src="@drawable/ic_late"/>
+
+                        <TextView
+                            android:id="@+id/status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text=""
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/primaryDark"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="15dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/C10dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Check OUT time"
-                    android:textColor="#737779"
-                    android:textSize="15sp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/check_out_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/primaryDark"
-                    android:textSize="15sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="IN Time"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textSize="15sp"
+                            android:textColor="@color/grey_600"
+                            android:textStyle="bold"/>
 
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/person_placeholder_0"
+                                />
+
+                            <TextView
+                                android:id="@+id/check_in_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="15sp"
+                                android:layout_marginTop="13dp"
+                                android:layout_marginStart="5dp"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/black"/>
+
+                            <ImageView
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:src="@drawable/ic_map_marker"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginStart="5dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginStart="5dp"
+                                android:text="View"
+                                android:textSize="14sp"
+                                android:textColor="#1997CE"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/roboto_medium"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/C10dp"
+                        android:layout_alignParentEnd="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OUT Time"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textSize="15sp"
+                            android:textColor="@color/grey_600"
+                            android:textStyle="bold"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/person_placeholder_0"
+                                />
+
+                            <TextView
+                                android:id="@+id/check_out_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="15sp"
+                                android:layout_marginTop="13dp"
+                                android:layout_marginStart="5dp"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/black"/>
+
+                            <ImageView
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:src="@drawable/ic_map_marker"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginStart="5dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginStart="5dp"
+                                android:text="View"
+                                android:textSize="14sp"
+                                android:textColor="#1997CE"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/roboto_medium"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/C70dp">
+                    <SeekBar
+                        android:id="@+id/seek_bar_change_brightness"
+                        android:layout_width="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_height="5dp"
+                        android:maxHeight="11dp"
+                        android:progressDrawable="@drawable/seekbar_style"
+                        android:thumb="@drawable/seekbar_custom_thumb"
+                        android:min="0"
+                        android:progress="0" />
+                </RelativeLayout>
             </LinearLayout>
 
+
+
+
+<!-- ==========================================================   Previous code-->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/C15dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Shift time"
-                    android:textColor="#737779"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/shift_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/primaryDark"
-                    android:textSize="15sp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <LinearLayout
-                    android:id="@+id/geoInView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:orientation="vertical"
+                    android:padding="@dimen/C15dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="In time"
+                            android:textColor="#737779"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="25dp"
+                            android:src="@drawable/view_arrow" />
+
+                        <TextView
+                            android:id="@+id/view_geo_in"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/C5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="View"
+                            android:textColor="@color/primaryBlurLight"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:src="@drawable/person_placeholder_0" />
+
+</LinearLayout>
+
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/C10dp"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="Geo IN"
+                        android:text="Check OUT time"
                         android:textColor="#737779"
                         android:textSize="15sp" />
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="25dp"
-                        android:src="@drawable/view_arrow" />
-
                     <TextView
-                        android:id="@+id/view_geo_in"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/C5dp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="View"
-                        android:textColor="@color/primaryBlurLight"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/primaryDark"
                         android:textSize="15sp" />
 
                 </LinearLayout>
 
-
-                <TextView
-                    android:id="@+id/geo_in"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:maxLines="1"
-                    android:textColor="@color/primaryDark"
-                    android:textSize="15sp" />
-
                 <LinearLayout
-                    android:id="@+id/geoOutView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:orientation="vertical"
+                    android:padding="@dimen/C15dp">
 
-                    <TextView
+
+                    <LinearLayout
+                        android:id="@+id/geoInView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="Geo OUT"
-                        android:textColor="#737779"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="OUT Time"
+                            android:textColor="#737779"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="25dp"
+                            android:src="@drawable/view_arrow" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/C5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="View"
+                            android:textColor="@color/primaryBlurLight"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/geo_in"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:maxLines="1"
+                        android:textColor="@color/primaryDark"
                         android:textSize="15sp" />
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/view_arrow" />
-
-                    <TextView
-                        android:id="@+id/view_geo_out"
+                    <LinearLayout
+                        android:id="@+id/geoOutView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/C5dp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="View"
-                        android:textColor="@color/primaryBlurLight"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Geo OUT"
+                            android:textColor="#737779"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/view_arrow" />
+
+                        <TextView
+                            android:id="@+id/view_geo_out"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/C5dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="View"
+                            android:textColor="@color/primaryBlurLight"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/geo_out"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="-"
+                        android:textColor="@color/primaryDark"
                         android:textSize="15sp" />
 
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/geo_out"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="-"
-                    android:textColor="@color/primaryDark"
-                    android:textSize="15sp" />
-
             </LinearLayout>
-        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/user_profile"
-            android:layout_width="@dimen/C40dp"
-            android:layout_height="@dimen/C40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="@dimen/C15dp"
-            android:layout_marginTop="@dimen/C15dp"
-            android:layout_marginEnd="@dimen/C15dp"
-            android:layout_marginBottom="@dimen/C15dp"
-            android:src="@drawable/person_placeholder_0" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="15dp"
-            android:paddingBottom="15dp"
-            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Status:"
-                android:textColor="#737779"
-                android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text=""
-                android:textSize="15sp" />
+
+
+
+
+            <ImageView
+                android:id="@+id/user_profile"
+                android:layout_width="@dimen/C40dp"
+                android:layout_height="@dimen/C40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="@dimen/C15dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:layout_marginEnd="@dimen/C15dp"
+                android:layout_marginBottom="@dimen/C15dp"
+                android:src="@drawable/person_placeholder_0"
+                android:visibility="gone"/>
+
+
+
+
 
         </LinearLayout>
-
     </RelativeLayout>
-
 </RelativeLayout>

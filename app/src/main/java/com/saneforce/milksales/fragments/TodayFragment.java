@@ -253,7 +253,7 @@ public class TodayFragment extends Fragment {
                 Date date2 = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").parse(ShiftEndTime);
                 String newDate2 = new SimpleDateFormat("h:mm a").format(date2);
 
-                binding.shiftTime.setText(newDate + " - " + newDate2);
+                binding.shiftTime.setText( "(" + newDate + " - " + newDate2 + ")");
 
                 binding.geoIn.setText(fItm.get("GeoIn").getAsString());
                 binding.checkInTime.setText(fItm.get("AttTm").getAsString());
