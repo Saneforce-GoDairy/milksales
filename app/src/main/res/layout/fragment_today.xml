@@ -2,24 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.TodayFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="235dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/C15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/C15dp">
+                android:paddingTop="@dimen/C15dp"
+                android:paddingStart="@dimen/C15dp"
+                android:paddingEnd="@dimen/C15dp">
 
                 <TextView
                     android:id="@+id/date"
@@ -34,7 +37,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp">
+                    android:layout_marginTop="5dp">
                     <TextView
                         android:id="@+id/shift_time"
                         android:layout_width="wrap_content"
@@ -76,7 +79,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp">
+                    android:layout_marginTop="5dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -98,12 +101,25 @@
                             android:layout_height="40dp"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_marginTop="10dp"
-                                android:src="@drawable/person_placeholder_0"
-                                />
+                            <RelativeLayout
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_marginTop="10dp">
+
+                                <ImageView
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginEnd="0dp"
+                                    app:srcCompat="@drawable/circle_bg_primary" />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="1dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/person_placeholder_0"
+                                    />
+                            </RelativeLayout>
 
                             <TextView
                                 android:id="@+id/check_in_time"
@@ -123,6 +139,7 @@
                                 android:layout_marginStart="5dp"/>
 
                             <TextView
+                                android:id="@+id/view_geo_in"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -158,13 +175,25 @@
                             android:layout_height="40dp"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_marginTop="10dp"
-                                android:src="@drawable/person_placeholder_0"
-                                />
+                            <RelativeLayout
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_marginTop="10dp">
 
+                                <ImageView
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginEnd="0dp"
+                                    app:srcCompat="@drawable/circle_bg_primary" />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="1dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/person_placeholder_0"
+                                    />
+                            </RelativeLayout>
                             <TextView
                                 android:id="@+id/check_out_time"
                                 android:layout_width="wrap_content"
@@ -183,6 +212,7 @@
                                 android:layout_marginStart="5dp"/>
 
                             <TextView
+                                android:id="@+id/view_geo_out"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -201,7 +231,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/C70dp">
+                    android:layout_height="@dimen/C60dp">
                     <SeekBar
                         android:id="@+id/seek_bar_change_brightness"
                         android:layout_width="match_parent"
@@ -254,7 +284,7 @@
                             android:src="@drawable/view_arrow" />
 
                         <TextView
-                            android:id="@+id/view_geo_in"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/C5dp"
@@ -371,7 +401,6 @@
                             android:src="@drawable/view_arrow" />
 
                         <TextView
-                            android:id="@+id/view_geo_out"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/C5dp"
