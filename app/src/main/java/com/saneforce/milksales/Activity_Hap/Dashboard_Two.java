@@ -5,15 +5,19 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -130,6 +134,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     private String checkInUrl = "";
     private String timerDate, key, timerTime;
     LinearLayout approval;
+    private SANGPSTracker mLUService;
 
     private Button StActivity, cardview3, cardview4, cardView5, btnCheckout, btnApprovals, btnExit, viewButton;
     private Button btnGateIn, btnGateOut;
@@ -404,13 +409,40 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
         mProfileUrl = UserDetails.getString("Profile", "");
 
-
-
         Glide.with(this.context)
                 .load(mProfileUrl)
                 .apply(RequestOptions.circleCropTransform())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(profileImageView);
+
+        if (!isMyServiceRunning(SANGPSTracker.class)) {
+            try {
+                Intent playIntent = new Intent(this, SANGPSTracker.class);
+                bindService(playIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+                startService(playIntent);
+            } catch (Exception ignored) { }
+        }
+    }
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mLUService = null;
+        }
+    };
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void checkInTimer() {
@@ -813,7 +845,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
     private void assignDyReports(JsonArray res) {
         try {
-            Log.v(TAG + "getDyReports", res.toString());
+            Log.v(TAG, res.toString());
             if (res.size() < 1) {
                 Toast.makeText(getApplicationContext(), "No Records Today", Toast.LENGTH_LONG).show();
 

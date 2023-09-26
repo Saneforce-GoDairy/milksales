@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".SFA_Activity.ChallanActivity">
 
@@ -32,11 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/C12dp"
+            android:visibility="gone"
             android:padding="6dp"
             android:src="@drawable/ic_round_print_24" />
 
         <ImageView
             android:id="@+id/share"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/C12dp"
@@ -49,25 +51,25 @@
         style="@style/myText"
         android:layout_marginHorizontal="@dimen/C12dp"
         android:layout_marginTop="@dimen/C15dp"
-        android:text="Order Number"/>
+        android:text="Order Number" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/C10dp"
         android:layout_marginHorizontal="@dimen/C10dp"
-        app:cardElevation="@dimen/C4dp"
-        android:foreground="?attr/selectableItemBackground"
+        android:layout_marginTop="@dimen/C10dp"
         android:clickable="true"
         android:focusable="true"
-        app:cardCornerRadius="@dimen/C4dp">
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/C4dp"
+        app:cardElevation="@dimen/C4dp">
 
         <TextView
             android:id="@+id/invoiceNumberTV"
             style="@style/myTitle"
             android:layout_marginHorizontal="@dimen/C12dp"
             android:layout_marginVertical="@dimen/C12dp"
-            android:text="Order Number"/>
+            android:text="" />
 
     </androidx.cardview.widget.CardView>
 
@@ -75,25 +77,25 @@
         style="@style/myText"
         android:layout_marginHorizontal="@dimen/C12dp"
         android:layout_marginTop="@dimen/C15dp"
-        android:text="Payment Initiated on"/>
+        android:text="Payment Initiated on" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/C10dp"
         android:layout_marginHorizontal="@dimen/C10dp"
-        app:cardElevation="@dimen/C4dp"
-        android:foreground="?attr/selectableItemBackground"
+        android:layout_marginTop="@dimen/C10dp"
         android:clickable="true"
         android:focusable="true"
-        app:cardCornerRadius="@dimen/C4dp">
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/C4dp"
+        app:cardElevation="@dimen/C4dp">
 
         <TextView
             android:id="@+id/crDateTV"
             style="@style/myTitle"
             android:layout_marginHorizontal="@dimen/C12dp"
             android:layout_marginVertical="@dimen/C12dp"
-            android:text="Payment Initiated on"/>
+            android:text="" />
 
     </androidx.cardview.widget.CardView>
 
@@ -101,25 +103,25 @@
         style="@style/myText"
         android:layout_marginHorizontal="@dimen/C12dp"
         android:layout_marginTop="@dimen/C15dp"
-        android:text="Stockist Name"/>
+        android:text="Stockist Name" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/C10dp"
         android:layout_marginHorizontal="@dimen/C10dp"
-        app:cardElevation="@dimen/C4dp"
-        android:foreground="?attr/selectableItemBackground"
+        android:layout_marginTop="@dimen/C10dp"
         android:clickable="true"
         android:focusable="true"
-        app:cardCornerRadius="@dimen/C4dp">
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/C4dp"
+        app:cardElevation="@dimen/C4dp">
 
         <TextView
             android:id="@+id/stockistNameTV"
             style="@style/myTitle"
             android:layout_marginHorizontal="@dimen/C12dp"
             android:layout_marginVertical="@dimen/C12dp"
-            android:text="Stockist Name"/>
+            android:text="" />
 
     </androidx.cardview.widget.CardView>
 
@@ -127,25 +129,25 @@
         style="@style/myText"
         android:layout_marginHorizontal="@dimen/C12dp"
         android:layout_marginTop="@dimen/C15dp"
-        android:text="Order Amount"/>
+        android:text="Order Amount" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/C10dp"
         android:layout_marginHorizontal="@dimen/C10dp"
-        app:cardElevation="@dimen/C4dp"
-        android:foreground="?attr/selectableItemBackground"
+        android:layout_marginTop="@dimen/C10dp"
         android:clickable="true"
         android:focusable="true"
-        app:cardCornerRadius="@dimen/C4dp">
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/C4dp"
+        app:cardElevation="@dimen/C4dp">
 
         <TextView
             android:id="@+id/amountTV"
             style="@style/myTitle"
             android:layout_marginHorizontal="@dimen/C12dp"
             android:layout_marginVertical="@dimen/C12dp"
-            android:text="Order Amount"/>
+            android:text="" />
 
     </androidx.cardview.widget.CardView>
 
@@ -153,26 +155,49 @@
         style="@style/myText"
         android:layout_marginHorizontal="@dimen/C12dp"
         android:layout_marginTop="@dimen/C15dp"
-        android:text="Payment Status"/>
+        android:text="Payment Status" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/C10dp"
         android:layout_marginHorizontal="@dimen/C10dp"
-        app:cardElevation="@dimen/C4dp"
-        android:foreground="?attr/selectableItemBackground"
+        android:layout_marginTop="@dimen/C10dp"
         android:clickable="true"
         android:focusable="true"
-        app:cardCornerRadius="@dimen/C4dp">
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/C4dp"
+        app:cardElevation="@dimen/C4dp">
 
         <TextView
             android:id="@+id/statusTV"
             style="@style/myTitle"
             android:layout_marginHorizontal="@dimen/C12dp"
             android:layout_marginVertical="@dimen/C12dp"
-            android:text="Payment Status"/>
+            android:text="" />
 
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/or"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:gravity="center_horizontal"
+        android:text="or" />
+
+    <TextView
+        android:id="@+id/payUsingOnline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/C15dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/button_greenbg"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:paddingVertical="@dimen/C10dp"
+        android:text="Pay using online"
+        android:textColor="@color/white" />
 
 </LinearLayout>

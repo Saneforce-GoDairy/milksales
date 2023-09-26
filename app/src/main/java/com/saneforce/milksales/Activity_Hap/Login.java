@@ -749,15 +749,6 @@ public class Login extends AppCompatActivity {
     void assignLoginData(Model response, int requestCode) {
         try {
 
-            if (isMyServiceRunning(SANGPSTracker.class) == false) {
-                try {
-                    Intent playIntent = new Intent(this, SANGPSTracker.class);
-                    bindService(playIntent, mServiceConection, Context.BIND_AUTO_CREATE);
-                    startService(playIntent);
-                } catch (Exception e) {
-                }
-            }
-
             shared_common_pref.save(Constants.LOGIN_DATE, com.saneforce.milksales.Common_Class.Common_Class.GetDatewothouttime());
 
             Gson gson = new Gson();

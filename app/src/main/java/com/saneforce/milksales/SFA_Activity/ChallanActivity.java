@@ -4,6 +4,7 @@ import static android.Manifest.permission.MANAGE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.os.Environment;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import com.saneforce.milksales.Common_Class.CurrencyConverter;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.R;
+import com.saneforce.milksales.databinding.ActivityChallanBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +58,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChallanActivity extends AppCompatActivity {
+    ActivityChallanBinding binding;
 
     final int pageWidth = 595, pageHeight = 842;
     final float xMin = 20, xMax = pageWidth - 20;
@@ -63,6 +67,7 @@ public class ChallanActivity extends AppCompatActivity {
     ImageView toolbarHome, print, share;
 
     Context context = this;
+    Activity activity = this;
 
     Paint paint;
     Canvas canvas;
@@ -70,6 +75,7 @@ public class ChallanActivity extends AppCompatActivity {
 
     double amount = 0;
     String invoice = "", DocNo = "", todayDate = "", customerCode = "", customerName = "", ERP_CODE = "", PAN = "", VERSION = "";
+    String pdfMode = "";
 
     public static String[] Split(String text, int chunkSize, int maxLength) {
         char[] data = text.toCharArray();
@@ -86,7 +92,8 @@ public class ChallanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_challan);
+        binding = ActivityChallanBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         toolbarHome = findViewById(R.id.toolbar_home);
         print = findViewById(R.id.print);
@@ -100,65 +107,57 @@ public class ChallanActivity extends AppCompatActivity {
         common_class = new Common_Class(this);
         invoice = getIntent().getStringExtra("invoice");
 
+        if (!isStoragePermissionEnabled()) {
+            requestPermission();
+        }
+
         print.setOnClickListener(v -> {
-            if (!isStoragePermissionEnabled()) {
-                Toast.makeText(context, "Please provide storage permission to print", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            pdfMode = "print";
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setCancelable(true);
             builder.setMessage("Select challan type");
             builder.setPositiveButton("Bank Copy", (dialog, which) -> {
                 VERSION = "Bank Copy (To be retained by Axis Bank Collecting Branch)";
-                createChallanPDF("print");
+                createChallanPDF();
             });
             builder.setNegativeButton("Customer Copy", (dialog, which) -> {
                 VERSION = "Customer Copy (To be submitted by the Applicant to the Lactalis India Pvt Ltd)";
-                createChallanPDF("print");
+                createChallanPDF();
             });
             builder.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
             builder.create().show();
         });
         share.setOnClickListener(v -> {
-            if (!isStoragePermissionEnabled()) {
-                Toast.makeText(context, "Please provide storage permission to share", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            pdfMode = "share";
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setCancelable(true);
             builder.setMessage("Select challan type");
             builder.setPositiveButton("Bank Copy", (dialog, which) -> {
                 VERSION = "Bank Copy (To be retained by Axis Bank Collecting Branch)";
-                createChallanPDF("share");
+                createChallanPDF();
             });
             builder.setNegativeButton("Customer Copy", (dialog, which) -> {
                 VERSION = "Customer Copy (To be submitted by the Applicant to the Lactalis India Pvt Ltd)";
-                createChallanPDF("share");
+                createChallanPDF();
             });
             builder.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
             builder.create().show();
         });
 
-        getChallanData();
-    }
+        binding.payUsingOnline.setOnClickListener(v -> {
+            Toast.makeText(context, "...", Toast.LENGTH_SHORT).show();
+        });
 
-    private boolean isStoragePermissionEnabled() {
-        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)) {
-                ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE}, 1);
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 1);
-            }
-        }
-        return false;
+        ImageView toolbarHome = findViewById(R.id.toolbar_home);
+        toolbarHome.setOnClickListener(v -> common_class.gotoHomeScreen(context, toolbarHome));
+
+        getChallanData();
     }
 
     private void getChallanData() {
         ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Creating challan");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Map<String, String> params = new HashMap<>();
@@ -215,14 +214,22 @@ public class ChallanActivity extends AppCompatActivity {
             amountTV.setText(common_class.formatCurrency(amount));
             if (amount == jsonObject.getDouble("DepositedAmt")) {
                 statusTV.setText("PAID");
+                binding.payUsingOnline.setVisibility(View.GONE);
+                binding.or.setVisibility(View.GONE);
+                binding.print.setVisibility(View.GONE);
+                binding.share.setVisibility(View.GONE);
             } else {
                 statusTV.setText("PENDING");
+                binding.payUsingOnline.setVisibility(View.VISIBLE);
+                binding.or.setVisibility(View.VISIBLE);
+                binding.print.setVisibility(View.VISIBLE);
+                binding.share.setVisibility(View.VISIBLE);
             }
         } catch (JSONException ignored) {
         }
     }
 
-    private void createChallanPDF(String mode) {
+    private void createChallanPDF() {
         float y = 0;
         paint = new Paint();
         PdfDocument pdfDocument = new PdfDocument();
@@ -436,10 +443,10 @@ public class ChallanActivity extends AppCompatActivity {
 
         Uri fileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", filePath);
 
-        if (mode.equals("share")) {
+        if (pdfMode.equals("share")) {
             Intent intent = ShareCompat.IntentBuilder.from(this).setType("*/*").setStream(fileUri).setChooserTitle("Choose bar").createChooserIntent().addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(intent);
-        } else if (mode.equals("print")) {
+        } else if (pdfMode.equals("print")) {
             PrintDocumentAdapter printDocumentAdapter = new PdfDocumentAdapter(this, fileUri);
             PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
             String jobName = getString(R.string.app_name) + " Document";
@@ -531,6 +538,18 @@ public class ChallanActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        isStoragePermissionEnabled();
+        /*if (!isStoragePermissionEnabled()) {
+            Toast.makeText(context, "Permission denied", Toast.LENGTH_SHORT).show();
+        }*/
+    }
+
+    private boolean isStoragePermissionEnabled() {
+        boolean canWrite = ContextCompat.checkSelfPermission(context, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        boolean canRead = ContextCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return (canWrite && canRead);
+    }
+
+    public void requestPermission() {
+        ActivityCompat.requestPermissions(activity, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 1);
     }
 }
