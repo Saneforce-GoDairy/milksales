@@ -434,7 +434,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 String contentType = connection.getHeaderField("Content-Type");
                 boolean image = contentType.startsWith("image/");
                 if (image){
-                    loadImage(mProfileUrl);
+                    runOnUiThread(() -> {
+                        loadImage(mProfileUrl);
+                    });
                 }
             } catch (IOException e) {
                 e.printStackTrace();

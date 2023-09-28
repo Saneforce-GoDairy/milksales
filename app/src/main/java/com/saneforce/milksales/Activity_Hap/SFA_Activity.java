@@ -190,7 +190,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 String contentType = connection.getHeaderField("Content-Type");
                 boolean image = contentType.startsWith("image/");
                 if (image){
-                    loadImage(mProfileUrl);
+                    runOnUiThread(() -> {
+                        loadImage(mProfileUrl);
+                    });
                 }
             } catch (IOException e) {
                 e.printStackTrace();

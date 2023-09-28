@@ -190,7 +190,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 String contentType = connection.getHeaderField("Content-Type");
                 boolean image = contentType.startsWith("image/");
                 if (image){
-                    loadImage(mProfileImage);
+                    runOnUiThread(() -> {
+                        loadImage(mProfileImage);
+                    });
                 }
             } catch (IOException e) {
                 e.printStackTrace();
