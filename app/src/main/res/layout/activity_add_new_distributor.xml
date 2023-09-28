@@ -244,6 +244,98 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
                 android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/sub_channel"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/select_sub_channel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Sub Channel"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/account_group"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectCusACGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Account Group"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/distributor_channel"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/select_dist_channel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Distributor Channel"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/sales_division"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/select_sales_division"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Sales Division"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
                 android:text="@string/city"
                 android:textSize="@dimen/C14dp"
                 android:textStyle="bold" />

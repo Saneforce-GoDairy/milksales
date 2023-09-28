@@ -52,6 +52,7 @@ import com.saneforce.milksales.SFA_Model_Class.CommonModelWithFourString;
 import com.saneforce.milksales.SFA_Model_Class.CommonModelWithThreeString;
 import com.saneforce.milksales.common.FileUploadService;
 import com.saneforce.milksales.common.LocationFinder;
+import com.saneforce.milksales.universal.UniversalDropDownAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,7 +75,7 @@ import retrofit2.Response;
 public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback, UpdateResponseUI {
 
     TextView select_region, select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation,
-            select_mode_of_payment, submit, select_bank_details, select_agreement_copy;
+            select_mode_of_payment, submit, select_bank_details, select_agreement_copy, select_sub_channel, selectCusACGroup, select_dist_channel, select_sales_division;
     ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai,
             display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, display_deposit, capture_deposit, home, display_aadhaar_number, capture_aadhaar_number,
             display_pan_number, capture_pan_number;
@@ -103,6 +104,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     double Lat = 0, Long = 0;
 
     GoogleMap googleMap;
+    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse;
+    String subChannelIDStr = "", subChannelNameStr = "", acGroupIDStr = "", acGroupNameStr = "", distChannelIDStr = "", distChannelNameStr = "", salesDivisionIDStr = "", salesDivisionNameStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +116,10 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         select_sales_office_name = findViewById(R.id.select_sales_office_name);
         select_route_name = findViewById(R.id.select_route_name);
         select_channel = findViewById(R.id.select_channel);
+        select_sub_channel = findViewById(R.id.select_sub_channel);
+        selectCusACGroup = findViewById(R.id.selectCusACGroup);
+        select_dist_channel = findViewById(R.id.select_dist_channel);
+        select_sales_division = findViewById(R.id.select_sales_division);
         select_state = findViewById(R.id.select_state);
         date_of_creation = findViewById(R.id.date_of_creation);
         select_mode_of_payment = findViewById(R.id.select_mode_of_payment);
@@ -185,7 +192,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     uploadImage(customer_photo_name, customer_photo_url);
 
                     // Todo: Upload Image to S3
-                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "milk_selfie");
+                    // com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "milk_selfie");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -528,8 +535,123 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             adapter.setSelectItem((model, position) -> {
                 channelIDStr = model.getId();
                 select_channel.setText(model.getTitle());
+                filteredSubChannel = new JSONArray();
+                subChannelIDStr = "";
+                subChannelNameStr = "";
+                select_sub_channel.setText("");
+                for (int i = 0; i < subChannelResponse.length(); i++) {
+                    try {
+                        if (subChannelResponse.getJSONObject(i).getString("CateCode").equals(model.getId())) {
+                            JSONObject object = new JSONObject();
+                            object.put("id", subChannelResponse.getJSONObject(i).getString("id"));
+                            object.put("title", subChannelResponse.getJSONObject(i).getString("title"));
+                            filteredSubChannel.put(object);
+                        }
+                    } catch (JSONException ignored) {
+                    }
+                }
                 dialog.dismiss();
             });
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        select_sub_channel.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Sub Channel");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, filteredSubChannel);
+            adapter.setOnItemClick(position -> {
+                try {
+                    subChannelIDStr = filteredSubChannel.getJSONObject(position).getString("id");
+                    subChannelNameStr = filteredSubChannel.getJSONObject(position).getString("title");
+                    select_sub_channel.setText(filteredSubChannel.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectCusACGroup.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Account Group");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, cusACGroupResponse);
+            adapter.setOnItemClick(position -> {
+                try {
+                    acGroupIDStr = cusACGroupResponse.getJSONObject(position).getString("id");
+                    acGroupNameStr = cusACGroupResponse.getJSONObject(position).getString("title");
+                    selectCusACGroup.setText(cusACGroupResponse.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        select_dist_channel.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Distributor Channel");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, distChannelResponse);
+            adapter.setOnItemClick(position -> {
+                try {
+                    distChannelIDStr = distChannelResponse.getJSONObject(position).getString("id");
+                    distChannelNameStr = distChannelResponse.getJSONObject(position).getString("title");
+                    select_dist_channel.setText(distChannelResponse.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        select_sales_division.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Sales Division");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, salesDivisionResponse);
+            adapter.setOnItemClick(position -> {
+                try {
+                    salesDivisionIDStr = salesDivisionResponse.getJSONObject(position).getString("id");
+                    salesDivisionNameStr = salesDivisionResponse.getJSONObject(position).getString("title");
+                    select_sales_division.setText(salesDivisionResponse.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
@@ -596,6 +718,12 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         refreshLocation.setOnClickListener(v -> getLocation());
         submit.setOnClickListener(v -> ValidateFields());
 
+        subChannelResponse = new JSONArray();
+        filteredSubChannel = new JSONArray();
+        cusACGroupResponse = new JSONArray();
+        distChannelResponse = new JSONArray();
+        salesDivisionResponse = new JSONArray();
+
         getLocation();
 
         if (Common_Class.isNullOrEmpty(pref.getvalue(Constants.STATE_LIST))) {
@@ -619,11 +747,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         PrepareDropdownLists();
 
         // Todo: Get Image From S3
-        common_class.getImageFromS3Bucket(context, "key", "MGR23_1694523049.jpg", "milk_selfie");
+        /*common_class.getImageFromS3Bucket(context, "key", "MGR23_1694523049.jpg", "milk_selfie");
         common_class.setOnDownloadImage((key, bmp) -> {
             display_customer_photo.setImageBitmap(bmp);
             display_customer_photo.setVisibility(View.VISIBLE);
-        });
+        });*/
     }
 
     private void PrepareStateList() {
@@ -649,7 +777,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 Long = location.getLongitude();
                 getCompleteAddressString(Lat, Long);
                 SetMap();
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
         });
     }
 
@@ -739,6 +868,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                                 Log.e("ksjdhksd", "channelResponse: " + id + ", " + title);
                                 ChannelList.add(new CommonModelForDropDown(id, title));
                             }
+                            // Todo: subChannelResponse
+                            subChannelResponse = object.getJSONArray("subChannelResponse");
+                            cusACGroupResponse = object.getJSONArray("cusACGroupResponse");
+                            distChannelResponse = object.getJSONArray("distChannelResponse");
+                            salesDivisionResponse = object.getJSONArray("salesDivisionResponse");
                         } else {
                             Toast.makeText(context, "Response is false", Toast.LENGTH_SHORT).show();
                         }
@@ -810,6 +944,14 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Select the Route Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(channelStr) || TextUtils.isEmpty(channelIDStr)) {
             Toast.makeText(context, "Please Select the Channel", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(subChannelIDStr) || TextUtils.isEmpty(subChannelNameStr)) {
+            Toast.makeText(context, "Please Select Sub Channel", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(acGroupIDStr) || TextUtils.isEmpty(acGroupNameStr)) {
+            Toast.makeText(context, "Please Select Account Group", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(distChannelIDStr) || TextUtils.isEmpty(distChannelNameStr)) {
+            Toast.makeText(context, "Please Select Distributor Channel", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(salesDivisionIDStr) || TextUtils.isEmpty(salesDivisionNameStr)) {
+            Toast.makeText(context, "Please Select Sales Division", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(cityStr)) {
             Toast.makeText(context, "Please Select the City", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(pincodeStr)) {
@@ -882,7 +1024,15 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("routeCodeStr", routeCodeStr);
             object.put("routeNameStr", routeNameStr);
             object.put("channelIDStr", channelIDStr);
-            object.put("channelStr", channelStr);
+            object.put("channelStr", channelStr); // DivERP, CustGrpErp, CusSubGrpErp, SubCat_channel
+            object.put("subChannelID", subChannelIDStr); // salesDivisionID, acGroupID, distChannelID, subChannelID
+            object.put("subChannelName", subChannelNameStr);
+            object.put("acGroupID", acGroupIDStr);
+            object.put("acGroupName", acGroupNameStr);
+            object.put("distChannelID", distChannelIDStr);
+            object.put("distChannelName", distChannelNameStr);
+            object.put("salesDivisionID", salesDivisionIDStr);
+            object.put("salesDivisionName", salesDivisionNameStr);
             object.put("cityStr", cityStr);
             object.put("pincodeStr", pincodeStr);
             object.put("stateCodeStr", stateCodeStr);
@@ -913,6 +1063,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("depositImageName", depositImageName);
             object.put("lat", Lat);
             object.put("long", Long);
+
         } catch (JSONException e) {
             progressDialog.dismiss();
             Toast.makeText(context, "Json Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();

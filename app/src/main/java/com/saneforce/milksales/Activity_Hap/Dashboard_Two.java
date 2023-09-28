@@ -440,14 +440,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 e.printStackTrace();
             }
         }).start();
-    }
-
-    private void loadImage(String mProfileUrl) {
-        Glide.with(this.context)
-                .load(mProfileUrl)
-                .apply(RequestOptions.circleCropTransform())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(profileImageView);
 
         if (!isMyServiceRunning(SANGPSTracker.class)) {
             try {
@@ -456,6 +448,14 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 startService(playIntent);
             } catch (Exception ignored) { }
         }
+    }
+
+    private void loadImage(String mProfileUrl) {
+        Glide.with(this.context)
+                .load(mProfileUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(profileImageView);
     }
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {

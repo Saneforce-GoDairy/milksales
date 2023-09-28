@@ -175,4 +175,9 @@
     <string name="ta_amp_claim"><![CDATA[TA & Claim]]></string>
     <string name="close">CLOSE</string>
 
+    <string name="sub_channel">Sub Channel<font fgcolor='#E53935'> *</font></string>
+    <string name="account_group">Account Group<font fgcolor='#E53935'> *</font></string>
+    <string name="distributor_channel">Distributor Channel<font fgcolor='#E53935'> *</font></string>
+    <string name="sales_division">Sales Division<font fgcolor='#E53935'> *</font></string>
+
 </resources>
