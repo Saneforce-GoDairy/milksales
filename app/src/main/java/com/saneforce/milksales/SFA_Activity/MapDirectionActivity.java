@@ -109,6 +109,14 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             if (status.equals("GEO")){
                 binding.mainMapContainer.setVisibility(View.GONE);
                 binding.myTeamMap.setVisibility(View.VISIBLE);
+                binding.backGeoOutlet.setVisibility(View.VISIBLE);
+
+                binding.backGeoOutlet.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
             }
 
             common_class = new Common_Class(this);

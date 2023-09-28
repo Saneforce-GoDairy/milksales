@@ -22,9 +22,12 @@ import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,9 +85,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -155,6 +164,22 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     private String mProfileUrl;
     private ImageView profileImageView;
 
+    ArrayList exploreImage = new ArrayList<>(Arrays.asList(
+            R.drawable.request_status_ic,
+            R.drawable.file_invoice_doller_ic,
+            R.drawable.users_gear_ic, R.drawable.gate_ic,
+            R.drawable.gate_out_ic, R.drawable.calendar_pjp,
+            R.drawable.canteen_scan_ic));
+
+    ArrayList exploreName = new ArrayList<>(Arrays.asList(
+            "Request & status",
+            "TA & Claim",
+            "SFA",
+            "Gate IN",
+            "Gate OUT",
+            "PJP",
+            "Approvals"));
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -165,6 +190,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
             loadFragment();
             onClick2();
+            loadExploreGrid();
 
             new Thread() {
                 @Override
@@ -264,6 +290,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             head_quarters.setText(SFDesig);
             String sUName = UserDetails.getString("SfName", "");
             txUserName.setText("HI! " + sUName);
+            binding.headQuarters.setText(SFDesig);
 
             sSFType = UserDetails.getString("Sf_Type", "");
             Log.d("CINDetails", CheckInDetails.toString());
@@ -331,25 +358,17 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 if (viewMode.equalsIgnoreCase("CIN") || viewMode.equalsIgnoreCase("extended")) {
                     cardview3.setVisibility(View.VISIBLE);
                     cardview4.setVisibility(View.VISIBLE);
-                    //cardView5.setVisibility(View.VISIBLE);
                     btnCheckout.setVisibility(View.VISIBLE);
                     if(viewMode.equalsIgnoreCase("extended")){
                         btnCheckout.setText("Checkout & Sent to Approval");
                     }
                 } else {
-                    //cardview3.setVisibility(View.GONE);
-                    // cardview4.setVisibility(View.GONE);
                     cardView5.setVisibility(View.GONE);
-                    //StActivity.setVisibility(View.GONE);
                     btnCheckout.setVisibility(View.GONE);
                     btnExit.setVisibility(View.VISIBLE);
-                    //               btnApprovals.setVisibility(View.GONE);
                 }
             } else {
-                //cardview3.setVisibility(View.GONE);
-                //cardview4.setVisibility(View.GONE);
                 cardView5.setVisibility(View.GONE);
-                //StActivity.setVisibility(View.GONE);
                 btnCheckout.setVisibility(View.GONE);
             }
             if (sSFType.equals("0"))
@@ -409,6 +428,21 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
         mProfileUrl = UserDetails.getString("Profile", "");
 
+        new Thread(() -> {
+            try {
+                URLConnection connection = new URL(mProfileUrl).openConnection();
+                String contentType = connection.getHeaderField("Content-Type");
+                boolean image = contentType.startsWith("image/");
+                if (image){
+                    loadImage(mProfileUrl);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void loadImage(String mProfileUrl) {
         Glide.with(this.context)
                 .load(mProfileUrl)
                 .apply(RequestOptions.circleCropTransform())
@@ -445,6 +479,97 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         return false;
     }
 
+    private void loadExploreGrid() {
+        binding.exploreMore.setLayoutManager(new GridLayoutManager(context, 3));
+        binding.exploreMore.setHasFixedSize(true);
+        binding.exploreMore.setItemViewCacheSize(20);
+        Adapter adapter6 = new Adapter(context, exploreImage, exploreName);
+        binding.exploreMore.setAdapter(adapter6);
+    }
+
+    public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+        ArrayList exploreImage, exploreName;
+        Context context;
+
+        public Adapter(Context context, ArrayList courseImg, ArrayList courseName) {
+            this.context = context;
+            this.exploreImage = courseImg;
+            this.exploreName = courseName;
+        }
+
+        @NonNull
+        @Override
+        public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_dash_explore_more_item, parent, false);
+            Adapter.ViewHolder viewHolder = new Adapter.ViewHolder(view);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position) {
+            int res = (int) exploreImage.get(position);
+            holder.images.setImageResource(res);
+            holder.text.setText((String) exploreName.get(position));
+
+            holder.layout.setOnClickListener(v -> {
+                switch (position){
+                    case 0:
+                        startActivity(new Intent(context, Leave_Dashboard.class));
+                        break;
+
+                    case 1:
+                        Shared_Common_Pref.TravelAllowance = 0;
+                        startActivity(new Intent(context, TAClaimActivity.class));
+                        break;
+
+                    case 2:
+                        startActivity(new Intent(context, SFA_Activity.class));
+                        break;
+
+                    case 3:
+                        Intent intent = new Intent(context, QRCodeScanner.class);
+                        intent.putExtra("Name", "GateIn");
+                        startActivity(intent);
+                        break;
+
+                    case 4:
+                        Intent intent1 = new Intent(context, QRCodeScanner.class);
+                        intent1.putExtra("Name", "GateOut");
+                        startActivity(intent1);
+                        break;
+
+                    case 5:
+                        Shared_Common_Pref.Tp_Approvalflag = "0";
+                        Intent intent5 = new Intent(context, Tp_Calander.class);
+                        startActivity(intent5);
+                        break;
+
+                    case 6:
+                        Shared_Common_Pref.TravelAllowance = 1;
+                        startActivity(new Intent(context, Approvals.class));
+                        break;
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return exploreImage.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView images;
+            TextView text;
+            RelativeLayout layout;
+
+            public ViewHolder(View view) {
+                super(view);
+                images = view.findViewById(R.id.image);
+                text = view.findViewById(R.id.name);
+                layout = view.findViewById(R.id.layout);
+            }
+        }
+    }
     private void checkInTimer() {
         String checkInTimeStamp = timerDate + " " + timerTime;
         Log.e(TAG, "Check in TimeStamp : " + checkInTimeStamp);

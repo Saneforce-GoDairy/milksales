@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="225dp"
         tools:context=".fragments.TodayFragment"
-        android:background="@drawable/fragment_card"
         android:layout_marginLeft="@dimen/C15dp"
         android:layout_marginRight="@dimen/C15dp">
     <TextView

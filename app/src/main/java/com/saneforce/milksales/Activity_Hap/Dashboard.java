@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -56,6 +61,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -95,6 +105,22 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     private MyViewPagerAdapter myViewPagerAdapter;
 
+    ArrayList exploreImage = new ArrayList<>(Arrays.asList(
+            R.drawable.request_status_ic,
+            R.drawable.file_invoice_doller_ic,
+            R.drawable.users_gear_ic, R.drawable.gate_ic,
+            R.drawable.gate_out_ic, R.drawable.calendar_pjp,
+            R.drawable.canteen_scan_ic));
+
+    ArrayList exploreName = new ArrayList<>(Arrays.asList(
+            "Request & status",
+            "TA & Claim",
+            "SFA",
+            "Gate IN",
+            "Gate OUT",
+            "PJP",
+            "Approvals"));
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,16 +130,14 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         onClick2();
         loadFragment();
+        loadExploreGrid();
 
         db = new DatabaseHandler(context);
-        //username = findViewById(R.id.username);
         lblUserName = (TextView) findViewById(R.id.user_name);
         head_quarters = (TextView) findViewById(R.id.head_quarters);
         lblEmail = (TextView) findViewById(R.id.lblEmail);
         profilePic = findViewById(R.id.image_view_user_profile);
         linReCheck = findViewById(R.id.lin_RecheckIn);
-
-
         linCheckin = findViewById(R.id.lin_check_in);
         linMyday = findViewById(R.id.lin_myday_plan);
 
@@ -153,28 +177,25 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 mCount++;
         }
 
+//        String last3;
+//        if (mProfileImage == null || mProfileImage.length() < 4) {
+//            last3 = mProfileImage;
+//        } else {
+//            last3 = mProfileImage.substring(mProfileImage.length() - 4);
+//        }
 
-
-        /*
-        if profile pic not available setImage Placeholder
-              -->  else set the valid profile pic url
-
-                Not valid url : https://lactalisindia.salesjump.in/SalesForce_Profile_Img/
-                Valid url : https://lactalisindia.salesjump.in/SalesForce_Profile_Img/MGR0008_1694517133.jpg
-         */
-        if (mCount == 58){
-            Glide.with(this.context)
-                    .load(R.drawable.person_placeholder_0)
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(profilePic);
-        }else { // Valid image url Example
-            Glide.with(this.context)
-                    .load(mProfileImage)
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(profilePic);
-        }
+        new Thread(() -> {
+            try {
+                URLConnection connection = new URL(mProfileImage).openConnection();
+                String contentType = connection.getHeaderField("Content-Type");
+                boolean image = contentType.startsWith("image/");
+                if (image){
+                    loadImage(mProfileImage);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         profilePic.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
@@ -270,6 +291,106 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         if (shared_common_pref.getvalue("worktype", "").equalsIgnoreCase("43")) {
             linCheckin.setVisibility(View.GONE);
             linReCheck.setVisibility(View.GONE);
+        }
+    }
+
+    private void loadImage(String mProfileImage) {
+        Glide.with(this.context)
+                .load(mProfileImage)
+                .apply(RequestOptions.circleCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(profilePic);
+    }
+
+    private void loadExploreGrid() {
+        binding.exploreMore.setLayoutManager(new GridLayoutManager(context, 3));
+        binding.exploreMore.setHasFixedSize(true);
+        binding.exploreMore.setItemViewCacheSize(20);
+        Adapter adapter6 = new Adapter(context, exploreImage, exploreName);
+        binding.exploreMore.setAdapter(adapter6);
+    }
+
+    public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+        ArrayList exploreImage, exploreName;
+        Context context;
+
+        public Adapter(Context context, ArrayList courseImg, ArrayList courseName) {
+            this.context = context;
+            this.exploreImage = courseImg;
+            this.exploreName = courseName;
+        }
+
+        @NonNull
+        @Override
+        public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_dash_explore_more_item, parent, false);
+            Adapter.ViewHolder viewHolder = new Adapter.ViewHolder(view);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position) {
+            int res = (int) exploreImage.get(position);
+            holder.images.setImageResource(res);
+            holder.text.setText((String) exploreName.get(position));
+
+            holder.layout.setOnClickListener(v -> {
+                switch (position){
+                    case 0:
+                        startActivity(new Intent(context, Leave_Dashboard.class));
+                        break;
+
+                    case 1:
+                        Shared_Common_Pref.TravelAllowance = 0;
+                        startActivity(new Intent(context, TAClaimActivity.class));
+                        break;
+
+                    case 2:
+                        startActivity(new Intent(context, SFA_Activity.class));
+                        break;
+
+                    case 3:
+                        Intent intent = new Intent(context, QRCodeScanner.class);
+                        intent.putExtra("Name", "GateIn");
+                        startActivity(intent);
+                        break;
+
+                    case 4:
+                        Intent intent1 = new Intent(context, QRCodeScanner.class);
+                        intent1.putExtra("Name", "GateOut");
+                        startActivity(intent1);
+                        break;
+
+                    case 5:
+                        Shared_Common_Pref.Tp_Approvalflag = "0";
+                        Intent intent5 = new Intent(context, Tp_Calander.class);
+                        startActivity(intent5);
+                        break;
+
+                    case 6:
+                        Shared_Common_Pref.TravelAllowance = 1;
+                        startActivity(new Intent(context, Approvals.class));
+                        break;
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return exploreImage.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView images;
+            TextView text;
+            RelativeLayout layout;
+
+            public ViewHolder(View view) {
+                super(view);
+                images = view.findViewById(R.id.image);
+                text = view.findViewById(R.id.name);
+                layout = view.findViewById(R.id.layout);
+            }
         }
     }
 
@@ -375,12 +496,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         });
 
-        binding.notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.notification.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
         binding.logout.setOnClickListener(v -> {
                     common_class.clearLocData(Dashboard.this);

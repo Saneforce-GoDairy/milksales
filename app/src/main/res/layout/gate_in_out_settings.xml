@@ -8,8 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/C15dp"
-        android:background="@drawable/fragment_card">
+        android:layout_marginHorizontal="@dimen/C15dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gate_recycle"

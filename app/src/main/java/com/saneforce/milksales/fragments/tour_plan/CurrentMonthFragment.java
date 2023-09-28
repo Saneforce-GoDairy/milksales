@@ -144,25 +144,25 @@ public class CurrentMonthFragment extends Fragment {
 
                     //------------- Gridview
                     adapter = new GridCellAdapter(getContext(), R.id.date, month, year, (ArrayList<Tp_View_Master>) Tp_View_Master);
-                    adapter.notifyDataSetChanged();
                     binding.gridcalander.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
 
                     //-------------- RecyclerView
                     adapter2 = new PostAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
                     binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
                     binding.recyclerView.setHasFixedSize(true);
                     binding.recyclerView.setItemViewCacheSize(20);
-                    adapter.notifyDataSetChanged();
                     binding.recyclerView.setAdapter(adapter2);
+                    adapter.notifyDataSetChanged();
 
                     //--------------- Tour plan RecyclerView Plan explore view
-                    adapter3 = new TourPlanExploreAdapter(getActivity(), (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
+                    adapter3 = new TourPlanExploreAdapter(getActivity(),  R.id.date, SelectedMonth + 1, year,(ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
                     binding.recyclerviewExplore.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.recyclerviewExplore.addItemDecoration(new DividerItemDecoration(requireContext(), 0));
                     binding.recyclerviewExplore.setHasFixedSize(true);
                     binding.recyclerviewExplore.setItemViewCacheSize(20);
                     binding.recyclerviewExplore.setAdapter(adapter3);
-                    adapter.notifyDataSetChanged();
+                    adapter3.notifyDataSetChanged();
                 }
 
                 @Override
@@ -177,10 +177,38 @@ public class CurrentMonthFragment extends Fragment {
     public class TourPlanExploreAdapter extends RecyclerView.Adapter<TourPlanExploreAdapter.ViewHolder>{
         private final Context context;
         private ArrayList<Tp_View_Master> tpViewMasterArrayList;
+        private final List<String> list;
+        private static final int DAY_OFFSET = 1;
+        private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        private int daysInMonth;
+        private int currentDayOfMonth;
+        private int currentWeekDay;
+        private TextView gridcell;
+        private ImageView iv_icon;
+        private TextView num_events_per_day;
+        private String  curentDateString;
+        private Calendar selectedDate;
+        private final HashMap<String, Integer> eventsPerMonthMap;
+        private SimpleDateFormat df;
+        int selectedPosition = -1;
+        int lastSelectedPosition = -1;
 
-        public TourPlanExploreAdapter(Context context, ArrayList<Tp_View_Master> tpViewMasterArrayList){
+        public TourPlanExploreAdapter(Context context,int textViewResourceId, int month, int year , ArrayList<Tp_View_Master> tpViewMasterArrayList){
             this.context = context;
             this.tpViewMasterArrayList = tpViewMasterArrayList;
+            this.list = new ArrayList<>();
+
+            Calendar calendar = Calendar.getInstance();
+            setCurrentDayOfMonth(calendar.get(Calendar.DAY_OF_MONTH));
+            setCurrentWeekDay(calendar.get(Calendar.DAY_OF_WEEK));
+            selectedDate = (Calendar) calendar.clone();
+            df = new SimpleDateFormat("MMM");
+            curentDateString = df.format(selectedDate.getTime());
+
+            printMonth(month, year);
+
+            eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
         }
 
         @NonNull
@@ -200,18 +228,23 @@ public class CurrentMonthFragment extends Fragment {
                 holder.mWorkType.setText(tpViewMaster.getWorktypeName());
                 holder.mRemarks.setText(tpViewMaster.getRemarks());
                 holder.mDate.setText(tpViewMaster.getDate());
+                    holder.mCardView.setCardBackgroundColor(Color.parseColor(tpViewMaster.getColor()));
 
-                if (tpViewMaster.getWorktypeName().equals("Field Work")){
-                    holder.mCardView.setCardBackgroundColor(Color.parseColor("#F9E7DB"));
-                }
+                holder.binding.cardLayout.setOnClickListener(v -> {
+                    lastSelectedPosition = selectedPosition;
+                    selectedPosition = holder.getBindingAdapterPosition();
+                    notifyItemChanged(lastSelectedPosition);
+                    notifyItemChanged(selectedPosition);
 
-                if (tpViewMaster.getWorktypeName().equals("Joint Work")){
-                    holder.mCardView.setCardBackgroundColor(Color.parseColor("#FFDCF0FA"));
-                }
+                    String[] day_color1 = list.get(position).split("-");
+                    String theday1 = day_color1[0];
+                    String themonth1 = day_color1[2];
+                    String theyear1 = day_color1[3];
+                    int month = SelectedMonth + 1;
+                    String TourMonth = theyear1 + "-" + month + "-" + theday1;
+                    common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
+                });
 
-                if (tpViewMaster.getWorktypeName().equals("Training day")){
-                    holder.mCardView.setCardBackgroundColor(Color.parseColor("#FFF8D1FF"));
-                }
             }else {
                 Toast.makeText(context, "Empty tp arraylist", Toast.LENGTH_SHORT).show();
             }
@@ -249,6 +282,131 @@ public class CurrentMonthFragment extends Fragment {
                 mCardView = binding.cardLayout;
             }
         }
+
+        private void setCurrentDayOfMonth(int currentDayOfMonth) {
+            this.currentDayOfMonth = currentDayOfMonth;
+        }
+
+        public void setCurrentWeekDay(int currentWeekDay) {
+            this.currentWeekDay = currentWeekDay;
+        }
+
+        private int getNumberOfDaysOfMonth(int i) {
+            return daysOfMonth[i];
+        }
+
+        private String getMonthAsString(int i) {
+            return months[i];
+        }
+
+        private HashMap<String, Integer> findNumberOfEventsPerMonth(int year, int month) {
+            HashMap<String, Integer> map = new HashMap<String, Integer>();
+            return map;
+        }
+
+        public String CheckTp_View(int a) {
+            String bflag = "0";
+            if (Tp_View_Master != null) {
+
+
+                for (int i = 0; Tp_View_Master.size() > i; i++) {
+                    if (a == Tp_View_Master.get(i).getDayofcout()) {
+                        Log.v("SUBMIT_STATUS", String.valueOf(Tp_View_Master.get(i).getSubmitStatus() + "DAY" + Tp_View_Master.get(i).getDayofcout()));
+                        if (String.valueOf(Tp_View_Master.get(i).getSubmitStatus()).equals("3")) {
+                            bflag = "3";
+                        } else {
+                            bflag = "1";
+                        }
+                    }
+                }
+            }
+            return bflag;
+        }
+
+        @SuppressLint("WrongConstant")
+        private void printMonth(int mm, int yy) {
+            int trailingSpaces = 0;
+            int daysInPrevMonth = 0;
+            int prevMonth = 0;
+            int prevYear = 0;
+            int nextMonth = 0;
+            int nextYear = 0;
+
+            int currentMonth = mm - 1;
+            daysInMonth = getNumberOfDaysOfMonth(currentMonth);
+            // Gregorian Calendar : MINUS 1, set to FIRST OF MONTH
+            GregorianCalendar cal = new GregorianCalendar(yy, currentMonth, 1);
+
+            if (currentMonth == 11) {
+                prevMonth = currentMonth - 1;
+                daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
+                nextMonth = 0;
+                prevYear = yy;
+                nextYear = yy + 1;
+            } else if (currentMonth == 0) {
+                prevMonth = 11;
+                prevYear = yy - 1;
+                nextYear = yy;
+                daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
+                nextMonth = 1;
+            } else {
+                prevMonth = currentMonth - 1;
+                nextMonth = currentMonth + 1;
+                nextYear = yy;
+                prevYear = yy;
+                daysInPrevMonth = getNumberOfDaysOfMonth(prevMonth);
+            }
+
+            int currentWeekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            trailingSpaces = currentWeekDay;
+
+            if (cal.isLeapYear(cal.get(Calendar.YEAR)) && mm == 1) {
+                ++daysInMonth;
+            }
+
+            // Trailing Month days
+            for (int i = 0; i < trailingSpaces; i++) {
+                list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-" + getMonthAsString(prevMonth) + "-" + prevYear);
+            }
+
+            // Current Month Days
+            for (int i = 1; i <= daysInMonth; i++) {
+                if (CheckTp_View(i).equals("1") || CheckTp_View(i).equals("3")) {
+                    Log.e("getCurrentDayOfMonth", String.valueOf(i) + "-BLUE" + "-" + curentDateString + "-" + yy + "  " + getMonthAsString(currentMonth) + "DATE " + getCurrentDayOfMonth() + "-" + getMonthAsString(currentMonth) + "=" + yy);
+                    if (CheckTp_View(i).equals("1")) {
+                        Log.e("PENDING_COLOR", CheckTp_View(i));
+                        list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                    } else {
+                        Log.e("APPROVED_COLOR", CheckTp_View(i));
+                        list.add(String.valueOf(i) + "-GREEN" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                    }
+                   /* if (getMonthAsString(currentMonth).equals(curentDateString)) {
+                        list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                        Log.d("getCurrentDayOfMonth11", String.valueOf(i) + "-BLUE" + "-" + curentDateString + "-" + yy + "  " + getMonthAsString(currentMonth));
+                    } else {
+                        list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                    }*/
+                } else {
+                    list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                }
+
+                Log.e("DAY_of_month", String.valueOf(list.get(i - 1)));
+            }
+
+            // Leading Month days
+            for (int i = 0; i < list.size() % 7; i++) {
+                list.add(i + 1 + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
+            }
+            for (int i = 0; i < list.size(); i++) {
+                Log.e("DAYCOLOR", String.valueOf(list.get(i)));
+                Log.e("Days_In_A month", String.valueOf(daysInMonth));
+            }
+        }
+        public int getCurrentDayOfMonth() {
+            return currentDayOfMonth;
+        }
+
+
     }
 
     public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
@@ -297,6 +455,7 @@ public class CurrentMonthFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull PostAdapter.ViewHolder holder, int position) {
+
             holder.binding.getRoot().setOnClickListener(v -> {
                 lastSelectedPosition = selectedPosition;
                 selectedPosition = holder.getBindingAdapterPosition();
@@ -332,6 +491,7 @@ public class CurrentMonthFragment extends Fragment {
             }
 
             String[] day_color = list.get(position).split("-");
+
             Log.e("day_color", String.valueOf(day_color[0]));
             String theday = day_color[0];
             String themonth = day_color[2];
@@ -365,6 +525,18 @@ public class CurrentMonthFragment extends Fragment {
            }else {
                Toast.makeText(context, "Empty dp arraylist", Toast.LENGTH_SHORT).show();
            }
+
+//            int size = tpViewMasterArrayList.size();
+//            Tp_View_Master tp = tpViewMasterArrayList.get(position);
+//
+//            String mColor = tp.getColor();
+//            String mDate = tp.getDate();
+//
+//            if (mColor != null){
+//                holder.mTourPlanCircle.setCardBackgroundColor(Color.parseColor(mColor));
+//            }
+//
+//            Log.e("color_", mColor);
         }
 
         @Override
