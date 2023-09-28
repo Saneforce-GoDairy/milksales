@@ -855,7 +855,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                             }
                             JSONArray routeResponse = object.getJSONArray("routeResponse");
                             for (int i = 0; i < routeResponse.length(); i++) {
-                                String id = routeResponse.getJSONObject(i).getString("RouteCode");
+                                String id = routeResponse.getJSONObject(i).getString("Route_ID");
                                 String title = routeResponse.getJSONObject(i).getString("Route_Name");
                                 String officeReference = routeResponse.getJSONObject(i).getString("Plant_Code");
                                 Log.e("ksjdhksd", "routeResponse: " + id + ", " + title + ", " + officeReference);
