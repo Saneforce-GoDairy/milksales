@@ -139,6 +139,8 @@ public class CameraxActivity extends AppCompatActivity {
     private Dialog submitProgressDialog, checkInSuccessDialog;
     private String capturedImageName;
 
+    double lat = 0, lng = 0;
+
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
         @Override
@@ -317,10 +319,16 @@ public class CameraxActivity extends AppCompatActivity {
         mIntent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
         FileUploadService.enqueueWork(this, mIntent);
 
+        lat = 0;
+        lng = 0;
         new LocationFinder(getApplication(), new LocationEvents() {
             @Override
             public void OnLocationRecived(Location location) {
-                saveCheckIn();
+                if (location != null) {
+                    lat = location.getLatitude();
+                    lng = location.getLongitude();
+                    saveCheckIn();
+                }
             }
         });
 
@@ -837,11 +845,7 @@ public class CameraxActivity extends AppCompatActivity {
     }
 
     private void saveCheckIn() {
-        
-        
         try {
-
-            Location location = mlocation;//Common_Class.location;//locationFinder.getLocation();
             String CTime = DT.GetDateTime(getApplicationContext(), "HH:mm:ss");
             String CDate = DT.GetDateTime(getApplicationContext(), "yyyy-MM-dd");
             if (mMode.equalsIgnoreCase("onduty")) {
@@ -853,21 +857,12 @@ public class CameraxActivity extends AppCompatActivity {
             CheckInInf.put("eDate", CDate + " " + CTime);
             CheckInInf.put("eTime", CTime);
             CheckInInf.put("UKey", UKey);
-            double lat = 0, lng = 0;
-            if (location != null) {
-                lat = location.getLatitude();
-                lng = location.getLongitude();
-            }
-            if (lat == 0 || lng == 0) {
-                Toast.makeText(context, "Please wait, searching location...", Toast.LENGTH_SHORT).show();
-                new LocationFinder(getApplication(), loc -> mlocation = loc);
-                return;
-            }
             CheckInInf.put("lat", lat);
             CheckInInf.put("long", lng);
             CheckInInf.put("Lattitude", lat);
             CheckInInf.put("Langitude", lng);
 
+            // Todo: Map Error
             Geocoder geocoder = new Geocoder(context, Locale.getDefault());
             try {
                 List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
