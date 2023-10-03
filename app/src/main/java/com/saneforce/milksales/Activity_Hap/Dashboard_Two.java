@@ -989,29 +989,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             checkInUrl = ApiClient.BASE_URL.replaceAll("server/", "");
             checkInUrl = checkInUrl + fItm.get("ImgName").getAsString();
 
-            Log.e(TAG, "image_capture : " + checkInUrl);
-
-//            Glide.with(Dashboard_Two.this)
-//                    .load(checkInUrl)
-//                    .into(binding.imageViewUserProfile);
-
-//            if (Common_Class.isNullOrEmpty(fItm.get("ImgName").getAsString()))
-//                ivCheckIn.setVisibility(View.GONE);
-//            else {
-//                ivCheckIn.setVisibility(View.VISIBLE);
-//                Glide.with(Dashboard_Two.this)
-//                        .load(checkInUrl)
-//                        .into(ivCheckIn);
-//            }
-
-//            try {
-//                Glide.with(Dashboard_Two.this)
-//                        .load(checkInUrl)
-//                        .into(binding.imageViewUserProfile);
-//            } catch (Exception e) {
-//
-//            }
-
             profileImageView.setOnClickListener(v -> {
                 Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
                 intent.putExtra("ImageUrl", mProfileUrl);

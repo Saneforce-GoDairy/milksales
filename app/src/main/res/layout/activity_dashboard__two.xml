@@ -166,12 +166,18 @@
                     />
             </LinearLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:layout_width="300dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card11"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardElevation="@dimen/C10dp"
+                app:cardBackgroundColor="@color/white"
                 android:layout_below="@id/lin_clock_in"
-                android:layout_marginTop="30dp"
-                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="20dp">
+
+            <com.google.android.material.tabs.TabLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:tabSelectedTextColor="@color/primaryDark"
                 app:tabTextColor="#737779"
                 app:tabIndicatorColor="#1997CE"
@@ -195,12 +201,22 @@
 
             </com.google.android.material.tabs.TabLayout>
 
+            </androidx.cardview.widget.CardView>
+
             <androidx.viewpager2.widget.ViewPager2
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:id="@+id/view_pager"
-                android:layout_below="@id/tab_layout"/>
+                android:layout_below="@id/card11"/>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/view_pager"
+                android:background="#CACACA" />
 
             <!-- New code -->
 
