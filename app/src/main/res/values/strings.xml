@@ -131,6 +131,7 @@
     <string name="city">City<font fgcolor='#E53935'> *</font></string>
     <string name="postal_code_pincode">Postal Code (Pincode)<font fgcolor='#E53935'> *</font></string>
     <string name="state_code">State<font fgcolor='#E53935'> *</font></string>
+    <string name="select_district">District<font fgcolor='#E53935'> *</font></string>
     <string name="name_of_the_customer">Name of the Customer<font fgcolor='#E53935'> *</font></string>
     <string name="name_of_the_owner">Name of the Owner<font fgcolor='#E53935'> *</font></string>
     <string name="address_of_the_shop">Address of the Shop<font fgcolor='#E53935'> *</font></string>
@@ -179,5 +180,14 @@
     <string name="account_group">Account Group<font fgcolor='#E53935'> *</font></string>
     <string name="distributor_channel">Distributor Channel<font fgcolor='#E53935'> *</font></string>
     <string name="sales_division">Sales Division<font fgcolor='#E53935'> *</font></string>
+    <string name="selectSalesRegion">Sales Region<font fgcolor='#E53935'> *</font></string>
+    <string name="selectBusinessType">Business Type<font fgcolor='#E53935'> *</font></string>
+    <string name="selectCustomerGroup">Customer Group<font fgcolor='#E53935'> *</font></string>
+    <string name="selectSalesGroup">Sales Group<font fgcolor='#E53935'> *</font></string>
+    <string name="selectBusinessDivision">Business Division<font fgcolor='#E53935'> *</font></string>
+    <string name="selectCustomerClass">Customer Class<font fgcolor='#E53935'> *</font></string>
+    <string name="selectCustomerType">Customer Type<font fgcolor='#E53935'> *</font></string>
+    <string name="selectReportingVerticals">Reporting Verticals<font fgcolor='#E53935'> *</font></string>
+    <string name="selectSubMarket">Sub Market<font fgcolor='#E53935'> *</font></string>
 
 </resources>

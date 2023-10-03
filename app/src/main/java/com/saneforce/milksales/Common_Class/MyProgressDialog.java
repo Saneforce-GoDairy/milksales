@@ -18,9 +18,7 @@ public class MyProgressDialog {
         if (!message.isEmpty()) {
             progressDialog.setMessage(message);
         }
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
-        }
+        progressDialog.show();
     }
 
     public void dismiss() {

@@ -278,7 +278,9 @@ public class Login extends AppCompatActivity {
         Intent inten = new Intent(this, TimerService.class);
         startService(inten);
         if (Login == true || CheckIn == true) {
-            ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
+            if (!shared_common_pref.getvalue("base_url").isEmpty()) {
+                ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
+            }
             if (cameraPermission.checkPermission()) {
                 Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
                 DAMode = true;

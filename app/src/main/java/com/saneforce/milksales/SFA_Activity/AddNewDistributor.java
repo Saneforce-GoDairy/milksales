@@ -34,10 +34,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.saneforce.milksales.Activity_Hap.AllowancCapture;
 import com.saneforce.milksales.Activity_Hap.ProductImageView;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Constants;
+import com.saneforce.milksales.Common_Class.MyProgressDialog;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
@@ -75,7 +77,7 @@ import retrofit2.Response;
 public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback, UpdateResponseUI {
 
     TextView select_region, select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation,
-            select_mode_of_payment, submit, select_bank_details, select_agreement_copy, select_sub_channel, selectCusACGroup, select_dist_channel, select_sales_division;
+            select_mode_of_payment, submit, select_bank_details, select_agreement_copy, select_sub_channel, selectCusACGroup, select_dist_channel, select_sales_division, selectDistrict, selectSalesRegion, selectBusinessType, selectCustomerGroup, selectSalesGroup, selectBusinessDivision, selectCustomerClass, selectCustomerType, selectReportingVerticals, selectSubMarket;
     ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai,
             display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, display_deposit, capture_deposit, home, display_aadhaar_number, capture_aadhaar_number,
             display_pan_number, capture_pan_number;
@@ -99,13 +101,18 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             residenceAddressStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", creationDateStr = "", aadhaarStr = "",
             PANStr = "", bankDetailsStr = "", bankImageName = "", bankImageFullPath = "", FSSAIDetailsStr = "", FSSAIImageName = "", FSSAIImageFullPath = "",
             GSTDetailsStr = "", GSTImageName = "", GSTImageFullPath = "", agreementDetailsStr = "", agreementImageName = "", agreementImageFullPath = "", modeOfPaymentStr = "",
-            depositDetailsStr = "", depositImageName = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "";
+            depositDetailsStr = "", depositImageName = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", DistrictID = "",
+            SalesRegionID = "", BusinessTypeID = "", CustomerGroupID = "", SalesGroupID = "", BusinessDivisionID = "", CustomerClassID = "", CustomerTypeID = "", ReportingVerticalsID = "",
+            SubMarketID = "", DistrictStr = "", SalesRegionStr = "", BusinessTypeStr = "", CustomerGroupStr = "", SalesGroupStr = "", BusinessDivisionStr = "", CustomerClassStr = "",
+            CustomerTypeStr = "", ReportingVerticalsStr = "", SubMarketStr = "";
 
     double Lat = 0, Long = 0;
+    MyProgressDialog myProgressDialog;
 
     GoogleMap googleMap;
-    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse;
+    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, MasSubMarketArray, MasCusTypeArray;
     String subChannelIDStr = "", subChannelNameStr = "", acGroupIDStr = "", acGroupNameStr = "", distChannelIDStr = "", distChannelNameStr = "", salesDivisionIDStr = "", salesDivisionNameStr = "";
+    SwitchMaterial gstSwitch, tcsSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +127,16 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         selectCusACGroup = findViewById(R.id.selectCusACGroup);
         select_dist_channel = findViewById(R.id.select_dist_channel);
         select_sales_division = findViewById(R.id.select_sales_division);
+        selectDistrict = findViewById(R.id.selectDistrict);
+        selectSalesRegion = findViewById(R.id.selectSalesRegion);
+        selectBusinessType = findViewById(R.id.selectBusinessType);
+        selectCustomerGroup = findViewById(R.id.selectCustomerGroup);
+        selectSalesGroup = findViewById(R.id.selectSalesGroup);
+        selectBusinessDivision = findViewById(R.id.selectBusinessDivision);
+        selectCustomerClass = findViewById(R.id.selectCustomerClass);
+        selectCustomerType = findViewById(R.id.selectCustomerType);
+        selectReportingVerticals = findViewById(R.id.selectReportingVerticals);
+        selectSubMarket = findViewById(R.id.selectSubMarket);
         select_state = findViewById(R.id.select_state);
         date_of_creation = findViewById(R.id.date_of_creation);
         select_mode_of_payment = findViewById(R.id.select_mode_of_payment);
@@ -161,6 +178,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         display_pan_number = findViewById(R.id.display_pan_number);
         capture_pan_number = findViewById(R.id.capture_pan_number);
         refreshLocation = findViewById(R.id.refreshLocation);
+        gstSwitch = findViewById(R.id.gstSwitch);
+        tcsSwitch = findViewById(R.id.tcsSwitch);
 
         common_class = new Common_Class(this);
         pref = new Shared_Common_Pref(this);
@@ -180,6 +199,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         routeList = new ArrayList<>();
         filteredRouteList = new ArrayList<>();
         tempRouteList = new ArrayList<>();
+
+        myProgressDialog = new MyProgressDialog(context);
 
         capture_customer_photo.setOnClickListener(v -> {
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
@@ -373,16 +394,31 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             recyclerView1.setAdapter(adapter);
             AlertDialog dialog = builder.create();
             adapter.setSelectItem((model, position) -> {
+                selectDistrict.setText("");
+                DistrictID = "";
+                DistrictStr = "";
+                select_state.setText(model.getTitle());
+                stateCodeStr = model.getId();
+                select_region.setText("");
+                regionCodeStr = "";
                 regionFilteredList.clear();
+                filteredMasDistrictArray = new JSONArray();
                 for (CommonModelWithThreeString modelForDropDown : regionList) {
                     if (modelForDropDown.getReference().equalsIgnoreCase(model.getId())) {
                         regionFilteredList.add(modelForDropDown);
                     }
                 }
-                select_state.setText(model.getTitle());
-                stateCodeStr = model.getId();
-                select_region.setText("");
-                regionCodeStr = "";
+                myProgressDialog.show("", "Filtering Districts...", true);
+                for (int i = 0; i < MasDistrictArray.length(); i++) {
+                    try {
+                        if (MasDistrictArray.getJSONObject(i).getString("State_Code").equals(stateCodeStr)) {
+                            filteredMasDistrictArray.put(MasDistrictArray.getJSONObject(i));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                myProgressDialog.dismiss();
                 dialog.dismiss();
             });
             close.setOnClickListener(v1 -> dialog.dismiss());
@@ -556,6 +592,14 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             dialog.show();
         });
         select_sub_channel.setOnClickListener(v -> {
+            if (select_channel.getText().toString().isEmpty()) {
+                Toast.makeText(context, "Please select channel", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (filteredSubChannel.length() == 0) {
+                Toast.makeText(context, "No sub channel found for the selected channel", Toast.LENGTH_SHORT).show();
+                return;
+            }
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
             builder.setView(view);
@@ -655,6 +699,272 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
+        selectSalesRegion.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Sales Region");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasCusSalRegionArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    SalesRegionID = MasCusSalRegionArray.getJSONObject(position).getString("id");
+                    SalesRegionStr = MasCusSalRegionArray.getJSONObject(position).getString("title");
+                    selectSalesRegion.setText(MasCusSalRegionArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectBusinessType.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Business Type");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasBusinessTypeArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    BusinessTypeID = MasBusinessTypeArray.getJSONObject(position).getString("id");
+                    BusinessTypeStr = MasBusinessTypeArray.getJSONObject(position).getString("title");
+                    selectBusinessType.setText(MasBusinessTypeArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectCustomerGroup.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Customer Group");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasCusGroupArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    CustomerGroupID = MasCusGroupArray.getJSONObject(position).getString("id");
+                    CustomerGroupStr = MasCusGroupArray.getJSONObject(position).getString("title");
+                    selectCustomerGroup.setText(MasCusGroupArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectSalesGroup.setOnClickListener(v -> {
+            if (select_sales_office_name.getText().toString().isEmpty()) {
+                Toast.makeText(context, "Please select sales office", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (filteredMasSalesGroupArray.length() == 0) {
+                Toast.makeText(context, "No sales group found for the selected sales office", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Sales Group");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, filteredMasSalesGroupArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    SalesGroupID = filteredMasSalesGroupArray.getJSONObject(position).getString("id");
+                    SalesGroupStr = filteredMasSalesGroupArray.getJSONObject(position).getString("title");
+                    selectSalesGroup.setText(filteredMasSalesGroupArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectBusinessDivision.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Business Division");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasBusinessDivisionArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    BusinessDivisionID = MasBusinessDivisionArray.getJSONObject(position).getString("id");
+                    BusinessDivisionStr = MasBusinessDivisionArray.getJSONObject(position).getString("title");
+                    selectBusinessDivision.setText(MasBusinessDivisionArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectCustomerClass.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Customer Class");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasCusClassArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    CustomerClassID = MasCusClassArray.getJSONObject(position).getString("id");
+                    CustomerClassStr = MasCusClassArray.getJSONObject(position).getString("title");
+                    selectCustomerClass.setText(MasCusClassArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectCustomerType.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Customer Type");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasCusTypeArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    CustomerTypeID = MasCusTypeArray.getJSONObject(position).getString("id");
+                    CustomerTypeStr = MasCusTypeArray.getJSONObject(position).getString("title");
+                    selectCustomerType.setText(MasCusTypeArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectReportingVerticals.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Reporting Verticals");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasReportingVertArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    ReportingVerticalsID = MasReportingVertArray.getJSONObject(position).getString("id");
+                    ReportingVerticalsStr = MasReportingVertArray.getJSONObject(position).getString("title");
+                    selectReportingVerticals.setText(MasReportingVertArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectSubMarket.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Sub Market");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasSubMarketArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    SubMarketID = MasSubMarketArray.getJSONObject(position).getString("id");
+                    SubMarketStr = MasSubMarketArray.getJSONObject(position).getString("title");
+                    selectSubMarket.setText(MasSubMarketArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        selectDistrict.setOnClickListener(v -> {
+            if (select_state.getText().toString().isEmpty()) {
+                Toast.makeText(context, "Please select state", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (filteredMasDistrictArray.length() == 0) {
+                Toast.makeText(context, "No District found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select District");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, filteredMasDistrictArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    DistrictID = filteredMasDistrictArray.getJSONObject(position).getString("id");
+                    DistrictStr = filteredMasDistrictArray.getJSONObject(position).getString("title");
+                    selectDistrict.setText(filteredMasDistrictArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
         select_bank_details.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
@@ -723,6 +1033,19 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         cusACGroupResponse = new JSONArray();
         distChannelResponse = new JSONArray();
         salesDivisionResponse = new JSONArray();
+
+        MasDistrictArray = new JSONArray();
+        filteredMasDistrictArray = new JSONArray();
+        MasCusSalRegionArray = new JSONArray();
+        MasSalesGroupArray = new JSONArray();
+        filteredMasSalesGroupArray = new JSONArray();
+        MasCusGroupArray = new JSONArray();
+        MasBusinessTypeArray = new JSONArray();
+        MasBusinessDivisionArray = new JSONArray();
+        MasCusClassArray = new JSONArray();
+        MasReportingVertArray = new JSONArray();
+        MasSubMarketArray = new JSONArray();
+        MasCusTypeArray = new JSONArray();
 
         getLocation();
 
@@ -800,12 +1123,25 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             officeCodeStr = model.getId();
             select_sales_office_name.setText(model.getTitle());
             routeCodeStr = "";
+            selectSalesGroup.setText("");
+            SalesGroupID = "";
+            SalesGroupStr = "";
             String routeReference = model.getRouteReference();
             select_route_name.setText("");
             filteredRouteList.clear();
             for (CommonModelWithFourString modelWithThreeString : routeList) {
                 if (modelWithThreeString.getRouteReference().equalsIgnoreCase(routeReference)) {
                     filteredRouteList.add(modelWithThreeString);
+                }
+            }
+            filteredMasSalesGroupArray = new JSONArray();
+            for (int i = 0; i < MasSalesGroupArray.length(); i++) {
+                try {
+                    if (MasSalesGroupArray.getJSONObject(i).getString("PlantCode").equals(officeCodeStr)) {
+                        filteredMasSalesGroupArray.put(MasSalesGroupArray.getJSONObject(i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -832,47 +1168,62 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         String result = response.body().string();
                         JSONObject object = new JSONObject(result);
                         if (object.getBoolean("success")) {
-                            regionList.clear();
-                            officeList.clear();
-                            routeList.clear();
-                            ChannelList.clear();
-                            JSONArray array = object.getJSONArray("regionResponse");
-                            for (int i = 0; i < array.length(); i++) {
-                                String id = array.getJSONObject(i).getString("Area_code");
-                                String title = array.getJSONObject(i).getString("Area_name");
-                                String stateCode = array.getJSONObject(i).getString("State_Code");
-                                Log.e("ksjdhksd", "regionResponse: " + id + ", " + title + ", state code: " + stateCode);
-                                regionList.add(new CommonModelWithThreeString(id, title, stateCode));
-                            }
-                            JSONArray officeResponse = object.getJSONArray("officeResponse");
-                            for (int i = 0; i < officeResponse.length(); i++) {
-                                String id = officeResponse.getJSONObject(i).getString("sOffCode");
-                                String title = officeResponse.getJSONObject(i).getString("sOffName");
-                                String regionReference = officeResponse.getJSONObject(i).getString("RegionId");
-                                String officeReference = officeResponse.getJSONObject(i).getString("PlantId");
-                                Log.e("ksjdhksd", "officeResponse: " + id + ", " + title + ", " + regionReference + ", " + officeReference);
-                                officeList.add(new CommonModelWithFourString(id, title, regionReference, officeReference));
-                            }
-                            JSONArray routeResponse = object.getJSONArray("routeResponse");
-                            for (int i = 0; i < routeResponse.length(); i++) {
-                                String id = routeResponse.getJSONObject(i).getString("Route_ID");
-                                String title = routeResponse.getJSONObject(i).getString("Route_Name");
-                                String officeReference = routeResponse.getJSONObject(i).getString("Plant_Code");
-                                Log.e("ksjdhksd", "routeResponse: " + id + ", " + title + ", " + officeReference);
-                                routeList.add(new CommonModelWithFourString(id, title, "", officeReference));
-                            }
-                            JSONArray channelResponse = object.getJSONArray("channelResponse");
-                            for (int i = 0; i < channelResponse.length(); i++) {
-                                String id = channelResponse.getJSONObject(i).getString("CateId");
-                                String title = channelResponse.getJSONObject(i).getString("CateNm");
-                                Log.e("ksjdhksd", "channelResponse: " + id + ", " + title);
-                                ChannelList.add(new CommonModelForDropDown(id, title));
-                            }
-                            // Todo: subChannelResponse
-                            subChannelResponse = object.getJSONArray("subChannelResponse");
-                            cusACGroupResponse = object.getJSONArray("cusACGroupResponse");
-                            distChannelResponse = object.getJSONArray("distChannelResponse");
-                            salesDivisionResponse = object.getJSONArray("salesDivisionResponse");
+                            new Thread(() -> {
+                                try {
+                                    regionList.clear();
+                                    officeList.clear();
+                                    routeList.clear();
+                                    ChannelList.clear();
+                                    JSONArray array = object.getJSONArray("regionResponse");
+                                    for (int i = 0; i < array.length(); i++) {
+                                        String id = array.getJSONObject(i).getString("Area_code");
+                                        String title = array.getJSONObject(i).getString("Area_name");
+                                        String stateCode = array.getJSONObject(i).getString("State_Code");
+                                        Log.e("ksjdhksd", "regionResponse: " + id + ", " + title + ", state code: " + stateCode);
+                                        regionList.add(new CommonModelWithThreeString(id, title, stateCode));
+                                    }
+                                    JSONArray officeResponse = object.getJSONArray("officeResponse");
+                                    for (int i = 0; i < officeResponse.length(); i++) {
+                                        String id = officeResponse.getJSONObject(i).getString("sOffCode");
+                                        String title = officeResponse.getJSONObject(i).getString("sOffName");
+                                        String regionReference = officeResponse.getJSONObject(i).getString("RegionId");
+                                        String officeReference = officeResponse.getJSONObject(i).getString("PlantId");
+                                        Log.e("ksjdhksd", "officeResponse: " + id + ", " + title + ", " + regionReference + ", " + officeReference);
+                                        officeList.add(new CommonModelWithFourString(id, title, regionReference, officeReference));
+                                    }
+                                    JSONArray routeResponse = object.getJSONArray("routeResponse");
+                                    for (int i = 0; i < routeResponse.length(); i++) {
+                                        String id = routeResponse.getJSONObject(i).getString("Route_ID");
+                                        String title = routeResponse.getJSONObject(i).getString("Route_Name");
+                                        String officeReference = routeResponse.getJSONObject(i).getString("Plant_Code");
+                                        Log.e("ksjdhksd", "routeResponse: " + id + ", " + title + ", " + officeReference);
+                                        routeList.add(new CommonModelWithFourString(id, title, "", officeReference));
+                                    }
+                                    JSONArray channelResponse = object.getJSONArray("channelResponse");
+                                    for (int i = 0; i < channelResponse.length(); i++) {
+                                        String id = channelResponse.getJSONObject(i).getString("CateId");
+                                        String title = channelResponse.getJSONObject(i).getString("CateNm");
+                                        Log.e("ksjdhksd", "channelResponse: " + id + ", " + title);
+                                        ChannelList.add(new CommonModelForDropDown(id, title));
+                                    }
+                                    subChannelResponse = object.getJSONArray("subChannelResponse");
+                                    cusACGroupResponse = object.getJSONArray("cusACGroupResponse");
+                                    distChannelResponse = object.getJSONArray("distChannelResponse");
+                                    salesDivisionResponse = object.getJSONArray("salesDivisionResponse");
+
+                                    MasDistrictArray = object.getJSONArray("MasDistrict");
+                                    MasCusSalRegionArray = object.getJSONArray("MasCusSalRegion");
+                                    MasSalesGroupArray = object.getJSONArray("MasSalesGroup");
+                                    MasCusGroupArray = object.getJSONArray("MasCusGroup");
+                                    MasBusinessTypeArray = object.getJSONArray("MasBusinessType");
+                                    MasBusinessDivisionArray = object.getJSONArray("MasBusinessDivision");
+                                    MasCusClassArray = object.getJSONArray("MasCusClass");
+                                    MasReportingVertArray = object.getJSONArray("MasReportingVert");
+                                    MasSubMarketArray = object.getJSONArray("MasSubMarket");
+                                    MasCusTypeArray = object.getJSONArray("MasCusType");
+                                } catch (JSONException ignored) {
+                                }
+                            }).start();
                         } else {
                             Toast.makeText(context, "Response is false", Toast.LENGTH_SHORT).show();
                         }
@@ -994,6 +1345,26 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Capture the Deposit Details", Toast.LENGTH_SHORT).show();
         } else if ((Lat == 0) || (Long == 0)) {
             Toast.makeText(context, "Location can't be fetched", Toast.LENGTH_SHORT).show();
+        } else if (DistrictID.isEmpty() || DistrictStr.isEmpty()) {
+            Toast.makeText(context, "Please Select District", Toast.LENGTH_SHORT).show();
+        } else if (SalesRegionID.isEmpty() || SalesRegionStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Sales Region", Toast.LENGTH_SHORT).show();
+        } else if (BusinessTypeID.isEmpty() || BusinessTypeStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Business Type", Toast.LENGTH_SHORT).show();
+        } else if (CustomerGroupID.isEmpty() || CustomerGroupStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Customer Group", Toast.LENGTH_SHORT).show();
+        } else if (SalesGroupID.isEmpty() || SalesGroupStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Sales Group", Toast.LENGTH_SHORT).show();
+        } else if (BusinessDivisionID.isEmpty() || BusinessDivisionStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Business Division", Toast.LENGTH_SHORT).show();
+        } else if (CustomerClassID.isEmpty() || CustomerClassStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Customer Class", Toast.LENGTH_SHORT).show();
+        } else if (CustomerTypeID.isEmpty() || CustomerTypeStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Customer Type", Toast.LENGTH_SHORT).show();
+        } else if (ReportingVerticalsID.isEmpty() || ReportingVerticalsStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Reporting Verticals", Toast.LENGTH_SHORT).show();
+        } else if (SubMarketID.isEmpty() || SubMarketStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Sub Market", Toast.LENGTH_SHORT).show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Are you sure want to submit?");
@@ -1024,8 +1395,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("routeCodeStr", routeCodeStr);
             object.put("routeNameStr", routeNameStr);
             object.put("channelIDStr", channelIDStr);
-            object.put("channelStr", channelStr); // DivERP, CustGrpErp, CusSubGrpErp, SubCat_channel
-            object.put("subChannelID", subChannelIDStr); // salesDivisionID, acGroupID, distChannelID, subChannelID
+            object.put("channelStr", channelStr);
+            object.put("subChannelID", subChannelIDStr);
             object.put("subChannelName", subChannelNameStr);
             object.put("acGroupID", acGroupIDStr);
             object.put("acGroupName", acGroupNameStr);
@@ -1063,6 +1434,29 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("depositImageName", depositImageName);
             object.put("lat", Lat);
             object.put("long", Long);
+
+            object.put("DistrictID", DistrictID);
+            object.put("DistrictStr", DistrictStr);
+            object.put("SalesRegionID", SalesRegionID);
+            object.put("SalesRegionStr", SalesRegionStr);
+            object.put("BusinessTypeID", BusinessTypeID);
+            object.put("BusinessTypeStr", BusinessTypeStr);
+            object.put("CustomerGroupID", CustomerGroupID);
+            object.put("CustomerGroupStr", CustomerGroupStr);
+            object.put("SalesGroupID", SalesGroupID);
+            object.put("SalesGroupStr", SalesGroupStr);
+            object.put("BusinessDivisionID", BusinessDivisionID);
+            object.put("BusinessDivisionStr", BusinessDivisionStr);
+            object.put("CustomerClassID", CustomerClassID);
+            object.put("CustomerClassStr", CustomerClassStr);
+            object.put("CustomerTypeID", CustomerTypeID);
+            object.put("CustomerTypeStr", CustomerTypeStr);
+            object.put("ReportingVerticalsID", ReportingVerticalsID);
+            object.put("ReportingVerticalsStr", ReportingVerticalsStr);
+            object.put("SubMarketID", SubMarketID);
+            object.put("SubMarketStr", SubMarketStr);
+            object.put("gstStatus", gstSwitch.isChecked() ? "1" : "0");
+            object.put("tcsStatus", tcsSwitch.isChecked() ? "0" : "1");
 
         } catch (JSONException e) {
             progressDialog.dismiss();
