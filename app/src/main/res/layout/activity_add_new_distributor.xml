@@ -187,7 +187,7 @@
                 android:layout_marginTop="@dimen/C5dp"
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
-                android:hint="Select Region"
+                android:hint="Select TM1 Reporting Verticals"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp"
@@ -371,7 +371,7 @@
                 android:layout_marginTop="@dimen/C5dp"
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
-                android:hint="Select Sales Region"
+                android:hint="Select Regional Market"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp"
@@ -486,7 +486,7 @@
                 android:layout_marginTop="@dimen/C5dp"
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
-                android:hint="Select Customer Class"
+                android:hint="Select Customer Cluster"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp"
@@ -627,6 +627,7 @@
                 android:elevation="5dp"
                 android:hint="Enter Name of the Customer"
                 android:inputType="textPersonName"
+                android:maxLength="30"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
@@ -1085,7 +1086,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/textbox_bg"
                     android:elevation="5dp"
-                    android:hint="Enter FSSAI Certificate / Applied Details"
+                    android:hint="Enter FSSAI Certificate / Declaration"
                     android:inputType="text"
                     android:padding="@dimen/C8dp"
                     android:textColor="@color/black"
@@ -1111,86 +1112,212 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="@dimen/C5dp"
-                android:layout_marginBottom="@dimen/C15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/C5dp"
+                android:layout_marginBottom="@dimen/C15dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C8dp"
                     android:text="GST Tax"
                     android:textSize="@dimen/C14dp"
-                    android:textStyle="bold"
-                    android:layout_marginHorizontal="@dimen/C8dp" />
+                    android:textStyle="bold" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:layout_marginEnd="25dp"
+                    android:id="@+id/gstSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/gstSwitch" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TCS  Tax"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold"
-                    android:layout_marginHorizontal="@dimen/C8dp" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tcsSwitch" />
+                    android:checked="true" />
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:text="@string/gst_certificate_declaration"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
             <LinearLayout
+                android:id="@+id/gstDeclarationLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/C15dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-                <EditText
-                    android:id="@+id/type_gst"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/downloadGSTDeclarationForm"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C10dp"
-                    android:layout_marginTop="@dimen/C5dp"
-                    android:layout_marginBottom="@dimen/C15dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textbox_bg"
-                    android:elevation="5dp"
-                    android:hint="Enter GST Certificate / Declaration"
-                    android:inputType="text"
-                    android:maxLength="15"
-                    android:padding="@dimen/C8dp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/C13dp" />
+                    android:layout_marginStart="@dimen/C8dp"
+                    android:background="@drawable/bottom_button"
+                    android:drawableEnd="@drawable/ic_download"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/C15dp"
+                    android:paddingVertical="@dimen/C5dp"
+                    android:text="Download GST Declaration Form"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/C14dp" />
 
                 <ImageView
-                    android:id="@+id/display_gst"
+                    android:id="@+id/gstInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/C8dp"
+                    android:gravity="end"
+                    android:src="@drawable/ic_info" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="10dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/previewGSTDeclaration"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="@dimen/C8dp"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_round_photo_camera_24"
                     android:visibility="gone" />
 
                 <ImageView
-                    android:id="@+id/capture_gst"
+                    android:id="@+id/captureGSTDeclaration"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="@dimen/C8dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_round_photo_camera_24" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/gstLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C8dp"
+                    android:text="@string/gst_certificate_declaration"
+                    android:textSize="@dimen/C14dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/type_gst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/C10dp"
+                        android:layout_marginTop="@dimen/C5dp"
+                        android:layout_marginBottom="@dimen/C15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/textbox_bg"
+                        android:elevation="5dp"
+                        android:hint="Enter GST Certificate / Declaration"
+                        android:inputType="text"
+                        android:maxLength="15"
+                        android:padding="@dimen/C8dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/C13dp" />
+
+                    <ImageView
+                        android:id="@+id/display_gst"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/ic_round_photo_camera_24"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/capture_gst"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/ic_round_photo_camera_24" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/C5dp"
+                android:layout_marginBottom="@dimen/C15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C8dp"
+                    android:text="TCS Tax"
+                    android:textSize="@dimen/C14dp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/tcsSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tcsDeclarationLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/C15dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/downloadTCSDeclarationForm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/C8dp"
+                    android:background="@drawable/bottom_button"
+                    android:drawableEnd="@drawable/ic_download"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/C15dp"
+                    android:paddingVertical="@dimen/C5dp"
+                    android:text="Download TCS Declaration Form"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/C14dp" />
+
+                <ImageView
+                    android:id="@+id/tcsInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/C8dp"
+                    android:gravity="end"
+                    android:src="@drawable/ic_info" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="10dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/previewTCSDeclaration"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_round_photo_camera_24"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/captureTCSDeclaration"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_round_photo_camera_24" />
 
             </LinearLayout>

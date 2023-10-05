@@ -7,15 +7,9 @@ import androidx.appcompat.app.AlertDialog;
 import com.saneforce.milksales.Interface.AlertBox;
 
 public class MyAlertDialog {
-    AlertDialog.Builder builder;
-    Context context;
 
-    public MyAlertDialog(Context context) {
-        this.context = context;
-    }
-
-    public void show(String title, String message, boolean isCancelable, String positiveButton, String negativeButton, AlertBox listener) {
-        builder = new AlertDialog.Builder(context);
+    public static void show(Context context, String title, String message, boolean isCancelable, String positiveButton, String negativeButton, AlertBox listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(isCancelable);
         if (!title.isEmpty()) {
             builder.setTitle(title);

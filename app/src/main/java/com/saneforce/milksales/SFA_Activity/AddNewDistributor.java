@@ -1,9 +1,12 @@
 package com.saneforce.milksales.SFA_Activity;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Address;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,8 +43,12 @@ import com.saneforce.milksales.Activity_Hap.AllowancCapture;
 import com.saneforce.milksales.Activity_Hap.ProductImageView;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Constants;
+import com.saneforce.milksales.Common_Class.DownloadReceiver;
+import com.saneforce.milksales.Common_Class.FileDownloader;
+import com.saneforce.milksales.Common_Class.MyAlertDialog;
 import com.saneforce.milksales.Common_Class.MyProgressDialog;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
+import com.saneforce.milksales.Interface.AlertBox;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.Interface.OnImagePickListener;
@@ -76,13 +84,14 @@ import retrofit2.Response;
 
 public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback, UpdateResponseUI {
 
-    TextView select_region, select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation,
+    TextView select_region, select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, downloadTCSDeclarationForm,
             select_mode_of_payment, submit, select_bank_details, select_agreement_copy, select_sub_channel, selectCusACGroup, select_dist_channel, select_sales_division, selectDistrict, selectSalesRegion, selectBusinessType, selectCustomerGroup, selectSalesGroup, selectBusinessDivision, selectCustomerClass, selectCustomerType, selectReportingVerticals, selectSubMarket;
     ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai,
             display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, display_deposit, capture_deposit, home, display_aadhaar_number, capture_aadhaar_number,
-            display_pan_number, capture_pan_number;
+            display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration;
     EditText type_city, type_pincode, type_name_of_the_customer, type_name_of_the_owner, type_address_of_the_shop, type_residence_address, type_mobile_number, type_email_id,
             type_sales_executive_name, type_sales_executive_employee_id, type_aadhaar_number, type_pan_number, type_gst, type_deposit, type_fssai;
+    LinearLayout gstDeclarationLL, gstLL, tcsDeclarationLL;
 
     Context context = this;
     Common_Class common_class;
@@ -101,18 +110,19 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             residenceAddressStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", creationDateStr = "", aadhaarStr = "",
             PANStr = "", bankDetailsStr = "", bankImageName = "", bankImageFullPath = "", FSSAIDetailsStr = "", FSSAIImageName = "", FSSAIImageFullPath = "",
             GSTDetailsStr = "", GSTImageName = "", GSTImageFullPath = "", agreementDetailsStr = "", agreementImageName = "", agreementImageFullPath = "", modeOfPaymentStr = "",
-            depositDetailsStr = "", depositImageName = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", DistrictID = "",
+            depositDetailsStr = "", depositImageName = "", tcsDeclarationImageName = "", tcsDeclarationImageFullPath = "", gstDeclarationImageName = "", gstDeclarationImageFullPath = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", DistrictID = "",
             SalesRegionID = "", BusinessTypeID = "", CustomerGroupID = "", SalesGroupID = "", BusinessDivisionID = "", CustomerClassID = "", CustomerTypeID = "", ReportingVerticalsID = "",
             SubMarketID = "", DistrictStr = "", SalesRegionStr = "", BusinessTypeStr = "", CustomerGroupStr = "", SalesGroupStr = "", BusinessDivisionStr = "", CustomerClassStr = "",
             CustomerTypeStr = "", ReportingVerticalsStr = "", SubMarketStr = "";
 
     double Lat = 0, Long = 0;
-    MyProgressDialog myProgressDialog;
 
     GoogleMap googleMap;
     JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, MasSubMarketArray, MasCusTypeArray;
     String subChannelIDStr = "", subChannelNameStr = "", acGroupIDStr = "", acGroupNameStr = "", distChannelIDStr = "", distChannelNameStr = "", salesDivisionIDStr = "", salesDivisionNameStr = "";
     SwitchMaterial gstSwitch, tcsSwitch;
+
+    DownloadReceiver downloadReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,11 +190,52 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         refreshLocation = findViewById(R.id.refreshLocation);
         gstSwitch = findViewById(R.id.gstSwitch);
         tcsSwitch = findViewById(R.id.tcsSwitch);
+        gstDeclarationLL = findViewById(R.id.gstDeclarationLL);
+        gstLL = findViewById(R.id.gstLL);
+        downloadGSTDeclarationForm = findViewById(R.id.downloadGSTDeclarationForm);
+        gstInfo = findViewById(R.id.gstInfo);
+        previewGSTDeclaration = findViewById(R.id.previewGSTDeclaration);
+        captureGSTDeclaration = findViewById(R.id.captureGSTDeclaration);
+        downloadTCSDeclarationForm = findViewById(R.id.downloadTCSDeclarationForm);
+        tcsInfo = findViewById(R.id.tcsInfo);
+        previewTCSDeclaration = findViewById(R.id.previewTCSDeclaration);
+        captureTCSDeclaration = findViewById(R.id.captureTCSDeclaration);
+        tcsDeclarationLL = findViewById(R.id.tcsDeclarationLL);
 
         common_class = new Common_Class(this);
         pref = new Shared_Common_Pref(this);
         UserDetails = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         common_class.gotoHomeScreen(context, home);
+
+        gstSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                gstLL.setVisibility(View.VISIBLE);
+                gstDeclarationLL.setVisibility(View.GONE);
+            } else {
+                gstLL.setVisibility(View.GONE);
+                gstDeclarationLL.setVisibility(View.VISIBLE);
+            }
+        });
+
+        tcsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                tcsDeclarationLL.setVisibility(View.GONE);
+            } else {
+                tcsDeclarationLL.setVisibility(View.VISIBLE);
+            }
+        });
+
+        downloadGSTDeclarationForm.setOnClickListener(v -> {
+            downloadReceiver = new DownloadReceiver();
+            Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/GST%20Non-Regsitration%20Declaration.docx", "GST Non-Registration Declaration.docx");
+            registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        });
+
+        downloadTCSDeclarationForm.setOnClickListener(v -> {
+            downloadReceiver = new DownloadReceiver();
+            Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/TCS%20Declaration.docx", "TCS Declaration.docx");
+            registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        });
 
         regionList = new ArrayList<>();
         regionFilteredList = new ArrayList<>();
@@ -199,8 +250,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         routeList = new ArrayList<>();
         filteredRouteList = new ArrayList<>();
         tempRouteList = new ArrayList<>();
-
-        myProgressDialog = new MyProgressDialog(context);
 
         capture_customer_photo.setOnClickListener(v -> {
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
@@ -331,6 +380,73 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Intent intent = new Intent(context, AllowancCapture.class);
             startActivity(intent);
         });
+        captureGSTDeclaration.setOnClickListener(v -> {
+            AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
+                @Override
+                public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
+                    gstDeclarationImageName = FileName;
+                    gstDeclarationImageFullPath = fullPath;
+                    previewGSTDeclaration.setImageBitmap(image);
+                    previewGSTDeclaration.setVisibility(View.VISIBLE);
+                    uploadImage(gstDeclarationImageName, gstDeclarationImageFullPath);
+                }
+            });
+            Intent intent = new Intent(context, AllowancCapture.class);
+            startActivity(intent);
+        });
+        captureTCSDeclaration.setOnClickListener(v -> {
+            AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
+                @Override
+                public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
+                    tcsDeclarationImageName = FileName;
+                    tcsDeclarationImageFullPath = fullPath;
+                    previewTCSDeclaration.setImageBitmap(image);
+                    previewTCSDeclaration.setVisibility(View.VISIBLE);
+                    uploadImage(tcsDeclarationImageName, tcsDeclarationImageFullPath);
+                }
+            });
+            Intent intent = new Intent(context, AllowancCapture.class);
+            startActivity(intent);
+        });
+
+        gstInfo.setOnClickListener(v -> {
+            MyAlertDialog.show(context, "", "Download the GST Declaration form.", true, "Close", "", new AlertBox() {
+                @Override
+                public void PositiveMethod(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void NegativeMethod(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+        });
+
+        tcsInfo.setOnClickListener(v -> {
+            MyAlertDialog.show(context, "", "Download the TCS Declaration form.", true, "Close", "", new AlertBox() {
+                @Override
+                public void PositiveMethod(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void NegativeMethod(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+        });
+
+        previewGSTDeclaration.setOnClickListener(v -> {
+            previewGSTDeclaration.setEnabled(false);
+            new Handler().postDelayed(() -> previewGSTDeclaration.setEnabled(true), 1500);
+            showImage(gstDeclarationImageFullPath);
+        });
+        previewTCSDeclaration.setOnClickListener(v -> {
+            previewTCSDeclaration.setEnabled(false);
+            new Handler().postDelayed(() -> previewTCSDeclaration.setEnabled(true), 1500);
+            showImage(tcsDeclarationImageFullPath);
+        });
         display_customer_photo.setOnClickListener(v -> {
             display_customer_photo.setEnabled(false);
             new Handler().postDelayed(() -> display_customer_photo.setEnabled(true), 1500);
@@ -408,7 +524,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         regionFilteredList.add(modelForDropDown);
                     }
                 }
-                myProgressDialog.show("", "Filtering Districts...", true);
+                MyProgressDialog.show(context, "", "Filtering Districts...", true);
                 for (int i = 0; i < MasDistrictArray.length(); i++) {
                     try {
                         if (MasDistrictArray.getJSONObject(i).getString("State_Code").equals(stateCodeStr)) {
@@ -418,7 +534,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         e.printStackTrace();
                     }
                 }
-                myProgressDialog.dismiss();
+                MyProgressDialog.dismiss();
                 dialog.dismiss();
             });
             close.setOnClickListener(v1 -> dialog.dismiss());
@@ -1317,7 +1433,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter the Shop Address", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(residenceAddressStr)) {
             Toast.makeText(context, "Please Enter the Residence Address", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(mobileNumberStr) || mobileNumberStr.length() != 10) {
+        } else if (TextUtils.isEmpty(mobileNumberStr) || mobileNumberStr.length() != 10) { // Todo: Need to discuss
             Toast.makeText(context, "Please Enter 10 Digit Mobile Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(executiveNameStr)) {
             Toast.makeText(context, "Please Enter the Sales Executive Name", Toast.LENGTH_SHORT).show();
@@ -1327,14 +1443,24 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Creation Date Can't be Fetched", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(aadhaarStr)) {
             Toast.makeText(context, "Please Enter the Aadhaar Number", Toast.LENGTH_SHORT).show();
+        } else if (aadhaarStr.length() != 12) {
+            Toast.makeText(context, "Please Enter 12 digit Aadhaar Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(aadhaarImageName) || TextUtils.isEmpty(aadhaarImageFullPath)) {
             Toast.makeText(context, "Please Capture the Aadhaar Image", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(PANStr)) {
             Toast.makeText(context, "Please Enter the PAN Number", Toast.LENGTH_SHORT).show();
+        } else if (PANStr.length() != 10) {
+            Toast.makeText(context, "Please Enter 10 digit PAN Number", Toast.LENGTH_SHORT).show();
+        } else if (!PANStr.matches("[A-Z]{5}[0-9]{4}[A-Z]{1}")) {
+            Toast.makeText(context, "Please Enter valid PAN Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(panImageName) || TextUtils.isEmpty(panImageFullPath)) {
             Toast.makeText(context, "Please Capture the PAN Image", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(GSTDetailsStr)) {
             Toast.makeText(context, "Please Enter the GST Number", Toast.LENGTH_SHORT).show();
+        } else if (GSTDetailsStr.length() != 15 && gstSwitch.isChecked()) {
+            Toast.makeText(context, "Please Enter 15 digit GST Number", Toast.LENGTH_SHORT).show();
+        } else if (!GSTDetailsStr.matches("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$") && gstSwitch.isChecked()) {
+            Toast.makeText(context, "Please Enter valid GST Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(GSTImageName) || TextUtils.isEmpty(GSTImageFullPath)) {
             Toast.makeText(context, "Please Capture the GST Certificate", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(modeOfPaymentStr)) {
@@ -1549,6 +1675,14 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     public void onLoadDataUpdateUI(String apiDataResponse, String key) {
         if (key.equals(Constants.STATE_LIST)) {
             PrepareStateList();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (downloadReceiver != null) {
+            unregisterReceiver(downloadReceiver);
         }
     }
 }

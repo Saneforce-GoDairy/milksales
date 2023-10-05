@@ -54,7 +54,6 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
     private WebView wv1;
     Intent i;
 
-    MyProgressDialog myProgressDialog;
     Context context = this;
 
     @Override
@@ -72,8 +71,6 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
         });
         TextView txtErt = findViewById(R.id.toolbar_ert);
         TextView txtPlaySlip = findViewById(R.id.toolbar_play_slip);
-
-        myProgressDialog = new MyProgressDialog(context);
 
         txtErt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,9 +157,9 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
 
     private void SendtpApproval(String Name, int flag) {
         if (flag == 1) {
-            myProgressDialog.show("", "Approving", false);
+            MyProgressDialog.show(context, "", "Approving", false);
         } else {
-            myProgressDialog.show("", "Rejecting", false);
+            MyProgressDialog.show(context, "", "Rejecting", false);
         }
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "dcr/save");
@@ -203,12 +200,12 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
                 } else {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
-                myProgressDialog.dismiss();
+                MyProgressDialog.dismiss();
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
-                myProgressDialog.dismiss();
+                MyProgressDialog.dismiss();
                 Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

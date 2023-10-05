@@ -387,7 +387,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 long AlrmTime = DT.getDate(ChkOutTm).getTime();
                 long cTime = DT.GetCurrDateTime(Dashboard_Two.this).getTime();
                 if (AlrmTime > cTime) {
-                    sendAlarmNotify(1001, AlrmTime, HAPApp.Title, "Check-Out Alert !.");
+//                    sendAlarmNotify(1001, AlrmTime, HAPApp.Title, "Check-Out Alert !.");
                 }
             }
 

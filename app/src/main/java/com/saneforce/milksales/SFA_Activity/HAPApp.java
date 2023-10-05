@@ -40,7 +40,7 @@ public class HAPApp extends Application {
     public static String CurrencySymbol = "₹"; // ₹ B $
     public static String MRPCap = "MRP"; // ₹ B $
     public static String MyAppID = "com.saneforce.milksales";
-    public static String Title = "Milk Sales";
+    public static String Title = "GoDairy";
     public static String StockCheck = "1"; // ₹ B $
     public static Boolean ProductsLoaded = false;
 

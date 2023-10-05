@@ -283,7 +283,6 @@ public class Login extends AppCompatActivity {
             }
             if (cameraPermission.checkPermission()) {
                 Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
-                DAMode = true;
                 if (DAMode == true) {
                     if (isMyServiceRunning(SANGPSTracker.class) == false) {
                         try {
@@ -517,10 +516,8 @@ public class Login extends AppCompatActivity {
             if (DAMode == true) {
                 if (isMyServiceRunning(SANGPSTracker.class) == false) {
                     try {
-                        bindService(new Intent(this, SANGPSTracker.class), mServiceConection,
-                                Context.BIND_AUTO_CREATE);
-                        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
-                                new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
+                        bindService(new Intent(this, SANGPSTracker.class), mServiceConection, Context.BIND_AUTO_CREATE);
+                        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver, new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
                     } catch (Exception e) {
                     }
                 }
