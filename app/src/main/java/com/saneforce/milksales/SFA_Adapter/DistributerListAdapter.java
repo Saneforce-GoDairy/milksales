@@ -291,9 +291,12 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
             });
 
             if (!Common_Class.isNullOrEmpty(itm.getString("Latlong"))) {
-                String[] latlongs = itm.getString("Latlong").split(":");
-
-                holder.tvLatLng.setText("Lat:" + latlongs[0] + "   " + "Lng:" + latlongs[1]);
+                try {
+                    String[] latlongs = itm.getString("Latlong").split(":");
+                    if (latlongs.length > 1) {
+                        holder.tvLatLng.setText("Lat:" + latlongs[0] + "   " + "Lng:" + latlongs[1]);
+                    }
+                } catch (JSONException ignored) { }
             }
 
 

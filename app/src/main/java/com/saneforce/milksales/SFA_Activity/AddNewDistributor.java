@@ -1,6 +1,7 @@
 package com.saneforce.milksales.SFA_Activity;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,16 +84,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback, UpdateResponseUI {
+public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback {
 
-    TextView select_region, select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, downloadTCSDeclarationForm,
-            select_mode_of_payment, submit, select_bank_details, select_agreement_copy, select_sub_channel, selectCusACGroup, select_dist_channel, select_sales_division, selectDistrict, selectSalesRegion, selectBusinessType, selectCustomerGroup, selectSalesGroup, selectBusinessDivision, selectCustomerClass, selectCustomerType, selectReportingVerticals, selectSubMarket;
+    TextView /*select_region,*/ select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, downloadTCSDeclarationForm, purchaseType,
+            /*select_mode_of_payment,*/ submit, select_bank_details, select_agreement_copy, select_sub_channel, selectCusACGroup, select_dist_channel, select_sales_division, /*selectDistrict,*/ selectSalesRegion, selectBusinessType, selectCustomerGroup, selectSalesGroup, selectBusinessDivision, selectCustomerClass, selectCustomerType, selectReportingVerticals, selectSubMarket, downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
     ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai,
-            display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, display_deposit, capture_deposit, home, display_aadhaar_number, capture_aadhaar_number,
-            display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration;
-    EditText type_city, type_pincode, type_name_of_the_customer, type_name_of_the_owner, type_address_of_the_shop, type_residence_address, type_mobile_number, type_email_id,
-            type_sales_executive_name, type_sales_executive_employee_id, type_aadhaar_number, type_pan_number, type_gst, type_deposit, type_fssai;
-    LinearLayout gstDeclarationLL, gstLL, tcsDeclarationLL;
+            display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, /*display_deposit,*/ /*capture_deposit,*/ home, display_aadhaar_number, capture_aadhaar_number,
+            display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration, fssaiInfo, previewfssaiDeclaration, capturefssaiDeclaration;
+    EditText type_city, type_pincode, type_name_of_the_customer, type_name_of_the_owner, /*type_address_of_the_shop,*/ /*type_residence_address,*/ type_mobile_number, type_email_id, type_pan_name, uidType,
+            type_sales_executive_name, type_sales_executive_employee_id, type_aadhaar_number, type_pan_number, type_gst, /*type_deposit,*/ type_fssai, businessAddressNo, businessAddressCity, businessAddressPincode, ownerAddressNo, ownerAddressCity, ownerAddressPincode;
+    LinearLayout gstDeclarationLL, gstLL, tcsDeclarationLL, fssaiDeclarationLL, fssaiLL;
 
     Context context = this;
     Common_Class common_class;
@@ -102,34 +104,36 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     RegionAdapter regionAdapter;
     CommonAdapterForDropdownWithFilter filterAdapter;
     ArrayList<CommonModelForDropDown> ChannelList, stateList, BankList, AgreementList, MOPList;
-    ArrayList<CommonModelWithThreeString> regionList, regionFilteredList;
+    ArrayList<CommonModelWithThreeString> regionList/*, regionFilteredList*/;
     ArrayList<CommonModelWithFourString> officeList, filteredOfficeList, tempOfficeList, routeList, filteredRouteList, tempRouteList;
 
-    String customer_photo_url = "", customer_photo_name = "", shop_photo_url = "", shop_photo_name = "", regionStr = "", regionCodeStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "",
-            routeNameStr = "", channelStr = "", channelIDStr = "", cityStr = "", pincodeStr = "", stateCodeStr = "", stateNameStr = "", customerNameStr = "", ownerNameStr = "", shopAddressStr = "",
-            residenceAddressStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", creationDateStr = "", aadhaarStr = "",
-            PANStr = "", bankDetailsStr = "", bankImageName = "", bankImageFullPath = "", FSSAIDetailsStr = "", FSSAIImageName = "", FSSAIImageFullPath = "",
-            GSTDetailsStr = "", GSTImageName = "", GSTImageFullPath = "", agreementDetailsStr = "", agreementImageName = "", agreementImageFullPath = "", modeOfPaymentStr = "",
-            depositDetailsStr = "", depositImageName = "", tcsDeclarationImageName = "", tcsDeclarationImageFullPath = "", gstDeclarationImageName = "", gstDeclarationImageFullPath = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", DistrictID = "",
+    String customer_photo_url = "", customer_photo_name = "", shop_photo_url = "", shop_photo_name = "", /*regionStr = "", regionCodeStr = "",*/ officeCodeStr = "", officeNameStr = "", routeCodeStr = "",
+            routeNameStr = "", channelStr = "", channelIDStr = "", cityStr = "", pincodeStr = "", stateCodeStr = "", stateNameStr = "", customerNameStr = "", ownerNameStr = "", /*shopAddressStr = "",*/
+    /*residenceAddressStr = "",*/ mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", creationDateStr = "", aadhaarStr = "",
+            PANStr = "", bankDetailsStr = "", bankImageName = "", bankImageFullPath = "", FSSAIDetailsStr = "", FSSAIImageName = "", FSSAIImageFullPath = "", FSSAIDeclarationImageName = "", FSSAIDeclarationImageFullPath = "",
+            GSTDetailsStr = "", GSTImageName = "", GSTImageFullPath = "", agreementDetailsStr = "", agreementImageName = "", agreementImageFullPath = "", /*modeOfPaymentStr = "",*/
+            /*depositDetailsStr = "",*/ /*depositImageName = "",*/ tcsDeclarationImageName = "", tcsDeclarationImageFullPath = "", gstDeclarationImageName = "", gstDeclarationImageFullPath = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", /*DistrictID = "",*/
             SalesRegionID = "", BusinessTypeID = "", CustomerGroupID = "", SalesGroupID = "", BusinessDivisionID = "", CustomerClassID = "", CustomerTypeID = "", ReportingVerticalsID = "",
-            SubMarketID = "", DistrictStr = "", SalesRegionStr = "", BusinessTypeStr = "", CustomerGroupStr = "", SalesGroupStr = "", BusinessDivisionStr = "", CustomerClassStr = "",
-            CustomerTypeStr = "", ReportingVerticalsStr = "", SubMarketStr = "";
+            SubMarketID = "", /*DistrictStr = "",*/ SalesRegionStr = "", BusinessTypeStr = "", CustomerGroupStr = "", SalesGroupStr = "", BusinessDivisionStr = "", CustomerClassStr = "", purchaseTypeID = "", purchaseTypeName = "",
+            CustomerTypeStr = "", ReportingVerticalsStr = "", SubMarketStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "",
+            fssaiFromStr = "", fssaitoStr = "", PANName = "", UIDType = "";
 
     double Lat = 0, Long = 0;
 
     GoogleMap googleMap;
-    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, MasSubMarketArray, MasCusTypeArray;
+    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, MasSubMarketArray, MasCusTypeArray, stateArray;
     String subChannelIDStr = "", subChannelNameStr = "", acGroupIDStr = "", acGroupNameStr = "", distChannelIDStr = "", distChannelNameStr = "", salesDivisionIDStr = "", salesDivisionNameStr = "";
-    SwitchMaterial gstSwitch, tcsSwitch;
+    SwitchMaterial gstSwitch, tcsSwitch, fssaiSwitch;
 
     DownloadReceiver downloadReceiver;
+    DatePickerDialog fromDatePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_distributor);
 
-        select_region = findViewById(R.id.select_region);
+        //select_region = findViewById(R.id.select_region);
         select_sales_office_name = findViewById(R.id.select_sales_office_name);
         select_route_name = findViewById(R.id.select_route_name);
         select_channel = findViewById(R.id.select_channel);
@@ -137,7 +141,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         selectCusACGroup = findViewById(R.id.selectCusACGroup);
         select_dist_channel = findViewById(R.id.select_dist_channel);
         select_sales_division = findViewById(R.id.select_sales_division);
-        selectDistrict = findViewById(R.id.selectDistrict);
+        //selectDistrict = findViewById(R.id.selectDistrict);
         selectSalesRegion = findViewById(R.id.selectSalesRegion);
         selectBusinessType = findViewById(R.id.selectBusinessType);
         selectCustomerGroup = findViewById(R.id.selectCustomerGroup);
@@ -149,7 +153,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         selectSubMarket = findViewById(R.id.selectSubMarket);
         select_state = findViewById(R.id.select_state);
         date_of_creation = findViewById(R.id.date_of_creation);
-        select_mode_of_payment = findViewById(R.id.select_mode_of_payment);
+//        select_mode_of_payment = findViewById(R.id.select_mode_of_payment);
         submit = findViewById(R.id.submit);
         display_customer_photo = findViewById(R.id.display_customer_photo);
         capture_customer_photo = findViewById(R.id.capture_customer_photo);
@@ -162,18 +166,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         display_gst = findViewById(R.id.display_gst);
         capture_gst = findViewById(R.id.capture_gst);
         type_gst = findViewById(R.id.type_gst);
-        type_deposit = findViewById(R.id.type_deposit);
+//        type_deposit = findViewById(R.id.type_deposit);
         display_agreement_copy = findViewById(R.id.display_agreement_copy);
         capture_agreement_copy = findViewById(R.id.capture_agreement_copy);
-        display_deposit = findViewById(R.id.display_deposit);
-        capture_deposit = findViewById(R.id.capture_deposit);
+//        display_deposit = findViewById(R.id.display_deposit);
+//        capture_deposit = findViewById(R.id.capture_deposit);
         home = findViewById(R.id.toolbar_home);
         type_city = findViewById(R.id.type_city);
         type_pincode = findViewById(R.id.type_pincode);
         type_name_of_the_customer = findViewById(R.id.type_name_of_the_customer);
         type_name_of_the_owner = findViewById(R.id.type_name_of_the_owner);
-        type_address_of_the_shop = findViewById(R.id.type_address_of_the_shop);
-        type_residence_address = findViewById(R.id.type_residence_address);
+        businessAddressNo = findViewById(R.id.businessAddressNo);
+        businessAddressCity = findViewById(R.id.businessAddressCity);
+        businessAddressPincode = findViewById(R.id.businessAddressPincode);
+//        type_residence_address = findViewById(R.id.type_residence_address);
         type_mobile_number = findViewById(R.id.type_mobile_number);
         type_email_id = findViewById(R.id.type_email_id);
         type_sales_executive_name = findViewById(R.id.type_sales_executive_name);
@@ -201,11 +207,36 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         previewTCSDeclaration = findViewById(R.id.previewTCSDeclaration);
         captureTCSDeclaration = findViewById(R.id.captureTCSDeclaration);
         tcsDeclarationLL = findViewById(R.id.tcsDeclarationLL);
+        fssaiDeclarationLL = findViewById(R.id.fssaiDeclarationLL);
+        fssaiLL = findViewById(R.id.fssaiLL);
+        fssaiSwitch = findViewById(R.id.fssaiSwitch);
+        downloadfssaiDeclarationForm = findViewById(R.id.downloadfssaiDeclarationForm);
+        fssaiInfo = findViewById(R.id.fssaiInfo);
+        previewfssaiDeclaration = findViewById(R.id.previewfssaiDeclaration);
+        capturefssaiDeclaration = findViewById(R.id.capturefssaiDeclaration);
+        fssaiFromDate = findViewById(R.id.fssaiFromDate);
+        fssaiToDate = findViewById(R.id.fssaiToDate);
+        ownerAddressNo = findViewById(R.id.ownerAddressNo);
+        ownerAddressCity = findViewById(R.id.ownerAddressCity);
+        ownerAddressPincode = findViewById(R.id.ownerAddressPincode);
+        purchaseType = findViewById(R.id.purchaseType);
+        type_pan_name = findViewById(R.id.type_pan_name);
+        uidType = findViewById(R.id.uidType);
 
         common_class = new Common_Class(this);
         pref = new Shared_Common_Pref(this);
         UserDetails = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         common_class.gotoHomeScreen(context, home);
+
+        fssaiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                fssaiLL.setVisibility(View.VISIBLE);
+                fssaiDeclarationLL.setVisibility(View.GONE);
+            } else {
+                fssaiLL.setVisibility(View.GONE);
+                fssaiDeclarationLL.setVisibility(View.VISIBLE);
+            }
+        });
 
         gstSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -215,6 +246,27 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 gstLL.setVisibility(View.GONE);
                 gstDeclarationLL.setVisibility(View.VISIBLE);
             }
+        });
+
+        fssaiFromDate.setOnClickListener(v -> {
+            Calendar newCalendar = Calendar.getInstance();
+            fromDatePickerDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+                int month = monthOfYear + 1;
+                String date = ("" + year + "-" + month + "-" + dayOfMonth);
+                fssaiFromDate.setText(date);
+                fssaiToDate.setEnabled(true);
+            }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+            fromDatePickerDialog.show();
+        });
+
+        fssaiToDate.setOnClickListener(v -> {
+            Calendar newCalendar = Calendar.getInstance();
+            fromDatePickerDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+                int month = monthOfYear + 1;
+                String date = ("" + year + "-" + month + "-" + dayOfMonth);
+                fssaiToDate.setText(date);
+            }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+            fromDatePickerDialog.show();
         });
 
         tcsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -237,8 +289,14 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         });
 
+        downloadfssaiDeclarationForm.setOnClickListener(v -> {
+            downloadReceiver = new DownloadReceiver();
+            Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/Undertaking%20FSSAI%20license.docx", "Undertaking FSSAI license.docx");
+            registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        });
+
         regionList = new ArrayList<>();
-        regionFilteredList = new ArrayList<>();
+//        regionFilteredList = new ArrayList<>();
         ChannelList = new ArrayList<>();
         stateList = new ArrayList<>();
         BankList = new ArrayList<>();
@@ -366,7 +424,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Intent intent = new Intent(context, AllowancCapture.class);
             startActivity(intent);
         });
-        capture_deposit.setOnClickListener(v -> {
+        /*capture_deposit.setOnClickListener(v -> {
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
@@ -379,7 +437,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             });
             Intent intent = new Intent(context, AllowancCapture.class);
             startActivity(intent);
-        });
+        });*/
         captureGSTDeclaration.setOnClickListener(v -> {
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
@@ -403,6 +461,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     previewTCSDeclaration.setImageBitmap(image);
                     previewTCSDeclaration.setVisibility(View.VISIBLE);
                     uploadImage(tcsDeclarationImageName, tcsDeclarationImageFullPath);
+                }
+            });
+            Intent intent = new Intent(context, AllowancCapture.class);
+            startActivity(intent);
+        });
+        capturefssaiDeclaration.setOnClickListener(v -> {
+            AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
+                @Override
+                public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
+                    FSSAIDeclarationImageName = FileName;
+                    FSSAIDeclarationImageFullPath = fullPath;
+                    previewfssaiDeclaration.setImageBitmap(image);
+                    previewfssaiDeclaration.setVisibility(View.VISIBLE);
+                    uploadImage(FSSAIDeclarationImageName, FSSAIDeclarationImageFullPath);
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -437,6 +509,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             });
         });
 
+        fssaiInfo.setOnClickListener(v -> {
+            MyAlertDialog.show(context, "", "Download the FSSAI Declaration form.", true, "Close", "", new AlertBox() {
+                @Override
+                public void PositiveMethod(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void NegativeMethod(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+        });
+
         previewGSTDeclaration.setOnClickListener(v -> {
             previewGSTDeclaration.setEnabled(false);
             new Handler().postDelayed(() -> previewGSTDeclaration.setEnabled(true), 1500);
@@ -446,6 +532,12 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             previewTCSDeclaration.setEnabled(false);
             new Handler().postDelayed(() -> previewTCSDeclaration.setEnabled(true), 1500);
             showImage(tcsDeclarationImageFullPath);
+        });
+        previewfssaiDeclaration.setOnClickListener(v -> {
+            previewfssaiDeclaration.setEnabled(false);
+            new Handler().postDelayed(() -> previewfssaiDeclaration.setEnabled(true), 1500);
+            showImage(FSSAIDeclarationImageFullPath);
+
         });
         display_customer_photo.setOnClickListener(v -> {
             display_customer_photo.setEnabled(false);
@@ -477,11 +569,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             new Handler().postDelayed(() -> display_agreement_copy.setEnabled(true), 1500);
             showImage(agreementImageFullPath);
         });
-        display_deposit.setOnClickListener(v -> {
+        /*display_deposit.setOnClickListener(v -> {
             display_deposit.setEnabled(false);
             new Handler().postDelayed(() -> display_deposit.setEnabled(true), 1500);
             showImage(depositImageFullPath);
-        });
+        });*/
         display_aadhaar_number.setOnClickListener(v -> {
             display_aadhaar_number.setEnabled(false);
             new Handler().postDelayed(() -> display_aadhaar_number.setEnabled(true), 1500);
@@ -493,7 +585,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             showImage(panImageFullPath);
         });
         select_state.setOnClickListener(v -> {
-            if (stateList.isEmpty()) {
+            if (stateArray.length() == 0) {
                 Toast.makeText(context, "No states found!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -505,42 +597,47 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             RecyclerView recyclerView1 = view.findViewById(R.id.recyclerView);
             TextView close = view.findViewById(R.id.close);
             title.setText("Select State");
-            recyclerView1.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-            adapter = new CommonAdapterForDropdown(stateList, context);
-            recyclerView1.setAdapter(adapter);
             AlertDialog dialog = builder.create();
-            adapter.setSelectItem((model, position) -> {
-                selectDistrict.setText("");
-                DistrictID = "";
-                DistrictStr = "";
-                select_state.setText(model.getTitle());
-                stateCodeStr = model.getId();
-                select_region.setText("");
-                regionCodeStr = "";
-                regionFilteredList.clear();
-                filteredMasDistrictArray = new JSONArray();
-                for (CommonModelWithThreeString modelForDropDown : regionList) {
-                    if (modelForDropDown.getReference().equalsIgnoreCase(model.getId())) {
-                        regionFilteredList.add(modelForDropDown);
-                    }
-                }
-                MyProgressDialog.show(context, "", "Filtering Districts...", true);
-                for (int i = 0; i < MasDistrictArray.length(); i++) {
-                    try {
-                        if (MasDistrictArray.getJSONObject(i).getString("State_Code").equals(stateCodeStr)) {
-                            filteredMasDistrictArray.put(MasDistrictArray.getJSONObject(i));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, stateArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    select_state.setText(stateArray.getJSONObject(position).getString("title"));
+                    stateCodeStr = stateArray.getJSONObject(position).getString("id");
+                    /*regionCodeStr = "";
+                    regionFilteredList.clear();*/
+                    filteredMasDistrictArray = new JSONArray();
+
+                    officeCodeStr = "";
+                    select_sales_office_name.setText("");
+                    filteredOfficeList.clear();
+
+                    for (CommonModelWithFourString modelWithThreeString : officeList) {
+                        if (modelWithThreeString.getRegionReference().equalsIgnoreCase(stateCodeStr)) {
+                            filteredOfficeList.add(modelWithThreeString);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                    MyProgressDialog.show(context, "", "Filtering Districts...", true);
+                    for (int i = 0; i < MasDistrictArray.length(); i++) {
+                        try {
+                            if (MasDistrictArray.getJSONObject(i).getString("State_Code").equals(stateCodeStr)) {
+                                filteredMasDistrictArray.put(MasDistrictArray.getJSONObject(i));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    MyProgressDialog.dismiss();
+                    dialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                MyProgressDialog.dismiss();
-                dialog.dismiss();
             });
+            recyclerView1.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            recyclerView1.setAdapter(adapter);
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
-        select_region.setOnClickListener(v -> {
+        /*select_region.setOnClickListener(v -> {
             if (TextUtils.isEmpty(select_state.getText().toString().trim())) {
                 Toast.makeText(context, "Please Select State", Toast.LENGTH_SHORT).show();
                 return;
@@ -576,13 +673,13 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             });
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
-        });
+        });*/
         select_sales_office_name.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(select_region.getText().toString().trim())) {
-                Toast.makeText(context, "Please Select Region", Toast.LENGTH_SHORT).show();
+            if (TextUtils.isEmpty(select_state.getText().toString().trim())) {
+                Toast.makeText(context, "Please Select State", Toast.LENGTH_SHORT).show();
                 return;
             } else if (filteredOfficeList.isEmpty()) {
-                Toast.makeText(context, "No Offices found for the selected Region", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "No offices found for the selected state", Toast.LENGTH_SHORT).show();
                 return;
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -593,7 +690,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             TextView title = view.findViewById(R.id.title);
             RecyclerView recyclerView1 = view.findViewById(R.id.recyclerView);
             TextView close = view.findViewById(R.id.close);
-            title.setText("Select Sales Office Name");
+            title.setText("Select Sales Office");
             EditText eT_Filter = view.findViewById(R.id.eT_Filter);
             eT_Filter.setImeOptions(EditorInfo.IME_ACTION_DONE);
             eT_Filter.addTextChangedListener(new TextWatcher() {
@@ -639,7 +736,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             TextView title = view.findViewById(R.id.title);
             RecyclerView recyclerView1 = view.findViewById(R.id.recyclerView);
             TextView close = view.findViewById(R.id.close);
-            title.setText("Select Route Name");
+            title.setText("Select Route");
             EditText eT_Filter = view.findViewById(R.id.eT_Filter);
             eT_Filter.setImeOptions(EditorInfo.IME_ACTION_DONE);
             eT_Filter.addTextChangedListener(new TextWatcher() {
@@ -956,7 +1053,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             TextView title = view.findViewById(R.id.title);
             RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
             TextView close = view.findViewById(R.id.close);
-            title.setText("Select Customer Class");
+            title.setText("Select Customer Cluster");
             AlertDialog dialog = builder.create();
             recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
             UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasCusClassArray);
@@ -1006,7 +1103,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             TextView title = view.findViewById(R.id.title);
             RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
             TextView close = view.findViewById(R.id.close);
-            title.setText("Select Reporting Verticals");
+            title.setText("Select Verticals");
             AlertDialog dialog = builder.create();
             recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
             UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasReportingVertArray);
@@ -1015,6 +1112,44 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     ReportingVerticalsID = MasReportingVertArray.getJSONObject(position).getString("id");
                     ReportingVerticalsStr = MasReportingVertArray.getJSONObject(position).getString("title");
                     selectReportingVerticals.setText(MasReportingVertArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        JSONArray purchaseTypeArray = new JSONArray();
+        JSONObject object = new JSONObject();
+        try {
+            object.put("id", "1");
+            object.put("title", "Advance Amount");
+            purchaseTypeArray.put(object);
+            object = new JSONObject();
+            object.put("id", "2");
+            object.put("title", "Credit Limit");
+            purchaseTypeArray.put(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        purchaseType.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select Purchase Type");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, purchaseTypeArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    purchaseTypeID = purchaseTypeArray.getJSONObject(position).getString("id");
+                    purchaseTypeName = purchaseTypeArray.getJSONObject(position).getString("title");
+                    purchaseType.setText(purchaseTypeArray.getJSONObject(position).getString("title"));
                     dialog.dismiss();
                 } catch (JSONException ignored) {
                 }
@@ -1048,7 +1183,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
-        selectDistrict.setOnClickListener(v -> {
+        /*selectDistrict.setOnClickListener(v -> {
             if (select_state.getText().toString().isEmpty()) {
                 Toast.makeText(context, "Please select state", Toast.LENGTH_SHORT).show();
                 return;
@@ -1080,7 +1215,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             recyclerView.setAdapter(adapter);
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
-        });
+        });*/
         select_bank_details.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
@@ -1121,7 +1256,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
-        select_mode_of_payment.setOnClickListener(v -> {
+        /*select_mode_of_payment.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
             builder.setView(view);
@@ -1140,7 +1275,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             });
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
-        });
+        });*/
         refreshLocation.setOnClickListener(v -> getLocation());
         submit.setOnClickListener(v -> ValidateFields());
 
@@ -1162,14 +1297,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         MasReportingVertArray = new JSONArray();
         MasSubMarketArray = new JSONArray();
         MasCusTypeArray = new JSONArray();
+        stateArray = new JSONArray();
 
         getLocation();
-
-        if (Common_Class.isNullOrEmpty(pref.getvalue(Constants.STATE_LIST))) {
-            common_class.getDb_310Data(Constants.STATE_LIST, this);
-        } else {
-            PrepareStateList();
-        }
 
         type_sales_executive_name.setText(UserDetails.getString("SfName", ""));
         type_sales_executive_name.setEnabled(false);
@@ -1191,22 +1321,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             display_customer_photo.setImageBitmap(bmp);
             display_customer_photo.setVisibility(View.VISIBLE);
         });*/
-    }
-
-    private void PrepareStateList() {
-        try {
-            stateList.clear();
-            JSONObject object = new JSONObject(pref.getvalue(Constants.STATE_LIST));
-            JSONArray array = object.getJSONArray("Data");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject jsonObject = array.getJSONObject(i);
-                String id = jsonObject.getString("State_Code");
-                String title = jsonObject.getString("StateName");
-                stateList.add(new CommonModelForDropDown(id, title));
-            }
-        } catch (Exception e) {
-            Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void getLocation() {
@@ -1302,7 +1416,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                                     for (int i = 0; i < officeResponse.length(); i++) {
                                         String id = officeResponse.getJSONObject(i).getString("sOffCode");
                                         String title = officeResponse.getJSONObject(i).getString("sOffName");
-                                        String regionReference = officeResponse.getJSONObject(i).getString("RegionId");
+                                        String regionReference = officeResponse.getJSONObject(i).getString("StateCode");
                                         String officeReference = officeResponse.getJSONObject(i).getString("PlantId");
                                         Log.e("ksjdhksd", "officeResponse: " + id + ", " + title + ", " + regionReference + ", " + officeReference);
                                         officeList.add(new CommonModelWithFourString(id, title, regionReference, officeReference));
@@ -1327,6 +1441,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                                     distChannelResponse = object.getJSONArray("distChannelResponse");
                                     salesDivisionResponse = object.getJSONArray("salesDivisionResponse");
 
+                                    stateArray = object.getJSONArray("MasState");
                                     MasDistrictArray = object.getJSONArray("MasDistrict");
                                     MasCusSalRegionArray = object.getJSONArray("MasCusSalRegion");
                                     MasSalesGroupArray = object.getJSONArray("MasSalesGroup");
@@ -1374,17 +1489,19 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void ValidateFields() {
-        regionStr = select_region.getText().toString().trim();
+        stateNameStr = select_state.getText().toString().trim();
         officeNameStr = select_sales_office_name.getText().toString().trim();
         routeNameStr = select_route_name.getText().toString().trim();
         channelStr = select_channel.getText().toString().trim();
+        subChannelNameStr = select_sub_channel.getText().toString().trim();
+
         cityStr = type_city.getText().toString().trim();
         pincodeStr = type_pincode.getText().toString().trim();
-        stateNameStr = select_state.getText().toString().trim();
         customerNameStr = type_name_of_the_customer.getText().toString().trim();
         ownerNameStr = type_name_of_the_owner.getText().toString().trim();
-        shopAddressStr = type_address_of_the_shop.getText().toString().trim();
-        residenceAddressStr = type_residence_address.getText().toString().trim();
+        businessAddressNoStr = businessAddressNo.getText().toString().trim();
+        businessAddressCityStr = businessAddressCity.getText().toString().trim();
+        businessAddressPincodeStr = businessAddressPincode.getText().toString().trim();
         mobileNumberStr = type_mobile_number.getText().toString().trim();
         emailAddressStr = type_email_id.getText().toString().trim();
         executiveNameStr = type_sales_executive_name.getText().toString().trim();
@@ -1396,16 +1513,29 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         FSSAIDetailsStr = type_fssai.getText().toString().trim();
         GSTDetailsStr = type_gst.getText().toString().trim();
         agreementDetailsStr = select_agreement_copy.getText().toString().trim();
-        modeOfPaymentStr = select_mode_of_payment.getText().toString().trim();
-        depositDetailsStr = type_deposit.getText().toString().trim();
+//        modeOfPaymentStr = select_mode_of_payment.getText().toString().trim();
+//        depositDetailsStr = type_deposit.getText().toString().trim();
+
+        ownerAddressNoStr = ownerAddressNo.getText().toString().trim();
+        ownerAddressCityStr = ownerAddressCity.getText().toString().trim();
+        ownerAddressPincodeStr = ownerAddressPincode.getText().toString().trim();
+        businessAddressNoStr = businessAddressNo.getText().toString().trim();
+        businessAddressCityStr = businessAddressCity.getText().toString().trim();
+        businessAddressPincodeStr = businessAddressPincode.getText().toString().trim();
+
+        fssaiFromStr = fssaiFromDate.getText().toString().trim();
+        fssaitoStr = fssaiToDate.getText().toString().trim();
+        FSSAIDetailsStr = type_fssai.getText().toString().trim();
+        PANName = type_pan_name.getText().toString().trim();
+        UIDType = uidType.getText().toString().trim();
 
         if (TextUtils.isEmpty(customer_photo_name) || TextUtils.isEmpty(customer_photo_url)) {
             Toast.makeText(context, "Please Capture Customer Photo", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(shop_photo_name) || TextUtils.isEmpty(shop_photo_url)) {
             Toast.makeText(context, "Please Capture Shop Photo", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(regionStr) || TextUtils.isEmpty(regionCodeStr)) {
+        } /*else if (TextUtils.isEmpty(regionStr) || TextUtils.isEmpty(regionCodeStr)) {
             Toast.makeText(context, "Please Select the Region", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(officeNameStr) || TextUtils.isEmpty(officeCodeStr)) {
+        }*/ else if (TextUtils.isEmpty(officeNameStr) || TextUtils.isEmpty(officeCodeStr)) {
             Toast.makeText(context, "Please Select the Sales Office Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(routeNameStr) || TextUtils.isEmpty(routeCodeStr)) {
             Toast.makeText(context, "Please Select the Route Name", Toast.LENGTH_SHORT).show();
@@ -1429,10 +1559,10 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter the Customer Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(ownerNameStr)) {
             Toast.makeText(context, "Please Enter the Owner Name", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(shopAddressStr)) {
-            Toast.makeText(context, "Please Enter the Shop Address", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(residenceAddressStr)) {
-            Toast.makeText(context, "Please Enter the Residence Address", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(businessAddressNoStr) || TextUtils.isEmpty(businessAddressCityStr) || TextUtils.isEmpty(businessAddressPincodeStr)) {
+            Toast.makeText(context, "Please Enter the Business Address", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(ownerAddressNoStr) || TextUtils.isEmpty(ownerAddressCityStr) || TextUtils.isEmpty(ownerAddressPincodeStr)) {
+            Toast.makeText(context, "Please Enter the Owner Address", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(mobileNumberStr) || mobileNumberStr.length() != 10) { // Todo: Need to discuss
             Toast.makeText(context, "Please Enter 10 Digit Mobile Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(executiveNameStr)) {
@@ -1463,17 +1593,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter valid GST Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(GSTImageName) || TextUtils.isEmpty(GSTImageFullPath)) {
             Toast.makeText(context, "Please Capture the GST Certificate", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(modeOfPaymentStr)) {
-            Toast.makeText(context, "Please Select the Mode of Payment", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(depositDetailsStr)) {
-            Toast.makeText(context, "Please Enter the Deposit Details", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(depositImageName) || TextUtils.isEmpty(depositImageFullPath)) {
-            Toast.makeText(context, "Please Capture the Deposit Details", Toast.LENGTH_SHORT).show();
         } else if ((Lat == 0) || (Long == 0)) {
             Toast.makeText(context, "Location can't be fetched", Toast.LENGTH_SHORT).show();
-        } else if (DistrictID.isEmpty() || DistrictStr.isEmpty()) {
+        } /*else if (DistrictID.isEmpty() || DistrictStr.isEmpty()) {
             Toast.makeText(context, "Please Select District", Toast.LENGTH_SHORT).show();
-        } else if (SalesRegionID.isEmpty() || SalesRegionStr.isEmpty()) {
+        }*/ else if (SalesRegionID.isEmpty() || SalesRegionStr.isEmpty()) {
             Toast.makeText(context, "Please Select Sales Region", Toast.LENGTH_SHORT).show();
         } else if (BusinessTypeID.isEmpty() || BusinessTypeStr.isEmpty()) {
             Toast.makeText(context, "Please Select Business Type", Toast.LENGTH_SHORT).show();
@@ -1512,77 +1636,124 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
         try {
             object.put("sfCode", UserDetails.getString("Sfcode", ""));
+
             object.put("customer_photo_name", customer_photo_name);
+
             object.put("shop_photo_name", shop_photo_name);
-            object.put("regionCodeStr", regionCodeStr);
-            object.put("regionStr", regionStr);
-            object.put("officeCodeStr", officeCodeStr);
-            object.put("officeNameStr", officeNameStr);
-            object.put("routeCodeStr", routeCodeStr);
-            object.put("routeNameStr", routeNameStr);
-            object.put("channelIDStr", channelIDStr);
-            object.put("channelStr", channelStr);
-            object.put("subChannelID", subChannelIDStr);
-            object.put("subChannelName", subChannelNameStr);
-            object.put("acGroupID", acGroupIDStr);
-            object.put("acGroupName", acGroupNameStr);
-            object.put("distChannelID", distChannelIDStr);
-            object.put("distChannelName", distChannelNameStr);
-            object.put("salesDivisionID", salesDivisionIDStr);
-            object.put("salesDivisionName", salesDivisionNameStr);
-            object.put("cityStr", cityStr);
-            object.put("pincodeStr", pincodeStr);
+
             object.put("stateCodeStr", stateCodeStr);
             object.put("stateNameStr", stateNameStr);
+
+            object.put("officeCodeStr", officeCodeStr);
+            object.put("officeNameStr", officeNameStr);
+
+            object.put("routeCodeStr", routeCodeStr);
+            object.put("routeNameStr", routeNameStr);
+
+            object.put("channelIDStr", channelIDStr);
+            object.put("channelStr", channelStr);
+
+            object.put("subChannelID", subChannelIDStr);
+            object.put("subChannelName", subChannelNameStr);
+
+            object.put("acGroupID", acGroupIDStr);
+            object.put("acGroupName", acGroupNameStr);
+
+            object.put("distChannelID", distChannelIDStr);
+            object.put("distChannelName", distChannelNameStr);
+
+            object.put("salesDivisionID", salesDivisionIDStr);
+            object.put("salesDivisionName", salesDivisionNameStr);
+
+            object.put("SalesRegionID", SalesRegionID);
+            object.put("SalesRegionStr", SalesRegionStr);
+
+            object.put("BusinessTypeID", BusinessTypeID);
+            object.put("BusinessTypeStr", BusinessTypeStr);
+
+            object.put("CustomerGroupID", CustomerGroupID);
+            object.put("CustomerGroupStr", CustomerGroupStr);
+
+            object.put("SalesGroupID", SalesGroupID);
+            object.put("SalesGroupStr", SalesGroupStr);
+
+            object.put("BusinessDivisionID", BusinessDivisionID);
+            object.put("BusinessDivisionStr", BusinessDivisionStr);
+
+            object.put("CustomerClassID", CustomerClassID);
+            object.put("CustomerClassStr", CustomerClassStr);
+
+            object.put("CustomerTypeID", CustomerTypeID);
+            object.put("CustomerTypeStr", CustomerTypeStr);
+
+            object.put("ReportingVerticalsID", ReportingVerticalsID);
+            object.put("ReportingVerticalsStr", ReportingVerticalsStr);
+
+            object.put("SubMarketID", SubMarketID);
+            object.put("SubMarketStr", SubMarketStr);
+
+            object.put("cityStr", cityStr);
+
+            object.put("pincodeStr", pincodeStr);
+
             object.put("customerNameStr", customerNameStr);
+
             object.put("ownerNameStr", ownerNameStr);
-            object.put("shopAddressStr", shopAddressStr);
-            object.put("residenceAddressStr", residenceAddressStr);
-            object.put("mobileNumberStr", mobileNumberStr);
-            object.put("emailAddressStr", emailAddressStr);
-            object.put("executiveNameStr", executiveNameStr);
-            object.put("employeeIdStr", employeeIdStr);
-            object.put("creationDateStr", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Calendar.getInstance().getTime()));
-            object.put("aadhaarStr", aadhaarStr);
-            object.put("aadhaarImage", aadhaarImageName);
-            object.put("PANStr", PANStr);
-            object.put("panImage", panImageName);
-            object.put("bankDetailsStr", bankDetailsStr);
-            object.put("bankImageName", bankImageName);
-            object.put("FSSAIDetailsStr", FSSAIDetailsStr);
-            object.put("FSSAIImageName", FSSAIImageName);
-            object.put("GSTDetailsStr", GSTDetailsStr);
-            object.put("GSTImageName", GSTImageName);
-            object.put("agreementDetailsStr", agreementDetailsStr);
-            object.put("agreementImageName", agreementImageName);
-            object.put("modeOfPaymentStr", modeOfPaymentStr);
-            object.put("depositDetailsStr", depositDetailsStr);
-            object.put("depositImageName", depositImageName);
+
             object.put("lat", Lat);
             object.put("long", Long);
 
-            object.put("DistrictID", DistrictID);
-            object.put("DistrictStr", DistrictStr);
-            object.put("SalesRegionID", SalesRegionID);
-            object.put("SalesRegionStr", SalesRegionStr);
-            object.put("BusinessTypeID", BusinessTypeID);
-            object.put("BusinessTypeStr", BusinessTypeStr);
-            object.put("CustomerGroupID", CustomerGroupID);
-            object.put("CustomerGroupStr", CustomerGroupStr);
-            object.put("SalesGroupID", SalesGroupID);
-            object.put("SalesGroupStr", SalesGroupStr);
-            object.put("BusinessDivisionID", BusinessDivisionID);
-            object.put("BusinessDivisionStr", BusinessDivisionStr);
-            object.put("CustomerClassID", CustomerClassID);
-            object.put("CustomerClassStr", CustomerClassStr);
-            object.put("CustomerTypeID", CustomerTypeID);
-            object.put("CustomerTypeStr", CustomerTypeStr);
-            object.put("ReportingVerticalsID", ReportingVerticalsID);
-            object.put("ReportingVerticalsStr", ReportingVerticalsStr);
-            object.put("SubMarketID", SubMarketID);
-            object.put("SubMarketStr", SubMarketStr);
+            object.put("businessAddressNoStr", businessAddressNoStr);
+            object.put("businessAddressCityStr", businessAddressCityStr);
+            object.put("businessAddressPincodeStr", businessAddressPincodeStr);
+
+            object.put("ownerAddressNoStr", ownerAddressNoStr);
+            object.put("ownerAddressCityStr", ownerAddressCityStr);
+            object.put("ownerAddressPincodeStr", ownerAddressPincodeStr);
+
+            object.put("mobileNumberStr", mobileNumberStr);
+
+            object.put("emailAddressStr", emailAddressStr);
+
+            object.put("executiveNameStr", executiveNameStr);
+
+            object.put("employeeIdStr", employeeIdStr);
+
+            object.put("creationDateStr", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Calendar.getInstance().getTime()));
+
+            object.put("UIDType", UIDType);
+
+            object.put("aadhaarStr", aadhaarStr);
+            object.put("aadhaarImage", aadhaarImageName);
+
+            object.put("PANStr", PANStr);
+            object.put("panImage", panImageName);
+
+            object.put("PANName", PANName);
+
+            object.put("bankDetailsStr", bankDetailsStr);
+            object.put("bankImageName", bankImageName);
+
+            object.put("fssaiStatus", fssaiSwitch.isChecked() ? "1" : "0");
+            object.put("FSSAIDetailsStr", FSSAIDetailsStr);
+            object.put("FSSAIImageName", FSSAIImageName);
+            object.put("fssaiFromStr", fssaiFromStr);
+            object.put("fssaitoStr", fssaitoStr);
+            object.put("FSSAIDeclarationImageName", FSSAIDeclarationImageName);
+
             object.put("gstStatus", gstSwitch.isChecked() ? "1" : "0");
+            object.put("GSTDetailsStr", GSTDetailsStr);
+            object.put("GSTImageName", GSTImageName);
+            object.put("gstDeclarationImageName", gstDeclarationImageName);
+
             object.put("tcsStatus", tcsSwitch.isChecked() ? "0" : "1");
+            object.put("tcsDeclarationImageName", tcsDeclarationImageName);
+
+            object.put("agreementDetailsStr", agreementDetailsStr);
+            object.put("agreementImageName", agreementImageName);
+
+            object.put("purchaseTypeId", purchaseTypeID);
+            object.put("purchaseTypeName", purchaseTypeName);
 
         } catch (JSONException e) {
             progressDialog.dismiss();
@@ -1649,9 +1820,12 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
-                type_address_of_the_shop.setText(strReturnedAddress.toString());
+                // Todo: Address
                 type_city.setText(returnedAddress.getLocality());
                 type_pincode.setText(returnedAddress.getPostalCode());
+                businessAddressNo.setText(returnedAddress.getSubThoroughfare() + ", " + returnedAddress.getThoroughfare());
+                businessAddressCity.setText(returnedAddress.getLocality() + ", " + returnedAddress.getAdminArea());
+                businessAddressPincode.setText(returnedAddress.getPostalCode());
             }
         } catch (Exception e) {
             Toast.makeText(context, "Map Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1669,13 +1843,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         googleMap.clear();
         googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your are here"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 16));
-    }
-
-    @Override
-    public void onLoadDataUpdateUI(String apiDataResponse, String key) {
-        if (key.equals(Constants.STATE_LIST)) {
-            PrepareStateList();
-        }
     }
 
     @Override

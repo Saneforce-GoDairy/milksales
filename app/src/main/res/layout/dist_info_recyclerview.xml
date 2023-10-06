@@ -7,7 +7,6 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:id="@+id/layparent"
         android:layout_width="match_parent"
@@ -18,7 +17,6 @@
         android:paddingLeft="@dimen/C5dp"
         android:paddingTop="@dimen/C5dp"
         android:paddingRight="@dimen/C5dp">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@+id/ivrefresh"
                         android:fontFamily="sans-serif"
-                        android:text="Your AC Balance"
+                        android:text="Order Limit Value"
                         android:textSize="11sp" />
 
                     <ImageView
