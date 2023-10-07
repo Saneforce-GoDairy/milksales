@@ -678,13 +678,13 @@
 
             </LinearLayout>
 
-            <!--<fragment
+            <fragment
                 android:id="@+id/route_map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginHorizontal="@dimen/C12dp"
-                android:layout_marginTop="@dimen/C5dp" />-->
+                android:layout_marginTop="@dimen/C5dp" />
 
             <EditText
                 android:id="@+id/businessAddressNo"
@@ -726,7 +726,8 @@
                 android:elevation="5dp"
                 android:gravity="start"
                 android:hint="Pincode"
-                android:inputType="textPostalAddress"
+                android:maxLength="6"
+                android:inputType="number"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
@@ -777,7 +778,9 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:gravity="start"
+                android:inputType="number"
                 android:hint="Pincode"
+                android:maxLength="6"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
@@ -948,6 +951,7 @@
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -957,6 +961,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/date_of_creation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

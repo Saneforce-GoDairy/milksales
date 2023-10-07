@@ -1533,9 +1533,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Capture Customer Photo", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(shop_photo_name) || TextUtils.isEmpty(shop_photo_url)) {
             Toast.makeText(context, "Please Capture Shop Photo", Toast.LENGTH_SHORT).show();
-        } /*else if (TextUtils.isEmpty(regionStr) || TextUtils.isEmpty(regionCodeStr)) {
-            Toast.makeText(context, "Please Select the Region", Toast.LENGTH_SHORT).show();
-        }*/ else if (TextUtils.isEmpty(officeNameStr) || TextUtils.isEmpty(officeCodeStr)) {
+        } else if (TextUtils.isEmpty(officeNameStr) || TextUtils.isEmpty(officeCodeStr)) {
             Toast.makeText(context, "Please Select the Sales Office Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(routeNameStr) || TextUtils.isEmpty(routeCodeStr)) {
             Toast.makeText(context, "Please Select the Route Name", Toast.LENGTH_SHORT).show();
@@ -1561,6 +1559,10 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter the Owner Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(businessAddressNoStr) || TextUtils.isEmpty(businessAddressCityStr) || TextUtils.isEmpty(businessAddressPincodeStr)) {
             Toast.makeText(context, "Please Enter the Business Address", Toast.LENGTH_SHORT).show();
+        } else if (businessAddressPincodeStr.length() != 6) {
+            Toast.makeText(context, "Please Enter 6 digit pincode", Toast.LENGTH_SHORT).show();
+        } else if (ownerAddressPincodeStr.length() != 6) {
+            Toast.makeText(context, "Please Enter 6 digit pincode", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(ownerAddressNoStr) || TextUtils.isEmpty(ownerAddressCityStr) || TextUtils.isEmpty(ownerAddressPincodeStr)) {
             Toast.makeText(context, "Please Enter the Owner Address", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(mobileNumberStr) || mobileNumberStr.length() != 10) { // Todo: Need to discuss
@@ -1595,9 +1597,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Capture the GST Certificate", Toast.LENGTH_SHORT).show();
         } else if ((Lat == 0) || (Long == 0)) {
             Toast.makeText(context, "Location can't be fetched", Toast.LENGTH_SHORT).show();
-        } /*else if (DistrictID.isEmpty() || DistrictStr.isEmpty()) {
-            Toast.makeText(context, "Please Select District", Toast.LENGTH_SHORT).show();
-        }*/ else if (SalesRegionID.isEmpty() || SalesRegionStr.isEmpty()) {
+        } else if (SalesRegionID.isEmpty() || SalesRegionStr.isEmpty()) {
             Toast.makeText(context, "Please Select Sales Region", Toast.LENGTH_SHORT).show();
         } else if (BusinessTypeID.isEmpty() || BusinessTypeStr.isEmpty()) {
             Toast.makeText(context, "Please Select Business Type", Toast.LENGTH_SHORT).show();
@@ -1786,11 +1786,22 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         JSONObject jsonObject = new JSONObject(result);
                         if (jsonObject.getBoolean("success")) {
                             progressDialog.dismiss();
-                            Toast.makeText(context, jsonObject.getString("response"), Toast.LENGTH_SHORT).show();
-                            finish();
+                            MyAlertDialog.show(context, "", jsonObject.getString("response"), false, "Close", "", new AlertBox() {
+                                @Override
+                                public void PositiveMethod(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+
+                                @Override
+                                public void NegativeMethod(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
                         } else {
                             progressDialog.dismiss();
-                            Toast.makeText(context, "Request does not reached the server", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, jsonObject.getString("response"), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         progressDialog.dismiss();
