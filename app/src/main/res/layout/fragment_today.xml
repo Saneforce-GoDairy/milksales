@@ -113,12 +113,12 @@
                                     app:srcCompat="@drawable/circle_bg_primary" />
 
                                 <ImageView
+                                    android:id="@+id/check_in_image"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:padding="1dp"
                                     android:layout_centerInParent="true"
-                                    android:src="@drawable/person_placeholder_0"
-                                    />
+                                    android:padding="1dp"
+                                    android:src="@drawable/person_placeholder_0" />
                             </RelativeLayout>
 
                             <TextView
@@ -187,12 +187,12 @@
                                     app:srcCompat="@drawable/circle_bg_primary" />
 
                                 <ImageView
+                                    android:id="@+id/check_out_image"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:padding="1dp"
                                     android:layout_centerInParent="true"
-                                    android:src="@drawable/person_placeholder_0"
-                                    />
+                                    android:padding="1dp"
+                                    android:src="@drawable/person_placeholder_0" />
                             </RelativeLayout>
                             <TextView
                                 android:id="@+id/check_out_time"

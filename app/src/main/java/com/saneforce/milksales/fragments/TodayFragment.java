@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import com.google.gson.annotations.SerializedName;
 import com.saneforce.milksales.Activity_Hap.Common_Class;
 import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
 import com.saneforce.milksales.Activity_Hap.Login;
+import com.saneforce.milksales.Activity_Hap.ProductImageView;
 import com.saneforce.milksales.Common_Class.Constants;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
@@ -65,6 +67,7 @@ public class TodayFragment extends Fragment {
     private SharedPreferences UserDetails;
     public static final String UserDetail = "MyPrefs";
     private String viewMode = "";
+    private String baseUrl = "https://lactalisindia.salesjump.in/";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -239,6 +242,39 @@ public class TodayFragment extends Fragment {
 
             String checkInTimeStr = fItm.get("GeoIn").getAsString();
             if (!checkInTimeStr.isEmpty() && !checkInTimeStr.equals("00:00:00")) {
+
+                // Check in image
+                String checkInImage = fItm.get("SImgName").getAsString();
+                String checkInImageFullUrl = baseUrl + checkInImage;
+
+                Glide.with(requireContext())
+                        .load(checkInImageFullUrl)
+                        .apply(RequestOptions.circleCropTransform())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(binding.checkInImage);
+
+                binding.checkInImage.setOnClickListener(v -> {
+                    Intent intent = new Intent(requireContext(), ProductImageView.class);
+                    intent.putExtra("ImageUrl", checkInImageFullUrl);
+                    startActivity(intent);
+                });
+
+                // Checkout image
+                String checkOutImage = fItm.get("EImgName").getAsString();
+                String checkOutImageFullUrl = baseUrl + checkOutImage;
+
+                Glide.with(requireContext())
+                        .load(checkOutImageFullUrl)
+                        .apply(RequestOptions.circleCropTransform())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(binding.checkOutImage);
+
+                binding.checkOutImage.setOnClickListener(v -> {
+                    Intent intent = new Intent(requireContext(), ProductImageView.class);
+                    intent.putExtra("ImageUrl", checkOutImageFullUrl);
+                    startActivity(intent);
+                });
+
                 // Shift start time
                 JsonObject shiftStartTimeJsonObject = fItm.getAsJsonObject("Shft");
                 String ShiftStartTime = shiftStartTimeJsonObject.get("date").getAsString();
