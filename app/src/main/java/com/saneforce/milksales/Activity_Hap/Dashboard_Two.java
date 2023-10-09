@@ -12,6 +12,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -39,6 +40,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -75,6 +77,7 @@ import com.saneforce.milksales.adapters.HomeRptRecyler;
 import com.saneforce.milksales.adapters.OffersAdapter;
 import com.saneforce.milksales.common.AlmReceiver;
 import com.saneforce.milksales.common.DatabaseHandler;
+import com.saneforce.milksales.common.LocationReceiver;
 import com.saneforce.milksales.common.SANGPSTracker;
 import com.saneforce.milksales.databinding.ActivityDashboardTwoBinding;
 import com.saneforce.milksales.fragments.GateInOutFragment;
@@ -444,12 +447,16 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         }).start();
 
         if (!isMyServiceRunning(SANGPSTracker.class)) {
-            try {
-                Intent playIntent = new Intent(this, SANGPSTracker.class);
-                bindService(playIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-                startService(playIntent);
-            } catch (Exception ignored) { }
         }
+
+
+        try {
+            mLUService = new SANGPSTracker(context);
+            LocationReceiver myReceiver = new LocationReceiver();
+            bindService(new Intent(context, SANGPSTracker.class), mServiceConnection, Context.BIND_AUTO_CREATE);
+            LocalBroadcastManager.getInstance(context).registerReceiver(myReceiver, new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
+            mLUService.requestLocationUpdates();
+        } catch (Exception ignored) { }
     }
 
     private void loadImage(String mProfileUrl) {

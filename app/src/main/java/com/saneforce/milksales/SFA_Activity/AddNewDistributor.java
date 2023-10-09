@@ -87,7 +87,7 @@ import retrofit2.Response;
 public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback {
 
     TextView /*select_region,*/ select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, downloadTCSDeclarationForm, purchaseType,
-            /*select_mode_of_payment,*/ submit, select_bank_details, select_agreement_copy, select_sub_channel, selectCusACGroup, select_dist_channel, select_sales_division, /*selectDistrict,*/ selectSalesRegion, selectBusinessType, selectCustomerGroup, selectSalesGroup, selectBusinessDivision, selectCustomerClass, selectCustomerType, selectReportingVerticals, selectSubMarket, downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
+    /*select_mode_of_payment,*/ submit, select_bank_details, select_agreement_copy, select_sub_channel, /*selectCusACGroup,*/ /*select_dist_channel,*/ /*select_sales_division,*/ /*selectDistrict,*/ /*selectSalesRegion,*/ selectBusinessType, /*selectCustomerGroup,*/ /*selectSalesGroup,*/ /*selectBusinessDivision,*/ /*selectCustomerClass,*/ /*selectCustomerType,*/ selectReportingVerticals, /*selectSubMarket,*/ downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
     ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai,
             display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, /*display_deposit,*/ /*capture_deposit,*/ home, display_aadhaar_number, capture_aadhaar_number,
             display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration, fssaiInfo, previewfssaiDeclaration, capturefssaiDeclaration;
@@ -112,7 +112,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     /*residenceAddressStr = "",*/ mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", creationDateStr = "", aadhaarStr = "",
             PANStr = "", bankDetailsStr = "", bankImageName = "", bankImageFullPath = "", FSSAIDetailsStr = "", FSSAIImageName = "", FSSAIImageFullPath = "", FSSAIDeclarationImageName = "", FSSAIDeclarationImageFullPath = "",
             GSTDetailsStr = "", GSTImageName = "", GSTImageFullPath = "", agreementDetailsStr = "", agreementImageName = "", agreementImageFullPath = "", /*modeOfPaymentStr = "",*/
-            /*depositDetailsStr = "",*/ /*depositImageName = "",*/ tcsDeclarationImageName = "", tcsDeclarationImageFullPath = "", gstDeclarationImageName = "", gstDeclarationImageFullPath = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", /*DistrictID = "",*/
+    /*depositDetailsStr = "",*/ /*depositImageName = "",*/ tcsDeclarationImageName = "", tcsDeclarationImageFullPath = "", gstDeclarationImageName = "", gstDeclarationImageFullPath = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", /*DistrictID = "",*/
             SalesRegionID = "", BusinessTypeID = "", CustomerGroupID = "", SalesGroupID = "", BusinessDivisionID = "", CustomerClassID = "", CustomerTypeID = "", ReportingVerticalsID = "",
             SubMarketID = "", /*DistrictStr = "",*/ SalesRegionStr = "", BusinessTypeStr = "", CustomerGroupStr = "", SalesGroupStr = "", BusinessDivisionStr = "", CustomerClassStr = "", purchaseTypeID = "", purchaseTypeName = "",
             CustomerTypeStr = "", ReportingVerticalsStr = "", SubMarketStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "",
@@ -138,19 +138,19 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         select_route_name = findViewById(R.id.select_route_name);
         select_channel = findViewById(R.id.select_channel);
         select_sub_channel = findViewById(R.id.select_sub_channel);
-        selectCusACGroup = findViewById(R.id.selectCusACGroup);
-        select_dist_channel = findViewById(R.id.select_dist_channel);
-        select_sales_division = findViewById(R.id.select_sales_division);
+//        selectCusACGroup = findViewById(R.id.selectCusACGroup);
+//        select_dist_channel = findViewById(R.id.select_dist_channel);
+//        select_sales_division = findViewById(R.id.select_sales_division);
         //selectDistrict = findViewById(R.id.selectDistrict);
-        selectSalesRegion = findViewById(R.id.selectSalesRegion);
+//        selectSalesRegion = findViewById(R.id.selectSalesRegion);
         selectBusinessType = findViewById(R.id.selectBusinessType);
-        selectCustomerGroup = findViewById(R.id.selectCustomerGroup);
-        selectSalesGroup = findViewById(R.id.selectSalesGroup);
-        selectBusinessDivision = findViewById(R.id.selectBusinessDivision);
-        selectCustomerClass = findViewById(R.id.selectCustomerClass);
-        selectCustomerType = findViewById(R.id.selectCustomerType);
+//        selectCustomerGroup = findViewById(R.id.selectCustomerGroup);
+//        selectSalesGroup = findViewById(R.id.selectSalesGroup);
+//        selectBusinessDivision = findViewById(R.id.selectBusinessDivision);
+//        selectCustomerClass = findViewById(R.id.selectCustomerClass);
+//        selectCustomerType = findViewById(R.id.selectCustomerType);
         selectReportingVerticals = findViewById(R.id.selectReportingVerticals);
-        selectSubMarket = findViewById(R.id.selectSubMarket);
+//        selectSubMarket = findViewById(R.id.selectSubMarket);
         select_state = findViewById(R.id.select_state);
         date_of_creation = findViewById(R.id.date_of_creation);
 //        select_mode_of_payment = findViewById(R.id.select_mode_of_payment);
@@ -230,9 +230,21 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
         fssaiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                fssaiLL.setVisibility(View.VISIBLE);
+                previewfssaiDeclaration.setVisibility(View.GONE);
                 fssaiDeclarationLL.setVisibility(View.GONE);
+                FSSAIDeclarationImageName = "";
+                FSSAIDeclarationImageFullPath = "";
+                fssaiLL.setVisibility(View.VISIBLE);
             } else {
+                fssaiFromDate.setText("");
+                fssaiFromStr = "";
+                fssaiToDate.setText("");
+                fssaitoStr = "";
+                type_fssai.setText("");
+                FSSAIDetailsStr = "";
+                display_fssai.setVisibility(View.GONE);
+                FSSAIImageName = "";
+                FSSAIImageFullPath = "";
                 fssaiLL.setVisibility(View.GONE);
                 fssaiDeclarationLL.setVisibility(View.VISIBLE);
             }
@@ -240,9 +252,17 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
         gstSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                gstLL.setVisibility(View.VISIBLE);
+                gstDeclarationImageName = "";
+                gstDeclarationImageFullPath = "";
+                previewGSTDeclaration.setVisibility(View.GONE);
                 gstDeclarationLL.setVisibility(View.GONE);
+                gstLL.setVisibility(View.VISIBLE);
             } else {
+                type_gst.setText("");
+                GSTDetailsStr = "";
+                GSTImageName = "";
+                GSTImageFullPath = "";
+                display_gst.setVisibility(View.GONE);
                 gstLL.setVisibility(View.GONE);
                 gstDeclarationLL.setVisibility(View.VISIBLE);
             }
@@ -271,6 +291,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
         tcsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
+                previewTCSDeclaration.setVisibility(View.GONE);
+                tcsDeclarationImageName = "";
+                tcsDeclarationImageFullPath = "";
                 tcsDeclarationLL.setVisibility(View.GONE);
             } else {
                 tcsDeclarationLL.setVisibility(View.VISIBLE);
@@ -837,7 +860,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
-        selectCusACGroup.setOnClickListener(v -> {
+        /*selectCusACGroup.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
             builder.setView(view);
@@ -936,7 +959,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             recyclerView.setAdapter(adapter);
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
-        });
+        });*/
         selectBusinessType.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
@@ -962,7 +985,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
-        selectCustomerGroup.setOnClickListener(v -> {
+        /*selectCustomerGroup.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
             builder.setView(view);
@@ -1094,7 +1117,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             recyclerView.setAdapter(adapter);
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
-        });
+        });*/
         selectReportingVerticals.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
@@ -1158,7 +1181,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });
-        selectSubMarket.setOnClickListener(v -> {
+        /*selectSubMarket.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
             builder.setView(view);
@@ -1182,7 +1205,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             recyclerView.setAdapter(adapter);
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
-        });
+        });*/
         /*selectDistrict.setOnClickListener(v -> {
             if (select_state.getText().toString().isEmpty()) {
                 Toast.makeText(context, "Please select state", Toast.LENGTH_SHORT).show();
@@ -1353,7 +1376,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             officeCodeStr = model.getId();
             select_sales_office_name.setText(model.getTitle());
             routeCodeStr = "";
-            selectSalesGroup.setText("");
+//            selectSalesGroup.setText("");
             SalesGroupID = "";
             SalesGroupStr = "";
             String routeReference = model.getRouteReference();
@@ -1510,7 +1533,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         aadhaarStr = type_aadhaar_number.getText().toString().trim();
         PANStr = type_pan_number.getText().toString().trim();
         bankDetailsStr = select_bank_details.getText().toString().trim();
-        FSSAIDetailsStr = type_fssai.getText().toString().trim();
         GSTDetailsStr = type_gst.getText().toString().trim();
         agreementDetailsStr = select_agreement_copy.getText().toString().trim();
 //        modeOfPaymentStr = select_mode_of_payment.getText().toString().trim();
@@ -1541,16 +1563,16 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Select the Channel", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(subChannelIDStr) || TextUtils.isEmpty(subChannelNameStr)) {
             Toast.makeText(context, "Please Select Sub Channel", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(acGroupIDStr) || TextUtils.isEmpty(acGroupNameStr)) {
+        }/* else if (TextUtils.isEmpty(acGroupIDStr) || TextUtils.isEmpty(acGroupNameStr)) {
             Toast.makeText(context, "Please Select Account Group", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(distChannelIDStr) || TextUtils.isEmpty(distChannelNameStr)) {
             Toast.makeText(context, "Please Select Distributor Channel", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(salesDivisionIDStr) || TextUtils.isEmpty(salesDivisionNameStr)) {
             Toast.makeText(context, "Please Select Sales Division", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(cityStr)) {
+        }*/ else if (TextUtils.isEmpty(cityStr)) {
             Toast.makeText(context, "Please Select the City", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(pincodeStr)) {
-            Toast.makeText(context, "Please Enter the Pincode", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(pincodeStr) || pincodeStr.length() != 6) {
+            Toast.makeText(context, "Please Enter 6 digit Pincode", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(stateCodeStr) || TextUtils.isEmpty(stateNameStr)) {
             Toast.makeText(context, "Please Select the State", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(customerNameStr)) {
@@ -1587,35 +1609,37 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter valid PAN Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(panImageName) || TextUtils.isEmpty(panImageFullPath)) {
             Toast.makeText(context, "Please Capture the PAN Image", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(GSTDetailsStr)) {
-            Toast.makeText(context, "Please Enter the GST Number", Toast.LENGTH_SHORT).show();
-        } else if (GSTDetailsStr.length() != 15 && gstSwitch.isChecked()) {
+        } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() != 14 && fssaiSwitch.isChecked()) {
+            Toast.makeText(context, "Please Enter 14 digit FSSAI Number", Toast.LENGTH_SHORT).show();
+        } else if (gstSwitch.isChecked() && GSTDetailsStr.length() != 15) {
             Toast.makeText(context, "Please Enter 15 digit GST Number", Toast.LENGTH_SHORT).show();
-        } else if (!GSTDetailsStr.matches("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$") && gstSwitch.isChecked()) {
+        } else if (gstSwitch.isChecked() && (!GSTDetailsStr.matches("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$"))) {
             Toast.makeText(context, "Please Enter valid GST Number", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(GSTImageName) || TextUtils.isEmpty(GSTImageFullPath)) {
+        } else if (gstSwitch.isChecked() && (TextUtils.isEmpty(GSTImageName) || TextUtils.isEmpty(GSTImageFullPath))) {
             Toast.makeText(context, "Please Capture the GST Certificate", Toast.LENGTH_SHORT).show();
+        } else if (!gstSwitch.isChecked() && (TextUtils.isEmpty(gstDeclarationImageName) || TextUtils.isEmpty(gstDeclarationImageFullPath))) {
+            Toast.makeText(context, "Please Capture the GST Declaration Certificate", Toast.LENGTH_SHORT).show();
         } else if ((Lat == 0) || (Long == 0)) {
             Toast.makeText(context, "Location can't be fetched", Toast.LENGTH_SHORT).show();
-        } else if (SalesRegionID.isEmpty() || SalesRegionStr.isEmpty()) {
+        }/* else if (SalesRegionID.isEmpty() || SalesRegionStr.isEmpty()) {
             Toast.makeText(context, "Please Select Sales Region", Toast.LENGTH_SHORT).show();
-        } else if (BusinessTypeID.isEmpty() || BusinessTypeStr.isEmpty()) {
+        }*/ else if (BusinessTypeID.isEmpty() || BusinessTypeStr.isEmpty()) {
             Toast.makeText(context, "Please Select Business Type", Toast.LENGTH_SHORT).show();
-        } else if (CustomerGroupID.isEmpty() || CustomerGroupStr.isEmpty()) {
+        }/* else if (CustomerGroupID.isEmpty() || CustomerGroupStr.isEmpty()) {
             Toast.makeText(context, "Please Select Customer Group", Toast.LENGTH_SHORT).show();
         } else if (SalesGroupID.isEmpty() || SalesGroupStr.isEmpty()) {
             Toast.makeText(context, "Please Select Sales Group", Toast.LENGTH_SHORT).show();
-        } else if (BusinessDivisionID.isEmpty() || BusinessDivisionStr.isEmpty()) {
+        }*//* else if (BusinessDivisionID.isEmpty() || BusinessDivisionStr.isEmpty()) {
             Toast.makeText(context, "Please Select Business Division", Toast.LENGTH_SHORT).show();
-        } else if (CustomerClassID.isEmpty() || CustomerClassStr.isEmpty()) {
+        }*//* else if (CustomerClassID.isEmpty() || CustomerClassStr.isEmpty()) {
             Toast.makeText(context, "Please Select Customer Class", Toast.LENGTH_SHORT).show();
-        } else if (CustomerTypeID.isEmpty() || CustomerTypeStr.isEmpty()) {
+        }*//* else if (CustomerTypeID.isEmpty() || CustomerTypeStr.isEmpty()) {
             Toast.makeText(context, "Please Select Customer Type", Toast.LENGTH_SHORT).show();
-        } else if (ReportingVerticalsID.isEmpty() || ReportingVerticalsStr.isEmpty()) {
+        }*/ else if (ReportingVerticalsID.isEmpty() || ReportingVerticalsStr.isEmpty()) {
             Toast.makeText(context, "Please Select Reporting Verticals", Toast.LENGTH_SHORT).show();
-        } else if (SubMarketID.isEmpty() || SubMarketStr.isEmpty()) {
+        }/* else if (SubMarketID.isEmpty() || SubMarketStr.isEmpty()) {
             Toast.makeText(context, "Please Select Sub Market", Toast.LENGTH_SHORT).show();
-        } else {
+        }*/ else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Are you sure want to submit?");
             builder.setCancelable(false);
@@ -1746,7 +1770,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("GSTImageName", GSTImageName);
             object.put("gstDeclarationImageName", gstDeclarationImageName);
 
-            object.put("tcsStatus", tcsSwitch.isChecked() ? "0" : "1");
+            object.put("tcsStatus", tcsSwitch.isChecked() ? "1" : "0");
             object.put("tcsDeclarationImageName", tcsDeclarationImageName);
 
             object.put("agreementDetailsStr", agreementDetailsStr);

@@ -244,6 +244,52 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
                 android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/selectBusinessType"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectBusinessType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Business Type"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/sales_division"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/select_sales_division"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Division"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
                 android:text="@string/channel"
                 android:textSize="@dimen/C14dp"
                 android:textStyle="bold" />
@@ -285,191 +331,7 @@
                 android:textSize="@dimen/C13dp"
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/account_group"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/selectCusACGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Account Group"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/distributor_channel"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/select_dist_channel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Distributor Channel"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/sales_division"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/select_sales_division"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Sales Division"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/selectSalesRegion"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/selectSalesRegion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Regional Market"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/selectBusinessType"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/selectBusinessType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Business Type"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/selectCustomerGroup"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/selectCustomerGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Customer Group"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/selectSalesGroup"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/selectSalesGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Sales Group"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/selectBusinessDivision"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/selectBusinessDivision"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Business Division"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -490,30 +352,7 @@
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/selectCustomerType"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/selectCustomerType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Select Customer Type"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -538,7 +377,7 @@
                 android:textSize="@dimen/C13dp"
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -559,7 +398,168 @@
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/selectCustomerType"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectCustomerType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Customer Type"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/account_group"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectCusACGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Account Group"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/distributor_channel"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/select_dist_channel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Distributor Channel"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/selectSalesRegion"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectSalesRegion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Regional Market"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/selectCustomerGroup"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectCustomerGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Customer Group"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/selectSalesGroup"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectSalesGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Sales Group"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C8dp"
+                android:layout_marginTop="@dimen/C15dp"
+                android:text="@string/selectBusinessDivision"
+                android:textSize="@dimen/C14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectBusinessDivision"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C5dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Select Business Division"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp"
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -695,7 +695,8 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:gravity="start"
-                android:hint="Shop No and Street"
+                android:hint="Business Address Line 1"
+                android:maxLength="35"
                 android:inputType="textPostalAddress"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
@@ -710,7 +711,8 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:gravity="start"
-                android:hint="City, District and State"
+                android:maxLength="35"
+                android:hint="Business Address Line 2"
                 android:inputType="textPostalAddress"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
@@ -725,9 +727,8 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:gravity="start"
-                android:hint="Pincode"
-                android:maxLength="6"
-                android:inputType="number"
+                android:hint="Business Address Line 3"
+                android:maxLength="35"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
@@ -750,7 +751,8 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:gravity="start"
-                android:hint="House No and Street"
+                android:hint="Owner Address Line 1"
+                android:maxLength="35"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
@@ -764,7 +766,8 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:gravity="start"
-                android:hint="City, District and State"
+                android:hint="Owner Address Line 2"
+                android:maxLength="35"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
@@ -1274,6 +1277,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/textbox_bg"
                         android:elevation="5dp"
+                        android:maxLength="14"
                         android:hint="Enter FSSAI Certificate / Declaration"
                         android:inputType="text"
                         android:padding="@dimen/C8dp"

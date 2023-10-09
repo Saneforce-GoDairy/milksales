@@ -160,7 +160,7 @@
     <string name="emi_banks">EMI Banks</string>
     <string name="emi_card_name">Card Name</string>
 
-    <string name="diary_product_delivery_solutions">Diary Product \n Delivery Solutions</string>
+    <string name="diary_product_delivery_solutions">Dairy Product \n Delivery Solutions</string>
     <string name="continue_with_google">Continue with google</string>
     <string name="request_amp_status"><![CDATA[Request & Status]]></string>
     <string name="canteen_scan">Canteen Scan</string>
@@ -179,7 +179,7 @@
     <string name="sub_channel">Sub Channel<font fgcolor='#E53935'> *</font></string>
     <string name="account_group">Account Group<font fgcolor='#E53935'> *</font></string>
     <string name="distributor_channel">Distributor Channel<font fgcolor='#E53935'> *</font></string>
-    <string name="sales_division">Sales Division<font fgcolor='#E53935'> *</font></string>
+    <string name="sales_division">Division<font fgcolor='#E53935'> *</font></string>
     <string name="selectSalesRegion">Regional Market<font fgcolor='#E53935'> *</font></string>
     <string name="selectBusinessType">Business Type<font fgcolor='#E53935'> *</font></string>
     <string name="selectCustomerGroup">Customer Group<font fgcolor='#E53935'> *</font></string>
