@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name" translatable="false">Milk Sales</string>
-    <string name="milk_sales_daily" translatable="false">Milk Sales Daily</string>
-    <string name="milk_sales_check_in" translatable="false">Milk Sales Check-In</string>
-    <string name="milk_sales_franchise" translatable="false">Milk Sales Franchise</string>
-    <string name="milk_sales_locations" translatable="false">Milk Sales Locations</string>
+    <string name="app_name" translatable="false">GoDairy</string>
+    <string name="milk_sales_daily" translatable="false">GoDairy</string>
+    <string name="milk_sales_check_in" translatable="false">GoDairy</string>
+    <string name="milk_sales_franchise" translatable="false">GoDairy Distributor</string>
+    <string name="milk_sales_locations" translatable="false">GoDairy Locations</string>
 
     <string name="loading_please_wait" translatable="false">Loading Please Wait......</string>
     <string name="todo" translatable="false">TODO</string>
@@ -16,8 +16,8 @@
 
     <!-- Strings used for fragments for navigation -->
     <string name="map_key" translatable="false">AIzaSyAER5hPywUW-5DRlyKJZEfsqgZlaqytxoU</string>
-    <string name="txt_haplocations" translatable="false">Select the Milk Sales locations <font fgcolor='#E53935'> *</font></string>
-    <string name="txt_haplocationss" translatable="false">Select the Milk Sales locations</string>
+    <string name="txt_haplocations" translatable="false">Select the GoDairy locations <font fgcolor='#E53935'> *</font></string>
+    <string name="txt_haplocationss" translatable="false">Select the GoDairy locations</string>
     <string name="txt_purpose" translatable="false">Enter the Purpose of visit<font fgcolor='#E53935'> *</font></string>
     <string name="txt_purposes" translatable="false">Enter the Purpose of visit</string>
     <string name="txt_ondutylocations" translatable="false">Enter your ON-Duty Location<font fgcolor='#E53935'> *</font></string>
@@ -122,19 +122,20 @@
 
     <string name="customer_photo">Customer Photo<font fgcolor='#E53935'> *</font></string>
     <string name="shop_photo">Shop Photo<font fgcolor='#E53935'> *</font></string>
-    <string name="region">Region<font fgcolor='#E53935'> *</font></string>
+    <string name="region">TM1 Reporting Verticals<font fgcolor='#E53935'> *</font></string>
     <string name="sales_office_code">Sales Office Code<font fgcolor='#E53935'> *</font></string>
-    <string name="sales_office_name">Sales Office Name<font fgcolor='#E53935'> *</font></string>
+    <string name="sales_office_name">Sales Office<font fgcolor='#E53935'> *</font></string>
     <string name="route_code">Route Code<font fgcolor='#E53935'> *</font></string>
-    <string name="route_name">Route Name<font fgcolor='#E53935'> *</font></string>
+    <string name="route_name">Route<font fgcolor='#E53935'> *</font></string>
     <string name="channel">Channel<font fgcolor='#E53935'> *</font></string>
     <string name="city">City<font fgcolor='#E53935'> *</font></string>
     <string name="postal_code_pincode">Postal Code (Pincode)<font fgcolor='#E53935'> *</font></string>
     <string name="state_code">State<font fgcolor='#E53935'> *</font></string>
-    <string name="name_of_the_customer">Name of the Customer<font fgcolor='#E53935'> *</font></string>
+    <string name="select_district">District<font fgcolor='#E53935'> *</font></string>
+    <string name="name_of_the_customer">Business Name<font fgcolor='#E53935'> *</font></string>
     <string name="name_of_the_owner">Name of the Owner<font fgcolor='#E53935'> *</font></string>
-    <string name="address_of_the_shop">Address of the Shop<font fgcolor='#E53935'> *</font></string>
-    <string name="residence_address">Residence Address<font fgcolor='#E53935'> *</font></string>
+    <string name="address_of_the_shop">Business Address<font fgcolor='#E53935'> *</font></string>
+    <string name="residence_address">Owner Address<font fgcolor='#E53935'> *</font></string>
     <string name="mobile">Mobile<font fgcolor='#E53935'> *</font></string>
     <string name="email_id">Email Id</string>
     <string name="sales_executive_name">Sales Executive Name<font fgcolor='#E53935'> *</font></string>
@@ -146,7 +147,7 @@
     <string name="aadhaar_number">Aadhaar Number<font fgcolor='#E53935'> *</font></string>
     <string name="pan_number">PAN Number<font fgcolor='#E53935'> *</font></string>
     <string name="bank_details">Bank Details</string>
-    <string name="fssai_certificate_applied_details">FSSAI Certificate / Applied Details</string>
+    <string name="fssai_certificate_applied_details">FSSAI Certificate / Declaration</string>
     <string name="gst_certificate_declaration">GST Certificate / Declaration<font fgcolor='#E53935'> *</font></string>
     <string name="agreement_copy">Agreement Copy</string>
     <string name="mode_of_payment">Mode of Payment<font fgcolor='#E53935'> *</font></string>
@@ -179,5 +180,17 @@
     <string name="account_group">Account Group<font fgcolor='#E53935'> *</font></string>
     <string name="distributor_channel">Distributor Channel<font fgcolor='#E53935'> *</font></string>
     <string name="sales_division">Sales Division<font fgcolor='#E53935'> *</font></string>
+    <string name="selectSalesRegion">Regional Market<font fgcolor='#E53935'> *</font></string>
+    <string name="selectBusinessType">Business Type<font fgcolor='#E53935'> *</font></string>
+    <string name="selectCustomerGroup">Customer Group<font fgcolor='#E53935'> *</font></string>
+    <string name="selectSalesGroup">Sales Group<font fgcolor='#E53935'> *</font></string>
+    <string name="selectBusinessDivision">Business Division<font fgcolor='#E53935'> *</font></string>
+    <string name="selectCustomerClass">Customer Cluster<font fgcolor='#E53935'> *</font></string>
+    <string name="selectCustomerType">Customer Type<font fgcolor='#E53935'> *</font></string>
+    <string name="selectReportingVerticals">Verticals<font fgcolor='#E53935'> *</font></string>
+    <string name="selectSubMarket">Sub Market<font fgcolor='#E53935'> *</font></string>
+    <string name="pan_name">PAN Name<font fgcolor='#E53935'> *</font></string>
+    <string name="uid_Type">UID Type<font fgcolor='#E53935'> *</font></string>
+    <string name="advance_amount">Purchase Type<font fgcolor='#E53935'> *</font></string>
 
 </resources>

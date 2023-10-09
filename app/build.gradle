@@ -148,7 +148,7 @@ dependencies {
     //implementation 'com.google.android.gms:play-services:12.0.1'
 
     //noinspection GradleDynamicVersion
-    implementation 'com.google.maps.android:android-maps-utils:0.4+'
+    implementation 'com.google.maps.android:android-maps-utils:3.5.3'
 
     implementation 'com.mcxiaoke.volley:library-aar:1.0.0'
     implementation 'com.github.kenglxn.QRGen:android:2.6.0'
@@ -168,8 +168,8 @@ dependencies {
 
     // BEGIN AWS DEPENDENCIES
     def aws_version = "2.16.+"
-    implementation "com.amazonaws:aws-android-sdk-s3:$aws_version"
-    implementation("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
+    implementation "com.amazonaws:aws-android-sdk-s3:2.73.0"
+    implementation("com.amazonaws:aws-android-sdk-mobile-client:2.73.0") { transitive = true }
     // END AWS DEPENDENCIES
 
     //for 12version

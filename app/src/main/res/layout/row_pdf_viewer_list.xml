@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.2"
-            android:text="Milk Sales GSTN Number List"
+            android:text="GoDairy GSTN Number List"
             android:textColor="@android:color/black"></TextView>
 
     </LinearLayout>

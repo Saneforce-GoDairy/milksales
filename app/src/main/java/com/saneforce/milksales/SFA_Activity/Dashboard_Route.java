@@ -1329,6 +1329,7 @@ public class Dashboard_Route extends AppCompatActivity implements View.OnClickLi
 
                             common_class.getDb_310Data(Constants.TAXList, getActiveActivity());
                             common_class.ProgressdialogShow(1, "Loading Matrial Details");
+                            Toast.makeText(context, "Reached", Toast.LENGTH_SHORT).show();
                             common_class.getProductDetails(getActiveActivity(), new OnLiveUpdateListener() {
                                 @Override
                                 public void onUpdate(String mode) {

@@ -326,7 +326,7 @@
                             android:layout_height="match_parent"
                             android:fontFamily="sans-serif"
                             android:gravity="center_vertical"
-                            android:text="Your AC Balance"
+                            android:text="Order Limit Value"
                             android:textSize="9sp" />
 
                         <ImageView

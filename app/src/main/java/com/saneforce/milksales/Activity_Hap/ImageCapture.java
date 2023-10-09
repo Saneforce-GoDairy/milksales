@@ -865,7 +865,7 @@ public class ImageCapture extends AppCompatActivity implements CameraActivity.Ca
                                         editor.putString("ShiftCutOff", CheckInInf.getString("ShiftCutOff"));
 
                                         long AlrmTime = DT.getDate(CheckInInf.getString("ShiftEnd")).getTime();
-                                        sendAlarmNotify(1001, AlrmTime, HAPApp.Title, "Check-Out Alert !.");
+//                                        sendAlarmNotify(1001, AlrmTime, HAPApp.Title, "Check-Out Alert !.");
                                     }
 
                                     if (mMode.equalsIgnoreCase("ONDuty")) {

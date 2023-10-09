@@ -4,13 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 public class MyProgressDialog {
-    ProgressDialog progressDialog;
+    static ProgressDialog progressDialog;
 
-    public MyProgressDialog(Context context) {
-        this.progressDialog = new ProgressDialog(context);
-    }
-
-    public void show(String title, String message, boolean isCancelable) {
+    public static void show(Context context, String title, String message, boolean isCancelable) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(context);
+        }
         progressDialog.setCancelable(isCancelable);
         if (!title.isEmpty()) {
             progressDialog.setTitle(title);
@@ -18,13 +17,12 @@ public class MyProgressDialog {
         if (!message.isEmpty()) {
             progressDialog.setMessage(message);
         }
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
+        progressDialog.show();
+    }
+
+    public static void dismiss() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
     }
-
-    public void dismiss() {
-        progressDialog.dismiss();
-    }
-
 }
