@@ -71,13 +71,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -87,7 +92,7 @@ import retrofit2.Response;
 public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback {
 
     TextView /*select_region,*/ select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, downloadTCSDeclarationForm, purchaseType,
-    /*select_mode_of_payment,*/ submit, select_bank_details, select_agreement_copy, select_sub_channel, /*selectCusACGroup,*/ /*select_dist_channel,*/ /*select_sales_division,*/ /*selectDistrict,*/ /*selectSalesRegion,*/ selectBusinessType, /*selectCustomerGroup,*/ /*selectSalesGroup,*/ /*selectBusinessDivision,*/ /*selectCustomerClass,*/ /*selectCustomerType,*/ selectReportingVerticals, /*selectSubMarket,*/ downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
+    /*select_mode_of_payment,*/ submit, select_bank_details, select_agreement_copy, select_sub_channel, /*selectCusACGroup,*/ /*select_dist_channel,*/ /*select_sales_division,*/ /*selectDistrict,*/ /*selectSalesRegion,*/ /*selectBusinessType,*/ /*selectCustomerGroup,*/ /*selectSalesGroup,*/ /*selectBusinessDivision,*/ /*selectCustomerClass,*/ /*selectCustomerType,*/ selectReportingVerticals, /*selectSubMarket,*/ downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
     ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai,
             display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, /*display_deposit,*/ /*capture_deposit,*/ home, display_aadhaar_number, capture_aadhaar_number,
             display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration, fssaiInfo, previewfssaiDeclaration, capturefssaiDeclaration;
@@ -113,8 +118,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             PANStr = "", bankDetailsStr = "", bankImageName = "", bankImageFullPath = "", FSSAIDetailsStr = "", FSSAIImageName = "", FSSAIImageFullPath = "", FSSAIDeclarationImageName = "", FSSAIDeclarationImageFullPath = "",
             GSTDetailsStr = "", GSTImageName = "", GSTImageFullPath = "", agreementDetailsStr = "", agreementImageName = "", agreementImageFullPath = "", /*modeOfPaymentStr = "",*/
     /*depositDetailsStr = "",*/ /*depositImageName = "",*/ tcsDeclarationImageName = "", tcsDeclarationImageFullPath = "", gstDeclarationImageName = "", gstDeclarationImageFullPath = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", /*DistrictID = "",*/
-            SalesRegionID = "", BusinessTypeID = "", CustomerGroupID = "", SalesGroupID = "", BusinessDivisionID = "", CustomerClassID = "", CustomerTypeID = "", ReportingVerticalsID = "",
-            SubMarketID = "", /*DistrictStr = "",*/ SalesRegionStr = "", BusinessTypeStr = "", CustomerGroupStr = "", SalesGroupStr = "", BusinessDivisionStr = "", CustomerClassStr = "", purchaseTypeID = "", purchaseTypeName = "",
+            SalesRegionID = "", /*BusinessTypeID = "",*/ CustomerGroupID = "", SalesGroupID = "", BusinessDivisionID = "", CustomerClassID = "", CustomerTypeID = "", ReportingVerticalsID = "",
+            SubMarketID = "", /*DistrictStr = "",*/ SalesRegionStr = "", /*BusinessTypeStr = "",*/ CustomerGroupStr = "", SalesGroupStr = "", BusinessDivisionStr = "", CustomerClassStr = "", purchaseTypeID = "", purchaseTypeName = "",
             CustomerTypeStr = "", ReportingVerticalsStr = "", SubMarketStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "",
             fssaiFromStr = "", fssaitoStr = "", PANName = "", UIDType = "";
 
@@ -143,7 +148,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 //        select_sales_division = findViewById(R.id.select_sales_division);
         //selectDistrict = findViewById(R.id.selectDistrict);
 //        selectSalesRegion = findViewById(R.id.selectSalesRegion);
-        selectBusinessType = findViewById(R.id.selectBusinessType);
+//        selectBusinessType = findViewById(R.id.selectBusinessType);
 //        selectCustomerGroup = findViewById(R.id.selectCustomerGroup);
 //        selectSalesGroup = findViewById(R.id.selectSalesGroup);
 //        selectBusinessDivision = findViewById(R.id.selectBusinessDivision);
@@ -271,22 +276,36 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         fssaiFromDate.setOnClickListener(v -> {
             Calendar newCalendar = Calendar.getInstance();
             fromDatePickerDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
-                int month = monthOfYear + 1;
-                String date = ("" + year + "-" + month + "-" + dayOfMonth);
+                Calendar fromCal = Calendar.getInstance();
+                fromCal.set(year, monthOfYear, dayOfMonth);
+                String date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(fromCal.getTime());
                 fssaiFromDate.setText(date);
-                fssaiToDate.setEnabled(true);
             }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
             fromDatePickerDialog.show();
         });
 
         fssaiToDate.setOnClickListener(v -> {
-            Calendar newCalendar = Calendar.getInstance();
-            fromDatePickerDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
-                int month = monthOfYear + 1;
-                String date = ("" + year + "-" + month + "-" + dayOfMonth);
-                fssaiToDate.setText(date);
-            }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-            fromDatePickerDialog.show();
+            String fromDate = fssaiFromDate.getText().toString();
+            if (fromDate.isEmpty()) {
+                Toast.makeText(context, "Please select from date", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    Date date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).parse(fromDate);
+                    Calendar toCal = Calendar.getInstance();
+                    toCal.setTime(date);
+                    fromDatePickerDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+                        Calendar refCal = Calendar.getInstance();
+                        refCal.set(year, monthOfYear, dayOfMonth);
+                        String dates = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(refCal.getTime());
+                        fssaiToDate.setText(dates);
+                    }, toCal.get(Calendar.YEAR), toCal.get(Calendar.MONTH), toCal.get(Calendar.DAY_OF_MONTH));
+                    fromDatePickerDialog.getDatePicker().setMinDate(toCal.getTimeInMillis());
+                    fromDatePickerDialog.show();
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
         tcsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -634,11 +653,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     select_sales_office_name.setText("");
                     filteredOfficeList.clear();
 
-                    for (CommonModelWithFourString modelWithThreeString : officeList) {
+                    /*for (CommonModelWithFourString modelWithThreeString : officeList) {
                         if (modelWithThreeString.getRegionReference().equalsIgnoreCase(stateCodeStr)) {
                             filteredOfficeList.add(modelWithThreeString);
                         }
-                    }
+                    }*/
                     MyProgressDialog.show(context, "", "Filtering Districts...", true);
                     for (int i = 0; i < MasDistrictArray.length(); i++) {
                         try {
@@ -698,10 +717,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             dialog.show();
         });*/
         select_sales_office_name.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(select_state.getText().toString().trim())) {
-                Toast.makeText(context, "Please Select State", Toast.LENGTH_SHORT).show();
-                return;
-            } else if (filteredOfficeList.isEmpty()) {
+            if (officeList.isEmpty()) {
                 Toast.makeText(context, "No offices found for the selected state", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -730,7 +746,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 @Override
                 public void afterTextChanged(Editable s) {
                     tempOfficeList.clear();
-                    for (CommonModelWithFourString modelWithThreeString : filteredOfficeList) {
+                    for (CommonModelWithFourString modelWithThreeString : officeList) {
                         if (modelWithThreeString.getTitle().toLowerCase().contains(s.toString().toLowerCase().trim())) {
                             tempOfficeList.add(modelWithThreeString);
                         }
@@ -740,7 +756,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             });
             close.setOnClickListener(v1 -> dialog.dismiss());
             recyclerView1.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-            setAdapterForOffice(filteredOfficeList, dialog, recyclerView1);
+            setAdapterForOffice(officeList, dialog, recyclerView1);
             dialog.show();
         });
         select_route_name.setOnClickListener(v -> {
@@ -960,7 +976,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
         });*/
-        selectBusinessType.setOnClickListener(v -> {
+        /*selectBusinessType.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
             builder.setView(view);
@@ -984,7 +1000,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             recyclerView.setAdapter(adapter);
             close.setOnClickListener(v1 -> dialog.dismiss());
             dialog.show();
-        });
+        });*/
         /*selectCustomerGroup.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
@@ -1611,6 +1627,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Capture the PAN Image", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() != 14 && fssaiSwitch.isChecked()) {
             Toast.makeText(context, "Please Enter 14 digit FSSAI Number", Toast.LENGTH_SHORT).show();
+        } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && (fssaiFromStr.isEmpty() || fssaitoStr.isEmpty())) {
+            Toast.makeText(context, "Please select FSSAI valid dates", Toast.LENGTH_SHORT).show();
         } else if (gstSwitch.isChecked() && GSTDetailsStr.length() != 15) {
             Toast.makeText(context, "Please Enter 15 digit GST Number", Toast.LENGTH_SHORT).show();
         } else if (gstSwitch.isChecked() && (!GSTDetailsStr.matches("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$"))) {
@@ -1623,9 +1641,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Location can't be fetched", Toast.LENGTH_SHORT).show();
         }/* else if (SalesRegionID.isEmpty() || SalesRegionStr.isEmpty()) {
             Toast.makeText(context, "Please Select Sales Region", Toast.LENGTH_SHORT).show();
-        }*/ else if (BusinessTypeID.isEmpty() || BusinessTypeStr.isEmpty()) {
+        }*//* else if (BusinessTypeID.isEmpty() || BusinessTypeStr.isEmpty()) {
             Toast.makeText(context, "Please Select Business Type", Toast.LENGTH_SHORT).show();
-        }/* else if (CustomerGroupID.isEmpty() || CustomerGroupStr.isEmpty()) {
+        }*//* else if (CustomerGroupID.isEmpty() || CustomerGroupStr.isEmpty()) {
             Toast.makeText(context, "Please Select Customer Group", Toast.LENGTH_SHORT).show();
         } else if (SalesGroupID.isEmpty() || SalesGroupStr.isEmpty()) {
             Toast.makeText(context, "Please Select Sales Group", Toast.LENGTH_SHORT).show();
@@ -1692,8 +1710,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("SalesRegionID", SalesRegionID);
             object.put("SalesRegionStr", SalesRegionStr);
 
-            object.put("BusinessTypeID", BusinessTypeID);
-            object.put("BusinessTypeStr", BusinessTypeStr);
+            object.put("BusinessTypeID", "");
+            object.put("BusinessTypeStr", "");
 
             object.put("CustomerGroupID", CustomerGroupID);
             object.put("CustomerGroupStr", CustomerGroupStr);
@@ -1814,6 +1832,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                                 @Override
                                 public void PositiveMethod(DialogInterface dialog, int id) {
                                     dialog.dismiss();
+                                    Reports_Distributor_Name.refresh = true;
                                     finish();
                                 }
 
@@ -1846,25 +1865,45 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void getCompleteAddressString(double LATITUDE, double LONGITUDE) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null) {
-                Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder();
-                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+        Executors.newSingleThreadExecutor().execute(() -> {Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+                if (addresses != null) {
+                    Address returnedAddress = addresses.get(0);
+                    String doorNo = returnedAddress.getSubThoroughfare();
+                    String street = returnedAddress.getThoroughfare();
+                    String city = returnedAddress.getLocality();
+                    String state = returnedAddress.getAdminArea();
+                    String pincode = returnedAddress.getPostalCode();
+
+                    runOnUiThread(() -> {
+                        type_city.setText(city);
+                        businessAddressPincode.setText(pincode);
+                        type_pincode.setText(pincode);
+                        businessAddressNo.setText(doorNo + ", " + street);
+                        businessAddressCity.setText(city + ", " + state);
+
+                        /*if (!city.equals("null")) {
+                            type_city.setText(city);
+                        }
+                        if (!pincode.equals("null")) {
+                            businessAddressPincode.setText(pincode);
+                            type_pincode.setText(pincode);
+                        }
+                        if (!doorNo.equals("null") && !street.equals("null")) {
+                            businessAddressNo.setText(doorNo + ", " + street);
+                        }
+                        if (!city.equals("null") && !state.equals("null")) {
+                            businessAddressCity.setText(city + ", " + state);
+                        }*/
+                    });
                 }
-                // Todo: Address
-                type_city.setText(returnedAddress.getLocality());
-                type_pincode.setText(returnedAddress.getPostalCode());
-                businessAddressNo.setText(returnedAddress.getSubThoroughfare() + ", " + returnedAddress.getThoroughfare());
-                businessAddressCity.setText(returnedAddress.getLocality() + ", " + returnedAddress.getAdminArea());
-                businessAddressPincode.setText(returnedAddress.getPostalCode());
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(context, "Map Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
             }
-        } catch (Exception e) {
-            Toast.makeText(context, "Map Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        });
     }
 
     @Override

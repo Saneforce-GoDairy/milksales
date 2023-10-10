@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Constants;
+import com.saneforce.milksales.Common_Class.MyProgressDialog;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
@@ -57,12 +58,14 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
     LottieAnimationView progressBar, animationView;
     LinearLayout error_layout;
     TextView error_info;
+    public static boolean refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_dist_name);
+            refresh = false;
             shared_common_pref = new Shared_Common_Pref(this);
             recyclerView = findViewById(R.id.rvDistList);
             etSearch = findViewById(R.id.etSearchDist);
@@ -282,16 +285,28 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
                     setAdapter(arr);
                 }
             }
+            MyProgressDialog.dismiss();
         } catch (Exception e) {
             Log.v(key + "Ex:", e.getMessage());
             progressBar.setVisibility(View.GONE);
             error_layout.setVisibility(View.VISIBLE);
             error_info.setText(e.getMessage());
+            MyProgressDialog.dismiss();
         }
 
     }
 
-//    private void distLocUpdate(int id, Location location) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (refresh) {
+            MyProgressDialog.show(this, "", "Refreshing Distributors...", true);
+            common_class.getDb_310Data(Constants.Distributor_List, this);
+            refresh = false;
+        }
+    }
+
+    //    private void distLocUpdate(int id, Location location) {
 //        pb.setVisibility(View.VISIBLE);
 //        JSONArray jsonarr = new JSONArray();
 //        JSONObject jsonarrplan = new JSONObject();

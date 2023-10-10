@@ -327,9 +327,11 @@ public class TodayFragment extends Fragment {
 
         }
 
-        Glide.with(requireContext())
-                .load(ApiClient.BASE_URL.replaceAll("server/", "") + fItm.get("ImgName").getAsString())
-                .apply(RequestOptions.circleCropTransform())
-                .into(binding.userProfile);
+        try {
+            Glide.with(requireContext())
+                    .load(ApiClient.BASE_URL.replaceAll("server/", "") + fItm.get("ImgName").getAsString())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(binding.userProfile);
+        } catch (Exception ignored) { }
     }
 }

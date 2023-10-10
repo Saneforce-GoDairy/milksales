@@ -239,7 +239,7 @@
                 android:textSize="@dimen/C13dp"
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -260,7 +260,7 @@
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp"
-                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
 
             <!--<TextView
                 android:layout_width="match_parent"
@@ -1279,7 +1279,7 @@
                         android:elevation="5dp"
                         android:maxLength="14"
                         android:hint="Enter FSSAI Certificate / Declaration"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:padding="@dimen/C8dp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/C13dp" />
@@ -1329,7 +1329,6 @@
                     <TextView
                         android:id="@+id/fssaiToDate"
                         android:layout_width="0dp"
-                        android:enabled="false"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/C10dp"
                         android:layout_marginBottom="@dimen/C10dp"
