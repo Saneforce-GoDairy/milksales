@@ -584,29 +584,16 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
 
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
                 android:layout_marginTop="@dimen/C15dp"
                 android:text="@string/postal_code_pincode"
                 android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
+                android:textStyle="bold" />-->
 
-            <EditText
-                android:id="@+id/type_pincode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C5dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Enter Pincode"
-                android:inputType="number"
-                android:maxLength="6"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp" />
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -729,6 +716,21 @@
                 android:gravity="start"
                 android:hint="Business Address Line 3"
                 android:maxLength="35"
+                android:padding="@dimen/C8dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/C13dp" />
+
+            <EditText
+                android:id="@+id/type_pincode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/C10dp"
+                android:layout_marginTop="@dimen/C8dp"
+                android:background="@drawable/textbox_bg"
+                android:elevation="5dp"
+                android:hint="Enter Pincode"
+                android:inputType="number"
+                android:maxLength="6"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />

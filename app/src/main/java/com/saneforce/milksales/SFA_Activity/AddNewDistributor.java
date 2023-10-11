@@ -351,6 +351,25 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         filteredRouteList = new ArrayList<>();
         tempRouteList = new ArrayList<>();
 
+        subChannelResponse = new JSONArray();
+        filteredSubChannel = new JSONArray();
+        cusACGroupResponse = new JSONArray();
+        distChannelResponse = new JSONArray();
+        salesDivisionResponse = new JSONArray();
+        MasDistrictArray = new JSONArray();
+        filteredMasDistrictArray = new JSONArray();
+        MasCusSalRegionArray = new JSONArray();
+        MasSalesGroupArray = new JSONArray();
+        filteredMasSalesGroupArray = new JSONArray();
+        MasCusGroupArray = new JSONArray();
+        MasBusinessTypeArray = new JSONArray();
+        MasBusinessDivisionArray = new JSONArray();
+        MasCusClassArray = new JSONArray();
+        MasReportingVertArray = new JSONArray();
+        MasSubMarketArray = new JSONArray();
+        MasCusTypeArray = new JSONArray();
+        stateArray = new JSONArray();
+
         capture_customer_photo.setOnClickListener(v -> {
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
@@ -648,26 +667,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     /*regionCodeStr = "";
                     regionFilteredList.clear();*/
                     filteredMasDistrictArray = new JSONArray();
-
                     officeCodeStr = "";
                     select_sales_office_name.setText("");
                     filteredOfficeList.clear();
-
-                    /*for (CommonModelWithFourString modelWithThreeString : officeList) {
-                        if (modelWithThreeString.getRegionReference().equalsIgnoreCase(stateCodeStr)) {
-                            filteredOfficeList.add(modelWithThreeString);
-                        }
-                    }*/
-                    MyProgressDialog.show(context, "", "Filtering Districts...", true);
-                    for (int i = 0; i < MasDistrictArray.length(); i++) {
-                        try {
-                            if (MasDistrictArray.getJSONObject(i).getString("State_Code").equals(stateCodeStr)) {
-                                filteredMasDistrictArray.put(MasDistrictArray.getJSONObject(i));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
                     MyProgressDialog.dismiss();
                     dialog.dismiss();
                 } catch (JSONException e) {
@@ -1318,26 +1320,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         refreshLocation.setOnClickListener(v -> getLocation());
         submit.setOnClickListener(v -> ValidateFields());
 
-        subChannelResponse = new JSONArray();
-        filteredSubChannel = new JSONArray();
-        cusACGroupResponse = new JSONArray();
-        distChannelResponse = new JSONArray();
-        salesDivisionResponse = new JSONArray();
-
-        MasDistrictArray = new JSONArray();
-        filteredMasDistrictArray = new JSONArray();
-        MasCusSalRegionArray = new JSONArray();
-        MasSalesGroupArray = new JSONArray();
-        filteredMasSalesGroupArray = new JSONArray();
-        MasCusGroupArray = new JSONArray();
-        MasBusinessTypeArray = new JSONArray();
-        MasBusinessDivisionArray = new JSONArray();
-        MasCusClassArray = new JSONArray();
-        MasReportingVertArray = new JSONArray();
-        MasSubMarketArray = new JSONArray();
-        MasCusTypeArray = new JSONArray();
-        stateArray = new JSONArray();
-
         getLocation();
 
         type_sales_executive_name.setText(UserDetails.getString("SfName", ""));
@@ -1355,7 +1337,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         PrepareDropdownLists();
 
         // Todo: Get Image From S3
-        /*common_class.getImageFromS3Bucket(context, "key", "MGR23_1694523049.jpg", "milk_selfie");
+        /*common_class.getImageFromS3Bucket(context, "kley", "MGR23_1694523049.jpg", "milk_selfie");
         common_class.setOnDownloadImage((key, bmp) -> {
             display_customer_photo.setImageBitmap(bmp);
             display_customer_photo.setVisibility(View.VISIBLE);
@@ -1597,8 +1579,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter the Owner Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(businessAddressNoStr) || TextUtils.isEmpty(businessAddressCityStr) || TextUtils.isEmpty(businessAddressPincodeStr)) {
             Toast.makeText(context, "Please Enter the Business Address", Toast.LENGTH_SHORT).show();
-        } else if (businessAddressPincodeStr.length() != 6) {
-            Toast.makeText(context, "Please Enter 6 digit pincode", Toast.LENGTH_SHORT).show();
         } else if (ownerAddressPincodeStr.length() != 6) {
             Toast.makeText(context, "Please Enter 6 digit pincode", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(ownerAddressNoStr) || TextUtils.isEmpty(ownerAddressCityStr) || TextUtils.isEmpty(ownerAddressPincodeStr)) {
@@ -1877,25 +1857,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     String pincode = returnedAddress.getPostalCode();
 
                     runOnUiThread(() -> {
-                        type_city.setText(city);
-                        businessAddressPincode.setText(pincode);
-                        type_pincode.setText(pincode);
                         businessAddressNo.setText(doorNo + ", " + street);
-                        businessAddressCity.setText(city + ", " + state);
-
-                        /*if (!city.equals("null")) {
-                            type_city.setText(city);
-                        }
-                        if (!pincode.equals("null")) {
-                            businessAddressPincode.setText(pincode);
-                            type_pincode.setText(pincode);
-                        }
-                        if (!doorNo.equals("null") && !street.equals("null")) {
-                            businessAddressNo.setText(doorNo + ", " + street);
-                        }
-                        if (!city.equals("null") && !state.equals("null")) {
-                            businessAddressCity.setText(city + ", " + state);
-                        }*/
+                        businessAddressCity.setText(city);
+                        businessAddressPincode.setText(state);
+                        type_city.setText(city);
+                        type_pincode.setText(pincode);
                     });
                 }
             } catch (Exception e) {
