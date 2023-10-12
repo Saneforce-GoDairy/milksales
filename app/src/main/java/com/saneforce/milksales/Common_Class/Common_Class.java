@@ -1747,6 +1747,7 @@ public class Common_Class {
                 intent = new Intent(context, SFA_Activity.class);
             } else if (CheckIn) {
                 intent = new Intent(context, Dashboard_Two.class);
+                intent.putExtra("Mode", "CIN");
             } else {
                 intent = new Intent(context, Dashboard.class);
             }

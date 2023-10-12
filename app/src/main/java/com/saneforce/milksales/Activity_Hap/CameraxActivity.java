@@ -180,7 +180,15 @@ public class CameraxActivity extends AppCompatActivity {
         UserDetails = getSharedPreferences(sUserDetail, Context.MODE_PRIVATE);
         common_class = new com.saneforce.milksales.Common_Class.Common_Class(this);
 
-        new LocationFinder(getApplication(), location -> mlocation = location);
+        new LocationFinder(getApplication(), location -> {
+            mlocation = location;
+            if (location != null) {
+                try {
+                    lat = location.getLatitude();
+                    lng = location.getLongitude();
+                } catch (Exception e) { }
+            }
+        });
         UKey = UserDetails.getString("Sfcode", "") + "-" + (new Date().getTime());
         Bundle params = getIntent().getExtras();
         try {
@@ -319,18 +327,20 @@ public class CameraxActivity extends AppCompatActivity {
         mIntent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
         FileUploadService.enqueueWork(this, mIntent);
 
-        lat = 0;
-        lng = 0;
-        new LocationFinder(getApplication(), new LocationEvents() {
-            @Override
-            public void OnLocationRecived(Location location) {
-                if (location != null) {
-                    lat = location.getLatitude();
-                    lng = location.getLongitude();
-                    saveCheckIn();
+        if (lat == 0 || lng == 0) {
+            new LocationFinder(getApplication(), new LocationEvents() {
+                @Override
+                public void OnLocationRecived(Location location) {
+                    if (location != null) {
+                        lat = location.getLatitude();
+                        lng = location.getLongitude();
+                        saveCheckIn();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            saveCheckIn();
+        }
 
 
         // New design Not full used previous code

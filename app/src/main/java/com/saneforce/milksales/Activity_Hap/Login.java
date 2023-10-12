@@ -283,7 +283,7 @@ public class Login extends AppCompatActivity {
             }
             if (cameraPermission.checkPermission()) {
                 Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
-                if (DAMode == true) {
+                /*if (DAMode == true) {
                     if (isMyServiceRunning(SANGPSTracker.class) == false) {
                         try {
                             Intent playIntent = new Intent(this, SANGPSTracker.class);
@@ -292,7 +292,7 @@ public class Login extends AppCompatActivity {
                         } catch (Exception e) {
                         }
                     }
-                }
+                }*/
             }
 
             if (Login && !CheckIn) {
@@ -513,7 +513,7 @@ public class Login extends AppCompatActivity {
             // that since this activity is in the foreground, the service can exit foreground mode.
 
             Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
-            if (DAMode == true) {
+            /*if (DAMode == true) {
                 if (isMyServiceRunning(SANGPSTracker.class) == false) {
                     try {
                         bindService(new Intent(this, SANGPSTracker.class), mServiceConection, Context.BIND_AUTO_CREATE);
@@ -521,7 +521,7 @@ public class Login extends AppCompatActivity {
                     } catch (Exception e) {
                     }
                 }
-            }
+            }*/
             Log.e("Loaction_Check", "Loaction_Check");
         }
     }

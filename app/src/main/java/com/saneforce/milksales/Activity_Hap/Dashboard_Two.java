@@ -457,15 +457,15 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             }
         }).start();
 
-        //if (!isMyServiceRunning(SANGPSTracker.class)) {
+        mLUService = new SANGPSTracker(getApplicationContext());
+        if (!isMyServiceRunning(SANGPSTracker.class)) {
             try {
-                Intent playIntent = new Intent(this, SANGPSTracker.class);
-                bindService(playIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-                startService(playIntent);
+                Intent playIntent = new Intent(Dashboard_Two.this, SANGPSTracker.class);
+                bindService(playIntent, mServiceConnection, Context.BIND_IMPORTANT);
+                mLUService.requestLocationUpdates();
                 LocalBroadcastManager.getInstance(this).registerReceiver(new LocationReceiver(), new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
-            } catch (Exception ignored) {
-            }
-        //}
+            } catch (Exception ignored) { }
+        }
     }
 
     private void loadImage(String mProfileUrl) {
