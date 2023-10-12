@@ -183,6 +183,17 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             "PJP",
             "Approvals"));
 
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mLUService = null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -446,17 +457,15 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             }
         }).start();
 
-        if (!isMyServiceRunning(SANGPSTracker.class)) {
-        }
-
-
-        try {
-            mLUService = new SANGPSTracker(context);
-            LocationReceiver myReceiver = new LocationReceiver();
-            bindService(new Intent(context, SANGPSTracker.class), mServiceConnection, Context.BIND_AUTO_CREATE);
-            LocalBroadcastManager.getInstance(context).registerReceiver(myReceiver, new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
-            mLUService.requestLocationUpdates();
-        } catch (Exception ignored) { }
+        //if (!isMyServiceRunning(SANGPSTracker.class)) {
+            try {
+                Intent playIntent = new Intent(this, SANGPSTracker.class);
+                bindService(playIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+                startService(playIntent);
+                LocalBroadcastManager.getInstance(this).registerReceiver(new LocationReceiver(), new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
+            } catch (Exception ignored) {
+            }
+        //}
     }
 
     private void loadImage(String mProfileUrl) {
@@ -466,17 +475,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(profileImageView);
     }
-
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mLUService = null;
-        }
-    };
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);

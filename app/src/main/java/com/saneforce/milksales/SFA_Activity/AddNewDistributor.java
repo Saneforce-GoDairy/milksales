@@ -95,7 +95,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     /*select_mode_of_payment,*/ submit, select_bank_details, select_agreement_copy, select_sub_channel, /*selectCusACGroup,*/ /*select_dist_channel,*/ /*select_sales_division,*/ /*selectDistrict,*/ /*selectSalesRegion,*/ /*selectBusinessType,*/ /*selectCustomerGroup,*/ /*selectSalesGroup,*/ /*selectBusinessDivision,*/ /*selectCustomerClass,*/ /*selectCustomerType,*/ selectReportingVerticals, /*selectSubMarket,*/ downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
     ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai,
             display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, /*display_deposit,*/ /*capture_deposit,*/ home, display_aadhaar_number, capture_aadhaar_number,
-            display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration, fssaiInfo, previewfssaiDeclaration, capturefssaiDeclaration;
+            display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration, fssaiInfo, previewfssaiDeclaration, capturefssaiDeclaration, capture_customer_application, display_customer_application;
     EditText type_city, type_pincode, type_name_of_the_customer, type_name_of_the_owner, /*type_address_of_the_shop,*/ /*type_residence_address,*/ type_mobile_number, type_email_id, type_pan_name, uidType,
             type_sales_executive_name, type_sales_executive_employee_id, type_aadhaar_number, type_pan_number, type_gst, /*type_deposit,*/ type_fssai, businessAddressNo, businessAddressCity, businessAddressPincode, ownerAddressNo, ownerAddressCity, ownerAddressPincode;
     LinearLayout gstDeclarationLL, gstLL, tcsDeclarationLL, fssaiDeclarationLL, fssaiLL;
@@ -116,7 +116,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             routeNameStr = "", channelStr = "", channelIDStr = "", cityStr = "", pincodeStr = "", stateCodeStr = "", stateNameStr = "", customerNameStr = "", ownerNameStr = "", /*shopAddressStr = "",*/
     /*residenceAddressStr = "",*/ mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", creationDateStr = "", aadhaarStr = "",
             PANStr = "", bankDetailsStr = "", bankImageName = "", bankImageFullPath = "", FSSAIDetailsStr = "", FSSAIImageName = "", FSSAIImageFullPath = "", FSSAIDeclarationImageName = "", FSSAIDeclarationImageFullPath = "",
-            GSTDetailsStr = "", GSTImageName = "", GSTImageFullPath = "", agreementDetailsStr = "", agreementImageName = "", agreementImageFullPath = "", /*modeOfPaymentStr = "",*/
+            GSTDetailsStr = "", GSTImageName = "", GSTImageFullPath = "", agreementDetailsStr = "", agreementImageName = "", agreementImageFullPath = "", /*modeOfPaymentStr = "",*/ customerApplicationImageName = "", customerApplicationImageFullPath = "",
     /*depositDetailsStr = "",*/ /*depositImageName = "",*/ tcsDeclarationImageName = "", tcsDeclarationImageFullPath = "", gstDeclarationImageName = "", gstDeclarationImageFullPath = "", depositImageFullPath = "", aadhaarImageName = "", aadhaarImageFullPath = "", panImageName = "", panImageFullPath = "", /*DistrictID = "",*/
             SalesRegionID = "", /*BusinessTypeID = "",*/ CustomerGroupID = "", SalesGroupID = "", BusinessDivisionID = "", CustomerClassID = "", CustomerTypeID = "", ReportingVerticalsID = "",
             SubMarketID = "", /*DistrictStr = "",*/ SalesRegionStr = "", /*BusinessTypeStr = "",*/ CustomerGroupStr = "", SalesGroupStr = "", BusinessDivisionStr = "", CustomerClassStr = "", purchaseTypeID = "", purchaseTypeName = "",
@@ -219,6 +219,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         fssaiInfo = findViewById(R.id.fssaiInfo);
         previewfssaiDeclaration = findViewById(R.id.previewfssaiDeclaration);
         capturefssaiDeclaration = findViewById(R.id.capturefssaiDeclaration);
+        capture_customer_application = findViewById(R.id.capture_customer_application);
+        display_customer_application = findViewById(R.id.display_customer_application);
         fssaiFromDate = findViewById(R.id.fssaiFromDate);
         fssaiToDate = findViewById(R.id.fssaiToDate);
         ownerAddressNo = findViewById(R.id.ownerAddressNo);
@@ -320,21 +322,16 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         });
 
         downloadGSTDeclarationForm.setOnClickListener(v -> {
-            downloadReceiver = new DownloadReceiver();
             Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/GST%20Non-Regsitration%20Declaration.docx", "GST Non-Registration Declaration.docx");
-            registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
         });
 
         downloadTCSDeclarationForm.setOnClickListener(v -> {
-            downloadReceiver = new DownloadReceiver();
             Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/TCS%20Declaration.docx", "TCS Declaration.docx");
-            registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         });
 
         downloadfssaiDeclarationForm.setOnClickListener(v -> {
-            downloadReceiver = new DownloadReceiver();
             Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/Undertaking%20FSSAI%20license.docx", "Undertaking FSSAI license.docx");
-            registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         });
 
         regionList = new ArrayList<>();
@@ -378,10 +375,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     customer_photo_url = fullPath;
                     display_customer_photo.setImageBitmap(image);
                     display_customer_photo.setVisibility(View.VISIBLE);
-                    uploadImage(customer_photo_name, customer_photo_url);
-
-                    // Todo: Upload Image to S3
-                    // com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "milk_selfie");
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -395,7 +389,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     shop_photo_url = fullPath;
                     display_shop_photo.setImageBitmap(image);
                     display_shop_photo.setVisibility(View.VISIBLE);
-                    uploadImage(shop_photo_name, shop_photo_url);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -409,7 +403,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     aadhaarImageFullPath = fullPath;
                     display_aadhaar_number.setImageBitmap(image);
                     display_aadhaar_number.setVisibility(View.VISIBLE);
-                    uploadImage(aadhaarImageName, aadhaarImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -423,7 +417,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     panImageFullPath = fullPath;
                     display_pan_number.setImageBitmap(image);
                     display_pan_number.setVisibility(View.VISIBLE);
-                    uploadImage(panImageName, panImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -437,7 +431,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     bankImageFullPath = fullPath;
                     display_bank_details.setImageBitmap(image);
                     display_bank_details.setVisibility(View.VISIBLE);
-                    uploadImage(bankImageName, bankImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -451,7 +445,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     FSSAIImageFullPath = fullPath;
                     display_fssai.setImageBitmap(image);
                     display_fssai.setVisibility(View.VISIBLE);
-                    uploadImage(FSSAIImageName, FSSAIImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -465,7 +459,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     GSTImageFullPath = fullPath;
                     display_gst.setImageBitmap(image);
                     display_gst.setVisibility(View.VISIBLE);
-                    uploadImage(GSTImageName, GSTImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -479,7 +473,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     agreementImageFullPath = fullPath;
                     display_agreement_copy.setImageBitmap(image);
                     display_agreement_copy.setVisibility(View.VISIBLE);
-                    uploadImage(agreementImageName, agreementImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -507,7 +501,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     gstDeclarationImageFullPath = fullPath;
                     previewGSTDeclaration.setImageBitmap(image);
                     previewGSTDeclaration.setVisibility(View.VISIBLE);
-                    uploadImage(gstDeclarationImageName, gstDeclarationImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -521,7 +515,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     tcsDeclarationImageFullPath = fullPath;
                     previewTCSDeclaration.setImageBitmap(image);
                     previewTCSDeclaration.setVisibility(View.VISIBLE);
-                    uploadImage(tcsDeclarationImageName, tcsDeclarationImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -535,7 +529,21 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     FSSAIDeclarationImageFullPath = fullPath;
                     previewfssaiDeclaration.setImageBitmap(image);
                     previewfssaiDeclaration.setVisibility(View.VISIBLE);
-                    uploadImage(FSSAIDeclarationImageName, FSSAIDeclarationImageFullPath);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                }
+            });
+            Intent intent = new Intent(context, AllowancCapture.class);
+            startActivity(intent);
+        });
+        capture_customer_application.setOnClickListener(v -> {
+            AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
+                @Override
+                public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
+                    customerApplicationImageName = FileName;
+                    customerApplicationImageFullPath = fullPath;
+                    display_customer_application.setImageBitmap(image);
+                    display_customer_application.setVisibility(View.VISIBLE);
+                    com.saneforce.milksales.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -598,6 +606,12 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             previewfssaiDeclaration.setEnabled(false);
             new Handler().postDelayed(() -> previewfssaiDeclaration.setEnabled(true), 1500);
             showImage(FSSAIDeclarationImageFullPath);
+
+        });
+        display_customer_application.setOnClickListener(v -> {
+            display_customer_application.setEnabled(false);
+            new Handler().postDelayed(() -> display_customer_application.setEnabled(true), 1500);
+            showImage(customerApplicationImageFullPath);
 
         });
         display_customer_photo.setOnClickListener(v -> {
@@ -1336,6 +1350,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
         PrepareDropdownLists();
 
+        downloadReceiver = new DownloadReceiver();
+        registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
         // Todo: Get Image From S3
         /*common_class.getImageFromS3Bucket(context, "kley", "MGR23_1694523049.jpg", "milk_selfie");
         common_class.setOnDownloadImage((key, bmp) -> {
@@ -1500,14 +1517,14 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         startActivity(show);
     }
 
-    private void uploadImage(String fileName, String fullPath) {
+    /*private void uploadImage(String fileName, String fullPath) {
         Intent mIntent = new Intent(context, FileUploadService.class);
         mIntent.putExtra("FileName", fileName);
         mIntent.putExtra("mFilePath", fullPath);
         mIntent.putExtra("SF", UserDetails.getString("Sfcode", ""));
         mIntent.putExtra("Mode", "AddNewDistributor");
         FileUploadService.enqueueWork(this, mIntent);
-    }
+    }*/
 
     private void ValidateFields() {
         stateNameStr = select_state.getText().toString().trim();
@@ -1553,6 +1570,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Capture Customer Photo", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(shop_photo_name) || TextUtils.isEmpty(shop_photo_url)) {
             Toast.makeText(context, "Please Capture Shop Photo", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(stateCodeStr) || TextUtils.isEmpty(stateNameStr)) {
+            Toast.makeText(context, "Please Select the State", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(officeNameStr) || TextUtils.isEmpty(officeCodeStr)) {
             Toast.makeText(context, "Please Select the Sales Office Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(routeNameStr) || TextUtils.isEmpty(routeCodeStr)) {
@@ -1561,6 +1580,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Select the Channel", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(subChannelIDStr) || TextUtils.isEmpty(subChannelNameStr)) {
             Toast.makeText(context, "Please Select Sub Channel", Toast.LENGTH_SHORT).show();
+        } else if (ReportingVerticalsID.isEmpty() || ReportingVerticalsStr.isEmpty()) {
+            Toast.makeText(context, "Please Select Verticals", Toast.LENGTH_SHORT).show();
         }/* else if (TextUtils.isEmpty(acGroupIDStr) || TextUtils.isEmpty(acGroupNameStr)) {
             Toast.makeText(context, "Please Select Account Group", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(distChannelIDStr) || TextUtils.isEmpty(distChannelNameStr)) {
@@ -1569,20 +1590,18 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Select Sales Division", Toast.LENGTH_SHORT).show();
         }*/ else if (TextUtils.isEmpty(cityStr)) {
             Toast.makeText(context, "Please Select the City", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(pincodeStr) || pincodeStr.length() != 6) {
-            Toast.makeText(context, "Please Enter 6 digit Pincode", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(stateCodeStr) || TextUtils.isEmpty(stateNameStr)) {
-            Toast.makeText(context, "Please Select the State", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(customerNameStr)) {
-            Toast.makeText(context, "Please Enter the Customer Name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please Enter the Business Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(ownerNameStr)) {
             Toast.makeText(context, "Please Enter the Owner Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(businessAddressNoStr) || TextUtils.isEmpty(businessAddressCityStr) || TextUtils.isEmpty(businessAddressPincodeStr)) {
             Toast.makeText(context, "Please Enter the Business Address", Toast.LENGTH_SHORT).show();
-        } else if (ownerAddressPincodeStr.length() != 6) {
-            Toast.makeText(context, "Please Enter 6 digit pincode", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(pincodeStr) || pincodeStr.length() != 6) {
+            Toast.makeText(context, "Please Enter 6 digit Pincode", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(ownerAddressNoStr) || TextUtils.isEmpty(ownerAddressCityStr) || TextUtils.isEmpty(ownerAddressPincodeStr)) {
             Toast.makeText(context, "Please Enter the Owner Address", Toast.LENGTH_SHORT).show();
+        } else if (ownerAddressPincodeStr.length() != 6) {
+            Toast.makeText(context, "Please Enter 6 digit pincode", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(mobileNumberStr) || mobileNumberStr.length() != 10) { // Todo: Need to discuss
             Toast.makeText(context, "Please Enter 10 Digit Mobile Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(executiveNameStr)) {
@@ -1590,7 +1609,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         } else if (TextUtils.isEmpty(employeeIdStr)) {
             Toast.makeText(context, "Please Enter the Sales Executive - Employee ID", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(creationDateStr)) {
-            Toast.makeText(context, "Creation Date Can't be Fetched", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Date Can't be Fetched", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(aadhaarStr)) {
             Toast.makeText(context, "Please Enter the Aadhaar Number", Toast.LENGTH_SHORT).show();
         } else if (aadhaarStr.length() != 12) {
@@ -1605,10 +1624,18 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter valid PAN Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(panImageName) || TextUtils.isEmpty(panImageFullPath)) {
             Toast.makeText(context, "Please Capture the PAN Image", Toast.LENGTH_SHORT).show();
+        } else if (!TextUtils.isEmpty(bankDetailsStr) && bankImageName.isEmpty()) {
+            Toast.makeText(context, "Please Capture the Bank Details Image", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(bankDetailsStr) && !bankImageName.isEmpty()) {
+            Toast.makeText(context, "Please Enter Bank Details", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() != 14 && fssaiSwitch.isChecked()) {
             Toast.makeText(context, "Please Enter 14 digit FSSAI Number", Toast.LENGTH_SHORT).show();
+        } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && FSSAIImageName.isEmpty()) {
+            Toast.makeText(context, "Please capture FSSAI License Certificate", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && (fssaiFromStr.isEmpty() || fssaitoStr.isEmpty())) {
             Toast.makeText(context, "Please select FSSAI valid dates", Toast.LENGTH_SHORT).show();
+        } else if (!fssaiSwitch.isChecked() && FSSAIDeclarationImageName.isEmpty()) {
+            Toast.makeText(context, "Please capture FSSAI declaration", Toast.LENGTH_SHORT).show();
         } else if (gstSwitch.isChecked() && GSTDetailsStr.length() != 15) {
             Toast.makeText(context, "Please Enter 15 digit GST Number", Toast.LENGTH_SHORT).show();
         } else if (gstSwitch.isChecked() && (!GSTDetailsStr.matches("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$"))) {
@@ -1633,11 +1660,19 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Select Customer Class", Toast.LENGTH_SHORT).show();
         }*//* else if (CustomerTypeID.isEmpty() || CustomerTypeStr.isEmpty()) {
             Toast.makeText(context, "Please Select Customer Type", Toast.LENGTH_SHORT).show();
-        }*/ else if (ReportingVerticalsID.isEmpty() || ReportingVerticalsStr.isEmpty()) {
-            Toast.makeText(context, "Please Select Reporting Verticals", Toast.LENGTH_SHORT).show();
-        }/* else if (SubMarketID.isEmpty() || SubMarketStr.isEmpty()) {
+        }*//* else if (SubMarketID.isEmpty() || SubMarketStr.isEmpty()) {
             Toast.makeText(context, "Please Select Sub Market", Toast.LENGTH_SHORT).show();
-        }*/ else {
+        }*/ else if (!tcsSwitch.isChecked() && tcsDeclarationImageName.isEmpty()) {
+            Toast.makeText(context, "Please capture the TCS Declaration", Toast.LENGTH_SHORT).show();
+        } else if (agreementDetailsStr.isEmpty() && !agreementImageName.isEmpty()) {
+            Toast.makeText(context, "Please select agreement copy", Toast.LENGTH_SHORT).show();
+        } else if (!agreementDetailsStr.isEmpty() && agreementImageName.isEmpty()) {
+            Toast.makeText(context, "Please capture the agreement copy", Toast.LENGTH_SHORT).show();
+        } else if (purchaseTypeID.isEmpty() || purchaseTypeName.isEmpty()) {
+            Toast.makeText(context, "Please select purchase type", Toast.LENGTH_SHORT).show();
+        } else if (customerApplicationImageName.isEmpty() || customerApplicationImageFullPath.isEmpty()) {
+            Toast.makeText(context, "Please capture customer application photo", Toast.LENGTH_SHORT).show();
+        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Are you sure want to submit?");
             builder.setCancelable(false);
@@ -1776,6 +1811,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
             object.put("purchaseTypeId", purchaseTypeID);
             object.put("purchaseTypeName", purchaseTypeName);
+
+            object.put("customerApplicationImageName", customerApplicationImageName);
 
         } catch (JSONException e) {
             progressDialog.dismiss();

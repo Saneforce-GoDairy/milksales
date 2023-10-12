@@ -244,36 +244,48 @@ public class TodayFragment extends Fragment {
             if (!checkInTimeStr.isEmpty() && !checkInTimeStr.equals("00:00:00")) {
 
                 // Check in image
-                String checkInImage = fItm.get("SImgName").getAsString();
+                String checkInImage = "";
+                try {
+                    checkInImage = fItm.get("SImgName").getAsString();
+                } catch (Exception ignored) {
+
+                }
                 String checkInImageFullUrl = baseUrl + checkInImage;
 
-                Glide.with(requireContext())
-                        .load(checkInImageFullUrl)
-                        .apply(RequestOptions.circleCropTransform())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(binding.checkInImage);
+                if (!checkInImage.isEmpty()) {
+                    Glide.with(requireContext())
+                            .load(checkInImageFullUrl)
+                            .apply(RequestOptions.circleCropTransform())
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(binding.checkInImage);
 
-                binding.checkInImage.setOnClickListener(v -> {
-                    Intent intent = new Intent(requireContext(), ProductImageView.class);
-                    intent.putExtra("ImageUrl", checkInImageFullUrl);
-                    startActivity(intent);
-                });
+                    binding.checkInImage.setOnClickListener(v -> {
+                        Intent intent = new Intent(requireContext(), ProductImageView.class);
+                        intent.putExtra("ImageUrl", checkInImageFullUrl);
+                        startActivity(intent);
+                    });
+                }
 
                 // Checkout image
-                String checkOutImage = fItm.get("EImgName").getAsString();
+                String checkOutImage = "";
+                try {
+                    checkOutImage = fItm.get("EImgName").getAsString();
+                } catch (Exception ignored) { }
                 String checkOutImageFullUrl = baseUrl + checkOutImage;
 
-                Glide.with(requireContext())
-                        .load(checkOutImageFullUrl)
-                        .apply(RequestOptions.circleCropTransform())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(binding.checkOutImage);
+                if (!checkInImage.isEmpty()) {
+                    Glide.with(requireContext())
+                            .load(checkOutImageFullUrl)
+                            .apply(RequestOptions.circleCropTransform())
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(binding.checkOutImage);
 
-                binding.checkOutImage.setOnClickListener(v -> {
-                    Intent intent = new Intent(requireContext(), ProductImageView.class);
-                    intent.putExtra("ImageUrl", checkOutImageFullUrl);
-                    startActivity(intent);
-                });
+                    binding.checkOutImage.setOnClickListener(v -> {
+                        Intent intent = new Intent(requireContext(), ProductImageView.class);
+                        intent.putExtra("ImageUrl", checkOutImageFullUrl);
+                        startActivity(intent);
+                    });
+                }
 
                 // Shift start time
                 JsonObject shiftStartTimeJsonObject = fItm.getAsJsonObject("Shft");
