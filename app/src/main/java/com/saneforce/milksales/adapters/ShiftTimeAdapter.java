@@ -91,6 +91,11 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
     }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     public int getItemCount() {
         return mShift_time.size();
     }
