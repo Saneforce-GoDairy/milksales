@@ -680,10 +680,10 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     stateCodeStr = stateArray.getJSONObject(position).getString("id");
                     /*regionCodeStr = "";
                     regionFilteredList.clear();*/
-                    filteredMasDistrictArray = new JSONArray();
-                    officeCodeStr = "";
-                    select_sales_office_name.setText("");
-                    filteredOfficeList.clear();
+//                    filteredMasDistrictArray = new JSONArray();
+//                    officeCodeStr = "";
+//                    select_sales_office_name.setText("");
+//                    filteredOfficeList.clear();
                     MyProgressDialog.dismiss();
                     dialog.dismiss();
                 } catch (JSONException e) {
@@ -1438,18 +1438,17 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         if (object.getBoolean("success")) {
                             new Thread(() -> {
                                 try {
-                                    regionList.clear();
                                     officeList.clear();
                                     routeList.clear();
                                     ChannelList.clear();
-                                    JSONArray array = object.getJSONArray("regionResponse");
+                                    /*JSONArray array = object.getJSONArray("regionResponse");
                                     for (int i = 0; i < array.length(); i++) {
                                         String id = array.getJSONObject(i).getString("Area_code");
                                         String title = array.getJSONObject(i).getString("Area_name");
                                         String stateCode = array.getJSONObject(i).getString("State_Code");
                                         Log.e("ksjdhksd", "regionResponse: " + id + ", " + title + ", state code: " + stateCode);
                                         regionList.add(new CommonModelWithThreeString(id, title, stateCode));
-                                    }
+                                    }*/
                                     JSONArray officeResponse = object.getJSONArray("officeResponse");
                                     for (int i = 0; i < officeResponse.length(); i++) {
                                         String id = officeResponse.getJSONObject(i).getString("sOffCode");
@@ -1475,21 +1474,21 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                                         ChannelList.add(new CommonModelForDropDown(id, title));
                                     }
                                     subChannelResponse = object.getJSONArray("subChannelResponse");
-                                    cusACGroupResponse = object.getJSONArray("cusACGroupResponse");
-                                    distChannelResponse = object.getJSONArray("distChannelResponse");
-                                    salesDivisionResponse = object.getJSONArray("salesDivisionResponse");
+//                                    cusACGroupResponse = object.getJSONArray("cusACGroupResponse");
+//                                    distChannelResponse = object.getJSONArray("distChannelResponse");
+//                                    salesDivisionResponse = object.getJSONArray("salesDivisionResponse");
 
                                     stateArray = object.getJSONArray("MasState");
-                                    MasDistrictArray = object.getJSONArray("MasDistrict");
-                                    MasCusSalRegionArray = object.getJSONArray("MasCusSalRegion");
-                                    MasSalesGroupArray = object.getJSONArray("MasSalesGroup");
-                                    MasCusGroupArray = object.getJSONArray("MasCusGroup");
-                                    MasBusinessTypeArray = object.getJSONArray("MasBusinessType");
-                                    MasBusinessDivisionArray = object.getJSONArray("MasBusinessDivision");
-                                    MasCusClassArray = object.getJSONArray("MasCusClass");
+//                                    MasDistrictArray = object.getJSONArray("MasDistrict");
+//                                    MasCusSalRegionArray = object.getJSONArray("MasCusSalRegion");
+//                                    MasSalesGroupArray = object.getJSONArray("MasSalesGroup");
+//                                    MasCusGroupArray = object.getJSONArray("MasCusGroup");
+//                                    MasBusinessTypeArray = object.getJSONArray("MasBusinessType");
+//                                    MasBusinessDivisionArray = object.getJSONArray("MasBusinessDivision");
+//                                    MasCusClassArray = object.getJSONArray("MasCusClass");
                                     MasReportingVertArray = object.getJSONArray("MasReportingVert");
-                                    MasSubMarketArray = object.getJSONArray("MasSubMarket");
-                                    MasCusTypeArray = object.getJSONArray("MasCusType");
+//                                    MasSubMarketArray = object.getJSONArray("MasSubMarket");
+//                                    MasCusTypeArray = object.getJSONArray("MasCusType");
                                 } catch (JSONException ignored) {
                                 }
                             }).start();

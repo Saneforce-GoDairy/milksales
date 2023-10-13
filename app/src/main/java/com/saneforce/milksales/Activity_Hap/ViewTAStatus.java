@@ -23,11 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.saneforce.milksales.Activity.TAClaimActivity;
+import com.saneforce.milksales.Common_Class.Common_Class;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
 import com.saneforce.milksales.Interface.AdapterOnClick;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.R;
+import com.saneforce.milksales.Status_Activity.Leave_Status_Activity;
 import com.saneforce.milksales.adapters.ViewTAStatusAdapter;
 
 import org.json.JSONObject;
@@ -122,6 +124,10 @@ public class ViewTAStatus extends AppCompatActivity {
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 JsonArray jsonTa = response.body();
                 Log.v("JSON_VIEW_Array", jsonTa.toString());
+
+                if (jsonTa.size() == 0) {
+                    Common_Class.ShowNoDataFound(ViewTAStatus.this);
+                }
 
                 viewTAStatusAdapter = new ViewTAStatusAdapter(ViewTAStatus.this, jsonTa, new AdapterOnClick() {
                     @Override

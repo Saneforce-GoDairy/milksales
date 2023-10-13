@@ -5,6 +5,7 @@ import static com.saneforce.milksales.Activity_Hap.ImageCapture.imagePickListene
 import static com.saneforce.milksales.SFA_Activity.HAPApp.sendOFFlineLocations;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -986,6 +987,7 @@ public class CameraxActivity extends AppCompatActivity {
                                         @Override
                                         public void PositiveMethod(DialogInterface dialog, int id) {
                                             if (sStatus.equalsIgnoreCase("true")) {
+                                                TrackLocation();
                                                 Intent Dashboard = new Intent(CameraxActivity.this, Dashboard_Two.class);
                                                 Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 Dashboard.putExtra("Mode", "CIN");
@@ -1049,6 +1051,7 @@ public class CameraxActivity extends AppCompatActivity {
                                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                                    TrackLocation();
                                                     Intent Dashboard = new Intent(CameraxActivity.this, Dashboard_Two.class);
                                                     Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     Dashboard.putExtra("Mode", "extended");
@@ -1368,6 +1371,28 @@ public class CameraxActivity extends AppCompatActivity {
             }
         } else {
             runOnUiThread(() -> Toast.makeText(context, "Flash is not available currently", Toast.LENGTH_SHORT).show());
+        }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void TrackLocation() {
+        mLUService = new SANGPSTracker(getApplicationContext());
+        if (!isMyServiceRunning(SANGPSTracker.class)) {
+            try {
+                Intent playIntent = new Intent(CameraxActivity.this, SANGPSTracker.class);
+                bindService(playIntent, mServiceConection, Context.BIND_AUTO_CREATE);
+                mLUService.requestLocationUpdates();
+                LocalBroadcastManager.getInstance(this).registerReceiver(new LocationReceiver(), new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
+            } catch (Exception ignored) { }
         }
     }
 }

@@ -3,16 +3,25 @@ package com.saneforce.milksales.Status_Activity;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -150,6 +159,11 @@ public class Advance_Status_Activity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                if (AdvList.length() == 0) {
+                    Common_Class.ShowNoDataFound(Advance_Status_Activity.this);
+                }
+
                 recyclerView.setAdapter(new Advance_Status_Adapter(AdvList, R.layout.advance_status_listitem, getApplicationContext(), AMOD, new LeaveCancelReason() {
                     @Override
                     public void onCancelReason(String reason) {

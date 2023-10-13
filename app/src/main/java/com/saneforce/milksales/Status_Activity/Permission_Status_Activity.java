@@ -131,6 +131,10 @@ public class Permission_Status_Activity extends AppCompatActivity {
                 }.getType();
                 approvalList = sortDate(gson.fromJson(new Gson().toJson(response.body()), userType));
 
+                if (approvalList.isEmpty()) {
+                    Common_Class.ShowNoDataFound(Permission_Status_Activity.this);
+                }
+
                 recyclerView.setAdapter(new Permission_Status_Adapter(approvalList, R.layout.permission_sattus_listitem, getApplicationContext(), AMOD));
 
 

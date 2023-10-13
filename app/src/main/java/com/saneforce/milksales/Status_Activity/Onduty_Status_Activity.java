@@ -136,6 +136,7 @@ public class Onduty_Status_Activity extends AppCompatActivity implements View.On
                     approvalList = sortDate(gson.fromJson(new Gson().toJson(response.body()), userType));
 
 
+
                     recyclerView.setAdapter(new Onduty_Status_Adapter(approvalList, R.layout.onduty_status_listitem, Onduty_Status_Activity.this, AMOD));
 
                     statusList.clear();

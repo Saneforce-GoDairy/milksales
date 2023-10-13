@@ -146,7 +146,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     private String checkInUrl = "";
     private String timerDate, key, timerTime;
     LinearLayout approval;
-    private SANGPSTracker mLUService;
 
     private Button StActivity, cardview3, cardview4, cardView5, btnCheckout, btnApprovals, btnExit, viewButton;
     private Button btnGateIn, btnGateOut;
@@ -171,8 +170,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             R.drawable.request_status_ic,
             R.drawable.file_invoice_doller_ic,
             R.drawable.users_gear_ic, R.drawable.gate_ic,
-            R.drawable.gate_out_ic, R.drawable.calendar_pjp,
-            R.drawable.canteen_scan_ic));
+            R.drawable.gate_out_ic, R.drawable.calendar_pjp));
 
     ArrayList exploreName = new ArrayList<>(Arrays.asList(
             "Request & status",
@@ -180,19 +178,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             "SFA",
             "Gate IN",
             "Gate OUT",
-            "PJP",
-            "Approvals"));
-
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mLUService = null;
-        }
-    };
+            "PJP"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +190,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
             loadFragment();
             onClick2();
-            loadExploreGrid();
 
             new Thread() {
                 @Override
@@ -362,8 +347,11 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 tvapprCnt.setVisibility(View.GONE);
             } else {
                 approval.setVisibility(View.VISIBLE);
+                exploreName.add("Approvals");
+                exploreImage.add(R.drawable.canteen_scan_ic);
                 tvapprCnt.setVisibility(View.VISIBLE);
             }
+            loadExploreGrid();
             btnExit.setVisibility(View.GONE);
             if (getIntent().getExtras() != null) {
                 Bundle params = getIntent().getExtras();
@@ -456,16 +444,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 e.printStackTrace();
             }
         }).start();
-
-        mLUService = new SANGPSTracker(getApplicationContext());
-        if (!isMyServiceRunning(SANGPSTracker.class)) {
-            try {
-                Intent playIntent = new Intent(Dashboard_Two.this, SANGPSTracker.class);
-                bindService(playIntent, mServiceConnection, Context.BIND_IMPORTANT);
-                mLUService.requestLocationUpdates();
-                LocalBroadcastManager.getInstance(this).registerReceiver(new LocationReceiver(), new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
-            } catch (Exception ignored) { }
-        }
     }
 
     private void loadImage(String mProfileUrl) {

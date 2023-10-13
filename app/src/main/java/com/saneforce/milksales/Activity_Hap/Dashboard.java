@@ -108,9 +108,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     ArrayList exploreImage = new ArrayList<>(Arrays.asList(
             R.drawable.request_status_ic,
             R.drawable.file_invoice_doller_ic,
-            R.drawable.users_gear_ic, R.drawable.gate_ic,
-            R.drawable.gate_out_ic, R.drawable.calendar_pjp,
-            R.drawable.canteen_scan_ic));
+            R.drawable.users_gear_ic,
+            R.drawable.gate_ic,
+            R.drawable.gate_out_ic,
+            R.drawable.calendar_pjp));
 
     ArrayList exploreName = new ArrayList<>(Arrays.asList(
             "Request & status",
@@ -118,8 +119,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             "SFA",
             "Gate IN",
             "Gate OUT",
-            "PJP",
-            "Approvals"));
+            "PJP"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +130,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         onClick2();
         loadFragment();
-        loadExploreGrid();
 
         db = new DatabaseHandler(context);
         lblUserName = (TextView) findViewById(R.id.user_name);
@@ -265,8 +264,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             approval.setVisibility(View.INVISIBLE);
 //            approvalcount.setVisibility(View.GONE);
         } else {
+            exploreName.add("Approvals");
+            exploreImage.add(R.drawable.canteen_scan_ic);
             approval.setVisibility(View.VISIBLE);
         }
+
+        loadExploreGrid();
 
         btMyQR.setOnClickListener(v -> {
             Intent intent = new Intent(context, CateenToken.class);

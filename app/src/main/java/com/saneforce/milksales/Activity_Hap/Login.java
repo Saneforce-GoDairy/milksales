@@ -330,23 +330,29 @@ public class Login extends AppCompatActivity {
                             if (checkValueStore())
                                 aIntent = new Intent(getApplicationContext(), SFA_Activity.class);
                             else {
+                                TrackLocation();
                                 aIntent = new Intent(getApplicationContext(), Dashboard_Two.class);
                                 int Type = CheckInDetails.getInt("CIType", 0);
                                 if (Type == 1)
                                     aIntent.putExtra("Mode", "extended");
-                                else
+                                else {
                                     aIntent.putExtra("Mode", "CIN");
+                                }
                             }
                         }
                         startActivity(aIntent);
+                        finish();
                     } else {
                         Intent Dashboard = new Intent(Login.this, Dashboard_Two.class);
                         int Type = CheckInDetails.getInt("CIType", 0);
                         if (Type == 1)
                             Dashboard.putExtra("Mode", "extended");
-                        else
+                        else {
                             Dashboard.putExtra("Mode", "CIN");
+                        }
+                        TrackLocation();
                         startActivity(Dashboard);
+                        finish();
                     }
                 }
             }
@@ -500,28 +506,11 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       /* Intent inten = new Intent(this, TimerService.class);
-        startService(inten);*/
         Log.v("LOG_IN_LOCATION", "ONRESUME");
-        /*REQUEST PERMISISON*/
         if (cameraPermission.checkPermission()) {
             if (mLUService == null)
                 mLUService = new SANGPSTracker(getApplicationContext());
             myReceiver = new LocationReceiver();
-
-            // Bind to the service. If the service is in foreground mode, this signals to the service
-            // that since this activity is in the foreground, the service can exit foreground mode.
-
-            Boolean DAMode = shared_common_pref.getBoolValue(Shared_Common_Pref.DAMode);
-            /*if (DAMode == true) {
-                if (isMyServiceRunning(SANGPSTracker.class) == false) {
-                    try {
-                        bindService(new Intent(this, SANGPSTracker.class), mServiceConection, Context.BIND_AUTO_CREATE);
-                        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver, new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
-                    } catch (Exception e) {
-                    }
-                }
-            }*/
             Log.e("Loaction_Check", "Loaction_Check");
         }
     }
@@ -535,11 +524,6 @@ public class Login extends AppCompatActivity {
         }
         return false;
     }
-
-
-/*// LocalBroadcastManager.getInstance(this).unregisterReceiver(myReceiver);
- super.onPause();
- }*/
 
     @Override
     protected void onPause() {
@@ -557,29 +541,12 @@ public class Login extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
         }
         firebaseAuth.addAuthStateListener(authStateListener);
-
-
-//        if(getIntent().getStringExtra("loading")!=null)
-//            assignLoginData();
     }
 
     @Override
     protected void onStop() {
- /* if (mBound) {
- // Unbind from the service. This signals to the service that this activity is no longer
- // in the foreground, and the service can respond by promoting itself to a foreground
- // service.
- unbindService(mServiceConection);
- mBound = false;
-
- }*/
         super.onStop();
-     /*   Intent inten = new Intent(this, TimerService.class);
-        startService(inten);
-*/
-
         Log.v("LOG_IN_LOCATION", "ONSTOP");
-
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
@@ -848,10 +815,13 @@ public class Login extends AppCompatActivity {
                 if (requestCode == RC_SIGN_IN) {
                     if (CheckIn == true) {
                         intent = new Intent(context, Dashboard_Two.class);
+                        TrackLocation();
                         if (Type == 1)
                             intent.putExtra("Mode", "extended");
-                        else
+                        else {
                             intent.putExtra("Mode", "CIN");
+                        }
+                        finish();
                     } else {
                         intent = new Intent(context, Dashboard.class);
                         finish();
@@ -1046,6 +1016,18 @@ public class Login extends AppCompatActivity {
                             .setTextColor(Color.WHITE)
                             .show();
                 }
+        }
+    }
+
+    private void TrackLocation() {
+        mLUService = new SANGPSTracker(getApplicationContext());
+        if (!isMyServiceRunning(SANGPSTracker.class)) {
+            try {
+                Intent playIntent = new Intent(Login.this, SANGPSTracker.class);
+                bindService(playIntent, mServiceConection, Context.BIND_AUTO_CREATE);
+                mLUService.requestLocationUpdates();
+                LocalBroadcastManager.getInstance(this).registerReceiver(new LocationReceiver(), new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
+            } catch (Exception ignored) { }
         }
     }
 }

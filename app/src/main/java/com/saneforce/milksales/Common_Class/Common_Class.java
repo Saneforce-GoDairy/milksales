@@ -10,6 +10,7 @@ import static com.saneforce.milksales.Common_Class.Constants.Rout_List;
 import static com.saneforce.milksales.SFA_Activity.HAPApp.ProductsLoaded;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -32,10 +33,13 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -1892,6 +1896,36 @@ public class Common_Class {
         void onDownload(String key, Bitmap bmp);
     }
 
+    @SuppressLint("ResourceType")
+    public static void ShowNoDataFound(Activity activity) {
+        ViewGroup rootView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+        try {
+            LinearLayout ll = rootView.findViewById(987654);
+            if (ll.getVisibility() == View.VISIBLE) {
+                rootView.removeView(ll);
+            }
+        } catch (Exception ignored) { }
+        TextView noDataTextView = new TextView(activity);
+        noDataTextView.setText("No Data Found");
+        noDataTextView.setTextSize(14);
+        noDataTextView.setTextColor(ContextCompat.getColor(activity, android.R.color.black));
+        LinearLayout linearLayout = new LinearLayout(activity);
+        linearLayout.setId(987654);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        linearLayout.setGravity(Gravity.CENTER);
+        linearLayout.addView(noDataTextView);
+        rootView.addView(linearLayout);
+    }
 
+    @SuppressLint("ResourceType")
+    public static void hideNoDataFound(Activity activity) {
+        ViewGroup rootView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+        try {
+            LinearLayout ll = rootView.findViewById(987654);
+            if (ll.getVisibility() == View.VISIBLE) {
+                rootView.removeView(ll);
+            }
+        } catch (Exception ignored) { }
+    }
 }
 
