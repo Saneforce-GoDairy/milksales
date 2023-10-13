@@ -2,37 +2,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="225dp"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/C15dp"
     tools:context=".fragments.GateInOutFragment">
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gate_recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/C15dp">
+        android:layout_height="200dp"
+        android:padding="5dp"
+        tools:itemCount="2"
+        tools:listitem="@layout/row_gtein_gteout" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/gate_recycle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            tools:itemCount="2"
-            tools:listitem="@layout/row_gtein_gteout" />
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
-        <ProgressBar
-            android:id="@+id/progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-
-        <TextView
-            android:id="@+id/info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="@dimen/C15dp"
-            android:text="No data available"
-            android:visibility="gone" />
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/C15dp"
+        android:text="No data available"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -39,6 +40,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -75,6 +77,7 @@ import com.saneforce.milksales.adapters.HomeRptRecyler;
 import com.saneforce.milksales.adapters.OffersAdapter;
 import com.saneforce.milksales.common.AlmReceiver;
 import com.saneforce.milksales.common.DatabaseHandler;
+import com.saneforce.milksales.common.LocationReceiver;
 import com.saneforce.milksales.common.SANGPSTracker;
 import com.saneforce.milksales.databinding.ActivityDashboardTwoBinding;
 import com.saneforce.milksales.fragments.GateInOutFragment;
@@ -179,6 +182,17 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             "Gate OUT",
             "PJP",
             "Approvals"));
+
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mLUService = null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -443,11 +457,13 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             }
         }).start();
 
+        mLUService = new SANGPSTracker(getApplicationContext());
         if (!isMyServiceRunning(SANGPSTracker.class)) {
             try {
-                Intent playIntent = new Intent(this, SANGPSTracker.class);
-                bindService(playIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-                startService(playIntent);
+                Intent playIntent = new Intent(Dashboard_Two.this, SANGPSTracker.class);
+                bindService(playIntent, mServiceConnection, Context.BIND_IMPORTANT);
+                mLUService.requestLocationUpdates();
+                LocalBroadcastManager.getInstance(this).registerReceiver(new LocationReceiver(), new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
             } catch (Exception ignored) { }
         }
     }
@@ -459,17 +475,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(profileImageView);
     }
-
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mLUService = ((SANGPSTracker.LocationBinder) service).getLocationUpdateService(getApplicationContext());
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mLUService = null;
-        }
-    };
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);

@@ -106,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/primaryDark"
-                        android:text="Work completed"/>
+                        android:text="Complete Work"/>
 
                     <ImageView
                         android:layout_width="@dimen/C15dp"

@@ -52,6 +52,7 @@ import com.google.gson.JsonObject;
 import com.saneforce.milksales.Activity.ProcurementDashboardActivity;
 import com.saneforce.milksales.Activity_Hap.CustomListViewDialog;
 import com.saneforce.milksales.Activity_Hap.Dashboard;
+import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
 import com.saneforce.milksales.Activity_Hap.SFA_Activity;
 import com.saneforce.milksales.Interface.AlertBox;
 import com.saneforce.milksales.Interface.ApiClient;
@@ -1738,23 +1739,21 @@ public class Common_Class {
 
 
     public void gotoHomeScreen(Context context, View ivToolbarHome) {
-        ivToolbarHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences CheckInDetails = context.getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
-                Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
-                Intent intent;
-                if (CheckIn) {
-                    intent = new Intent(context, SFA_Activity.class);
-                } else {
-                    intent = new Intent(context, Dashboard.class);
-                }
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+        ivToolbarHome.setOnClickListener(v -> {
+            SharedPreferences CheckInDetails = context.getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
+            boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
+            Intent intent;
+            if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+                intent = new Intent(context, SFA_Activity.class);
+            } else if (CheckIn) {
+                intent = new Intent(context, Dashboard_Two.class);
+                intent.putExtra("Mode", "CIN");
+            } else {
+                intent = new Intent(context, Dashboard.class);
             }
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         });
-
-
     }
 
     public void gotoProcurementDashboardScreen(Context context, View ivToolbarHome) {
@@ -1799,17 +1798,17 @@ public class Common_Class {
         return null;
     }
 
-    public static void uploadToS3Bucket(Context context, String mFilePath, String FileName,String Mode) {
+    public static void uploadToS3Bucket(Context context, String mFilePath, String FileName, String companyCode, String Mode) {
         try{
             Util util = new Util();
             TransferUtility transferUtility = util.getTransferUtility(context);
-            File file = new File(mFilePath);
+            File file;
             if (mFilePath.contains(".png") || mFilePath.contains(".jpg") || mFilePath.contains(".jpeg")) {
                 file = new Compressor(context).compressToFile(new File(mFilePath));
             } else {
                 file = new File(mFilePath);
             }
-            TransferObserver uploadObserver = transferUtility.upload("happic",Mode+"/" + FileName , file);
+            TransferObserver uploadObserver = transferUtility.upload("godairy",companyCode + "/" + Mode+"/" + FileName , file);
             ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setCancelable(false);
             progressDialog.setMessage("Uploading...");
@@ -1830,7 +1829,7 @@ public class Common_Class {
                 public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
                     float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
                     int percentDone = (int) percentDonef;
-                    progressDialog.setMessage("Uploading (" + percentDone + "%)");
+                    progressDialog.setMessage("Uploading... (" + percentDone + "%)");
                 }
 
                 @Override

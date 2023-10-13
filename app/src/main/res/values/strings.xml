@@ -133,10 +133,10 @@
     <string name="state_code">State<font fgcolor='#E53935'> *</font></string>
     <string name="select_district">District<font fgcolor='#E53935'> *</font></string>
     <string name="name_of_the_customer">Business Name<font fgcolor='#E53935'> *</font></string>
-    <string name="name_of_the_owner">Name of the Owner<font fgcolor='#E53935'> *</font></string>
+    <string name="name_of_the_owner">Owner Name<font fgcolor='#E53935'> *</font></string>
     <string name="address_of_the_shop">Business Address<font fgcolor='#E53935'> *</font></string>
     <string name="residence_address">Owner Address<font fgcolor='#E53935'> *</font></string>
-    <string name="mobile">Mobile<font fgcolor='#E53935'> *</font></string>
+    <string name="mobile">Mobile Number<font fgcolor='#E53935'> *</font></string>
     <string name="email_id">Email Id</string>
     <string name="sales_executive_name">Sales Executive Name<font fgcolor='#E53935'> *</font></string>
     <string name="sales_executive_employee_id">Sales Executive - Employee ID<font fgcolor='#E53935'> *</font></string>
@@ -160,7 +160,7 @@
     <string name="emi_banks">EMI Banks</string>
     <string name="emi_card_name">Card Name</string>
 
-    <string name="diary_product_delivery_solutions">Diary Product \n Delivery Solutions</string>
+    <string name="diary_product_delivery_solutions">Dairy Product \n Delivery Solutions</string>
     <string name="continue_with_google">Continue with google</string>
     <string name="request_amp_status"><![CDATA[Request & Status]]></string>
     <string name="canteen_scan">Canteen Scan</string>
@@ -179,7 +179,7 @@
     <string name="sub_channel">Sub Channel<font fgcolor='#E53935'> *</font></string>
     <string name="account_group">Account Group<font fgcolor='#E53935'> *</font></string>
     <string name="distributor_channel">Distributor Channel<font fgcolor='#E53935'> *</font></string>
-    <string name="sales_division">Sales Division<font fgcolor='#E53935'> *</font></string>
+    <string name="sales_division">Division<font fgcolor='#E53935'> *</font></string>
     <string name="selectSalesRegion">Regional Market<font fgcolor='#E53935'> *</font></string>
     <string name="selectBusinessType">Business Type<font fgcolor='#E53935'> *</font></string>
     <string name="selectCustomerGroup">Customer Group<font fgcolor='#E53935'> *</font></string>
@@ -192,5 +192,6 @@
     <string name="pan_name">PAN Name<font fgcolor='#E53935'> *</font></string>
     <string name="uid_Type">UID Type<font fgcolor='#E53935'> *</font></string>
     <string name="advance_amount">Purchase Type<font fgcolor='#E53935'> *</font></string>
+    <string name="customer_application">Customer Application<font fgcolor='#E53935'> *</font></string>
 
 </resources>
