@@ -925,6 +925,7 @@ public class Login extends AppCompatActivity {
 
                 userEditor.putString("url", String.valueOf(profile));
                 userEditor.putString("Profile", String.valueOf(mProfile));
+                shared_common_pref.save("mProfile", mProfile);
                 userEditor.putString("ProfPath", String.valueOf(mProfPath));
 
                 userEditor.apply();

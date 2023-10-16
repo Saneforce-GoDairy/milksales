@@ -19,6 +19,7 @@
             android:background="#666666">
 
             <ImageView
+                android:id="@+id/pImage"
                 android:layout_width="@dimen/C40dp"
                 android:layout_height="@dimen/C40dp"
                 android:layout_centerVertical="true"

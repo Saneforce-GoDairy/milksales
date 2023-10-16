@@ -45,6 +45,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -310,6 +313,20 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         route_layout.setVisibility(View.GONE);
 
         initOnClick();
+
+        String mProfileUrl = sharedCommonPref.getvalue("mProfile");
+
+        Log.e("hgfhg", mProfileUrl);
+        if (!com.saneforce.milksales.Common_Class.Common_Class.isNullOrEmpty(mProfileUrl)) {
+            String[] image = mProfileUrl.split("/");
+            if (image.length > 0 && image[(image.length - 1)].contains(".")) {
+                Glide.with(this.context)
+                        .load(mProfileUrl)
+                        .apply(RequestOptions.circleCropTransform())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(binding.pImage);
+            }
+        }
     }
 
 //    private void initSession() {

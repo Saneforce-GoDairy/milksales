@@ -428,22 +428,14 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         getcountdetails();
         btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
 
-        mProfileUrl = UserDetails.getString("Profile", "");
-
-        new Thread(() -> {
-            try {
-                URLConnection connection = new URL(mProfileUrl).openConnection();
-                String contentType = connection.getHeaderField("Content-Type");
-                boolean image = contentType.startsWith("image/");
-                if (image){
-                    runOnUiThread(() -> {
-                        loadImage(mProfileUrl);
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        mProfileUrl = mShared_common_pref.getvalue("mProfile");
+        Log.e("hgfhg", mProfileUrl);
+        if (!com.saneforce.milksales.Common_Class.Common_Class.isNullOrEmpty(mProfileUrl)) {
+            String[] image = mProfileUrl.split("/");
+            if (image.length > 0 && image[(image.length - 1)].contains(".")) {
+                loadImage(mProfileUrl);
             }
-        }).start();
+        }
     }
 
     private void loadImage(String mProfileUrl) {

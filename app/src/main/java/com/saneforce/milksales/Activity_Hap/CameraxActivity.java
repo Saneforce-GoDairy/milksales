@@ -927,17 +927,15 @@ public class CameraxActivity extends AppCompatActivity {
                         modelCall.enqueue(new Callback<JsonObject>() {
                             @Override
                             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
                                 if (response.isSuccessful()) {
-
                                     JsonObject itm = response.body().getAsJsonObject();
                                     Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
                                     submitProgressDialog.dismiss();
                                     sStatus = itm.get("success").getAsString();
                                     if (sStatus.equalsIgnoreCase("true")) {
                                         SharedPreferences.Editor editor = CheckInDetails.edit();
-                                        try {
-                                            if (mMode.equalsIgnoreCase("CIN")) {
+                                        if (mMode.equalsIgnoreCase("CIN")) {
+                                            try {
                                                 editor.putString("Shift_Selected_Id", CheckInInf.getString("Shift_Selected_Id"));
                                                 editor.putString("Shift_Name", CheckInInf.getString("Shift_Name"));
                                                 editor.putString("ShiftStart", CheckInInf.getString("ShiftStart"));
@@ -945,37 +943,35 @@ public class CameraxActivity extends AppCompatActivity {
                                                 editor.putString("ShiftCutOff", CheckInInf.getString("ShiftCutOff"));
 
                                                 long AlrmTime = DT.getDate(CheckInInf.getString("ShiftEnd")).getTime();
+                                            } catch (Exception ignored) { }
 //                                                sendAlarmNotify(1001, AlrmTime, HAPApp.Title, "Check-Out Alert !.");
-                                            }
-
-                                            if (mMode.equalsIgnoreCase("ONDuty")) {
-                                                mShared_common_pref.save(Shared_Common_Pref.DAMode, true);
-
-                                                mLUService = new SANGPSTracker(CameraxActivity.this);
-                                                myReceiver = new LocationReceiver();
-                                                bindService(new Intent(CameraxActivity.this, SANGPSTracker.class), mServiceConection,
-                                                        Context.BIND_AUTO_CREATE);
-                                                LocalBroadcastManager.getInstance(CameraxActivity.this).registerReceiver(myReceiver,
-                                                        new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
-                                                mLUService.requestLocationUpdates();
-                                            }
-
-
-                                            if (CheckInDetails.getString("FTime", "").equalsIgnoreCase(""))
-                                                editor.putString("FTime", CTime);
-                                            editor.putString("Logintime", CTime);
-
-                                            if (mMode.equalsIgnoreCase("onduty"))
-                                                editor.putString("On_Duty_Flag", "1");
-                                            else
-                                                editor.putString("On_Duty_Flag", "0");
-
-                                            editor.putInt("Type", 0);
-                                            editor.putBoolean("CheckIn", true);
-                                            editor.apply();
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
                                         }
+
+                                        if (mMode.equalsIgnoreCase("ONDuty")) {
+                                            mShared_common_pref.save(Shared_Common_Pref.DAMode, true);
+
+                                            mLUService = new SANGPSTracker(CameraxActivity.this);
+                                            myReceiver = new LocationReceiver();
+                                            bindService(new Intent(CameraxActivity.this, SANGPSTracker.class), mServiceConection,
+                                                    Context.BIND_AUTO_CREATE);
+                                            LocalBroadcastManager.getInstance(CameraxActivity.this).registerReceiver(myReceiver,
+                                                    new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
+                                            mLUService.requestLocationUpdates();
+                                        }
+
+
+                                        if (CheckInDetails.getString("FTime", "").equalsIgnoreCase(""))
+                                            editor.putString("FTime", CTime);
+                                        editor.putString("Logintime", CTime);
+
+                                        if (mMode.equalsIgnoreCase("onduty"))
+                                            editor.putString("On_Duty_Flag", "1");
+                                        else
+                                            editor.putString("On_Duty_Flag", "0");
+
+                                        editor.putInt("Type", 0);
+                                        editor.putBoolean("CheckIn", true);
+                                        editor.apply();
                                     }
                                     String mMessage = "Your Check-In Submitted Successfully";
                                     try {

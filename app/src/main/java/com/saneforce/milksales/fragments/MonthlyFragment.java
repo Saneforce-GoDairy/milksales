@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,7 +79,11 @@ public class MonthlyFragment extends Fragment {
         });
 
         binding.LeaveLL.setOnClickListener(v -> {
-            // Todo: Leave
+            Intent intent = new Intent(context, View_All_Status_Activity.class);
+            intent.putExtra("Priod", 0);
+            intent.putExtra("Status", "Leave");
+            intent.putExtra("name", "View Leave Status");
+            context.startActivity(intent);
         });
 
         binding.lateLL.setOnClickListener(v -> {
@@ -88,8 +94,12 @@ public class MonthlyFragment extends Fragment {
             context.startActivity(intent);
         });
 
-        binding.earlyArrivalLL.setOnClickListener(v -> {
-            // Todo: Early Arrival
+        binding.onTimeLL.setOnClickListener(v -> {
+            Intent intent = new Intent(context, View_All_Status_Activity.class);
+            intent.putExtra("Priod", 0);
+            intent.putExtra("Status", "On-Time");
+            intent.putExtra("name", "View On-Time Status");
+            context.startActivity(intent);
         });
 
         binding.missedPunchLL.setOnClickListener(v -> {
@@ -111,8 +121,7 @@ public class MonthlyFragment extends Fragment {
         return binding.getRoot();
     }
     private void getMnthReports(int m) {
-        if (cModMnth == m) return;
-        Common_Class Dt = new Common_Class();
+        /*Common_Class Dt = new Common_Class();
         String sDt = Dt.GetDateTime(getContext(), "yyyy-MM-dd HH:mm:ss");
         Date dt = Dt.getDate(sDt);
         if (m == -1) {
@@ -127,74 +136,49 @@ public class MonthlyFragment extends Fragment {
         }
         sDt = Dt.AddMonths(Dt.getYear(sDt) + "-" + Dt.getMonth(sDt) + "-22 00:00:00", 1, "yyyy-MM-dd HH:mm:ss");
         int tmn = Dt.getMonth(sDt);
-        Log.d("Tag", sDt + "-" + String.valueOf(fmn) + "-" + String.valueOf(tmn));
+        Log.d("Tag", sDt + "-" + String.valueOf(fmn) + "-" + String.valueOf(tmn));*/
       //  TextView txUserName = findViewById(R.id.txtMnth);
       //  txUserName.setText("23," + mns[fmn - 1] + " - 22," + mns[tmn - 1]);
 
         // appendDS = appendDS + "&divisionCode=" + userData.divisionCode + "&sfCode=" + sSF + "&rSF=" + userData.sfCode + "&State_Code=" + userData.State_Code;
-        if (Common_Class.isNullOrEmpty(mShared_common_pref.getvalue(Constants.DB_TWO_GET_MREPORTS+"_"+mns[fmn - 1]))) {
-            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<JsonArray> rptMnCall = apiInterface.getDataArrayList("get/AttndMn", m,
-                    UserDetails.getString("Divcode", ""),
-                    UserDetails.getString("Sfcode", ""), UserDetails.getString("Sfcode", ""), "", "", null);
-            rptMnCall.enqueue(new Callback<JsonArray>() {
-                @Override
-                public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                    assignMnthReports(response.body(), m);
-                    mShared_common_pref.save(Constants.DB_TWO_GET_MREPORTS+"_"+mns[fmn - 1], gson.toJson(response.body()));
-                }
-
-                @Override
-                public void onFailure(Call<JsonArray> call, Throwable t) {
-                    Log.d("Tag", String.valueOf(t));
-                //    LoadingCnt++;
-                  //  hideShimmer();
-                }
-            });
-        } else {
-            Type userType = new TypeToken<JsonArray>() {
-            }.getType();
-            JsonArray arr = (gson.fromJson(mShared_common_pref.getvalue(Constants.DB_TWO_GET_MREPORTS+"_"+mns[fmn - 1]), userType));
-            assignMnthReports(arr, m);
-        }
-    }
-
-    private void assignMnthReports(JsonArray res, int m) {
-        try {
-            JsonArray dyRpt = new JsonArray();
-            for (int il = 0; il < res.size(); il++) {
-                JsonObject Itm = res.get(il).getAsJsonObject();
-                JsonObject newItem = new JsonObject();
-                newItem.addProperty("name", Itm.get("Status").getAsString());
-                newItem.addProperty("value", Itm.get("StatusCnt").getAsString());
-                newItem.addProperty("Link", true);
-                newItem.addProperty("Priod", m);
-                newItem.addProperty("color", Itm.get("StusClr").getAsString().replace(" !important", ""));
-
-                JsonObject jsonObject0 = res.get(0).getAsJsonObject();
-                JsonObject jsonObject1 = res.get(1).getAsJsonObject();
-                JsonObject jsonObject2 = res.get(2).getAsJsonObject();
-
-                binding.late.setText(jsonObject1.get("StatusCnt").getAsString());
-
-                binding.weeklyOffText.setText(jsonObject0.get("Status").getAsString());
-                binding.weeklyOff.setText(jsonObject0.get("StatusCnt").getAsString());
-
-                binding.missedPunch.setText(jsonObject2.get("StatusCnt").getAsString());
-
-                dyRpt.add(newItem);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<JsonObject> rptMnCall = apiInterface.getDataObjectList("get/AttndMn", m,
+                UserDetails.getString("Divcode", ""),
+                UserDetails.getString("Sfcode", ""), UserDetails.getString("Sfcode", ""), "", "", null);
+        rptMnCall.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                assignMnthReports(response.body(), m);
+//                mShared_common_pref.save(Constants.DB_TWO_GET_MREPORTS+"_"+mns[fmn - 1], gson.toJson(response.body()));
             }
 
-           // recyclerView = findViewById(R.id.Rv_MnRpt);
-         //   mAdapter = new HomeRptRecyler(dyRpt, Dashboard_Two.this);
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.d("Tag", String.valueOf(t));
+            }
+        });
+    }
 
-//            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//            recyclerView.setLayoutManager(mLayoutManager);
-//            recyclerView.setItemAnimator(new DefaultItemAnimator());
-//            recyclerView.setAdapter(mAdapter);
-//            LoadingCnt++;
-//            hideShimmer();
-        } catch (Exception ignored) {
+    private void assignMnthReports(JsonObject res, int m) {
+        try {
+            Log.e("ryrh", "" + res);
+
+            int permissionCount = res.get("Permission").getAsInt();
+            int leaveCount = res.get("leave").getAsInt();
+            int lateCount = res.get("late").getAsInt();
+            int onTimeCount = res.get("onTime").getAsInt();
+            int missedPunchCount = res.get("missedPunch").getAsInt();
+            int weeklyOffCount = res.get("weeklyOff").getAsInt();
+
+            binding.permissionCount.setText(String.valueOf(permissionCount));
+            binding.leaveCount.setText(String.valueOf(leaveCount));
+            binding.lateCount.setText(String.valueOf(lateCount));
+            binding.onTimeCount.setText(String.valueOf(onTimeCount));
+            binding.missedPunchCount.setText(String.valueOf(missedPunchCount));
+            binding.weeklyOffCount.setText(String.valueOf(weeklyOffCount));
+
+        } catch (Exception e) {
+            Log.e("ryrh", "Error: " + e.getMessage());
         }
     }
 }

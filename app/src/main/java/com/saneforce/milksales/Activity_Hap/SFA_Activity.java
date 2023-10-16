@@ -177,14 +177,21 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         sfa_date = tvDate.getText().toString();
         String sUName = UserDetails.getString("SfName", "");
         String SFDesig = UserDetails.getString("SFDesig", "");
-        String mProfileUrl = UserDetails.getString("Profile", "");
+        String mProfileUrl = sharedCommonPref.getvalue("mProfile");
 
+        Log.e("hgfhg", mProfileUrl);
+        if (!Common_Class.isNullOrEmpty(mProfileUrl)) {
+            String[] image = mProfileUrl.split("/"); // https://lactalisindia.salesjump.in/SalesForce_Profile_Img/TRMUMGR0009_1697262524.jpg
+            if (image.length > 0 && image[(image.length - 1)].contains(".")) {
+                loadImage(mProfileUrl);
+            }
+        }
         tvUserName.setText(sUName);
         binding.userName.setText(sUName);
         binding.designation.setText(SFDesig );
         tvUpdTime.setText("Last Updated On : " + updateTime);
 
-        new Thread(() -> {
+        /*new Thread(() -> {
             try {
                 URLConnection connection = new URL(mProfileUrl).openConnection();
                 String contentType = connection.getHeaderField("Content-Type");
@@ -197,7 +204,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).start();
+        }).start();*/
 
         common_class.getProductDetails(this);
         getNoOrderRemarks();

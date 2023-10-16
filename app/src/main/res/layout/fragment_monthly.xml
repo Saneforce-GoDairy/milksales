@@ -59,6 +59,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/permissionCount"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -92,6 +93,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/leaveCount"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -122,7 +124,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/late"
+                                android:id="@+id/lateCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -148,7 +150,7 @@
                         android:layout_marginTop="5dp">
 
                         <LinearLayout
-                            android:id="@+id/early_Arrival_LL"
+                            android:id="@+id/onTimeLL"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/C10dp"
@@ -158,6 +160,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/onTimeCount"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -166,9 +169,10 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/onTime"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Early Arrival"
+                                android:text="On-Time"
                                 android:fontFamily="@font/roboto_medium"
                                 android:layout_marginTop="@dimen/C8dp"
                                 android:textColor="#2E3032"
@@ -191,7 +195,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/missed_punch"
+                                android:id="@+id/missedPunchCount"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -222,7 +226,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/weekly_off"
+                                android:id="@+id/weeklyOffCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"

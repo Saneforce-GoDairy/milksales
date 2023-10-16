@@ -87,7 +87,7 @@ public class TodayFragment extends Fragment {
 
     private void onClick() {
         binding.viewGeoIn.setOnClickListener(v -> openMap());
-        binding.viewGeoOut.setOnClickListener(v -> openMap());
+        binding.viewGeoOuts.setOnClickListener(v -> openMap());
     }
 
     private void openMap() {
@@ -198,48 +198,54 @@ public class TodayFragment extends Fragment {
         String todayDate = new SimpleDateFormat("dd-MM-yyy", Locale.getDefault()).format(new Date());
         binding.date.setText(todayDate);
 
-        if (Common_Class.isNullOrEmpty(SHARED_COMMON_PREF.getvalue(Constants.DB_TWO_GET_DYREPORTS))) {
-            String divisionCode = USER_DETAILS.getString("Divcode", "");
-            Log.e(TAG, "Division code : " + divisionCode);
+        //if (Common_Class.isNullOrEmpty(SHARED_COMMON_PREF.getvalue(Constants.DB_TWO_GET_DYREPORTS))) {
+        String divisionCode = USER_DETAILS.getString("Divcode", "");
+        Log.e(TAG, "Division code : " + divisionCode);
 
-            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<JsonArray> rptCall = apiInterface.getDataArrayList("get/AttnDySty",
-                    USER_DETAILS.getString("Divcode", ""),
-                    USER_DETAILS.getString("Sfcode", ""), "", "", null);
-            Log.v(TAG, "View Request :" + rptCall.request().toString());
-            rptCall.enqueue(new Callback<>() {
-                @Override
-                public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                    try {
-                        assignDyReports(response.body());
-                        SHARED_COMMON_PREF.save(Constants.DB_TWO_GET_DYREPORTS, gson.toJson(response.body()));
-                    } catch (Exception ignored) {
-                    }
-
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<JsonArray> rptCall = apiInterface.getDataArrayList("get/AttnDySty",
+                USER_DETAILS.getString("Divcode", ""),
+                USER_DETAILS.getString("Sfcode", ""), "", "", null);
+        Log.v(TAG, "View Request :" + rptCall.request().toString());
+        rptCall.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                try {
+                    assignDyReports(response.body());
+                    SHARED_COMMON_PREF.save(Constants.DB_TWO_GET_DYREPORTS, gson.toJson(response.body()));
+                } catch (Exception ignored) {
                 }
 
-                @Override
-                public void onFailure(Call<JsonArray> call, Throwable t) {
-                    Log.d(TAG, "Error : " + t);
-                }
-            });
-        }else {
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                Log.d(TAG, "Error : " + t);
+            }
+        });
+        /*}
+        else {
             Type userType = new TypeToken<JsonArray>() {
             }.getType();
             JsonArray arr = (gson.fromJson(SHARED_COMMON_PREF.getvalue(Constants.DB_TWO_GET_DYREPORTS), userType));
             assignDyReports(arr);
-        }
+        }*/
     }
 
 
     private void assignDyReports(JsonArray res) {
         try {
             if (res.size() < 1){
-                //Toast.makeText(getContext(), "No Records Today", Toast.LENGTH_LONG).show();
+                binding.info.setVisibility(View.VISIBLE);
+                binding.progressbar.setVisibility(View.GONE);
+                binding.llRoot.setVisibility(View.GONE);
+                return;
             }
+            binding.info.setVisibility(View.GONE);
+            binding.progressbar.setVisibility(View.GONE);
+            binding.llRoot.setVisibility(View.VISIBLE);
+
             fItm = res.get(0).getAsJsonObject();
-
-
             String checkInTimeStr = fItm.get("GeoIn").getAsString();
             if (!checkInTimeStr.isEmpty() && !checkInTimeStr.equals("00:00:00")) {
 
@@ -325,15 +331,23 @@ public class TodayFragment extends Fragment {
             if (!checkInTimeStr.isEmpty() && !checkOutTimeStr.equals("00:00:00")) {
                 binding.geoOut.setText(fItm.get("GeoOut").getAsString());
                 binding.checkOutTime.setText(checkOutTimeStr);
-                binding.geoOutView.setVisibility(View.VISIBLE);
+                binding.viewGeoOuts.setVisibility(View.VISIBLE);
+                binding.locOut.setVisibility(View.VISIBLE);
+                binding.outTitle.setVisibility(View.VISIBLE);
+                binding.outBackImg.setVisibility(View.VISIBLE);
+                binding.checkOutImage.setVisibility(View.VISIBLE);
             } else {
-                binding.geoOutView.setVisibility(View.GONE);
+                binding.locOut.setVisibility(View.GONE);
+                binding.viewGeoOuts.setVisibility(View.GONE);
+                binding.outTitle.setVisibility(View.GONE);
+                binding.outBackImg.setVisibility(View.GONE);
+                binding.checkOutImage.setVisibility(View.GONE);
             }
 
-          String  checkInUrl =  fItm.get("ImgName").getAsString();
-                    Glide.with(requireContext())
+            String  checkInUrl =  fItm.get("ImgName").getAsString();
+            Glide.with(requireContext())
                     .load(ApiClient.BASE_URL.replaceAll("server/", "") + fItm.get("EImgName").getAsString())
-                            .apply(RequestOptions.circleCropTransform())
+                    .apply(RequestOptions.circleCropTransform())
                     .into(binding.userProfile);
         }catch (Exception ignored) {
 

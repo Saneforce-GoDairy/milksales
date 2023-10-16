@@ -1802,7 +1802,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("GSTImageName", GSTImageName);
             object.put("gstDeclarationImageName", gstDeclarationImageName);
 
-            object.put("tcsStatus", tcsSwitch.isChecked() ? "1" : "0");
+            object.put("tcsStatus", tcsSwitch.isChecked() ? "0" : "1");
             object.put("tcsDeclarationImageName", tcsDeclarationImageName);
 
             object.put("agreementDetailsStr", agreementDetailsStr);
