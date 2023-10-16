@@ -64,6 +64,7 @@ import com.saneforce.milksales.SFA_Model_Class.CommonModelWithFourString;
 import com.saneforce.milksales.SFA_Model_Class.CommonModelWithThreeString;
 import com.saneforce.milksales.common.FileUploadService;
 import com.saneforce.milksales.common.LocationFinder;
+import com.saneforce.milksales.databinding.ActivityAddNewDistributorBinding;
 import com.saneforce.milksales.universal.UniversalDropDownAdapter;
 
 import org.json.JSONArray;
@@ -90,6 +91,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback {
+    ActivityAddNewDistributorBinding binding;
 
     TextView /*select_region,*/ select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, downloadTCSDeclarationForm, purchaseType,
     /*select_mode_of_payment,*/ submit, select_bank_details, select_agreement_copy, select_sub_channel, /*selectCusACGroup,*/ /*select_dist_channel,*/ /*select_sales_division,*/ /*selectDistrict,*/ /*selectSalesRegion,*/ /*selectBusinessType,*/ /*selectCustomerGroup,*/ /*selectSalesGroup,*/ /*selectBusinessDivision,*/ /*selectCustomerClass,*/ /*selectCustomerType,*/ selectReportingVerticals, /*selectSubMarket,*/ downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
@@ -136,7 +138,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_distributor);
+        binding = ActivityAddNewDistributorBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         //select_region = findViewById(R.id.select_region);
         select_sales_office_name = findViewById(R.id.select_sales_office_name);
@@ -1353,6 +1356,22 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         downloadReceiver = new DownloadReceiver();
         registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
+        binding.clearBank.setOnClickListener(v -> {
+            bankDetailsStr = "";
+            bankImageName = "";
+            bankImageFullPath = "";
+            select_bank_details.setText("");
+            display_bank_details.setVisibility(View.GONE);
+        });
+
+        binding.clearAgreement.setOnClickListener(v -> {
+            agreementDetailsStr = "";
+            agreementImageName = "";
+            aadhaarImageFullPath = "";
+            select_agreement_copy.setText("");
+            display_agreement_copy.setVisibility(View.GONE);
+        });
+
         // Todo: Get Image From S3
         /*common_class.getImageFromS3Bucket(context, "kley", "MGR23_1694523049.jpg", "milk_selfie");
         common_class.setOnDownloadImage((key, bmp) -> {
@@ -1569,6 +1588,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Capture Customer Photo", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(shop_photo_name) || TextUtils.isEmpty(shop_photo_url)) {
             Toast.makeText(context, "Please Capture Shop Photo", Toast.LENGTH_SHORT).show();
+        } else if (customerApplicationImageName.isEmpty() || customerApplicationImageFullPath.isEmpty()) {
+            Toast.makeText(context, "Please capture customer application photo", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(stateCodeStr) || TextUtils.isEmpty(stateNameStr)) {
             Toast.makeText(context, "Please Select the State", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(officeNameStr) || TextUtils.isEmpty(officeCodeStr)) {
@@ -1669,8 +1690,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please capture the agreement copy", Toast.LENGTH_SHORT).show();
         } else if (purchaseTypeID.isEmpty() || purchaseTypeName.isEmpty()) {
             Toast.makeText(context, "Please select purchase type", Toast.LENGTH_SHORT).show();
-        } else if (customerApplicationImageName.isEmpty() || customerApplicationImageFullPath.isEmpty()) {
-            Toast.makeText(context, "Please capture customer application photo", Toast.LENGTH_SHORT).show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Are you sure want to submit?");
@@ -1881,7 +1900,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void getCompleteAddressString(double LATITUDE, double LONGITUDE) {
-        Executors.newSingleThreadExecutor().execute(() -> {Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        Executors.newSingleThreadExecutor().execute(() -> {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
                 List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
                 if (addresses != null) {
@@ -1889,13 +1909,15 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     String doorNo = returnedAddress.getSubThoroughfare();
                     String street = returnedAddress.getThoroughfare();
                     String city = returnedAddress.getLocality();
+                    String district = returnedAddress.getSubAdminArea();                                // 4125, 8966
                     String state = returnedAddress.getAdminArea();
+                    String country = returnedAddress.getCountryName();
                     String pincode = returnedAddress.getPostalCode();
 
                     runOnUiThread(() -> {
                         businessAddressNo.setText(doorNo + ", " + street);
-                        businessAddressCity.setText(city);
-                        businessAddressPincode.setText(state);
+                        businessAddressCity.setText(city + ", " + district);
+                        businessAddressPincode.setText(state + ", " + country);
                         type_city.setText(city);
                         type_pincode.setText(pincode);
                     });
