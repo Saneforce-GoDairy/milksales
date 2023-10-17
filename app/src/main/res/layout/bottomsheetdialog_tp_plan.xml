@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="430dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rounded_dialog_top_right_left"/>
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_work_plan"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:id="@+id/header2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Monthly Plan"
+                />
+
+            <TextView
+                android:id="@+id/plan_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/grey_600"
+                android:fontFamily="@font/poppins_regular"
+                android:text="(DD/MM/YYYY)"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/C16dp"
+            android:orientation="vertical"
+            android:layout_below="@id/header2"
+            android:layout_marginTop="@dimen/C16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="WORK TYPE"
+                android:textColor="@color/grey_600"
+                android:textSize="13sp" />
+
+            <Spinner
+                android:id="@+id/spinner_work_type"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/grey_600"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/C20dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="REMARKS"
+                android:textColor="@color/grey_600"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@+id/edt_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:fontFamily="@font/roboto_medium"
+                android:background="@drawable/edit_text_border_radius_grey"
+                android:hint="Type....."
+                android:gravity="start"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                />
+
+            <Button
+                android:id="@+id/tpapprovebutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/button_blue1"
+                android:text="SUBMIT"
+                android:fontFamily="@font/roboto_medium"
+                android:textAllCaps="true"
+                android:textColor="#FFFFFF"/>
+
+            <Button
+                android:id="@+id/tpreject"
+                style="@style/DashboardButton"
+                android:layout_weight="1"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/button_amber"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Reject"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
+
