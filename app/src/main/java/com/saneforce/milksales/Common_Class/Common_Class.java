@@ -43,6 +43,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -58,6 +59,7 @@ import com.saneforce.milksales.Activity_Hap.CustomListViewDialog;
 import com.saneforce.milksales.Activity_Hap.Dashboard;
 import com.saneforce.milksales.Activity_Hap.Dashboard_Two;
 import com.saneforce.milksales.Activity_Hap.SFA_Activity;
+import com.saneforce.milksales.Interface.APIResult;
 import com.saneforce.milksales.Interface.AlertBox;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
@@ -126,11 +128,6 @@ public class Common_Class {
     SharedPreferences UserDetails;
     public static final String UserDetail = "MyPrefs";
     public int brandPos = 0, grpPos = 0, categoryPos = 0;
-    OnDownloadImage onDownloadImage;
-
-    public void setOnDownloadImage(OnDownloadImage onDownloadImage) {
-        this.onDownloadImage = onDownloadImage;
-    }
 
     public void CommonIntentwithFinish(Class classname) {
         intent = new Intent(activity, classname);
@@ -1193,20 +1190,20 @@ public class Common_Class {
                 ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
                 ProductsLoaded=false;
                 service.getDataArrayList("get/prodstockdets", jParam.toString()).enqueue(new Callback<JsonArray>() {
-                        @Override
-                        public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                    @Override
+                    public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
 //                            Log.v("SEC_Product_List", response.body().toString());
-                            db.deleteMasterData(Constants.ProductStock_List);
-                            db.addMasterData(Constants.ProductStock_List, response.body());
-                            ProductsLoaded=true;
-                            if(liveUpdateListener!=null) liveUpdateListener.onUpdate("");
-                        }
+                        db.deleteMasterData(Constants.ProductStock_List);
+                        db.addMasterData(Constants.ProductStock_List, response.body());
+                        ProductsLoaded=true;
+                        if(liveUpdateListener!=null) liveUpdateListener.onUpdate("");
+                    }
 
-                        @Override
-                        public void onFailure(Call<JsonArray> call, Throwable t) {
-                            if(liveUpdateListener!=null) liveUpdateListener.onUpdate("");
-                        }
-                    });
+                    @Override
+                    public void onFailure(Call<JsonArray> call, Throwable t) {
+                        if(liveUpdateListener!=null) liveUpdateListener.onUpdate("");
+                    }
+                });
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1812,7 +1809,7 @@ public class Common_Class {
             } else {
                 file = new File(mFilePath);
             }
-            TransferObserver uploadObserver = transferUtility.upload("godairy",companyCode + "/" + Mode+"/" + FileName , file);
+            TransferObserver uploadObserver = transferUtility.upload("godairy",companyCode + "/" + Mode + "/" + FileName , file);
             ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setCancelable(false);
             progressDialog.setMessage("Uploading...");
@@ -1848,25 +1845,25 @@ public class Common_Class {
         }
     }
 
-    public void getImageFromS3Bucket(Context context, String key, String FileName,String Mode) {
+    public void getImageFromS3Bucket(Context context, String companyCode, String FileName,String Mode, OnDownloadImage onDownloadImage) {
         try{
             String[] names = FileName.split("\\.");
             String extension = names[names.length - 1];
             final File file = File.createTempFile(FileName, extension);
             Util util = new Util();
             TransferUtility transferUtility = util.getTransferUtility(context);
-            TransferObserver downloadObserver = transferUtility.download("happic",Mode+"/" + FileName, file);
+            TransferObserver downloadObserver = transferUtility.download("godairy",companyCode + "/" + Mode + "/" + FileName, file);
             downloadObserver.setTransferListener(new TransferListener() {
                 @Override
                 public void onStateChanged(int id, TransferState state) {
                     if (TransferState.COMPLETED == state) {
                         Bitmap bmp= BitmapFactory.decodeFile(file.getAbsolutePath());
                         if (onDownloadImage != null) {
-                            onDownloadImage.onDownload(key, bmp);
+                            onDownloadImage.onDownload(bmp);
                         }
                     } else if (TransferState.FAILED == state) {
                         if (onDownloadImage != null) {
-                            onDownloadImage.onDownload(key, null);
+                            onDownloadImage.onDownload(null);
                         }
                     }
                 }
@@ -1880,20 +1877,20 @@ public class Common_Class {
                 @Override
                 public void onError(int id, Exception ex) {
                     if (onDownloadImage != null) {
-                        onDownloadImage.onDownload(key, null);
+                        onDownloadImage.onDownload(null);
                     }
                 }
             });
         }
         catch (Exception e){
             if (onDownloadImage != null) {
-                onDownloadImage.onDownload(key, null);
+                onDownloadImage.onDownload(null);
             }
         }
     }
 
     public interface OnDownloadImage {
-        void onDownload(String key, Bitmap bmp);
+        void onDownload(Bitmap bmp);
     }
 
     @SuppressLint("ResourceType")
@@ -1926,6 +1923,36 @@ public class Common_Class {
                 rootView.removeView(ll);
             }
         } catch (Exception ignored) { }
+    }
+
+    public static void makeApiCall(Map<String, String> params, String data, APIResult listener) {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        String result = response.body().string();
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            listener.onSuccess(jsonObject);
+                        } else {
+                            listener.onFailure(jsonObject.getString("msg"));
+                        }
+                    } catch (Exception e) {
+                        listener.onFailure(e.getLocalizedMessage());
+                    }
+                } else {
+                    listener.onFailure("Something went wrong");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                listener.onFailure(t.getLocalizedMessage());
+            }
+        });
     }
 }
 
