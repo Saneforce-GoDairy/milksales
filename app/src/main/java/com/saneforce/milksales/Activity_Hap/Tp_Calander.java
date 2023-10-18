@@ -44,9 +44,6 @@ import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.Model_Class.Tp_View_Master;
 import com.saneforce.milksales.R;
 import com.saneforce.milksales.databinding.TpClanderBinding;
-import com.saneforce.milksales.fragments.GateInOutFragment;
-import com.saneforce.milksales.fragments.MonthlyFragment;
-import com.saneforce.milksales.fragments.TodayFragment;
 import com.saneforce.milksales.fragments.tour_plan.CurrentMonthFragment;
 import com.saneforce.milksales.fragments.tour_plan.NextMonthFragment;
 
@@ -388,8 +385,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
     }
 
     public void GetTp_List() {
-        try {
-            Log.e("ERROR_CONTROL", String.valueOf(SelectedMonth));
             int SM = SelectedMonth + 1;
             String Tp_Object = "{\"tableName\":\"vwTourPlan\",\"coloumns\":\"[\\\"date\\\",\\\"remarks\\\",\\\"worktype_code\\\",\\\"worktype_name\\\",\\\"RouteCode\\\",\\\"RouteName\\\",\\\"Worked_with_Code\\\",\\\"Worked_with_Name\\\",\\\"JointWork_Name\\\"]\",\"orderBy\":\"[\\\"name asc\\\"]\",\"desig\":\"mgr\"}";
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -399,24 +394,20 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
             } else {
                 Sf_Code = Shared_Common_Pref.Tp_SFCode;
             }
-            Log.e("FIELDFORCE_SF", Sf_Code);
+
             Call<Object> mCall = apiInterface.GettpRespnse(Shared_Common_Pref.Div_Code, Sf_Code, Sf_Code, Shared_Common_Pref.StateCode, String.valueOf(SM), String.valueOf(year), Tp_Object);
-            mCall.enqueue(new Callback<Object>() {
+            mCall.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
-                    // locationList=response.body();
-                    Log.e("GetCurrentMonth_Values", String.valueOf(response.body().toString()));
-                    Log.e("TAG_TP_RESPONSE", "response Tp_View: " + new Gson().toJson(response.body()));
                     userType = new TypeToken<ArrayList<Tp_View_Master>>() {
                     }.getType();
                     Tp_View_Master = gson.fromJson(new Gson().toJson(response.body()), userType);
 
                     month = SelectedMonth + 1;
 
-                    adapter = new Tp_Calander.GridCellAdapter(getApplicationContext(), R.id.date, month, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
+                    adapter = new Tp_Calander.GridCellAdapter(getApplicationContext(), month, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
                     adapter.notifyDataSetChanged();
                     calendarView.setAdapter(adapter);
-
                     progressDialog.dismiss();
                 }
 
@@ -424,31 +415,22 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                 public void onFailure(Call<Object> call, Throwable t) {
                     progressDialog.dismiss();
                 }
-            });
 
-            try {
-                adapter = new Tp_Calander.GridCellAdapter(getApplicationContext(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
+            });
+                adapter = new Tp_Calander.GridCellAdapter(getApplicationContext(), SelectedMonth + 1, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
                 adapter.notifyDataSetChanged();
                 calendarView.setAdapter(adapter);
-            } catch (Exception e) {
-                Log.v("TP CALENDER:local", e.getMessage());
-
-            }
-        } catch (Exception e) {
-            Log.v("TP CALENDER:", e.getMessage());
-        }
-
-
     }
 
     private void setGridCellAdapterToDate(int month, int year) {
-        adapter = new Tp_Calander.GridCellAdapter(getApplicationContext(), R.id.date, month, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
+        adapter = new Tp_Calander.GridCellAdapter(getApplicationContext(), month, year, (ArrayList<com.saneforce.milksales.Model_Class.Tp_View_Master>) Tp_View_Master);
         _calendar.set(year, month - 1, _calendar.get(Calendar.DAY_OF_MONTH));
         currentMonth.setText(android.text.format.DateFormat.format(dateTemplate, _calendar.getTime()));
         adapter.notifyDataSetChanged();
         calendarView.setAdapter(adapter);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
 
@@ -470,14 +452,10 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
 
     }
 
-
-    // ///////////////////////////////////////////////////////////////////////////////////////
-    // Inner Class
     public class GridCellAdapter extends BaseAdapter implements View.OnClickListener {
         private final Context _context;
         private final List<String> list;
         private ArrayList<Tp_View_Master> Tp_View_Master;
-        private ArrayList<String> items;
         private static final int DAY_OFFSET = 1;
         private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -485,31 +463,18 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         private int currentDayOfMonth;
         private int currentWeekDay;
         private TextView gridcell;
-        private ImageView iv_icon;
         private TextView num_events_per_day;
-        String itemvalue, curentDateString;
+        private String  curentDateString;
         private Calendar selectedDate;
-        int firstDay;
-        int maxWeeknumber;
-        int maxP;
-        int calMaxP;
-        int mnthlength;
         private final HashMap<String, Integer> eventsPerMonthMap;
-        SimpleDateFormat df;
+        private SimpleDateFormat df;
 
-        private Calendar month;
-        public Calendar pmonth;
-        public Calendar pmonthmaxset;
-
-
-        // Days in Current Month
-        public GridCellAdapter(Context context, int textViewResourceId, int month, int year, ArrayList<Tp_View_Master> Tp_View_Master) {
+        public GridCellAdapter(Context context, int month, int year, ArrayList<Tp_View_Master> Tp_View_Master) {
             super();
             this._context = context;
-            this.Tp_View_Master = new ArrayList<Tp_View_Master>();
             this.Tp_View_Master = Tp_View_Master;
+            this.list = new ArrayList<>();
 
-            this.list = new ArrayList<String>();
             Calendar calendar = Calendar.getInstance();
             setCurrentDayOfMonth(calendar.get(Calendar.DAY_OF_MONTH));
             setCurrentWeekDay(calendar.get(Calendar.DAY_OF_WEEK));
@@ -522,7 +487,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
 
             // Find Number of Events
             eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
-//
         }
 
         private String getMonthAsString(int i) {
@@ -591,7 +555,7 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
             // Current Month Days
             for (int i = 1; i <= daysInMonth; i++) {
                 if (CheckTp_View(i).equals("1") || CheckTp_View(i).equals("3")) {
-                    Log.e("getCurrentDayOfMonth", String.valueOf(i) + "-BLUE" + "-" + curentDateString + "-" + yy + "  " + getMonthAsString(currentMonth) + "DATE " + getCurrentDayOfMonth() + "-" + getMonthAsString(currentMonth) + "=" + yy);
+                    Log.e("getCurrentDayOfMonth", i + "-BLUE" + "-" + curentDateString + "-" + yy + "  " + getMonthAsString(currentMonth) + "DATE " + getCurrentDayOfMonth() + "-" + getMonthAsString(currentMonth) + "=" + yy);
                     if (CheckTp_View(i).equals("1")) {
                         Log.e("PENDING_COLOR", CheckTp_View(i));
                         list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
@@ -599,8 +563,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                         Log.e("APPROVED_COLOR", CheckTp_View(i));
                         list.add(String.valueOf(i) + "-GREEN" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                     }
-
-
                    /* if (getMonthAsString(currentMonth).equals(curentDateString)) {
                         list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                         Log.d("getCurrentDayOfMonth11", String.valueOf(i) + "-BLUE" + "-" + curentDateString + "-" + yy + "  " + getMonthAsString(currentMonth));
@@ -611,7 +573,7 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                     list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                 }
 
-                Log.e("DAY_of_month", String.valueOf(list.get(i - 1)));
+                Log.e("tp_calander_", "Day of month :" + list.get(i - 1));
             }
 
             // Leading Month days
@@ -619,13 +581,12 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                 list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
             }
             for (int i = 0; i < list.size(); i++) {
-                Log.e("DAYCOLOR", String.valueOf(list.get(i)));
-                Log.e("Days_In_A month", String.valueOf(daysInMonth));
+                Log.e("tp_calander_", "Day color : " + list.get(i));
             }
         }
 
         private HashMap<String, Integer> findNumberOfEventsPerMonth(int year, int month) {
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
+            HashMap<String, Integer> map = new HashMap<>();
             return map;
         }
 
@@ -643,17 +604,10 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                 row = inflater.inflate(R.layout.calendar_item, parent, false);
             }
 
-            // Get a reference to the Day gridcell
             gridcell = row.findViewById(R.id.date);
-            iv_icon = row.findViewById(R.id.tp_date_icon);
-
 
             // ACCOUNT FOR SPACING
-
             String[] day_color = list.get(position).split("-");
-
-            Log.e("THE_DAY_COLOR", String.valueOf(day_color[0]));
-
 
             String theday = day_color[0];
             String themonth = day_color[2];
@@ -666,10 +620,8 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                 }
             }
 
-            // Set the Day GridCell
             gridcell.setText(theday);
             gridcell.setTag(theday + "-" + themonth + "-" + theyear);
-            Log.e("ALL_DATE", theday + "-" + themonth + "-" + theyear + day_color[1]);
             if (day_color[1].equals("GREY")) {
                 gridcell.setTextColor(Color.LTGRAY);
                 gridcell.setEnabled(false);
@@ -678,24 +630,16 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
                 gridcell.setTextColor(getResources().getColor(R.color.subExpHeader));
             }
             if (day_color[1].equals("BLUE")) {
-                // iv_icon.setVisibility(View.VISIBLE);
                 gridcell.setTextColor(getResources().getColor(R.color.Pending_yellow));
-                //gridcell.setBackgroundResource(R.drawable.grid_dateshape);
             }
-            gridcell.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String[] day_color = list.get(position).split("-");
-                    Log.e("THE_DAY_COLOR", String.valueOf(day_color[0]));
-                    String theday = day_color[0];
-                    String themonth = day_color[2];
-                    String theyear = day_color[3];
-                    int month = SelectedMonth + 1;
-                    String TourMonth = theyear + "-" + month + "-" + theday;
-                    Log.e("Grid_Selected_Date", theday + "-" + themonth + "-" + theyear + day_color[1]);
-                    common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
-
-                }
+            gridcell.setOnClickListener(v -> {
+                String[] day_color1 = list.get(position).split("-");
+                String theday1 = day_color1[0];
+                String themonth1 = day_color1[2];
+                String theyear1 = day_color1[3];
+                int month = SelectedMonth + 1;
+                String TourMonth = theyear1 + "-" + month + "-" + theday1;
+                common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
             });
 
             return row;
@@ -704,7 +648,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         @Override
         public void onClick(View view) {
             String date_month_year = (String) view.getTag();
-            //selectedDayMonthYearButton.setText("Selected: " + date_month_year);
             Log.e("Selected date", date_month_year);
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
@@ -721,17 +664,13 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         public String CheckTp_View(int a) {
             String bflag = "0";
             if (Tp_View_Master != null) {
-
-
                 for (int i = 0; Tp_View_Master.size() > i; i++) {
                     if (a == Tp_View_Master.get(i).getDayofcout()) {
-                        Log.v("SUBMIT_STATUS", String.valueOf(Tp_View_Master.get(i).getSubmitStatus() + "DAY" + Tp_View_Master.get(i).getDayofcout()));
                         if (String.valueOf(Tp_View_Master.get(i).getSubmitStatus()).equals("3")) {
                             bflag = "3";
                         } else {
                             bflag = "1";
                         }
-
                     }
                 }
             }
@@ -749,8 +688,6 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
         public int getCurrentWeekDay() {
             return currentWeekDay;
         }
-
-
     }
 
     private final OnBackPressedDispatcher mOnBackPressedDispatcher =
