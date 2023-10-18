@@ -50,6 +50,7 @@ import com.saneforce.milksales.Common_Class.FileDownloader;
 import com.saneforce.milksales.Common_Class.MyAlertDialog;
 import com.saneforce.milksales.Common_Class.MyProgressDialog;
 import com.saneforce.milksales.Common_Class.Shared_Common_Pref;
+import com.saneforce.milksales.Interface.APIResult;
 import com.saneforce.milksales.Interface.AlertBox;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
@@ -129,7 +130,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
     GoogleMap googleMap;
     JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, MasSubMarketArray, MasCusTypeArray, stateArray;
-    String subChannelIDStr = "", subChannelNameStr = "", acGroupIDStr = "", acGroupNameStr = "", distChannelIDStr = "", distChannelNameStr = "", salesDivisionIDStr = "", salesDivisionNameStr = "";
+    String subChannelIDStr = "", subChannelNameStr = "", acGroupIDStr = "", acGroupNameStr = "", distChannelIDStr = "", distChannelNameStr = "", salesDivisionIDStr = "", salesDivisionNameStr = "", stockistCode = "";
     SwitchMaterial gstSwitch, tcsSwitch, fssaiSwitch;
 
     DownloadReceiver downloadReceiver;
@@ -336,6 +337,19 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         downloadfssaiDeclarationForm.setOnClickListener(v -> {
             Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/Undertaking%20FSSAI%20license.docx", "Undertaking FSSAI license.docx");
         });
+
+        if (getIntent().hasExtra("id")) {
+            binding.headtext.setText("View Distributor");
+            stockistCode = getIntent().getStringExtra("id");
+            Log.e("stockistCode", stockistCode);
+            getStockistInfo();
+        } else {
+            getLocation();
+            type_sales_executive_name.setText(UserDetails.getString("SfName", ""));
+            type_sales_executive_employee_id.setText(UserDetails.getString("EmpId", ""));
+            creationDateStr = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+            date_of_creation.setText(creationDateStr);
+        }
 
         regionList = new ArrayList<>();
 //        regionFilteredList = new ArrayList<>();
@@ -1337,14 +1351,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         refreshLocation.setOnClickListener(v -> getLocation());
         submit.setOnClickListener(v -> ValidateFields());
 
-        getLocation();
-
-        type_sales_executive_name.setText(UserDetails.getString("SfName", ""));
         type_sales_executive_name.setEnabled(false);
-        type_sales_executive_employee_id.setText(UserDetails.getString("EmpId", ""));
         type_sales_executive_employee_id.setEnabled(false);
-        creationDateStr = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-        date_of_creation.setText(creationDateStr);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.route_map);
         if (mapFragment != null) {
@@ -1371,13 +1379,214 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             select_agreement_copy.setText("");
             display_agreement_copy.setVisibility(View.GONE);
         });
+    }
 
-        // Todo: Get Image From S3
-        /*common_class.getImageFromS3Bucket(context, "kley", "MGR23_1694523049.jpg", "milk_selfie");
-        common_class.setOnDownloadImage((key, bmp) -> {
-            display_customer_photo.setImageBitmap(bmp);
-            display_customer_photo.setVisibility(View.VISIBLE);
-        });*/
+    private void getStockistInfo() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_stockist_info");
+        params.put("stockistCode", stockistCode);
+        Common_Class.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                try {
+                    AssignStockistInfo(jsonObject.getJSONObject("response"));
+                } catch (Exception e) {
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("getStockistInfo", error);
+            }
+        });
+    }
+
+    private void AssignStockistInfo(JSONObject jsonObject) {
+        Log.e("AssignStockistInfo", jsonObject.toString());
+
+        try {
+            String Cust_Photo = jsonObject.optString("Cust_Photo");
+            common_class.getImageFromS3Bucket(context, "trmu", Cust_Photo, "stockist_info", (bmp) -> {
+                display_customer_photo.setImageBitmap(bmp);
+                display_customer_photo.setVisibility(View.VISIBLE);
+            });
+
+            shop_photo_name = jsonObject.optString("Shop_Photo");
+            common_class.getImageFromS3Bucket(context, "trmu", shop_photo_name, "stockist_info", (bmp) -> {
+                display_shop_photo.setImageBitmap(bmp);
+                display_shop_photo.setVisibility(View.VISIBLE);
+            });
+
+            customerApplicationImageName = jsonObject.optString("custAppImg");
+            common_class.getImageFromS3Bucket(context, "trmu", customerApplicationImageName, "stockist_info", (bmp) -> {
+                display_customer_application.setImageBitmap(bmp);
+                display_customer_application.setVisibility(View.VISIBLE);
+            });
+
+            stateCodeStr = jsonObject.optString("state_Code");
+            stateNameStr = jsonObject.optString("state_Name");
+            select_state.setText(stateNameStr);
+
+            String Sales_Offc_Name = jsonObject.optString("Sales_Offc_Name");
+            select_sales_office_name.setText(Sales_Offc_Name);
+
+            routeCodeStr = jsonObject.optString("RouteCode");
+            routeNameStr = jsonObject.optString("Route_Name");
+            select_route_name.setText(routeNameStr);
+
+            channelStr = jsonObject.optString("Dis_Cat_Name");
+            select_channel.setText(channelStr);
+
+            subChannelNameStr = jsonObject.optString("SubCat_channel");
+            select_sub_channel.setText(subChannelNameStr);
+
+            ReportingVerticalsID = jsonObject.optString("RepVertID");
+            ReportingVerticalsStr = jsonObject.optString("RepVertName");
+            selectReportingVerticals.setText(ReportingVerticalsStr);
+
+            cityStr = jsonObject.optString("city");
+            type_city.setText(cityStr);
+
+            customerNameStr = jsonObject.optString("Stockist_Name");
+            type_name_of_the_customer.setText(customerNameStr);
+
+            ownerNameStr = jsonObject.optString("Stockist_ContactPerson");
+            type_name_of_the_owner.setText(ownerNameStr);
+
+            Lat = jsonObject.optDouble("Lat");
+            Long = jsonObject.optDouble("Lng");
+            SetMap();
+
+            businessAddressNoStr = jsonObject.optString("Bus_Add1");
+            businessAddressNo.setText(businessAddressNoStr);
+            businessAddressCityStr = jsonObject.optString("Bus_Add2");
+            businessAddressCity.setText(businessAddressCityStr);
+            businessAddressPincodeStr = jsonObject.optString("Bus_Add3");
+            businessAddressPincode.setText(businessAddressPincodeStr);
+            pincodeStr = jsonObject.optString("pincode");
+            type_pincode.setText(pincodeStr);
+
+            ownerAddressNoStr = jsonObject.optString("Own_Add1");
+            ownerAddressNo.setText(ownerAddressNoStr);
+            ownerAddressCityStr = jsonObject.optString("Own_Add2");
+            ownerAddressCity.setText(ownerAddressCityStr);
+            ownerAddressPincodeStr = jsonObject.optString("Own_Add3");
+            ownerAddressPincode.setText(ownerAddressPincodeStr);
+
+            mobileNumberStr = jsonObject.optString("mobile");
+            type_mobile_number.setText(mobileNumberStr);
+
+            emailAddressStr = jsonObject.optString("email");
+            type_email_id.setText(emailAddressStr);
+
+            executiveNameStr = jsonObject.optString("Field_Name");
+            type_sales_executive_name.setText(executiveNameStr);
+
+            String Field_Code = jsonObject.optString("Field_Code");
+
+            employeeIdStr = jsonObject.optString("Emp_ID");
+            type_sales_executive_employee_id.setText(employeeIdStr);
+
+            UIDType = jsonObject.optString("UID_Type");
+            uidType.setText(UIDType);
+
+            aadhaarStr = jsonObject.optString("Aadhaar");
+            type_aadhaar_number.setText(aadhaarStr);
+
+            aadhaarImageName = jsonObject.optString("AadhaarImg");
+            common_class.getImageFromS3Bucket(context, "trmu", aadhaarImageName, "stockist_info", (bmp) -> {
+                display_aadhaar_number.setImageBitmap(bmp);
+                display_aadhaar_number.setVisibility(View.VISIBLE);
+            });
+
+            PANStr = jsonObject.optString("Pan");
+            type_pan_number.setText(PANStr);
+
+            panImageName = jsonObject.optString("PanImg");
+            common_class.getImageFromS3Bucket(context, "trmu", panImageName, "stockist_info", (bmp) -> {
+                display_pan_number.setImageBitmap(bmp);
+                display_pan_number.setVisibility(View.VISIBLE);
+            });
+
+            PANName = jsonObject.optString("Pan_Name");
+            type_pan_name.setText(PANName);
+
+            bankDetailsStr = jsonObject.optString("BankAccNo");
+            select_bank_details.setText(bankDetailsStr);
+
+            bankImageName = jsonObject.optString("BankAccImg");
+            common_class.getImageFromS3Bucket(context, "trmu", bankImageName, "stockist_info", (bmp) -> {
+                display_bank_details.setImageBitmap(bmp);
+                display_bank_details.setVisibility(View.VISIBLE);
+            });
+
+            String have_fssai = jsonObject.optString("have_fssai");
+            fssaiSwitch.setChecked(have_fssai.equals("1"));
+
+            FSSAIDetailsStr = jsonObject.optString("Fssai");
+            type_fssai.setText(FSSAIDetailsStr);
+
+            FSSAIImageName = jsonObject.optString("FssaiImg");
+            common_class.getImageFromS3Bucket(context, "trmu", FSSAIImageName, "stockist_info", (bmp) -> {
+                display_fssai.setImageBitmap(bmp);
+                display_fssai.setVisibility(View.VISIBLE);
+            });
+
+            fssaiFromStr = jsonObject.optString("fssaiFrom");
+            fssaiFromDate.setText(fssaiFromStr);
+
+            fssaitoStr = jsonObject.optString("fssaiTo");
+            fssaiToDate.setText(fssaitoStr);
+
+            FSSAIDeclarationImageName = jsonObject.optString("fssaiDecImg");
+            common_class.getImageFromS3Bucket(context, "trmu", FSSAIDeclarationImageName, "stockist_info", (bmp) -> {
+                previewfssaiDeclaration.setImageBitmap(bmp);
+                previewfssaiDeclaration.setVisibility(View.VISIBLE);
+            });
+
+            String GST_type = jsonObject.optString("GST_type");
+            gstSwitch.setChecked(GST_type.equals("1"));
+
+            GSTDetailsStr = jsonObject.optString("Gst");
+            type_gst.setText(GSTDetailsStr);
+
+            GSTImageName = jsonObject.optString("GstImg");
+            common_class.getImageFromS3Bucket(context, "trmu", GSTImageName, "stockist_info", (bmp) -> {
+                display_gst.setImageBitmap(bmp);
+                display_gst.setVisibility(View.VISIBLE);
+            });
+
+            gstDeclarationImageName = jsonObject.optString("gstDecImg");
+            common_class.getImageFromS3Bucket(context, "trmu", gstDeclarationImageName, "stockist_info", (bmp) -> {
+                previewGSTDeclaration.setImageBitmap(bmp);
+                previewGSTDeclaration.setVisibility(View.VISIBLE);
+            });
+
+            String have_tcs = jsonObject.optString("have_tcs");
+            tcsSwitch.setChecked(have_tcs.equals("0"));
+
+            tcsDeclarationImageName = jsonObject.optString("tcsDecImg");
+            common_class.getImageFromS3Bucket(context, "trmu", tcsDeclarationImageName, "stockist_info", (bmp) -> {
+                previewTCSDeclaration.setImageBitmap(bmp);
+                previewTCSDeclaration.setVisibility(View.VISIBLE);
+            });
+
+            agreementDetailsStr = jsonObject.optString("Agreement");
+            select_agreement_copy.setText(agreementDetailsStr);
+
+            agreementImageName = jsonObject.optString("AgreementImg");
+            common_class.getImageFromS3Bucket(context, "trmu", agreementImageName, "stockist_info", (bmp) -> {
+                display_agreement_copy.setImageBitmap(bmp);
+                display_agreement_copy.setVisibility(View.VISIBLE);
+            });
+
+            purchaseTypeID = jsonObject.optString("purchaseTypeId");
+            purchaseTypeName = jsonObject.optString("purchaseType");
+            purchaseType.setText(purchaseTypeName);
+
+        } catch (Exception e) {
+            Toast.makeText(context, "Json parsing error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getLocation() {
@@ -1949,5 +2158,21 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         if (downloadReceiver != null) {
             unregisterReceiver(downloadReceiver);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        MyAlertDialog.show(context, "", "Are you sure you want to go back?", true, "Yes", "No", new AlertBox() {
+            @Override
+            public void PositiveMethod(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                finish();
+            }
+
+            @Override
+            public void NegativeMethod(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
     }
 }

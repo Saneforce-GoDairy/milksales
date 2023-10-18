@@ -27,6 +27,7 @@ import com.saneforce.milksales.Interface.AlertBox;
 import com.saneforce.milksales.Interface.ApiClient;
 import com.saneforce.milksales.Interface.ApiInterface;
 import com.saneforce.milksales.R;
+import com.saneforce.milksales.SFA_Activity.AddNewDistributor;
 import com.saneforce.milksales.SFA_Activity.HAPApp;
 import com.saneforce.milksales.SFA_Activity.MapDirectionActivity;
 import com.saneforce.milksales.SFA_Activity.Reports_Distributor_Name;
@@ -222,21 +223,7 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
                 @Override
                 public void onClick(View v) {
                     try {
-//                        JSONObject itm = AryDta.getJSONObject(position);
-//
-//                        Intent intent = new Intent(context, AddNewRetailer.class);
-//                        Shared_Common_Pref.Outlet_Info_Flag = "1";
-//                        Shared_Common_Pref.Editoutletflag = "1";
-//                        Shared_Common_Pref.Outler_AddFlag = "0";
-//                        Shared_Common_Pref.FromActivity = "Outlets";
-//                    Shared_Common_Pref.OutletCode = String.valueOf(Retailer_Modal_ListFilter.get(position).getId());
-//                    intent.putExtra("OutletCode", String.valueOf(Retailer_Modal_ListFilter.get(position).getId()));
-//                    intent.putExtra("OutletName", Retailer_Modal_ListFilter.get(position).getName());
-//                    intent.putExtra("OutletAddress", Retailer_Modal_ListFilter.get(position).getListedDrAddress1());
-//                    intent.putExtra("OutletMobile", Retailer_Modal_ListFilter.get(position).getPrimary_No());
-//                    intent.putExtra("OutletRoute", Retailer_Modal_ListFilter.get(position).getTownName());
 
-                        //  context.startActivity(intent);
                     } catch (Exception e) {
 
                     }
@@ -298,6 +285,16 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
                     }
                 } catch (JSONException ignored) { }
             }
+
+            holder.itemView.setOnClickListener(v -> {
+                try {
+                    Intent intent = new Intent(context, AddNewDistributor.class);
+                    intent.putExtra("id", AryDta.getJSONObject(holder.getBindingAdapterPosition()).getString("id"));
+                    context.startActivity(intent);
+                } catch (JSONException ignored) {
+
+                }
+            });
 
 
         } catch (JSONException e) {
