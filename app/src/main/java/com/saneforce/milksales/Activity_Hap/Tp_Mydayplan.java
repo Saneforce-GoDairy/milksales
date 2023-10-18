@@ -2,6 +2,7 @@ package com.saneforce.milksales.Activity_Hap;
 
 import static com.saneforce.milksales.Common_Class.Common_Class.addquote;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -302,6 +303,7 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         if (type == -1) {
             worktype_text.setText(myDataset.get(position).getName());
             worktype_id = String.valueOf(myDataset.get(position).getId());
+            Log.e("gmd_", "Work type text" + worktype_text.getText().toString());
             Log.e("FIELD_WORK", myDataset.get(position).getFlag());
             Log.e("Button_Access", myDataset.get(position).getCheckouttime());
             Fieldworkflag = myDataset.get(position).getFlag();
@@ -633,6 +635,7 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
     }
 
     public boolean vali() {
+        String wrkType = worktype_text.getText().toString();
         if (worktype_text.getText().toString().equalsIgnoreCase("")) {
             Toast.makeText(this, "select the Work Type", Toast.LENGTH_SHORT).show();
             return false;
@@ -774,8 +777,6 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
                     binding.spinnerWorkType.setPrompt(name);
                     list.add(name);
                 }
-
-
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 binding.spinnerWorkType.setAdapter(adapter);
@@ -786,12 +787,16 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
     }
 
     private void Get_MydayPlan(String tourDate) {
+        Log.e("gmd_", "runs");
         String Sf_Code = "";
         if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
             Sf_Code = Shared_Common_Pref.Sf_Code;
         } else {
             Sf_Code = Shared_Common_Pref.Tp_SFCode;
         }
+
+        Log.e("gmd_", "Sf code : " + Sf_Code);
+        Log.e("gmd_", "Parameters : " + "\n" + "Sf_code = " + Sf_Code + "\n" + "Date = " + tourDate + "\n" + "divisionCode = " + Shared_Common_Pref.Div_Code);
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "Get/Tp_dayplan");
         QueryString.put("Sf_code", Sf_Code);
@@ -822,6 +827,8 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
                         edt_remarks.setText(String.valueOf(jsoncc.getJSONObject(0).get("remarks")));
                         Fieldworkflag = String.valueOf(jsoncc.getJSONObject(0).get("Worktype_Flag"));
                         worktype_text.setText(String.valueOf(jsoncc.getJSONObject(0).get("worktype_name")));
+
+                        Log.e("gmd_", "Worktype text" + worktype_text.getText().toString());
 
                         for (int i = 0; i < worktypelist.size(); i++) {
                             if (worktypelist.get(i).getId().equals(worktype_id)) {
@@ -1207,7 +1214,7 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         }
 
         @Override
-        public void onBindViewHolder(Tp_Mydayplan.DynamicViewAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(Tp_Mydayplan.DynamicViewAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
             if (!dynamicarray.get(position).getFld_Symbol().equals("JW")) {
                 holder.tpcaptions.setVisibility(View.VISIBLE);
                 holder.tpcaptions.setText(dynamicarray.get(position).getFld_Name());
