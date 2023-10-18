@@ -1859,11 +1859,7 @@ public class Common_Class {
                     if (TransferState.COMPLETED == state) {
                         Bitmap bmp= BitmapFactory.decodeFile(file.getAbsolutePath());
                         if (onDownloadImage != null) {
-                            onDownloadImage.onDownload(bmp);
-                        }
-                    } else if (TransferState.FAILED == state) {
-                        if (onDownloadImage != null) {
-                            onDownloadImage.onDownload(null);
+                            onDownloadImage.onDownload(bmp, file.getAbsolutePath());
                         }
                     }
                 }
@@ -1876,21 +1872,17 @@ public class Common_Class {
 
                 @Override
                 public void onError(int id, Exception ex) {
-                    if (onDownloadImage != null) {
-                        onDownloadImage.onDownload(null);
-                    }
+
                 }
             });
         }
         catch (Exception e){
-            if (onDownloadImage != null) {
-                onDownloadImage.onDownload(null);
-            }
+
         }
     }
 
     public interface OnDownloadImage {
-        void onDownload(Bitmap bmp);
+        void onDownload(Bitmap bmp, String path);
     }
 
     @SuppressLint("ResourceType")
