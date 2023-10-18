@@ -1,10 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.tour_plan.CurrentMonthFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
+        <TextView
+            android:id="@+id/text_tour_plancount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxEms="2"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"/>
+
+        <LinearLayout
+            android:id="@+id/Approvereject"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/Sf_name"
+            style="@style/TextStyle"
+            android:gravity="center"
+            android:text="Time"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dynamicrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/C10dp" />
+        <LinearLayout
+            android:id="@+id/lin_to_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+        <LinearLayout
+            android:id="@+id/lin_check_driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="horizontal" />
+
+        <CheckBox
+            android:id="@+id/da_driver_allowance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/C10dp"
+            android:text="Driver Allowance"/>
+
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/CardOthPlc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="#B1AFAF"
+            android:padding="18dp"
+            android:visibility="gone"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"/>
+
+
+        <TextView
+            android:id="@+id/text_daily_allowance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/basic"
+            android:hint="Mode of Allowance"
+            android:padding="@dimen/C10dp"
+            android:textAllCaps="false"
+            android:textColor="#515151"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/edt_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fontFamily="@font/basic"
+            android:hint="To Place"
+            android:padding="@dimen/C10dp"
+            android:text=""
+            android:textAllCaps="false"
+            android:textColor="#515151"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/edt_frm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fontFamily="@font/basic"
+            android:hint="From Place"
+            android:padding="@dimen/C10dp"
+            android:text=""
+            android:textAllCaps="false"
+            android:textColor="#515151"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/worktype_text"
+            style="@style/TextStyle"
+            android:layout_width="match_parent"
+            android:background="@drawable/round_white_backround"
+            android:hint="Select the worktype"
+            android:padding="@dimen/C8dp" />
+
+        <TextView
+            android:id="@+id/txt_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/basic"
+            android:hint="Mode of Travel"
+            android:padding="@dimen/C10dp"
+            android:textAllCaps="false"
+            android:textColor="#515151"
+            android:textSize="13sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
