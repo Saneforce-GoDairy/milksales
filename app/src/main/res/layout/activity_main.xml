@@ -14,9 +14,9 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="@dimen/C150dp"
-            android:layout_height="60dp"
-            android:src="@drawable/sales_jump_logo1" />
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/godairy_logo" />
 
     </LinearLayout>
 
