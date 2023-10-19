@@ -6,12 +6,12 @@ apply plugin: 'com.google.firebase.crashlytics'
 //6.x.x//start hsfa--checkin
 android {
     defaultConfig {
-        applicationId "com.saneforce.milksales"
+        applicationId "com.saneforce.godairy"
         compileSdk 33
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 3316
-        versionName "8.2.1"
+        versionCode 1
+        versionName "1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
