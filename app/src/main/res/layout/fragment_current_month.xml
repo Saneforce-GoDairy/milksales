@@ -135,6 +135,7 @@
 
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -324,13 +325,13 @@
             android:layout_height="0.1dp"
             android:layout_marginTop="10dp"
             android:background="#CACACA" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_explore"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:scrollbars="none" />
-
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_explore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ll"
+        android:layout_marginTop="10dp"
+        android:scrollbars="none" />
 </RelativeLayout>

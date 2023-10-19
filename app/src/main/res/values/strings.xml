@@ -193,5 +193,10 @@
     <string name="uid_Type">UID Type<font fgcolor='#E53935'> *</font></string>
     <string name="advance_amount">Purchase Type<font fgcolor='#E53935'> *</font></string>
     <string name="customer_application">Customer Application<font fgcolor='#E53935'> *</font></string>
+    <string name="monthly_plan">Monthly Plan</string>
+    <string name="dd_mm_yyyy">(DD/MM/YYYY)</string>
+    <string name="work_type">WORK TYPE</string>
+    <string name="type">Type.....</string>
+    <string name="reject">Reject</string>
 
 </resources>

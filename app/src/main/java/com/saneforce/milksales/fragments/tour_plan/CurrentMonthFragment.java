@@ -223,9 +223,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             binding.SfName.setText("" + Shared_Common_Pref.Tp_Sf_name);
             binding.SfName.setVisibility(View.VISIBLE);
             binding.Approvereject.setVisibility(View.VISIBLE);
-
         }
-
         return binding.getRoot();
     }
 
@@ -275,56 +273,11 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     }
 
     private void initOnClickTpPlan(){
-        bottomSheetSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("tp__", "Clicked");
-                Tp_Submit("1");
-            }
-        });
+        bottomSheetSubmit.setOnClickListener(v -> Tp_Submit("1"));
     }
 
     private void Tp_Submit(String Submit_Flag) {
-
-
         int workTypeIdPosition = spinner.getSelectedItemPosition();
-
-
-
-//       switch (workTypeIdPosition){
-//           case 0:
-//               finalWorkTypeIdPosition = 1; // 1 position not selected valid item
-//               break;
-//
-//           case 1:
-//               finalWorkTypeIdPosition = 1;
-//               break;
-//
-//           case 2:
-//               finalWorkTypeIdPosition = 2;
-//               break;
-//
-//           case 3:
-//               finalWorkTypeIdPosition = 3;
-//               break;
-//
-//           case 4:
-//               finalWorkTypeIdPosition = 5;
-//               break;
-//
-//           case 5:
-//               finalWorkTypeIdPosition = 6;
-//               break;
-//
-//           case 6:
-//               finalWorkTypeIdPosition = 7;
-//               break;
-//
-//           case 7:
-//               finalWorkTypeIdPosition = 8;
-//               break;
-//       }
-
         String check = String.valueOf(workTypeIdPosition);
 
         if(check.equals("0")){
@@ -340,7 +293,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         }
 
         Savejointwork = Jointworklistview;
-        Log.e("Savejointwork_SIZE", String.valueOf(Savejointwork.size()));
         String jointwork = "";
         String jointworkname = "";
         for (int ii = 0; ii < Savejointwork.size(); ii++) {
@@ -348,11 +300,9 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 jointwork = jointwork.concat(",");
                 jointworkname = jointworkname.concat(",");
             }
-            Log.e("JOINT_WORK_SELECT_NAME", Savejointwork.get(ii).getName());
             jointwork = jointwork.concat(Savejointwork.get(ii).getId());
             jointworkname = jointworkname.concat(Savejointwork.get(ii).getName());
         }
-        Log.e("JOINT_WORK", jointwork);
         common_class.ProgressdialogShow(1, "Tour  plan");
         Calendar c = Calendar.getInstance();
         String Dcr_Dste = new SimpleDateFormat("HH:mm a", Locale.ENGLISH).format(new Date());
@@ -363,7 +313,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             JSONObject jsonobj = new JSONObject();
             jsonobj.put("worktype_code", addquote(String.valueOf(workTypeIdPosition)));
             jsonobj.put("Tour_Date", addquote(finalTourDate));
-            Log.e("tp_", finalTourDate);
             jsonobj.put("worktype_name",  addquote(workType));
             jsonobj.put("Ekey", Common_Class.GetEkey());
             jsonobj.put("objective",  addquote(remarks));
@@ -418,11 +367,13 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             jsonarrplan.put("Tp_DynamicValues", personarray);
             jsonarr.put(jsonarrplan);
             String Sf_Code;
+
             if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
                 Sf_Code = Shared_Common_Pref.Sf_Code;
             } else {
                 Sf_Code = Shared_Common_Pref.Tp_SFCode;
             }
+
             Map<String, String> QueryString = new HashMap<>();
             QueryString.put("sfCode", Sf_Code);
             QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);
@@ -435,10 +386,9 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             Log.e("QueryString_Sc", Shared_Common_Pref.StateCode);
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Call<Object> Callto = apiInterface.Tb_Mydayplannew(QueryString, jsonarr.toString());
-            Callto.enqueue(new Callback<Object>() {
+            Callto.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
-                    Log.e("RESPONSE_FROM_SERVER", response.body().toString());
                     common_class.ProgressdialogShow(2, "Tour  plan");
                     if (response.code() == 200 || response.code() == 201) {
                         common_class.GetTP_Result("TourPlanSubmit", "", common_class.getintentValues("SubmitMonth"), common_class.getintentValues("TourYear"));
@@ -448,17 +398,13 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                         } else {
                             common_class.CommonIntentwithoutFinishputextra(Tp_Calander.class, "Monthselection", String.valueOf(common_class.getintentValues("TourMonth")));
                             Toast.makeText(requireContext(), "Work Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
-
                         }
-
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
                     common_class.ProgressdialogShow(2, "Tour  plan");
-                    Log.e("Reponse TAG", "onFailure : " + t);
                 }
             });
 
@@ -475,7 +421,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         QueryString.put("State_Code", Shared_Common_Pref.Div_Code);
         QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);
         QueryString.put("Start_date", finalTourDate);
-        Log.e("tp_", finalTourDate);
         QueryString.put("Mr_Sfcode", Shared_Common_Pref.Tp_SFCode);
         QueryString.put("desig", "MGR");
         JSONArray jsonArray = new JSONArray();
@@ -490,32 +435,23 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         jsonArray.put(jsonObject);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> mCall = apiInterface.DCRSave(QueryString, jsonArray.toString());
-        Log.e("Log_TpQuerySTring", QueryString.toString());
-        Log.e("Log_Tp_SELECT", jsonArray.toString());
-        mCall.enqueue(new Callback<JsonObject>() {
+        mCall.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                // locationList=response.body();
-                Log.e("TAG_TP_RESPONSE", "response Tp_View: " + new Gson().toJson(response.body()));
-                try {
-                    common_class.CommonIntentwithoutFinishputextra(Tp_Calander.class, "Monthselection", String.valueOf(common_class.getintentValues("TourMonth")));
-                    JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                    if (flag == 1) {
-                        Toast.makeText(requireContext(), "TP Approved  Successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(requireContext(), "TP Rejected  Successfully", Toast.LENGTH_SHORT).show();
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                common_class.CommonIntentwithoutFinishputextra(Tp_Calander.class, "Monthselection", String.valueOf(common_class.getintentValues("TourMonth")));
+                if (flag == 1) {
+                    Toast.makeText(requireContext(), "TP Approved  Successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "TP Rejected  Successfully", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonObject> call, Throwable t) {
 
             }
         });
@@ -555,7 +491,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 return false;
             }
         }
-
         return true;
     }
 
@@ -578,17 +513,12 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         jsonArray.put(jsonObject);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> mCall = apiInterface.DCRSave(QueryString, jsonArray.toString());
-        Log.e("Log_TpQuerySTring", QueryString.toString());
-        Log.e("Log_Tp_SELECT", jsonArray.toString());
         mCall.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
                     JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                    Log.e("GettodayResult", "response Tp_View: " + jsonObject.getJSONArray("GettodayResult"));
-                    Log.e("DynamicViewes", "response Tp_View: " + jsonObject.getJSONArray("DynamicViews"));
                     JSONArray jsoncc = jsonObject.getJSONArray("GettodayResult");
-                    Log.e("LENGTH", String.valueOf(jsoncc.length()));
                     // hide by prasanth
                //     jointwork_layout.setVisibility(View.GONE);
                 //    Jointworklistview.clear();
@@ -624,14 +554,14 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                         String JointWork_Name = String.valueOf(jsoncc.getJSONObject(0).get("JointWork_Name"));
                         String[] arrOfStr = Jointworkcode.split(",");
                         String[] arrOfname = JointWork_Name.split(",");
-                        //Model_Pojo = new Common_Model(arrOfStr.get("Sf_Name").getAsString() + "-" + EmpDet.get("sf_Designation_Short_Name").getAsString(), EmpDet.get("Sf_Code").getAsString(), false);
-                        //Log.e("JOINTWORKCode", String.valueOf(arrOfStr.length));
+
                         if (!Jointworkcode.equals("")) {
                             Jointworklistview.clear();
                             for (int ik = 0; arrOfStr.length > ik; ik++) {
                                 Model_Pojo = new Common_Model(arrOfname[ik], arrOfStr[ik], false);
                                 Jointworklistview.add(Model_Pojo);
                             }
+
                             if (Jointworklistview.size() > 0) {
                                 jointwork_layout.setVisibility(View.VISIBLE);
                                 binding.textTourPlancount.setText(String.valueOf(arrOfStr.length));
@@ -672,31 +602,23 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                         }
 
                         Tp_dynamicArraylist.clear();
-                        //jsonData = response.body();
-                        Log.e("response_data", "thiru" + jsonObject.getJSONArray("DynamicViews"));
 
                         JSONArray jsnArValue = jsonObject.getJSONArray("DynamicViews");
-                        Log.v("AfterTpresponse", jsnArValue.toString());
                         for (int i = 0; i < jsnArValue.length(); i++) {
                             JSONObject json_oo = jsnArValue.getJSONObject(i);
-                            Log.e("Json_Filed", String.valueOf(json_oo.getJSONArray("inputs")));
                             ArrayList<Common_Model> a_listt = new ArrayList<>();
                             ArrayList<Common_Model> a_list = new ArrayList<>();
                             if (json_oo.getJSONArray("inputs") != null) {
                                 JSONArray jarray = json_oo.getJSONArray("inputs");
                                 a_listt.clear();
                                 String[] txtArray = json_oo.getString("Fld_Src_Field").split(",");
-                                Log.e("JOINT_WORK", json_oo.getString("Fld_Symbol"));
                                 if (jarray != null && jarray.length() > 0) {
                                     for (int m = 0; m < jarray.length(); m++) {
                                         JSONObject jjss = jarray.getJSONObject(m);
-                                        Log.v("InsideLoop", jjss.getString(txtArray[1]));
                                         a_listt.add(new Common_Model(jjss.getString(txtArray[1]), jjss.getString(txtArray[0]), false));
                                     }
                                 }
-
                             }
-
                             Tp_dynamicArraylist.add(new Tp_Dynamic_Modal(json_oo.getString("Fld_ID"), json_oo.getString("Fld_Name"), "", json_oo.getString("Fld_Type"), json_oo.getString("Fld_Src_Name"), json_oo.getString("Fld_Src_Field"), json_oo.getInt("Fld_Length"), json_oo.getString("Fld_Symbol"), json_oo.getString("Fld_Mandatory"), json_oo.getString("Active_flag"), json_oo.getString("Control_id"), json_oo.getString("Target_Form"), json_oo.getString("Filter_Text"), json_oo.getString("Filter_Value"), json_oo.getString("Field_Col"), a_listt));
                         }
 
@@ -731,7 +653,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     }
 
     public class DynamicViewAdapter extends RecyclerView.Adapter<DynamicViewAdapter.MyViewHolder> {
-
         private final int rowLayout;
         private final Context context;
         AdapterOnClick mAdapterOnClick;
@@ -790,7 +711,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                     } else {
                         holder.edittextid.setInputType(InputType.TYPE_CLASS_TEXT);
                     }
-                    // Log.e("THIRUMALAIVASAN", String.valueOf(dynamicarray.get(position).getFld_Length()));
+
                     int maxLength = dynamicarray.get(position).getFld_Length();
                     InputFilter[] FilterArray = new InputFilter[1];
                     FilterArray[0] = new InputFilter.LengthFilter(maxLength);
@@ -807,8 +728,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                         }
 
                         @Override
-                        public void beforeTextChanged(CharSequence s, int start,
-                                                      int count, int after) {
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                         }
 
@@ -827,7 +747,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                     holder.Textspinnerview.setVisibility(View.VISIBLE);
                     holder.edittextid.setVisibility(View.GONE);
                 } else if (dynamicarray.get(position).getControl_id().equals("10")) {
-                    Log.e("ROute_Size", String.valueOf(dynamicarray.get(position).getA_list().size()));
                     holder.radiogroup.setVisibility(View.VISIBLE);
                     holder.edittextid.setVisibility(View.GONE);
                     for (int ii = 0; ii < dynamicarray.get(position).getA_list().size(); ii++) {
@@ -839,34 +758,25 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                         }
                         holder.radiogroup.addView(rbn);
                     }
-                    holder.radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            // This will get the radiobutton that has changed in its check state
-                            RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
-                            // This puts the value (true/false) into the variable
-                            boolean isChecked = checkedRadioButton.isChecked();
-                            // If the radiobutton that has changed in check state is now checked...
-                            if (isChecked) {
-                                dynamicarray.get(position).setFilter_Value(dynamicarray.get(position).getA_list().get(checkedId).getName());
-                                dynamicarray.get(position).setFilter_Text(dynamicarray.get(position).getA_list().get(checkedId).getId());
-                                dynamicarray.get(position).getA_list().get(checkedId).setSelected(true);
 
-                            }
+                    holder.radiogroup.setOnCheckedChangeListener((group, checkedId) -> {
+                        RadioButton checkedRadioButton = (RadioButton) group.findViewById(checkedId);
+                        boolean isChecked = checkedRadioButton.isChecked();
+                        if (isChecked) {
+                            dynamicarray.get(position).setFilter_Value(dynamicarray.get(position).getA_list().get(checkedId).getName());
+                            dynamicarray.get(position).setFilter_Text(dynamicarray.get(position).getA_list().get(checkedId).getId());
+                            dynamicarray.get(position).getA_list().get(checkedId).setSelected(true);
                         }
                     });
-
                 }
-                holder.Textspinnerview.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Log.e("GOOGLE", dynamicarray.get(position).getA_list().toString());
-                        if (dynamicarray.get(position).getControl_id().equals("11")) {
-                            timePicker(position, dynamicarray.get(position).getA_list());
-                        } else if (dynamicarray.get(position).getControl_id().equals("8")) {
-                            datePicker(position, dynamicarray.get(position).getA_list());
-                        } else
-                            openspinnerbox(position, dynamicarray.get(position).getA_list());
-                    }
+
+                holder.Textspinnerview.setOnClickListener(v -> {
+                    if (dynamicarray.get(position).getControl_id().equals("11")) {
+                        timePicker(position, dynamicarray.get(position).getA_list());
+                    } else if (dynamicarray.get(position).getControl_id().equals("8")) {
+                        datePicker(position, dynamicarray.get(position).getA_list());
+                    } else
+                        openspinnerbox(position, dynamicarray.get(position).getA_list());
                 });
             }
         }
@@ -875,7 +785,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         public int getItemCount() {
             return dynamicarray.size();
         }
-
     }
 
      public void openspinnerbox(int position, ArrayList<Common_Model> ArrayList) {
@@ -890,16 +799,12 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
-        timePickerDialog = new TimePickerDialog(requireContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                //eReminderTime.setText( selectedHour + ":" + selectedMinute);
-                dynamicarray.get(position).setFilter_Value(selectedHour + ":" + selectedMinute);
-                dynamicadapter = new DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, requireContext(), -1);
-                binding.dynamicrecyclerview.setAdapter(dynamicadapter);
-                dynamicadapter.notifyDataSetChanged();
-                binding.dynamicrecyclerview.setItemViewCacheSize(dynamicarray.size());
-            }
+        timePickerDialog = new TimePickerDialog(requireContext(), (timePicker, selectedHour, selectedMinute) -> {
+            dynamicarray.get(position).setFilter_Value(selectedHour + ":" + selectedMinute);
+            dynamicadapter = new DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, requireContext(), -1);
+            binding.dynamicrecyclerview.setAdapter(dynamicadapter);
+            dynamicadapter.notifyDataSetChanged();
+            binding.dynamicrecyclerview.setItemViewCacheSize(dynamicarray.size());
         }, hour, minute, true);//Yes 24 hour time
         timePickerDialog.setTitle("Select Time");
         timePickerDialog.show();
@@ -908,13 +813,10 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     public void datePicker(int position, ArrayList<Common_Model> ArrayList) {
         Calendar newCalendar = Calendar.getInstance();
         DatePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
-
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
                 int mnth = monthOfYear + 1;
                 dynamicarray.get(position).setFilter_Value(dayOfMonth + "-" + mnth + "-" + year);
                 dynamicadapter.notifyDataSetChanged();
-
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         DatePickerDialog.show();
@@ -938,7 +840,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     @Override
     public void setDataToRouteObject(Object noticeArrayList, int position) {
         if (position == 0) {
-            Log.e("SharedprefrenceVALUES", new Gson().toJson(noticeArrayList));
             GetJsonData(new Gson().toJson(noticeArrayList), "0");
         } else if (position == 1) {
             GetJsonData(new Gson().toJson(noticeArrayList), "1");
@@ -955,9 +856,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             GetJsonData(new Gson().toJson(noticeArrayList), "6");
             common_class.ProgressdialogShow(1, "Day plan");
             Get_MydayPlan(finalTourDate);
-            Log.e("tp_", finalTourDate);
         }
-
     }
 
     @Override
@@ -968,20 +867,15 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     @Override
     public void OnclickMasterType(java.util.List<Common_Model> myDataset, int position, int type) {
         customDialog.dismiss();
-        Log.e("LogWorktype", String.valueOf(type));
         if (type == -1) {
             binding.worktypeText.setText(myDataset.get(position).getName());
             worktype_id = String.valueOf(myDataset.get(position).getId());
-            Log.e("FIELD_WORK", myDataset.get(position).getFlag());
-            Log.e("Button_Access", myDataset.get(position).getCheckouttime());
             Fieldworkflag = myDataset.get(position).getFlag();
             Worktype_Button = myDataset.get(position).getCheckouttime();
             ExpNeed = myDataset.get(position).getExpNeed();
-            Log.e("LogWorktype", String.valueOf(myDataset.get(position).getId()));
             jointwork_layout.setVisibility(View.GONE);
             Jointworklistview.clear();
             GetTp_Worktype_Fields(Worktype_Button);
-            Log.e("FIELD_Dept_Type", Shared_Common_Pref.Dept_Type);
             vwExpTravel.setVisibility(View.VISIBLE);
             if (!ExpNeed) {
                 vwExpTravel.setVisibility(View.GONE);
@@ -1036,7 +930,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             }
             binding.edtTo.setText("");
         } else {
-            Log.e("Selectedposition", "" + type);
             dynamicarray.get(type).setFilter_Value(myDataset.get(position).getName());
             dynamicarray.get(type).setFilter_Text(myDataset.get(position).getId());
             dynamicadapter = new DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, requireContext(), -1);
@@ -1047,7 +940,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     }
 
      private void GetJsonData(String jsonResponse, String type) {
-
         try {
             JSONArray jsonArray = new JSONArray(jsonResponse);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -1085,7 +977,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                     Model_Pojo = new Common_Model(id, name, flag);
                     ChillingCenter_List.add(Model_Pojo);
                 }
-
             }
             if (type.equalsIgnoreCase("4")) {
                 Model_Pojo = new Common_Model("-1", "Other Location", "");
@@ -1101,14 +992,11 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                             if (Jointworklistview.get(i).isSelected()) {
                                 jcount = jcount + 1;
                             }
-
                         }
                         binding.textTourPlancount.setText(String.valueOf(jcount));
                     }
                 }));
-
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1130,19 +1018,15 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         QueryString.put("Worktype_Code", wflag);
         QueryString.put("State_Code", Shared_Common_Pref.StateCode);
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-        Log.e("QUERY_STRING", QueryString.toString());
         Call<Object> call = service.GettpWorktypeFields(QueryString);
-        call.enqueue(new Callback<Object>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
                 try {
                     if (response.isSuccessful()) {
-                        Log.v("print_upload_file_true", "ggg" + response);
                         String jsonData = null;
                         Tp_dynamicArraylist.clear();
-                        Log.v("response_data", new Gson().toJson(response.body()));
                         JSONArray jsnArValue = new JSONArray(new Gson().toJson(response.body()));
-                        Log.v("AfterTpresponse", jsnArValue.toString());
                         for (int i = 0; i < jsnArValue.length(); i++) {
                             JSONObject json_oo = jsnArValue.getJSONObject(i);
                             Log.e("Json_Filed", String.valueOf(json_oo.getJSONArray("inputs")));
@@ -1156,16 +1040,14 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                                     jointwork_layout.setVisibility(View.VISIBLE);
                                     Log.e("JOINT_WORK", json_oo.getString("Fld_Symbol"));
                                 }
-                                // Toast.makeText(Tp_Mydayplan.this, "Fld_Src_Field", Toast.LENGTH_SHORT).show();
+                                // Fld_Src_Field
                                 if (jarray != null && jarray.length() > 0) {
                                     for (int m = 0; m < jarray.length(); m++) {
                                         JSONObject jjss = jarray.getJSONObject(m);
-                                        Log.v("InsideLoop", jjss.getString(txtArray[1]));
                                         a_listt.add(new Common_Model(jjss.getString(txtArray[1]), jjss.getString(txtArray[0]), false));
                                     }
                                 }
                             }
-                            Log.e("THIRUMALAI", String.valueOf(a_listt.size()));
                             Tp_dynamicArraylist.add(new Tp_Dynamic_Modal(json_oo.getString("Fld_ID"), json_oo.getString("Fld_Name"), "", json_oo.getString("Fld_Type"), json_oo.getString("Fld_Src_Name"), json_oo.getString("Fld_Src_Field"), json_oo.getInt("Fld_Length"), json_oo.getString("Fld_Symbol"), json_oo.getString("Fld_Mandatory"), json_oo.getString("Active_flag"), json_oo.getString("Control_id"), json_oo.getString("Target_Form"), json_oo.getString("Filter_Text"), json_oo.getString("Filter_Value"), json_oo.getString("Field_Col"), a_listt));
                         }
                         dynamicadapter = new DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, requireContext(), -1);
@@ -1299,7 +1181,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             selectedDate = (Calendar) calendar.clone();
             df = new SimpleDateFormat("MMM");
             curentDateString = df.format(selectedDate.getTime());
-
             printMonth(month, year);
             eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
         }
@@ -1313,7 +1194,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
 
         @Override
         public void onBindViewHolder(@NonNull TourPlanCalanderAdapter.ViewHolder holder, int position) {
-
             holder.binding.getRoot().setOnClickListener(v -> {
                 lastSelectedPosition = selectedPosition;
                 selectedPosition = holder.getBindingAdapterPosition();
@@ -1334,6 +1214,9 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 bottomSheetDate.setText(TourMonth);
                 bottomSheetRemarks.setText(null);
                 spinner.setSelection(0);
+                /*
+                 * don't erase my_dayplan previous activity with code
+                 */
               //  common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
             });
 
@@ -1345,7 +1228,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                     holder.mDateLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.tp_month_enabled_bg));
                 }
                 holder.mDate.setTextColor(Color.WHITE);
-
             } else {
                 final int sdk = Build.VERSION.SDK_INT;
                 if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -1355,7 +1237,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 }
                 holder.mDate.setTextColor(Color.BLACK);
             }
-
             String[] day_color = list.get(position).split("-");
 
             Log.e("day_color", String.valueOf(day_color[0]));
@@ -1364,7 +1245,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             String theyear = day_color[3];
             if ((!eventsPerMonthMap.isEmpty()) && (eventsPerMonthMap != null)) {
                 if (eventsPerMonthMap.containsKey(theday)) {
-                  //  num_events_per_day = view.findViewById(R.id.num_events_per_day);
                     Integer numEvents = eventsPerMonthMap.get(theday);
                     num_events_per_day.setText(numEvents.toString());
                 }
@@ -1391,18 +1271,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
            }else {
                Toast.makeText(context, "Empty dp arraylist", Toast.LENGTH_SHORT).show();
            }
-
-//            int size = tpViewMasterArrayList.size();
-//            Tp_View_Master tp = tpViewMasterArrayList.get(position);
-//
-//            String mColor = tp.getColor();
-//            String mDate = tp.getDate();
-//
-//            if (mColor != null){
-//                holder.mTourPlanCircle.setCardBackgroundColor(Color.parseColor(mColor));
-//            }
-//
-//            Log.e("color_", mColor);
         }
 
         @Override
@@ -1431,11 +1299,9 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             {
                 super(binding.getRoot());
                 this.binding = binding;
-
                 mDate = binding.date;
                 mDateLayout = binding.dateLayout;
                 mTourPlanCircle = binding.color;
-
             }
         }
 
@@ -1462,8 +1328,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         public String CheckTp_View(int a) {
             String bflag = "0";
             if (Tp_View_Master != null) {
-
-
                 for (int i = 0; Tp_View_Master.size() > i; i++) {
                     if (a == Tp_View_Master.get(i).getDayofcout()) {
                         Log.v("SUBMIT_STATUS", Tp_View_Master.get(i).getSubmitStatus() + "DAY" + Tp_View_Master.get(i).getDayofcout());
@@ -1586,7 +1450,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             super();
             this._context = context;
             this.Tp_View_Master = Tp_View_Master;
-
             this.list = new ArrayList<>();
 
             Calendar calendar = Calendar.getInstance();
@@ -1595,9 +1458,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             selectedDate = (Calendar) calendar.clone();
             df = new SimpleDateFormat("MMM");
             curentDateString = df.format(selectedDate.getTime());
-
             printMonth(month, year);
-
             eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
         }
 
@@ -1684,7 +1545,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 } else {
                     list.add(i + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
                 }
-
                 Log.e("DAY_of_month", String.valueOf(list.get(i - 1)));
             }
 
@@ -1693,8 +1553,8 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 list.add(i + 1 + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
             }
             for (int i = 0; i < list.size(); i++) {
-                Log.e("DAYCOLOR", String.valueOf(list.get(i)));
-                Log.e("Days_In_A month", String.valueOf(daysInMonth));
+                Log.e("day_color", String.valueOf(list.get(i)));
+                Log.e("days_in_month", String.valueOf(daysInMonth));
             }
         }
 
@@ -1721,11 +1581,8 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             gridcell = row.findViewById(R.id.date);
             iv_icon = row.findViewById(R.id.tp_date_icon);
 
-
             // for spacing
             String[] day_color = list.get(position).split("-");
-
-            Log.e("THE_DAY_COLOR", String.valueOf(day_color[0]));
             String theday = day_color[0];
             String themonth = day_color[2];
             String theyear = day_color[3];
@@ -1736,7 +1593,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                     num_events_per_day.setText(numEvents.toString());
                 }
             }
-
             // Set the Day GridCell
             gridcell.setText(theday);
             gridcell.setTag(theday + "-" + themonth + "-" + theyear);
@@ -1762,7 +1618,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 String TourMonth = theyear1 + "-" + month + "-" + theday1;
                 Log.e("Grid_Selected_Date", theday1 + "-" + themonth1 + "-" + theyear1 + day_color1[1]);
                 common_class.CommonIntentwithoutFinishputextratwo(Tp_Mydayplan.class, "TourDate", TourMonth, "TourMonth", String.valueOf(month - 1));
-
             });
             return row;
         }
@@ -1773,7 +1628,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             Log.e("Selected date", date_month_year);
             try {
                 dateFormatter.parse(date_month_year);
-
             } catch (ParseException e) {
                 e.printStackTrace();
             }
