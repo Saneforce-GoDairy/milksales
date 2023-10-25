@@ -62,7 +62,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.milksales.godairy.Activity.AllowanceActivityTwo;
-import com.milksales.godairy.BuildConfig;
 import com.milksales.godairy.Common_Class.AlertDialogBox;
 import com.milksales.godairy.Common_Class.CameraPermission;
 import com.milksales.godairy.Common_Class.Constants;
@@ -79,6 +78,7 @@ import com.milksales.godairy.common.LocationFinder;
 import com.milksales.godairy.common.LocationReceiver;
 import com.milksales.godairy.common.SANGPSTracker;
 import com.milksales.godairy.databinding.ActivityCameraxBinding;
+import com.milksales.godairy.BuildConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1325,7 +1325,7 @@ public class CameraxActivity extends AppCompatActivity {
                     (this, 0, intent, PendingIntent.FLAG_MUTABLE);
         } else {
             pIntent = PendingIntent.getBroadcast
-                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_MUTABLE);
         }
 
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
