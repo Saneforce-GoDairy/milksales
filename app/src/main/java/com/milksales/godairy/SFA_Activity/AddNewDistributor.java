@@ -87,9 +87,9 @@ import retrofit2.Response;
 public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCallback {
     ActivityAddNewDistributorBinding binding;
 
-    TextView select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, downloadTCSDeclarationForm, purchaseType, submit, select_bank_details, select_agreement_copy, select_sub_channel, selectReportingVerticals, downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
+    TextView select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, uidType, downloadTCSDeclarationForm, purchaseType, submit, select_bank_details, select_agreement_copy, select_sub_channel, selectReportingVerticals, downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
     ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai, display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, home, display_aadhaar_number, capture_aadhaar_number, display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration, fssaiInfo, previewfssaiDeclaration, capturefssaiDeclaration, capture_customer_application, display_customer_application;
-    EditText type_city, type_pincode, type_name_of_the_customer, type_name_of_the_owner, type_mobile_number, type_email_id, type_pan_name, uidType, type_sales_executive_name, type_sales_executive_employee_id, type_aadhaar_number, type_pan_number, type_gst, type_fssai, businessAddressNo, businessAddressCity, businessAddressPincode, ownerAddressNo, ownerAddressCity, ownerAddressPincode;
+    EditText type_city, type_pincode, type_name_of_the_customer, type_name_of_the_owner, type_mobile_number, type_email_id, type_pan_name, type_sales_executive_name, type_sales_executive_employee_id, type_aadhaar_number, type_pan_number, type_gst, type_fssai, businessAddressNo, businessAddressCity, businessAddressPincode, ownerAddressNo, ownerAddressCity, ownerAddressPincode;
     LinearLayout gstDeclarationLL, gstLL, tcsDeclarationLL, fssaiDeclarationLL, fssaiLL;
     SwitchMaterial gstSwitch, tcsSwitch, fssaiSwitch;
 
@@ -105,13 +105,13 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     ArrayList<CommonModelWithFourString> officeList, filteredOfficeList, tempOfficeList, routeList, filteredRouteList, tempRouteList;
 
     GoogleMap googleMap;
-    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, MasSubMarketArray, MasCusTypeArray, stateArray;
+    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, uidTypeArray, MasSubMarketArray, MasCusTypeArray, stateArray;
 
     DownloadReceiver downloadReceiver;
     DatePickerDialog fromDatePickerDialog;
 
     double Lat = 0, Long = 0;
-    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", FSSAIImageName = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", GSTImageName = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", FSSAIImageFullPath = "", gstDeclarationImageFullPath = "", GSTImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "";
+    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", FSSAIImageName = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", GSTImageName = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", FSSAIImageFullPath = "", gstDeclarationImageFullPath = "", GSTImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", uid = "";
     boolean isEditMode = false;
 
     @Override
@@ -340,6 +340,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         MasBusinessDivisionArray = new JSONArray();
         MasCusClassArray = new JSONArray();
         MasReportingVertArray = new JSONArray();
+        uidTypeArray = new JSONArray();
         MasSubMarketArray = new JSONArray();
         MasCusTypeArray = new JSONArray();
         stateArray = new JSONArray();
@@ -824,6 +825,46 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     ReportingVerticalsID = MasReportingVertArray.getJSONObject(position).getString("id");
                     ReportingVerticalsStr = MasReportingVertArray.getJSONObject(position).getString("title");
                     selectReportingVerticals.setText(MasReportingVertArray.getJSONObject(position).getString("title"));
+                    dialog.dismiss();
+                } catch (JSONException ignored) {
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.show();
+        });
+        try {
+            uidTypeArray.put(new JSONObject().put("title", "Aadhaar"));
+            uidTypeArray.put(new JSONObject().put("title", "I don't have Aadhaar"));
+        } catch (Exception ignored) {
+
+        }
+        uidType.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            TextView title = view.findViewById(R.id.title);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            TextView close = view.findViewById(R.id.close);
+            title.setText("Select UID Type");
+            AlertDialog dialog = builder.create();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, uidTypeArray);
+            adapter.setOnItemClick(position -> {
+                try {
+                    uid = uidTypeArray.getJSONObject(position).getString("title");
+                    uidType.setText(uid);
+                    if (!uid.equals("Aadhaar")) {
+                        binding.aadhaarLL.setVisibility(View.GONE);
+                        aadhaarStr = "";
+                        aadhaarImageName = "";
+                        aadhaarImageFullPath = "";
+                        binding.typeAadhaarNumber.setText("");
+                        binding.displayAadhaarNumber.setVisibility(View.GONE);
+                    } else {
+                        binding.aadhaarLL.setVisibility(View.VISIBLE);
+                    }
                     dialog.dismiss();
                 } catch (JSONException ignored) {
                 }
@@ -1373,11 +1414,13 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter the Sales Executive Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(employeeIdStr)) {
             Toast.makeText(context, "Please Enter the Sales Executive - Employee ID", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(aadhaarStr)) {
+        } else if (TextUtils.isEmpty(uid)) {
+            Toast.makeText(context, "Please select UID type", Toast.LENGTH_SHORT).show();
+        } else if (uid.equals("Aadhaar") && TextUtils.isEmpty(aadhaarStr)) {
             Toast.makeText(context, "Please Enter the Aadhaar Number", Toast.LENGTH_SHORT).show();
-        } else if (aadhaarStr.length() != 12) {
+        } else if (uid.equals("Aadhaar") && aadhaarStr.length() != 12) {
             Toast.makeText(context, "Please Enter 12 digit Aadhaar Number", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(aadhaarImageName) || TextUtils.isEmpty(aadhaarImageFullPath)) {
+        } else if (uid.equals("Aadhaar") && (TextUtils.isEmpty(aadhaarImageName) || TextUtils.isEmpty(aadhaarImageFullPath))) {
             Toast.makeText(context, "Please Capture the Aadhaar Image", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(PANStr)) {
             Toast.makeText(context, "Please Enter the PAN Number", Toast.LENGTH_SHORT).show();
