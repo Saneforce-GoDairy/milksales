@@ -1945,5 +1945,9 @@ public class Common_Class {
             }
         });
     }
+
+    public static String validateField(String value) {
+        return value.replaceAll("'", "''");
+    }
 }
 

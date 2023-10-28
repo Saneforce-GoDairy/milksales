@@ -111,7 +111,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     DatePickerDialog fromDatePickerDialog;
 
     double Lat = 0, Long = 0;
-    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", FSSAIImageName = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", GSTImageName = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", FSSAIImageFullPath = "", gstDeclarationImageFullPath = "", GSTImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", uid = "";
+    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", FSSAIImageName = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", GSTImageName = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", FSSAIImageFullPath = "", gstDeclarationImageFullPath = "", GSTImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "";
     boolean isEditMode = false;
 
     @Override
@@ -299,17 +299,27 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         });
 
         if (getIntent().hasExtra("id")) {
-            isEditMode = true;
             binding.headtext.setText("View Distributor");
             stockistCode = getIntent().getStringExtra("id");
             Log.e("stockistCode", stockistCode);
             getStockistInfo();
-            submit.setText("Update");
         } else {
-            isEditMode = false;
             getLocation();
             type_sales_executive_name.setText(UserDetails.getString("SfName", ""));
             type_sales_executive_employee_id.setText(UserDetails.getString("EmpId", ""));
+        }
+
+        if (getIntent().hasExtra("flag")) {
+            int flag = getIntent().getIntExtra("flag", 0);
+            if (flag == 3) {
+                isEditMode = true;
+                binding.headtext.setText("Edit Distributor");
+                submit.setVisibility(View.VISIBLE);
+                submit.setText("Re-Submit");
+            } else {
+                isEditMode = false;
+                submit.setVisibility(View.GONE);
+            }
         }
 
         regionList = new ArrayList<>();
@@ -853,9 +863,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, uidTypeArray);
             adapter.setOnItemClick(position -> {
                 try {
-                    uid = uidTypeArray.getJSONObject(position).getString("title");
-                    uidType.setText(uid);
-                    if (!uid.equals("Aadhaar")) {
+                    UIDType = uidTypeArray.getJSONObject(position).getString("title");
+                    uidType.setText(UIDType);
+                    if (!UIDType.equals("Aadhaar")) {
                         binding.aadhaarLL.setVisibility(View.GONE);
                         aadhaarStr = "";
                         aadhaarImageName = "";
@@ -1099,16 +1109,19 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
             UIDType = jsonObject.optString("UID_Type");
             uidType.setText(UIDType);
+            if (!UIDType.equals("Aadhaar")) {
+                binding.aadhaarLL.setVisibility(View.GONE);
+            } else {
+                aadhaarStr = jsonObject.optString("Aadhaar");
+                type_aadhaar_number.setText(aadhaarStr);
 
-            aadhaarStr = jsonObject.optString("Aadhaar");
-            type_aadhaar_number.setText(aadhaarStr);
-
-            aadhaarImageName = jsonObject.optString("AadhaarImg");
-            common_class.getImageFromS3Bucket(context, "trmu", aadhaarImageName, "stockist_info", (bmp, path) -> {
-                display_aadhaar_number.setImageBitmap(bmp);
-                display_aadhaar_number.setVisibility(View.VISIBLE);
-                aadhaarImageFullPath = path;
-            });
+                aadhaarImageName = jsonObject.optString("AadhaarImg");
+                common_class.getImageFromS3Bucket(context, "trmu", aadhaarImageName, "stockist_info", (bmp, path) -> {
+                    display_aadhaar_number.setImageBitmap(bmp);
+                    display_aadhaar_number.setVisibility(View.VISIBLE);
+                    aadhaarImageFullPath = path;
+                });
+            }
 
             PANStr = jsonObject.optString("Pan");
             type_pan_number.setText(PANStr);
@@ -1341,40 +1354,97 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
     private void ValidateFields() {
         stateNameStr = select_state.getText().toString().trim();
+        stateNameStr = Common_Class.validateField(stateNameStr);
+
         officeNameStr = select_sales_office_name.getText().toString().trim();
+        officeNameStr = Common_Class.validateField(officeNameStr);
+
         routeNameStr = select_route_name.getText().toString().trim();
+        routeNameStr = Common_Class.validateField(routeNameStr);
+
         channelStr = select_channel.getText().toString().trim();
+        channelStr = Common_Class.validateField(channelStr);
+
         subChannelNameStr = select_sub_channel.getText().toString().trim();
+        subChannelNameStr = Common_Class.validateField(subChannelNameStr);
+
+        ReportingVerticalsStr = selectReportingVerticals.getText().toString().trim();
+        ReportingVerticalsStr = Common_Class.validateField(ReportingVerticalsStr);
 
         cityStr = type_city.getText().toString().trim();
-        pincodeStr = type_pincode.getText().toString().trim();
+        cityStr = Common_Class.validateField(cityStr);
+
         customerNameStr = type_name_of_the_customer.getText().toString().trim();
+        customerNameStr = Common_Class.validateField(customerNameStr);
+
         ownerNameStr = type_name_of_the_owner.getText().toString().trim();
+        ownerNameStr = Common_Class.validateField(ownerNameStr);
+
         businessAddressNoStr = businessAddressNo.getText().toString().trim();
+        businessAddressNoStr = Common_Class.validateField(businessAddressNoStr);
+
         businessAddressCityStr = businessAddressCity.getText().toString().trim();
+        businessAddressCityStr = Common_Class.validateField(businessAddressCityStr);
+
         businessAddressPincodeStr = businessAddressPincode.getText().toString().trim();
-        mobileNumberStr = type_mobile_number.getText().toString().trim();
-        emailAddressStr = type_email_id.getText().toString().trim();
-        executiveNameStr = type_sales_executive_name.getText().toString().trim();
-        employeeIdStr = type_sales_executive_employee_id.getText().toString().trim();
-        aadhaarStr = type_aadhaar_number.getText().toString().trim();
-        PANStr = type_pan_number.getText().toString().trim();
-        bankDetailsStr = select_bank_details.getText().toString().trim();
-        GSTDetailsStr = type_gst.getText().toString().trim();
-        agreementDetailsStr = select_agreement_copy.getText().toString().trim();
+        businessAddressPincodeStr = Common_Class.validateField(businessAddressPincodeStr);
+
+        pincodeStr = type_pincode.getText().toString().trim();
+        pincodeStr = Common_Class.validateField(pincodeStr);
 
         ownerAddressNoStr = ownerAddressNo.getText().toString().trim();
+        ownerAddressNoStr = Common_Class.validateField(ownerAddressNoStr);
+
         ownerAddressCityStr = ownerAddressCity.getText().toString().trim();
+        ownerAddressCityStr = Common_Class.validateField(ownerAddressCityStr);
+
         ownerAddressPincodeStr = ownerAddressPincode.getText().toString().trim();
-        businessAddressNoStr = businessAddressNo.getText().toString().trim();
-        businessAddressCityStr = businessAddressCity.getText().toString().trim();
-        businessAddressPincodeStr = businessAddressPincode.getText().toString().trim();
+        ownerAddressPincodeStr = Common_Class.validateField(ownerAddressPincodeStr);
+
+        mobileNumberStr = type_mobile_number.getText().toString().trim();
+        mobileNumberStr = Common_Class.validateField(mobileNumberStr);
+
+        emailAddressStr = type_email_id.getText().toString().trim();
+        emailAddressStr = Common_Class.validateField(emailAddressStr);
+
+        executiveNameStr = type_sales_executive_name.getText().toString().trim();
+        executiveNameStr = Common_Class.validateField(executiveNameStr);
+
+        employeeIdStr = type_sales_executive_employee_id.getText().toString().trim();
+        employeeIdStr = Common_Class.validateField(employeeIdStr);
+
+        UIDType = uidType.getText().toString().trim();
+        UIDType = Common_Class.validateField(UIDType);
+
+        aadhaarStr = type_aadhaar_number.getText().toString().trim();
+        aadhaarStr = Common_Class.validateField(aadhaarStr);
+
+        PANStr = type_pan_number.getText().toString().trim();
+        PANStr = Common_Class.validateField(PANStr);
+
+        PANName = type_pan_name.getText().toString().trim();
+        PANName = Common_Class.validateField(PANName);
+
+        bankDetailsStr = select_bank_details.getText().toString().trim();
+        bankDetailsStr = Common_Class.validateField(bankDetailsStr);
 
         fssaiFromStr = fssaiFromDate.getText().toString().trim();
+        fssaiFromStr = Common_Class.validateField(fssaiFromStr);
+
         fssaitoStr = fssaiToDate.getText().toString().trim();
+        fssaitoStr = Common_Class.validateField(fssaitoStr);
+
         FSSAIDetailsStr = type_fssai.getText().toString().trim();
-        PANName = type_pan_name.getText().toString().trim();
-        UIDType = uidType.getText().toString().trim();
+        FSSAIDetailsStr = Common_Class.validateField(FSSAIDetailsStr);
+
+        GSTDetailsStr = type_gst.getText().toString().trim();
+        GSTDetailsStr = Common_Class.validateField(GSTDetailsStr);
+
+        agreementDetailsStr = select_agreement_copy.getText().toString().trim();
+        agreementDetailsStr = Common_Class.validateField(agreementDetailsStr);
+
+        purchaseTypeName = purchaseType.getText().toString().trim();
+        purchaseTypeName = Common_Class.validateField(purchaseTypeName);
 
         if (TextUtils.isEmpty(customer_photo_name) || TextUtils.isEmpty(customer_photo_url)) {
             Toast.makeText(context, "Please Capture Customer Photo", Toast.LENGTH_SHORT).show();
@@ -1414,13 +1484,13 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter the Sales Executive Name", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(employeeIdStr)) {
             Toast.makeText(context, "Please Enter the Sales Executive - Employee ID", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(uid)) {
+        } else if (TextUtils.isEmpty(UIDType)) {
             Toast.makeText(context, "Please select UID type", Toast.LENGTH_SHORT).show();
-        } else if (uid.equals("Aadhaar") && TextUtils.isEmpty(aadhaarStr)) {
+        } else if (UIDType.equals("Aadhaar") && TextUtils.isEmpty(aadhaarStr)) {
             Toast.makeText(context, "Please Enter the Aadhaar Number", Toast.LENGTH_SHORT).show();
-        } else if (uid.equals("Aadhaar") && aadhaarStr.length() != 12) {
+        } else if (UIDType.equals("Aadhaar") && aadhaarStr.length() != 12) {
             Toast.makeText(context, "Please Enter 12 digit Aadhaar Number", Toast.LENGTH_SHORT).show();
-        } else if (uid.equals("Aadhaar") && (TextUtils.isEmpty(aadhaarImageName) || TextUtils.isEmpty(aadhaarImageFullPath))) {
+        } else if (UIDType.equals("Aadhaar") && (TextUtils.isEmpty(aadhaarImageName) || TextUtils.isEmpty(aadhaarImageFullPath))) {
             Toast.makeText(context, "Please Capture the Aadhaar Image", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(PANStr)) {
             Toast.makeText(context, "Please Enter the PAN Number", Toast.LENGTH_SHORT).show();
@@ -1430,6 +1500,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter valid PAN Number", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(panImageName) || TextUtils.isEmpty(panImageFullPath)) {
             Toast.makeText(context, "Please Capture the PAN Image", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(PANName)) {
+            Toast.makeText(context, "Please enter PAN Name", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(bankDetailsStr) && bankImageName.isEmpty()) {
             Toast.makeText(context, "Please Capture the Bank Details Image", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(bankDetailsStr) && !bankImageName.isEmpty()) {
@@ -1463,7 +1535,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             if (isEditMode) {
-                builder.setMessage("Are you sure you want to update?");
+                builder.setMessage("Are you sure you want to re-submit?");
             } else {
                 builder.setMessage("Are you sure you want to submit?");
             }
@@ -1477,7 +1549,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     private void SubmitForm() {
         ProgressDialog progressDialog = new ProgressDialog(context);
         if (isEditMode) {
-            progressDialog.setMessage("Updating Distributor...");
+            progressDialog.setMessage("Re-Submitting Distributor...");
         } else {
             progressDialog.setMessage("Creating Distributor...");
         }
