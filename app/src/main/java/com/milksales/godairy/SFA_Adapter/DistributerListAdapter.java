@@ -78,11 +78,11 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
             holder.tvDistName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.drawable.eye), null);
             String flag = itm.getString("flag");
             if (flag.equals("5")) {
-                holder.status.setText("Status: Pending with master");
+                holder.status.setText("Status: Pending with Master");
                 holder.status.setTextColor(Color.parseColor("#ffa500"));
                 holder.remarks.setVisibility(View.GONE);
             } else if (flag.equals("4")) {
-                holder.status.setText("Status: Pending");
+                holder.status.setText("Status: Pending with Logistic");
                 holder.status.setTextColor(Color.parseColor("#ffa500"));
                 holder.remarks.setVisibility(View.GONE);
             } else if (flag.equals("3")) {
@@ -92,7 +92,7 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
                 holder.remarks.setVisibility(View.VISIBLE);
                 holder.remarks.setText("Remarks: " + itm.getString("remarks"));
             } else if (flag.equals("2")) {
-                holder.status.setText("Status: Pending with controller");
+                holder.status.setText("Status: Pending with Controller");
                 holder.remarks.setVisibility(View.GONE);
             } else if (flag.equals("1")) {
                 holder.status.setText("Status: Deactivated");

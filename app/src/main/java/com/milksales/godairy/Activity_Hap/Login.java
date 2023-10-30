@@ -162,10 +162,11 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            Log.w("deviceToken", "Fetching FCM registration token failed", task.getException());
                             return;
                         }
                         deviceToken = task.getResult();
+                        Log.e("deviceToken", deviceToken);
                         shared_common_pref.save(Shared_Common_Pref.Dv_ID, deviceToken);
                     }
                 });

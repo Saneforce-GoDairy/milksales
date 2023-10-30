@@ -1199,6 +1199,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Clear"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/C15dp"
                     android:gravity="center_vertical"
                     android:textSize="13dp"
@@ -1657,6 +1658,7 @@
                     android:text="Clear"
                     android:gravity="center_vertical"
                     android:textSize="13dp"
+                    android:visibility="gone"
                     android:drawablePadding="5dp"
                     android:layout_marginHorizontal="@dimen/C8dp"
                     app:drawableEndCompat="@drawable/ic_cancel" />

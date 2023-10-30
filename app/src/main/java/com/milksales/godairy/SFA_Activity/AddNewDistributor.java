@@ -318,6 +318,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 submit.setText("Re-Submit");
             } else {
                 isEditMode = false;
+                MakeFieldsEnabled(false);
                 submit.setVisibility(View.GONE);
             }
         }
@@ -962,6 +963,48 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             dialog.show();
         });
 
+        select_agreement_copy.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    binding.clearAgreement.setVisibility(View.GONE);
+                } else {
+                    binding.clearAgreement.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        select_bank_details.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    binding.clearBank.setVisibility(View.GONE);
+                } else {
+                    binding.clearBank.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         refreshLocation.setOnClickListener(v -> getLocation());
         submit.setOnClickListener(v -> ValidateFields());
 
@@ -993,6 +1036,54 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             select_agreement_copy.setText("");
             display_agreement_copy.setVisibility(View.GONE);
         });
+    }
+
+    private void MakeFieldsEnabled(boolean isEnabled) {
+        capture_customer_photo.setEnabled(isEnabled);
+        capture_shop_photo.setEnabled(isEnabled);
+        capture_customer_application.setEnabled(isEnabled);
+        select_state.setEnabled(isEnabled);
+        select_sales_office_name.setEnabled(isEnabled);
+        select_route_name.setEnabled(isEnabled);
+        select_channel.setEnabled(isEnabled);
+        select_sub_channel.setEnabled(isEnabled);
+        selectReportingVerticals.setEnabled(isEnabled);
+        type_city.setEnabled(isEnabled);
+        type_name_of_the_customer.setEnabled(isEnabled);
+        type_name_of_the_owner.setEnabled(isEnabled);
+        businessAddressNo.setEnabled(isEnabled);
+        businessAddressCity.setEnabled(isEnabled);
+        businessAddressPincode.setEnabled(isEnabled);
+        type_pincode.setEnabled(isEnabled);
+        ownerAddressNo.setEnabled(isEnabled);
+        ownerAddressCity.setEnabled(isEnabled);
+        ownerAddressPincode.setEnabled(isEnabled);
+        type_mobile_number.setEnabled(isEnabled);
+        type_email_id.setEnabled(isEnabled);
+        uidType.setEnabled(isEnabled);
+        type_aadhaar_number.setEnabled(isEnabled);
+        capture_aadhaar_number.setEnabled(isEnabled);
+        type_pan_number.setEnabled(isEnabled);
+        capture_pan_number.setEnabled(isEnabled);
+        type_pan_name.setEnabled(isEnabled);
+        select_bank_details.setEnabled(isEnabled);
+        capture_bank_details.setEnabled(isEnabled);
+        fssaiSwitch.setEnabled(isEnabled);
+        type_fssai.setEnabled(isEnabled);
+        capture_fssai.setEnabled(isEnabled);
+        fssaiFromDate.setEnabled(isEnabled);
+        fssaiToDate.setEnabled(isEnabled);
+        capturefssaiDeclaration.setEnabled(isEnabled);
+        gstSwitch.setEnabled(isEnabled);
+        type_gst.setEnabled(isEnabled);
+        capture_gst.setEnabled(isEnabled);
+        captureGSTDeclaration.setEnabled(isEnabled);
+        tcsSwitch.setEnabled(isEnabled);
+        captureTCSDeclaration.setEnabled(isEnabled);
+        select_agreement_copy.setEnabled(isEnabled);
+        capture_agreement_copy.setEnabled(isEnabled);
+        purchaseType.setEnabled(isEnabled);
+        binding.refreshLocation.setEnabled(isEnabled);
     }
 
     private void getStockistInfo() {
