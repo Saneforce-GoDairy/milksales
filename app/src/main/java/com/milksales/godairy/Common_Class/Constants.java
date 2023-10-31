@@ -16,6 +16,10 @@ public class Constants {
 //    public static final String MERCHANT_ID_PAYMENT = "2605716";
 //    public static final String ACCESS_CODE_PAYMENT = "AVQV82KF49CC66VQCC";
 //    public static final String COMMAND = "initiateTransaction";
+
+    public static final String DONT_SHOW_LOCATION_PERMISSION_DIALOG = "kDontShowPermissionDialog";
+    public static final String USER_REJECTED_PERMISSION = "USER_REJECTED_PERMISSION";
+
     public static final String MERCHANT_ID_PAYMENT = "2";
     public static final String ACCESS_CODE_PAYMENT = "4YRUXLSRO20O8NIH";
     public static final String COMMAND = "getJsonDataVault";

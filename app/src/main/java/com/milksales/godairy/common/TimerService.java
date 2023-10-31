@@ -207,7 +207,7 @@ public class TimerService extends Service {
                 headTxt.setTextSize(20);
                 headTxt.setPadding(0, 10, 10, 10);
                 headTxt.setTypeface(null, Typeface.BOLD);
-                headTxt.setText("Location permission required");
+                headTxt.setText("Background Location permission required");
                 relative.addView(headTxt);
 
 
@@ -219,14 +219,15 @@ public class TimerService extends Service {
                 subheadTxt.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
-                subheadTxt.setGravity(Gravity.CENTER);
+                subheadTxt.setGravity(Gravity.LEFT);
                 subheadTxt.setLayoutParams(subheadRel);
                 subheadTxt.setTextColor(Color.parseColor("#585858"));
                 subheadTxt.setId(152);
-                subheadTxt.setTextSize(16);
+                subheadTxt.setTextSize(14);
                 subheadTxt.setPadding(0, 10, 10, 10);
                 /* edt.setText("Please provide AllOW ALWAYS in the permission setting to access the Application");*/
-                subheadTxt.setText("Allow App to automatically detect your current location for travel allowance");
+                subheadTxt.setText("Allow GODAIRY App to automatically detect your current location for travel allowance and " +
+                        "Collects Location data to enable idendification of near by outlets even when the app is closed or not in use.");
                 relative.addView(subheadTxt);
 
 
@@ -245,7 +246,7 @@ public class TimerService extends Service {
                 edt.setTextSize(12);
                 edt.setPadding(0, 10, 10, 10);
                 /* edt.setText("Please provide AllOW ALWAYS in the permission setting to access the Application");*/
-                edt.setText("To enable, go to 'Settings' and turn on Location permission 'Allow all the time'");
+                edt.setText("Accept to enable, go to 'Settings' and turn on Location permission 'Allow all the time'");
                 relative.addView(edt);
 
 
@@ -264,7 +265,7 @@ public class TimerService extends Service {
                 btn.setTextColor(Color.WHITE);
                 btn.setBackgroundResource(R.drawable.button_blueg);
 
-                btn.setText("Open Setting");
+                btn.setText("OPEN SETTINGS");
                 btn.setAllCaps(false);
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
