@@ -10,6 +10,7 @@ import com.milksales.godairy.Model_Class.Model;
 import com.milksales.godairy.Model_Class.POSDataList;
 import com.milksales.godairy.Model_Class.ReportDataList;
 import com.milksales.godairy.Model_Class.RetailerViewDetails;
+import com.milksales.godairy.Model_Class.TpMyDayPlanExtra;
 
 import org.json.JSONArray;
 
@@ -772,4 +773,8 @@ public interface ApiInterface {
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
+
+    @FormUrlEncoded
+    @POST("MyPHP.php?axn=get_jointwork_list")
+    Call<TpMyDayPlanExtra> getExtraFieldTpMyDayPlan(@Field("sfCode") String sfCode);
 }

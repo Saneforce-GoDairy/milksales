@@ -2,11 +2,15 @@ package com.milksales.godairy.fragments.tour_plan;
 
 import static com.milksales.godairy.Common_Class.Common_Class.addquote;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -38,11 +43,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
@@ -62,6 +69,7 @@ import com.milksales.godairy.Interface.Master_Interface;
 import com.milksales.godairy.MVP.Main_Model;
 import com.milksales.godairy.Model_Class.ModeOfTravel;
 import com.milksales.godairy.Model_Class.Route_Master;
+import com.milksales.godairy.Model_Class.TpMyDayPlanExtra;
 import com.milksales.godairy.Model_Class.Tp_Dynamic_Modal;
 import com.milksales.godairy.Model_Class.Tp_View_Master;
 import com.milksales.godairy.R;
@@ -75,6 +83,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,6 +96,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -178,11 +188,13 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     private View bottomSheetView;
     private BottomSheetDialog bottomSheetDialog;
     private BottomSheetBehavior bottomSheetBehavior;
-    Spinner spinner;
+    Spinner spinner, extraSpinner;
     TextView bottomSheetDate;
     Button bottomSheetSubmit;
     EditText bottomSheetRemarks;
     String finalTourDate;
+    Dialog jointWorkDialog;
+    ArrayList<String> jointWorkTypeList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -205,9 +217,11 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         // tp_plan
         shared_common_pref = new Shared_Common_Pref(requireContext());
         initBottomSheetDialog();
+       // initJointWorkDialog();
         initOnClickTpPlan();
         binding.textTourPlancount.setText("0");
         loadWorkTypes();
+        loadExtraField();
 
         if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
             bottomSheetSubmit.setText("Submit");
@@ -224,6 +238,142 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         return binding.getRoot();
     }
 
+    private void initJointWorkDialog() {
+        jointWorkDialog = new Dialog(requireContext());
+        jointWorkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        jointWorkDialog.setContentView(R.layout.model_dialog_joint_work);
+        jointWorkDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        jointWorkDialog.show();
+
+        RecyclerView recyclerView = jointWorkDialog.findViewById(R.id.primaryChannelList);
+        recyclerView.setEnabled(true);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemViewCacheSize(20);
+        JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(requireContext(),  jointWorkTypeList);
+        recyclerView.setAdapter(jointWorkAdapater);
+
+    }
+
+    public class JointWorkAdapater extends RecyclerView.Adapter<JointWorkAdapater.ViewHolder> {
+        private Context context;
+        private Activity activity;
+        ArrayList  name;
+
+        public JointWorkAdapater(Context context, ArrayList  name){
+            this.context = context;
+            this.name = name;
+        }
+
+        @NonNull
+        @Override
+        public JointWorkAdapater.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view  = LayoutInflater.from(context).inflate(R.layout.model_joint_work, parent, false);
+            return new JointWorkAdapater.ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull JointWorkAdapater.ViewHolder holder, int position) {
+            holder.name.setText((String) name.get(position));
+
+            Glide
+                    .with(context)
+                    .load(R.drawable.joint_work_bg)
+                    .placeholder(R.color.grey_50)
+                    .into(holder.channelImage);
+
+            String mName = (String) name.get(position);
+
+            holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
+
+            holder.mainLayout.setOnClickListener(view -> {
+                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
+                holder.radioButton.setEnabled(true);
+
+            });
+
+            holder.radioButton.setOnClickListener(view -> {
+                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
+                holder.radioButton.setEnabled(true);
+
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return name.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder{
+            private TextView name, nameLetter;
+            private CardView mainLayout;
+            private RadioButton radioButton;
+            private ImageView channelImage;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                name = itemView.findViewById(R.id.name);
+                mainLayout = itemView.findViewById(R.id.main);
+                radioButton = itemView.findViewById(R.id.radio_button);
+                channelImage = itemView.findViewById(R.id.channel_image);
+                nameLetter = itemView.findViewById(R.id.name_letter);
+            }
+        }
+    }
+
+    private void loadExtraField() {
+       ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_jointwork_list");
+        params.put("sfCode", "MGR0201");
+        Call<ResponseBody> call = apiInterface.getUniversalData(params);
+
+       call.enqueue(new Callback<ResponseBody>() {
+           @Override
+           public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+               if (response.isSuccessful()){
+                   String result = null;
+                   try {
+                       assert response.body() != null;
+                       result = response.body().string();
+                       JSONObject jsonObject = new JSONObject(result);
+
+                       if (jsonObject.getBoolean("success")){
+                           JSONArray array = jsonObject.getJSONArray("response");
+
+                           jointWorkTypeList = new ArrayList<>();
+                           //catList.add("Select");
+                           for (int i =0; i<array.length(); i++){
+                               JSONObject jsonObject1 = array.getJSONObject(i);
+                               jointWorkTypeList.add(jsonObject1.getString("name"));
+                           }
+
+//                           ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, catList);
+//                           adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                           extraSpinner.setAdapter(adapter);
+
+                           String debug = "";
+                           Log.e("extra_field_", String.valueOf(array));
+                       }else {
+                           Log.e("extra_field_", "response error");
+                       }
+                   } catch (JSONException | IOException e) {
+                       throw new RuntimeException(e);
+                   }
+               }
+           }
+
+           @Override
+           public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+           }
+       });
+    }
+
     // dp_plan
     private void initBottomSheetDialog() {
         bottomSheetView = getLayoutInflater().inflate(R.layout.bottomsheetdialog_tp_plan, null);
@@ -235,6 +385,30 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         bottomSheetSubmit = bottomSheetDialog.findViewById(R.id.submit);
         bottomSheetRemarks = bottomSheetDialog.findViewById(R.id.remarks);
         spinner = bottomSheetDialog.findViewById(R.id.spinner);
+        extraSpinner = bottomSheetDialog.findViewById(R.id.spinnerEmployee);
+        LinearLayout linearLayout = bottomSheetDialog.findViewById(R.id.extra_field);
+
+        assert spinner != null;
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String workType = spinner.getSelectedItem().toString();
+
+                if (workType.equals("Joint Work")){
+                    assert linearLayout != null;
+                    linearLayout.setVisibility(View.GONE);
+                    initJointWorkDialog();
+                }else {
+                    assert linearLayout != null;
+                    linearLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void loadWorkTypes() {
@@ -411,7 +585,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         }
     }
 
-    private void SendtpApproval(String Name, int flag) {
+    private void  SendtpApproval(String Name, int flag) {
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "dcr/save");
         QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
