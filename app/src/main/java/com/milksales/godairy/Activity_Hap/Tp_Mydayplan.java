@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -232,23 +231,6 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         backView = findViewById(R.id.imag_back);
     }
     private void setOnClick() {
-
-        binding.spinnerWorkType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String workType = binding.spinnerWorkType.getSelectedItem().toString();
-
-                if (workType.equals("Joint Work")){
-                    Toast.makeText(context, "Clicked joint work", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         backView.setOnClickListener(v -> mOnBackPressedDispatcher.onBackPressed());
         ModeTravel.setOnClickListener(v -> {
             modelTravelType.clear();
