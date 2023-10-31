@@ -75,18 +75,24 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
             holder.tvDistAdd.setText(itm.getString("Addr1"));
             holder.tvLatLng.setText("");
 
+            holder.tvDistName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.drawable.eye), null);
             String flag = itm.getString("flag");
-            if (flag.equals("4")) {
-                holder.status.setText("Status: Pending");
+            if (flag.equals("5")) {
+                holder.status.setText("Status: Pending with Master");
+                holder.status.setTextColor(Color.parseColor("#ffa500"));
+                holder.remarks.setVisibility(View.GONE);
+            } else if (flag.equals("4")) {
+                holder.status.setText("Status: Pending with Logistic");
                 holder.status.setTextColor(Color.parseColor("#ffa500"));
                 holder.remarks.setVisibility(View.GONE);
             } else if (flag.equals("3")) {
                 holder.status.setText("Status: Rejected");
+                holder.tvDistName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.drawable.ic_edit), null);
                 holder.status.setTextColor(Color.parseColor("#b22222"));
                 holder.remarks.setVisibility(View.VISIBLE);
                 holder.remarks.setText("Remarks: " + itm.getString("remarks"));
             } else if (flag.equals("2")) {
-                holder.status.setText("Status: 1st Line Approval");
+                holder.status.setText("Status: Pending with Controller");
                 holder.remarks.setVisibility(View.GONE);
             } else if (flag.equals("1")) {
                 holder.status.setText("Status: Deactivated");
@@ -219,18 +225,6 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
                 }
             });
 
-            holder.tvDistName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-
-                    } catch (Exception e) {
-
-                    }
-
-                }
-            });
-
             holder.llRefreshLoc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -286,9 +280,10 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
                 } catch (JSONException ignored) { }
             }
 
-            holder.itemView.setOnClickListener(v -> {
+            holder.tvDistName.setOnClickListener(v -> {
                 try {
                     Intent intent = new Intent(context, AddNewDistributor.class);
+                    intent.putExtra("flag", Integer.parseInt(flag));
                     intent.putExtra("id", AryDta.getJSONObject(holder.getBindingAdapterPosition()).getString("id"));
                     context.startActivity(intent);
                 } catch (JSONException ignored) {

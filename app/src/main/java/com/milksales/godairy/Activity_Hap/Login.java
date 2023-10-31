@@ -162,10 +162,11 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            Log.w("deviceToken", "Fetching FCM registration token failed", task.getException());
                             return;
                         }
                         deviceToken = task.getResult();
+                        Log.e("deviceToken", deviceToken);
                         shared_common_pref.save(Shared_Common_Pref.Dv_ID, deviceToken);
                     }
                 });
@@ -372,6 +373,7 @@ public class Login extends AppCompatActivity {
                         JSONObject object = new JSONObject(body);
                         if (object.has(code)) {
                             baseURL = object.getJSONObject(code).getString("base_url");
+                            Log.e("login_info", "base_url: " + baseURL);
                             ApiClient.ChangeBaseURL(baseURL);
                             shared_common_pref.save("base_url",baseURL);
                         }
