@@ -846,7 +846,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         });
         try {
             uidTypeArray.put(new JSONObject().put("title", "Aadhaar"));
-            uidTypeArray.put(new JSONObject().put("title", "I don't have Aadhaar"));
+            uidTypeArray.put(new JSONObject().put("title", "Without Aadhaar"));
         } catch (Exception ignored) {
 
         }
