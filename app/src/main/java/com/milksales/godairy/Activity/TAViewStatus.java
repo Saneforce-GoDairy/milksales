@@ -1901,6 +1901,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     Log.v("JSON_TRAVEL_DETAILS", jsonObjects.toString());
                     ExpSetup = jsonObjects.getAsJsonArray("Settings");
 
+                    // Todo: Json Response
                     jsonFuelAllowance = jsonObjects.getAsJsonArray("FuelAllowance");
                     jsonArray = jsonObjects.getAsJsonArray("TodayStart_Details");
                     lcDraftArray = jsonObjects.getAsJsonArray("Additional_ExpenseLC");
@@ -1966,8 +1967,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
 
                                     TextTotalAmount.setText("₹" + new DecimalFormat("##0.00").format(fuelAmt));
                                 } else {
-                                    btn_sub.setVisibility(View.GONE);
-                                    buttonSave.setVisibility(View.GONE);
+                                    /*btn_sub.setVisibility(View.GONE);
+                                    buttonSave.setVisibility(View.GONE);*/
                                 }
                             }
                         }
@@ -3248,7 +3249,9 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
 
         }
 
-        dynamicLabelList.add(jsonObjectAdd.get("Ref_Code").getAsString());
+        try {
+            dynamicLabelList.add(jsonObjectAdd.get("Ref_Code").getAsString());
+        } catch (Exception e) { }
 
         CtrlsListModel ULCItem = new CtrlsListModel(users, flag);
         uLCItems.put(modeName, ULCItem);
