@@ -194,7 +194,12 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     EditText bottomSheetRemarks;
     String finalTourDate;
     Dialog jointWorkDialog;
-    ArrayList<String> jointWorkTypeList;
+    TextView jointWorkName;
+    ArrayList<String> jointWorkNameList;
+    ArrayList<String> jointWorkIdList;
+    ArrayList<String> jointWorkDesigList;
+    LinearLayout linearLayout;
+    String jointWorkSelectedEmployeeId, jointWorkSelectedEmployeeName, jointWorkSelectedEmployeeDesig;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -254,7 +259,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemViewCacheSize(20);
-        JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(requireContext(),  jointWorkTypeList);
+        JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(requireContext(), jointWorkIdList, jointWorkNameList, jointWorkDesigList);
         recyclerView.setAdapter(jointWorkAdapater);
 
     }
@@ -262,11 +267,15 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     public class JointWorkAdapater extends RecyclerView.Adapter<JointWorkAdapater.ViewHolder> {
         private Context context;
         private Activity activity;
+        ArrayList  id;
         ArrayList  name;
+        ArrayList  desig;
 
-        public JointWorkAdapater(Context context, ArrayList  name){
+        public JointWorkAdapater(Context context, ArrayList  id, ArrayList  name , ArrayList  desig){
             this.context = context;
+            this.id = id;
             this.name = name;
+            this.desig = desig;
         }
 
         @NonNull
@@ -290,10 +299,25 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
 
             holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
 
+            /*
+              [{"id":"TRMUMGR0009",
+              "name":"Ramesh qc-GENERAL SE",
+              "desig":"GENERALSE"]}
+             */
+
             holder.mainLayout.setOnClickListener(view -> {
                 Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
                 holder.radioButton.setEnabled(true);
+                holder.radioButton.setChecked(true);
+                jointWorkName.setText((String) name.get(position));
+                linearLayout.setVisibility(View.VISIBLE);
+                jointWorkDialog.dismiss();
 
+                 jointWorkSelectedEmployeeId = (String) id.get(position);
+                 jointWorkSelectedEmployeeName = (String) name.get(position);
+                 jointWorkSelectedEmployeeDesig = (String) desig.get(position);
+
+                Log.e("jw__", jointWorkSelectedEmployeeId + jointWorkSelectedEmployeeName + jointWorkSelectedEmployeeDesig);
             });
 
             holder.radioButton.setOnClickListener(view -> {
@@ -345,11 +369,15 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                        if (jsonObject.getBoolean("success")){
                            JSONArray array = jsonObject.getJSONArray("response");
 
-                           jointWorkTypeList = new ArrayList<>();
+                           jointWorkNameList = new ArrayList<>();
+                           jointWorkIdList = new ArrayList<>();
+                           jointWorkDesigList = new ArrayList<>();
                            //catList.add("Select");
                            for (int i =0; i<array.length(); i++){
                                JSONObject jsonObject1 = array.getJSONObject(i);
-                               jointWorkTypeList.add(jsonObject1.getString("name"));
+                               jointWorkIdList.add(jsonObject1.getString("id"));
+                               jointWorkNameList.add(jsonObject1.getString("name"));
+                               jointWorkDesigList.add(jsonObject1.getString("desig"));
                            }
 
 //                           ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, catList);
@@ -385,8 +413,12 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         bottomSheetSubmit = bottomSheetDialog.findViewById(R.id.submit);
         bottomSheetRemarks = bottomSheetDialog.findViewById(R.id.remarks);
         spinner = bottomSheetDialog.findViewById(R.id.spinner);
-        extraSpinner = bottomSheetDialog.findViewById(R.id.spinnerEmployee);
-        LinearLayout linearLayout = bottomSheetDialog.findViewById(R.id.extra_field);
+      //  extraSpinner = bottomSheetDialog.findViewById(R.id.spinnerEmployee);
+        jointWorkName = bottomSheetDialog.findViewById(R.id.joint_work_name);
+        linearLayout = bottomSheetDialog.findViewById(R.id.extra_field);
+
+        assert linearLayout != null;
+        linearLayout.setOnClickListener(v -> jointWorkDialog.show());
 
         assert spinner != null;
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -501,8 +533,8 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             jsonobj.put("MOT_ID", addquote(modeId));
             jsonobj.put("To_Place_ID", addquote(toId));
             jsonobj.put("Mode_Travel_ID", addquote(startEnd));
-            jsonobj.put("worked_with", addquote(jointworkname));
-            jsonobj.put("jointWorkCode", addquote(jointwork));
+            jsonobj.put("worked_with", addquote(jointWorkSelectedEmployeeName));  // name
+            jsonobj.put("jointWorkCode", addquote(jointWorkSelectedEmployeeId)); // id
             JSONArray personarray = new JSONArray();
             JSONObject ProductJson_Object;
             for (int z = 0; z < dynamicarray.size(); z++) {

@@ -58,6 +58,7 @@
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="50dp" />
 
             <View
@@ -81,17 +82,23 @@
                     android:textColor="@color/grey_600"
                     android:textSize="13sp" />
 
-                <Spinner
-                    android:id="@+id/spinnerEmployee"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp" />
+                <TextView
+                    android:id="@+id/joint_work_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Prasanth"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
 
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/C20dp"
+                android:layout_marginTop="@dimen/C10dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="REMARKS"
                 android:textColor="@color/grey_600"
@@ -103,6 +110,7 @@
                 android:layout_height="85dp"
                 android:background="@drawable/edit_text_border_radius_grey"
                 android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
                 android:gravity="start"
                 android:hint="@string/type"
                 android:paddingStart="10dp"
