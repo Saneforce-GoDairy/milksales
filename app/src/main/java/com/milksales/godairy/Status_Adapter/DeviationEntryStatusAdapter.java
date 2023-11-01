@@ -42,37 +42,44 @@ public class DeviationEntryStatusAdapter extends RecyclerView.Adapter<DeviationE
 
     @Override
     public void onBindViewHolder(@NonNull DeviationEntryStatusAdapter.MyViewHolder holder, int position) {
-        holder.HolidayDate.setText(holiday_status_modelist.get(position).getDeviationDate());
-        holder.HolidayStatus.setText(holiday_status_modelist.get(position).getDStatus());
-        holder.HolidayEntry.setText(holiday_status_modelist.get(position).getDeviationType());
-        holder.HolidayReason.setText(holiday_status_modelist.get(position).getReason());
-        holder.HolidayApplied.setText(holiday_status_modelist.get(position).getCreatedDate());
-        if (holiday_status_modelist.get(position).getDeviActiveFlag() == 1) {
+        holder.HolidayDate.setText(holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getDeviationDate());
+        holder.HolidayStatus.setText(holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getDStatus());
+        holder.HolidayEntry.setText(holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getDeviationType());
+        holder.HolidayReason.setText(holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getReason());
+        holder.HolidayApplied.setText(holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getCreatedDate());
+        if (holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getDeviActiveFlag() == 1) {
             if (AMod.equals("1")) {
                 holder.sf_namelayout.setVisibility(View.VISIBLE);
-                holder.SfName.setText(holiday_status_modelist.get(position).getSFNm());
+                holder.SfName.setText(holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getSFNm());
                 holder.SfName.setTextColor(Color.parseColor("#ff3700"));
             } else {
                 holder.sf_namelayout.setVisibility(View.GONE);
             }
+
             holder.HolidayStatus.setPadding(20,5,20,0);
-            holder.HolidayReject.setText("Reject : " + holiday_status_modelist.get(position).getLastUpdtDate());
+            String hgfv = "Reject : " + holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getLastUpdtDate();
+            holder.HolidayReject.setText(hgfv);
             holder.HolidayStatus.setBackgroundResource(R.drawable.button_red);
-        } else if (holiday_status_modelist.get(position).getDeviActiveFlag() == 0) {
+
+            holder.rejectReason.setVisibility(View.VISIBLE);
+            String rejectRea = "Reject Reason: " + holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getRejectedReason();
+            holder.rejectReason.setText(rejectRea);
+
+        } else if (holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getDeviActiveFlag() == 0) {
             if (AMod.equals("1")) {
                 holder.sf_namelayout.setVisibility(View.VISIBLE);
-                holder.SfName.setText(holiday_status_modelist.get(position).getSFNm());
+                holder.SfName.setText(holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getSFNm());
                 holder.SfName.setTextColor(Color.parseColor("#009688"));
             } else {
                 holder.sf_namelayout.setVisibility(View.GONE);
             }
             holder.HolidayStatus.setPadding(20,5,20,0);
-            holder.HolidayReject.setText("Approved : " + holiday_status_modelist.get(position).getLastUpdtDate());
+            holder.HolidayReject.setText("Approved : " + holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getLastUpdtDate());
             holder.HolidayStatus.setBackgroundResource(R.drawable.button_green);
         } else {
             if (AMod.equals("1")) {
                 holder.sf_namelayout.setVisibility(View.VISIBLE);
-                holder.SfName.setText(holiday_status_modelist.get(position).getSFNm());
+                holder.SfName.setText(holiday_status_modelist.get(holder.getAbsoluteAdapterPosition()).getSFNm());
                 holder.SfName.setTextColor(Color.parseColor("#ff9819"));
             } else {
                 holder.sf_namelayout.setVisibility(View.GONE);
@@ -80,7 +87,6 @@ public class DeviationEntryStatusAdapter extends RecyclerView.Adapter<DeviationE
             holder.HolidayStatus.setPadding(20,5,20,0);
             holder.HolidayStatus.setBackgroundResource(R.drawable.button_yellows);
         }
-
     }
 
     @Override
@@ -90,7 +96,7 @@ public class DeviationEntryStatusAdapter extends RecyclerView.Adapter<DeviationE
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView HolidayDate, HolidayStatus, HolidayEntry, SfName, HolidayReason, HolidayApplied, HolidayReject, HolidayGeoIN, HolidayGeoOut, HolidayEntryDate;
+        TextView HolidayDate, HolidayStatus, HolidayEntry, SfName, HolidayReason, HolidayApplied, HolidayReject, HolidayGeoIN, HolidayGeoOut, HolidayEntryDate, rejectReason;
         RelativeLayout sf_namelayout;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -104,6 +110,7 @@ public class DeviationEntryStatusAdapter extends RecyclerView.Adapter<DeviationE
             HolidayReject = itemView.findViewById(R.id.deviation_rejected);
             sf_namelayout = itemView.findViewById(R.id.sf_namelayout);
             SfName = itemView.findViewById(R.id.SfName);
+            rejectReason = itemView.findViewById(R.id.rejectReason);
         }
     }
 }
