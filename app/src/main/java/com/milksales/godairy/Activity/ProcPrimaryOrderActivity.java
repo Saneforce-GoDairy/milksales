@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -189,7 +190,9 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
 
             if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)) {
                 distributor_text.setText("HI! " + sharedCommonPref.getvalue(Constants.Distributor_name, ""));
-                distributor_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+                    distributor_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
                 findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
                 tvTimer.setVisibility(View.VISIBLE);
 

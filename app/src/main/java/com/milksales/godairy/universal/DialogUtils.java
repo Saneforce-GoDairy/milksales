@@ -1,46 +1,15 @@
 package com.milksales.godairy.universal;
 
-import static android.content.Context.POWER_SERVICE;
-
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.PowerManager;
-import android.provider.Settings;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-
-import com.google.gson.JsonObject;
 import com.milksales.godairy.Common_Class.Constants;
 import com.milksales.godairy.SFA_Activity.HAPApp;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.milksales.godairy.R;
-
-import okhttp3.ResponseBody;
 
 public class DialogUtils {
 
