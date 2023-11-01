@@ -1083,7 +1083,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         select_agreement_copy.setEnabled(isEnabled);
         capture_agreement_copy.setEnabled(isEnabled);
         purchaseType.setEnabled(isEnabled);
-        binding.refreshLocation.setEnabled(isEnabled);
+
+        binding.refreshLocation.setVisibility(View.GONE);
     }
 
     private void getStockistInfo() {
@@ -1306,6 +1307,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             purchaseTypeID = jsonObject.optString("purchaseTypeId");
             purchaseTypeName = jsonObject.optString("purchaseType");
             purchaseType.setText(purchaseTypeName);
+
+            binding.clearBank.setVisibility(View.GONE);
+            binding.clearAgreement.setVisibility(View.GONE);
 
         } catch (Exception e) {
             Toast.makeText(context, "Json parsing error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
@@ -1823,11 +1827,33 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     String pincode = returnedAddress.getPostalCode();
 
                     runOnUiThread(() -> {
-                        businessAddressNo.setText(doorNo + ", " + street);
-                        businessAddressCity.setText(city + ", " + district);
-                        businessAddressPincode.setText(state + ", " + country);
-                        type_city.setText(city);
-                        type_pincode.setText(pincode);
+                        if (!Common_Class.isNullOrEmpty(city)) {
+                            type_city.setText(city);
+                        }
+                        if (!Common_Class.isNullOrEmpty(pincode)) {
+                            type_pincode.setText(pincode);
+                        }
+                        if (!Common_Class.isNullOrEmpty(doorNo) && !Common_Class.isNullOrEmpty(street)) {
+                            businessAddressNo.setText(doorNo + ", " + street);
+                        } else if (!Common_Class.isNullOrEmpty(doorNo)) {
+                            businessAddressNo.setText(doorNo);
+                        } else if (!Common_Class.isNullOrEmpty(street)) {
+                            businessAddressNo.setText(street);
+                        }
+                        if (!Common_Class.isNullOrEmpty(city) && !Common_Class.isNullOrEmpty(district)) {
+                            businessAddressCity.setText(city + ", " + district);
+                        } else if (!Common_Class.isNullOrEmpty(city)) {
+                            businessAddressCity.setText(city);
+                        } else if (!Common_Class.isNullOrEmpty(district)) {
+                            businessAddressCity.setText(district);
+                        }
+                        if (!Common_Class.isNullOrEmpty(state) && !Common_Class.isNullOrEmpty(country)) {
+                            businessAddressPincode.setText(state + ", " + country);
+                        } else if (!Common_Class.isNullOrEmpty(state)) {
+                            businessAddressPincode.setText(state);
+                        } else if (!Common_Class.isNullOrEmpty(country)) {
+                            businessAddressPincode.setText(country);
+                        }
                     });
                 }
             } catch (Exception e) {
