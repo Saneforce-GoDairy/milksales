@@ -6,7 +6,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 //6.x.x//start hsfa--checkin
 android {
     defaultConfig {
-        applicationId "com.milksales.godairy"
+        applicationId "com.saneforce.godairy"
         compileSdk 33
         minSdkVersion 21
         targetSdkVersion 33

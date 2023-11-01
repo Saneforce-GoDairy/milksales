@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#666666">
+
         <RelativeLayout
             android:id="@+id/top"
             android:layout_width="match_parent"
@@ -73,30 +74,24 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            >
+            android:background="@drawable/rounded_dialog_top_right_left">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="430dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/rounded_dialog_top_right_left"/>
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/my_day_plan_icon"
-                android:layout_centerHorizontal="true"/>
+<!--            <ImageView-->
+<!--                android:id="@+id/icon"-->
+<!--                android:layout_width="130dp"-->
+<!--                android:layout_height="130dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:src="@drawable/my_day_plan_icon"-->
+<!--                android:layout_centerHorizontal="true"/>-->
 
             <LinearLayout
                 android:id="@+id/header2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 android:gravity="center_horizontal">
 
@@ -123,10 +118,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/C16dp"
-                android:orientation="vertical"
                 android:layout_below="@id/header2"
-                android:layout_marginTop="@dimen/C16dp">
+                android:layout_marginStart="@dimen/C16dp"
+                android:layout_marginTop="@dimen/C16dp"
+                android:layout_marginEnd="@dimen/C16dp"
+                android:layout_marginBottom="@dimen/C16dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -139,14 +136,41 @@
                 <Spinner
                     android:id="@+id/spinner_work_type"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    />
+                    android:layout_height="50dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/grey_600"/>
+                    android:background="@color/grey_600" />
 
+                <LinearLayout
+                    android:id="@+id/extra_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="SELECT"
+                        android:textColor="@color/grey_600"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/joint_work_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Prasanth"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -155,19 +179,18 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="REMARKS"
                     android:textColor="@color/grey_600"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <EditText
                     android:id="@+id/edit_remarks1"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
-                    android:fontFamily="@font/roboto_medium"
                     android:background="@drawable/edit_text_border_radius_grey"
-                    android:hint="Type....."
+                    android:fontFamily="@font/roboto_medium"
                     android:gravity="start"
+                    android:hint="Type....."
                     android:paddingStart="10dp"
-                    android:paddingTop="10dp"
-                    />
+                    android:paddingTop="10dp" />
 
                 <Button
                     android:id="@+id/submit_button1"
@@ -178,11 +201,8 @@
                     android:background="@drawable/button_blue1"
                     android:text="SUBMIT"
                     android:textAllCaps="true"
-                    android:textColor="#FFFFFF"
-                    />
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
-
-        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -834,5 +854,5 @@
         android:visibility="gone"
         tools:visibility="gone"></include>
 
-
+    </RelativeLayout>
 </RelativeLayout>
