@@ -2,6 +2,7 @@ package com.milksales.godairy.Activity_Hap;
 
 import static com.milksales.godairy.Common_Class.Common_Class.GetDateOnly;
 import static com.milksales.godairy.Common_Class.Common_Class.addquote;
+import static com.milksales.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -344,8 +345,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     private void loadExtraField() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Map<String, String> params = new HashMap<>();
-        params.put("axn", "get_jointwork_list");
-        params.put("sfCode", "MGR0201");
+        params.put("axn", GET_JOINT_WORK_LIST); // axn
+        params.put("sfCode", "MGR0201"); // sf code
         Call<ResponseBody> call = apiInterface.getUniversalData(params);
 
         call.enqueue(new Callback<ResponseBody>() {
@@ -440,7 +441,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                 holder.radioButton.setEnabled(true);
                 holder.radioButton.setChecked(true);
                 binding.jointWorkName.setText((String) name.get(position));
-                binding.extraField.setVisibility(View.VISIBLE);
+                binding.jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
                 jointWorkDialog.dismiss();
 
                 jointWorkSelectedEmployeeId = (String) id.get(position);
@@ -514,7 +515,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         ImageView backView = findViewById(R.id.imag_back);
 
 
-        binding.extraField.setOnClickListener(v -> jointWorkDialog.show());
+        binding.jointWorkExtraFieldLayout.setOnClickListener(v -> jointWorkDialog.show());
 
         assert binding.spinnerWorkType != null;
         binding.spinnerWorkType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -523,12 +524,12 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                 String workType = binding.spinnerWorkType.getSelectedItem().toString();
 
                 if (workType.equals("Joint Work")){
-                    assert binding.extraField != null;
-                    binding.extraField.setVisibility(View.GONE);
+                    assert binding.jointWorkExtraFieldLayout != null;
+                    binding.jointWorkExtraFieldLayout.setVisibility(View.GONE);
                     initJointWorkDialog();
                 }else {
-                    assert binding.extraField != null;
-                    binding.extraField.setVisibility(View.GONE);
+                    assert binding.jointWorkExtraFieldLayout != null;
+                    binding.jointWorkExtraFieldLayout.setVisibility(View.GONE);
                 }
             }
 
