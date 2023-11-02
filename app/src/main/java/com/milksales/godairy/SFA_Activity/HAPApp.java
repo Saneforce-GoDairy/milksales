@@ -36,6 +36,9 @@ public class HAPApp extends Application {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String hoursFormat = "12"; // 24
 
+    static HAPApp sharedInstance;
+    public boolean isAppInForeground = false;
+
     public static Activity activeActivity;
     public static String CurrencySymbol = "₹"; // ₹ B $
     public static String MRPCap = "MRP"; // ₹ B $
@@ -63,6 +66,7 @@ public class HAPApp extends Application {
         setupActivityListener();
         mNetworkReceiver=new ConnectivityReceiver();
         registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        sharedInstance = this;
 
     }
 
@@ -139,6 +143,9 @@ public class HAPApp extends Application {
         });
     }
 
+    public static HAPApp getApplication() {
+        return sharedInstance;
+    }
     public static Activity getActiveActivity() {
         return activeActivity;
     }

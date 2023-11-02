@@ -58,6 +58,7 @@
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="50dp" />
 
             <View
@@ -65,11 +66,39 @@
                 android:layout_height="0.5dp"
                 android:background="@color/grey_600" />
 
+            <LinearLayout
+                android:id="@+id/extra_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="SELECT"
+                    android:textColor="@color/grey_600"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/joint_work_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Prasanth"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/C20dp"
+                android:layout_marginTop="@dimen/C10dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="REMARKS"
                 android:textColor="@color/grey_600"
@@ -81,6 +110,7 @@
                 android:layout_height="85dp"
                 android:background="@drawable/edit_text_border_radius_grey"
                 android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
                 android:gravity="start"
                 android:hint="@string/type"
                 android:paddingStart="10dp"
