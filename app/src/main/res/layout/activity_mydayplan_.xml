@@ -144,7 +144,7 @@
                     android:background="@color/grey_600" />
 
                 <LinearLayout
-                    android:id="@+id/extra_field"
+                    android:id="@+id/joint_work_extra_field_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
