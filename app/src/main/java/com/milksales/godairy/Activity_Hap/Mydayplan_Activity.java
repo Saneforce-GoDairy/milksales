@@ -23,6 +23,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -175,7 +176,6 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     ArrayList<String> jointWorkIdList;
     ArrayList<String> jointWorkDesigList;
     String jointWorkSelectedEmployeeId, jointWorkSelectedEmployeeName, jointWorkSelectedEmployeeDesig;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -515,18 +515,22 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         ImageView backView = findViewById(R.id.imag_back);
 
 
-        binding.jointWorkExtraFieldLayout.setOnClickListener(v -> jointWorkDialog.show());
+        binding.jointWorkExtraFieldLayout.setOnClickListener(v -> {
+            jointWorkDialog.show();
+        });
 
         assert binding.spinnerWorkType != null;
         binding.spinnerWorkType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("enabled__", "yes");
                 String workType = binding.spinnerWorkType.getSelectedItem().toString();
 
                 if (workType.equals("Joint Work")){
                     assert binding.jointWorkExtraFieldLayout != null;
                     binding.jointWorkExtraFieldLayout.setVisibility(View.GONE);
                     initJointWorkDialog();
+
                 }else {
                     assert binding.jointWorkExtraFieldLayout != null;
                     binding.jointWorkExtraFieldLayout.setVisibility(View.GONE);

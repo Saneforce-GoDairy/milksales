@@ -751,7 +751,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                             }
 
                             if (Jointworklistview.size() > 0) {
-                                jointwork_layout.setVisibility(View.VISIBLE);
+//                                jointwork_layout.setVisibility(View.VISIBLE);
                                 binding.textTourPlancount.setText(String.valueOf(arrOfStr.length));
                                 adapter = new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
                                     @Override
@@ -761,7 +761,10 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                                         adapter.notifyDataSetChanged();
                                     }
                                 });
-                                jointwork_recycler.setAdapter(adapter);
+                                /*
+                                   Previous version code
+                                 */
+                               // jointwork_recycler.setAdapter(adapter);
                             }
                         }
 
@@ -1171,19 +1174,24 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 getfieldforcehqlist.add(Model_Pojo);
             }
             if (type.equals("3")) {
-                jointwork_recycler.setAdapter(new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
-                    @Override
-                    public void onIntentClick(int po, boolean flag) {
-                        Jointworklistview.get(po).setSelected(flag);
-                        int jcount = 0;
-                        for (int i = 0; Jointworklistview.size() > i; i++) {
-                            if (Jointworklistview.get(i).isSelected()) {
-                                jcount = jcount + 1;
-                            }
-                        }
-                        binding.textTourPlancount.setText(String.valueOf(jcount));
-                    }
-                }));
+
+                 /*
+                    Previous version code
+                 */
+
+//                jointwork_recycler.setAdapter(new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
+//                    @Override
+//                    public void onIntentClick(int po, boolean flag) {
+//                        Jointworklistview.get(po).setSelected(flag);
+//                        int jcount = 0;
+//                        for (int i = 0; Jointworklistview.size() > i; i++) {
+//                            if (Jointworklistview.get(i).isSelected()) {
+//                                jcount = jcount + 1;
+//                            }
+//                        }
+//                        binding.textTourPlancount.setText(String.valueOf(jcount));
+//                    }
+//                }));
             }
         } catch (JSONException e) {
             e.printStackTrace();

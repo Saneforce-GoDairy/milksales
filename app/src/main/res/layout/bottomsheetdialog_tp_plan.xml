@@ -55,7 +55,7 @@
                 android:textColor="@color/grey_600"
                 android:textSize="13sp" />
 
-            <Spinner
+            <com.milksales.godairy.common.CustomSpinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
