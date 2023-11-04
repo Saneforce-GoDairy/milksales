@@ -2351,7 +2351,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                                 tvGstLayout.setVisibility(View.VISIBLE);
                             } else {
                                 imgAtt.setVisibility(View.GONE);
-                                imgPrv.setVisibility(View.GONE);
+//                                imgPrv.setVisibility(View.GONE);
                                 tvGstLayout.setVisibility(View.GONE);
                             }
 
