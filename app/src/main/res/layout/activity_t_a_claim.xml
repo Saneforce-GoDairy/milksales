@@ -3307,26 +3307,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/lin_back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#99ECEAEA"
-        tools:ignore="MissingConstraints">
-
-        <ImageView
-            android:id="@+id/imag_backs"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="@dimen/C5dp"
-            android:paddingLeft="@dimen/C8dp"
-            android:paddingRight="@dimen/C8dp"
-            android:src="@drawable/back_arrow" />
-
-
-    </LinearLayout>
-
     <RelativeLayout
         android:id="@+id/lnRetVehicle"
         android:layout_width="match_parent"

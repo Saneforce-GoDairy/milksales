@@ -205,6 +205,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     LinearLayout jointWorkExtraFieldLayout;
     String jointWorkSelectedEmployeeId, jointWorkSelectedEmployeeName, jointWorkSelectedEmployeeDesig;
     private SharedPreferences UserDetails;
+    private int radioSelectedPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -305,8 +306,13 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
 
             holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
 
+            Log.e("rd__", String.valueOf(radioSelectedPosition));
+
+            if (radioSelectedPosition == position){
+                holder.radioButton.setChecked(true);
+            }
+
             holder.mainLayout.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
                 holder.radioButton.setChecked(true);
                 jointWorkName.setText((String) name.get(position));
                 jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
@@ -315,11 +321,20 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                  jointWorkSelectedEmployeeId = (String) id.get(position);
                  jointWorkSelectedEmployeeName = (String) name.get(position);
                  jointWorkSelectedEmployeeDesig = (String) desig.get(position);
+
+                radioSelectedPosition = position;
             });
 
             holder.radioButton.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
+                jointWorkName.setText((String) name.get(position));
+                jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
+                jointWorkDialog.dismiss();
 
+                jointWorkSelectedEmployeeId = (String) id.get(position);
+                jointWorkSelectedEmployeeName = (String) name.get(position);
+                jointWorkSelectedEmployeeDesig = (String) desig.get(position);
+
+                radioSelectedPosition = position;
             });
         }
 
@@ -408,7 +423,10 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         jointWorkExtraFieldLayout = bottomSheetDialog.findViewById(R.id.extra_field);
 
         assert jointWorkExtraFieldLayout != null;
-        jointWorkExtraFieldLayout.setOnClickListener(v -> jointWorkDialog.show());
+        jointWorkExtraFieldLayout.setOnClickListener(v -> {
+            initJointWorkDialog();
+            jointWorkDialog.show();
+        });
 
         assert spinner != null;
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
