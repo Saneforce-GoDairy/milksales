@@ -139,6 +139,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     ArrayList<String> jointWorkIdList;
     ArrayList<String> jointWorkDesigList;
     boolean ExpNeed = false;
+    private int radioSelectedPosition;
+    ArrayList<String> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         binding = ActivityMydayplanBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        arrayList = new ArrayList<>();
 
         db = new DatabaseHandler(context);
         UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
@@ -299,7 +303,6 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
 
                         if (jsonObject.getBoolean("success")) {
                             JSONArray array = jsonObject.getJSONArray("response");
-
                             jointWorkNameList = new ArrayList<>();
                             jointWorkIdList = new ArrayList<>();
                             jointWorkDesigList = new ArrayList<>();
@@ -328,11 +331,11 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     public class JointWorkAdapater extends RecyclerView.Adapter<JointWorkAdapater.ViewHolder> {
         private Context context;
         private Activity activity;
-        ArrayList  id;
-        ArrayList  name;
-        ArrayList  desig;
+        ArrayList<String> id;
+        ArrayList<String> name;
+        ArrayList<String> desig;
 
-        public JointWorkAdapater(Context context, ArrayList  id, ArrayList  name , ArrayList  desig){
+        public JointWorkAdapater(Context context, ArrayList<String> id, ArrayList<String> name , ArrayList<String> desig){
             this.context = context;
             this.id = id;
             this.name = name;
@@ -348,7 +351,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
 
         @Override
         public void onBindViewHolder(@NonNull JointWorkAdapater.ViewHolder holder, int position) {
-            holder.name.setText((String) name.get(position));
+            holder.name.setText(name.get(position));
 
             Glide
                     .with(context)
@@ -356,26 +359,38 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     .placeholder(R.color.grey_50)
                     .into(holder.channelImage);
 
-            String mName = (String) name.get(position);
+            String mName = name.get(position);
 
             holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
 
+            Log.e("rd__", String.valueOf(radioSelectedPosition));
+
+//            if (radioSelectedPosition == position){
+//                holder.radioButton.setChecked(true);
+//            }
+
             holder.mainLayout.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
-                holder.radioButton.setEnabled(true);
-                holder.radioButton.setChecked(true);
-                binding.jointWorkName.setText((String) name.get(position));
+                binding.jointWorkName.setText(name.get(position));
                 binding.jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
                 jointWorkDialog.dismiss();
 
-                jointWorkSelectedEmployeeId = (String) id.get(position);
-                jointWorkSelectedEmployeeName = (String) name.get(position);
-                jointWorkSelectedEmployeeDesig = (String) desig.get(position);
+                jointWorkSelectedEmployeeId = id.get(position);
+                jointWorkSelectedEmployeeName = name.get(position);
+                jointWorkSelectedEmployeeDesig = desig.get(position);
+                radioSelectedPosition = position;
+
             });
 
             holder.radioButton.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
-                holder.radioButton.setEnabled(true);
+                binding.jointWorkName.setText(name.get(position));
+                binding.jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
+                jointWorkDialog.dismiss();
+
+                jointWorkSelectedEmployeeId = id.get(position);
+                jointWorkSelectedEmployeeName = name.get(position);
+                jointWorkSelectedEmployeeDesig = desig.get(position);
+
+                radioSelectedPosition = position;
             });
         }
 
@@ -434,6 +449,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         binding.cardToplace.setOnClickListener(this);
         binding.chillinglayout.setOnClickListener(this);
         binding.jointWorkExtraFieldLayout.setOnClickListener(v -> {
+            initJointWorkDialog();
             jointWorkDialog.show();
         });
 
@@ -596,7 +612,6 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         recyclerView.setItemViewCacheSize(20);
         JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(Mydayplan_Activity.this, jointWorkIdList, jointWorkNameList, jointWorkDesigList);
         recyclerView.setAdapter(jointWorkAdapater);
-
     }
 
 
@@ -845,11 +860,6 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
 
     private void toastMessage(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onBackPressed() {
-
     }
 
     private void GetJsonData(String jsonResponse, String type) {

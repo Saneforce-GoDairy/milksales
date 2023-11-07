@@ -159,15 +159,6 @@ public class Leave_Dashboard extends AppCompatActivity implements View.OnClickLi
             FlightTick.setVisibility(View.VISIBLE);
             flightBookStatus.setVisibility(View.VISIBLE);
         }
-
-        ImageView backView = findViewById(R.id.imag_back);
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnBackPressedDispatcher.onBackPressed();
-            }
-        });
-
         mShared_common_pref = new Shared_Common_Pref(this);
     }
 
@@ -278,9 +269,4 @@ public class Leave_Dashboard extends AppCompatActivity implements View.OnClickLi
                     finish();
                 }
             });
-
-    @Override
-    public void onBackPressed() {
-
-    }
 }

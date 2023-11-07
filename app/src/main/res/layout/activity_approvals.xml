@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar3"
-            android:layout_marginBottom="@dimen/C60dp"
             android:scrollbars="none">
 
             <LinearLayout
@@ -1383,7 +1382,5 @@
         </ScrollView>
 
     </LinearLayout>
-
-    <include layout="@layout/back_arrow"></include>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

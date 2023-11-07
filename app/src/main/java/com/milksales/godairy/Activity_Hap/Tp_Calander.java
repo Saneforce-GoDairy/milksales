@@ -702,9 +702,4 @@ public class Tp_Calander extends AppCompatActivity implements View.OnClickListen
 
                 }
             });
-
-    @Override
-    public void onBackPressed() {
-
-    }
 }

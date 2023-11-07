@@ -150,7 +150,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             linFareAmount, ldg_typ_sp, linLocalSpinner, linOtherSpinner, ldg_StylocSpinner,ldg_DrvStylocSpinner, DA_TypSpinner, DA_locSpinner, lodgCont, lodgContvw, ldg_stayloc, ldg_stayDt,
             lodgJoin, ldgEAra, ldgMyEAra, JNLdgEAra, drvldgEAra, jointLodging, vwBoarding, vwDrvBoarding, linAddplaces,
             linAddAllowance, diverAllowanceLinear, LDailyAllowance, LOtherExpense, LLocalConve, LinearOtherAllowance,
-            linlocalCon, linBusMode, linBikeMode, linMode, travelDynamicLoaction, travelPlaces, linDailyAllowance, linback, lin,
+            linlocalCon, linBusMode, linBikeMode, linMode, travelDynamicLoaction, travelPlaces, linDailyAllowance, lin,
             linImgPrv, TotalDays, stayDays, linEarly, linLate, linContinueStay, linCheckOut, vwldgBillAmt, linearConView;
     LinearLayout viewContinue, viewContinueTotal, ViewData, driverStayLocLayout, ldgGstLayout, lcGstLayout, oEGstLayout, tvGstLayout;
     RelativeLayout lnChangePlace,lnRetVehicle;
@@ -169,7 +169,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             edtFAFrom,edtFAStartKm,edtFATo,edtFACloseKm,edtFAPersonalKm,FAtravelledkm,
             edtLdgGstNum,edtLdgGstAmt, edtLdgGstBillNo, edtTVGstNum, edtTVGstAmt, edtTVGstBillNo, edtOEGstNum, edtOEGstAmt,edtOEGstBillNo, edtLCGstNum, edtLCGstAmt, edtLCGstBillNo;
     ImageView deleteButton, previewss, taAttach, lcAttach, oeAttach, lcPreview, oePreview, endkmimage, startkmimage,
-            img_lodg_prvw, img_lodg_atta, mapZoomIn, imgBck, imgEdtPlace, btnDAclose,btnVRetclose;
+            img_lodg_prvw, img_lodg_atta, mapZoomIn, imgEdtPlace, btnDAclose,btnVRetclose;
     String SF_code = "", div = "", State_Code = "", StartedKm = "", ClosingKm = "", ModeOfTravel = "", PersonalKm = "",
             DriverNeed = "", DateForAPi = "", DateTime = "", shortName = "", Exp_Name = "", Id = "", userEnter = "",
             attachment = "", maxAllowonce = "", strRetriveType = "", StrToEnd = "", StrBus = "", StrTo = "", StrDaName = "",
@@ -385,8 +385,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         mapZoomIn = findViewById(R.id.map_zoom);
         buttonSave = findViewById(R.id.save_button);
         txtTAamt = findViewById(R.id.txt_trav_loca);
-        linback = findViewById(R.id.lin_back);
-        imgBck = findViewById(R.id.imag_backs);
         txtName = findViewById(R.id.txt_Name);
         txtDesig = findViewById(R.id.txt_desg);
         txtDept = findViewById(R.id.txt_dep);
@@ -971,13 +969,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
 
         ImageView backView = findViewById(R.id.imag_back);
         backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnBackPressedDispatcher.onBackPressed();
-            }
-        });
-
-        imgBck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOnBackPressedDispatcher.onBackPressed();
@@ -5473,7 +5464,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         linAll.setVisibility(View.VISIBLE);
         linRemarks.setVisibility(View.VISIBLE);
         linFareAmount.setVisibility(View.VISIBLE);
-        linback.setVisibility(View.GONE);
     }
 
     public void getStayAllow() {
@@ -5920,10 +5910,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             uOEItems.put(Exp_Name, ULCItem);
         } catch (Exception e) {
         }
-    }
-
-    @Override
-    public void onBackPressed() {
     }
 
     /*Imageview */

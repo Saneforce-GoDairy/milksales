@@ -128,17 +128,7 @@ public class Approvals extends AppCompatActivity implements View.OnClickListener
             }
         });
 
-
         common_class = new Common_Class(this);
-
-        ImageView backView = findViewById(R.id.imag_back);
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnBackPressedDispatcher.onBackPressed();
-            }
-        });
-
 
         LeaveRequest = findViewById(R.id.lin_leave_req);
         AdvanceRequest = findViewById(R.id.lin_Advance_req);
@@ -534,13 +524,6 @@ public class Approvals extends AppCompatActivity implements View.OnClickListener
 
                 }
             });
-
-
-    @Override
-    public void onBackPressed() {
-
-    }
-
 
     @Override
     public void onLoadDataUpdateUI(String apiDataResponse, String key) {
