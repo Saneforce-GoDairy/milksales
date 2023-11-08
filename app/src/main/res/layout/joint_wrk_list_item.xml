@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="30dp">
+        <TextView
+            android:id="@+id/joint_work_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="Select"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="#272727"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/delete_"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/x"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="#272727"
+            android:textSize="13sp"
+            android:visibility="gone"/>
+
+</RelativeLayout>
