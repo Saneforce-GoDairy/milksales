@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.milksales.godairy">
+    package="com.saneforce.godairy">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -42,7 +42,7 @@
         android:required="false" />
 
     <application
-        android:name="com.milksales.godairy.SFA_Activity.HAPApp"
+        android:name=".SFA_Activity.HAPApp"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -56,65 +56,65 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.ChallanActivity"
+            android:name=".SFA_Activity.ChallanActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.CameraxActivity"
+            android:name=".Activity_Hap.CameraxActivity"
             android:exported="false" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.ImageCapture"
+            android:name=".Activity_Hap.ImageCapture"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Checkin"
+            android:name=".Activity_Hap.Checkin"
             android:exported="false" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.LoginHome"
+            android:name=".Activity_Hap.LoginHome"
             android:exported="false" />
         <activity
-            android:name="com.milksales.godairy.Activity.TestActivity"
+            android:name=".Activity.TestActivity"
             android:exported="false" />
         <activity
-            android:name="com.milksales.godairy.CCAvenue.StatusActivity"
+            android:name=".CCAvenue.StatusActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.CCAvenue.WebViewActivity"
+            android:name=".CCAvenue.WebViewActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.CCAvenue.InitiatePaymentActivity"
+            android:name=".CCAvenue.InitiatePaymentActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.JioMoney.PaymentWebView"
+            android:name=".JioMoney.PaymentWebView"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.FeedbackActivitySFA"
+            android:name=".SFA_Activity.FeedbackActivitySFA"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.AddNewDistributor"
+            android:name=".SFA_Activity.AddNewDistributor"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -122,7 +122,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.CancelledOrdersActivity"
+            android:name=".SFA_Activity.CancelledOrdersActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -130,7 +130,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.SalesReturnHistoryActivity"
+            android:name=".SFA_Activity.SalesReturnHistoryActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -138,7 +138,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.SalesReturnActivity"
+            android:name=".SFA_Activity.SalesReturnActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -146,7 +146,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.GRN_Invoice"
+            android:name=".SFA_Activity.GRN_Invoice"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -154,7 +154,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.GRN_Print_Invoice_Activity"
+            android:name=".SFA_Activity.GRN_Print_Invoice_Activity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -162,7 +162,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.GrnPendingActivity"
+            android:name=".SFA_Activity.GrnPendingActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -170,7 +170,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.GrnHistory"
+            android:name=".SFA_Activity.GrnHistory"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -178,11 +178,11 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.InshopViewActivity"
+            android:name=".SFA_Activity.InshopViewActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.TP_Approval_Status"
+            android:name=".Activity_Hap.TP_Approval_Status"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -190,11 +190,11 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.TP_Approval_Details"
+            android:name=".Activity_Hap.TP_Approval_Details"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.LedgerHistoryActivity"
+            android:name=".SFA_Activity.LedgerHistoryActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -202,7 +202,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.PrimaryOrderReportActivity"
+            android:name=".SFA_Activity.PrimaryOrderReportActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -210,7 +210,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.ComplementaryInvoiceHistory"
+            android:name=".SFA_Activity.ComplementaryInvoiceHistory"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -218,7 +218,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.CompementaryInvoiceActivity"
+            android:name=".SFA_Activity.CompementaryInvoiceActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -226,7 +226,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.PendingOrdersActivity"
+            android:name=".SFA_Activity.PendingOrdersActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -234,7 +234,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.POSStockLoadingActivity"
+            android:name=".SFA_Activity.POSStockLoadingActivity"
             android:exported="false"
             android:label="@string/title_activity_posstock_loading"
             android:screenOrientation="nosensor"
@@ -244,7 +244,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.ApprovalHistoryActivity"
+            android:name=".SFA_Activity.ApprovalHistoryActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -252,7 +252,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.PendingOutletsCategory"
+            android:name=".SFA_Activity.PendingOutletsCategory"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -260,7 +260,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.ApproveOutletsDetailedActivity"
+            android:name=".Activity_Hap.ApproveOutletsDetailedActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -268,7 +268,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.ApproveOutletsActivity"
+            android:name=".SFA_Activity.ApproveOutletsActivity"
             android:exported="false"
             android:screenOrientation="nosensor">
             <meta-data
@@ -276,7 +276,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.POSViewEntryActivity"
+            android:name=".SFA_Activity.POSViewEntryActivity"
             android:exported="false"
             android:screenOrientation="portrait" /> <!-- <activity -->
         <!-- android:name=".Activity_Hap.TP_Approval_Status" -->
@@ -287,121 +287,121 @@
         <!-- android:exported="false" -->
         <!-- android:screenOrientation="portrait" /> -->
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.NewJoinEntry"
+            android:name=".Activity_Hap.NewJoinEntry"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.NewJoineeApproval"
+            android:name=".Activity_Hap.NewJoineeApproval"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.NewJoineeApproval_Reject"
+            android:name=".Activity_Hap.NewJoineeApproval_Reject"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Invoice_Vansales_Select"
+            android:name=".Activity_Hap.Invoice_Vansales_Select"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.POS_SalesEntryActivity"
+            android:name=".SFA_Activity.POS_SalesEntryActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.InshopRetailerActivity"
+            android:name=".SFA_Activity.InshopRetailerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.InshopOutletActivity"
+            android:name=".SFA_Activity.InshopOutletActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.InshopCheckoutActivity"
+            android:name=".SFA_Activity.InshopCheckoutActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.InshopCheckinActivity"
+            android:name=".SFA_Activity.InshopCheckinActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.InshopActivity"
+            android:name=".SFA_Activity.InshopActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.AdvanceReq"
+            android:name=".Activity_Hap.AdvanceReq"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.Advance_Status_Activity"
+            android:name=".Status_Activity.Advance_Status_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Advance_Approval_Reject"
+            android:name=".Activity_Hap.Advance_Approval_Reject"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Advance_Approval"
+            android:name=".Activity_Hap.Advance_Approval"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.VanSalPaymentActivity"
+            android:name=".SFA_Activity.VanSalPaymentActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.PaymentActivity"
+            android:name=".SFA_Activity.PaymentActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.HistoryInfoActivity"
+            android:name=".SFA_Activity.HistoryInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.MyTeamActivity"
+            android:name=".SFA_Activity.MyTeamActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.PayLedgerActivity"
+            android:name=".SFA_Activity.PayLedgerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.FlightBooking_Approval_History"
+            android:name=".Activity_Hap.FlightBooking_Approval_History"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.DashboardInfoActivity"
+            android:name=".SFA_Activity.DashboardInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.MapDirectionActivity"
+            android:name=".SFA_Activity.MapDirectionActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.TACumulativeApproval" />
-        <activity android:name="com.milksales.godairy.Activity.FuleEntryActivity" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.DaExceptionStatus" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.DaExceptionReject" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.DAExcApproval" />
-        <activity android:name="com.milksales.godairy.SFA_Activity.SalesCallsActivity" />
-        <activity android:name="com.milksales.godairy.SFA_Activity.SFADCRActivity" />
+        <activity android:name=".Activity_Hap.TACumulativeApproval" />
+        <activity android:name=".Activity.FuleEntryActivity" />
+        <activity android:name=".Activity_Hap.DaExceptionStatus" />
+        <activity android:name=".Activity_Hap.DaExceptionReject" />
+        <activity android:name=".Activity_Hap.DAExcApproval" />
+        <activity android:name=".SFA_Activity.SalesCallsActivity" />
+        <activity android:name=".SFA_Activity.SFADCRActivity" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.TaFuelEdit"
+            android:name=".Activity_Hap.TaFuelEdit"
             android:theme="@style/AppTheme.Dialog" />
-        <activity android:name="com.milksales.godairy.Activity.ModeOfTravel" />
-        <activity android:name="com.milksales.godairy.Activity.TAViewStatus" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.ViewTAStatus" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.FlightTicketRequest" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.CateenToken" />
-        <activity android:name="com.milksales.godairy.Common_Class.ToolBarMethod" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.foodExp" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.PayslipFtp" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.Leave_Cancel_Approval" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.Leave_Cancel_Approval_Reject" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.Deviation_Entry_Approval" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.Deviation_Approval_Reject" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.Holiday_Entry_Approval" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.Holiday_Approval_Reject" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.FlightBookingApproval" />
-        <activity android:name="com.milksales.godairy.Activity_Hap.DaExceptionEntry" />
-        <activity android:name="com.milksales.godairy.Activity.LodgingCliamActivity" />
+        <activity android:name=".Activity.ModeOfTravel" />
+        <activity android:name=".Activity.TAViewStatus" />
+        <activity android:name=".Activity_Hap.ViewTAStatus" />
+        <activity android:name=".Activity_Hap.FlightTicketRequest" />
+        <activity android:name=".Activity_Hap.CateenToken" />
+        <activity android:name=".Common_Class.ToolBarMethod" />
+        <activity android:name=".Activity_Hap.foodExp" />
+        <activity android:name=".Activity_Hap.PayslipFtp" />
+        <activity android:name=".Activity_Hap.Leave_Cancel_Approval" />
+        <activity android:name=".Activity_Hap.Leave_Cancel_Approval_Reject" />
+        <activity android:name=".Activity_Hap.Deviation_Entry_Approval" />
+        <activity android:name=".Activity_Hap.Deviation_Approval_Reject" />
+        <activity android:name=".Activity_Hap.Holiday_Entry_Approval" />
+        <activity android:name=".Activity_Hap.Holiday_Approval_Reject" />
+        <activity android:name=".Activity_Hap.FlightBookingApproval" />
+        <activity android:name=".Activity_Hap.DaExceptionEntry" />
+        <activity android:name=".Activity.LodgingCliamActivity" />
         <activity
-            android:name="com.milksales.godairy.Activity.PDFActivity"
+            android:name=".Activity.PDFActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dialogs" />
         <activity
-            android:name="com.milksales.godairy.Activity.PdfViewerActivity"
+            android:name=".Activity.PdfViewerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -413,126 +413,126 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        <activity android:name="com.milksales.godairy.Activity.FuelAllowance" />
-        <activity android:name="com.milksales.godairy.Activity.TL_cliam_Apprval" />
-        <activity android:name="com.milksales.godairy.Activity.OEClaimActivity" />
-        <activity android:name="com.milksales.godairy.Activity.LocalConvenActivity" />
-        <activity android:name="com.milksales.godairy.Activity.DAClaimActivity" />
-        <activity android:name="com.milksales.godairy.SFA_Activity.Outet_Report_Details" />
-        <activity android:name="com.milksales.godairy.SFA_Activity.Outlet_Report_View" />
-        <activity android:name="com.milksales.godairy.SFA_Activity.Reports_Outler_Name" />
+        <activity android:name=".Activity.FuelAllowance" />
+        <activity android:name=".Activity.TL_cliam_Apprval" />
+        <activity android:name=".Activity.OEClaimActivity" />
+        <activity android:name=".Activity.LocalConvenActivity" />
+        <activity android:name=".Activity.DAClaimActivity" />
+        <activity android:name=".SFA_Activity.Outet_Report_Details" />
+        <activity android:name=".SFA_Activity.Outlet_Report_View" />
+        <activity android:name=".SFA_Activity.Reports_Outler_Name" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.ReportsListActivity"
+            android:name=".SFA_Activity.ReportsListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.WebReportsActivity"
+            android:name=".SFA_Activity.WebReportsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.OutletApprovListActivity"
+            android:name=".SFA_Activity.OutletApprovListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.ProjectionApprovListActivity"
+            android:name=".SFA_Activity.ProjectionApprovListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Outlet_Status_Activity"
+            android:name=".SFA_Activity.Outlet_Status_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.OutletApprovActiviy"
+            android:name=".SFA_Activity.OutletApprovActiviy"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Reports_Distributor_Name"
+            android:name=".SFA_Activity.Reports_Distributor_Name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Order_Category_Select"
+            android:name=".SFA_Activity.Order_Category_Select"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.ProjectionCategorySelectActivity"
+            android:name=".SFA_Activity.ProjectionCategorySelectActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.StockAuditCategorySelectActivity"
+            android:name=".SFA_Activity.StockAuditCategorySelectActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Grn_Category_Select"
+            android:name=".SFA_Activity.Grn_Category_Select"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.GrnListActivity"
+            android:name=".SFA_Activity.GrnListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.IndentActivity"
+            android:name=".SFA_Activity.IndentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.POSActivity"
+            android:name=".SFA_Activity.POSActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.PrimaryOrderActivity"
+            android:name=".SFA_Activity.PrimaryOrderActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.TodayPrimOrdActivity"
+            android:name=".SFA_Activity.TodayPrimOrdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.PosHistoryActivity"
+            android:name=".SFA_Activity.PosHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.ProjectionHistoryActivity"
+            android:name=".SFA_Activity.ProjectionHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Invoice_History"
+            android:name=".SFA_Activity.Invoice_History"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.VanSalesOrderActivity"
+            android:name=".SFA_Activity.VanSalesOrderActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.VanSalStockUnLoadActivity"
+            android:name=".SFA_Activity.VanSalStockUnLoadActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.VanSalStockLoadActivity"
+            android:name=".SFA_Activity.VanSalStockLoadActivity"
             android:screenOrientation="portrait" /> <!-- <activity -->
         <!-- android:name=".SFA_Activity.VanSalPaymentActivity" -->
         <!-- android:screenOrientation="portrait" /> -->
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.TAHistory"
+            android:name=".Activity_Hap.TAHistory"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.VanStockViewActivity"
+            android:name=".SFA_Activity.VanStockViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.More_Info_Activity"
+            android:name=".SFA_Activity.More_Info_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Dist_Locations"
+            android:name=".SFA_Activity.Dist_Locations"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Route_Product_Info"
+            android:name=".SFA_Activity.Route_Product_Info"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Outlet_Info_Activity"
+            android:name=".SFA_Activity.Outlet_Info_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Dashboard_Route"
+            android:name=".SFA_Activity.Dashboard_Route"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.VanSalesDashboardRoute"
+            android:name=".SFA_Activity.VanSalesDashboardRoute"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Dashboard_View_Activity"
+            android:name=".SFA_Activity.Dashboard_View_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.SFA_Dashboard"
+            android:name=".SFA_Activity.SFA_Dashboard"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.New_Outlet_Map_creations"
+            android:name=".SFA_Activity.New_Outlet_Map_creations"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Dashboard_Order_Reports"
+            android:name=".SFA_Activity.Dashboard_Order_Reports"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Offline_Sync_Activity"
+            android:name=".SFA_Activity.Offline_Sync_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Nearby_Outlets"
+            android:name=".SFA_Activity.Nearby_Outlets"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Print_Invoice_Activity"
+            android:name=".SFA_Activity.Print_Invoice_Activity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -545,239 +545,239 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        <activity android:name="com.milksales.godairy.SFA_Activity.Lead_Activity" />
+        <activity android:name=".SFA_Activity.Lead_Activity" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.SFA_Activity"
+            android:name=".Activity_Hap.SFA_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.AttachementActivity"
+            android:name=".Activity_Hap.AttachementActivity"
             android:theme="@style/AppTheme.Dialogs" />
         <activity
-            android:name="com.milksales.godairy.Activity.TaApprovalDisplay"
+            android:name=".Activity.TaApprovalDisplay"
             android:label="@string/title_activity_ta_approval_display"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.MapZoomIn"
+            android:name=".Activity_Hap.MapZoomIn"
             android:theme="@style/AppTheme.Dialogs" /> <!-- <activity -->
         <!-- android:name=".Activity_Hap.TravelAllowanceForm" -->
         <!-- android:theme="@style/AppTheme.Dialog" /> -->
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.QRCodeScanner"
+            android:name=".Activity_Hap.QRCodeScanner"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.AllowancCapture"
+            android:name=".Activity_Hap.AllowancCapture"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.LeaveReasonStatus"
+            android:name=".Activity_Hap.LeaveReasonStatus"
             android:theme="@style/AppTheme.Dialog" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.ERT"
+            android:name=".Activity_Hap.ERT"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.LeaveCancelRequestStatus"
+            android:name=".Activity_Hap.LeaveCancelRequestStatus"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.DeviationEntryStatus"
+            android:name=".Activity_Hap.DeviationEntryStatus"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.HolidayEntryStatus"
+            android:name=".Activity_Hap.HolidayEntryStatus"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.DeviationEntry"
+            android:name=".Activity_Hap.DeviationEntry"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.PrivacyPolicy"
+            android:name=".Activity_Hap.PrivacyPolicy"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity.AllowanceActivityTwo"
+            android:name=".Activity.AllowanceActivityTwo"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.EventCaptureActivity"
+            android:name=".Activity_Hap.EventCaptureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.OrderCategoryActivity"
+            android:name=".Activity_Hap.OrderCategoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.AddNewRetailer"
+            android:name=".Activity_Hap.AddNewRetailer"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.SecondaryOrderActivity"
+            android:name=".Activity_Hap.SecondaryOrderActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.OrderDashBoard"
+            android:name=".Activity_Hap.OrderDashBoard"
             android:screenOrientation="portrait" /> <!-- <activity -->
         <!-- android:name=".Activity.ApprovalViewActivity" -->
         <!-- android:screenOrientation="portrait" /> -->
         <activity
-            android:name="com.milksales.godairy.Activity.TAClaimActivity"
+            android:name=".Activity.TAClaimActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
-            android:name="com.milksales.godairy.Activity.TAClaimAwsActivity"
+            android:name=".Activity.TAClaimAwsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
-            android:name="com.milksales.godairy.Activity.TAApprovalActivity"
+            android:name=".Activity.TAApprovalActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity.AllowanceActivity"
+            android:name=".Activity.AllowanceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Block_Information"
+            android:name=".Activity_Hap.Block_Information"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Extendedshift_approval"
+            android:name=".Activity_Hap.Extendedshift_approval"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Onduty_approval"
+            android:name=".Activity_Hap.Onduty_approval"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Leave_Approval"
+            android:name=".Activity_Hap.Leave_Approval"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity.ViewActivity"
+            android:name=".Activity.ViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity.ProcPrimaryOrderActivity"
+            android:name=".Activity.ProcPrimaryOrderActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Reports"
+            android:name=".Activity_Hap.Reports"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Dashboard_Two"
+            android:name=".Activity_Hap.Dashboard_Two"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Weekly_Off"
+            android:name=".Activity_Hap.Weekly_Off"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Missed_Punch"
+            android:name=".Activity_Hap.Missed_Punch"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Permission_Request"
+            android:name=".Activity_Hap.Permission_Request"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Leave_Request"
+            android:name=".Activity_Hap.Leave_Request"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Leave_Dashboard"
+            android:name=".Activity_Hap.Leave_Dashboard"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Approvals"
+            android:name=".Activity_Hap.Approvals"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.Extended_Shift_Activity"
+            android:name=".Status_Activity.Extended_Shift_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.WeekOff_Status_Activity"
+            android:name=".Status_Activity.WeekOff_Status_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.MissedPunch_Status_Activity"
+            android:name=".Status_Activity.MissedPunch_Status_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.Leave_Status_Activity"
+            android:name=".Status_Activity.Leave_Status_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.FlightBooking_Status_Activity"
+            android:name=".Status_Activity.FlightBooking_Status_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.Permission_Status_Activity"
+            android:name=".Status_Activity.Permission_Status_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.Onduty_Status_Activity"
+            android:name=".Status_Activity.Onduty_Status_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Status_Activity.View_All_Status_Activity"
+            android:name=".Status_Activity.View_All_Status_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Tp_Mydayplan"
+            android:name=".Activity_Hap.Tp_Mydayplan"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Tp_Calander"
+            android:name=".Activity_Hap.Tp_Calander"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Mydayplan_Activity"
+            android:name=".Activity_Hap.Mydayplan_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Tp_Month_Select"
+            android:name=".Activity_Hap.Tp_Month_Select"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Tp_Approval"
+            android:name=".Activity_Hap.Tp_Approval"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.QPS_Approval"
+            android:name=".Activity_Hap.QPS_Approval"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Tp_Approval_Reject"
+            android:name=".Activity_Hap.Tp_Approval_Reject"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Leave_Approval_Reject"
+            android:name=".Activity_Hap.Leave_Approval_Reject"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Permission_Approval"
+            android:name=".Activity_Hap.Permission_Approval"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Permission_Approval_Reject"
+            android:name=".Activity_Hap.Permission_Approval_Reject"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Onduty_Approval_Reject"
+            android:name=".Activity_Hap.Onduty_Approval_Reject"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Webview_Activity"
+            android:name=".Activity_Hap.Webview_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Missed_punch_Approval"
+            android:name=".Activity_Hap.Missed_punch_Approval"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Missed_Punch_Approval_Reject"
+            android:name=".Activity_Hap.Missed_Punch_Approval_Reject"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Extended_Approval_Reject"
+            android:name=".Activity_Hap.Extended_Approval_Reject"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.ViewCartActivity"
+            android:name=".Activity_Hap.ViewCartActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.ReportActivity"
+            android:name=".Activity_Hap.ReportActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.ViewReportActivity"
+            android:name=".Activity_Hap.ViewReportActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.TimeOut"
+            android:name=".Activity_Hap.TimeOut"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.On_Duty_Activity"
+            android:name=".Activity_Hap.On_Duty_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Help_Activity"
+            android:name=".Activity_Hap.Help_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.UpdateTaskActivity"
+            android:name=".Activity_Hap.UpdateTaskActivity"
             android:theme="@style/AppTheme.Dialog" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Dashboard"
+            android:name=".Activity_Hap.Dashboard"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.Login"
+            android:name=".Activity_Hap.Login"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.ProductImageView"
+            android:name=".Activity_Hap.ProductImageView"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
 
         <service
-            android:name="com.milksales.godairy.common.SANGPSTracker"
+            android:name=".common.SANGPSTracker"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name="com.milksales.godairy.common.TimerService"
+            android:name=".common.TimerService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="com.milksales.godairy.common.FileUploadService"
+            android:name=".common.FileUploadService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
@@ -786,7 +786,7 @@
             android:enabled="true" />
 
         <activity
-            android:name="com.milksales.godairy.Activity_Hap.MainActivity"
+            android:name=".Activity_Hap.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -831,22 +831,22 @@
         <!-- </intent-filter> -->
         <!-- </activity-alias> -->
         <activity
-            android:name="com.milksales.godairy.Activity.ProcurementDashboardActivity"
+            android:name=".Activity.ProcurementDashboardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.Invoice_Category_Select"
+            android:name=".SFA_Activity.Invoice_Category_Select"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.CoolerInfoActivity"
+            android:name=".SFA_Activity.CoolerInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.POPActivity"
+            android:name=".SFA_Activity.POPActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.QPSActivity"
+            android:name=".SFA_Activity.QPSActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.milksales.godairy.SFA_Activity.OtherBrandActivity"
+            android:name=".SFA_Activity.OtherBrandActivity"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -876,14 +876,14 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/black" /> <!-- Notification -->
         <service
-            android:name="com.milksales.godairy.PushNotification.MyFirebaseMessagingService"
+            android:name=".PushNotification.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service> <!-- Broadcast receiver declaration in manifest file and make sure to enable it -->
         <receiver
-            android:name="com.milksales.godairy.common.ConnectivityReceiver"
+            android:name=".common.ConnectivityReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -895,13 +895,13 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.milksales.godairy.common.AlmReceiver"
+            android:name=".common.AlmReceiver"
             android:enabled="true" />
-        <receiver android:name="com.milksales.godairy.SFA_Activity.GeofenceBroadcastReceiver" />
+        <receiver android:name=".SFA_Activity.GeofenceBroadcastReceiver" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.milksales.godairy"
+            android:authorities="com.saneforce.godairy"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

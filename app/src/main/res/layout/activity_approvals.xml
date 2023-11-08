@@ -323,6 +323,7 @@
                             layout="@layout/part_view" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_on_duty"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -374,9 +375,11 @@
 
                         <include
                             android:id="@+id/llOnDuty"
-                            layout="@layout/part_view" />
+                            layout="@layout/part_view"
+                            android:visibility="gone" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_newjoin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -428,7 +431,8 @@
 
                         <include
                             android:id="@+id/llNewJoin"
-                            layout="@layout/part_view" />
+                            layout="@layout/part_view"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:id="@+id/lin_miss_punch"
@@ -488,6 +492,7 @@
                             layout="@layout/part_view" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_ext_shift_status"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -540,9 +545,10 @@
                         <include
                             android:id="@+id/llExtndSft"
                             layout="@layout/part_view"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_FlightAppr"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -594,7 +600,8 @@
 
                         <include
                             android:id="@+id/llFlightAppr"
-                            layout="@layout/part_view" />
+                            layout="@layout/part_view"
+                            android:visibility="gone" />
                         <LinearLayout
                             android:id="@+id/lin_travel_allow"
                             android:layout_width="match_parent"
@@ -761,6 +768,7 @@
                             layout="@layout/part_view" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_holidayentryApproval"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -984,6 +992,7 @@
                         <include layout="@layout/part_view" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_duty_sta"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1012,7 +1021,8 @@
                             </RelativeLayout>
                         </LinearLayout>
 
-                        <include layout="@layout/part_view" />
+                        <include layout="@layout/part_view"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:id="@+id/lin_miss_sta"
@@ -1077,9 +1087,11 @@
 
                         </LinearLayout>
 
-                        <include layout="@layout/part_view" />
+                        <include layout="@layout/part_view"
+                            android:visibility="gone" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_ext_shift"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1109,7 +1121,8 @@
 
                         </LinearLayout>
 
-                        <include layout="@layout/part_view" />
+                        <include layout="@layout/part_view"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:id="@+id/lin_travel_histry"
@@ -1211,7 +1224,8 @@
 
                         </LinearLayout>
 
-                        <include layout="@layout/part_view" />
+                        <include layout="@layout/part_view"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:id="@+id/lin_leavecancel_histry"
@@ -1283,6 +1297,7 @@
                             android:visibility="gone" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_leaveholidaystatus"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1312,9 +1327,11 @@
 
                         </LinearLayout>
 
-                        <include layout="@layout/part_view" />
+                        <include layout="@layout/part_view"
+                            android:visibility="gone" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_da_excep_status"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1343,9 +1360,11 @@
                             </RelativeLayout>
 
                         </LinearLayout>
-                        <include layout="@layout/part_view" />
+                        <include layout="@layout/part_view"
+                            android:visibility="gone" />
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:id="@+id/lin_FlightApprHist"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
