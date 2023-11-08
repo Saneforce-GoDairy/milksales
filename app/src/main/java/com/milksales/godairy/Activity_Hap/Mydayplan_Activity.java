@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -139,8 +140,12 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     ArrayList<String> jointWorkIdList;
     ArrayList<String> jointWorkDesigList;
     boolean ExpNeed = false;
-    private int radioSelectedPosition;
     ArrayList<String> arrayList;
+    ArrayList<String> arrayListId;
+    RecyclerView recyclerView;
+    String commaseparatedlistName;
+    String commaseparatedlistId;
+    JointWorkSelectedAdapter jointWorkSelectedAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +154,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         View view = binding.getRoot();
         setContentView(view);
 
-        arrayList = new ArrayList<>();
+        arrayList = new ArrayList<String>();
+        arrayListId = new ArrayList<String>();
 
         db = new DatabaseHandler(context);
         UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
@@ -282,6 +288,52 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                         .into(binding.pImage);
             }
         }
+
+        initJointWorkSelectedRecyclerView();
+
+        binding.selectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                arrayList.clear();
+//                arrayListId.clear();
+             //   initJointWorkDialog();
+                jointWorkDialog.show();
+            }
+        });
+
+        binding.clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.clear();
+                arrayListId.clear();
+
+                initJointWorkDialogFresh();
+                jointWorkSelectedAdapter.notifyDataSetChanged();
+                binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void initJointWorkDialogFresh() {
+        RecyclerView recyclerView = jointWorkDialog.findViewById(R.id.primaryChannelList);
+        recyclerView.setEnabled(true);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemViewCacheSize(20);
+        JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(Mydayplan_Activity.this, jointWorkIdList, jointWorkNameList, jointWorkDesigList);
+        recyclerView.setAdapter(jointWorkAdapater);
+    }
+
+    private void initJointWorkSelectedRecyclerView() {
+        recyclerView = findViewById(R.id.recycler_view_jw);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     private void loadExtraField() {
@@ -363,34 +415,47 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
 
             holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
 
-            Log.e("rd__", String.valueOf(radioSelectedPosition));
-
-//            if (radioSelectedPosition == position){
-//                holder.radioButton.setChecked(true);
-//            }
+            holder.radioButton.setChecked(false);
 
             holder.mainLayout.setOnClickListener(view -> {
-                binding.jointWorkName.setText(name.get(position));
-                binding.jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
-                jointWorkDialog.dismiss();
-
-                jointWorkSelectedEmployeeId = id.get(position);
-                jointWorkSelectedEmployeeName = name.get(position);
-                jointWorkSelectedEmployeeDesig = desig.get(position);
-                radioSelectedPosition = position;
-
             });
 
             holder.radioButton.setOnClickListener(view -> {
-                binding.jointWorkName.setText(name.get(position));
-                binding.jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
-                jointWorkDialog.dismiss();
+                boolean isChecked = ((CheckBox)view).isChecked();
 
-                jointWorkSelectedEmployeeId = id.get(position);
-                jointWorkSelectedEmployeeName = name.get(position);
-                jointWorkSelectedEmployeeDesig = desig.get(position);
+                if (isChecked){
+                    arrayList.add(name.get(position));
+                    arrayListId.add(id.get(position));
+                }else {
+                    if (arrayListId.contains(id.get(position))){
+                        arrayList.remove(name.get(position));
+                        arrayListId.remove(id.get(position));
 
-                radioSelectedPosition = position;
+                        JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(Mydayplan_Activity.this, arrayList);
+                        recyclerView.setAdapter(jointWorkSelectedAdapter);
+                        jointWorkSelectedAdapter.notifyDataSetChanged();
+
+                        StringBuilder str = new StringBuilder("");
+
+                        for (String eachstring : arrayList) {
+                            str.append(eachstring).append(",");
+                        }
+                        commaseparatedlistName = str.toString();
+
+                        StringBuilder str2 = new StringBuilder("");
+
+                        for (String eachstring : arrayListId) {
+                            str2.append(eachstring).append(",");
+                        }
+                        commaseparatedlistId = str2.toString();
+
+                        if (commaseparatedlistId.equals("")){
+                            arrayList.clear();
+                            arrayListId.clear();
+                            binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
             });
         }
 
@@ -402,7 +467,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         public class ViewHolder extends RecyclerView.ViewHolder{
             private final TextView name, nameLetter;
             private final CardView mainLayout;
-            private final RadioButton radioButton;
+            private final CheckBox radioButton;
             private final ImageView channelImage;
 
             public ViewHolder(@NonNull View itemView) {
@@ -449,7 +514,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         binding.cardToplace.setOnClickListener(this);
         binding.chillinglayout.setOnClickListener(this);
         binding.jointWorkExtraFieldLayout.setOnClickListener(v -> {
-            initJointWorkDialog();
+//            initJointWorkDialog();
             jointWorkDialog.show();
         });
 
@@ -458,10 +523,13 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String workType = binding.spinnerWorkType.getSelectedItem().toString();
                 if (workType.equals("Joint Work")){
-                    binding.jointWorkExtraFieldLayout.setVisibility(View.GONE);
-                    initJointWorkDialog();
-
+                    binding.jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
+                    initJointWorkDialog3();
+                    jointWorkSelectedAdapter = new JointWorkSelectedAdapter(Mydayplan_Activity.this, arrayList);
+                    recyclerView.setAdapter(jointWorkSelectedAdapter);
+                    jointWorkSelectedAdapter.notifyDataSetChanged();
                 }else {
+                    arrayList.clear();
                     binding.jointWorkExtraFieldLayout.setVisibility(View.GONE);
                 }
             }
@@ -517,8 +585,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     jsonobj.put("MOT_ID", addquote(modeId));
                     jsonobj.put("To_Place_ID", addquote(toId));
                     jsonobj.put("Mode_Travel_ID", addquote(startEnd));
-                    jsonobj.put("worked_with", addquote(jointWorkSelectedEmployeeName));
-                    jsonobj.put("jointWorkCode", addquote(jointWorkSelectedEmployeeId));
+                    jsonobj.put("worked_with", addquote(commaseparatedlistName));
+                    jsonobj.put("jointWorkCode", addquote(commaseparatedlistId));
                     JSONArray personarray = new JSONArray();
                     JSONObject ProductJson_Object;
                     for (int z = 0; z < dynamicarray.size(); z++) {
@@ -561,37 +629,174 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     QueryString.put("axn", "save/dayplandynamic");
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<Object> Callto = apiInterface.Tb_Mydayplannew(QueryString, jsonarr.toString());
-                    Callto.enqueue(new Callback<>() {
-                        @Override
-                        public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
-                            common_class.ProgressdialogShow(2, "Tour  plan");
-                            if (response.code() == 200 || response.code() == 201) {
-                                if (worktype_id.equalsIgnoreCase("43")) {
-                                    common_class.CommonIntentwithFinish(Dashboard.class);
-                                    shared_common_pref.save("worktype", worktype_id);
-                                } else if (ExpNeed) {
-                                    Intent intent = new Intent(Mydayplan_Activity.this, AllowanceActivity.class);
-                                    intent.putExtra("My_Day_Plan", "One");
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    common_class.CommonIntentwithFinish(Dashboard.class);
-                                }
-                                Toast.makeText(Mydayplan_Activity.this, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
-                            common_class.ProgressdialogShow(2, "Tour  plan");
-                            Log.e("Reponse TAG", "onFailure : " + t);
-                        }
-                    });
+//                    Callto.enqueue(new Callback<>() {
+//                        @Override
+//                        public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
+//                            common_class.ProgressdialogShow(2, "Tour  plan");
+//                            if (response.code() == 200 || response.code() == 201) {
+//                                if (worktype_id.equalsIgnoreCase("43")) {
+//                                    common_class.CommonIntentwithFinish(Dashboard.class);
+//                                    shared_common_pref.save("worktype", worktype_id);
+//                                } else if (ExpNeed) {
+//                                    Intent intent = new Intent(Mydayplan_Activity.this, AllowanceActivity.class);
+//                                    intent.putExtra("My_Day_Plan", "One");
+//                                    startActivity(intent);
+//                                    finish();
+//                                } else {
+//                                    common_class.CommonIntentwithFinish(Dashboard.class);
+//                                }
+//                                Toast.makeText(Mydayplan_Activity.this, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
+//                            common_class.ProgressdialogShow(2, "Tour  plan");
+//                            Log.e("Reponse TAG", "onFailure : " + t);
+//                        }
+//                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+
+        binding.recyclerViewJw.setOnClickListener(v -> {
+//                initJointWorkDialog();
+//                jointWorkDialog.show();
+        });
+    }
+
+    public class JointWorkSelectedAdapter extends RecyclerView.Adapter<JointWorkSelectedAdapter.ViewHolder> {
+        ArrayList<String> name;
+        Context context;
+
+        public JointWorkSelectedAdapter(Context context, ArrayList<String> name){
+            this.context = context;
+            this.name = name;
+        }
+
+        @NonNull
+        @Override
+        public JointWorkSelectedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.joint_wrk_list_item, parent, false);
+            JointWorkSelectedAdapter.ViewHolder viewHolder = new JointWorkSelectedAdapter.ViewHolder(view);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull JointWorkSelectedAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+            //  String res = (String) name.get(position);
+            holder.nameText.setText(name.get(position));
+
+            holder.nameText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    jointWorkDialog.show();
+                }
+            });
+
+            holder.deleteText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (arrayList.contains(name.get(position))) {
+                        arrayList.remove(name.get(position));
+                        JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(Mydayplan_Activity.this, arrayList);
+                        recyclerView.setAdapter(jointWorkSelectedAdapter);
+                        jointWorkSelectedAdapter.notifyDataSetChanged();
+
+                        StringBuilder str = new StringBuilder("");
+                        for (String eachstring : arrayList) {
+                            str.append(eachstring).append(",");
+                        }
+                        commaseparatedlistName = str.toString();
+
+                        StringBuilder str2 = new StringBuilder("");
+
+                        for (String eachstring : arrayListId) {
+                            str2.append(eachstring).append(",");
+                        }
+                        commaseparatedlistId = str2.toString();
+
+                        if (commaseparatedlistId.equals("")) {
+                            arrayList.clear();
+                            arrayListId.clear();
+                            binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return name.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView nameText;
+            ImageView deleteText;
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                nameText = itemView.findViewById(R.id.joint_work_name);
+                deleteText = itemView.findViewById(R.id.delete_);
+            }
+        }
+    }
+
+    private void initJointWorkDialog3() {
+        jointWorkDialog = new Dialog(Mydayplan_Activity.this);
+        jointWorkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        jointWorkDialog.setContentView(R.layout.model_dialog_joint_work);
+        Objects.requireNonNull(jointWorkDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+  //      jointWorkDialog.show();
+
+        RelativeLayout ok = jointWorkDialog.findViewById(R.id.ok_btn);
+        ok.setEnabled(true);
+
+        ok.setOnClickListener(v -> {
+            binding.jointWorkNameTemp.setVisibility(View.GONE);
+            jointWorkDialog.dismiss();
+            JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(Mydayplan_Activity.this, arrayList);
+            recyclerView.setAdapter(jointWorkSelectedAdapter);
+            jointWorkSelectedAdapter.notifyDataSetChanged();
+
+            // final comma operation for name
+            StringBuilder str = new StringBuilder("");
+
+            // Traversing the ArrayList name
+            for (String eachstring : arrayList) {
+                str.append(eachstring).append(",");
+            }
+            commaseparatedlistName = str.toString();
+
+            // final operation for id
+            StringBuilder str2 = new StringBuilder("");
+
+            // Traversing the ArrayList name
+            for (String eachstring : arrayListId) {
+                str2.append(eachstring).append(",");
+            }
+            commaseparatedlistId = str2.toString();
+
+            if (commaseparatedlistId.equals("")){
+                arrayList.clear();
+                arrayListId.clear();
+                binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
+            }
+        });
+
+        RecyclerView recyclerView = jointWorkDialog.findViewById(R.id.primaryChannelList);
+        recyclerView.setEnabled(true);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemViewCacheSize(20);
+        JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(Mydayplan_Activity.this, jointWorkIdList, jointWorkNameList, jointWorkDesigList);
+        recyclerView.setAdapter(jointWorkAdapater);
     }
 
     private void initJointWorkDialog() {
@@ -600,6 +805,46 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         jointWorkDialog.setContentView(R.layout.model_dialog_joint_work);
         Objects.requireNonNull(jointWorkDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         jointWorkDialog.show();
+
+        Button ok = jointWorkDialog.findViewById(R.id.ok_btn);
+        ok.setEnabled(true);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.jointWorkNameTemp.setVisibility(View.GONE);
+                jointWorkDialog.dismiss();
+                JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(Mydayplan_Activity.this, arrayList);
+                recyclerView.setAdapter(jointWorkSelectedAdapter);
+                jointWorkSelectedAdapter.notifyDataSetChanged();
+
+                // final comma operation for name
+                StringBuilder str = new StringBuilder("");
+
+                // Traversing the ArrayList name
+                for (String eachstring : arrayList) {
+                    str.append(eachstring).append(",");
+                }
+                commaseparatedlistName = str.toString();
+
+                // final operation for id
+                StringBuilder str2 = new StringBuilder("");
+
+                // Traversing the ArrayList name
+                for (String eachstring : arrayListId) {
+                    str2.append(eachstring).append(",");
+                }
+                commaseparatedlistId = str2.toString();
+
+             //   Toast.makeText(context, commaseparatedlistId, Toast.LENGTH_SHORT).show();
+
+                if (commaseparatedlistId.equals("")){
+                    arrayList.clear();
+                    arrayListId.clear();
+                    binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         RecyclerView recyclerView = jointWorkDialog.findViewById(R.id.primaryChannelList);
         recyclerView.setEnabled(true);
