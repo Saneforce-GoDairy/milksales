@@ -74,7 +74,7 @@ import static com.saneforce.godairy.SFA_Activity.HAPApp.activeActivity;
 public class SANGPSTracker extends Service {
     private static Location location = null;
     private BroadcastReceiver yourReceiver;
-    private static final String PACKAGE_NAME ="com.saneforce.milksales.common";
+    private static final String PACKAGE_NAME ="com.saneforce.saneforce.common";
             //"com.google.android.gms.location.sample.locationupdatesforegroundservice";
     private static final String ACTION_GPS = "android.location.PROVIDERS_CHANGED";
 

@@ -126,7 +126,7 @@
                     android:textColor="@color/grey_600"
                     android:textSize="13sp" />
 
-                <com.milksales.godairy.common.CustomSpinner
+                <com.saneforce.godairy.common.CustomSpinner
                     android:id="@+id/spinner_work_type"
                     android:layout_width="match_parent"
                     android:layout_height="50dp" />
