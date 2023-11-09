@@ -630,32 +630,32 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     QueryString.put("axn", "save/dayplandynamic");
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<Object> Callto = apiInterface.Tb_Mydayplannew(QueryString, jsonarr.toString());
-//                    Callto.enqueue(new Callback<>() {
-//                        @Override
-//                        public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
-//                            common_class.ProgressdialogShow(2, "Tour  plan");
-//                            if (response.code() == 200 || response.code() == 201) {
-//                                if (worktype_id.equalsIgnoreCase("43")) {
-//                                    common_class.CommonIntentwithFinish(Dashboard.class);
-//                                    shared_common_pref.save("worktype", worktype_id);
-//                                } else if (ExpNeed) {
-//                                    Intent intent = new Intent(Mydayplan_Activity.this, AllowanceActivity.class);
-//                                    intent.putExtra("My_Day_Plan", "One");
-//                                    startActivity(intent);
-//                                    finish();
-//                                } else {
-//                                    common_class.CommonIntentwithFinish(Dashboard.class);
-//                                }
-//                                Toast.makeText(Mydayplan_Activity.this, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
-//                            common_class.ProgressdialogShow(2, "Tour  plan");
-//                            Log.e("Reponse TAG", "onFailure : " + t);
-//                        }
-//                    });
+                    Callto.enqueue(new Callback<>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
+                            common_class.ProgressdialogShow(2, "Tour plan");
+                            if (response.code() == 200 || response.code() == 201) {
+                                if (worktype_id.equalsIgnoreCase("43")) {
+                                    common_class.CommonIntentwithFinish(Dashboard.class);
+                                    shared_common_pref.save("worktype", worktype_id);
+                                } else if (ExpNeed) {
+                                    Intent intent = new Intent(Mydayplan_Activity.this, AllowanceActivity.class);
+                                    intent.putExtra("My_Day_Plan", "One");
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    common_class.CommonIntentwithFinish(Dashboard.class);
+                                }
+                                Toast.makeText(Mydayplan_Activity.this, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
+                            common_class.ProgressdialogShow(2, "Tour  plan");
+                            Log.e("Reponse TAG", "onFailure : " + t);
+                        }
+                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

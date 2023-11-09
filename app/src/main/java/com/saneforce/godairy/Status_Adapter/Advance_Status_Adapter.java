@@ -90,10 +90,14 @@ public class Advance_Status_Adapter extends RecyclerView.Adapter<Advance_Status_
             drawable.setColor(Color.parseColor(color.trim()));
 
             int flag=item.getInt("flag");
+
+
             holder.sf_namelayout.setVisibility(View.VISIBLE);
-            if(flag==1) {
+            if(flag == 1) {
                 holder.txtApproved.setText(item.getString("ApprDt"));
-            }else if (AMod.equalsIgnoreCase("1") && flag==0){
+            } else if(flag == 2 && item.getString("LStatus").equals("Reject")) {
+                holder.txtApproved.setText("Rejected on: " + item.getString("ApprDt"));
+            } else if (AMod.equalsIgnoreCase("1") && flag==0){
                 holder.sf_namelayout.setVisibility(View.GONE);
             }
         } catch (JSONException e) {
