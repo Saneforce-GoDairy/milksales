@@ -1,16 +1,13 @@
-package com.milksales.godairy.fragments.tour_plan;
+package com.saneforce.godairy.fragments.tour_plan;
 
-import static com.milksales.godairy.Common_Class.Common_Class.addquote;
-import static com.milksales.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
+import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -38,47 +34,48 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.milksales.godairy.Activity_Hap.CustomListViewDialog;
-import com.milksales.godairy.Activity_Hap.Tp_Calander;
-import com.milksales.godairy.Activity_Hap.Tp_Mydayplan;
-import com.milksales.godairy.Common_Class.Common_Class;
-import com.milksales.godairy.Common_Class.Common_Model;
-import com.milksales.godairy.Common_Class.Shared_Common_Pref;
-import com.milksales.godairy.Interface.AdapterOnClick;
-import com.milksales.godairy.Interface.ApiClient;
-import com.milksales.godairy.Interface.ApiInterface;
-import com.milksales.godairy.Interface.Joint_Work_Listner;
-import com.milksales.godairy.Interface.Master_Interface;
-import com.milksales.godairy.MVP.Main_Model;
-import com.milksales.godairy.Model_Class.ModeOfTravel;
-import com.milksales.godairy.Model_Class.Route_Master;
-import com.milksales.godairy.Model_Class.Tp_Dynamic_Modal;
-import com.milksales.godairy.Model_Class.Tp_View_Master;
-import com.milksales.godairy.R;
-import com.milksales.godairy.adapters.Joint_Work_Adapter;
-import com.milksales.godairy.adapters.TourPlanExploreAdapter;
-import com.milksales.godairy.common.DatabaseHandler;
-import com.milksales.godairy.databinding.CalendarItemBinding;
-import com.milksales.godairy.databinding.FragmentNextMonthBinding;
+import com.saneforce.godairy.Activity_Hap.CustomListViewDialog;
+import com.saneforce.godairy.Activity_Hap.Tp_Calander;
+import com.saneforce.godairy.Activity_Hap.Tp_Mydayplan;
+import com.saneforce.godairy.Common_Class.Common_Class;
+import com.saneforce.godairy.Common_Class.Common_Model;
+import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.AdapterOnClick;
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Interface.Joint_Work_Listner;
+import com.saneforce.godairy.Interface.Master_Interface;
+import com.saneforce.godairy.MVP.Main_Model;
+import com.saneforce.godairy.Model_Class.ModeOfTravel;
+import com.saneforce.godairy.Model_Class.Route_Master;
+import com.saneforce.godairy.Model_Class.Tp_Dynamic_Modal;
+import com.saneforce.godairy.Model_Class.Tp_View_Master;
+import com.saneforce.godairy.R;
+import com.saneforce.godairy.adapters.Joint_Work_Adapter;
+import com.saneforce.godairy.adapters.TourPlanExploreAdapter;
+import com.saneforce.godairy.common.DatabaseHandler;
+import com.saneforce.godairy.databinding.CalendarItemBinding;
+import com.saneforce.godairy.databinding.FragmentNextMonthBinding;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
+
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -90,7 +87,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import okhttp3.ResponseBody;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -179,7 +176,6 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
     private Button tpapprovebutton, tp_rejectsave, tpreject;
     private DatabaseHandler db;
     private final List<String> list = new ArrayList<>();
-    private Context context ;
 
     private View bottomSheetView;
     private BottomSheetDialog bottomSheetDialog;
@@ -189,14 +185,6 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
     Button bottomSheetSubmit;
     EditText bottomSheetRemarks;
     String finalTourDate;
-
-    Dialog jointWorkDialog;
-    TextView jointWorkName;
-    ArrayList<String> jointWorkNameList;
-    ArrayList<String> jointWorkIdList;
-    ArrayList<String> jointWorkDesigList;
-    LinearLayout jointWorkExtraFieldLayout;
-    String jointWorkSelectedEmployeeId, jointWorkSelectedEmployeeName, jointWorkSelectedEmployeeDesig;
 
 
     @Override
@@ -213,15 +201,16 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
 
         SelectedMonth = NM;
 
+        // Load tour plan
         progressDialog.show();
-        GetTp_List(); // Load tour plan
+        GetTp_List();
 
-        shared_common_pref = new Shared_Common_Pref(requireContext());  // tp_plan
+           // tp_plan
+        shared_common_pref = new Shared_Common_Pref(requireContext());
         initBottomSheetDialog();
         initOnClickTpPlan();
         binding.textTourPlancount.setText("0");
         loadWorkTypes();
-        loadExtraField();
 
         if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
             bottomSheetSubmit.setText("Submit");
@@ -239,165 +228,7 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
         return binding.getRoot();
     }
 
-      private void initJointWorkDialog() {
-        jointWorkDialog = new Dialog(requireContext());
-        jointWorkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        jointWorkDialog.setContentView(R.layout.model_dialog_joint_work);
-        jointWorkDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        jointWorkDialog.show();
-
-        RecyclerView recyclerView = jointWorkDialog.findViewById(R.id.primaryChannelList);
-        recyclerView.setEnabled(true);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setItemViewCacheSize(20);
-        JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(requireContext(), jointWorkIdList, jointWorkNameList, jointWorkDesigList);
-        recyclerView.setAdapter(jointWorkAdapater);
-
-    }
-
-    public class JointWorkAdapater extends RecyclerView.Adapter<JointWorkAdapater.ViewHolder> {
-        private Context context;
-        private Activity activity;
-        ArrayList  id;
-        ArrayList  name;
-        ArrayList  desig;
-
-        public JointWorkAdapater(Context context, ArrayList  id, ArrayList  name , ArrayList  desig){
-            this.context = context;
-            this.id = id;
-            this.name = name;
-            this.desig = desig;
-        }
-
-        @NonNull
-        @Override
-        public JointWorkAdapater.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view  = LayoutInflater.from(context).inflate(R.layout.model_joint_work, parent, false);
-            return new JointWorkAdapater.ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull JointWorkAdapater.ViewHolder holder, int position) {
-            holder.name.setText((String) name.get(position));
-
-            Glide
-                    .with(context)
-                    .load(R.drawable.joint_work_bg)
-                    .placeholder(R.color.grey_50)
-                    .into(holder.channelImage);
-
-            String mName = (String) name.get(position);
-
-            holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
-
-            /*
-              [{"id":"TRMUMGR0009",
-              "name":"Ramesh qc-GENERAL SE",
-              "desig":"GENERALSE"]}
-             */
-
-            holder.mainLayout.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
-                holder.radioButton.setEnabled(true);
-                holder.radioButton.setChecked(true);
-                jointWorkName.setText((String) name.get(position));
-                jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
-                jointWorkDialog.dismiss();
-
-                 jointWorkSelectedEmployeeId = (String) id.get(position);
-                 jointWorkSelectedEmployeeName = (String) name.get(position);
-                 jointWorkSelectedEmployeeDesig = (String) desig.get(position);
-
-                Log.e("jw__", jointWorkSelectedEmployeeId + jointWorkSelectedEmployeeName + jointWorkSelectedEmployeeDesig);
-            });
-
-            holder.radioButton.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
-                holder.radioButton.setEnabled(true);
-
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return name.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder{
-            private TextView name, nameLetter;
-            private CardView mainLayout;
-            private RadioButton radioButton;
-            private ImageView channelImage;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                name = itemView.findViewById(R.id.name);
-                mainLayout = itemView.findViewById(R.id.main);
-                radioButton = itemView.findViewById(R.id.radio_button);
-                channelImage = itemView.findViewById(R.id.channel_image);
-                nameLetter = itemView.findViewById(R.id.name_letter);
-            }
-        }
-    }
-
-    private void loadExtraField() {
-       ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Map<String, String> params = new HashMap<>();
-        params.put("axn", GET_JOINT_WORK_LIST);
-        params.put("sfCode", "MGR0201");
-        Call<ResponseBody> call = apiInterface.getUniversalData(params);
-
-       call.enqueue(new Callback<ResponseBody>() {
-           @Override
-           public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-               if (response.isSuccessful()){
-                   String result = null;
-                   try {
-                       assert response.body() != null;
-                       result = response.body().string();
-                       JSONObject jsonObject = new JSONObject(result);
-
-                       if (jsonObject.getBoolean("success")){
-                           JSONArray array = jsonObject.getJSONArray("response");
-
-                           jointWorkNameList = new ArrayList<>();
-                           jointWorkIdList = new ArrayList<>();
-                           jointWorkDesigList = new ArrayList<>();
-                           //catList.add("Select");
-                           for (int i =0; i<array.length(); i++){
-                               JSONObject jsonObject1 = array.getJSONObject(i);
-                               jointWorkIdList.add(jsonObject1.getString("id"));
-                               jointWorkNameList.add(jsonObject1.getString("name"));
-                               jointWorkDesigList.add(jsonObject1.getString("desig"));
-                           }
-
-//                           ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, catList);
-//                           adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                           extraSpinner.setAdapter(adapter);
-
-                           String debug = "";
-                           Log.e("extra_field_", String.valueOf(array));
-                       }else {
-                           Log.e("extra_field_", "response error");
-                       }
-                   } catch (JSONException | IOException e) {
-                       throw new RuntimeException(e);
-                   }
-               }
-           }
-
-           @Override
-           public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-           }
-       });
-    }
-
+        // dp_plan
     private void initBottomSheetDialog() {
         bottomSheetView = getLayoutInflater().inflate(R.layout.bottomsheetdialog_tp_plan, null);
         bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
@@ -408,34 +239,6 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
         bottomSheetSubmit = bottomSheetDialog.findViewById(R.id.submit);
         bottomSheetRemarks = bottomSheetDialog.findViewById(R.id.remarks);
         spinner = bottomSheetDialog.findViewById(R.id.spinner);
-
-            jointWorkName = bottomSheetDialog.findViewById(R.id.joint_work_name);
-        jointWorkExtraFieldLayout = bottomSheetDialog.findViewById(R.id.extra_field);
-
-        assert jointWorkExtraFieldLayout != null;
-        jointWorkExtraFieldLayout.setOnClickListener(v -> jointWorkDialog.show());
-
-        assert spinner != null;
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String workType = spinner.getSelectedItem().toString();
-
-                if (workType.equals("Joint Work")){
-                    assert jointWorkExtraFieldLayout != null;
-                    jointWorkExtraFieldLayout.setVisibility(View.GONE);
-                    initJointWorkDialog();
-                }else {
-                    assert jointWorkExtraFieldLayout != null;
-                    jointWorkExtraFieldLayout.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     public void loadWorkTypes() {
@@ -1313,7 +1116,7 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
                     adapterGrid.notifyDataSetChanged();
 
                     //-------------- RecyclerView
-                    adapter2 = new TourPlanCalanderAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.milksales.godairy.Model_Class.Tp_View_Master>) Tp_View_Master);
+                    adapter2 = new TourPlanCalanderAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.godairy.Model_Class.Tp_View_Master>) Tp_View_Master);
                     binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
                     binding.recyclerView.setHasFixedSize(true);
                     binding.recyclerView.setItemViewCacheSize(20);
@@ -1321,7 +1124,7 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
                     adapter2.notifyDataSetChanged();
 
                     //--------------- Tour plan RecyclerView Plan explore view
-                    adapter3 = new TourPlanExploreAdapter(getActivity(), SelectedMonth + 1, year,(ArrayList<com.milksales.godairy.Model_Class.Tp_View_Master>) Tp_View_Master);
+                    adapter3 = new TourPlanExploreAdapter(getActivity(), SelectedMonth + 1, year,(ArrayList<com.saneforce.godairy.Model_Class.Tp_View_Master>) Tp_View_Master);
                     binding.recyclerviewExplore.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.recyclerviewExplore.addItemDecoration(new DividerItemDecoration(requireContext(), 0));
                     binding.recyclerviewExplore.setHasFixedSize(true);

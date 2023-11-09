@@ -1,9 +1,6 @@
-package com.milksales.godairy.fragments.tour_plan;
+package com.saneforce.godairy.fragments.tour_plan;
 
-import static com.milksales.godairy.Common_Class.Common_Class.addquote;
-import static com.milksales.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
-import static com.milksales.godairy.common.AppConstants.USER_DETAILS_PREF;
-
+import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -11,8 +8,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -59,29 +54,28 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.milksales.godairy.Activity_Hap.CustomListViewDialog;
-import com.milksales.godairy.Activity_Hap.Tp_Calander;
-import com.milksales.godairy.Activity_Hap.Tp_Mydayplan;
-import com.milksales.godairy.Common_Class.Common_Class;
-import com.milksales.godairy.Common_Class.Common_Model;
-import com.milksales.godairy.Common_Class.Shared_Common_Pref;
-import com.milksales.godairy.Interface.AdapterOnClick;
-import com.milksales.godairy.Interface.ApiClient;
-import com.milksales.godairy.Interface.ApiInterface;
-import com.milksales.godairy.Interface.Joint_Work_Listner;
-import com.milksales.godairy.Interface.Master_Interface;
-import com.milksales.godairy.MVP.Main_Model;
-import com.milksales.godairy.Model_Class.ModeOfTravel;
-import com.milksales.godairy.Model_Class.Route_Master;
-import com.milksales.godairy.Model_Class.TpMyDayPlanExtra;
-import com.milksales.godairy.Model_Class.Tp_Dynamic_Modal;
-import com.milksales.godairy.Model_Class.Tp_View_Master;
-import com.milksales.godairy.R;
-import com.milksales.godairy.adapters.Joint_Work_Adapter;
-import com.milksales.godairy.adapters.TourPlanExploreAdapter;
-import com.milksales.godairy.common.DatabaseHandler;
-import com.milksales.godairy.databinding.CalendarItemBinding;
-import com.milksales.godairy.databinding.FragmentCurrentMonthBinding;
+import com.saneforce.godairy.Activity_Hap.CustomListViewDialog;
+import com.saneforce.godairy.Activity_Hap.Tp_Calander;
+import com.saneforce.godairy.Activity_Hap.Tp_Mydayplan;
+import com.saneforce.godairy.Common_Class.Common_Class;
+import com.saneforce.godairy.Common_Class.Common_Model;
+import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.AdapterOnClick;
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Interface.Joint_Work_Listner;
+import com.saneforce.godairy.Interface.Master_Interface;
+import com.saneforce.godairy.MVP.Main_Model;
+import com.saneforce.godairy.Model_Class.ModeOfTravel;
+import com.saneforce.godairy.Model_Class.Route_Master;
+import com.saneforce.godairy.Model_Class.Tp_Dynamic_Modal;
+import com.saneforce.godairy.Model_Class.Tp_View_Master;
+import com.saneforce.godairy.R;
+import com.saneforce.godairy.adapters.Joint_Work_Adapter;
+import com.saneforce.godairy.adapters.TourPlanExploreAdapter;
+import com.saneforce.godairy.common.DatabaseHandler;
+import com.saneforce.godairy.databinding.CalendarItemBinding;
+import com.saneforce.godairy.databinding.FragmentCurrentMonthBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -202,10 +196,8 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     ArrayList<String> jointWorkNameList;
     ArrayList<String> jointWorkIdList;
     ArrayList<String> jointWorkDesigList;
-    LinearLayout jointWorkExtraFieldLayout;
+    LinearLayout linearLayout;
     String jointWorkSelectedEmployeeId, jointWorkSelectedEmployeeName, jointWorkSelectedEmployeeDesig;
-    private SharedPreferences UserDetails;
-    private int radioSelectedPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -232,7 +224,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         initOnClickTpPlan();
         binding.textTourPlancount.setText("0");
         loadWorkTypes();
-        UserDetails = requireContext().getSharedPreferences(USER_DETAILS_PREF, Context.MODE_PRIVATE);
         loadExtraField();
 
         if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
@@ -261,7 +252,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         recyclerView.setEnabled(true);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -306,35 +297,31 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
 
             holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
 
-            Log.e("rd__", String.valueOf(radioSelectedPosition));
-
-            if (radioSelectedPosition == position){
-                holder.radioButton.setChecked(true);
-            }
+            /*
+              [{"id":"TRMUMGR0009",
+              "name":"Ramesh qc-GENERAL SE",
+              "desig":"GENERALSE"]}
+             */
 
             holder.mainLayout.setOnClickListener(view -> {
+                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
+                holder.radioButton.setEnabled(true);
                 holder.radioButton.setChecked(true);
                 jointWorkName.setText((String) name.get(position));
-                jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
+                linearLayout.setVisibility(View.VISIBLE);
                 jointWorkDialog.dismiss();
 
                  jointWorkSelectedEmployeeId = (String) id.get(position);
                  jointWorkSelectedEmployeeName = (String) name.get(position);
                  jointWorkSelectedEmployeeDesig = (String) desig.get(position);
 
-                radioSelectedPosition = position;
+                Log.e("jw__", jointWorkSelectedEmployeeId + jointWorkSelectedEmployeeName + jointWorkSelectedEmployeeDesig);
             });
 
             holder.radioButton.setOnClickListener(view -> {
-                jointWorkName.setText((String) name.get(position));
-                jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
-                jointWorkDialog.dismiss();
+                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
+                holder.radioButton.setEnabled(true);
 
-                jointWorkSelectedEmployeeId = (String) id.get(position);
-                jointWorkSelectedEmployeeName = (String) name.get(position);
-                jointWorkSelectedEmployeeDesig = (String) desig.get(position);
-
-                radioSelectedPosition = position;
             });
         }
 
@@ -362,36 +349,42 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
 
     private void loadExtraField() {
        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        String mSfCode = UserDetails.getString("Sfcode", "");
         Map<String, String> params = new HashMap<>();
-        params.put("axn", GET_JOINT_WORK_LIST);
+        params.put("axn", "get_jointwork_list");
         params.put("sfCode", "MGR0201");
-
         Call<ResponseBody> call = apiInterface.getUniversalData(params);
 
-       call.enqueue(new Callback<>() {
+       call.enqueue(new Callback<ResponseBody>() {
            @Override
            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-               if (response.isSuccessful()) {
+               if (response.isSuccessful()){
                    String result = null;
                    try {
                        assert response.body() != null;
                        result = response.body().string();
                        JSONObject jsonObject = new JSONObject(result);
 
-                       if (jsonObject.getBoolean("success")) {
+                       if (jsonObject.getBoolean("success")){
                            JSONArray array = jsonObject.getJSONArray("response");
 
                            jointWorkNameList = new ArrayList<>();
                            jointWorkIdList = new ArrayList<>();
                            jointWorkDesigList = new ArrayList<>();
-                           for (int i = 0; i < array.length(); i++) {
+                           //catList.add("Select");
+                           for (int i =0; i<array.length(); i++){
                                JSONObject jsonObject1 = array.getJSONObject(i);
                                jointWorkIdList.add(jsonObject1.getString("id"));
                                jointWorkNameList.add(jsonObject1.getString("name"));
                                jointWorkDesigList.add(jsonObject1.getString("desig"));
                            }
-                       } else {
+
+//                           ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, catList);
+//                           adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                           extraSpinner.setAdapter(adapter);
+
+                           String debug = "";
+                           Log.e("extra_field_", String.valueOf(array));
+                       }else {
                            Log.e("extra_field_", "response error");
                        }
                    } catch (JSONException | IOException e) {
@@ -420,13 +413,10 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         spinner = bottomSheetDialog.findViewById(R.id.spinner);
       //  extraSpinner = bottomSheetDialog.findViewById(R.id.spinnerEmployee);
         jointWorkName = bottomSheetDialog.findViewById(R.id.joint_work_name);
-        jointWorkExtraFieldLayout = bottomSheetDialog.findViewById(R.id.extra_field);
+        linearLayout = bottomSheetDialog.findViewById(R.id.extra_field);
 
-        assert jointWorkExtraFieldLayout != null;
-        jointWorkExtraFieldLayout.setOnClickListener(v -> {
-            initJointWorkDialog();
-            jointWorkDialog.show();
-        });
+        assert linearLayout != null;
+        linearLayout.setOnClickListener(v -> jointWorkDialog.show());
 
         assert spinner != null;
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -435,12 +425,12 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 String workType = spinner.getSelectedItem().toString();
 
                 if (workType.equals("Joint Work")){
-                    assert jointWorkExtraFieldLayout != null;
-                    jointWorkExtraFieldLayout.setVisibility(View.GONE);
+                    assert linearLayout != null;
+                    linearLayout.setVisibility(View.GONE);
                     initJointWorkDialog();
                 }else {
-                    assert jointWorkExtraFieldLayout != null;
-                    jointWorkExtraFieldLayout.setVisibility(View.GONE);
+                    assert linearLayout != null;
+                    linearLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -756,6 +746,11 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                             }
                         }
 
+                        // hide by prasanth
+//                        vwExpTravel.setVisibility(View.VISIBLE);
+//                        if (ExpNeed == false) {
+//                            vwExpTravel.setVisibility(View.GONE);
+//                        }
                         String Jointworkcode = String.valueOf(jsoncc.getJSONObject(0).get("JointworkCode"));
                         String JointWork_Name = String.valueOf(jsoncc.getJSONObject(0).get("JointWork_Name"));
                         String[] arrOfStr = Jointworkcode.split(",");
@@ -769,7 +764,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                             }
 
                             if (Jointworklistview.size() > 0) {
-//                                jointwork_layout.setVisibility(View.VISIBLE);
+                                jointwork_layout.setVisibility(View.VISIBLE);
                                 binding.textTourPlancount.setText(String.valueOf(arrOfStr.length));
                                 adapter = new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
                                     @Override
@@ -779,10 +774,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                                         adapter.notifyDataSetChanged();
                                     }
                                 });
-                                /*
-                                   Previous version code
-                                 */
-                               // jointwork_recycler.setAdapter(adapter);
+                                jointwork_recycler.setAdapter(adapter);
                             }
                         }
 
@@ -1192,24 +1184,19 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 getfieldforcehqlist.add(Model_Pojo);
             }
             if (type.equals("3")) {
-
-                 /*
-                    Previous version code
-                 */
-
-//                jointwork_recycler.setAdapter(new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
-//                    @Override
-//                    public void onIntentClick(int po, boolean flag) {
-//                        Jointworklistview.get(po).setSelected(flag);
-//                        int jcount = 0;
-//                        for (int i = 0; Jointworklistview.size() > i; i++) {
-//                            if (Jointworklistview.get(i).isSelected()) {
-//                                jcount = jcount + 1;
-//                            }
-//                        }
-//                        binding.textTourPlancount.setText(String.valueOf(jcount));
-//                    }
-//                }));
+                jointwork_recycler.setAdapter(new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
+                    @Override
+                    public void onIntentClick(int po, boolean flag) {
+                        Jointworklistview.get(po).setSelected(flag);
+                        int jcount = 0;
+                        for (int i = 0; Jointworklistview.size() > i; i++) {
+                            if (Jointworklistview.get(i).isSelected()) {
+                                jcount = jcount + 1;
+                            }
+                        }
+                        binding.textTourPlancount.setText(String.valueOf(jcount));
+                    }
+                }));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1340,7 +1327,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                     adapterGrid.notifyDataSetChanged();
 
                     //-------------- RecyclerView
-                    adapter2 = new TourPlanCalanderAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.milksales.godairy.Model_Class.Tp_View_Master>) Tp_View_Master);
+                    adapter2 = new TourPlanCalanderAdapter(getActivity(), R.id.date, SelectedMonth + 1, year, (ArrayList<com.saneforce.godairy.Model_Class.Tp_View_Master>) Tp_View_Master);
                     binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 7));
                     binding.recyclerView.setHasFixedSize(true);
                     binding.recyclerView.setItemViewCacheSize(20);
@@ -1348,7 +1335,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                     adapterGrid.notifyDataSetChanged();
 
                     //--------------- Tour plan RecyclerView Plan explore view
-                    adapter3 = new TourPlanExploreAdapter(getActivity(), SelectedMonth + 1, year,(ArrayList<com.milksales.godairy.Model_Class.Tp_View_Master>) Tp_View_Master);
+                    adapter3 = new TourPlanExploreAdapter(getActivity(), SelectedMonth + 1, year,(ArrayList<com.saneforce.godairy.Model_Class.Tp_View_Master>) Tp_View_Master);
                     binding.recyclerviewExplore.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.recyclerviewExplore.addItemDecoration(new DividerItemDecoration(requireContext(), 0));
                     binding.recyclerviewExplore.setHasFixedSize(true);

@@ -1,4 +1,4 @@
-package com.milksales.godairy.Activity_Hap;
+package com.saneforce.godairy.Activity_Hap;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -31,28 +33,30 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.milksales.godairy.Activity.AllowanceActivity;
-import com.milksales.godairy.Activity.AllowanceActivityTwo;
-import com.milksales.godairy.Activity.TAClaimActivity;
-import com.milksales.godairy.Common_Class.AlertDialogBox;
-import com.milksales.godairy.Common_Class.Common_Class;
-import com.milksales.godairy.Common_Class.Constants;
-import com.milksales.godairy.Common_Class.Shared_Common_Pref;
-import com.milksales.godairy.Interface.AlertBox;
-import com.milksales.godairy.Interface.ApiClient;
-import com.milksales.godairy.Interface.ApiInterface;
-import com.milksales.godairy.R;
-import com.milksales.godairy.SFA_Activity.HAPApp;
-import com.milksales.godairy.SFA_Activity.MapDirectionActivity;
-import com.milksales.godairy.common.DatabaseHandler;
-import com.milksales.godairy.common.SANGPSTracker;
-import com.milksales.godairy.databinding.ActivityDashboardBinding;
-import com.milksales.godairy.fragments.GateInOutFragment;
-import com.milksales.godairy.fragments.MonthlyFragment;
-import com.milksales.godairy.fragments.TodayFragment;
+import com.saneforce.godairy.Activity.AllowanceActivity;
+import com.saneforce.godairy.Activity.AllowanceActivityTwo;
+import com.saneforce.godairy.Activity.TAClaimActivity;
+import com.saneforce.godairy.Common_Class.AlertDialogBox;
+import com.saneforce.godairy.Common_Class.Common_Class;
+import com.saneforce.godairy.Common_Class.Constants;
+import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.AlertBox;
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.R;
+import com.saneforce.godairy.SFA_Activity.HAPApp;
+import com.saneforce.godairy.SFA_Activity.MapDirectionActivity;
+import com.saneforce.godairy.common.DatabaseHandler;
+import com.saneforce.godairy.common.SANGPSTracker;
+import com.saneforce.godairy.databinding.ActivityDashboardBinding;
+import com.saneforce.godairy.fragments.GateInOutFragment;
+import com.saneforce.godairy.fragments.MonthlyFragment;
+import com.saneforce.godairy.fragments.TodayFragment;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -61,34 +65,43 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener {
     private ActivityDashboardBinding binding;
-    private final Context context = this;
+    private Context context = this;
+
     public static final String CheckInDetail = "CheckInDetail";
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String mypreference = "mypref";
-    private String sSFType = "";
+    private static String Tag = "HAP_Check-In";
+    private String imageProfile = "", sSFType = "";
     private String onDuty = "", ClosingDate = "";
+
     private Integer ClosingKm = 0;
-    private ImageView profilePic;
+    private Integer type, OTFlg = 0;
+
+    private RelativeLayout mRelApproval;
+    private ImageView profilePic, btMyQR;
+    private TextView lblUserName, head_quarters, lblEmail;
     private TextView approvalcount;
     LinearLayout approval;
-    private Button linMyday;
-    private Button linCheckin;
-    private Button linHolidayWorking;
-    private Button linReCheck;
+    private Button linMyday, linCheckin, linApprovals, linRequstStaus, linReport, linOnDuty, linSFA;
+    private Button linTourPlan, linExit, lin_check_in, linHolidayWorking, linReCheck, linTaClaim, linExtShift;
+
     private SharedPreferences.Editor editors;
     private SharedPreferences CheckInDetails, UserDetails, sharedpreferences;
     private Common_Class common_class;
     private Shared_Common_Pref shared_common_pref;
-    private com.milksales.godairy.Activity_Hap.Common_Class DT = new com.milksales.godairy.Activity_Hap.Common_Class();
+    private com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
     private DatabaseHandler db;
 
-    ArrayList<Integer> exploreImage = new ArrayList<>(Arrays.asList(
+    private MyViewPagerAdapter myViewPagerAdapter;
+
+    ArrayList exploreImage = new ArrayList<>(Arrays.asList(
             R.drawable.request_status_ic,
             R.drawable.file_invoice_doller_ic,
             R.drawable.users_gear_ic,
@@ -96,7 +109,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             R.drawable.gate_out_ic,
             R.drawable.calendar_pjp));
 
-    ArrayList<String> exploreName = new ArrayList<>(Arrays.asList(
+    ArrayList exploreName = new ArrayList<>(Arrays.asList(
             "Request & status",
             "TA & Claim",
             "SFA",
@@ -115,9 +128,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         loadFragment();
 
         db = new DatabaseHandler(context);
-        TextView lblUserName = (TextView) findViewById(R.id.user_name);
-        TextView head_quarters = (TextView) findViewById(R.id.head_quarters);
-        TextView lblEmail = (TextView) findViewById(R.id.lblEmail);
+        lblUserName = (TextView) findViewById(R.id.user_name);
+        head_quarters = (TextView) findViewById(R.id.head_quarters);
+        lblEmail = (TextView) findViewById(R.id.lblEmail);
         profilePic = findViewById(R.id.image_view_user_profile);
         linReCheck = findViewById(R.id.lin_RecheckIn);
         linCheckin = findViewById(R.id.lin_check_in);
@@ -133,7 +146,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         getHAPWorkTypes();
         shared_common_pref = new Shared_Common_Pref(context);
 
-        Integer type = (UserDetails.getInt("CheckCount", 0));
+        type = (UserDetails.getInt("CheckCount", 0));
 
         common_class = new Common_Class(context);
 
@@ -141,12 +154,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         String sSFName = UserDetails.getString("SfName", "");
         String SFDesig = UserDetails.getString("SFDesig", "");
         sSFType = UserDetails.getString("Sf_Type", "");
-        int OTFlg = UserDetails.getInt("OTFlg", 0);
+        OTFlg = UserDetails.getInt("OTFlg", 0);
         String mProfileImage = UserDetails.getString("Profile", "");
 
-        RelativeLayout mRelApproval = findViewById(R.id.rel_app);
+        mRelApproval = findViewById(R.id.rel_app);
 
-        String imageProfile = UserDetails.getString("url", "");
+        imageProfile = UserDetails.getString("url", "");
 
         lblUserName.setText(sSFName);
         head_quarters.setText(SFDesig);
@@ -158,6 +171,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             if(mProfileImage.charAt(i) != ' ')
                 mCount++;
         }
+
+//        String last3;
+//        if (mProfileImage == null || mProfileImage.length() < 4) {
+//            last3 = mProfileImage;
+//        } else {
+//            last3 = mProfileImage.substring(mProfileImage.length() - 4);
+//        }
 
         new Thread(() -> {
             try {
@@ -181,7 +201,16 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         });
 
-        ImageView btMyQR = findViewById(R.id.myQR);
+//        try {
+//            Uri Profile = Uri.parse(shared_common_pref.getvalue(Shared_Common_Pref.Profile));
+//            Glide.with(context).load(Profile).into(profilePic);
+//        } catch (Exception e) {
+//        }
+//        Glide.with(context).load(Uri.parse((UserDetails.getString("url", "")))).into(profilePic);
+
+        //profilePic.setImageURI(Uri.parse((UserDetails.getString("url", ""))));
+
+        btMyQR = findViewById(R.id.myQR);
         linMyday.setVisibility(View.GONE);
 
         Log.e("Dashboard", "sSFType :" + sSFType);
@@ -193,10 +222,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             linCheckin.setVisibility(View.GONE);
         }
 
-        Button linRequstStaus = (findViewById(R.id.lin_request_status));
-        Button linReport = (findViewById(R.id.lin_report));
-        Button linOnDuty = (findViewById(R.id.lin_onduty));
-        Button linSFA = findViewById(R.id.lin_sfa);
+
+        linRequstStaus = (findViewById(R.id.lin_request_status));
+        linReport = (findViewById(R.id.lin_report));
+        linOnDuty = (findViewById(R.id.lin_onduty));
+        linSFA = findViewById(R.id.lin_sfa);
 
         linSFA.setVisibility(View.GONE);
 
@@ -216,18 +246,19 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
 
         approval = findViewById(R.id.approval);
-        Button linTaClaim = (findViewById(R.id.lin_ta_claim));
-        Button linExtShift = (findViewById(R.id.lin_extenden_shift));
+        linTaClaim = (findViewById(R.id.lin_ta_claim));
+        linExtShift = (findViewById(R.id.lin_extenden_shift));
         linExtShift.setVisibility(View.GONE);
         if (OTFlg == 1) linExtShift.setVisibility(View.VISIBLE);
-        Button linTourPlan = (findViewById(R.id.lin_tour_plan));
+        linTourPlan = (findViewById(R.id.lin_tour_plan));
         linTourPlan.setVisibility(View.GONE);
         if (sSFType.equals("1")) linTourPlan.setVisibility(View.VISIBLE);
-        Button linExit = (findViewById(R.id.lin_exit));
+        linExit = (findViewById(R.id.lin_exit));
         approvalcount = findViewById(R.id.approvalcount);
 
         if (UserDetails.getInt("CheckCount", 0) <= 0) {
             approval.setVisibility(View.INVISIBLE);
+//            approvalcount.setVisibility(View.GONE);
         } else {
             exploreName.add("Approvals");
             exploreImage.add(R.drawable.canteen_scan_ic);
@@ -370,6 +401,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             Log.v("CHECKIN:", "" + val);
             if (/*sSFType.equals("0")*/UserDetails.getInt("checkRadius", 0) == 1) {
                 String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
+                //  String[] latlongs = "13.0299326:80.2414088".split(":");
+
                 Intent intent = new Intent(context, MapDirectionActivity.class);
                 intent.putExtra(Constants.DEST_LAT, latlongs[0]);
                 intent.putExtra(Constants.DEST_LNG, latlongs[1]);
@@ -377,6 +410,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 intent.putExtra(Constants.NEW_OUTLET, "checkin");
                 startActivity(intent);
             } else {
+
                 String ETime = CheckInDetails.getString("CINEnd", "");
                 if (!ETime.equalsIgnoreCase("")) {
                     String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
@@ -403,7 +437,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
             }
         });
-
         binding.linMydayPlan.setOnClickListener(v -> {
             if (ClosingKm == 1) {
                 Intent closingIntet = new Intent(context, AllowanceActivityTwo.class);
@@ -447,6 +480,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.sfa.setOnClickListener(v -> {
             startActivity(new Intent(context, SFA_Activity.class));
         });
+        /*binding.canteenScan.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CateenToken.class);
+            startActivity(intent);
+        });*/
 
         binding.gateIn.setOnClickListener(v -> {
             Intent intent = new Intent(this, QRCodeScanner.class);
@@ -473,6 +510,33 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     startActivity(Dashboard);
         });
 
+//        binding.menuBar.setOnClickListener(v -> {
+//            PopupMenu popup = new PopupMenu(context, binding.menuBar);
+//            popup.inflate(R.menu.month_plan);
+//            popup.setOnMenuItemClickListener(item -> {
+//                switch (item.getItemId()) {
+//                    case R.id.tour_plan:
+//                        Intent intent = new Intent(context, Tp_Month_Select.class);
+//                        startActivity(intent);
+//                        break;
+//
+//                    case R.id.logout:
+//                        common_class.clearLocData(Dashboard.this);
+//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
+//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
+//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
+//                        shared_common_pref.clear_pref(Constants.LOGIN_DATA);
+//                        finishAffinity();
+//
+//                        Intent Dashboard = new Intent(context, Login.class);
+//                        startActivity(Dashboard);
+//                        break;
+//                }
+//                return false;
+//            });
+//            popup.show();
+//        });
+
         binding.pjp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -484,7 +548,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     private void loadFragment() {
-        MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter(this);
+        myViewPagerAdapter = new MyViewPagerAdapter(this);
         binding.viewPager.setAdapter(myViewPagerAdapter);
     }
 
@@ -507,6 +571,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     return new TodayFragment();
             }
         }
+
         @Override
         public int getItemCount() {
             return 3;
@@ -514,9 +579,106 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     @Override
+    public void onBackPressed() {
+        //Toast.makeText(context, "There is no back action", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onClick(View view) {
+        Intent I;
         switch (view.getId()) {
+
             case R.id.lin_check_in:
+                /*
+                      Dashboard --> Checkin Btn --> Map --> Selfie --> Submit checkin
+
+                 */
+                   /*
+                      PREVIOUS CODE - OLD DESIGN
+
+                int val = UserDetails.getInt("checkRadius", 0);
+                Log.v("CHECKIN:", "" + val);
+                if (UserDetails.getInt("checkRadius", 0) == 1) {
+
+
+
+                        String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
+
+                    Intent intent = new Intent(Dashboard.this, MapDirectionActivity.class);
+                    intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+                    intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+                    intent.putExtra(Constants.DEST_NAME, "HOLocation");
+                    intent.putExtra(Constants.NEW_OUTLET, "checkin");
+                    startActivity(intent);
+                } else {
+
+                    String ETime = CheckInDetails.getString("CINEnd", "");
+                    if (!ETime.equalsIgnoreCase("")) {
+                        String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
+                        String SftId = CheckInDetails.getString("Shift_Selected_Id", "0");
+                        if (DT.GetCurrDateTime(this).getTime() >= DT.getDate(CutOFFDt).getTime() || SftId == "0") {
+                            ETime = "";
+                        }
+                    }
+                    if (!ETime.equalsIgnoreCase("")) {
+                        Intent takePhoto = new Intent(this, CameraxActivity.class);
+                        takePhoto.putExtra("Mode", "CIN");
+                        takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
+                        takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
+                        takePhoto.putExtra("On_Duty_Flag", CheckInDetails.getString("On_Duty_Flag", "0"));
+                        takePhoto.putExtra("ShiftStart", CheckInDetails.getString("ShiftStart", "0"));
+                        takePhoto.putExtra("ShiftEnd", CheckInDetails.getString("ShiftEnd", "0"));
+                        takePhoto.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
+                        startActivity(takePhoto);
+
+
+                    String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
+
+                    Intent intent = new Intent(Dashboard.this, MapDirectionActivity.class);
+                    intent.putExtra(Constants.DEST_LAT, latlongs[0]);
+                    intent.putExtra(Constants.DEST_LNG, latlongs[1]);
+                    intent.putExtra(Constants.DEST_NAME, "HOLocation");
+                    intent.putExtra(Constants.NEW_OUTLET, "checkin");
+                    startActivity(intent);
+
+
+                } else {
+
+                    String ETime = CheckInDetails.getString("CINEnd", "");
+                    if (!ETime.equalsIgnoreCase("")) {
+                        String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
+                        String SftId = CheckInDetails.getString("Shift_Selected_Id", "0");
+                        if (DT.GetCurrDateTime(this).getTime() >= DT.getDate(CutOFFDt).getTime() || SftId == "0") {
+                            ETime = "";
+                        }
+                    }
+
+
+                    if (!ETime.equalsIgnoreCase("")) {
+                        Intent takePhoto = new Intent(this, CameraxActivity.class);
+                        takePhoto.putExtra("Mode", "CIN");
+                        takePhoto.putExtra("ShiftId", CheckInDetails.getString("Shift_Selected_Id", ""));
+                        takePhoto.putExtra("ShiftName", CheckInDetails.getString("Shift_Name", ""));
+                        takePhoto.putExtra("On_Duty_Flag", CheckInDetails.getString("On_Duty_Flag", "0"));
+                        takePhoto.putExtra("ShiftStart", CheckInDetails.getString("ShiftStart", "0"));
+                        takePhoto.putExtra("ShiftEnd", CheckInDetails.getString("ShiftEnd", "0"));
+                        takePhoto.putExtra("ShiftCutOff", CheckInDetails.getString("ShiftCutOff", "0"));
+                        startActivity(takePhoto);
+                    } else {
+                        Intent i = new Intent(this, Checkin.class);
+                        startActivity(i);
+                    }
+
+                     */
+
+                    /*
+                            Select shift time. per day only once.
+                            Dashboard -->My day plan Btn --> Select shift time --> Dashboard
+                            if above done :-
+                                   VISIBLE : Checkin Btn;
+                                   GONE : My day plan Btn;
+                       */
+
                   String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
                      Intent intent = new Intent(context, MapDirectionActivity.class);
                      intent.putExtra(Constants.DEST_LAT, latlongs[0]);
@@ -553,7 +715,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 Shared_Common_Pref.TravelAllowance = 1;
                 startActivity(new Intent(context, Approvals.class));
                 break;
-
             case R.id.lin_myday_plan:
                 if (ClosingKm == 1) {
                     Intent closingIntet = new Intent(context, AllowanceActivityTwo.class);
@@ -572,11 +733,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 startActivity(recall);
                 break;
 
+
             case R.id.lin_tour_plan:
                 Shared_Common_Pref.Tp_Approvalflag = "0";
                 startActivity(new Intent(context, Tp_Month_Select.class));
-                break;
 
+                break;
             case R.id.lin_holiday_working:
                 AlertDialogBox.showDialog(context, HAPApp.Title, "Are you sure want to Check-in with Hoilday Entry", "YES", "NO", false, new AlertBox() {
                     @Override
@@ -590,17 +752,18 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     }
                 });
                 break;
-
             case R.id.lin_onduty:
+
+                // startActivity(new Intent(this, On_Duty_Activity.class));
                 Intent oDutyInt = new Intent(context, On_Duty_Activity.class);
                 oDutyInt.putExtra("Onduty", onDuty);
                 startActivity(oDutyInt);
+
                 break;
 
             case R.id.lin_sfa:
                 startActivity(new Intent(context, SFA_Activity.class));
                 break;
-
             case R.id.lin_exit:
                 shared_common_pref.clear_pref(Constants.LOGIN_DATA);
                 SharedPreferences.Editor editor = UserDetails.edit();
@@ -610,15 +773,15 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 Intent playIntent = new Intent(context, SANGPSTracker.class);
                 stopService(playIntent);
                 finishAffinity();
-                break;
 
+                break;
             case R.id.lin_extenden_shift:
                 validateExtened("ValidateExtended");
                 break;
-
             default:
                 break;
         }
+
     }
 
     public void updateFlxlayout() {
@@ -662,8 +825,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         mCall.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                // locationList=response.body();
                 try {
                     JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                    // Log.e("GettodayResult", "response Tp_View: " + jsonObject.getString("success"));
+
                     String success = jsonObject.getString("success");
                     String Msg = jsonObject.getString("msg");
                     if (!Msg.equals("")) {
@@ -684,6 +850,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                             public void PositiveMethod(DialogInterface dialog, int id) {
                                 dialog.dismiss();
                                 common_class.CommonIntentwithoutFinishputextra(Checkin.class, "Mode", "extended");
+                                /*Intent intent = new Intent(getApplicationContext(), Checkin.class);
+                                Bundle extras = new Bundle();
+                                extras.putString("Extended_Flag", "extended");
+                                startActivity(intent);*/
                             }
 
                             @Override
@@ -734,7 +904,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         String commonLeaveType = "{\"orderBy\":\"[\\\"name asc\\\"]\",\"desig\":\"mgr\"}";
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonArray> GetHAPLocation = service.GetHAPLocation(UserDetails.getString("Divcode", ""), UserDetails.getString("Sfcode", ""), commonLeaveType);
-        GetHAPLocation.enqueue(new Callback<>() {
+        GetHAPLocation.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 db.deleteMasterData("HAPLocations");
@@ -757,12 +927,16 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> mCall = apiInterface.DCRSave(QueryString, "[]");
 
-        mCall.enqueue(new Callback<>() {
+        mCall.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
                 try {
                     JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+
+                    Log.v("GET_MYDAY_PLAN", jsonObject.toString());
                     Integer MotCount = Integer.valueOf(jsonObject.getString("checkMOT"));
+
                     ClosingKm = Integer.valueOf(jsonObject.getString("CheckEndKM"));
                     ClosingDate = jsonObject.getString("CheckEndDT");
                     /* *********  Missing KM Auto Asking ******* */
@@ -775,7 +949,15 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         return;
                     }
 
+
+                    Log.v("MOT_COUNT", String.valueOf(MotCount));
+
+//                    if (MotCount > 0)
+//                        linReCheck.setVisibility(View.VISIBLE);
+
                     onDuty = jsonObject.getString("CheckOnduty");
+                    Log.v("ONDUTY_RESPONSE", jsonObject.getString("CheckOnduty"));
+
                     sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
                     editors = sharedpreferences.edit();
                     editors.putString("Onduty", onDuty);
@@ -787,12 +969,14 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     if (flag == 1 && sSFType.equals("1")) {
                         JSONArray jsoncc = jsonObject.getJSONArray("Checkdayplan");
                         if (jsoncc.length() > 0) {
+
                             if (jsoncc.getJSONObject(0).getInt("Cnt") < 1) {
                                 Intent intent = new Intent(context, AllowanceActivity.class);
                                 intent.putExtra("My_Day_Plan", "One");
                                 startActivity(intent);
                             } else {
                                 linMyday.setVisibility(View.GONE);
+
                                 if (jsoncc.getJSONObject(0).getString("wtype").equalsIgnoreCase("43")) {
                                     linCheckin.setVisibility(View.GONE);
                                     linReCheck.setVisibility(View.GONE);
@@ -809,6 +993,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                             linMyday.setVisibility(View.VISIBLE);
                             updateFlxlayout();
                         }
+
+//                        Log.v("wrkType:",shared_common_pref.getvalue("worktype", ""));
+//                        if (shared_common_pref.getvalue("worktype", "").equalsIgnoreCase("43")) {
+//                            linCheckin.setVisibility(View.GONE);
+//                            linReCheck.setVisibility(View.GONE);
+//                        }
+
                     } else {
                         String success = jsonObject.getString("success");
                         String Msg = jsonObject.getString("msg");
@@ -830,6 +1021,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                 public void PositiveMethod(DialogInterface dialog, int id) {
                                     dialog.dismiss();
                                     common_class.CommonIntentwithoutFinishputextra(Checkin.class, "Mode", "extended");
+                                    /*Intent intent = new Intent(getApplicationContext(), Checkin.class);
+                                    Bundle extras = new Bundle();
+                                    extras.putString("Extended_Flag", "extended");
+                                    startActivity(intent);*/
                                 }
 
                                 @Override
@@ -855,6 +1050,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
 
     public void getcountdetails() {
+
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "ViewAllCount");
         QueryString.put("sfCode", UserDetails.getString("Sfcode", ""));
@@ -863,16 +1059,22 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         QueryString.put("rSF", UserDetails.getString("Sfcode", ""));
         QueryString.put("desig", "MGR");
         String commonworktype = "{\"orderBy\":\"[\\\"name asc\\\"]\",\"desig\":\"mgr\"}";
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> mCall = apiInterface.DCRSave(QueryString, commonworktype);
 
-        mCall.enqueue(new Callback<>() {
+        mCall.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                // locationList=response.body();
+                Log.e("TAG_TP_RESPONSEcount", "response Tp_View: " + new Gson().toJson(response.body()));
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                    // int TC=Integer.parseInt(jsonObject.getString("leave")) + Integer.parseInt(jsonObject.getString("Permission")) + Integer.parseInt(jsonObject.getString("vwOnduty")) + Integer.parseInt(jsonObject.getString("vwmissedpunch")) + Integer.parseInt(jsonObject.getString("TountPlanCount")) + Integer.parseInt(jsonObject.getString("vwExtended"));
+                    //jsonObject.getString("leave"))
                     Log.e("TOTAl_COUNT", String.valueOf(Integer.parseInt(jsonObject.getString("leave")) + Integer.parseInt(jsonObject.getString("Permission")) + Integer.parseInt(jsonObject.getString("vwOnduty")) + Integer.parseInt(jsonObject.getString("vwmissedpunch")) + Integer.parseInt(jsonObject.getString("TountPlanCount")) + Integer.parseInt(jsonObject.getString("vwExtended"))));
+                    //count = count +
                     Shared_Common_Pref.TotalCountApproval = jsonObject.getInt("leave") + jsonObject.getInt("Permission") +
                             jsonObject.getInt("vwOnduty") + jsonObject.getInt("vwmissedpunch") +
                             jsonObject.getInt("vwExtended") + jsonObject.getInt("TountPlanCount") +
@@ -881,8 +1083,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                             jsonObject.getInt("CancelLeave") + jsonObject.getInt("ExpList");
                     approvalcount.setText(String.valueOf(Shared_Common_Pref.TotalCountApproval));
                     approvalcount.setVisibility(View.GONE);
-                    if (Shared_Common_Pref.TotalCountApproval > 0)
-                        approvalcount.setVisibility(View.VISIBLE);
+                    if(Shared_Common_Pref.TotalCountApproval>0) approvalcount.setVisibility(View.VISIBLE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -898,8 +1099,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
-        if (CheckIn) {
+        Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
+        if (CheckIn == true) {
             Shared_Common_Pref.Sf_Code = UserDetails.getString("Sfcode", "");
             Shared_Common_Pref.Sf_Name = UserDetails.getString("SfName", "");
             Shared_Common_Pref.Div_Code = UserDetails.getString("Divcode", "");
@@ -928,30 +1129,3 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
 }
-
-//        binding.menuBar.setOnClickListener(v -> {
-//            PopupMenu popup = new PopupMenu(context, binding.menuBar);
-//            popup.inflate(R.menu.month_plan);
-//            popup.setOnMenuItemClickListener(item -> {
-//                switch (item.getItemId()) {
-//                    case R.id.tour_plan:
-//                        Intent intent = new Intent(context, Tp_Month_Select.class);
-//                        startActivity(intent);
-//                        break;
-//
-//                    case R.id.logout:
-//                        common_class.clearLocData(Dashboard.this);
-//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
-//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
-//                        shared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
-//                        shared_common_pref.clear_pref(Constants.LOGIN_DATA);
-//                        finishAffinity();
-//
-//                        Intent Dashboard = new Intent(context, Login.class);
-//                        startActivity(Dashboard);
-//                        break;
-//                }
-//                return false;
-//            });
-//            popup.show();
-//        });
