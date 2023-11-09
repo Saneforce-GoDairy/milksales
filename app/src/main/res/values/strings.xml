@@ -198,5 +198,6 @@
     <string name="work_type">WORK TYPE</string>
     <string name="type">Type.....</string>
     <string name="reject">Reject</string>
+    <string name="edit">Edit</string>
 
 </resources>

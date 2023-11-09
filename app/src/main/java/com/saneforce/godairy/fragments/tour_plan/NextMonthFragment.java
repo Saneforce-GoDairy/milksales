@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -191,19 +192,26 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
     EditText bottomSheetRemarks;
     String finalTourDate;
 
-    Dialog jointWorkDialog;
-    TextView jointWorkName;
     ArrayList<String> jointWorkNameList;
     ArrayList<String> jointWorkIdList;
     ArrayList<String> jointWorkDesigList;
     LinearLayout jointWorkExtraFieldLayout;
-    String jointWorkSelectedEmployeeId, jointWorkSelectedEmployeeName, jointWorkSelectedEmployeeDesig;
-
+    Dialog jointWorkDialog;
+    private ArrayList<String> arrayList;
+    private ArrayList<String> arrayListId;
+    private RecyclerView recyclerView;
+    private TextView jointWorkNameTemp;
+    private String  commaseparatedlistName, commaseparatedlistId;
+    private JointWorkSelectedAdapter jointWorkSelectedAdapter;
+    TextView jointWorkName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNextMonthBinding.inflate(inflater, container, false);
+
+        arrayList = new ArrayList<>();
+        arrayListId = new ArrayList<>();
 
         common_class = new Common_Class(getActivity());
         gson = new Gson();
@@ -223,6 +231,7 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
         binding.textTourPlancount.setText("0");
         loadWorkTypes();
         loadExtraField();
+        initJointWorkSelectedRecyclerView();
 
         if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
             bottomSheetSubmit.setText("Submit");
@@ -240,7 +249,14 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
         return binding.getRoot();
     }
 
-      private void initJointWorkDialog() {
+    private void initJointWorkSelectedRecyclerView() {
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    private void initJointWorkDialog() {
         jointWorkDialog = new Dialog(requireContext());
         jointWorkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         jointWorkDialog.setContentView(R.layout.model_dialog_joint_work);
@@ -261,14 +277,83 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
 
     }
 
-    public class JointWorkAdapater extends RecyclerView.Adapter<JointWorkAdapater.ViewHolder> {
-        private Context context;
-        private Activity activity;
-        ArrayList  id;
-        ArrayList  name;
-        ArrayList  desig;
+    public class JointWorkSelectedAdapter extends RecyclerView.Adapter<JointWorkSelectedAdapter.ViewHolder> {
+        ArrayList<String> name;
+        Context context;
 
-        public JointWorkAdapater(Context context, ArrayList  id, ArrayList  name , ArrayList  desig){
+        public JointWorkSelectedAdapter(Context context, ArrayList<String> name){
+            this.context = context;
+            this.name = name;
+        }
+
+        @NonNull
+        @Override
+        public JointWorkSelectedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.joint_wrk_list_item, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        public void onBindViewHolder(@NonNull JointWorkSelectedAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+            holder.nameText.setText(name.get(position));
+
+            holder.nameText.setOnClickListener(v -> jointWorkDialog.show());
+
+            holder.deleteText.setOnClickListener(v -> {
+                if (arrayList.contains(name.get(position))) {
+                    arrayList.remove(name.get(position));
+                    JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(context, arrayList);
+                    recyclerView.setAdapter(jointWorkSelectedAdapter);
+                    jointWorkSelectedAdapter.notifyDataSetChanged();
+
+                    // for name
+                    StringBuilder str = new StringBuilder();
+                    for (String eachstring : arrayList) {
+                        str.append(eachstring).append(",");
+                    }
+                    commaseparatedlistName = str.toString();
+
+                    // for id
+                    StringBuilder str2 = new StringBuilder();
+                    for (String eachstring : arrayListId) {
+                        str2.append(eachstring).append(",");
+                    }
+                    commaseparatedlistId = str2.toString();
+
+                    // clear entries
+                    if (commaseparatedlistId.equals("")) {
+                        arrayList.clear();
+                        arrayListId.clear();
+                        jointWorkNameTemp.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return name.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView nameText;
+            ImageView deleteText;
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                nameText = itemView.findViewById(R.id.joint_work_name);
+                deleteText = itemView.findViewById(R.id.delete_);
+            }
+        }
+    }
+
+    public class JointWorkAdapater extends RecyclerView.Adapter<JointWorkAdapater.ViewHolder> {
+        private final Context context;
+        ArrayList<String> id;
+        ArrayList<String> name;
+        ArrayList<String> desig;
+
+        public JointWorkAdapater(Context context,ArrayList<String> id, ArrayList<String> name , ArrayList<String> desig){
             this.context = context;
             this.id = id;
             this.name = name;
@@ -278,49 +363,66 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
         @NonNull
         @Override
         public JointWorkAdapater.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view  = LayoutInflater.from(context).inflate(R.layout.model_joint_work, parent, false);
+            View view  = LayoutInflater.from(requireContext()).inflate(R.layout.model_joint_work, parent, false);
             return new JointWorkAdapater.ViewHolder(view);
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         @Override
-        public void onBindViewHolder(@NonNull JointWorkAdapater.ViewHolder holder, int position) {
-            holder.name.setText((String) name.get(position));
+        public void onBindViewHolder(@NonNull JointWorkAdapater.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+            holder.name.setText(name.get(position));
 
             Glide
-                    .with(context)
+                    .with(requireContext())
                     .load(R.drawable.joint_work_bg)
                     .placeholder(R.color.grey_50)
                     .into(holder.channelImage);
 
-            String mName = (String) name.get(position);
+            String mName = name.get(position);
 
             holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
 
-            /*
-              [{"id":"TRMUMGR0009",
-              "name":"Ramesh qc-GENERAL SE",
-              "desig":"GENERALSE"]}
-             */
+            holder.radioButton.setChecked(false);
 
             holder.mainLayout.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
-                holder.radioButton.setEnabled(true);
-                holder.radioButton.setChecked(true);
-                jointWorkName.setText((String) name.get(position));
-                jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
-                jointWorkDialog.dismiss();
-
-                 jointWorkSelectedEmployeeId = (String) id.get(position);
-                 jointWorkSelectedEmployeeName = (String) name.get(position);
-                 jointWorkSelectedEmployeeDesig = (String) desig.get(position);
-
-                Log.e("jw__", jointWorkSelectedEmployeeId + jointWorkSelectedEmployeeName + jointWorkSelectedEmployeeDesig);
             });
 
             holder.radioButton.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
-                holder.radioButton.setEnabled(true);
+                boolean isChecked = ((CheckBox)view).isChecked();
 
+                if (isChecked){
+                    arrayList.add(name.get(position));
+                    arrayListId.add(id.get(position));
+                }else {
+                    if (arrayListId.contains(id.get(position))){
+                        arrayList.remove(name.get(position));
+                        arrayListId.remove(id.get(position));
+
+                        JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(context, arrayList);
+                        recyclerView.setAdapter(jointWorkSelectedAdapter);
+                        jointWorkSelectedAdapter.notifyDataSetChanged();
+
+                        StringBuilder str = new StringBuilder();
+
+                        for (String eachstring : arrayList) {
+                            str.append(eachstring).append(",");
+                        }
+                        commaseparatedlistName = str.toString();
+
+                        StringBuilder str2 = new StringBuilder();
+
+                        for (String eachstring : arrayListId) {
+                            str2.append(eachstring).append(",");
+                        }
+                        commaseparatedlistId = str2.toString();
+
+                        if (commaseparatedlistId.equals("")){
+                            arrayList.clear();
+                            arrayListId.clear();
+                            jointWorkNameTemp.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
             });
         }
 
@@ -330,10 +432,10 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder{
-            private TextView name, nameLetter;
-            private CardView mainLayout;
-            private RadioButton radioButton;
-            private ImageView channelImage;
+            private final TextView name, nameLetter;
+            private final CardView mainLayout;
+            private final CheckBox radioButton;
+            private final ImageView channelImage;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -344,6 +446,56 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
                 nameLetter = itemView.findViewById(R.id.name_letter);
             }
         }
+    }
+
+    private void initJointWorkDialog3() {
+        jointWorkDialog = new Dialog(requireContext());
+        jointWorkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        jointWorkDialog.setContentView(R.layout.model_dialog_joint_work);
+
+        RelativeLayout ok = jointWorkDialog.findViewById(R.id.ok_btn);
+        ok.setEnabled(true);
+
+        ok.setOnClickListener(v -> {
+            jointWorkNameTemp.setVisibility(View.GONE);
+            jointWorkDialog.dismiss();
+            JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(context, arrayList);
+            recyclerView.setAdapter(jointWorkSelectedAdapter);
+            jointWorkSelectedAdapter.notifyDataSetChanged();
+
+            // for name
+            StringBuilder str = new StringBuilder();
+            for (String eachstring : arrayList) {
+                str.append(eachstring).append(",");
+            }
+            String removeLastExtraComma = str.toString();
+            commaseparatedlistName = removeLastExtraComma.replaceFirst(".$",""); // removed last extra comma
+
+            // for id
+            StringBuilder str2 = new StringBuilder();
+            for (String eachstring : arrayListId) {
+                str2.append(eachstring).append(",");
+            }
+            String removeLastExtraCommaInId = str2.toString();
+            commaseparatedlistId = removeLastExtraCommaInId.replaceFirst(".$",""); // removed last extra comma
+
+            if (commaseparatedlistId.equals("")){
+                arrayList.clear();
+                arrayListId.clear();
+                jointWorkNameTemp.setVisibility(View.VISIBLE);
+            }
+        });
+
+        RecyclerView recyclerView = jointWorkDialog.findViewById(R.id.primaryChannelList);
+        recyclerView.setEnabled(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemViewCacheSize(20);
+        JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(context, jointWorkIdList, jointWorkNameList, jointWorkDesigList);
+        recyclerView.setAdapter(jointWorkAdapater);
     }
 
     private void loadExtraField() {
@@ -400,34 +552,42 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
     }
 
     private void initBottomSheetDialog() {
-        bottomSheetView = getLayoutInflater().inflate(R.layout.bottomsheetdialog_tp_plan, null);
+        @SuppressLint("InflateParams") View bottomSheetView = getLayoutInflater().inflate(R.layout.bottomsheetdialog_tp_plan, null);
         bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView(bottomSheetView);
-        bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetView.getParent());
 
         bottomSheetDate = bottomSheetDialog.findViewById(R.id.plan_date);
         bottomSheetSubmit = bottomSheetDialog.findViewById(R.id.submit);
         bottomSheetRemarks = bottomSheetDialog.findViewById(R.id.remarks);
         spinner = bottomSheetDialog.findViewById(R.id.spinner);
 
-            jointWorkName = bottomSheetDialog.findViewById(R.id.joint_work_name);
-        jointWorkExtraFieldLayout = bottomSheetDialog.findViewById(R.id.extra_field);
+        jointWorkExtraFieldLayout = bottomSheetDialog.findViewById(R.id.joint_work_extra_field_layout);
+        jointWorkNameTemp = bottomSheetDialog.findViewById(R.id.joint_work_name_temp);
+        recyclerView = bottomSheetDialog.findViewById(R.id.recycler_view_jw);
 
         assert jointWorkExtraFieldLayout != null;
-        jointWorkExtraFieldLayout.setOnClickListener(v -> jointWorkDialog.show());
+        jointWorkExtraFieldLayout.setOnClickListener(v -> {
+            // initJointWorkDialog3();
+            jointWorkDialog.show();
+        });
 
         assert spinner != null;
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String workType = spinner.getSelectedItem().toString();
 
                 if (workType.equals("Joint Work")){
-                    assert jointWorkExtraFieldLayout != null;
-                    jointWorkExtraFieldLayout.setVisibility(View.GONE);
-                    initJointWorkDialog();
+                    jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
+                    initJointWorkDialog3();
+                    jointWorkSelectedAdapter = new JointWorkSelectedAdapter(context, arrayList);
+                    recyclerView.setAdapter(jointWorkSelectedAdapter);
+                    jointWorkSelectedAdapter.notifyDataSetChanged();
                 }else {
                     assert jointWorkExtraFieldLayout != null;
+                    jointWorkExtraFieldLayout.setVisibility(View.GONE);
+                    arrayList.clear();
                     jointWorkExtraFieldLayout.setVisibility(View.GONE);
                 }
             }
@@ -530,8 +690,8 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
             jsonobj.put("MOT_ID", addquote(modeId));
             jsonobj.put("To_Place_ID", addquote(toId));
             jsonobj.put("Mode_Travel_ID", addquote(startEnd));
-            jsonobj.put("worked_with", addquote(jointworkname));
-            jsonobj.put("jointWorkCode", addquote(jointwork));
+            jsonobj.put("worked_with", addquote(commaseparatedlistName));
+            jsonobj.put("jointWorkCode", addquote(commaseparatedlistId));
             JSONArray personarray = new JSONArray();
             JSONObject ProductJson_Object;
             for (int z = 0; z < dynamicarray.size(); z++) {

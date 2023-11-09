@@ -5,7 +5,6 @@ import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
 import static com.saneforce.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -39,14 +38,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -61,7 +61,6 @@ import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.Interface.Joint_Work_Listner;
 import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.MVP.Main_Model;
 import com.saneforce.godairy.Model_Class.ModeOfTravel;
@@ -75,6 +74,7 @@ import com.saneforce.godairy.databinding.ActivityMydayplanBinding;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -83,6 +83,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -114,19 +115,17 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     Dialog jointWorkDialog;
     Gson gson;
     Type userType;
-    Shared_Common_Pref shared_common_pref;
     Common_Class common_class;
     EditText edt_remarks, empidedittext;
     TextView TextMode, TextToAddress, dailyAllowance;
     TextView worktype_text, distributor_text, route_text, text_tour_plancount, hq_text, shift_type, chilling_text, Remarkscaption, tourdate;
     String TpDate, worktype_id, Worktype_Button = "", Fieldworkflag = "", shifttypeid,  modeId = "", toId = "", startEnd = "";
-    String STRCode = "", DM = "", DriverNeed = "false", DriverMode = "", modeTypeVale = "", mode = "", modeVal = "";
+    String STRCode = "", DriverNeed = "false", DriverMode = "", modeTypeVale = "", mode = "", modeVal = "";
     String StartedKM = "", FromKm = "", ToKm = "";
-    String jointWorkSelectedEmployeeId, jointWorkSelectedEmployeeName, jointWorkSelectedEmployeeDesig;
     Button submitbutton, GetEmpId;
     ProgressBar progressbar;
     Common_Model Model_Pojo;
-    LinearLayout BusTo, jointwork_layout, hqlayout, shiftypelayout, Procrumentlayout, chillinglayout, MdeTraval, DailyAll, frmPlace, ToPlace;;
+    LinearLayout BusTo, jointwork_layout, hqlayout, shiftypelayout, Procrumentlayout, chillinglayout, MdeTraval, DailyAll, frmPlace;
     LinearLayout worktypelayout, distributors_layout, route_layout, linCheckdriver, Dynamictpview;
     RecyclerView jointwork_recycler, dynamicrecyclerview;
     CardView ModeTravel, card_Toplace, CardDailyAllowance;
@@ -155,11 +154,17 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         View view = binding.getRoot();
         setContentView(view);
 
-        arrayList = new ArrayList<String>();
-        arrayListId = new ArrayList<String>();
+        initVariable();
+        initOnClick();
 
+        arrayList = new ArrayList<>();
+        arrayListId = new ArrayList<>();
+
+        gson = new Gson();
         db = new DatabaseHandler(context);
         UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+        sharedCommonPref = new Shared_Common_Pref(this);
+        common_class = new Common_Class(this);
 
         new Handler().postDelayed(() -> {
             loadWorkTypes();
@@ -167,80 +172,23 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
             Log.e("my_day_plan", "Handler : started now");
         },500);
 
-        initVariable();
         loadExtraField();
-
-        progressbar = findViewById(R.id.progressbar);
-        shared_common_pref = new Shared_Common_Pref(this);
-        common_class = new Common_Class(this);
-        edt_remarks = findViewById(R.id.edt_remarks);
-        Dynamictpview = findViewById(R.id.Dynamictpview);
-        dynamicrecyclerview = findViewById(R.id.dynamicrecyclerview);
-        dynamicrecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        gson = new Gson();
-        tourdate = findViewById(R.id.tourdate);
-        TpDate = com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly();
-        String[] TP_Dt = TpDate.split("-");
-        tourdate.setText(TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0]);
-        route_text = findViewById(R.id.route_text);
-        worktypelayout = findViewById(R.id.worktypelayout);
-        distributors_layout = findViewById(R.id.distributors_layout);
-        ModeTravel = findViewById(R.id.card_travel_mode);
-        card_Toplace = findViewById(R.id.card_Toplace);
-        Remarkscaption = findViewById(R.id.remarkscaption);
-        chillinglayout = findViewById(R.id.chillinglayout);
-        chilling_text = findViewById(R.id.chilling_text);
-        Procrumentlayout = findViewById(R.id.Procrumentlayout);
-        hqlayout = findViewById(R.id.hqlayout);
-        shiftypelayout = findViewById(R.id.shiftypelayout);
-        hq_text = findViewById(R.id.hq_text);
-        shift_type = findViewById(R.id.shift_type);
-        route_layout = findViewById(R.id.route_layout);
-        submitbutton = findViewById(R.id.submitbutton);
-        worktype_text = findViewById(R.id.worktype_text);
-        distributor_text = findViewById(R.id.distributor_text);
-        text_tour_plancount = findViewById(R.id.text_tour_plancount);
-        text_tour_plancount.setText("0");
-
+        initJointWorkSelectedRecyclerView();
         loadWorkTypes();
         getWorkTypes();
         Get_MydayPlan(com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly());
+        loadWorkTypes();
+        getWorkTypes();
+        Get_MydayPlan(com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly());
+        initSetup();
+    }
 
-        jointwork_layout = findViewById(R.id.jointwork_layout);
-        jointwork_recycler = findViewById(R.id.jointwork_recycler);
-        jointwork_recycler.setLayoutManager(new LinearLayoutManager(this));
-
-        jointwork_layout = findViewById(R.id.jointwork_layout);
-        jointwork_recycler = findViewById(R.id.jointwork_recycler);
-        jointwork_recycler.setLayoutManager(new LinearLayoutManager(this));
-
-        MdeTraval = findViewById(R.id.mode_of_travel);
-        DailyAll = findViewById(R.id.lin_daily);
-        frmPlace = findViewById(R.id.lin_from);
-        ToPlace = findViewById(R.id.lin_to_place);
-        GetEmpId = findViewById(R.id.GetEmpId);
-        empidedittext = findViewById(R.id.empidedittext);
-        BusTo = findViewById(R.id.lin_to_place);
-        GetEmpId.setOnClickListener(this);
-        submitbutton.setOnClickListener(this);
-        worktypelayout.setOnClickListener(this);
-        distributors_layout.setOnClickListener(this);
-        route_layout.setOnClickListener(this);
-        shiftypelayout.setOnClickListener(this);
-        hqlayout.setOnClickListener(this);
-        card_Toplace.setOnClickListener(this);
-        chillinglayout.setOnClickListener(this);
-        TextMode = findViewById(R.id.txt_mode);
-        TextToAddress = findViewById(R.id.edt_to);
-        CardDailyAllowance = findViewById(R.id.card_daily_allowance);
-        dailyAllowance = findViewById(R.id.text_daily_allowance);
-        driverAllowance = findViewById(R.id.da_driver_allowance);
-        linCheckdriver = findViewById(R.id.lin_check_driver);
-
-        ModeTravel.setOnClickListener(v -> {
-            modelTravelType.clear();
-            dynamicMode();
-        });
+    @SuppressLint("SetTextI18n")
+    private void initSetup() {
+        TpDate = com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly();
+        String[] TP_Dt = TpDate.split("-");
+        tourdate.setText(TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0]);
+        text_tour_plancount.setText("0");
 
         distributors_layout.setVisibility(View.GONE);
         chillinglayout.setVisibility(View.GONE);
@@ -248,34 +196,17 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         shiftypelayout.setVisibility(View.GONE);
         route_layout.setVisibility(View.GONE);
 
-        CardDailyAllowance.setOnClickListener(v -> {
-            listOrderType.clear();
-            OrderType();
-        });
-
-        sharedCommonPref = new Shared_Common_Pref(this);
-        shared_common_pref = new Shared_Common_Pref(this);
-        common_class = new Common_Class(this);
-
-        binding.dynamicrecyclerview.setLayoutManager(new LinearLayoutManager(this));
-
         TpDate = GetDateOnly();
         binding.tourdate.setText(TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0]);
         binding.myDayPlanDate.setText("(" + TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0] + ")");
         binding.textTourPlancount.setText("0");
 
-        loadWorkTypes();
-        getWorkTypes();
-        Get_MydayPlan(com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly());
-        binding.jointworkRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         distributors_layout.setVisibility(View.GONE);
         binding.chillinglayout.setVisibility(View.GONE);
         binding.hqlayout.setVisibility(View.GONE);
         binding.shiftypelayout.setVisibility(View.GONE);
         route_layout.setVisibility(View.GONE);
-
-        initOnClick();
 
         String mProfileUrl = sharedCommonPref.getvalue("mProfile");
 
@@ -289,30 +220,6 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                         .into(binding.pImage);
             }
         }
-
-        initJointWorkSelectedRecyclerView();
-
-        binding.selectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                arrayList.clear();
-//                arrayListId.clear();
-             //   initJointWorkDialog();
-                jointWorkDialog.show();
-            }
-        });
-
-        binding.clearBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                arrayList.clear();
-                arrayListId.clear();
-
-                initJointWorkDialogFresh();
-                jointWorkSelectedAdapter.notifyDataSetChanged();
-                binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     private void initJointWorkDialogFresh() {
@@ -348,7 +255,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    String result = null;
+                    String result;
                     try {
                         assert response.body() != null;
                         result = response.body().string();
@@ -382,8 +289,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     }
 
     public class JointWorkAdapater extends RecyclerView.Adapter<JointWorkAdapater.ViewHolder> {
-        private Context context;
-        private Activity activity;
+        private final Context context;
         ArrayList<String> id;
         ArrayList<String> name;
         ArrayList<String> desig;
@@ -402,6 +308,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
             return new JointWorkAdapater.ViewHolder(view);
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         @Override
         public void onBindViewHolder(@NonNull JointWorkAdapater.ViewHolder holder, int position) {
             holder.name.setText(name.get(position));
@@ -436,14 +343,14 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                         recyclerView.setAdapter(jointWorkSelectedAdapter);
                         jointWorkSelectedAdapter.notifyDataSetChanged();
 
-                        StringBuilder str = new StringBuilder("");
+                        StringBuilder str = new StringBuilder();
 
                         for (String eachstring : arrayList) {
                             str.append(eachstring).append(",");
                         }
                         commaseparatedlistName = str.toString();
 
-                        StringBuilder str2 = new StringBuilder("");
+                        StringBuilder str2 = new StringBuilder();
 
                         for (String eachstring : arrayListId) {
                             str2.append(eachstring).append(",");
@@ -504,6 +411,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initOnClick() {
         binding.GetEmpId.setOnClickListener(this);
         binding.submitbutton.setOnClickListener(this);
@@ -514,12 +422,10 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         binding.hqlayout.setOnClickListener(this);
         binding.cardToplace.setOnClickListener(this);
         binding.chillinglayout.setOnClickListener(this);
-        binding.jointWorkExtraFieldLayout.setOnClickListener(v -> {
-//            initJointWorkDialog();
-            jointWorkDialog.show();
-        });
+        binding.jointWorkExtraFieldLayout.setOnClickListener(v -> jointWorkDialog.show());
 
         binding.spinnerWorkType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String workType = binding.spinnerWorkType.getSelectedItem().toString();
@@ -630,41 +536,57 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     QueryString.put("axn", "save/dayplandynamic");
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<Object> Callto = apiInterface.Tb_Mydayplannew(QueryString, jsonarr.toString());
-//                    Callto.enqueue(new Callback<>() {
-//                        @Override
-//                        public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
-//                            common_class.ProgressdialogShow(2, "Tour  plan");
-//                            if (response.code() == 200 || response.code() == 201) {
-//                                if (worktype_id.equalsIgnoreCase("43")) {
-//                                    common_class.CommonIntentwithFinish(Dashboard.class);
-//                                    shared_common_pref.save("worktype", worktype_id);
-//                                } else if (ExpNeed) {
-//                                    Intent intent = new Intent(Mydayplan_Activity.this, AllowanceActivity.class);
-//                                    intent.putExtra("My_Day_Plan", "One");
-//                                    startActivity(intent);
-//                                    finish();
-//                                } else {
-//                                    common_class.CommonIntentwithFinish(Dashboard.class);
-//                                }
-//                                Toast.makeText(Mydayplan_Activity.this, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
-//                            common_class.ProgressdialogShow(2, "Tour  plan");
-//                            Log.e("Reponse TAG", "onFailure : " + t);
-//                        }
-//                    });
+                    Callto.enqueue(new Callback<>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
+                            common_class.ProgressdialogShow(2, "Tour  plan");
+                            if (response.code() == 200 || response.code() == 201) {
+                                if (worktype_id.equalsIgnoreCase("43")) {
+                                    common_class.CommonIntentwithFinish(Dashboard.class);
+                                    sharedCommonPref.save("worktype", worktype_id);
+                                } else if (ExpNeed) {
+                                    Intent intent = new Intent(Mydayplan_Activity.this, AllowanceActivity.class);
+                                    intent.putExtra("My_Day_Plan", "One");
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    common_class.CommonIntentwithFinish(Dashboard.class);
+                                }
+                                Toast.makeText(Mydayplan_Activity.this, "Day Plan Submitted Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
+                            common_class.ProgressdialogShow(2, "Tour  plan");
+                            Log.e("Reponse TAG", "onFailure : " + t);
+                        }
+                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
 
-        binding.recyclerViewJw.setOnClickListener(v -> {
-//                initJointWorkDialog();
-//                jointWorkDialog.show();
+       ModeTravel.setOnClickListener(v -> {
+           modelTravelType.clear();
+           dynamicMode();
+       });
+
+        binding.selectBtn.setOnClickListener(v -> jointWorkDialog.show());
+
+        binding.clearBtn.setOnClickListener(v -> {
+            arrayList.clear();
+            arrayListId.clear();
+
+            initJointWorkDialogFresh();
+            jointWorkSelectedAdapter.notifyDataSetChanged();
+            binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
+        });
+
+        CardDailyAllowance.setOnClickListener(v -> {
+            listOrderType.clear();
+            OrderType();
         });
     }
 
@@ -681,49 +603,42 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         @Override
         public JointWorkSelectedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.joint_wrk_list_item, parent, false);
-            JointWorkSelectedAdapter.ViewHolder viewHolder = new JointWorkSelectedAdapter.ViewHolder(view);
-            return viewHolder;
+            return new ViewHolder(view);
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         @Override
         public void onBindViewHolder(@NonNull JointWorkSelectedAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-            //  String res = (String) name.get(position);
             holder.nameText.setText(name.get(position));
 
-            holder.nameText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    jointWorkDialog.show();
-                }
-            });
+            holder.nameText.setOnClickListener(v -> jointWorkDialog.show());
 
-            holder.deleteText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (arrayList.contains(name.get(position))) {
-                        arrayList.remove(name.get(position));
-                        JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(Mydayplan_Activity.this, arrayList);
-                        recyclerView.setAdapter(jointWorkSelectedAdapter);
-                        jointWorkSelectedAdapter.notifyDataSetChanged();
+            holder.deleteText.setOnClickListener(v -> {
+                if (arrayList.contains(name.get(position))) {
+                    arrayList.remove(name.get(position));
+                    JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(Mydayplan_Activity.this, arrayList);
+                    recyclerView.setAdapter(jointWorkSelectedAdapter);
+                    jointWorkSelectedAdapter.notifyDataSetChanged();
 
-                        StringBuilder str = new StringBuilder("");
-                        for (String eachstring : arrayList) {
-                            str.append(eachstring).append(",");
-                        }
-                        commaseparatedlistName = str.toString();
+                    // for name
+                    StringBuilder str = new StringBuilder();
+                    for (String eachstring : arrayList) {
+                        str.append(eachstring).append(",");
+                    }
+                    commaseparatedlistName = str.toString();
 
-                        StringBuilder str2 = new StringBuilder("");
+                    // for id
+                    StringBuilder str2 = new StringBuilder();
+                    for (String eachstring : arrayListId) {
+                        str2.append(eachstring).append(",");
+                    }
+                    commaseparatedlistId = str2.toString();
 
-                        for (String eachstring : arrayListId) {
-                            str2.append(eachstring).append(",");
-                        }
-                        commaseparatedlistId = str2.toString();
-
-                        if (commaseparatedlistId.equals("")) {
-                            arrayList.clear();
-                            arrayListId.clear();
-                            binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
-                        }
+                    // clear entries
+                    if (commaseparatedlistId.equals("")) {
+                        arrayList.clear();
+                        arrayListId.clear();
+                        binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
                     }
                 }
             });
@@ -745,12 +660,12 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initJointWorkDialog3() {
         jointWorkDialog = new Dialog(Mydayplan_Activity.this);
         jointWorkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         jointWorkDialog.setContentView(R.layout.model_dialog_joint_work);
         Objects.requireNonNull(jointWorkDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-  //      jointWorkDialog.show();
 
         RelativeLayout ok = jointWorkDialog.findViewById(R.id.ok_btn);
         ok.setEnabled(true);
@@ -762,23 +677,23 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
             recyclerView.setAdapter(jointWorkSelectedAdapter);
             jointWorkSelectedAdapter.notifyDataSetChanged();
 
-            // final comma operation for name
-            StringBuilder str = new StringBuilder("");
-
-            // Traversing the ArrayList name
+            // for name
+            StringBuilder str = new StringBuilder();
             for (String eachstring : arrayList) {
                 str.append(eachstring).append(",");
             }
-            commaseparatedlistName = str.toString();
+            String removeLastExtraComma = str.toString();
+            commaseparatedlistName = removeLastExtraComma.replaceFirst(".$",""); // removed last extra comma
 
-            // final operation for id
-            StringBuilder str2 = new StringBuilder("");
 
-            // Traversing the ArrayList name
+            // for id
+            StringBuilder str2 = new StringBuilder();
             for (String eachstring : arrayListId) {
                 str2.append(eachstring).append(",");
             }
-            commaseparatedlistId = str2.toString();
+            String removeLastExtraCommaInId = str2.toString();
+            commaseparatedlistId = removeLastExtraCommaInId.replaceFirst(".$",""); // removed last extra comma
+
 
             if (commaseparatedlistId.equals("")){
                 arrayList.clear();
@@ -789,7 +704,6 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
 
         RecyclerView recyclerView = jointWorkDialog.findViewById(R.id.primaryChannelList);
         recyclerView.setEnabled(true);
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -799,72 +713,60 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(Mydayplan_Activity.this, jointWorkIdList, jointWorkNameList, jointWorkDesigList);
         recyclerView.setAdapter(jointWorkAdapater);
     }
-
-    private void initJointWorkDialog() {
-        jointWorkDialog = new Dialog(Mydayplan_Activity.this);
-        jointWorkDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        jointWorkDialog.setContentView(R.layout.model_dialog_joint_work);
-        Objects.requireNonNull(jointWorkDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        jointWorkDialog.show();
-
-        Button ok = jointWorkDialog.findViewById(R.id.ok_btn);
-        ok.setEnabled(true);
-
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.jointWorkNameTemp.setVisibility(View.GONE);
-                jointWorkDialog.dismiss();
-                JointWorkSelectedAdapter jointWorkSelectedAdapter = new JointWorkSelectedAdapter(Mydayplan_Activity.this, arrayList);
-                recyclerView.setAdapter(jointWorkSelectedAdapter);
-                jointWorkSelectedAdapter.notifyDataSetChanged();
-
-                // final comma operation for name
-                StringBuilder str = new StringBuilder("");
-
-                // Traversing the ArrayList name
-                for (String eachstring : arrayList) {
-                    str.append(eachstring).append(",");
-                }
-                commaseparatedlistName = str.toString();
-
-                // final operation for id
-                StringBuilder str2 = new StringBuilder("");
-
-                // Traversing the ArrayList name
-                for (String eachstring : arrayListId) {
-                    str2.append(eachstring).append(",");
-                }
-                commaseparatedlistId = str2.toString();
-
-             //   Toast.makeText(context, commaseparatedlistId, Toast.LENGTH_SHORT).show();
-
-                if (commaseparatedlistId.equals("")){
-                    arrayList.clear();
-                    arrayListId.clear();
-                    binding.jointWorkNameTemp.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        RecyclerView recyclerView = jointWorkDialog.findViewById(R.id.primaryChannelList);
-        recyclerView.setEnabled(true);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setItemViewCacheSize(20);
-        JointWorkAdapater jointWorkAdapater = new JointWorkAdapater(Mydayplan_Activity.this, jointWorkIdList, jointWorkNameList, jointWorkDesigList);
-        recyclerView.setAdapter(jointWorkAdapater);
-    }
-
 
     private void initVariable() {
+        progressbar = findViewById(R.id.progressbar);
+        edt_remarks = findViewById(R.id.edt_remarks);
+        Dynamictpview = findViewById(R.id.Dynamictpview);
+        dynamicrecyclerview = findViewById(R.id.dynamicrecyclerview);
+        tourdate = findViewById(R.id.tourdate);
+        route_text = findViewById(R.id.route_text);
+        worktypelayout = findViewById(R.id.worktypelayout);
+        distributors_layout = findViewById(R.id.distributors_layout);
+        ModeTravel = findViewById(R.id.card_travel_mode);
+        card_Toplace = findViewById(R.id.card_Toplace);
+        Remarkscaption = findViewById(R.id.remarkscaption);
+        chillinglayout = findViewById(R.id.chillinglayout);
+        chilling_text = findViewById(R.id.chilling_text);
+        Procrumentlayout = findViewById(R.id.Procrumentlayout);
+        hqlayout = findViewById(R.id.hqlayout);
+        shiftypelayout = findViewById(R.id.shiftypelayout);
+        hq_text = findViewById(R.id.hq_text);
+        shift_type = findViewById(R.id.shift_type);
+        route_layout = findViewById(R.id.route_layout);
+        submitbutton = findViewById(R.id.submitbutton);
+        worktype_text = findViewById(R.id.worktype_text);
+        distributor_text = findViewById(R.id.distributor_text);
+        text_tour_plancount = findViewById(R.id.text_tour_plancount);
+        jointwork_layout = findViewById(R.id.jointwork_layout);
+        jointwork_recycler = findViewById(R.id.jointwork_recycler);
+        jointwork_layout = findViewById(R.id.jointwork_layout);
+        jointwork_recycler = findViewById(R.id.jointwork_recycler);
+        MdeTraval = findViewById(R.id.mode_of_travel);
+        DailyAll = findViewById(R.id.lin_daily);
+        frmPlace = findViewById(R.id.lin_from);
+        GetEmpId = findViewById(R.id.GetEmpId);
+        empidedittext = findViewById(R.id.empidedittext);
+        BusTo = findViewById(R.id.lin_to_place);
+        TextMode = findViewById(R.id.txt_mode);
+        TextToAddress = findViewById(R.id.edt_to);
+        CardDailyAllowance = findViewById(R.id.card_daily_allowance);
+        dailyAllowance = findViewById(R.id.text_daily_allowance);
+        driverAllowance = findViewById(R.id.da_driver_allowance);
+        linCheckdriver = findViewById(R.id.lin_check_driver);
         worktypelayout = findViewById(R.id.worktypelayout);
         distributors_layout = findViewById(R.id.distributors_layout);
         route_layout = findViewById(R.id.route_layout);
+
+        GetEmpId.setOnClickListener(this);
+        submitbutton.setOnClickListener(this);
+        worktypelayout.setOnClickListener(this);
+        distributors_layout.setOnClickListener(this);
+        route_layout.setOnClickListener(this);
+        shiftypelayout.setOnClickListener(this);
+        hqlayout.setOnClickListener(this);
+        card_Toplace.setOnClickListener(this);
+        chillinglayout.setOnClickListener(this);
     }
 
     @Override
@@ -979,7 +881,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         } else {
             dynamicarray.get(type).setFilter_Value(myDataset.get(position).getName());
             dynamicarray.get(type).setFilter_Text(myDataset.get(position).getId());
-            dynamicadapter = new Mydayplan_Activity.DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, getApplicationContext(), -1);
+            dynamicrecyclerview.setLayoutManager(new LinearLayoutManager(this));
+            dynamicadapter = new Mydayplan_Activity.DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, getApplicationContext());
             dynamicrecyclerview.setAdapter(dynamicadapter);
             dynamicadapter.notifyDataSetChanged();
             dynamicrecyclerview.setItemViewCacheSize(dynamicarray.size());
@@ -1118,45 +1021,52 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                 String flag = jsonObject1.optString("FWFlg");
                 String ETabs = jsonObject1.optString("ETabs");
                 Model_Pojo = new Common_Model(id, name, flag);
-                if (type.equals("0")) {
-                    String PlInv = jsonObject1.optString("Place_Involved");
-                    boolean tExpNeed = (PlInv.equalsIgnoreCase("Y"));
-                    Model_Pojo = new Common_Model(id, name, flag, ETabs, tExpNeed);
-                    worktypelist.add(Model_Pojo);
-                } else if (type.equals("1")) {
-                    distributor_master.add(Model_Pojo);
-                } else if (type.equals("2")) {
-                    Model_Pojo = new Common_Model(id, name, jsonObject1.optString("stockist_code"));
-                    FRoute_Master.add(Model_Pojo);
-                    Route_Masterlist.add(Model_Pojo);
-                } else if (type.equals("3")) {
-                } else if (type.equals("4")) {
-                    String sid = jsonObject1.optString(("id"));
-                    String Odflag = jsonObject1.optString("ODFlag");
-                    Model_Pojo = new Common_Model(sid, name, Odflag);
-                    getfieldforcehqlist.add(Model_Pojo);
-                } else if (type.equals("5")) {
-                    Model_Pojo = new Common_Model(id, name, flag);
-                    Shift_Typelist.add(Model_Pojo);
-                } else {
-                    Model_Pojo = new Common_Model(id, name, flag);
-                    ChillingCenter_List.add(Model_Pojo);
+                switch (type) {
+                    case "0":
+                        String PlInv = jsonObject1.optString("Place_Involved");
+                        boolean tExpNeed = (PlInv.equalsIgnoreCase("Y"));
+                        Model_Pojo = new Common_Model(id, name, flag, ETabs, tExpNeed);
+                        worktypelist.add(Model_Pojo);
+                        break;
+                    case "1":
+                        distributor_master.add(Model_Pojo);
+                        break;
+                    case "2":
+                        Model_Pojo = new Common_Model(id, name, jsonObject1.optString("stockist_code"));
+                        FRoute_Master.add(Model_Pojo);
+                        Route_Masterlist.add(Model_Pojo);
+                        break;
+                    case "3":
+                        break;
+                    case "4":
+                        String sid = jsonObject1.optString(("id"));
+                        String Odflag = jsonObject1.optString("ODFlag");
+                        Model_Pojo = new Common_Model(sid, name, Odflag);
+                        getfieldforcehqlist.add(Model_Pojo);
+                        break;
+                    case "5":
+                        Model_Pojo = new Common_Model(id, name, flag);
+                        Shift_Typelist.add(Model_Pojo);
+                        break;
+                    default:
+                        Model_Pojo = new Common_Model(id, name, flag);
+                        ChillingCenter_List.add(Model_Pojo);
+                        break;
                 }
             }
 
             if (type.equals("3")) {
-                jointwork_recycler.setAdapter(new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, getApplicationContext(), "10", new Joint_Work_Listner() {
-                    @Override
-                    public void onIntentClick(int po, boolean flag) {
-                        Jointworklistview.get(po).setSelected(flag);
-                        int jcount = 0;
-                        for (int i = 0; Jointworklistview.size() > i; i++) {
-                            if (Jointworklistview.get(i).isSelected()) {
-                                jcount = jcount + 1;
-                            }
+                jointwork_recycler.setLayoutManager(new LinearLayoutManager(this));
+                jointwork_recycler.setLayoutManager(new LinearLayoutManager(this));
+                jointwork_recycler.setAdapter(new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, getApplicationContext(), "10", (po, flag) -> {
+                    Jointworklistview.get(po).setSelected(flag);
+                    int jcount = 0;
+                    for (int i = 0; Jointworklistview.size() > i; i++) {
+                        if (Jointworklistview.get(i).isSelected()) {
+                            jcount = jcount + 1;
                         }
-                        text_tour_plancount.setText(String.valueOf(jcount));
                     }
+                    text_tour_plancount.setText(String.valueOf(jcount));
                 }));
             }
         } catch (JSONException e) {
@@ -1173,7 +1083,6 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         QueryString.put("desig", "MGR");
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-        JSONObject sp = new JSONObject();
         jsonArray.put(jsonObject);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> mCall = apiInterface.DCRSave(QueryString, jsonArray.toString());
@@ -1208,14 +1117,10 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                             if (Jointworklistview.size() > 0) {
                                 jointwork_layout.setVisibility(View.VISIBLE);
                                 text_tour_plancount.setText(String.valueOf(arrOfStr.length));
-                                adapter = new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, getApplicationContext(), "10", new Joint_Work_Listner() {
-                                    @SuppressLint("NotifyDataSetChanged")
-                                    @Override
-                                    public void onIntentClick(int position, boolean flag) {
-                                        Jointworklistview.remove(position);
-                                        text_tour_plancount.setText(String.valueOf(Jointworklistview.size()));
-                                        adapter.notifyDataSetChanged();
-                                    }
+                                adapter = new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, getApplicationContext(), "10", (position, flag) -> {
+                                    Jointworklistview.remove(position);
+                                    text_tour_plancount.setText(String.valueOf(Jointworklistview.size()));
+                                    adapter.notifyDataSetChanged();
                                 });
                                 jointwork_recycler.setAdapter(adapter);
                             }
@@ -1251,21 +1156,18 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                         for (int i = 0; i < jsnArValue.length(); i++) {
                             JSONObject json_oo = jsnArValue.getJSONObject(i);
                             ArrayList<Common_Model> a_listt = new ArrayList<>();
-                            ArrayList<Common_Model> a_list = new ArrayList<>();
-                            if (json_oo.getJSONArray("inputs") != null) {
-                                JSONArray jarray = json_oo.getJSONArray("inputs");
-                                a_listt.clear();
-                                String[] txtArray = json_oo.getString("Fld_Src_Field").split(",");
-                                if (jarray != null && jarray.length() > 0) {
-                                    for (int m = 0; m < jarray.length(); m++) {
-                                        JSONObject jjss = jarray.getJSONObject(m);
-                                        a_listt.add(new Common_Model(jjss.getString(txtArray[1]), jjss.getString(txtArray[0]), false));
-                                    }
+                            json_oo.getJSONArray("inputs");
+                            JSONArray jarray = json_oo.getJSONArray("inputs");
+                            String[] txtArray = json_oo.getString("Fld_Src_Field").split(",");
+                            if (jarray.length() > 0) {
+                                for (int m = 0; m < jarray.length(); m++) {
+                                    JSONObject jjss = jarray.getJSONObject(m);
+                                    a_listt.add(new Common_Model(jjss.getString(txtArray[1]), jjss.getString(txtArray[0]), false));
                                 }
                             }
                             Tp_dynamicArraylist.add(new Tp_Dynamic_Modal(json_oo.getString("Fld_ID"), json_oo.getString("Fld_Name"), "", json_oo.getString("Fld_Type"), json_oo.getString("Fld_Src_Name"), json_oo.getString("Fld_Src_Field"), json_oo.getInt("Fld_Length"), json_oo.getString("Fld_Symbol"), json_oo.getString("Fld_Mandatory"), json_oo.getString("Active_flag"), json_oo.getString("Control_id"), json_oo.getString("Target_Form"), json_oo.getString("Filter_Text"), json_oo.getString("Filter_Value"), json_oo.getString("Field_Col"), a_listt));
                         }
-                        dynamicadapter = new Mydayplan_Activity.DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, getApplicationContext(), -1);
+                        dynamicadapter = new Mydayplan_Activity.DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, getApplicationContext());
                         dynamicrecyclerview.setAdapter(dynamicadapter);
                         dynamicadapter.notifyDataSetChanged();
                         dynamicrecyclerview.setItemViewCacheSize(jsnArValue.length());
@@ -1289,9 +1191,11 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                 Shared_Common_Pref.Div_Code,
                 Shared_Common_Pref.Sf_Code, empidedittext.getText().toString(), "", "DateTime", null);
         Callto.enqueue(new Callback<>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<JsonArray> call, @NonNull Response<JsonArray> response) {
                 JsonArray res = response.body();
+                assert res != null;
                 if (res.size() < 1) {
                     Toast.makeText(getApplicationContext(), "Emp Code  Not Found!", Toast.LENGTH_LONG).show();
                     return;
@@ -1306,14 +1210,10 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     Jointworklistview.add(Model_Pojo);
                 }
                 text_tour_plancount.setText(String.valueOf(Jointworklistview.size()));
-                adapter = new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, getApplicationContext(), "10", new Joint_Work_Listner() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onIntentClick(int position, boolean flag) {
-                        Jointworklistview.remove(position);
-                        text_tour_plancount.setText(String.valueOf(Jointworklistview.size()));
-                        adapter.notifyDataSetChanged();
-                    }
+                adapter = new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, getApplicationContext(), "10", (position, flag1) -> {
+                    Jointworklistview.remove(position);
+                    text_tour_plancount.setText(String.valueOf(Jointworklistview.size()));
+                    adapter.notifyDataSetChanged();
                 });
                 jointwork_recycler.setAdapter(adapter);
             }
@@ -1386,36 +1286,32 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         QueryString.put("State_Code", Shared_Common_Pref.StateCode);
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
         Call<Object> call = service.GettpWorktypeFields(QueryString);
-        call.enqueue(new Callback<Object>() {
+        call.enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
                 try {
                     if (response.isSuccessful()) {
-                        String jsonData = null;
                         Tp_dynamicArraylist.clear();
                         JSONArray jsnArValue = new JSONArray(new Gson().toJson(response.body()));
                         for (int i = 0; i < jsnArValue.length(); i++) {
                             JSONObject json_oo = jsnArValue.getJSONObject(i);
                             ArrayList<Common_Model> a_listt = new ArrayList<>();
-                            ArrayList<Common_Model> a_list = new ArrayList<>();
-                            if (json_oo.getJSONArray("inputs") != null) {
-                                JSONArray jarray = json_oo.getJSONArray("inputs");
-                                a_listt.clear();
-                                String[] txtArray = json_oo.getString("Fld_Src_Field").split(",");
-                                if (json_oo.getString("Fld_Symbol").equals("JW")) {
-                                    jointwork_layout.setVisibility(View.VISIBLE);
-                                }
-                                if (jarray != null && jarray.length() > 0) {
-                                    for (int m = 0; m < jarray.length(); m++) {
-                                        JSONObject jjss = jarray.getJSONObject(m);
-                                        a_listt.add(new Common_Model(jjss.getString(txtArray[1]), jjss.getString(txtArray[0]), false));
-                                    }
+                            json_oo.getJSONArray("inputs");
+                            JSONArray jarray = json_oo.getJSONArray("inputs");
+                            String[] txtArray = json_oo.getString("Fld_Src_Field").split(",");
+                            if (json_oo.getString("Fld_Symbol").equals("JW")) {
+                                jointwork_layout.setVisibility(View.VISIBLE);
+                            }
+                            if (jarray.length() > 0) {
+                                for (int m = 0; m < jarray.length(); m++) {
+                                    JSONObject jjss = jarray.getJSONObject(m);
+                                    a_listt.add(new Common_Model(jjss.getString(txtArray[1]), jjss.getString(txtArray[0]), false));
                                 }
                             }
                             Tp_dynamicArraylist.add(new Tp_Dynamic_Modal(json_oo.getString("Fld_ID"), json_oo.getString("Fld_Name"), "", json_oo.getString("Fld_Type"), json_oo.getString("Fld_Src_Name"), json_oo.getString("Fld_Src_Field"), json_oo.getInt("Fld_Length"), json_oo.getString("Fld_Symbol"), json_oo.getString("Fld_Mandatory"), json_oo.getString("Active_flag"), json_oo.getString("Control_id"), json_oo.getString("Target_Form"), json_oo.getString("Filter_Text"), json_oo.getString("Filter_Value"), json_oo.getString("Field_Col"), a_listt));
                         }
-                        dynamicadapter = new Mydayplan_Activity.DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, getApplicationContext(), -1);
+                        dynamicadapter = new Mydayplan_Activity.DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, getApplicationContext());
                         dynamicrecyclerview.setAdapter(dynamicadapter);
                         dynamicadapter.notifyDataSetChanged();
                         dynamicrecyclerview.setItemViewCacheSize(jsnArValue.length());
@@ -1425,7 +1321,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
             }
 
             @Override
-            public void onFailure(Call<Object> call, Throwable t) {
+            public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
 
             }
         });
@@ -1440,27 +1336,24 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         customDialog.show();
     }
 
-    public void timePicker(int position, ArrayList<Common_Model> ArrayList) {
+    @SuppressLint("NotifyDataSetChanged")
+    public void timePicker(int position) {
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
-        timePickerDialog = new TimePickerDialog(Mydayplan_Activity.this, new TimePickerDialog.OnTimeSetListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                dynamicarray.get(position).setFilter_Value(selectedHour + ":" + selectedMinute);
-                dynamicadapter = new Mydayplan_Activity.DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, getApplicationContext(), -1);
-                dynamicrecyclerview.setAdapter(dynamicadapter);
-                dynamicadapter.notifyDataSetChanged();
-                dynamicrecyclerview.setItemViewCacheSize(dynamicarray.size());
-            }
+        timePickerDialog = new TimePickerDialog(Mydayplan_Activity.this, (timePicker, selectedHour, selectedMinute) -> {
+            dynamicarray.get(position).setFilter_Value(selectedHour + ":" + selectedMinute);
+            dynamicadapter = new DynamicViewAdapter(Tp_dynamicArraylist, R.layout.tp_dynamic_layout, getApplicationContext());
+            dynamicrecyclerview.setAdapter(dynamicadapter);
+            dynamicadapter.notifyDataSetChanged();
+            dynamicrecyclerview.setItemViewCacheSize(dynamicarray.size());
         }, hour, minute, true);//Yes 24 hour time
         timePickerDialog.setTitle("Select Time");
         timePickerDialog.show();
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void datePicker(int position, ArrayList<Common_Model> ArrayList) {
+    public void datePicker(int position) {
         Calendar newCalendar = Calendar.getInstance();
         DatePickerDialog = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
             int mnth = monthOfYear + 1;
@@ -1472,43 +1365,48 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
 
     public class DynamicViewAdapter extends RecyclerView.Adapter<DynamicViewAdapter.MyViewHolder> {
         private final int rowLayout;
-        private final Context context;
-        private final int Categorycolor;
 
-        public DynamicViewAdapter(ArrayList<Tp_Dynamic_Modal> array, int rowLayout, Context context, int Categorycolor) {
+        public DynamicViewAdapter(ArrayList<Tp_Dynamic_Modal> array, int rowLayout, Context context) {
             dynamicarray = array;
             this.rowLayout = rowLayout;
-            this.context = context;
-            this.Categorycolor = Categorycolor;
         }
 
+        @NonNull
         @Override
         public DynamicViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
             return new DynamicViewAdapter.MyViewHolder(view);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull DynamicViewAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
             if (!dynamicarray.get(position).getFld_Symbol().equals("JW")) {
                 holder.tpcaptions.setVisibility(View.VISIBLE);
                 holder.tpcaptions.setText(dynamicarray.get(position).getFld_Name());
-                String titlecaptions = dynamicarray.get(position).getFld_Name();
-                String SEttextvalues = dynamicarray.get(position).getFilter_Value();
+                String titleCaptions = dynamicarray.get(position).getFld_Name();
+                String setTextValues = dynamicarray.get(position).getFilter_Value();
+                //noinspection IfCanBeSwitch
                 if (dynamicarray.get(position).getControl_id().equals("1") || dynamicarray.get(position).getControl_id().equals("3") || dynamicarray.get(position).getControl_id().equals("18") || dynamicarray.get(position).getControl_id().equals("24") || dynamicarray.get(position).getControl_id().equals("24")) {
-                    holder.edittextid.setHint("" + titlecaptions);
+                    holder.edittextid.setHint("" + titleCaptions);
                     holder.edittextid.setVisibility(View.VISIBLE);
-                    holder.edittextid.setText(SEttextvalues);
-                    if (dynamicarray.get(position).getControl_id().equals("1")) {
-                        holder.edittextid.setInputType(InputType.TYPE_CLASS_TEXT);
-                    } else if (dynamicarray.get(position).getControl_id().equals("3")) {
-                        holder.edittextid.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    } else if (dynamicarray.get(position).getControl_id().equals("18")) {
-                        holder.edittextid.setInputType(InputType.TYPE_CLASS_PHONE);
-                    } else if (dynamicarray.get(position).getControl_id().equals("24")) {
-                        holder.edittextid.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    } else {
-                        holder.edittextid.setInputType(InputType.TYPE_CLASS_TEXT);
+                    holder.edittextid.setText(setTextValues);
+                    switch (dynamicarray.get(position).getControl_id()) {
+                        case "1":
+                            holder.edittextid.setInputType(InputType.TYPE_CLASS_TEXT);
+                            break;
+                        case "3":
+                            holder.edittextid.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            break;
+                        case "18":
+                            holder.edittextid.setInputType(InputType.TYPE_CLASS_PHONE);
+                            break;
+                        case "24":
+                            holder.edittextid.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            break;
+                        default:
+                            Toast.makeText(context, "test", Toast.LENGTH_SHORT).show();
+                            break;
                     }
 
                     int maxLength = dynamicarray.get(position).getFld_Length();
@@ -1541,14 +1439,14 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                         }
                     });
                 } else if (dynamicarray.get(position).getControl_id().equals("7") || dynamicarray.get(position).getControl_id().equals("8") || dynamicarray.get(position).getControl_id().equals("11")) {
-                    holder.Textspinnerview.setHint("Select The " + titlecaptions);
-                    holder.Textspinnerview.setText(SEttextvalues);
+                    holder.Textspinnerview.setHint("Select The " + titleCaptions);
+                    holder.Textspinnerview.setText(setTextValues);
                     holder.Textspinnerview.setVisibility(View.VISIBLE);
                     holder.edittextid.setVisibility(View.GONE);
-                    if (titlecaptions.equals("Distributor")) {
-                        shared_common_pref.save(Constants.Distributor_name, SEttextvalues);
-                        shared_common_pref.save(Constants.Distributor_Id, dynamicarray.get(position).getFilter_Text());
-                        shared_common_pref.save(Constants.TEMP_DISTRIBUTOR_ID, dynamicarray.get(position).getFilter_Text());
+                    if (titleCaptions.equals("Distributor")) {
+                        sharedCommonPref.save(Constants.Distributor_name, setTextValues);
+                        sharedCommonPref.save(Constants.Distributor_Id, dynamicarray.get(position).getFilter_Text());
+                        sharedCommonPref.save(Constants.TEMP_DISTRIBUTOR_ID, dynamicarray.get(position).getFilter_Text());
                         common_class.getDataFromApi(Constants.Retailer_OutletList, Mydayplan_Activity.this, false);
                     }
                 } else if (dynamicarray.get(position).getControl_id().equals("10")) {
@@ -1558,7 +1456,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                         RadioButton rbn = new RadioButton(getApplicationContext());
                         rbn.setId(ii);
                         rbn.setText("" + dynamicarray.get(position).getA_list().get(ii).getName());
-                        if (dynamicarray.get(position).getA_list().get(ii).isSelected() || (dynamicarray.get(position).getFilter_Text() != null && dynamicarray.get(position).getFilter_Text() != "" && dynamicarray.get(position).getFilter_Text().equals(dynamicarray.get(position).getA_list().get(ii).getId()))) {
+                        if (dynamicarray.get(position).getA_list().get(ii).isSelected() || (dynamicarray.get(position).getFilter_Text() != null && !Objects.equals(dynamicarray.get(position).getFilter_Text(), "") && dynamicarray.get(position).getFilter_Text().equals(dynamicarray.get(position).getA_list().get(ii).getId()))) {
                             rbn.setChecked(true);
                         }
                         holder.radiogroup.addView(rbn);
@@ -1576,9 +1474,9 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                 }
                 holder.Textspinnerview.setOnClickListener(v -> {
                     if (dynamicarray.get(position).getControl_id().equals("11")) {
-                        timePicker(position, dynamicarray.get(position).getA_list());
+                        timePicker(position);
                     } else if (dynamicarray.get(position).getControl_id().equals("8")) {
-                        datePicker(position, dynamicarray.get(position).getA_list());
+                        datePicker(position);
                     } else
                         openspinnerbox(position, dynamicarray.get(position).getA_list());
                 });
