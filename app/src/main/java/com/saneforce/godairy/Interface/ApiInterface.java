@@ -773,8 +773,4 @@ public interface ApiInterface {
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
-
-    @FormUrlEncoded
-    @POST("MyPHP.php?axn=get_jointwork_list")
-    Call<TpMyDayPlanExtra> getExtraFieldTpMyDayPlan(@Field("sfCode") String sfCode);
 }

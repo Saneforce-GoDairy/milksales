@@ -55,7 +55,7 @@
                 android:textColor="@color/grey_600"
                 android:textSize="13sp" />
 
-            <Spinner
+            <com.milksales.godairy.common.CustomSpinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:textColor="@color/black"
@@ -72,13 +72,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:orientation="vertical"
+                android:background="@drawable/edit_text_common"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="SELECT"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:text="WORK WITH"
                     android:textColor="@color/grey_600"
                     android:textSize="13sp" />
 
@@ -86,12 +90,13 @@
                     android:id="@+id/joint_work_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="13dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Prasanth"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
-
 
             </LinearLayout>
 

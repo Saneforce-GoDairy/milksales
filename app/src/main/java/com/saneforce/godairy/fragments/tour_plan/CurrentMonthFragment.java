@@ -1,6 +1,9 @@
 package com.saneforce.godairy.fragments.tour_plan;
 
 import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
+import static com.saneforce.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
+import static com.saneforce.godairy.common.AppConstants.USER_DETAILS_PREF;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -8,6 +11,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -196,8 +201,10 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     ArrayList<String> jointWorkNameList;
     ArrayList<String> jointWorkIdList;
     ArrayList<String> jointWorkDesigList;
-    LinearLayout linearLayout;
+    LinearLayout jointWorkExtraFieldLayout;
     String jointWorkSelectedEmployeeId, jointWorkSelectedEmployeeName, jointWorkSelectedEmployeeDesig;
+    private SharedPreferences UserDetails;
+    private int radioSelectedPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -224,6 +231,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         initOnClickTpPlan();
         binding.textTourPlancount.setText("0");
         loadWorkTypes();
+        UserDetails = requireContext().getSharedPreferences(USER_DETAILS_PREF, Context.MODE_PRIVATE);
         loadExtraField();
 
         if (Shared_Common_Pref.Tp_Approvalflag.equals("0")) {
@@ -252,7 +260,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         recyclerView.setEnabled(true);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -297,31 +305,35 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
 
             holder.nameLetter.setText(mName.substring(0,1).toUpperCase());
 
-            /*
-              [{"id":"TRMUMGR0009",
-              "name":"Ramesh qc-GENERAL SE",
-              "desig":"GENERALSE"]}
-             */
+            Log.e("rd__", String.valueOf(radioSelectedPosition));
+
+            if (radioSelectedPosition == position){
+                holder.radioButton.setChecked(true);
+            }
 
             holder.mainLayout.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
-                holder.radioButton.setEnabled(true);
                 holder.radioButton.setChecked(true);
                 jointWorkName.setText((String) name.get(position));
-                linearLayout.setVisibility(View.VISIBLE);
+                jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
                 jointWorkDialog.dismiss();
 
                  jointWorkSelectedEmployeeId = (String) id.get(position);
                  jointWorkSelectedEmployeeName = (String) name.get(position);
                  jointWorkSelectedEmployeeDesig = (String) desig.get(position);
 
-                Log.e("jw__", jointWorkSelectedEmployeeId + jointWorkSelectedEmployeeName + jointWorkSelectedEmployeeDesig);
+                radioSelectedPosition = position;
             });
 
             holder.radioButton.setOnClickListener(view -> {
-                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
-                holder.radioButton.setEnabled(true);
+                jointWorkName.setText((String) name.get(position));
+                jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
+                jointWorkDialog.dismiss();
 
+                jointWorkSelectedEmployeeId = (String) id.get(position);
+                jointWorkSelectedEmployeeName = (String) name.get(position);
+                jointWorkSelectedEmployeeDesig = (String) desig.get(position);
+
+                radioSelectedPosition = position;
             });
         }
 
@@ -349,42 +361,36 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
 
     private void loadExtraField() {
        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        String mSfCode = UserDetails.getString("Sfcode", "");
         Map<String, String> params = new HashMap<>();
-        params.put("axn", "get_jointwork_list");
+        params.put("axn", GET_JOINT_WORK_LIST);
         params.put("sfCode", "MGR0201");
+
         Call<ResponseBody> call = apiInterface.getUniversalData(params);
 
-       call.enqueue(new Callback<ResponseBody>() {
+       call.enqueue(new Callback<>() {
            @Override
            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-               if (response.isSuccessful()){
+               if (response.isSuccessful()) {
                    String result = null;
                    try {
                        assert response.body() != null;
                        result = response.body().string();
                        JSONObject jsonObject = new JSONObject(result);
 
-                       if (jsonObject.getBoolean("success")){
+                       if (jsonObject.getBoolean("success")) {
                            JSONArray array = jsonObject.getJSONArray("response");
 
                            jointWorkNameList = new ArrayList<>();
                            jointWorkIdList = new ArrayList<>();
                            jointWorkDesigList = new ArrayList<>();
-                           //catList.add("Select");
-                           for (int i =0; i<array.length(); i++){
+                           for (int i = 0; i < array.length(); i++) {
                                JSONObject jsonObject1 = array.getJSONObject(i);
                                jointWorkIdList.add(jsonObject1.getString("id"));
                                jointWorkNameList.add(jsonObject1.getString("name"));
                                jointWorkDesigList.add(jsonObject1.getString("desig"));
                            }
-
-//                           ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, catList);
-//                           adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                           extraSpinner.setAdapter(adapter);
-
-                           String debug = "";
-                           Log.e("extra_field_", String.valueOf(array));
-                       }else {
+                       } else {
                            Log.e("extra_field_", "response error");
                        }
                    } catch (JSONException | IOException e) {
@@ -413,10 +419,13 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         spinner = bottomSheetDialog.findViewById(R.id.spinner);
       //  extraSpinner = bottomSheetDialog.findViewById(R.id.spinnerEmployee);
         jointWorkName = bottomSheetDialog.findViewById(R.id.joint_work_name);
-        linearLayout = bottomSheetDialog.findViewById(R.id.extra_field);
+        jointWorkExtraFieldLayout = bottomSheetDialog.findViewById(R.id.extra_field);
 
-        assert linearLayout != null;
-        linearLayout.setOnClickListener(v -> jointWorkDialog.show());
+        assert jointWorkExtraFieldLayout != null;
+        jointWorkExtraFieldLayout.setOnClickListener(v -> {
+            initJointWorkDialog();
+            jointWorkDialog.show();
+        });
 
         assert spinner != null;
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -425,12 +434,12 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 String workType = spinner.getSelectedItem().toString();
 
                 if (workType.equals("Joint Work")){
-                    assert linearLayout != null;
-                    linearLayout.setVisibility(View.GONE);
+                    assert jointWorkExtraFieldLayout != null;
+                    jointWorkExtraFieldLayout.setVisibility(View.GONE);
                     initJointWorkDialog();
                 }else {
-                    assert linearLayout != null;
-                    linearLayout.setVisibility(View.GONE);
+                    assert jointWorkExtraFieldLayout != null;
+                    jointWorkExtraFieldLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -746,11 +755,6 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                             }
                         }
 
-                        // hide by prasanth
-//                        vwExpTravel.setVisibility(View.VISIBLE);
-//                        if (ExpNeed == false) {
-//                            vwExpTravel.setVisibility(View.GONE);
-//                        }
                         String Jointworkcode = String.valueOf(jsoncc.getJSONObject(0).get("JointworkCode"));
                         String JointWork_Name = String.valueOf(jsoncc.getJSONObject(0).get("JointWork_Name"));
                         String[] arrOfStr = Jointworkcode.split(",");
@@ -764,7 +768,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                             }
 
                             if (Jointworklistview.size() > 0) {
-                                jointwork_layout.setVisibility(View.VISIBLE);
+//                                jointwork_layout.setVisibility(View.VISIBLE);
                                 binding.textTourPlancount.setText(String.valueOf(arrOfStr.length));
                                 adapter = new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
                                     @Override
@@ -774,7 +778,10 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                                         adapter.notifyDataSetChanged();
                                     }
                                 });
-                                jointwork_recycler.setAdapter(adapter);
+                                /*
+                                   Previous version code
+                                 */
+                               // jointwork_recycler.setAdapter(adapter);
                             }
                         }
 
@@ -1184,19 +1191,24 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
                 getfieldforcehqlist.add(Model_Pojo);
             }
             if (type.equals("3")) {
-                jointwork_recycler.setAdapter(new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
-                    @Override
-                    public void onIntentClick(int po, boolean flag) {
-                        Jointworklistview.get(po).setSelected(flag);
-                        int jcount = 0;
-                        for (int i = 0; Jointworklistview.size() > i; i++) {
-                            if (Jointworklistview.get(i).isSelected()) {
-                                jcount = jcount + 1;
-                            }
-                        }
-                        binding.textTourPlancount.setText(String.valueOf(jcount));
-                    }
-                }));
+
+                 /*
+                    Previous version code
+                 */
+
+//                jointwork_recycler.setAdapter(new Joint_Work_Adapter(Jointworklistview, R.layout.jointwork_listitem, requireContext(), "10", new Joint_Work_Listner() {
+//                    @Override
+//                    public void onIntentClick(int po, boolean flag) {
+//                        Jointworklistview.get(po).setSelected(flag);
+//                        int jcount = 0;
+//                        for (int i = 0; Jointworklistview.size() > i; i++) {
+//                            if (Jointworklistview.get(i).isSelected()) {
+//                                jcount = jcount + 1;
+//                            }
+//                        }
+//                        binding.textTourPlancount.setText(String.valueOf(jcount));
+//                    }
+//                }));
             }
         } catch (JSONException e) {
             e.printStackTrace();

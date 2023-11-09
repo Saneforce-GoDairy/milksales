@@ -1,4 +1,4 @@
-package com.milksales.godairy.common;
+package com.saneforce.godairy.common;
 
 import android.content.Context;
 import android.util.AttributeSet;
