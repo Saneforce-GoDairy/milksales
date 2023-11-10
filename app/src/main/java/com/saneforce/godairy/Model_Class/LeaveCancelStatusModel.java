@@ -49,7 +49,7 @@ public class LeaveCancelStatusModel {
     @SerializedName("Rejected_Reason")
     @Expose
     private Object rejectedReason;
-    @SerializedName("Leavecancel_Id")
+    @SerializedName("Leave_Active_Flag")
     @Expose
     private Integer leavecancelId;
 
