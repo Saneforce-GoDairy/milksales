@@ -1817,8 +1817,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             try {
                 List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
                 if (addresses != null && addresses.size() > 0) {
+
                     Address returnedAddress = addresses.get(0);
-                    Log.e("returnedAddress", returnedAddress.toString());
                     doorNo = returnedAddress.getSubThoroughfare();
                     street = returnedAddress.getThoroughfare();
                     feature = returnedAddress.getFeatureName();
@@ -1840,10 +1840,13 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         if (Common_Class.isNullOrEmpty(street)) street = "";
                         if (Common_Class.isNullOrEmpty(feature)) feature = "";
 
-                        String line1 = doorNo + ", " + street + ", " + feature;
-                        line1 = line1.replace(", , ", ", ");
-                        if (line1.startsWith(", ")) line1 = line1.substring(2);
-                        if (line1.endsWith(", ")) line1 = line1.substring(0, line1.length()- 3);
+//                        String line1 = doorNo + ", " + street + ", " + feature;
+//                        line1 = line1.replace(", , ", ", ");
+//                        if (line1.startsWith(", ")) line1 = line1.substring(2);
+//                        if (line1.endsWith(", ")) line1 = line1.substring(0, line1.length()- 3);
+                        String[] sadd= returnedAddress.getAddressLine(0).split(",");
+
+                        String line1 = sadd[1].trim()  + ", " + sadd[2].trim() ;
                         businessAddressNo.setText(line1);
 
                         if (!Common_Class.isNullOrEmpty(city) && !Common_Class.isNullOrEmpty(district)) {
