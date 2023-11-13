@@ -272,14 +272,17 @@ public class CameraxActivity extends AppCompatActivity {
 
     private void onClick() {
         binding.submit.setOnClickListener(v -> saveImgPreview());
-        binding.retry.setOnClickListener(v -> {
+        binding.cameraxRightControls.setOnClickListener(v -> {
             startCamera(cameraFacing);
             binding.imageView.setVisibility(View.GONE);
-            binding.imageOkRetryContainer.setVisibility(View.GONE);
-            binding.cameraFunctionContainer.setVisibility(View.VISIBLE);
-              binding.cameraPreview.setVisibility(View.VISIBLE);
-            binding.seekBarChangeBrightness.setVisibility(View.VISIBLE);
             binding.submit.setVisibility(View.GONE);
+            binding.cameraxRightControls.setVisibility(View.GONE);
+
+            binding.cameraxLeftControls.setVisibility(View.VISIBLE);
+            binding.cameraPreview.setVisibility(View.VISIBLE);
+            binding.seekBarChangeBrightness.setVisibility(View.VISIBLE);
+            binding.cameraxClickLayout.setVisibility(View.VISIBLE);
+            binding.cameraFunctionContainer.setVisibility(View.VISIBLE);
         });
         binding.back.setOnClickListener(v -> finish());
         binding.buttonFlash.setOnClickListener(v -> {
@@ -493,13 +496,16 @@ public class CameraxActivity extends AppCompatActivity {
                     Bitmap bmRotated = rotateBitmap(bitmap, orientation);
 
                     binding.imageView.setImageBitmap(bmRotated);
+                    binding.cameraFunctionContainer.setVisibility(View.GONE);
+                    binding.cameraxLeftControls.setVisibility(View.GONE);
+                    binding.cameraxClickLayout.setVisibility(View.GONE);
+
+
                     binding.submit.setVisibility(View.VISIBLE);
-
                     binding.imageView.setVisibility(View.VISIBLE);
-                    binding.imageOkRetryContainer.setVisibility(View.VISIBLE);
-
+                    binding.cameraxCustomController.setVisibility(View.VISIBLE);
+                    binding.cameraxRightControls.setVisibility(View.VISIBLE);
                     binding.cameraPreview.setVisibility(View.INVISIBLE);
-                    binding.cameraFunctionContainer.setVisibility(View.INVISIBLE);
                     binding.seekBarChangeBrightness.setVisibility(View.GONE);
                 });
                 startCamera(cameraFacing);

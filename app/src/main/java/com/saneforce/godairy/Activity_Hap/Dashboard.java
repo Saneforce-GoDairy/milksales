@@ -708,11 +708,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void getHAPWorkTypes() {
-
         JSONObject jParam = new JSONObject();
         try {
-            jParam.put("SF", UserDetails.getString("Sfcode", ""));
-            jParam.put("div", UserDetails.getString("Divcode", ""));
+            jParam.put("SF", UserDetails.getString("Sfcode", "")); // MGR0201
+            jParam.put("div", UserDetails.getString("Divcode", "")); // // 1
             ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
             service.getDataArrayList("get/worktypes", jParam.toString()).enqueue(new Callback<JsonArray>() {
                 @Override
