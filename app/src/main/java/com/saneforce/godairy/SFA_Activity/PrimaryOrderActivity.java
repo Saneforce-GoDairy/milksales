@@ -350,7 +350,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
-                if (PaymentMethod == null) {
+                if (PaymentMethod == null || PaymentMethod == "null") {
                     Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
                 } else if (PaymentMethod.equalsIgnoreCase("CC")) {
                     Intent intent = new Intent(this, InitiatePaymentActivity.class);

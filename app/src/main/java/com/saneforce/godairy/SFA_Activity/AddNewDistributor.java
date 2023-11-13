@@ -1844,6 +1844,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 //                        line1 = line1.replace(", , ", ", ");
 //                        if (line1.startsWith(", ")) line1 = line1.substring(2);
 //                        if (line1.endsWith(", ")) line1 = line1.substring(0, line1.length()- 3);
+
                         String[] sadd= returnedAddress.getAddressLine(0).split(",");
 
                         String line1 = sadd[1].trim()  + ", " + sadd[2].trim() ;
