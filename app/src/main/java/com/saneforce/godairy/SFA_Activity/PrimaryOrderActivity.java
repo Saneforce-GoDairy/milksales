@@ -1070,7 +1070,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void FilterProduct() {
-
         try {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
