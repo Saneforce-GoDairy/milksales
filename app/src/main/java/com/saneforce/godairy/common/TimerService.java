@@ -473,7 +473,7 @@ public class TimerService extends Service {
                             if (locations.length() > 0 && UpdtFlag == false) {
                                 try {
                                     UpdtFlag = true;
-                                    Call<JsonObject> call = apiInterface.JsonSave("save/trackall", "3", UserDetails.getString("Sfcode", ""), "", "", locations.toString());
+                                    Call<JsonObject> call = apiInterface.JsonSave("save/trackall", "3", UserDetails.getString("Sfcode", ""), "", "","", locations.toString());
                                     call.enqueue(new Callback<JsonObject>() {
                                         @Override
                                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

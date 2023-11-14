@@ -767,7 +767,13 @@ public class Missed_Punch extends AppCompatActivity implements DatePickerDialog.
 
 
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-        Call<JsonObject> call = service.SubmitmissedPunch(Shared_Common_Pref.Sf_Name, Shared_Common_Pref.Div_Code, Shared_Common_Pref.Sf_Code, Shared_Common_Pref.StateCode, "MGR", leaveCap1);
+        Call<JsonObject> call = service.SubmitmissedPunch(Shared_Common_Pref.Sf_Name,
+                Common_Class.GetEkey(),
+                Shared_Common_Pref.Div_Code,
+                Shared_Common_Pref.Sf_Code,
+                Shared_Common_Pref.StateCode,
+                "MGR",
+                leaveCap1);
         Log.e("TOTAL_REQUEST", call.request().toString());
         call.enqueue(new Callback<JsonObject>() {
             @Override

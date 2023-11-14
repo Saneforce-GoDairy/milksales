@@ -547,6 +547,7 @@ public class Permission_Request extends AppCompatActivity implements View.OnClic
             jsonleaveType.put("Noof_Count", StringPremissonEntry);
             jsonleaveType.put("Shift", shiftTypeId);
             jsonleaveTypeS.put("PermissionFormValidate", jsonleaveType);
+            jsonleaveTypeS.put("Ekey", com.saneforce.godairy.Common_Class.Common_Class.GetEkey());
             jsonArray1.put(jsonleaveTypeS);
 
         } catch (JSONException e) {
@@ -606,6 +607,7 @@ public class Permission_Request extends AppCompatActivity implements View.OnClic
             jsonleaveType.put("Reason", reasonPermission.getText().toString());
             jsonleaveType.put("No_of_Hrs", StringPremissonEntry);
             jsonleaveTypeS.put("PermissionEntry", jsonleaveType);
+            jsonleaveTypeS.put("Ekey", com.saneforce.godairy.Common_Class.Common_Class.GetEkey());
             jsonArray1.put(jsonleaveTypeS);
 
         } catch (JSONException e) {

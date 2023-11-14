@@ -3,6 +3,7 @@ package com.saneforce.godairy.Activity_Hap;
 import static com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly;
 import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
 import static com.saneforce.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
+import static com.saneforce.godairy.common.AppConstants.SUBMIT_MY_DAY_PLAN;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -533,7 +534,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);
                     QueryString.put("State_Code", Shared_Common_Pref.StateCode);
                     QueryString.put("desig", "MGR");
-                    QueryString.put("axn", "save/dayplandynamic");
+                    QueryString.put("axn", SUBMIT_MY_DAY_PLAN);
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<Object> Callto = apiInterface.Tb_Mydayplannew(QueryString, jsonarr.toString());
                     Callto.enqueue(new Callback<>() {
