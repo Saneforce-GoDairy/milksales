@@ -53,14 +53,11 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
     Intent i;
 
     Context context = this;
-    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave__approval__reject);
-
-        mUkey = Common_Class.GetEkey();
 
         TextView txtHelp = findViewById(R.id.toolbar_help);
         ImageView imgHome = findViewById(R.id.toolbar_home);
@@ -164,7 +161,6 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
         }
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "dcr/save");
-        QueryString.put("Ukey", mUkey);
         QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
         QueryString.put("State_Code", Shared_Common_Pref.Div_Code);
         QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);

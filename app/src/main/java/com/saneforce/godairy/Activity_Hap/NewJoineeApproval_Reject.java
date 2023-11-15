@@ -48,14 +48,11 @@ public class NewJoineeApproval_Reject extends AppCompatActivity implements View.
     LinearLayout Approvereject, rejectonly;
     EditText reason;
     Intent i;
-    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_joinee_approval_reject);
-
-        mUkey = Common_Class.GetEkey();
 
         TextView txtHelp = findViewById(R.id.toolbar_help);
         ImageView imgHome = findViewById(R.id.toolbar_home);
@@ -156,7 +153,6 @@ public class NewJoineeApproval_Reject extends AppCompatActivity implements View.
     private void SendtpApproval(int flag) {
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "save/newapprvrej");
-        QueryString.put("Ukey", mUkey);
         QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
         QueryString.put("State_Code", Shared_Common_Pref.Div_Code);
         QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);
