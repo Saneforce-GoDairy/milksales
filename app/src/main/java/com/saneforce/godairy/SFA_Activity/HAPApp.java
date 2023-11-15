@@ -15,6 +15,7 @@ import android.util.Log;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.JsonObject;
+import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -158,7 +159,7 @@ public class HAPApp extends Application {
             try {
                 SharedPreferences UserDetails = activeActivity.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                 if (UserDetails.getString("Sfcode", "") != "") {
-                    Call<JsonObject> call = apiInterface.JsonSave("save/trackall", "3", UserDetails.getString("Sfcode", ""), "", "", locations.toString());
+                    Call<JsonObject> call = apiInterface.JsonSave("save/trackall", "3", Common_Class.GetEkey(), UserDetails.getString("Sfcode", ""), "", "", locations.toString());
                     call.enqueue(new Callback<JsonObject>() {
                         @Override
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

@@ -392,7 +392,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
 
     private void loadExtraField() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        UserDetails.getString("Sfcode", "");
+      //  UserDetails.getString("Sfcode", "");
         Map<String, String> params = new HashMap<>();
         params.put("axn", GET_JOINT_WORK_LIST);
         params.put("sfCode", "MGR0201");

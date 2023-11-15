@@ -38,6 +38,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
+import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AlertBox;
@@ -656,6 +657,7 @@ public class Leave_Request extends AppCompatActivity implements View.OnClickList
             jsonleaveType.put("Outime", wrkCOut.getText());
             jsonleaveType.put("NoofHrs", wrkHrs.getText());
             jsonleaveType.put("EligDys", wrkEligi.getText());
+            jsonleaveType.put("Ekey", Common_Class.GetEkey());
             //  jsonleaveArrayType.put(jsonleaveType);
             jsonleaveTypeS.put("LeaveFormValidate", jsonleaveType);
             jsonArray1.put(jsonleaveTypeS);
