@@ -68,11 +68,14 @@ public class POS_SalesEntryActivity extends AppCompatActivity implements View.On
     public static TextView tvStartDate, tvEndDate, currDate, totalExpense, tvView;
     public static String stDate = "", endDate = "", entryDate="";
     String date = "", SF_code = "";
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pos_sales_entry);
+
+        mUkey = Common_Class.GetEkey();
 
         db = new DatabaseHandler(this);
         sharedCommonPref = new Shared_Common_Pref(POS_SalesEntryActivity.this);
@@ -133,7 +136,7 @@ public class POS_SalesEntryActivity extends AppCompatActivity implements View.On
     private void submitData() {
         JSONObject jObj = new JSONObject();
         try {
-            jObj.put("eKey",common_class.GetEkey());
+            jObj.put("Ukey", mUkey);
             jObj.put("SFCode",SF_code);
             jObj.put("currentDate",entryDate);
             jObj.put("fromDate",stDate);

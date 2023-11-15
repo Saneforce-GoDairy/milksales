@@ -112,11 +112,14 @@ public class Missed_Punch extends AppCompatActivity implements DatePickerDialog.
     Common_Model mCommon_model_spinner;
     Integer count = 0;
     List<Common_Model> modelRetailDetails = new ArrayList<>();
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missed__punch);
+
+        mUkey = Common_Class.GetEkey();
 
         sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
@@ -735,7 +738,7 @@ public class Missed_Punch extends AppCompatActivity implements DatePickerDialog.
         JSONObject jsonleaveTypeS = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         try {
-
+            jsonleaveType.put("Ukey", mUkey);
             jsonleaveType.put("missed_date", misseddateselect.getText().toString());
             jsonleaveType.put("Shift_Name", shiftType.getText().toString());
             jsonleaveType.put("checkouttime", missedCheckOut);
@@ -928,7 +931,7 @@ public class Missed_Punch extends AppCompatActivity implements DatePickerDialog.
         try {
             if (missedDates == null) return;
             JSONObject jj = new JSONObject();
-
+            jj.put("Ukey", mUkey);
             jj.put("div", Shared_Common_Pref.Div_Code);
             jj.put("sf", Shared_Common_Pref.Sf_Code);
             jj.put("rSF", Shared_Common_Pref.Sf_Code);
