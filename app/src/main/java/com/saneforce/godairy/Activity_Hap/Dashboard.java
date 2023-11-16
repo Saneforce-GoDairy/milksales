@@ -1,5 +1,6 @@
 package com.saneforce.godairy.Activity_Hap;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +50,6 @@ import com.saneforce.godairy.databinding.ActivityDashboardBinding;
 import com.saneforce.godairy.fragments.GateInOutFragment;
 import com.saneforce.godairy.fragments.MonthlyFragment;
 import com.saneforce.godairy.fragments.TodayFragment;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,21 +71,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     public static final String CheckInDetail = "CheckInDetail";
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String mypreference = "mypref";
-    private String sSFType = "";
-    private String onDuty = "", ClosingDate = "";
+    private String onDuty = "", ClosingDate = "", sSFType = "";
     private Integer ClosingKm = 0;
-    private ImageView profilePic;
-    private TextView approvalcount;
-    LinearLayout approval;
-    private Button linMyday;
-    private Button linCheckin;
-    private Button linHolidayWorking;
-    private Button linReCheck;
     private SharedPreferences.Editor editors;
     private SharedPreferences CheckInDetails, UserDetails, sharedpreferences;
     private Common_Class common_class;
     private Shared_Common_Pref shared_common_pref;
-    private com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
+    private final com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
     private DatabaseHandler db;
 
     ArrayList<Integer> exploreImage = new ArrayList<>(Arrays.asList(
@@ -116,15 +107,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         loadFragment();
 
         db = new DatabaseHandler(context);
-        TextView lblUserName = (TextView) findViewById(R.id.user_name);
-        TextView head_quarters = (TextView) findViewById(R.id.head_quarters);
-        TextView lblEmail = (TextView) findViewById(R.id.lblEmail);
-        profilePic = findViewById(R.id.image_view_user_profile);
-        linReCheck = findViewById(R.id.lin_RecheckIn);
-        linCheckin = findViewById(R.id.lin_check_in);
-        linMyday = findViewById(R.id.lin_myday_plan);
-
-        linHolidayWorking = findViewById(R.id.lin_holiday_working);
 
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -134,7 +116,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         getHAPWorkTypes();
         shared_common_pref = new Shared_Common_Pref(context);
 
-        Integer type = (UserDetails.getInt("CheckCount", 0));
+        // Integer type = (UserDetails.getInt("CheckCount", 0));
 
         common_class = new Common_Class(context);
 
@@ -145,13 +127,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         int OTFlg = UserDetails.getInt("OTFlg", 0);
         String mProfileImage = UserDetails.getString("Profile", "");
 
-        RelativeLayout mRelApproval = findViewById(R.id.rel_app);
-
-        String imageProfile = UserDetails.getString("url", "");
-
-        lblUserName.setText(sSFName);
-        head_quarters.setText(SFDesig);
-        lblEmail.setText(eMail);
+        binding.userName.setText(sSFName);
+        binding.headQuarters.setText(SFDesig);
+        binding.lblEmail.setText(eMail);
 
         int mCount = 0;
 
@@ -175,7 +153,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             }
         }).start();
 
-        profilePic.setOnClickListener(v -> {
+        binding.userImage.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
             intent.putExtra("ImageUrl", mProfileImage);
             startActivity(intent);
@@ -183,15 +161,15 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         });
 
         ImageView btMyQR = findViewById(R.id.myQR);
-        linMyday.setVisibility(View.GONE);
+        binding.linMydayPlan.setVisibility(View.GONE);
 
         Log.e("Dashboard", "sSFType :" + sSFType);
 
 
         if (sSFType.equals("1")) {
-            linMyday.setVisibility(View.VISIBLE);
-            linHolidayWorking.setVisibility(View.GONE);
-            linCheckin.setVisibility(View.GONE);
+            binding.linMydayPlan.setVisibility(View.VISIBLE);
+            binding.linHolidayWorking.setVisibility(View.GONE);
+            binding.linCheckIn.setVisibility(View.GONE);
         }
 
         Button linRequstStaus = (findViewById(R.id.lin_request_status));
@@ -206,17 +184,16 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             linOnDuty.setVisibility(View.VISIBLE);
         else {
             linSFA.setVisibility(View.VISIBLE);
-            linReCheck.setVisibility(View.VISIBLE);
+            binding.linRecheckIn.setVisibility(View.VISIBLE);
         }
 
         if (linOnDuty.getVisibility() == View.VISIBLE) {
-            linCheckin.setVisibility(View.VISIBLE);
-            linHolidayWorking.setVisibility(View.VISIBLE);
+            binding.linCheckIn.setVisibility(View.VISIBLE);
+            binding.linHolidayWorking.setVisibility(View.VISIBLE);
         } else {
-            linCheckin.setVisibility(View.GONE);
+            binding.linCheckIn.setVisibility(View.GONE);
         }
 
-        approval = findViewById(R.id.approval);
         Button linTaClaim = (findViewById(R.id.lin_ta_claim));
         Button linExtShift = (findViewById(R.id.lin_extenden_shift));
         linExtShift.setVisibility(View.GONE);
@@ -225,14 +202,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         linTourPlan.setVisibility(View.GONE);
         if (sSFType.equals("1")) linTourPlan.setVisibility(View.VISIBLE);
         Button linExit = (findViewById(R.id.lin_exit));
-        approvalcount = findViewById(R.id.approvalcount);
 
         if (UserDetails.getInt("CheckCount", 0) <= 0) {
-            approval.setVisibility(View.INVISIBLE);
+            binding.approval.setVisibility(View.INVISIBLE);
         } else {
             exploreName.add("Approvals");
             exploreImage.add(R.drawable.canteen_scan_ic);
-            approval.setVisibility(View.VISIBLE);
+            binding.approval.setVisibility(View.VISIBLE);
         }
 
         loadExploreGrid();
@@ -242,26 +218,26 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         });
 
-        linMyday.setOnClickListener(this);
-        linCheckin.setOnClickListener(this);
+        binding.linMydayPlan.setOnClickListener(this);
+        binding.linCheckIn.setOnClickListener(this);
         linRequstStaus.setOnClickListener(this);
         linReport.setOnClickListener(this);
         linOnDuty.setOnClickListener(this);
-        approval.setOnClickListener(this);
+        binding.approval.setOnClickListener(this);
         linTaClaim.setOnClickListener(this);
         linExtShift.setOnClickListener(this);
         linTourPlan.setOnClickListener(this);
-        linHolidayWorking.setOnClickListener(this);
+        binding.linHolidayWorking.setOnClickListener(this);
         linExit.setOnClickListener(this);
-        linReCheck.setOnClickListener(this);
+        binding.linRecheckIn.setOnClickListener(this);
         linSFA.setOnClickListener(this);
         getcountdetails();
         updateFlxlayout();
 
         Log.v("wrkType:",shared_common_pref.getvalue("worktype", ""));
         if (shared_common_pref.getvalue("worktype", "").equalsIgnoreCase("43")) {
-            linCheckin.setVisibility(View.GONE);
-            linReCheck.setVisibility(View.GONE);
+            binding.linCheckIn.setVisibility(View.GONE);
+            binding.linRecheckIn.setVisibility(View.GONE);
         }
     }
 
@@ -270,7 +246,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 .load(mProfileImage)
                 .apply(RequestOptions.circleCropTransform())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(profilePic);
+                .into(binding.userImage);
     }
 
     private void loadExploreGrid() {
@@ -295,8 +271,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         @Override
         public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_dash_explore_more_item, parent, false);
-            Adapter.ViewHolder viewHolder = new Adapter.ViewHolder(view);
-            return viewHolder;
+            return new ViewHolder(view);
         }
 
         @Override
@@ -382,7 +357,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 if (!ETime.equalsIgnoreCase("")) {
                     String CutOFFDt = CheckInDetails.getString("ShiftCutOff", "0");
                     String SftId = CheckInDetails.getString("Shift_Selected_Id", "0");
-                    if (DT.GetCurrDateTime(context).getTime() >= DT.getDate(CutOFFDt).getTime() || SftId == "0") {
+                    if (DT.GetCurrDateTime(context).getTime() >= DT.getDate(CutOFFDt).getTime() || SftId.equals("0")) {
                         ETime = "";
                     }
                 }
@@ -498,8 +473,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         @Override
         public Fragment createFragment(int position) {
             switch (position){
-                case 0:
-                    return new TodayFragment();
                 case 1:
                     return new MonthlyFragment();
                 case 2:
@@ -514,6 +487,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -607,7 +581,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 SharedPreferences.Editor editor = UserDetails.edit();
                 editor.putBoolean("Login", false);
                 editor.apply();
-                CheckInDetails.edit().clear().commit();
+                CheckInDetails.edit().clear().apply();
                 Intent playIntent = new Intent(context, SANGPSTracker.class);
                 stopService(playIntent);
                 finishAffinity();
@@ -635,7 +609,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 else
                     flg = 1;
                 FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) flxlastChild.getLayoutParams();
-                Log.d("TagName", flxlastChild.toString() + " - " + lp.getFlexBasisPercent() + "-" + flg);
+                Log.d("TagName", flxlastChild + " - " + lp.getFlexBasisPercent() + "-" + flg);
                 lp.setFlexBasisPercent(0.47f);
                 flxlastChild.setLayoutParams(lp);
             }
@@ -651,21 +625,19 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", Name);
         QueryString.put("Sf_code", UserDetails.getString("Sfcode", ""));
-        QueryString.put("Date", common_class.GetDate());
+        QueryString.put("Date", Common_Class.GetDate());
         QueryString.put("divisionCode", UserDetails.getString("Divcode", ""));
         QueryString.put("desig", "MGR");
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-        JSONObject sp = new JSONObject();
         jsonArray.put(jsonObject);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> mCall = apiInterface.DCRSave(QueryString, jsonArray.toString());
-        mCall.enqueue(new Callback<JsonObject>() {
+        mCall.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 try {
                     JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                    String success = jsonObject.getString("success");
                     String Msg = jsonObject.getString("msg");
                     if (!Msg.equals("")) {
                         AlertDialogBox.showDialog(context, HAPApp.Title, Msg, "OK", "", false, new AlertBox() {
@@ -701,7 +673,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
 
             }
         });
@@ -711,17 +683,17 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         JSONObject jParam = new JSONObject();
         try {
             jParam.put("SF", UserDetails.getString("Sfcode", "")); // MGR0201
-            jParam.put("div", UserDetails.getString("Divcode", "")); // // 1
+            jParam.put("div", UserDetails.getString("Divcode", "")); // 1
             ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
-            service.getDataArrayList("get/worktypes", jParam.toString()).enqueue(new Callback<JsonArray>() {
+            service.getDataArrayList("get/worktypes", jParam.toString()).enqueue(new Callback<>() {
                 @Override
-                public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                public void onResponse(@NonNull Call<JsonArray> call, @NonNull Response<JsonArray> response) {
                     db.deleteMasterData("HAPWorkTypes");
                     db.addMasterData("HAPWorkTypes", response.body());
                 }
 
                 @Override
-                public void onFailure(Call<JsonArray> call, Throwable t) {
+                public void onFailure(@NonNull Call<JsonArray> call, @NonNull Throwable t) {
 
                 }
             });
@@ -736,13 +708,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         Call<JsonArray> GetHAPLocation = service.GetHAPLocation(UserDetails.getString("Divcode", ""), UserDetails.getString("Sfcode", ""), commonLeaveType);
         GetHAPLocation.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+            public void onResponse(@NonNull Call<JsonArray> call, @NonNull Response<JsonArray> response) {
                 db.deleteMasterData("HAPLocations");
                 db.addMasterData("HAPLocations", response.body());
             }
 
             @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonArray> call, @NonNull Throwable t) {
             }
         });
     }
@@ -751,7 +723,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", Name);
         QueryString.put("Sf_code", UserDetails.getString("Sfcode", ""));
-        QueryString.put("Date", common_class.GetDate());
+        QueryString.put("Date", Common_Class.GetDate());
         QueryString.put("divisionCode", UserDetails.getString("Divcode", ""));
         QueryString.put("desig", "MGR");
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -759,10 +731,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         mCall.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 try {
                     JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                    Integer MotCount = Integer.valueOf(jsonObject.getString("checkMOT"));
                     ClosingKm = Integer.valueOf(jsonObject.getString("CheckEndKM"));
                     ClosingDate = jsonObject.getString("CheckEndDT");
                     /* *********  Missing KM Auto Asking ******* */
@@ -782,8 +753,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     editors.putString("ShiftDuty", jsonObject.getString("Todaycheckin_Flag"));
                     editors.commit();
 
-                    linCheckin.setVisibility(View.VISIBLE);
-                    linHolidayWorking.setVisibility(View.VISIBLE);
+                    binding.linCheckIn.setVisibility(View.VISIBLE);
+                    binding.linHolidayWorking.setVisibility(View.VISIBLE);
                     if (flag == 1 && sSFType.equals("1")) {
                         JSONArray jsoncc = jsonObject.getJSONArray("Checkdayplan");
                         if (jsoncc.length() > 0) {
@@ -792,25 +763,24 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                 intent.putExtra("My_Day_Plan", "One");
                                 startActivity(intent);
                             } else {
-                                linMyday.setVisibility(View.GONE);
+                                binding.linMydayPlan.setVisibility(View.GONE);
                                 if (jsoncc.getJSONObject(0).getString("wtype").equalsIgnoreCase("43")) {
-                                    linCheckin.setVisibility(View.GONE);
-                                    linReCheck.setVisibility(View.GONE);
+                                    binding.linCheckIn.setVisibility(View.GONE);
+                                    binding.linRecheckIn.setVisibility(View.GONE);
 
                                 } else {
-                                    linCheckin.setVisibility(View.VISIBLE);
+                                    binding.linCheckIn.setVisibility(View.VISIBLE);
                                 }
-                                linHolidayWorking.setVisibility(View.VISIBLE);
+                                binding.linHolidayWorking.setVisibility(View.VISIBLE);
                                 updateFlxlayout();
                             }
                         } else {
-                            linCheckin.setVisibility(View.GONE);
-                            linHolidayWorking.setVisibility(View.GONE);
-                            linMyday.setVisibility(View.VISIBLE);
+                            binding.linCheckIn.setVisibility(View.GONE);
+                            binding.linHolidayWorking.setVisibility(View.GONE);
+                            binding.linMydayPlan.setVisibility(View.VISIBLE);
                             updateFlxlayout();
                         }
                     } else {
-                        String success = jsonObject.getString("success");
                         String Msg = jsonObject.getString("msg");
                         if (!Msg.equals("")) {
                             AlertDialogBox.showDialog(context, HAPApp.Title, Msg, "OK", "", false, new AlertBox() {
@@ -847,8 +817,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.d("MDPError", t.getMessage());
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.d("MDPError", Objects.requireNonNull(t.getMessage()));
             }
         });
     }
@@ -868,7 +838,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         mCall.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(new Gson().toJson(response.body()));
@@ -879,17 +849,17 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                             jsonObject.getInt("FlightAppr") +
                             jsonObject.getInt("HolidayCount") + jsonObject.getInt("DeviationC") +
                             jsonObject.getInt("CancelLeave") + jsonObject.getInt("ExpList");
-                    approvalcount.setText(String.valueOf(Shared_Common_Pref.TotalCountApproval));
-                    approvalcount.setVisibility(View.GONE);
+                    binding.approvalcount.setText(String.valueOf(Shared_Common_Pref.TotalCountApproval));
+                    binding.approvalcount.setVisibility(View.GONE);
                     if (Shared_Common_Pref.TotalCountApproval > 0)
-                        approvalcount.setVisibility(View.VISIBLE);
+                        binding.approvalcount.setVisibility(View.VISIBLE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 common_class.ProgressdialogShow(2, "");
             }
         });

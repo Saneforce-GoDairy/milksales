@@ -73,7 +73,7 @@ public class AdvanceReq extends AppCompatActivity implements Master_Interface {
     EditText etext2,AdvAmt,txLocation,txPurpose;
     Button Submit;
 
-    String minDate = "",AdvTypeVal="",eKey="";
+    String minDate = "",AdvTypeVal="";
     String minYear = "", minMonth = "", minDay = "";
     String tominYear = "", tominMonth = "", tominDay = "";
     String fromData="", toData="", maxTWoDate = "",Setldate="";
@@ -93,7 +93,6 @@ public class AdvanceReq extends AppCompatActivity implements Master_Interface {
         common_class = new Common_Class(this);
         DateFormat dfw = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Calendar calobjw = Calendar.getInstance();
-        eKey =   UserDetails.getString("Sfcode","-") + dfw.format(calobjw.getTime()).hashCode();
 
 
         TextView txtHelp = findViewById(R.id.toolbar_help);
@@ -119,7 +118,6 @@ public class AdvanceReq extends AppCompatActivity implements Master_Interface {
                 startActivity(new Intent(getApplicationContext(), PayslipFtp.class));
             }
         });
-
 
         ObjectAnimator textColorAnim;
         textColorAnim = ObjectAnimator.ofInt(txtErt, "textColor", Color.WHITE, Color.TRANSPARENT);
@@ -407,7 +405,7 @@ public class AdvanceReq extends AppCompatActivity implements Master_Interface {
         String sTime=DT.GetDateTime(AdvanceReq.this,"yyyy-MM-dd HH:mm:ss");
 
         try {
-            param.put("eKey",eKey);
+            param.put("eKey", Common_Class.GetEkey());
             param.put("SF",UserDetails.getString("Sfcode",""));
             param.put("eDate", sTime);
             param.put("AdvFrom",fromData);

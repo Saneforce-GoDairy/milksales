@@ -838,7 +838,7 @@ public class ImageCapture extends AppCompatActivity implements CameraActivity.Ca
 
 
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save",
+                Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save", com.saneforce.godairy.Common_Class.Common_Class.GetEkey(),
                         UserDetails.getString("Divcode", ""),
                         UserDetails.getString("Sfcode", ""), "", "", jsonarray.toString());
 
@@ -939,7 +939,7 @@ public class ImageCapture extends AppCompatActivity implements CameraActivity.Ca
                 Log.e("CHECK_IN_DETAILS", String.valueOf(jsonarray));
 
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save",
+                Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save", com.saneforce.godairy.Common_Class.Common_Class.GetEkey(),
                         UserDetails.getString("Divcode", ""),
                         UserDetails.getString("Sfcode", ""), "", "", jsonarray.toString());
                 modelCall.enqueue(new Callback<JsonObject>() {
@@ -992,7 +992,7 @@ public class ImageCapture extends AppCompatActivity implements CameraActivity.Ca
                 if(mMode.equalsIgnoreCase("EXOUT")) {
                     lMode = "get/Extendlogout";
                 }
-                Call<JsonObject> modelCall = apiInterface.JsonSave(lMode,
+                Call<JsonObject> modelCall = apiInterface.JsonSave(lMode, com.saneforce.godairy.Common_Class.Common_Class.GetEkey(),
                         UserDetails.getString("Divcode", ""),
                         UserDetails.getString("Sfcode", ""), "", "", CheckInInf.toString());
                 modelCall.enqueue(new Callback<JsonObject>() {
@@ -1240,7 +1240,7 @@ public class ImageCapture extends AppCompatActivity implements CameraActivity.Ca
                     (this, 0, intent, PendingIntent.FLAG_MUTABLE);
         } else {
             pIntent = PendingIntent.getBroadcast
-                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
 
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);

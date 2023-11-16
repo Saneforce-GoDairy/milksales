@@ -1534,7 +1534,6 @@ public class Common_Class {
         DateFormat dateformet = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Calendar calander = Calendar.getInstance();
         return "EK" + Shared_Common_Pref.Sf_Code + dateformet.format(calander.getTime()).hashCode();
-
     }
 
     public void hideKeybaord(View v, Context context) {

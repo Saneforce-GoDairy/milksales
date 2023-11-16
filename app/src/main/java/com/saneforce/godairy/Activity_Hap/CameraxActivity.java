@@ -105,7 +105,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class CameraxActivity extends AppCompatActivity {
     private ActivityCameraxBinding binding;
     private Context context = this;
@@ -139,6 +138,8 @@ public class CameraxActivity extends AppCompatActivity {
     private String capturedImageName;
 
     double lat = 0, lng = 0;
+
+    private String Ekey;
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -259,6 +260,13 @@ public class CameraxActivity extends AppCompatActivity {
 
         }
         button = (Button) findViewById(R.id.button_capture);
+        GetEkey();
+    }
+
+    private void GetEkey() {
+        DateFormat dateformet = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Calendar calander = Calendar.getInstance();
+        Ekey =  "EK" + Shared_Common_Pref.Sf_Code + dateformet.format(calander.getTime()).hashCode();
     }
 
     private void createDirectory() {
@@ -921,7 +929,7 @@ public class CameraxActivity extends AppCompatActivity {
 
 
                         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                        Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save",
+                        Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save", Ekey,
                                 UserDetails.getString("Divcode", ""),
                                 UserDetails.getString("Sfcode", ""), "", "", jsonarray.toString());
 
@@ -1020,7 +1028,7 @@ public class CameraxActivity extends AppCompatActivity {
                         Log.e("CHECK_IN_DETAILS", String.valueOf(jsonarray));
 
                         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                        Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save",
+                        Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save", Ekey,
                                 UserDetails.getString("Divcode", ""),
                                 UserDetails.getString("Sfcode", ""), "", "", jsonarray.toString());
                         modelCall.enqueue(new Callback<JsonObject>() {
@@ -1077,7 +1085,7 @@ public class CameraxActivity extends AppCompatActivity {
                         if(mMode.equalsIgnoreCase("EXOUT")) {
                             lMode = "get/Extendlogout";
                         }
-                        Call<JsonObject> modelCall = apiInterface.JsonSave(lMode,
+                        Call<JsonObject> modelCall = apiInterface.JsonSave(lMode, Ekey,
                                 UserDetails.getString("Divcode", ""),
                                 UserDetails.getString("Sfcode", ""), "", "", CheckInInf.toString());
                         modelCall.enqueue(new Callback<JsonObject>() {
