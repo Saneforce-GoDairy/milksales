@@ -690,7 +690,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 public void afterTextChanged(Editable s) {
                     tempOfficeList.clear();
                     for (CommonModelWithFourString modelWithThreeString : officeList) {
-                        if (modelWithThreeString.getTitle().toLowerCase().contains(s.toString().toLowerCase().trim())) {
+                        if (modelWithThreeString.getTitle().toLowerCase().contains(s.toString().toLowerCase().trim()) || modelWithThreeString.getId().toLowerCase().contains(s.toString().toLowerCase().trim())) {
                             tempOfficeList.add(modelWithThreeString);
                         }
                     }
@@ -736,7 +736,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 public void afterTextChanged(Editable s) {
                     tempRouteList.clear();
                     for (CommonModelWithFourString modelWithThreeString : filteredRouteList) {
-                        if (modelWithThreeString.getTitle().toLowerCase().contains(s.toString().toLowerCase().trim())) {
+                        if (modelWithThreeString.getTitle().toLowerCase().contains(s.toString().toLowerCase().trim()) || modelWithThreeString.getId().toLowerCase().contains(s.toString().toLowerCase().trim())) {
                             tempRouteList.add(modelWithThreeString);
                         }
                     }

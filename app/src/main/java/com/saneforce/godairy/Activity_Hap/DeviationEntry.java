@@ -346,7 +346,9 @@ public class DeviationEntry extends AppCompatActivity implements Master_Interfac
                         @Override
                         public void PositiveMethod(DialogInterface dialog, int id) {
                             dialog.dismiss();
-                            openHome();
+                            if (jsonObjecta.get("success").getAsBoolean()) {
+                                openHome();
+                            }
                         }
 
                         @Override
