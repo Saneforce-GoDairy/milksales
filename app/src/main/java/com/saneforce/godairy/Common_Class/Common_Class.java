@@ -1924,6 +1924,7 @@ public class Common_Class {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String result = response.body().string();
+                        Log.e("makeApiCall", "response: " + result);
                         JSONObject jsonObject = new JSONObject(result);
                         if (jsonObject.getBoolean("success")) {
                             listener.onSuccess(jsonObject);
@@ -1931,15 +1932,18 @@ public class Common_Class {
                             listener.onFailure(jsonObject.getString("msg"));
                         }
                     } catch (Exception e) {
+                        Log.e("makeApiCall", "Exception: " + e.getLocalizedMessage());
                         listener.onFailure(e.getLocalizedMessage());
                     }
                 } else {
+                    Log.e("makeApiCall", "Something went wrong");
                     listener.onFailure("Something went wrong");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.e("makeApiCall", "onFailure: " + t.getLocalizedMessage());
                 listener.onFailure(t.getLocalizedMessage());
             }
         });

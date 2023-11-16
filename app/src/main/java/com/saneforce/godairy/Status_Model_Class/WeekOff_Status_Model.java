@@ -25,6 +25,16 @@ public class WeekOff_Status_Model {
     @SerializedName("sbmtOn")
     @Expose
     private String sbmtOn;
+
+    public WeekOff_Status_Model(String wrkTyp, String wkDate, String wkDt, String dtNm, String rmks, String sbmtOn) {
+        this.wrkTyp = wrkTyp;
+        this.wkDate = wkDate;
+        this.wkDt = wkDt;
+        this.dtNm = dtNm;
+        this.rmks = rmks;
+        this.sbmtOn = sbmtOn;
+    }
+
     public void setSFNm(String SFNm) {
         this.sFNm = SFNm;
     }
