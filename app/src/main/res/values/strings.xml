@@ -177,6 +177,7 @@
     <string name="close">CLOSE</string>
 
     <string name="sub_channel">Sub Channel<font fgcolor='#E53935'> *</font></string>
+    <string name="del_address">Delivery Address<font fgcolor='#E53935'> *</font></string>
     <string name="account_group">Account Group<font fgcolor='#E53935'> *</font></string>
     <string name="distributor_channel">Distributor Channel<font fgcolor='#E53935'> *</font></string>
     <string name="sales_division">Division<font fgcolor='#E53935'> *</font></string>

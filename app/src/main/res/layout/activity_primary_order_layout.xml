@@ -1031,6 +1031,40 @@
 
 
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/delAddressLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:layout_marginTop="@dimen/C15dp"
+                                android:text="@string/del_address"
+                                android:textSize="@dimen/C14dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/selectDeliveryAddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/C10dp"
+                                android:layout_marginTop="@dimen/C5dp"
+                                android:layout_marginBottom="15dp"
+                                android:background="@drawable/textbox_bg"
+                                android:elevation="5dp"
+                                android:hint="Select Delivery Address"
+                                android:padding="@dimen/C8dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/C13dp"
+                                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
                 </ScrollView>
 
