@@ -198,12 +198,15 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:layout_marginStart="@dimen/C20dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:layout_marginEnd="@dimen/C20dp"
         android:layout_marginBottom="@dimen/C20dp"
         android:background="@drawable/button_blue1"
         android:text="FINISH"
         android:textColor="@color/white"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:focusable="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
