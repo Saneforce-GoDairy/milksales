@@ -1797,17 +1797,23 @@ public class Common_Class {
         return null;
     }
 
-    public static void uploadToS3Bucket(Context context, String mFilePath, String FileName, String companyCode, String Mode) {
+    public static void uploadToS3Bucket(Context context, String FilePath, String FileName, String Folder) {
         try{
             Util util = new Util();
             TransferUtility transferUtility = util.getTransferUtility(context);
             File file;
-            if (mFilePath.contains(".png") || mFilePath.contains(".jpg") || mFilePath.contains(".jpeg")) {
-                file = new Compressor(context).compressToFile(new File(mFilePath));
+            if (FilePath.contains(".png") || FilePath.contains(".jpg") || FilePath.contains(".jpeg")) {
+                file = new Compressor(context).compressToFile(new File(FilePath));
             } else {
-                file = new File(mFilePath);
+                file = new File(FilePath);
             }
-            TransferObserver uploadObserver = transferUtility.upload("godairy",companyCode + "/" + Mode + "/" + FileName , file);
+            Shared_Common_Pref shared_common_pref = new Shared_Common_Pref((Activity) context);
+            String companyCode = shared_common_pref.getvalue("company_code");
+            if (companyCode.isEmpty()) {
+                Toast.makeText(context, "Company code invalid", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            TransferObserver uploadObserver = transferUtility.upload("godairy",companyCode + "/" + Folder + "/" + FileName , file);
             ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setCancelable(false);
             progressDialog.setMessage("Uploading...");
@@ -1843,14 +1849,20 @@ public class Common_Class {
         }
     }
 
-    public void getImageFromS3Bucket(Context context, String companyCode, String FileName,String Mode, OnDownloadImage onDownloadImage) {
+    public void getImageFromS3Bucket(Context context, String FileName, String Folder, OnDownloadImage onDownloadImage) {
         try{
             String[] names = FileName.split("\\.");
             String extension = names[names.length - 1];
             final File file = File.createTempFile(FileName, extension);
             Util util = new Util();
+            Shared_Common_Pref shared_common_pref = new Shared_Common_Pref((Activity) context);
+            String companyCode = shared_common_pref.getvalue("company_code");
+            if (companyCode.isEmpty()) {
+                Toast.makeText(context, "Company code invalid", Toast.LENGTH_SHORT).show();
+                return;
+            }
             TransferUtility transferUtility = util.getTransferUtility(context);
-            TransferObserver downloadObserver = transferUtility.download("godairy",companyCode + "/" + Mode + "/" + FileName, file);
+            TransferObserver downloadObserver = transferUtility.download("godairy",companyCode + "/" + Folder + "/" + FileName, file);
             downloadObserver.setTransferListener(new TransferListener() {
                 @Override
                 public void onStateChanged(int id, TransferState state) {

@@ -375,7 +375,8 @@ public class Login extends AppCompatActivity {
                             baseURL = object.getJSONObject(code).getString("base_url");
                             Log.e("login_info", "base_url: " + baseURL);
                             ApiClient.ChangeBaseURL(baseURL);
-                            shared_common_pref.save("base_url",baseURL);
+                            shared_common_pref.save("base_url", baseURL);
+                            shared_common_pref.save("company_code", code.toLowerCase());
                         }
                         MakeInvisible();
                         login(1);
