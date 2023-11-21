@@ -114,10 +114,14 @@ public class Leave_Request extends AppCompatActivity implements View.OnClickList
     int AutoPost=0,MaxDays=0;
     private JsonArray WrkedDys = new JsonArray();
     HAPListItem lstWrkDts;
+    private String mUkey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave__request);
+
+        mUkey = Common_Class.GetEkey();
 
         CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(UserInfo, Context.MODE_PRIVATE);
@@ -657,7 +661,7 @@ public class Leave_Request extends AppCompatActivity implements View.OnClickList
             jsonleaveType.put("Outime", wrkCOut.getText());
             jsonleaveType.put("NoofHrs", wrkHrs.getText());
             jsonleaveType.put("EligDys", wrkEligi.getText());
-            jsonleaveType.put("Ekey", Common_Class.GetEkey());
+            jsonleaveType.put("Ukey", mUkey);
             //  jsonleaveArrayType.put(jsonleaveType);
             jsonleaveTypeS.put("LeaveFormValidate", jsonleaveType);
             jsonArray1.put(jsonleaveTypeS);
@@ -720,7 +724,7 @@ public class Leave_Request extends AppCompatActivity implements View.OnClickList
         JSONObject jsonleaveTypeS = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         try {
-
+            jsonleaveType.put("Ukey", mUkey);
             jsonleaveType.put("Leave_Type", leavetype_id);
             jsonleaveType.put("From_Date", fromData);
             jsonleaveType.put("To_Date", toData);

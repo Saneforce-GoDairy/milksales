@@ -67,10 +67,14 @@ public class InshopCheckinActivity extends AppCompatActivity {
     public static String getCheckinTime() {
         return checkinTime;
     }
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mUkey = Common_Class.GetEkey();
+
         setContentView(R.layout.activity_inshop_checkin);
         checkinRunTime = findViewById(R.id.tvCheckInRunTime);
         checkin = findViewById(R.id.btnInshopCheckin);
@@ -367,7 +371,7 @@ public class InshopCheckinActivity extends AppCompatActivity {
         activityReportAppObject.addProperty("retailer_code", "'" +retailerCode+ "'");
         activityReportAppObject.addProperty("retailer_name", "'" +name+ "'");
         activityReportAppObject.addProperty("route",retailerRoute);
-        activityReportAppObject.addProperty("ekey", "'" +Common_Class.GetEkey()+ "'");
+        activityReportAppObject.addProperty("Ukey", "'" + mUkey + "'");
         activityReportAppObject.addProperty("checkin_time", "'" +cinTime+ "'");
         activityReportAppObject.addProperty("entry_date", "'" +date+ "'");
         activityReportAppObject.addProperty("c_flag",1);

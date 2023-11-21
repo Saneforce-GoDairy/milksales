@@ -101,7 +101,6 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
             tvTimer, txBalAmt, txAmtWalt, txAvBal, tvDistId, tvDate, tvGrpName;
     LinearLayout lin_orderrecyclerview, lin_gridcategory, rlAddProduct, llTdPriOrd, btnRefACBal;
     Common_Class common_class;
-    String Ukey;
     String[] strLoc;
     String Worktype_code = "", Route_Code = "", Dirtributor_Cod = "", Distributor_Name = "";
     Shared_Common_Pref sharedCommonPref;
@@ -142,6 +141,7 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
     LinearLayout llDistributor;
 
     boolean isSubmit = false;
+    private String mUkey;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -149,6 +149,9 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_primary_order_layout);
+
+            mUkey = Common_Class.GetEkey();
+
             primaryOrderActivity = this;
             selPOS = 0;
             db = new DatabaseHandler(this);
@@ -216,7 +219,6 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
             Category_Nametext.setOnClickListener(this);
             btnRepeat.setOnClickListener(this);
 
-            Ukey = Common_Class.GetEkey();
             recyclerView = findViewById(R.id.orderrecyclerview);
             freeRecyclerview = findViewById(R.id.freeRecyclerview);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -743,7 +745,7 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
                             HeadItem.put("Town_code", sharedCommonPref.getvalue(Constants.Route_Id));
                             HeadItem.put("dcr_activity_date", Common_Class.GetDate());
                             HeadItem.put("Daywise_Remarks", "");
-                            HeadItem.put("UKey", Ukey);
+                            HeadItem.put("Ukey", mUkey);
                             HeadItem.put("orderValue", formatter.format(totalvalues));
                             HeadItem.put("DataSF", Shared_Common_Pref.Sf_Code);
                             HeadItem.put("AppVer", BuildConfig.VERSION_NAME);
