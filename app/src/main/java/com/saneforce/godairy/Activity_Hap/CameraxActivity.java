@@ -1,14 +1,11 @@
 package com.saneforce.godairy.Activity_Hap;
 
-import static android.app.PendingIntent.getActivity;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.sendOFFlineLocations;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.AlarmManager;
 import android.app.Dialog;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,7 +19,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
@@ -34,11 +30,9 @@ import android.util.Log;
 import android.util.Range;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -57,11 +51,11 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.saneforce.godairy.Activity.AllowanceActivityTwo;
+import com.saneforce.godairy.BuildConfig;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
 import com.saneforce.godairy.Common_Class.CameraPermission;
 import com.saneforce.godairy.Common_Class.Constants;
@@ -72,31 +66,23 @@ import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.LocationEvents;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.HAPApp;
-import com.saneforce.godairy.common.AlmReceiver;
 import com.saneforce.godairy.common.FileUploadService;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.common.LocationReceiver;
 import com.saneforce.godairy.common.SANGPSTracker;
 import com.saneforce.godairy.databinding.ActivityCameraxBinding;
-import com.saneforce.godairy.BuildConfig;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-
 import id.zelory.compressor.Compressor;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -107,39 +93,31 @@ import retrofit2.Response;
 
 public class CameraxActivity extends AppCompatActivity {
     private ActivityCameraxBinding binding;
-    private Context context = this;
-    private static final String TAG = "ImageCapture";
-
-    private Button button;
-    private String imagePath, imageFileName;
-    private ProgressDialog mProgress;
+    private final Context context = this;
     private File file;
-
     private JSONObject CheckInInf;
     private Shared_Common_Pref mShared_common_pref;
-    private SharedPreferences CheckInDetails, UserDetails, sharedpreferences;
-    private Common_Class DT = new Common_Class();
-    private String VistPurpose = "", UKey = "", DIR, onDutyPlcID, onDutyPlcNm, vstPurpose, PlaceId = "", PlaceName = "";
-    private String sStatus, mMode="", mModeRetailorCapture, WrkType, UserInfo = "MyPrefs", imagvalue = "", mypreference = "mypref";
-    private com.saneforce.godairy.Common_Class.Common_Class common_class;
-
+    private SharedPreferences CheckInDetails;
+    private SharedPreferences UserDetails;
+    private final Common_Class DT = new Common_Class();
+    private String VistPurpose = "", UKey = "", DIR, onDutyPlcID, onDutyPlcNm, vstPurpose, PlaceId = "", PlaceName = "" , imagePath, imageFileName;
+    private String sStatus;
+    private String mMode="";
+    private String mModeRetailorCapture;
+    private String imagvalue = "";
     public static final String sCheckInDetail = "CheckInDetail";
     public static final String sUserDetail = "MyPrefs";
-
+    private String capturedImageName, Ekey;;
+    private com.saneforce.godairy.Common_Class.Common_Class common_class;
     private SANGPSTracker mLUService;
     private boolean mBound = false;
     private LocationReceiver myReceiver;
     private Location mlocation;
-
     public static final String APP_DATA = "/.saneforce";
     private Camera camera;
     private Bitmap bitmap;
-    private Dialog submitProgressDialog, checkInSuccessDialog;
-    private String capturedImageName;
-
+    private Dialog submitProgressDialog;
     double lat = 0, lng = 0;
-
-    private String Ekey;
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -151,6 +129,7 @@ public class CameraxActivity extends AppCompatActivity {
         }
     });
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +153,8 @@ public class CameraxActivity extends AppCompatActivity {
         createDirectory();
 
         mShared_common_pref = new Shared_Common_Pref(this);
-        sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+        String mypreference = "mypref";
+        SharedPreferences sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         CheckInInf = new JSONObject();
         CheckInDetails = getSharedPreferences(sCheckInDetail, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(sUserDetail, Context.MODE_PRIVATE);
@@ -186,7 +166,7 @@ public class CameraxActivity extends AppCompatActivity {
                 try {
                     lat = location.getLatitude();
                     lng = location.getLongitude();
-                } catch (Exception e) { }
+                } catch (Exception ignored) { }
             }
         });
         UKey = UserDetails.getString("Sfcode", "") + "-" + (new Date().getTime());
@@ -204,14 +184,14 @@ public class CameraxActivity extends AppCompatActivity {
                 CheckInInf.put("Mode", mMode);
                 CheckInInf.put("Divcode", UserDetails.getString("Divcode", ""));
                 CheckInInf.put("sfCode", UserDetails.getString("Sfcode", ""));
-                WrkType = "0";
+                String wrkType = "0";
                 if (mMode.equals("onduty")) {
-                    WrkType = "1";
+                    wrkType = "1";
                 }
-                Log.e("Checkin_Mode", mMode);
+
                 String SftId = params.getString("ShiftId");
                 if (mMode.equalsIgnoreCase("CIN") || mMode.equalsIgnoreCase("onduty") || mMode.equalsIgnoreCase("holidayentry")) {
-                    if (!(SftId.isEmpty() || SftId.equalsIgnoreCase(""))) {
+                    if (!SftId.isEmpty()) {
                         CheckInInf.put("Shift_Selected_Id", SftId);
                         CheckInInf.put("Shift_Name", params.getString("ShiftName"));
                         CheckInInf.put("ShiftStart", params.getString("ShiftStart"));
@@ -219,17 +199,17 @@ public class CameraxActivity extends AppCompatActivity {
                         CheckInInf.put("ShiftCutOff", params.getString("ShiftCutOff"));
                     }
                     CheckInInf.put("App_Version", BuildConfig.VERSION_NAME);
-                    CheckInInf.put("WrkType", WrkType);
+                    CheckInInf.put("WrkType", wrkType);
                     CheckInInf.put("CheckDutyFlag", "0");
-                    CheckInInf.put("On_Duty_Flag", WrkType);
+                    CheckInInf.put("On_Duty_Flag", wrkType);
                     CheckInInf.put("PlcID", onDutyPlcID);
                     CheckInInf.put("PlcNm", onDutyPlcNm);
                     CheckInInf.put("vstRmks", VistPurpose);
                 }
 
                 if (mMode.equalsIgnoreCase("extended")) {
-                    if (!(SftId.isEmpty() || SftId.equalsIgnoreCase(""))) {
-                        DateFormat dfw = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    if (!SftId.isEmpty()) {
+                        @SuppressLint("SimpleDateFormat") DateFormat dfw = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                         Calendar calobjw = Calendar.getInstance();
                         CheckInInf.put("Shift_Selected_Id", SftId);
                         CheckInInf.put("Shift_Name", params.getString("ShiftName"));
@@ -253,18 +233,14 @@ public class CameraxActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 cameraPermission.requestPermission();
             }
-            Log.v("PERMISSION_NOT", "PERMISSION_NOT");
         } else {
             Log.v("PERMISSION", "PERMISSION");
-      //  startCamera(0, 0, dpWidth, dpHeight, "front", false, false, false, "1", false, false, true);
-
         }
-        button = (Button) findViewById(R.id.button_capture);
         GetEkey();
     }
 
     private void GetEkey() {
-        DateFormat dateformet = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        @SuppressLint("SimpleDateFormat") DateFormat dateformet = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Calendar calander = Calendar.getInstance();
         Ekey =  "EK" + Shared_Common_Pref.Sf_Code + dateformet.format(calander.getTime()).hashCode();
     }
@@ -351,76 +327,6 @@ public class CameraxActivity extends AppCompatActivity {
         } else {
             saveCheckIn();
         }
-
-
-        // New design Not full used previous code
-
-        /*
-//                   try {
-//
-//
-//            vwPreview = findViewById(R.id.ImgPreview);
-//            ImageView imgPreview = findViewById(R.id.imgPreviewImg);
-//            BitmapDrawable drawableBitmap = new BitmapDrawable(String.valueOf(Uri.fromFile(file)));
-//
-//            vwPreview.setBackground(drawableBitmap);
-//            String filePath = String.valueOf(file);
-//            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-//            imgPreview.setImageBitmap(bitmap);
-//
-//            if (mModeRetailorCapture == null) {
-//
-//                Intent mIntent = new Intent(this, FileUploadService.class);
-//                mIntent.putExtra("mFilePath", String.valueOf(file));
-//                mIntent.putExtra("SF", UserDetails.getString("Sfcode", ""));
-//                mIntent.putExtra("FileName", imageFileName);
-//                mIntent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
-//                FileUploadService.enqueueWork(this, mIntent);
-//                Log.e("Image_Capture", Uri.fromFile(file).toString());
-//                Log.e("Image_Capture", "IAMGE     " + bitmap);
-//            }
-//
-//            if (mModeRetailorCapture != null && mModeRetailorCapture.equals("NewRetailor")) {
-////                Intent mIntent = new Intent(this, AddNewRetailer.class);
-////                mIntent.putExtra("mFilePath", Uri.fromFile(file).toString());
-////                startActivity(mIntent);
-//
-//                mShared_common_pref.save(Constants.Retailor_FilePath, Uri.fromFile(file).toString());
-//
-//                finish();
-//            } else if (mMode.equalsIgnoreCase("PF")) {
-//                imagePickListener.OnImagePick(bitmap, imageFileName);
-//                finish();
-//            } else {
-//                mProgress = new ProgressDialog(this);
-//                String titleId = "Submiting";
-//                mProgress.setTitle(titleId);
-//                mProgress.setMessage("Preparing Please Wait...");
-//                mProgress.show();
-//                /*if (mlocation != null) {
-//                    mProgress.setMessage("Submiting Please Wait...");
-//                    vwPreview.setVisibility(View.GONE);
-//                    // imgPreview.setImageURI(Uri.fromFile(file));
-//                    button.setVisibility(View.GONE);
-//                    saveCheckIn();
-//                } else {*/
-//        new LocationFinder(getApplication(), new LocationEvents() {
-//            @Override
-//            public void OnLocationRecived(Location location) {
-//                mlocation = location;
-//                mProgress.setMessage("Submiting Please Wait...");
-//                vwPreview.setVisibility(View.GONE);
-//                // imgPreview.setImageURI(Uri.fromFile(file));
-//                button.setVisibility(View.GONE);
-//                saveCheckIn();
-//            }
-//        });
-//        //}
-//    }
-//} catch (Exception e) {
-//        Log.e(TAG, e.getMessage());
-//        }
-
     }
 
     private void initSubmitProgressDialog(String messge) {
@@ -474,7 +380,8 @@ public class CameraxActivity extends AppCompatActivity {
 
     public void takePicture(androidx.camera.core.ImageCapture imageCapture) {
 
-        UserDetails = getSharedPreferences(UserInfo, Context.MODE_PRIVATE);
+        String userInfo = "MyPrefs";
+        UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
         String SF_Code=UserDetails.getString("Sfcode","");
 
         long tsLong = System.currentTimeMillis() / 1000;
@@ -486,8 +393,6 @@ public class CameraxActivity extends AppCompatActivity {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                 runOnUiThread(() -> {
-                    // Toast.makeText(context, "Image saved at: " + file.getPath(), Toast.LENGTH_SHORT).show();
-                    Log.e("image_capture", "Captured image save path :" + file.getPath());
                     file = new File(DIR, capturedImageName);
                     bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
@@ -577,214 +482,7 @@ public class CameraxActivity extends AppCompatActivity {
             startCamera(cameraFacing);
         }
     }
-//    private void StartSelfiCamera() {
-//
-//        if (mCamera != null) {
-//            mCamera.stopPreview();
-//            mCamera.release();
-//            mCamera = null;
-//        }
-//        preview = (SurfaceView) findViewById(R.id.PREVIEW);
-//        mHolder = preview.getHolder();
-//        mHolder.addCallback(this);
-//        setDefaultCameraId((mCamId == 1) ? "front" : "back");
-//        try {
-//            mCamera = Camera.open(mCamId);
-//            mCamera.setPreviewDisplay(mHolder);
-//            setCameraDisplayOrientation();
-//            mCamera.startPreview();
-//        } catch (IOException e) {
-//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
-//            e.printStackTrace();
-//        }
-//
-//        Log.e("mCAmer_id", String.valueOf(mCamId));
-//
-//    }
 
-//    public static void setOnImagePickListener(OnImagePickListener mImagePickListener) {
-//        imagePickListener = mImagePickListener;
-//    }
-
-//    @Override
-//    public void onPictureTaken(String originalPicture, String picData) {
-//        //File imgFile=new File(originalPicture);
-//        FrameLayout preview = findViewById(R.id.preview);
-//        RelativeLayout vwPreview = findViewById(R.id.ImgPreview);
-//        ImageView imgPreview = findViewById(R.id.imgPreviewImg);
-//        file = new File(originalPicture);
-//        imagePath = originalPicture;
-//        imageFileName = originalPicture.substring(originalPicture.lastIndexOf("/") + 1);
-//        imgPreview.setImageURI(Uri.fromFile(file));
-//        vwPreview.setVisibility(View.VISIBLE);
-//        imgPreview.setVisibility(View.VISIBLE);
-//        button.setVisibility(View.GONE);
-//    }
-
-
-    //    public void takePicture() {
-//
-//        String usrNm=UserDetails.getString("Sfcode","");
-//        long tsLong = System.currentTimeMillis() / 1000;
-//        imageFileName = usrNm+"_"+Long.toString(tsLong) + ".jpg";
-//        //file  = new File(Environment.getExternalStorageDirectory() + "/"+ts+".jpg");
-//        imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + imageFileName;
-//        file = new File(imagePath);
-//        try {
-//            mCamera.takePicture(null, null,
-//                    new Camera.PictureCallback() {
-//                        @Override
-//                        public void onPictureTaken(byte[] bytes, Camera camera) {
-//                            Bitmap bm = null;
-//                            try {
-//                                if (bytes != null) {
-//                                    int screenWidth = getResources().getDisplayMetrics().widthPixels;
-//                                    int screenHeight = getResources().getDisplayMetrics().heightPixels;
-//                                    bm = BitmapFactory.decodeByteArray(bytes, 0, (bytes != null) ? bytes.length : 0);
-//
-//                                    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-//                                        // Notice that width and height are reversed
-//                                        Bitmap scaled = Bitmap.createScaledBitmap(bm, screenHeight, screenWidth, true);
-//                                        int w = scaled.getWidth();
-//                                        int h = scaled.getHeight();
-//                                        w = bm.getWidth();
-//                                        h = bm.getHeight();
-//                                        // Setting post rotate to 90
-//                                        Matrix mtx = new Matrix();
-//
-//                                        int CameraEyeValue = setPhotoOrientation(ImageCapture.this, mCamId); // CameraID = 1 : front 0:back
-//                                        if (mCamId == 1) { // As Front camera is Mirrored so Fliping the Orientation
-//                                            if (CameraEyeValue == 270) {
-//                                                mtx.postRotate(90);
-//                                            } else if (CameraEyeValue == 90) {
-//                                                mtx.postRotate(270);
-//                                            }
-//                                        } else {
-//                                            mtx.postRotate(CameraEyeValue); // CameraEyeValue is default to Display Rotation
-//                                        }
-//                                        bm = applyMatrix(bm, mtx);
-//                                        // bm = Bitmap.createBitmap(bm, 0, 0, w, h, mtx, true);
-//                                    } else {// LANDSCAPE MODE
-//                                        //No need to reverse width and height
-//                                        Bitmap scaled = Bitmap.createScaledBitmap(bm, screenWidth, screenHeight, true);
-//                                        bm = scaled;
-//                                    }
-//                                }
-//
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                                byte[] byteArray = stream.toByteArray();
-//
-//                                save(byteArray);
-//                                ShowImgPreview();
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        super.onResume();
-//    }
-
-
-
-//    private void ShowImgPreview() {
-//        RelativeLayout vwPreview = findViewById(R.id.ImgPreview);
-//        ImageView imgPreview = findViewById(R.id.imgPreviewImg);
-//        vwPreview.setVisibility(View.VISIBLE);
-//        imgPreview.setImageURI(Uri.fromFile(file));
-//        button.setVisibility(View.GONE);
-//        BitmapDrawable drawableBitmap = new BitmapDrawable(String.valueOf(Uri.fromFile(file)));
-//
-//        vwPreview.setBackground(drawableBitmap);
-//
-//        Log.v("CAMERA_FOCUS_Preview", String.valueOf(mCamId));
-//
-//        if (mCamId == 1) {
-//            imgPreview.setRotation((float) -90.0);
-//        } else if (mCamId == 2) {
-//            imgPreview.setRotation((float) 90.0);
-//        } else {
-//            imgPreview.setRotation((float) 270.0);
-//        }
-//
-//    }
-
-//    private void CloseImgPreview() {
-//        vwPreview = findViewById(R.id.ImgPreview);
-//        vwPreview.setVisibility(View.GONE);
-//        button.setVisibility(View.VISIBLE);
-//    }
-
-//    private void saveImgPreview() {
-//        try {
-//
-//
-//            vwPreview = findViewById(R.id.ImgPreview);
-//            ImageView imgPreview = findViewById(R.id.imgPreviewImg);
-//            BitmapDrawable drawableBitmap = new BitmapDrawable(String.valueOf(Uri.fromFile(file)));
-//
-//            vwPreview.setBackground(drawableBitmap);
-//            String filePath = String.valueOf(file);
-//            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-//            imgPreview.setImageBitmap(bitmap);
-//
-//            if (mModeRetailorCapture == null) {
-//
-//                Intent mIntent = new Intent(this, FileUploadService.class);
-//                mIntent.putExtra("mFilePath", String.valueOf(file));
-//                mIntent.putExtra("SF", UserDetails.getString("Sfcode", ""));
-//                mIntent.putExtra("FileName", imageFileName);
-//                mIntent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
-//                FileUploadService.enqueueWork(this, mIntent);
-//                Log.e("Image_Capture", Uri.fromFile(file).toString());
-//                Log.e("Image_Capture", "IAMGE     " + bitmap);
-//            }
-//
-//            if (mModeRetailorCapture != null && mModeRetailorCapture.equals("NewRetailor")) {
-////                Intent mIntent = new Intent(this, AddNewRetailer.class);
-////                mIntent.putExtra("mFilePath", Uri.fromFile(file).toString());
-////                startActivity(mIntent);
-//
-//                mShared_common_pref.save(Constants.Retailor_FilePath, Uri.fromFile(file).toString());
-//
-//                finish();
-//            } else if (mMode.equalsIgnoreCase("PF")) {
-//                imagePickListener.OnImagePick(bitmap, imageFileName);
-//                finish();
-//            } else {
-//                mProgress = new ProgressDialog(this);
-//                String titleId = "Submiting";
-//                mProgress.setTitle(titleId);
-//                mProgress.setMessage("Preparing Please Wait...");
-//                mProgress.show();
-//                /*if (mlocation != null) {
-//                    mProgress.setMessage("Submiting Please Wait...");
-//                    vwPreview.setVisibility(View.GONE);
-//                    // imgPreview.setImageURI(Uri.fromFile(file));
-//                    button.setVisibility(View.GONE);
-//                    saveCheckIn();
-//                } else {*/
-//                new LocationFinder(getApplication(), new LocationEvents() {
-//                    @Override
-//                    public void OnLocationRecived(Location location) {
-//                        mlocation = location;
-//                        mProgress.setMessage("Submiting Please Wait...");
-//                        vwPreview.setVisibility(View.GONE);
-//                        // imgPreview.setImageURI(Uri.fromFile(file));
-//                        button.setVisibility(View.GONE);
-//                        saveCheckIn();
-//                    }
-//                });
-//                //}
-//            }
-//        } catch (Exception e) {
-//            Log.e(TAG, e.getMessage());
-//        }
-//    }
-//
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -794,11 +492,7 @@ public class CameraxActivity extends AppCompatActivity {
                 public void OnLocationRecived(Location location) {
                     try {
                         mlocation = location;
-//                        ImageCapture.vwPreview.setVisibility(View.GONE);
-//                        // imgPreview.setImageURI(Uri.fromFile(file));
-//                        button.setVisibility(View.GONE);
-//                        saveCheckIn();
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                 }
             });
@@ -812,7 +506,6 @@ public class CameraxActivity extends AppCompatActivity {
 
     public MultipartBody.Part convertimg(String tag, String path) {
         MultipartBody.Part yy = null;
-        Log.v("full_profile", path);
         try {
             if (!TextUtils.isEmpty(path)) {
                 File file;
@@ -824,9 +517,8 @@ public class CameraxActivity extends AppCompatActivity {
                 RequestBody requestBody = RequestBody.create(MultipartBody.FORM, file);
                 yy = MultipartBody.Part.createFormData(tag, file.getPath(), requestBody);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
-        Log.v("full_profile", yy + "");
         return yy;
     }
 
@@ -834,34 +526,25 @@ public class CameraxActivity extends AppCompatActivity {
         Call<ResponseBody> Callto;
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Callto = apiInterface.CheckImage(values, imgg);
-
-        Log.v("print_upload_file", Callto.request().toString());
-        Callto.enqueue(new Callback<ResponseBody>() {
+        Callto.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.v("print_upload_file", "ggg" + response.isSuccessful() + response.body());
-                //uploading.setText("Uploading "+String.valueOf(count)+"/"+String.valueOf(count_check));
-
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     if (response.isSuccessful()) {
-                        Log.v("print_upload_file_true", "ggg" + response);
-                        JSONObject jb = null;
-                        String jsonData = null;
+                        String jsonData;
                         jsonData = response.body().string();
-                        Log.v("request_data_upload", String.valueOf(jsonData));
                         JSONObject js = new JSONObject(jsonData);
                         if (js.getString("success").equalsIgnoreCase("true")) {
                             imagvalue = js.getString("url");
-                            Log.v("printing_dynamic_cou", js.getString("url"));
                         }
                     }
 
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.v("print_failure", "ggg" + t.getMessage());
             }
         });
@@ -887,19 +570,19 @@ public class CameraxActivity extends AppCompatActivity {
 
             Geocoder geocoder = new Geocoder(context, Locale.getDefault());
             try {
-                List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-                if (addresses != null) {
-                    Address address = addresses.get(0);
-                    StringBuilder fullAddress = new StringBuilder();
-                    if (address != null) {
-                        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-                            fullAddress.append(address.getAddressLine(i)).append("\n");
-                        }
-                    }
-                    CheckInInf.put("address", fullAddress.toString().trim());
-                    CheckInInf.put("locality", address.getLocality().trim());
-                    CheckInInf.put("postalCode", address.getPostalCode().trim());
-                    Log.e("fullAddress", fullAddress.toString().trim());
+//                List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+//                if (addresses != null) {
+//                    Address address = addresses.get(0);
+//                    StringBuilder fullAddress = new StringBuilder();
+//                    if (address != null) {
+//                        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+//                            fullAddress.append(address.getAddressLine(i)).append("\n");
+//                        }
+//                    }
+//                    CheckInInf.put("address", fullAddress.toString().trim());
+//                    CheckInInf.put("locality", address.getLocality().trim());
+//                    CheckInInf.put("postalCode", address.getPostalCode().trim());
+//                    Log.e("fullAddress", fullAddress.toString().trim());
 
                     if (mMode.equalsIgnoreCase("onduty")) {
                         CheckInInf.put("PlcNm", PlaceName);
@@ -935,9 +618,9 @@ public class CameraxActivity extends AppCompatActivity {
 
                         Log.v("PRINT_REQUEST", modelCall.request().toString());
 
-                        modelCall.enqueue(new Callback<JsonObject>() {
+                        modelCall.enqueue(new Callback<>() {
                             @Override
-                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                                 if (response.isSuccessful()) {
                                     JsonObject itm = response.body().getAsJsonObject();
                                     Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
@@ -952,9 +635,8 @@ public class CameraxActivity extends AppCompatActivity {
                                                 editor.putString("ShiftStart", CheckInInf.getString("ShiftStart"));
                                                 editor.putString("ShiftEnd", CheckInInf.getString("ShiftEnd"));
                                                 editor.putString("ShiftCutOff", CheckInInf.getString("ShiftCutOff"));
-
-                                                long AlrmTime = DT.getDate(CheckInInf.getString("ShiftEnd")).getTime();
-                                            } catch (Exception ignored) { }
+                                            } catch (Exception ignored) {
+                                            }
 //                                                sendAlarmNotify(1001, AlrmTime, HAPApp.Title, "Check-Out Alert !.");
                                         }
 
@@ -969,8 +651,6 @@ public class CameraxActivity extends AppCompatActivity {
                                                     new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
                                             mLUService.requestLocationUpdates();
                                         }
-
-
                                         if (CheckInDetails.getString("FTime", "").equalsIgnoreCase(""))
                                             editor.putString("FTime", CTime);
                                         editor.putString("Logintime", CTime);
@@ -979,7 +659,6 @@ public class CameraxActivity extends AppCompatActivity {
                                             editor.putString("On_Duty_Flag", "1");
                                         else
                                             editor.putString("On_Duty_Flag", "0");
-
                                         editor.putInt("Type", 0);
                                         editor.putBoolean("CheckIn", true);
                                         editor.apply();
@@ -987,7 +666,7 @@ public class CameraxActivity extends AppCompatActivity {
                                     String mMessage = "Your Check-In Submitted Successfully";
                                     try {
                                         mMessage = itm.get("Msg").getAsString();
-                                    } catch (Exception e) {
+                                    } catch (Exception ignored) {
                                     }
 
                                     AlertDialogBox.showDialog(CameraxActivity.this, HAPApp.Title, String.valueOf(Html.fromHtml(mMessage)), "Yes", "", false, new AlertBox() {
@@ -1000,7 +679,7 @@ public class CameraxActivity extends AppCompatActivity {
                                                 Dashboard.putExtra("Mode", "CIN");
                                                 startActivity(Dashboard);
                                             }
-                                            ((AppCompatActivity) CameraxActivity.this).finish();
+                                            CameraxActivity.this.finish();
                                         }
 
                                         @Override
@@ -1008,12 +687,11 @@ public class CameraxActivity extends AppCompatActivity {
 
                                         }
                                     });
-
                                 }
                             }
 
                             @Override
-                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                                 submitProgressDialog.dismiss();
                                 Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.d("HAP_receive", "");
@@ -1025,7 +703,6 @@ public class CameraxActivity extends AppCompatActivity {
                         JSONObject paramObject = new JSONObject();
                         paramObject.put("extended_entry", CheckInInf);
                         jsonarray.put(paramObject);
-                        Log.e("CHECK_IN_DETAILS", String.valueOf(jsonarray));
 
                         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                         Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save", Ekey,
@@ -1033,45 +710,37 @@ public class CameraxActivity extends AppCompatActivity {
                                 UserDetails.getString("Sfcode", ""), "", "", jsonarray.toString());
                         modelCall.enqueue(new Callback<JsonObject>() {
                             @Override
-                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                                 submitProgressDialog.dismiss();
-                                Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
                                 if (response.isSuccessful()) {
                                     JsonObject itm = response.body().getAsJsonObject();
                                     SharedPreferences.Editor editor = CheckInDetails.edit();
-
                                     editor.putInt("Type", 1);
                                     editor.putBoolean("CheckIn", true);
                                     editor.apply();
-
                                     String mMessage = "Your Extended Submitted Successfully";
                                     try {
                                         mMessage = itm.get("Msg").getAsString();
-
-
-                                    } catch (Exception e) {
+                                    } catch (Exception ignored) {
                                     }
 
-                                    AlertDialog alertDialog = new AlertDialog.Builder(CameraxActivity.this)
+                                    new AlertDialog.Builder(CameraxActivity.this)
                                             .setTitle(HAPApp.Title)
                                             .setMessage(Html.fromHtml(mMessage))
-                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    TrackLocation();
-                                                    Intent Dashboard = new Intent(CameraxActivity.this, Dashboard_Two.class);
-                                                    Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    Dashboard.putExtra("Mode", "extended");
-                                                    CameraxActivity.this.startActivity(Dashboard);
-                                                    ((AppCompatActivity) CameraxActivity.this).finish();
-                                                }
+                                            .setPositiveButton("OK", (dialogInterface, i) -> {
+                                                TrackLocation();
+                                                Intent Dashboard = new Intent(CameraxActivity.this, Dashboard_Two.class);
+                                                Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                Dashboard.putExtra("Mode", "extended");
+                                                CameraxActivity.this.startActivity(Dashboard);
+                                                CameraxActivity.this.finish();
                                             })
                                             .show();
                                 }
                             }
 
                             @Override
-                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                                 submitProgressDialog.dismiss();
                                 Log.d("HAP_receive", "");
                             }
@@ -1088,16 +757,15 @@ public class CameraxActivity extends AppCompatActivity {
                         Call<JsonObject> modelCall = apiInterface.JsonSave(lMode, Ekey,
                                 UserDetails.getString("Divcode", ""),
                                 UserDetails.getString("Sfcode", ""), "", "", CheckInInf.toString());
-                        modelCall.enqueue(new Callback<JsonObject>() {
+                        modelCall.enqueue(new Callback<>() {
                             @Override
-                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                                 submitProgressDialog.dismiss();
                                 if (response.isSuccessful()) {
                                     Log.e("TOTAL_REPOSNEaaa", String.valueOf(response.body()));
                                     SharedPreferences.Editor loginsp = UserDetails.edit();
                                     loginsp.putBoolean("Login", false);
                                     loginsp.apply();
-                                    Boolean Login = UserDetails.getBoolean("Login", false);
                                     SharedPreferences.Editor editor = CheckInDetails.edit();
                                     editor.putString("Logintime", "");
                                     editor.putBoolean("CheckIn", false);
@@ -1113,7 +781,7 @@ public class CameraxActivity extends AppCompatActivity {
 
                                     try {
                                         mMessage = itm.get("Msg").getAsString();
-                                    } catch (Exception e) {
+                                    } catch (Exception ignored) {
                                     }
 
                                     AlertDialogBox.showDialog(CameraxActivity.this, HAPApp.Title, String.valueOf(Html.fromHtml(mMessage)), "Ok", "", false, new AlertBox() {
@@ -1125,16 +793,14 @@ public class CameraxActivity extends AppCompatActivity {
                                                     UserDetails.getString("Divcode", ""),
                                                     UserDetails.getString("Sfcode", ""), CDate);
 
-                                            Log.v("DATE_REQUEST", Callto.request().toString());
-                                            Callto.enqueue(new Callback<JsonArray>() {
+                                            Callto.enqueue(new Callback<>() {
                                                 @Override
-                                                public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                                                public void onResponse(@NonNull Call<JsonArray> call, @NonNull Response<JsonArray> response) {
                                                     common_class.clearLocData(CameraxActivity.this);
                                                     mShared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
                                                     mShared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
                                                     mShared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
                                                     mShared_common_pref.clear_pref(Constants.LOGIN_DATA);
-
                                                     finishAffinity();
                                                     if (response.body().size() > 0) {
                                                         Intent takePhoto = new Intent(CameraxActivity.this, AllowanceActivityTwo.class);
@@ -1142,17 +808,15 @@ public class CameraxActivity extends AppCompatActivity {
                                                         takePhoto.putExtra("Mode", "COUT");
                                                         startActivity(takePhoto);
                                                     } else {
-
                                                         Intent Dashboard = new Intent(CameraxActivity.this, Login.class);
                                                         Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         startActivity(Dashboard);
-                                                        ((AppCompatActivity) CameraxActivity.this).finish();
+                                                        CameraxActivity.this.finish();
                                                     }
-
                                                 }
 
                                                 @Override
-                                                public void onFailure(Call<JsonArray> call, Throwable t) {
+                                                public void onFailure(@NonNull Call<JsonArray> call, @NonNull Throwable t) {
 
                                                 }
                                             });
@@ -1166,184 +830,17 @@ public class CameraxActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                                 submitProgressDialog.dismiss();
-                                Log.d("HAP_receive", "");
                             }
                         });
                     }
-                }
-            } catch (Exception e) {
-                saveCheckIn();
-                // Toast.makeText(context, "Map Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+            } catch (Exception ignored) {
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private void save(byte[] bytes) throws IOException {
-        OutputStream outputStream = null;
-        outputStream = new FileOutputStream(file);
-        outputStream.write(bytes);
-        outputStream.close();
-    }
-
-//    private void setDefaultCameraId(String cam) {
-//        noOfCameras = Camera.getNumberOfCameras();
-//        int facing = cam.equalsIgnoreCase("front") ? Camera.CameraInfo.CAMERA_FACING_FRONT : Camera.CameraInfo.CAMERA_FACING_BACK;
-//        Log.v("CAMERA_FOCUS", String.valueOf(facing));
-//        mCamId = facing;
-//
-//        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-//        for (int i = 0; i < noOfCameras; i++) {
-//            Camera.getCameraInfo(i, cameraInfo);
-//            if (cameraInfo.facing == facing) {
-//                //mCamId = i;
-//            }
-//        }
-//    }
-
-//    private boolean setExposureCompensation(int exposureCompensation) {
-//
-//
-//        Camera camera = fragment.getCamera();
-//        Camera.Parameters params = camera.getParameters();
-//
-//        int minExposureCompensation = camera.getParameters().getMinExposureCompensation();
-//        int maxExposureCompensation = camera.getParameters().getMaxExposureCompensation();
-//
-//        if (minExposureCompensation == 0 && maxExposureCompensation == 0) {
-//            Log.d("Cam Error", "Can't set Exposure");
-//        } else {
-//            if (exposureCompensation < minExposureCompensation) {
-//                exposureCompensation = minExposureCompensation;
-//            } else if (exposureCompensation > maxExposureCompensation) {
-//                exposureCompensation = maxExposureCompensation;
-//            }
-//            params.setExposureCompensation(exposureCompensation);
-//            camera.setParameters(params);
-//        }
-//
-//        return true;
-//    }
-
-//    private String[] getSupportedWhiteBalanceModes() {
-//        Camera camera = fragment.getCamera();
-//        Camera.Parameters params = camera.getParameters();
-//
-//        List<String> supportedWhiteBalanceModes;
-//        supportedWhiteBalanceModes = params.getSupportedWhiteBalance();
-//
-//        JSONArray jsonWhiteBalanceModes = new JSONArray();
-//        String[] lstModes = new String[supportedWhiteBalanceModes.size()];
-//        if (camera.getParameters().isAutoWhiteBalanceLockSupported()) {
-//            jsonWhiteBalanceModes.put(new String("lock"));
-//        }
-//        if (supportedWhiteBalanceModes != null) {
-//            for (int i = 0; i < supportedWhiteBalanceModes.size(); i++) {
-//                jsonWhiteBalanceModes.put(new String(supportedWhiteBalanceModes.get(i)));
-//                lstModes[i] = supportedWhiteBalanceModes.get(i);
-//            }
-//        }
-//
-//        // callbackContext.success(jsonWhiteBalanceModes);
-//        return lstModes;
-//    }
-
-//    private boolean getWhiteBalanceMode() {
-//        Camera camera = fragment.getCamera();
-//        Camera.Parameters params = camera.getParameters();
-//
-//        String whiteBalanceMode;
-//
-//        if (camera.getParameters().isAutoWhiteBalanceLockSupported()) {
-//            if (camera.getParameters().getAutoWhiteBalanceLock()) {
-//                whiteBalanceMode = "lock";
-//            } else {
-//                whiteBalanceMode = camera.getParameters().getWhiteBalance();
-//            }
-//            ;
-//        } else {
-//            whiteBalanceMode = camera.getParameters().getWhiteBalance();
-//        }
-//        if (whiteBalanceMode != null) {
-//            //callbackContext.success(whiteBalanceMode);
-//        } else {
-//            Log.e("Cam Error", "White balance mode not supported");
-//        }
-//
-//        return true;
-//    }
-//
-//    private boolean setWhiteBalanceMode(String whiteBalanceMode) {
-//        Camera.Parameters params = fragment.getCamera().getParameters();
-//
-//        if (whiteBalanceMode.equals("lock")) {
-//            if (fragment.getCamera().getParameters().isAutoWhiteBalanceLockSupported()) {
-//                params.setAutoWhiteBalanceLock(true);
-//                fragment.setCameraParameters(params);
-//            } else {
-//                Log.e("Cam Error", "White balance lock not supported");
-//            }
-//        } else if (whiteBalanceMode.equals("auto") ||
-//                whiteBalanceMode.equals("incandescent") ||
-//                whiteBalanceMode.equals("cloudy-daylight") ||
-//                whiteBalanceMode.equals("daylight") ||
-//                whiteBalanceMode.equals("fluorescent") ||
-//                whiteBalanceMode.equals("shade") ||
-//                whiteBalanceMode.equals("twilight") ||
-//                whiteBalanceMode.equals("warm-fluorescent")) {
-//            params.setWhiteBalance(whiteBalanceMode);
-//            fragment.setCameraParameters(params);
-//        } else {
-//            Log.e("Cam Error", "White balance parameter not supported");
-//        }
-//
-//        return true;
-//    }
-//
-//    public void setCameraDisplayOrientation() {
-//        Camera.CameraInfo info = new Camera.CameraInfo();
-//        Camera.getCameraInfo(mCamId, info);
-//        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-//        Camera.Parameters parameters = mCamera.getParameters();
-//        parameters.setRotation(-rotation);
-//        mCamera.setParameters(parameters);
-//        mCamera.setDisplayOrientation(90);
-//        mCamera.startPreview();
-//
-//        int degrees = 0;
-//        switch (rotation) {
-//            case Surface.ROTATION_0:
-//                degrees = 0;
-//                break;
-//        }
-//    }
-
-    public void sendAlarmNotify(int AlmID, long AlmTm, String NotifyTitle, String NotifyMsg) {
-        /*AlmTm=AlmTm.replaceAll(" ","-").replaceAll("/","-").replaceAll(":","-");
-        String[] sDts= AlmTm.split("-");
-        Calendar cal = Calendar.getInstance();
-        cal.set(sDts[0],sDts[1],sDts[2],sDts[3],sDts[4]);*/
-
-        Intent intent = new Intent(this, AlmReceiver.class);
-        intent.putExtra("ID", String.valueOf(AlmID));
-        intent.putExtra("Title", NotifyTitle);
-        intent.putExtra("Message", NotifyMsg);
-        PendingIntent pIntent = null;
-        // PendingIntent.getBroadcast(this.getApplicationContext(), AlmID, intent, 0);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            pIntent = PendingIntent.getBroadcast
-                    (this, 0, intent, PendingIntent.FLAG_MUTABLE);
-        } else {
-            pIntent = PendingIntent.getBroadcast
-                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT|PendingIntent.FLAG_MUTABLE);
-        }
-
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, AlmTm, pIntent);
     }
 
     private final ServiceConnection mServiceConection = new ServiceConnection() {
@@ -1382,10 +879,10 @@ public class CameraxActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
+    private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
+            if (SANGPSTracker.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }
@@ -1394,7 +891,7 @@ public class CameraxActivity extends AppCompatActivity {
 
     private void TrackLocation() {
         mLUService = new SANGPSTracker(getApplicationContext());
-        if (!isMyServiceRunning(SANGPSTracker.class)) {
+        if (!isMyServiceRunning()) {
             try {
                 Intent playIntent = new Intent(CameraxActivity.this, SANGPSTracker.class);
                 bindService(playIntent, mServiceConection, Context.BIND_AUTO_CREATE);
