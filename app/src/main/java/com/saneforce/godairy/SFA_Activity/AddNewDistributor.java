@@ -117,12 +117,15 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", gstDeclarationImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", doorNo = "", street = "", city = "", district = "", state = "", country = "", pincode = "", feature = "";
     boolean isEditMode = false;
     ArrayList<String> FSSAIList, GSTList;
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAddNewDistributorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        mUkey = Common_Class.GetEkey();
 
         select_sales_office_name = findViewById(R.id.select_sales_office_name);
         select_route_name = findViewById(R.id.select_route_name);
@@ -1667,7 +1670,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("sfCode", UserDetails.getString("Sfcode", ""));
 
             object.put("customer_photo_name", customer_photo_name);
-
+            object.put("Ukey", mUkey);
             object.put("shop_photo_name", shop_photo_name);
 
             object.put("stateCodeStr", stateCodeStr);

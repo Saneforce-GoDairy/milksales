@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
+import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
@@ -62,11 +63,14 @@ public class Weekly_Off extends AppCompatActivity {
     String maxYear = "", maxMonth = "", maxDay = "", minYear = "", minMonth = "", minDay = "", maxDate = "", minDate = "";
     Boolean CheckIn;
     ConstraintLayout ConstraintLayout;
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weekly__off);
+
+        mUkey = Common_Class.GetEkey();
 
         TextView txtHelp = findViewById(R.id.toolbar_help);
         SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
@@ -259,10 +263,9 @@ public class Weekly_Off extends AppCompatActivity {
         JSONObject jsonleaveTypeS = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         try {
-
+            jsonleaveType.put("Ukey", mUkey);
             jsonleaveType.put("WKDate", eText.getText().toString());
             jsonleaveType.put("reason", remark.getText().toString());
-
             jsonleaveTypeS.put("WeekofPunch", jsonleaveType);
             jsonArray1.put(jsonleaveTypeS);
         } catch (JSONException e) {

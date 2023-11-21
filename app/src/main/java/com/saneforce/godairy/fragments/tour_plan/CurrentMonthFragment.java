@@ -213,12 +213,14 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     private TextView jointWorkNameTemp;
     private String  commaseparatedlistName, commaseparatedlistId;
     private JointWorkSelectedAdapter jointWorkSelectedAdapter;
-
+    private String mUkey;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCurrentMonthBinding.inflate(inflater, container, false);
+
+        mUkey = Common_Class.GetEkey();
 
         arrayList = new ArrayList<>();
         arrayListId = new ArrayList<>();
@@ -679,7 +681,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
             jsonobj.put("worktype_code", addquote(String.valueOf(workTypeIdPosition)));
             jsonobj.put("Tour_Date", addquote(finalTourDate));
             jsonobj.put("worktype_name",  addquote(workType));
-            jsonobj.put("Ekey", Common_Class.GetEkey());
+            jsonobj.put("Ukey", addquote(mUkey));
             jsonobj.put("objective",  addquote(remarks));
             jsonobj.put("Flag", addquote(Fieldworkflag));
             jsonobj.put("Button_Access", Worktype_Button);
@@ -782,6 +784,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
     private void  SendtpApproval(String Name, int flag) {
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "dcr/save");
+        QueryString.put("Ukey", addquote(mUkey));
         QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
         QueryString.put("State_Code", Shared_Common_Pref.Div_Code);
         QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);

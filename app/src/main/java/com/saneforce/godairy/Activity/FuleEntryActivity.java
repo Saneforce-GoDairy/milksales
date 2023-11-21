@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 import com.saneforce.godairy.Activity_Hap.AllowancCapture;
 import com.saneforce.godairy.Activity_Hap.CustomListViewDialog;
 import com.saneforce.godairy.Common_Class.CameraPermission;
+import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -68,10 +69,14 @@ public class FuleEntryActivity extends AppCompatActivity implements Master_Inter
     CustomListViewDialog customDialog;
     ApiInterface apiInterface;
     String sSFCode,sDiv,sState;
+    private String mUkey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fule_entry);
+
+        mUkey = Common_Class.GetEkey();
 
         CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(UserInfo, Context.MODE_PRIVATE);
@@ -166,6 +171,7 @@ public class FuleEntryActivity extends AppCompatActivity implements Master_Inter
         QueryString.put("sfCode", sSFCode);
         QueryString.put("rSF", sSFCode);
         QueryString.put("State_Code", sState);
+        QueryString.put("Ukey", mUkey);
         String commonLeaveType = "{\"tableName\":\"getmodeoftravel\",\"coloumns\":\"[\\\"id\\\",\\\"name\\\",\\\"Leave_Name\\\"]\",\"orderBy\":\"[\\\"name asc\\\"]\",\"desig\":\"mgr\"}";
 
         ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
@@ -198,6 +204,7 @@ public class FuleEntryActivity extends AppCompatActivity implements Master_Inter
         try {
             jj.put("sfCode", sSFCode);
             jj.put("divisionCode", sDiv);
+            jj.put("Ukey", mUkey);
         } catch (JSONException e) {
             e.printStackTrace();
         }

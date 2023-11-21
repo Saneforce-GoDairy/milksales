@@ -204,11 +204,14 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
     private String  commaseparatedlistName, commaseparatedlistId;
     private JointWorkSelectedAdapter jointWorkSelectedAdapter;
     TextView jointWorkName;
+    private String mUkey;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNextMonthBinding.inflate(inflater, container, false);
+
+        mUkey = Common_Class.GetEkey();
 
         arrayList = new ArrayList<>();
         arrayListId = new ArrayList<>();
@@ -672,9 +675,9 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
         try {
             JSONObject jsonobj = new JSONObject();
             jsonobj.put("worktype_code", addquote(String.valueOf(workTypeIdPosition)));
+            jsonobj.put("Ukey", addquote(mUkey));
             jsonobj.put("Tour_Date", addquote(finalTourDate));
             jsonobj.put("worktype_name",  addquote(workType));
-            jsonobj.put("Ekey", Common_Class.GetEkey());
             jsonobj.put("objective",  addquote(remarks));
             jsonobj.put("Flag", addquote(Fieldworkflag));
             jsonobj.put("Button_Access", Worktype_Button);
@@ -734,6 +737,7 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
             }
             Map<String, String> QueryString = new HashMap<>();
             QueryString.put("sfCode", Sf_Code);
+            QueryString.put("Ukey", mUkey);
             QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);
             QueryString.put("State_Code", Shared_Common_Pref.StateCode);
             QueryString.put("Approval_MGR", Shared_Common_Pref.Tp_Approvalflag); // Todo: Tp_Approvalflag
