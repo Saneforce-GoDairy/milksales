@@ -71,7 +71,6 @@ public class FuleEntryActivity extends AppCompatActivity implements Master_Inter
     String sSFCode,sDiv,sState;
     private String mUkey;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

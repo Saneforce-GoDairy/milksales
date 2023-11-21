@@ -148,12 +148,16 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     String commaseparatedlistId;
     JointWorkSelectedAdapter jointWorkSelectedAdapter;
 
+    private String mUkey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMydayplanBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        mUkey = Common_Class.GetEkey();
 
         initVariable();
         initOnClick();
@@ -481,7 +485,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     jsonobj.put("worktype_code", addquote(worktype_id));
                     jsonobj.put("dcr_activity_date", addquote(TpDate));
                     jsonobj.put("worktype_name", addquote(worktype_text.getText().toString()));
-                    jsonobj.put("Ekey", Common_Class.GetEkey());
+                    jsonobj.put("Ukey", mUkey);
                     jsonobj.put("objective", addquote(remarks));
                     jsonobj.put("Flag", addquote(Fieldworkflag));
                     jsonobj.put("Button_Access", Worktype_Button);

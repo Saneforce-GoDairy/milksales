@@ -135,6 +135,7 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
     private Button tpapprovebutton, tp_rejectsave, tpreject;
     private DatabaseHandler db;
     private List<String> list = new ArrayList<>();
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +143,8 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
         binding = ActivityTpMydayplanBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        mUkey = Common_Class.GetEkey();
 
         initializeCommonClass();
         initVariable();
@@ -528,7 +531,7 @@ public class Tp_Mydayplan extends AppCompatActivity implements Main_Model.Master
             jsonobj.put("worktype_code", addquote(String.valueOf(workTypeIdPosition)));
             jsonobj.put("Tour_Date", addquote(common_class.getintentValues("TourDate")));
             jsonobj.put("worktype_name",  addquote(workType));
-            jsonobj.put("Ekey", Common_Class.GetEkey());
+            jsonobj.put("Ukey", mUkey);
             jsonobj.put("objective",  addquote(remarks));
             jsonobj.put("Flag", addquote(Fieldworkflag));
             jsonobj.put("Button_Access", Worktype_Button);
