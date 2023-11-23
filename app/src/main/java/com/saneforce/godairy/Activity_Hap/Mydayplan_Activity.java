@@ -169,6 +169,10 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
 
         EKey = Common_Class.GetEkey();
 
+        jointWorkNameList = new ArrayList<>();
+        jointWorkIdList = new ArrayList<>();
+        jointWorkDesigList = new ArrayList<>();
+
         new Handler().postDelayed(() -> {
             loadWorkTypes();
             getWorkTypes();
@@ -250,8 +254,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     private void loadExtraField() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Map<String, String> params = new HashMap<>();
-        params.put("axn", GET_JOINT_WORK_LIST); // axn
-        params.put("sfCode", "MGR0201"); // sf code
+        params.put("axn", GET_JOINT_WORK_LIST);
+        params.put("sfCode", UserDetails.getString("Sfcode", ""));
         Call<ResponseBody> call = apiInterface.getUniversalData(params);
 
         call.enqueue(new Callback<>() {
