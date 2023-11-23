@@ -45,7 +45,7 @@ public class HAPApp extends Application {
     public static String MRPCap = "MRP"; // ₹ B $
     public static String MyAppID = "com.saneforce.saneforce";
     public static String Title = "GoDairy";
-    public static String StockCheck = "1"; // ₹ B $
+    public static String StockCheck = "0"; // ₹ B $
     public static Boolean ProductsLoaded = false;
 
     SharedPreferences UserDetails, CheckInDetails;
@@ -95,7 +95,7 @@ public class HAPApp extends Application {
                 Shared_Common_Pref.Div_Code = CommUserDetails.getString("Divcode", "");
                 Shared_Common_Pref.StateCode = CommUserDetails.getString("State_Code", "");
 
-                StockCheck=CommUserDetails.getString("StockCheck", "1");
+                StockCheck=CommUserDetails.getString("StockCheck", "0");
                 CurrencySymbol = getActiveActivity().getResources().getString(R.string.Currency); //"₹";//₹
                 MRPCap = getActiveActivity().getResources().getString(R.string.MRPCAP);//₹ B$
                 if(Shared_Common_Pref.Sf_Code.equalsIgnoreCase("7951")){

@@ -350,7 +350,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
-                if (PaymentMethod == null) {
+                if (PaymentMethod == null || PaymentMethod == "null") {
                     Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
                 } else if (PaymentMethod.equalsIgnoreCase("CC")) {
                     Intent intent = new Intent(this, InitiatePaymentActivity.class);
@@ -444,8 +444,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                     double ActBAL = jItem.get("LC_BAL").getAsDouble();
                                     ACBalance = jItem.get("Balance").getAsDouble();
                                     ACBalanceChk=jItem.get("BalanceChk").getAsBoolean();
-                                    if (ACBalance <= 0) ACBalance = Math.abs(ACBalance);
-                                    else ACBalance = 0 - ACBalance;
                                     if (ActBAL <= 0) ActBAL = Math.abs(ActBAL);
                                     else ActBAL = 0 - ActBAL;
                                     NumberFormat format1 = NumberFormat.getCurrencyInstance(new Locale("en", "in"));
@@ -1072,7 +1070,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void FilterProduct() {
-
         try {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);

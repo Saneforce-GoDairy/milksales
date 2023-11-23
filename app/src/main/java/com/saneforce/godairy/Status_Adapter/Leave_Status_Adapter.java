@@ -132,6 +132,7 @@ public class Leave_Status_Adapter extends RecyclerView.Adapter<Leave_Status_Adap
             holder.LStatus.setPadding(20,5,20,0);
             holder.txtApproved.setText("Rejected : "+Leave_Status_ModelsList.get(position).getLastUpdtDate());
             holder.LStatus.setBackgroundResource(R.drawable.button_red);
+            holder.linearCancel.setVisibility(View.GONE);
         }
     }
 

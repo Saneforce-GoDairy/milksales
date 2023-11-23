@@ -1072,12 +1072,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/C3dp"
+                android:layout_margin="@dimen/C5dp"
                 android:layout_toRightOf="@+id/tvCart"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginRight="@dimen/C100dp"
                     android:layout_toRightOf="@+id/tvCart"
                     android:orientation="horizontal">
@@ -1108,21 +1108,21 @@
                     </TextView>
 
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/tvTotUom"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/C100dp"
-                    android:fontFamily="sans-serif"
-                    android:scrollbars="horizontal"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:textStyle="bold">
-
-                </TextView>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tvTotUom"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/C100dp"
+                android:fontFamily="sans-serif"
+                android:scrollbars="horizontal"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold">
+
+            </TextView>
             <!--<TextView
                 android:id="@+id/takeorder"
                 android:layout_width="wrap_content"

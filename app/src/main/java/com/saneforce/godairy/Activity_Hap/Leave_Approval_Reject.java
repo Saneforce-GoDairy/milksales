@@ -157,11 +157,13 @@ public class Leave_Approval_Reject extends AppCompatActivity implements View.OnC
 
 
     private void SendtpApproval(String Name, int flag) {
-        if (flag == 1) {
-            MyProgressDialog.show(context, "", "Approving", false);
-        } else {
-            MyProgressDialog.show(context, "", "Rejecting", false);
-        }
+        try {
+            if (flag == 1) {
+                MyProgressDialog.show(this, "", "Approving", false);
+            } else {
+                MyProgressDialog.show(this, "", "Rejecting", false);
+            }
+        } catch (Exception e) { }
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "dcr/save");
         QueryString.put("Ukey", mUkey);

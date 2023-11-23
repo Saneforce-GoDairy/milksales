@@ -111,7 +111,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     DatePickerDialog fromDatePickerDialog;
 
     double Lat = 0, Long = 0;
-    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", FSSAIImageName = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", GSTImageName = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", FSSAIImageFullPath = "", gstDeclarationImageFullPath = "", GSTImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "";
+    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", FSSAIImageName = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", GSTImageName = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", FSSAIImageFullPath = "", gstDeclarationImageFullPath = "", GSTImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", doorNo = "", street = "", city = "", district = "", state = "", country = "", pincode = "", feature = "";
     boolean isEditMode = false;
     private String mUkey;
 
@@ -1819,15 +1819,17 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
                 List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-                if (addresses != null) {
+                if (addresses != null && addresses.size() > 0) {
+
                     Address returnedAddress = addresses.get(0);
-                    String doorNo = returnedAddress.getSubThoroughfare();
-                    String street = returnedAddress.getThoroughfare();
-                    String city = returnedAddress.getLocality();
-                    String district = returnedAddress.getSubAdminArea();                                // 4125, 8966
-                    String state = returnedAddress.getAdminArea();
-                    String country = returnedAddress.getCountryName();
-                    String pincode = returnedAddress.getPostalCode();
+                    doorNo = returnedAddress.getSubThoroughfare();
+                    street = returnedAddress.getThoroughfare();
+                    feature = returnedAddress.getFeatureName();
+                    city = returnedAddress.getLocality();
+                    district = returnedAddress.getSubAdminArea();
+                    state = returnedAddress.getAdminArea();
+                    country = returnedAddress.getCountryName();
+                    pincode = returnedAddress.getPostalCode();
 
                     runOnUiThread(() -> {
                         if (!Common_Class.isNullOrEmpty(city)) {
@@ -1836,13 +1838,21 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         if (!Common_Class.isNullOrEmpty(pincode)) {
                             type_pincode.setText(pincode);
                         }
-                        if (!Common_Class.isNullOrEmpty(doorNo) && !Common_Class.isNullOrEmpty(street)) {
-                            businessAddressNo.setText(doorNo + ", " + street);
-                        } else if (!Common_Class.isNullOrEmpty(doorNo)) {
-                            businessAddressNo.setText(doorNo);
-                        } else if (!Common_Class.isNullOrEmpty(street)) {
-                            businessAddressNo.setText(street);
-                        }
+
+                        if (Common_Class.isNullOrEmpty(doorNo)) doorNo = "";
+                        if (Common_Class.isNullOrEmpty(street)) street = "";
+                        if (Common_Class.isNullOrEmpty(feature)) feature = "";
+
+//                        String line1 = doorNo + ", " + street + ", " + feature;
+//                        line1 = line1.replace(", , ", ", ");
+//                        if (line1.startsWith(", ")) line1 = line1.substring(2);
+//                        if (line1.endsWith(", ")) line1 = line1.substring(0, line1.length()- 3);
+
+                        String[] sadd= returnedAddress.getAddressLine(0).split(",");
+
+                        String line1 = sadd[1].trim()  + ", " + sadd[2].trim() ;
+                        businessAddressNo.setText(line1);
+
                         if (!Common_Class.isNullOrEmpty(city) && !Common_Class.isNullOrEmpty(district)) {
                             businessAddressCity.setText(city + ", " + district);
                         } else if (!Common_Class.isNullOrEmpty(city)) {
@@ -1850,6 +1860,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         } else if (!Common_Class.isNullOrEmpty(district)) {
                             businessAddressCity.setText(district);
                         }
+
                         if (!Common_Class.isNullOrEmpty(state) && !Common_Class.isNullOrEmpty(country)) {
                             businessAddressPincode.setText(state + ", " + country);
                         } else if (!Common_Class.isNullOrEmpty(state)) {

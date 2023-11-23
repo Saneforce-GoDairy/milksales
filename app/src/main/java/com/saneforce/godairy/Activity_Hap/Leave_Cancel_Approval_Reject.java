@@ -170,6 +170,9 @@ public class Leave_Cancel_Approval_Reject extends AppCompatActivity implements V
         QueryString.put("No_of_Days", leavedays.getText().toString());
         QueryString.put("desig", "MGR");
         QueryString.put("flag", String.valueOf(flag));
+        if (flag == 2) {
+            QueryString.put("reason", reason.getText().toString().trim());
+        }
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         JSONObject sp = new JSONObject();
