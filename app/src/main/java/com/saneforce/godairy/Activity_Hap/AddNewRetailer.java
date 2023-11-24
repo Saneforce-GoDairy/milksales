@@ -60,6 +60,7 @@ import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -170,6 +171,7 @@ public class AddNewRetailer extends AppCompatActivity implements Master_Interfac
     String customer_code = "";
 
     boolean isServiceType = false;
+    Context context = this;
 
 
     @Override
@@ -266,6 +268,7 @@ public class AddNewRetailer extends AppCompatActivity implements Master_Interfac
             rlSubCategory.setOnClickListener(this);
             ivProfilePreview.setOnClickListener(this);
 
+            getDropdowns();
 
             findViewById(R.id.ivFreezReqMandatory).setVisibility(View.INVISIBLE);
 
@@ -2268,6 +2271,25 @@ public class AddNewRetailer extends AppCompatActivity implements Master_Interfac
 
             }
         }
+    }
+
+    private void getDropdowns() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_outet_creation_dropdowns");
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                try {
+                    Log.e("OutetCreationDropdowns", jsonObject.toString());
+                } catch (Exception ignored) {
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("getStockistInfo", error);
+            }
+        });
     }
 
 

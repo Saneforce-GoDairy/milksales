@@ -1112,7 +1112,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         Map<String, String> params = new HashMap<>();
         params.put("axn", "get_stockist_info");
         params.put("stockistCode", stockistCode);
-        Common_Class.makeApiCall(params, "", new APIResult() {
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
