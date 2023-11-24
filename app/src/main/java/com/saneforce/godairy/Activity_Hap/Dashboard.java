@@ -91,7 +91,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     ArrayList<String> exploreName = new ArrayList<>(Arrays.asList(
             "Request & status",
             "TA & Claim",
-            "SFA",
+            "Activity",
             "Gate IN",
             "Gate OUT",
             "PJP"));

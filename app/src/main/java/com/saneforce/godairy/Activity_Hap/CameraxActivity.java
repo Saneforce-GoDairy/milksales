@@ -303,7 +303,7 @@ public class CameraxActivity extends AppCompatActivity {
     }
 
     private void saveImgPreview() {
-        if(file==null) return;
+        if(file == null) return;
         imageFileName = file.getName();
 
         Intent mIntent = new Intent(this, FileUploadService.class);
@@ -313,20 +313,22 @@ public class CameraxActivity extends AppCompatActivity {
         mIntent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
         FileUploadService.enqueueWork(this, mIntent);
 
-        if (lat == 0 || lng == 0) {
-            new LocationFinder(getApplication(), new LocationEvents() {
-                @Override
-                public void OnLocationRecived(Location location) {
-                    if (location != null) {
-                        lat = location.getLatitude();
-                        lng = location.getLongitude();
-                        saveCheckIn();
-                    }
-                }
-            });
-        } else {
-            saveCheckIn();
-        }
+        saveCheckIn();
+
+//        if (lat == 0 || lng == 0) {
+//            new LocationFinder(getApplication(), new LocationEvents() {
+//                @Override
+//                public void OnLocationRecived(Location location) {
+//                    if (location != null) {
+//                        lat = location.getLatitude();
+//                        lng = location.getLongitude();
+//                        saveCheckIn();
+//                    }
+//                }
+//            });
+//        } else {
+//            saveCheckIn();
+//        }
     }
 
     private void initSubmitProgressDialog(String messge) {
@@ -393,7 +395,7 @@ public class CameraxActivity extends AppCompatActivity {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                 runOnUiThread(() -> {
-                    file = new File(DIR, capturedImageName);
+                  //  file = new File(DIR, capturedImageName);
                     bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
                     // automatic screen orientation require Android 13 above API 33

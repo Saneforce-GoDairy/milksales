@@ -259,6 +259,8 @@ public class Login extends AppCompatActivity {
             SUserID = binding.userEmail.getText().toString().trim();
             eMail = binding.userEmail.getText().toString().trim();
             SPwd = binding.userPassword.getText().toString().trim();
+            
+
             if (TextUtils.isEmpty(eMail)) {
                 Toast.makeText(this, "Email Address Required", Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(SPwd)) {
@@ -272,6 +274,8 @@ public class Login extends AppCompatActivity {
                 MakeInvisible();
                 login(1);
             }
+
+
         });
 
         Boolean Login = UserDetails.getBoolean("Login", false);
