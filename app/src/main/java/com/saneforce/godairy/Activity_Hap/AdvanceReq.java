@@ -82,10 +82,14 @@ public class AdvanceReq extends AppCompatActivity implements Master_Interface {
 
     com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
 
+    private String mUkey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advance_req);
+
+        mUkey = Common_Class.GetEkey();
 
         db = new DatabaseHandler(this);
         CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
@@ -405,7 +409,7 @@ public class AdvanceReq extends AppCompatActivity implements Master_Interface {
         String sTime=DT.GetDateTime(AdvanceReq.this,"yyyy-MM-dd HH:mm:ss");
 
         try {
-            param.put("eKey", Common_Class.GetEkey());
+            param.put("Ukey", mUkey);
             param.put("SF",UserDetails.getString("Sfcode",""));
             param.put("eDate", sTime);
             param.put("AdvFrom",fromData);

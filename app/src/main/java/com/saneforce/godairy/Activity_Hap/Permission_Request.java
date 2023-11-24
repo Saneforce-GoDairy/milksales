@@ -101,11 +101,15 @@ public class Permission_Request extends AppCompatActivity implements View.OnClic
     TextView PermissionHours;
 
     com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission__request);
+
+        mUkey = com.saneforce.godairy.Common_Class.Common_Class.GetEkey();
+
         CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(UserInfo, Context.MODE_PRIVATE);
         Setups = getSharedPreferences(SetupsInfo, Context.MODE_PRIVATE);
@@ -547,7 +551,7 @@ public class Permission_Request extends AppCompatActivity implements View.OnClic
             jsonleaveType.put("Noof_Count", StringPremissonEntry);
             jsonleaveType.put("Shift", shiftTypeId);
             jsonleaveTypeS.put("PermissionFormValidate", jsonleaveType);
-            jsonleaveTypeS.put("Ekey", com.saneforce.godairy.Common_Class.Common_Class.GetEkey());
+            jsonleaveTypeS.put("Ukey", mUkey);
             jsonArray1.put(jsonleaveTypeS);
 
         } catch (JSONException e) {

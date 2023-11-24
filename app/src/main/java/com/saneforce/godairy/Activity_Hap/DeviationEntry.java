@@ -33,6 +33,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.saneforce.godairy.BuildConfig;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
+import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AlertBox;
@@ -84,12 +85,16 @@ public class DeviationEntry extends AppCompatActivity implements Master_Interfac
     CustomListViewDialog customDialog;
     Location mLocation;
     LinearLayout LinearDevaitaionType;
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deviation_entry);
         getToolbar();
+
+        mUkey = Common_Class.GetEkey();
+
         gson = new Gson();
         CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(UserInfo, Context.MODE_PRIVATE);
@@ -321,6 +326,7 @@ public class DeviationEntry extends AppCompatActivity implements Master_Interfac
         JSONObject deviationArray = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         try {
+            deviationObject.put("Ukey", mUkey);
             deviationObject.put("Deviation_Type", deivationID);
             deviationObject.put("AppVer", myVersion);
             deviationObject.put("AndVer", "Android "+myVersion);

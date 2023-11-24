@@ -48,7 +48,7 @@ public class TodayFragment extends Fragment {
     private SharedPreferences UserDetails;
     public static final String UserDetail = "MyPrefs";
     private String viewMode = "";
-    private String baseUrl = "https://lactalisindia.salesjump.in/";
+    private String baseUrl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +58,7 @@ public class TodayFragment extends Fragment {
         gson = new Gson();
         mShared_common_pref = new Shared_Common_Pref(getActivity());
         UserDetails = getActivity().getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        baseUrl = ApiClient.BASE_URL.split("server/")[0];
 
         initSharedPref();
         loadTodayCheckInReport();

@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +55,7 @@ import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.OnImagePickListener;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.SFA_Adapter.AdapterShowMultipleImages;
 import com.saneforce.godairy.SFA_Adapter.CommonAdapterForDropdown;
 import com.saneforce.godairy.SFA_Adapter.CommonAdapterForDropdownWithFilter;
 import com.saneforce.godairy.SFA_Model_Class.CommonModelForDropDown;
@@ -71,6 +73,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -111,14 +114,18 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     DatePickerDialog fromDatePickerDialog;
 
     double Lat = 0, Long = 0;
-    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", FSSAIImageName = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", GSTImageName = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", FSSAIImageFullPath = "", gstDeclarationImageFullPath = "", GSTImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", doorNo = "", street = "", city = "", district = "", state = "", country = "", pincode = "", feature = "";
+    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", gstDeclarationImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", doorNo = "", street = "", city = "", district = "", state = "", country = "", pincode = "", feature = "";
     boolean isEditMode = false;
+    ArrayList<String> FSSAIList, GSTList;
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAddNewDistributorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        mUkey = Common_Class.GetEkey();
 
         select_sales_office_name = findViewById(R.id.select_sales_office_name);
         select_route_name = findViewById(R.id.select_route_name);
@@ -213,9 +220,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 fssaitoStr = "";
                 type_fssai.setText("");
                 FSSAIDetailsStr = "";
-                display_fssai.setVisibility(View.GONE);
-                FSSAIImageName = "";
-                FSSAIImageFullPath = "";
+                FSSAIList.clear();
                 fssaiLL.setVisibility(View.GONE);
                 fssaiDeclarationLL.setVisibility(View.VISIBLE);
             }
@@ -231,9 +236,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             } else {
                 type_gst.setText("");
                 GSTDetailsStr = "";
-                GSTImageName = "";
-                GSTImageFullPath = "";
-                display_gst.setVisibility(View.GONE);
+                GSTList.clear();
                 gstLL.setVisibility(View.GONE);
                 gstDeclarationLL.setVisibility(View.VISIBLE);
             }
@@ -335,6 +338,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         routeList = new ArrayList<>();
         filteredRouteList = new ArrayList<>();
         tempRouteList = new ArrayList<>();
+        FSSAIList = new ArrayList<>();
+        GSTList = new ArrayList<>();
 
         subChannelResponse = new JSONArray();
         filteredSubChannel = new JSONArray();
@@ -364,7 +369,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     customer_photo_url = fullPath;
                     display_customer_photo.setImageBitmap(image);
                     display_customer_photo.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -378,7 +383,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     shop_photo_url = fullPath;
                     display_shop_photo.setImageBitmap(image);
                     display_shop_photo.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -392,7 +397,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     aadhaarImageFullPath = fullPath;
                     display_aadhaar_number.setImageBitmap(image);
                     display_aadhaar_number.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -406,7 +411,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     panImageFullPath = fullPath;
                     display_pan_number.setImageBitmap(image);
                     display_pan_number.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -420,7 +425,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     bankImageFullPath = fullPath;
                     display_bank_details.setImageBitmap(image);
                     display_bank_details.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -430,11 +435,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    FSSAIImageName = FileName;
-                    FSSAIImageFullPath = fullPath;
-                    display_fssai.setImageBitmap(image);
-                    display_fssai.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    FSSAIList.add(FileName);
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -444,11 +446,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    GSTImageName = FileName;
-                    GSTImageFullPath = fullPath;
-                    display_gst.setImageBitmap(image);
-                    display_gst.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    GSTList.add(FileName);
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -462,7 +461,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     agreementImageFullPath = fullPath;
                     display_agreement_copy.setImageBitmap(image);
                     display_agreement_copy.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -476,7 +475,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     gstDeclarationImageFullPath = fullPath;
                     previewGSTDeclaration.setImageBitmap(image);
                     previewGSTDeclaration.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -490,7 +489,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     tcsDeclarationImageFullPath = fullPath;
                     previewTCSDeclaration.setImageBitmap(image);
                     previewTCSDeclaration.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -504,7 +503,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     FSSAIDeclarationImageFullPath = fullPath;
                     previewfssaiDeclaration.setImageBitmap(image);
                     previewfssaiDeclaration.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -518,7 +517,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     customerApplicationImageFullPath = fullPath;
                     display_customer_application.setImageBitmap(image);
                     display_customer_application.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "trmu", "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -605,14 +604,36 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             showImage(bankImageFullPath);
         });
         display_fssai.setOnClickListener(v -> {
-            display_fssai.setEnabled(false);
-            new Handler().postDelayed(() -> display_fssai.setEnabled(true), 1500);
-            showImage(FSSAIImageFullPath);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setCancelable(true);
+            View view = LayoutInflater.from(context).inflate(R.layout.layout_show_multiple_images, null, false);
+            builder.setView(view);
+            AlertDialog dialog = builder.create();
+            TextView title = view.findViewById(R.id.title);
+            ImageView close = view.findViewById(R.id.close);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            title.setText("FSSAI Images");
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
+            recyclerView.setAdapter(new AdapterShowMultipleImages(context, FSSAIList));
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.show();
         });
         display_gst.setOnClickListener(v -> {
-            display_gst.setEnabled(false);
-            new Handler().postDelayed(() -> display_gst.setEnabled(true), 1500);
-            showImage(GSTImageFullPath);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setCancelable(true);
+            View view = LayoutInflater.from(context).inflate(R.layout.layout_show_multiple_images, null, false);
+            builder.setView(view);
+            AlertDialog dialog = builder.create();
+            TextView title = view.findViewById(R.id.title);
+            ImageView close = view.findViewById(R.id.close);
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            title.setText("GST Images");
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
+            recyclerView.setAdapter(new AdapterShowMultipleImages(context, GSTList));
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.show();
         });
         display_agreement_copy.setOnClickListener(v -> {
             display_agreement_copy.setEnabled(false);
@@ -1112,21 +1133,21 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
         try {
             customer_photo_name = jsonObject.optString("Cust_Photo");
-            common_class.getImageFromS3Bucket(context, "trmu", customer_photo_name, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, customer_photo_name, "stockist_info", (bmp, path) -> {
                 display_customer_photo.setImageBitmap(bmp);
                 display_customer_photo.setVisibility(View.VISIBLE);
                 customer_photo_url = path;
             });
 
             shop_photo_name = jsonObject.optString("Shop_Photo");
-            common_class.getImageFromS3Bucket(context, "trmu", shop_photo_name, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, shop_photo_name, "stockist_info", (bmp, path) -> {
                 display_shop_photo.setImageBitmap(bmp);
                 display_shop_photo.setVisibility(View.VISIBLE);
                 shop_photo_url = path;
             });
 
             customerApplicationImageName = jsonObject.optString("custAppImg");
-            common_class.getImageFromS3Bucket(context, "trmu", customerApplicationImageName, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, customerApplicationImageName, "stockist_info", (bmp, path) -> {
                 display_customer_application.setImageBitmap(bmp);
                 display_customer_application.setVisibility(View.VISIBLE);
                 customerApplicationImageFullPath = path;
@@ -1208,7 +1229,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 type_aadhaar_number.setText(aadhaarStr);
 
                 aadhaarImageName = jsonObject.optString("AadhaarImg");
-                common_class.getImageFromS3Bucket(context, "trmu", aadhaarImageName, "stockist_info", (bmp, path) -> {
+                common_class.getImageFromS3Bucket(context, aadhaarImageName, "stockist_info", (bmp, path) -> {
                     display_aadhaar_number.setImageBitmap(bmp);
                     display_aadhaar_number.setVisibility(View.VISIBLE);
                     aadhaarImageFullPath = path;
@@ -1219,7 +1240,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             type_pan_number.setText(PANStr);
 
             panImageName = jsonObject.optString("PanImg");
-            common_class.getImageFromS3Bucket(context, "trmu", panImageName, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, panImageName, "stockist_info", (bmp, path) -> {
                 display_pan_number.setImageBitmap(bmp);
                 display_pan_number.setVisibility(View.VISIBLE);
                 panImageFullPath = path;
@@ -1232,7 +1253,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             select_bank_details.setText(bankDetailsStr);
 
             bankImageName = jsonObject.optString("BankAccImg");
-            common_class.getImageFromS3Bucket(context, "trmu", bankImageName, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, bankImageName, "stockist_info", (bmp, path) -> {
                 display_bank_details.setImageBitmap(bmp);
                 display_bank_details.setVisibility(View.VISIBLE);
                 bankImageFullPath = path;
@@ -1244,12 +1265,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             FSSAIDetailsStr = jsonObject.optString("Fssai");
             type_fssai.setText(FSSAIDetailsStr);
 
-            FSSAIImageName = jsonObject.optString("FssaiImg");
-            common_class.getImageFromS3Bucket(context, "trmu", FSSAIImageName, "stockist_info", (bmp, path) -> {
-                display_fssai.setImageBitmap(bmp);
-                display_fssai.setVisibility(View.VISIBLE);
-                FSSAIImageFullPath = path;
-            });
+            String FSSAIImageName = jsonObject.optString("FssaiImg");
+            FSSAIList.clear();
+            FSSAIList.addAll(Arrays.asList(FSSAIImageName.split(",")));
 
             fssaiFromStr = jsonObject.optString("fssaiFrom");
             fssaiFromDate.setText(fssaiFromStr);
@@ -1258,7 +1276,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             fssaiToDate.setText(fssaitoStr);
 
             FSSAIDeclarationImageName = jsonObject.optString("fssaiDecImg");
-            common_class.getImageFromS3Bucket(context, "trmu", FSSAIDeclarationImageName, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, FSSAIDeclarationImageName, "stockist_info", (bmp, path) -> {
                 previewfssaiDeclaration.setImageBitmap(bmp);
                 previewfssaiDeclaration.setVisibility(View.VISIBLE);
                 FSSAIDeclarationImageFullPath = path;
@@ -1270,15 +1288,12 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             GSTDetailsStr = jsonObject.optString("Gst");
             type_gst.setText(GSTDetailsStr);
 
-            GSTImageName = jsonObject.optString("GstImg");
-            common_class.getImageFromS3Bucket(context, "trmu", GSTImageName, "stockist_info", (bmp, path) -> {
-                display_gst.setImageBitmap(bmp);
-                display_gst.setVisibility(View.VISIBLE);
-                GSTImageFullPath = path;
-            });
+            String GSTImageName = jsonObject.optString("GstImg");
+            GSTList.clear();
+            GSTList.addAll(Arrays.asList(GSTImageName.split(",")));
 
             gstDeclarationImageName = jsonObject.optString("gstDecImg");
-            common_class.getImageFromS3Bucket(context, "trmu", gstDeclarationImageName, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, gstDeclarationImageName, "stockist_info", (bmp, path) -> {
                 previewGSTDeclaration.setImageBitmap(bmp);
                 previewGSTDeclaration.setVisibility(View.VISIBLE);
                 gstDeclarationImageFullPath = path;
@@ -1288,7 +1303,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             tcsSwitch.setChecked(have_tcs.equals("0"));
 
             tcsDeclarationImageName = jsonObject.optString("tcsDecImg");
-            common_class.getImageFromS3Bucket(context, "trmu", tcsDeclarationImageName, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, tcsDeclarationImageName, "stockist_info", (bmp, path) -> {
                 previewTCSDeclaration.setImageBitmap(bmp);
                 previewTCSDeclaration.setVisibility(View.VISIBLE);
                 tcsDeclarationImageFullPath = path;
@@ -1298,7 +1313,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             select_agreement_copy.setText(agreementDetailsStr);
 
             agreementImageName = jsonObject.optString("AgreementImg");
-            common_class.getImageFromS3Bucket(context, "trmu", agreementImageName, "stockist_info", (bmp, path) -> {
+            common_class.getImageFromS3Bucket(context, agreementImageName, "stockist_info", (bmp, path) -> {
                 display_agreement_copy.setImageBitmap(bmp);
                 display_agreement_copy.setVisibility(View.VISIBLE);
                 agreementImageFullPath = path;
@@ -1399,7 +1414,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                                         String title = officeResponse.getJSONObject(i).getString("sOffName");
                                         String regionReference = officeResponse.getJSONObject(i).getString("StateCode");
                                         String officeReference = officeResponse.getJSONObject(i).getString("PlantId");
-                                        Log.e("ksjdhksd", "officeResponse: " + id + ", " + title + ", " + regionReference + ", " + officeReference);
                                         officeList.add(new CommonModelWithFourString(id, title, regionReference, officeReference));
                                     }
                                     JSONArray routeResponse = object.getJSONArray("routeResponse");
@@ -1407,14 +1421,12 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                                         String id = routeResponse.getJSONObject(i).getString("Route_ID");
                                         String title = routeResponse.getJSONObject(i).getString("Route_Name");
                                         String officeReference = routeResponse.getJSONObject(i).getString("Plant_Code");
-                                        Log.e("ksjdhksd", "routeResponse: " + id + ", " + title + ", " + officeReference);
                                         routeList.add(new CommonModelWithFourString(id, title, "", officeReference));
                                     }
                                     JSONArray channelResponse = object.getJSONArray("channelResponse");
                                     for (int i = 0; i < channelResponse.length(); i++) {
                                         String id = channelResponse.getJSONObject(i).getString("CateId");
                                         String title = channelResponse.getJSONObject(i).getString("CateNm");
-                                        Log.e("ksjdhksd", "channelResponse: " + id + ", " + title);
                                         ChannelList.add(new CommonModelForDropDown(id, title));
                                     }
                                     subChannelResponse = object.getJSONArray("subChannelResponse");
@@ -1603,7 +1615,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter Bank Details", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() != 14 && fssaiSwitch.isChecked()) {
             Toast.makeText(context, "Please Enter 14 digit FSSAI Number", Toast.LENGTH_SHORT).show();
-        } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && FSSAIImageName.isEmpty()) {
+        } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && FSSAIList.isEmpty()) {
             Toast.makeText(context, "Please capture FSSAI License Certificate", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && (fssaiFromStr.isEmpty() || fssaitoStr.isEmpty())) {
             Toast.makeText(context, "Please select FSSAI valid dates", Toast.LENGTH_SHORT).show();
@@ -1613,7 +1625,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(context, "Please Enter 15 digit GST Number", Toast.LENGTH_SHORT).show();
         } else if (gstSwitch.isChecked() && (!GSTDetailsStr.matches("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$"))) {
             Toast.makeText(context, "Please Enter valid GST Number", Toast.LENGTH_SHORT).show();
-        } else if (gstSwitch.isChecked() && (TextUtils.isEmpty(GSTImageName) || TextUtils.isEmpty(GSTImageFullPath))) {
+        } else if (gstSwitch.isChecked() && (GSTList.isEmpty())) {
             Toast.makeText(context, "Please Capture the GST Certificate", Toast.LENGTH_SHORT).show();
         } else if (!gstSwitch.isChecked() && (TextUtils.isEmpty(gstDeclarationImageName) || TextUtils.isEmpty(gstDeclarationImageFullPath))) {
             Toast.makeText(context, "Please Capture the GST Declaration Certificate", Toast.LENGTH_SHORT).show();
@@ -1658,7 +1670,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             object.put("sfCode", UserDetails.getString("Sfcode", ""));
 
             object.put("customer_photo_name", customer_photo_name);
-
+            object.put("Ukey", mUkey);
             object.put("shop_photo_name", shop_photo_name);
 
             object.put("stateCodeStr", stateCodeStr);
@@ -1722,16 +1734,31 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
             object.put("fssaiStatus", fssaiSwitch.isChecked() ? "1" : "0");
             object.put("FSSAIDetailsStr", FSSAIDetailsStr);
-            object.put("FSSAIImageName", FSSAIImageName);
+
+            StringBuilder FSSAIImageName = new StringBuilder();
+            for (String name : FSSAIList) {
+                FSSAIImageName.append(",").append(name);
+            }
+            String fssaiImageName = FSSAIImageName.toString();
+            if (fssaiImageName.length() > 0) {
+                fssaiImageName = fssaiImageName.substring(1);
+            }
+            object.put("FSSAIImageName", fssaiImageName);
             object.put("fssaiFromStr", fssaiFromStr);
             object.put("fssaitoStr", fssaitoStr);
             object.put("FSSAIDeclarationImageName", FSSAIDeclarationImageName);
-
             object.put("gstStatus", gstSwitch.isChecked() ? "1" : "0");
             object.put("GSTDetailsStr", GSTDetailsStr);
-            object.put("GSTImageName", GSTImageName);
+            StringBuilder GSTImageName = new StringBuilder();
+            for (String name : GSTList) {
+                GSTImageName.append(",").append(name);
+            }
+            String gstImageName = GSTImageName.toString();
+            if (gstImageName.length() > 0) {
+                gstImageName = gstImageName.substring(1);
+            }
+            object.put("GSTImageName", gstImageName);
             object.put("gstDeclarationImageName", gstDeclarationImageName);
-
             object.put("tcsStatus", tcsSwitch.isChecked() ? "0" : "1");
             object.put("tcsDeclarationImageName", tcsDeclarationImageName);
 

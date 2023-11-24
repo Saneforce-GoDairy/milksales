@@ -1114,6 +1114,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             findViewById(R.id.cdFreeQtyParent).setVisibility(View.GONE);
 
         }
+        findViewById(R.id.delAddressLL).setVisibility(View.VISIBLE);
 
     }
 
@@ -1820,6 +1821,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.llBillHeader).setVisibility(View.GONE);
         findViewById(R.id.llPayNetAmountDetail).setVisibility(View.GONE);
         findViewById(R.id.cdFreeQtyParent).setVisibility(View.GONE);
+        findViewById(R.id.delAddressLL).setVisibility(View.GONE);
         btnRepeat.setVisibility(View.VISIBLE);
         takeorder.setText("PROCEED");
         takeorder.setVisibility(View.VISIBLE);

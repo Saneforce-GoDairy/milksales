@@ -53,11 +53,15 @@ public class Leave_Cancel_Approval_Reject extends AppCompatActivity implements V
     EditText reason;
     private WebView wv1;
     Intent i;
+    private String mUkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave__cancel__approval__reject);
+
+        mUkey = Common_Class.GetEkey();
+
         TextView txtHelp = findViewById(R.id.toolbar_help);
         ImageView imgHome = findViewById(R.id.toolbar_home);
         txtHelp.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +159,7 @@ public class Leave_Cancel_Approval_Reject extends AppCompatActivity implements V
     private void SendtpApproval(String Name, int flag) {
         Map<String, String> QueryString = new HashMap<>();
         QueryString.put("axn", "dcr/save");
+        QueryString.put("Ukey", mUkey);
         QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
         QueryString.put("State_Code", Shared_Common_Pref.Div_Code);
         QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);

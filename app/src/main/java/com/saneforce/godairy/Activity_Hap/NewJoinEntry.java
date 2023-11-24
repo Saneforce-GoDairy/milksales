@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
+import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
@@ -63,10 +64,14 @@ public class NewJoinEntry extends AppCompatActivity {
     List<MaxMinDate> maxMinDates;
     String maxYear = "", maxMonth = "", maxDay = "", minYear = "", minMonth = "", minDay = "", maxDate = "", minDate = "";
     ConstraintLayout ConstraintLayout;
+    private String mUkey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_join_entry);
+
+        mUkey = Common_Class.GetEkey();
 
         CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(UserInfo, Context.MODE_PRIVATE);
@@ -183,6 +188,7 @@ public class NewJoinEntry extends AppCompatActivity {
                 JSONObject jsonleaveTypeS = new JSONObject();
                 JSONArray jsonArray1 = new JSONArray();
                 try {
+                    jsonleaveType.put("Ukey", mUkey);
                     jsonleaveType.put("From_Date", eText.getText().toString());
                     jsonleaveType.put("Reason", remark.getText().toString());
                     jsonleaveTypeS.put("NewJoinForm", jsonleaveType);
