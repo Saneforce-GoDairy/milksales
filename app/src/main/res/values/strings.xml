@@ -4,7 +4,6 @@
     <string name="milk_sales_check_in" translatable="false">GoDairy</string>
     <string name="milk_sales_franchise" translatable="false">GoDairy Distributor</string>
     <string name="milk_sales_locations" translatable="false">GoDairy Locations</string>
-
     <string name="loading_please_wait" translatable="false">Loading Please Wait......</string>
     <string name="todo" translatable="false">TODO</string>
     <string name="sign_in" translatable="false">Sign-In</string>
@@ -22,11 +21,9 @@
     <string name="txt_purposes" translatable="false">Enter the Purpose of visit</string>
     <string name="txt_ondutylocations" translatable="false">Enter your ON-Duty Location<font fgcolor='#E53935'> *</font></string>
     <string name="txt_ondutylocationss" translatable="false">Enter your ON-Duty Location</string>
-
     <string name="selectmissed_date" translatable="false">Select Missed Date</string>
     <string name="select_type" translatable="false">Select Type</string>
     <string name="enter_location" translatable="false">Enter location</string>
-
     <string name="web_client_id" translatable="false">92787437164-iv0q3cg155ve0a0pl21d4r6e6e295p09.apps.googleusercontent.com</string>
     <string name="launch_activity" translatable="false">open</string>
     <string name="location_updated" translatable="false">Updating</string>
@@ -37,24 +34,16 @@
     <string name="reason" translatable="false">Reason</string>
     <string name="txt_jointwork" translatable="false">Joint work</string>
     <string name="txt_enter_reason" translatable="false">Enter the Reason</string>
-
-
     <string name="Tourplan" translatable="false">Work  Plan</string>
-
-
     <string name="txt_worktype" translatable="false">Work Type</string>
     <string name="txt_distributors">Distributors</string>
     <string name="txt_route">Route</string>
     <string name="DayPlan">My Day  Plan</string>
     <string name="txt_submit">Submit</string>
-
     <string name="txt_hq">Head Quarters</string>
     <string name="txt_chillingtext">Visiting Chilling Center</string>
     <string name="txt_shifttype">Shift M/E</string>
-
     <string name="txt_enter_purpose">Enter The Visiting Purpose</string>
-
-
     <string name="leave_type">Leave Type</string>
     <string name="shit_type">Shift Timing</string>
     <string name="half_day_type">Halfday Type</string>
@@ -74,7 +63,6 @@
     </array>
     <string name="btnsummit">Submit For Approval</string>
 
-
     <!--Order Deatils-->
     <string name="Rep_orders">Reports</string>
     <string name="pri_orders">Orders</string>
@@ -90,7 +78,6 @@
     <string name="from_date">From :</string>
     <string name="to_date">To :</string>
     <string name="allowance">Do you want to submit Allowance?</string>
-
     <bool name="config_closeDialogWhenTouchOutside">false</bool>
     <string name="title_activity_ta_approval_display">TaApprovalDisplay</string>
     <string name="take_photo">Photo</string>
@@ -99,7 +86,6 @@
     <string name="trv_exc_entry">Travel Mode Exception Entry</string>
     <string name="trv_exc_aprvl">Travel Mode Exception Approval</string>
     <string name="trv_exc_status">Travel Mode Exception Status</string>
-
     <string name="map_api_key">AIzaSyAER5hPywUW-5DRlyKJZEfsqgZlaqytxoU</string>
     <string name="dash">-</string>
     <string name="rs">\u20B9</string>
@@ -108,7 +94,6 @@
     <string name="select_state">Select the State</string>
     <string name="select_distributor">Select the Franchise</string>
     <string name="select_route">Select the Route</string>
-
     <string name="projection_history">History &amp; Status </string>
     <string name="title_activity_posstock_loading">POSStockLoadingActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -116,10 +101,8 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-
     <string name="customer_photo">Customer Photo<font fgcolor='#E53935'> *</font></string>
     <string name="shop_photo">Shop Photo<font fgcolor='#E53935'> *</font></string>
     <string name="region">TM1 Reporting Verticals<font fgcolor='#E53935'> *</font></string>
@@ -154,12 +137,10 @@
     <string name="security_deposit_details">Security Deposit Details<font fgcolor='#E53935'> *</font></string>
     <string name="security_deposit_details_image">Security Deposit Details Image<font fgcolor='#E53935'> *</font></string>
     <string name="submit">SUBMIT</string>
-
     <string name="pay_opt">Payment Option</string>
     <string name="card_type">Card Type</string>
     <string name="emi_banks">EMI Banks</string>
     <string name="emi_card_name">Card Name</string>
-
     <string name="diary_product_delivery_solutions">Dairy Product \n Delivery Solutions</string>
     <string name="continue_with_google">Continue with google</string>
     <string name="request_amp_status"><![CDATA[Request & Status]]></string>
@@ -175,7 +156,6 @@
     <string name="sfa">SFA</string>
     <string name="ta_amp_claim"><![CDATA[TA & Claim]]></string>
     <string name="close">CLOSE</string>
-
     <string name="sub_channel">Sub Channel<font fgcolor='#E53935'> *</font></string>
     <string name="account_group">Account Group<font fgcolor='#E53935'> *</font></string>
     <string name="distributor_channel">Distributor Channel<font fgcolor='#E53935'> *</font></string>
@@ -196,12 +176,8 @@
     <string name="monthly_plan">Monthly Plan</string>
     <string name="dd_mm_yyyy">(DD/MM/YYYY)</string>
     <string name="work_type">WORK TYPE</string>
-    <string name="type">Type.....</string>
     <string name="reject">Reject</string>
     <string name="edit">Edit</string>
-
-
-    <string name="app_name">Sales Jump Procurement Activity</string>
     <string name="type">Type</string>
     <string name="agronomist_form">Agronomist Form</string>
     <string name="select_company">Select Company</string>

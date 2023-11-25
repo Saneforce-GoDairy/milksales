@@ -1,5 +1,7 @@
 package com.saneforce.godairy.procurement;
 
+import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -25,26 +27,29 @@ public class ProcurementHome extends AppCompatActivity {
     private ActivityProcurementHomeBinding binding;
     private Context context = this;
 
-    ArrayList dashboardImage = new ArrayList(Arrays.asList(
-            R.drawable.doctor,
-            R.drawable.ait_form,
-            R.drawable.veterinary,
-            R.drawable.ic_quality,
-            R.drawable.ic_maintanence,
-            R.drawable.ic_agent,
-            R.drawable.ic_collection,
-            R.drawable.ic_procurement));
+//    ArrayList dashboardImage = new ArrayList(Arrays.asList(
+//            R.drawable.doctor,
+//            R.drawable.ait_form,
+//            R.drawable.veterinary,
+//            R.drawable.ic_quality,
+//            R.drawable.ic_maintanence,
+//            R.drawable.ic_agent,
+//            R.drawable.ic_collection,
+//            R.drawable.ic_procurement));
+//
+//    ArrayList dashboardName = new ArrayList(Arrays.asList(
+//            "Agronomist",
+//            "AIT Form",
+//            "Veterinary",
+//            "Quality" ,
+//            "Maintanence-Regular Form",
+//            "Existing Agent Visit" ,
+//            "Collection Center Location" ,
+//            "Procurement Asset"
+//    ));
 
-    ArrayList dashboardName = new ArrayList(Arrays.asList(
-            "Agronomist",
-            "AIT Form",
-            "Veterinary",
-            "Quality" ,
-            "Maintanence-Regular Form",
-            "Existing Agent Visit" ,
-            "Collection Center Location" ,
-            "Procurement Asset"
-    ));
+    ArrayList dashboardImage;
+    ArrayList dashboardName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,24 @@ public class ProcurementHome extends AppCompatActivity {
     }
 
     private void loadHome() {
+
+        String userMode = getIntent().getStringExtra("proc_user");
+
+        if (userMode.equals(INTENT_PROCUREMENT_USER_DOC_MODE)){
+            dashboardImage = new ArrayList(Arrays.asList(
+            R.drawable.doctor,
+            R.drawable.ait_form,
+            R.drawable.veterinary,
+                        R.drawable.ic_agent));
+
+            dashboardName = new ArrayList(Arrays.asList(
+            "Agronomist",
+            "AIT Form",
+            "Veterinary",
+            "Existing Agent Visit"
+    ));
+        }
+
         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setItemViewCacheSize(20);

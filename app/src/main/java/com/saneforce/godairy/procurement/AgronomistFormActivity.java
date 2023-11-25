@@ -2,12 +2,19 @@ package com.saneforce.godairy.procurement;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Base64;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -15,16 +22,26 @@ import android.widget.Toast;
 
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityAgronomistFormBinding;
+import com.saneforce.godairy.procurement.database.DatabaseManager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class AgronomistFormActivity extends AppCompatActivity {
     private ActivityAgronomistFormBinding binding;
     private String mCompanyName, mPlant, mCenterName, mFarmerCodeName, mTypeOfProduct, mTeatTipCup, mTypeOfService, mFodderDev;
-    private String mNoOfFarmersEnrolled, mNoOfFarmersInducted;
+    private String mNoOfFarmersEnrolled, mNoOfFarmersInducted, mFarmersMeetingBase64Image;
     private final Context context = this;
     private File fileFormersMeeting, fileCSRActivity, fileFodderDevAcres;
     private Bitmap bitmapFormersMeeting, bitmapCSRActivity , bitmapFodderDevAcres;
+    private DatabaseManager databaseManager;
+    SharedPreferences UserDetails;
+    public static final String MY_PREFERENCES = "MyPrefs";
+    private Dialog progressDialog;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +49,25 @@ public class AgronomistFormActivity extends AppCompatActivity {
         binding = ActivityAgronomistFormBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        databaseManager = new DatabaseManager(this);
+        databaseManager.open();
+
         initSpinnerArray();
         onClick();
+        initProgressDialog();
+    }
+
+    private void initProgressDialog() {
+        progressDialog = new Dialog(context);
+        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressDialog.setContentView(R.layout.model_dialog_custom_progress);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressDialog.setCancelable(false);
+
+        TextView textView = progressDialog.findViewById(R.id.message1);
+        textView.setEnabled(true);
+        textView.setText("Please wait. form saving");
+        // customProgressDialog.show();
     }
 
     private void onClick() {
@@ -65,7 +99,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
 
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
-                Toast.makeText(AgronomistFormActivity.this, "valid save", Toast.LENGTH_SHORT).show();
                 saveNow();
             }
         });
@@ -268,7 +301,72 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
+        UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+        String mSFCode = "DEMO ID";
+        String mSFName = "DEMO_NAME";
+
+        new Thread(() -> {
+            String mFarmersMeetingBase64Image =  bitmapToBase64_1(bitmapFormersMeeting);
+            String mCSRActivityBase64Image =  bitmapToBase64_2(bitmapCSRActivity);
+            String mFodderDevAcresBase64Image =  bitmapToBase64_3(bitmapFodderDevAcres);
+
+            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+            String mTimeDate  = mDate +" "+mTime;
+
+            databaseManager.saveProcAgronomist(
+                    mSFCode,
+                    mSFName,
+                    mCompanyName,
+                    mPlant,
+                    mCenterName,
+                    mFarmerCodeName,
+                    mTypeOfProduct,
+                    mTeatTipCup,
+                    mTypeOfService,
+                    mFarmersMeetingBase64Image,
+                    mCSRActivityBase64Image,
+                    mFodderDev,
+                    mFodderDevAcresBase64Image,
+                    mNoOfFarmersEnrolled,
+                    mNoOfFarmersInducted,
+                    mTimeDate);
+        }).start();
+        progressDialog.show();
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(context, ProcurementHome.class));
+                finish();
+            }
+        }, 10000);
     }
+
+    private String bitmapToBase64_1(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    private String bitmapToBase64_2(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+
+    private String bitmapToBase64_3(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
 
     @Override
     protected void onResume() {

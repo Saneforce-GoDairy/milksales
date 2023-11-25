@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:src="@drawable/report"></ImageView>
+                    android:src="@drawable/ic_report_new"></ImageView>
 
                 <TextView
                     style="@style/TextStyle"

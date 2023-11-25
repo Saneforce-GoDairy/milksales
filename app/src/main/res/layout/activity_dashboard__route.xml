@@ -515,7 +515,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:padding="@dimen/C2dp"
-                                android:src="@drawable/report"
+                                android:src="@drawable/ic_report_new"
                                 app:tint="@color/colorAccent" />
                         </LinearLayout>
                     </LinearLayout>
