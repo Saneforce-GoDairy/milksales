@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +8,6 @@
     tools:context=".Activity_Hap.AddNewRetailer">
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -25,33 +25,32 @@
                 android:background="@drawable/blue_bg">
 
                 <TextView
-
                     android:id="@+id/headtext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Outlet Info"
+                    android:text="Create Outlet"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
                     android:textSize="17dp"
                     android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/C5dp"
             android:layout_marginBottom="@dimen/C10dp"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             app:cardCornerRadius="@dimen/C5dp">
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="none">
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,7 +63,6 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -73,7 +71,7 @@
                             android:text="@string/head_quater"
                             android:textColor="@android:color/black"
                             android:textSize="16dp"
-                            android:visibility="gone"></TextView>
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:id="@+id/linear_order"
@@ -93,52 +91,6 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-
-                                android:id="@+id/CurrentLocLin"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:visibility="gone">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:text="Current Location Address "
-                                    android:textColor="@android:color/black"
-                                    android:textSize="13dp"></TextView>
-
-                                <ImageView
-                                    android:id="@+id/copypaste"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
-                                    android:src="@drawable/copy_paste" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/CurrentLocationsAddress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/text_bg_grey"
-                                android:gravity="start"
-                                android:hint="address"
-
-                                android:padding="10dp"
-                                android:textSize="13dp" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/C5dp"
@@ -149,7 +101,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="3dp"
                                 android:layout_marginBottom="3dp"
-                                android:text="Franchise"
+                                android:text="Distributor"
                                 android:textColor="@android:color/black"
                                 android:textSize="13dp" />
 
@@ -330,7 +282,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Outlet Type"
+                                    android:text="Outlet Status"
                                     android:textColor="@android:color/black"
                                     android:textSize="13sp" />
 
@@ -355,7 +307,7 @@
                                     android:id="@+id/txOutletType"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Outlet Type"
+                                    android:hint="Select Outlet Status"
                                     android:padding="5dp"
                                     android:textSize="13sp" />
 
@@ -456,7 +408,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -984,14 +937,42 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/text_bg_grey"
                             android:gravity="start"
-                            android:maxLength="10"
                             android:hint="Enter the Phone No"
                             android:inputType="phone"
+                            android:maxLength="10"
                             android:padding="10dp"
                             android:textSize="13sp" />
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/whatsappLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/whatsappTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Whatsapp Number"
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/whatsappNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/text_bg_grey"
+                            android:gravity="start"
+                            android:hint="Enter whatsapp number"
+                            android:inputType="phone"
+                            android:maxLength="10"
+                            android:padding="10dp"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1252,7 +1233,7 @@
                                 android:layout_marginStart="@dimen/C2dp"
                                 android:layout_marginTop="@dimen/C3dp"
                                 android:src="@drawable/mandatory"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -1278,470 +1259,212 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="@dimen/C10dp"
-                                android:src="@drawable/spin_down_arrow"></ImageView>
+                                android:src="@drawable/spin_down_arrow"/>
+
                         </RelativeLayout>
 
-
                         <LinearLayout
-                            android:id="@+id/llCategoryType"
+                            android:id="@+id/outletCategoryLL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="visible">
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/C10dp"
-                                android:orientation="horizontal"
-                                android:visibility="visible">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Category Type"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="13sp" />
-
-                                <ImageView
-                                    android:id="@+id/category_type_mandatory_icon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/C2dp"
-                                    android:layout_marginTop="@dimen/C3dp"
-                                    android:src="@drawable/mandatory" />
-                            </LinearLayout>
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rvCategoryTypes"
+                            <TextView
+                                android:id="@+id/outletCategoryTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:visibility="visible"
-                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
+                                android:text="Outlet Category"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/selectOutletCategory"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/C10dp"
-                                android:orientation="horizontal"
-                                android:visibility="visible">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Freezer/Cooler Required"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="13sp" />
-
-                                <ImageView
-                                    android:id="@+id/ivFreezReqMandatory"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/C2dp"
-                                    android:layout_marginTop="@dimen/C3dp"
-                                    android:src="@drawable/mandatory"
-                                    android:visibility="gone" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/C3dp"
-                                android:visibility="visible">
-
-                                <CheckBox
-                                    android:id="@+id/cbFreezerYes"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"></CheckBox>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:gravity="center_vertical"
-                                    android:paddingRight="@dimen/C3dp"
-                                    android:text="Yes"
-                                    android:textColor="@color/black" />
-
-                                <CheckBox
-                                    android:id="@+id/cbFreezerNo"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingLeft="@dimen/C3dp"></CheckBox>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:gravity="center_vertical"
-                                    android:text="No"
-                                    android:textColor="@color/black" />
-                            </LinearLayout>
+                                android:background="@drawable/text_bg_grey"
+                                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                                android:gravity="start"
+                                android:hint=" --- select ---"
+                                android:padding="10dp"
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/linear_service_type"
+                        <LinearLayout
+                            android:id="@+id/outletSubCategoryLL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/text_bg_grey"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/outletSubCategoryTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Outlet Sub Category"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/selectOutletSubCategory"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/text_bg_grey"
+                                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                                android:gravity="start"
+                                android:hint=" --- select ---"
+                                android:padding="10dp"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/visiCoolerAvailableLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/visiCoolerAvailableTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Visi Cooler Available"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/selectVisiCoolerAvailable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/text_bg_grey"
+                                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                                android:gravity="start"
+                                android:hint=" --- select ---"
+                                android:padding="10dp"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/visiCoolerCompanyLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:orientation="vertical"
-                            android:padding="5dp"
                             android:visibility="gone">
 
                             <TextView
-                                android:id="@+id/txt_service_type"
+                                android:id="@+id/visiCoolerCompanyTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Service Type"
-                                android:padding="5dp"
-                                android:textSize="13dp" />
+                                android:text="Visi Cooler Company"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
 
-                            <ImageView
-                                android:layout_width="@dimen/C10dp"
-                                android:layout_height="@dimen/C10dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="@dimen/C10dp"
-                                android:src="@drawable/spin_down_arrow"></ImageView>
+                            <EditText
+                                android:id="@+id/enterVisiCoolerCompany"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/text_bg_grey"
+                                android:gravity="start"
+                                android:hint="Enter Visi Cooler Company"
+                                android:padding="10dp"
+                                android:textSize="13sp" />
 
-
-                        </RelativeLayout>
-
+                        </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/llFreezer"
+                            android:id="@+id/iceCreamFreezerLL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/iceCreamFreezerTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Ice Cream Freezer"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/selectIceCreamFreezer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/text_bg_grey"
+                                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                                android:gravity="start"
+                                android:hint=" --- select ---"
+                                android:padding="10dp"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/iceCreamFreezerCompanyLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:orientation="vertical"
                             android:visibility="gone">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/iceCreamFreezerCompanyTitle"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/C10dp"
-                                android:orientation="horizontal">
+                                android:text="Ice Cream Freezer Company"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Freezer status"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="13sp" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/C2dp"
-                                    android:layout_marginTop="@dimen/C3dp"
-                                    android:src="@drawable/mandatory"
-                                    android:visibility="gone" />
-
-                            </LinearLayout>
-
-                            <RelativeLayout
-                                android:id="@+id/rlFreezerStatus"
+                            <EditText
+                                android:id="@+id/enterIceCreamFreezerCompany"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/text_bg_grey"
-                                android:orientation="vertical"
-                                android:padding="5dp">
+                                android:gravity="start"
+                                android:hint="Enter Ice Cream Freezer Company"
+                                android:padding="10dp"
+                                android:textSize="13sp" />
 
-                                <TextView
-                                    android:id="@+id/txFreezerStatus"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Freezer/Cooler status"
-                                    android:padding="5dp"
-                                    android:textSize="13sp" />
+                        </LinearLayout>
 
-                                <ImageView
-                                    android:layout_width="@dimen/C10dp"
-                                    android:layout_height="@dimen/C10dp"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="@dimen/C10dp"
-                                    android:src="@drawable/spin_down_arrow"></ImageView>
-                            </RelativeLayout>
+                        <LinearLayout
+                            android:id="@+id/lactalisFreezerRequirementLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:id="@+id/llExpecSalVal"
+                            <TextView
+                                android:id="@+id/lactalisFreezerRequirementTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/C10dp"
-                                android:orientation="vertical"
-                                android:visibility="gone">
+                                android:text="Lactalis Freezer/Chiller Requirement"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
 
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Expected Sales Value"
-                                        android:textColor="@android:color/black"
-                                        android:textSize="13sp" />
-
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/C2dp"
-                                        android:layout_marginTop="@dimen/C3dp"
-                                        android:src="@drawable/mandatory"
-                                        android:visibility="gone" />
-                                </LinearLayout>
-
-                                <EditText
-                                    android:id="@+id/edt_expectSaleVal"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/text_bg_grey"
-                                    android:gravity="start"
-                                    android:hint="Enter Expected Sales Value"
-                                    android:inputType="numberDecimal"
-                                    android:padding="10dp"
-                                    android:textSize="13sp" />
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/C10dp"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Deposit Amount"
-                                        android:textColor="@android:color/black"
-                                        android:textSize="13sp" />
-
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/C2dp"
-                                        android:layout_marginTop="@dimen/C3dp"
-                                        android:src="@drawable/mandatory"
-                                        android:visibility="gone" />
-                                </LinearLayout>
-
-                                <EditText
-                                    android:id="@+id/edt_depositAmt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/text_bg_grey"
-                                    android:gravity="start"
-                                    android:hint="Enter Deposit Amount"
-                                    android:inputType="numberDecimal"
-                                    android:padding="10dp"
-                                    android:textSize="13sp" />
-
-                            </LinearLayout>
-
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:orientation="vertical">
-
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Freezer Make"
-                                        android:textColor="@android:color/black"
-                                        android:textSize="13sp" />
-
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/C2dp"
-                                        android:layout_marginTop="@dimen/C3dp"
-                                        android:src="@drawable/mandatory"
-                                        android:visibility="gone" />
-                                </LinearLayout>
-
-                                <EditText
-                                    android:id="@+id/edt_retailer_freezerMake"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/text_bg_grey"
-                                    android:gravity="start"
-                                    android:hint="Enter the Freezer/Cooler Make"
-                                    android:padding="10dp"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:orientation="vertical">
-
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Freezer/Cooler Tag Number"
-                                        android:textColor="@android:color/black"
-                                        android:textSize="13sp" />
-
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/C2dp"
-                                        android:layout_marginTop="@dimen/C3dp"
-                                        android:src="@drawable/mandatory"
-                                        android:visibility="gone" />
-                                </LinearLayout>
-
-                                <EditText
-                                    android:id="@+id/edt_retailer_freezerTagNo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/text_bg_grey"
-                                    android:gravity="start"
-                                    android:maxLength="13"
-                                    android:hint="Enter the Freezer/Cooler Tag Number"
-                                    android:padding="10dp"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/C10dp"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Freezer/Cooler Capacity (Ltr)"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="13sp" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/C2dp"
-                                    android:layout_marginTop="@dimen/C3dp"
-                                    android:src="@drawable/mandatory"
-                                    android:visibility="gone" />
-
-                            </LinearLayout>
-
-                            <RelativeLayout
-                                android:id="@+id/rlFreezerCapacity"
+                            <TextView
+                                android:id="@+id/selectLactalisFreezerRequirement"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/text_bg_grey"
-                                android:orientation="vertical"
-                                android:padding="5dp">
-
-                                <TextView
-                                    android:id="@+id/txFreezerCapacity"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Freezer/Cooler Capacity"
-                                    android:padding="5dp"
-                                    android:textSize="13sp" />
-
-                                <ImageView
-                                    android:layout_width="@dimen/C10dp"
-                                    android:layout_height="@dimen/C10dp"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="@dimen/C10dp"
-                                    android:src="@drawable/spin_down_arrow"></ImageView>
-                            </RelativeLayout>
-
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/C10dp"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Freezer/Cooler Photo Upload"
-                                        android:textColor="@android:color/black"
-                                        android:textSize="13sp" />
-
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/C2dp"
-                                        android:layout_marginTop="@dimen/C3dp"
-                                        android:src="@drawable/mandatory"
-                                        android:visibility="gone" />
-                                </LinearLayout>
-
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/text_bg_grey"
-                                    android:orientation="horizontal"
-                                    android:padding="@dimen/C5dp">
-
-                                    <ImageView
-                                        android:id="@+id/ivFreezerCapture"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:padding="@dimen/C5dp"
-                                        android:src="@drawable/ic_round_photo_camera_24"></ImageView>
-
-
-                                    <androidx.recyclerview.widget.RecyclerView
-                                        android:id="@+id/rvFreezerFiles"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:orientation="horizontal"
-                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
-                                </LinearLayout>
-
-
-                            </LinearLayout>
-
+                                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                                android:gravity="start"
+                                android:hint=" --- select ---"
+                                android:padding="10dp"
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:orientation="vertical">
-
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -1754,6 +1477,7 @@
                                     android:text="FSSAI Number"
                                     android:textColor="@android:color/black"
                                     android:textSize="13sp" />
+
                             </LinearLayout>
 
                             <EditText
@@ -1765,16 +1489,15 @@
                                 android:hint="Enter the FSSAI Number"
                                 android:padding="10dp"
                                 android:textSize="13sp" />
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:orientation="vertical">
-
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -1787,6 +1510,7 @@
                                     android:text="PAN Number"
                                     android:textColor="@android:color/black"
                                     android:textSize="13sp" />
+
                             </LinearLayout>
 
                             <EditText
@@ -1798,16 +1522,15 @@
                                 android:hint="Enter the PAN Number"
                                 android:padding="10dp"
                                 android:textSize="13sp" />
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="20dp"
                             android:orientation="vertical">
-
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -1820,6 +1543,7 @@
                                     android:text="@string/outstanding_amt"
                                     android:textColor="@android:color/black"
                                     android:textSize="13sp" />
+
                             </LinearLayout>
 
                             <EditText
@@ -1832,63 +1556,17 @@
                                 android:inputType="numberDecimal"
                                 android:padding="10dp"
                                 android:textSize="13sp" />
-                        </LinearLayout>
 
+                        </LinearLayout>
 
                     </LinearLayout>
 
-
                 </LinearLayout>
-            </ScrollView>
 
+            </ScrollView>
 
         </androidx.cardview.widget.CardView>
 
-
-        <!--        <LinearLayout-->
-        <!--            android:visibility="gone"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:layout_weight="0.1"-->
-        <!--            android:orientation="vertical"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent">-->
-
-
-        <!--            <LinearLayout-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:orientation="horizontal">-->
-
-        <!--                <ImageView-->
-        <!--                    android:id="@+id/imag_back"-->
-        <!--                    android:layout_width="40dp"-->
-        <!--                    android:layout_height="40dp"-->
-        <!--                    android:layout_marginLeft="@dimen/C5dp"-->
-        <!--                    android:layout_marginRight="@dimen/C5dp"-->
-        <!--                    android:paddingLeft="@dimen/C8dp"-->
-        <!--                    android:paddingRight="@dimen/C8dp"-->
-        <!--                    android:src="@drawable/back_arrow"-->
-        <!--                    android:visibility="gone"-->
-        <!--                    app:tint="@color/white" />-->
-
-        <!--                <Button-->
-        <!--                    android:id="@+id/submit_button"-->
-        <!--                    style="@style/ButtonStyle"-->
-        <!--                    android:text="Save"-->
-
-        <!--                    android:visibility="visible" />-->
-
-        <!--            </LinearLayout>-->
-        <!--        </LinearLayout>-->
-
-        <!--<Button
-
-            android:id="@+id/submit_button"
-            style="@style/BottomButton"
-            android:text="Save"
-
-            />-->
         <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
             android:id="@+id/submit_button"
             style="@style/BottomButton"
@@ -1900,7 +1578,6 @@
             app:spinning_bar_padding="5dp"
             app:spinning_bar_width="5dp"
             tools:ignore="TouchTargetSizeCheck" />
-
 
         <LinearLayout
             android:id="@+id/llApprovParent"

@@ -223,7 +223,9 @@ public class Nearby_Outlets extends AppCompatActivity implements View.OnClickLis
                     super.onScrollStateChanged(recyclerView, newState);
                     if (!recyclerView.canScrollVertically(1)) {
                         if (common_class.isNetworkAvailable(Nearby_Outlets.this)) {
-                            common_class.ProgressdialogShow(1, "");
+                            try {
+                                common_class.ProgressdialogShow(1, "");
+                            } catch (Exception e) { }
                             getExploreDr(true);
                         } else {
                             Toast.makeText(getApplicationContext(), "Check your Internet Connection", Toast.LENGTH_SHORT).show();
@@ -315,7 +317,9 @@ public class Nearby_Outlets extends AppCompatActivity implements View.OnClickLis
         getCompleteAddressString(location.getLatitude(), location.getLongitude());
         JSONObject jsonObject = new JSONObject();
         try {
-            common_class.ProgressdialogShow(1, "");
+            try {
+                common_class.ProgressdialogShow(1, "");
+            } catch (Exception e) {  }
 
             jsonObject.put("SF", UserDetails.getString("Sfcode", ""));
             jsonObject.put("Div", UserDetails.getString("Divcode", ""));
@@ -328,7 +332,9 @@ public class Nearby_Outlets extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                     try {
-                        common_class.ProgressdialogShow(0, "");
+                        try {
+                            common_class.ProgressdialogShow(0, "");
+                        } catch (Exception e) { }
 
                         jOutlets = response.body();
 
