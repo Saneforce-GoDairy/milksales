@@ -255,4 +255,46 @@
         <item name="android:thumbTint">#1A97CF</item>
     </style>
 
+    <style name="myFormTitle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="myFormEditText" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/text_bg_grey</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+    <style name="myFormDropdown" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/text_bg_grey</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:drawableEnd">@drawable/ic_arrow_drop_down</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="myFormCheckbox" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
 </resources>

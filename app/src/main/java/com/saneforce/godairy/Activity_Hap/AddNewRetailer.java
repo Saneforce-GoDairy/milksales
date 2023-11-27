@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,9 +73,9 @@ import java.util.concurrent.Executors;
 public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallback, Master_Interface, UpdateResponseUI {
     ActivityAddNewRetailerBinding binding;
 
-    String categoryID = "", categoryTITLE = "", subCategoryID = "", subCategoryTITLE = "", outletStatusID = "", outletStatusTITLE = "", visiCoolerAvailableID = "", visiCoolerAvailableTITLE = "", iceCreamFreezerID = "", iceCreamFreezerTITLE = "", lactalisFreezerRequirementID = "", lactalisFreezerRequirementTITLE = "", deliveryTypeID = "", deliveryTypeTITLE = "", stateID = "", stateTITLE = "", shopImageName = "", shopImageFullPath = "", distGrpERP = "", distributorERP = "",  divERP = "", routeId = "", routeName = "", customer_code = "";
+    String categoryID = "", categoryTITLE = "", subCategoryID = "", subCategoryTITLE = "", outletStatusID = "", outletStatusTITLE = "", visiCoolerAvailableID = "", visiCoolerAvailableTITLE = "", iceCreamFreezerID = "", iceCreamFreezerTITLE = "", lactalisFreezerRequirementID = "", lactalisFreezerRequirementTITLE = "", deliveryTypeID = "", deliveryTypeTITLE = "", stateID = "", stateTITLE = "", shopImageName = "", shopImageFullPath = "", distGrpERP = "", distributorERP = "", divERP = "", routeId = "", routeName = "", customer_code = "", visiCoolerCompanyID = "", visiCoolerCompanyTITLE = "";
     double lat = 0, lng = 0;
-    JSONArray fieldDetailsArray, outletTypeArray, categoryListArray, subCategoryListArray, filteredSubCategoryListArray, yesNoArray, deliveryTypeArray, stateListArray;
+    JSONArray fieldDetailsArray, outletTypeArray, categoryListArray, subCategoryListArray, filteredSubCategoryListArray, yesNoArray, visiCoolerCompanyArray, deliveryTypeArray, stateListArray;
 
     UniversalDropDownAdapter adapter;
 
@@ -97,6 +98,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         subCategoryListArray = new JSONArray();
         filteredSubCategoryListArray = new JSONArray();
         yesNoArray = new JSONArray();
+        visiCoolerCompanyArray = new JSONArray();
         deliveryTypeArray = new JSONArray();
         stateListArray = new JSONArray();
 
@@ -132,15 +134,13 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                 Toast.makeText(context, "Please capture shop photo", Toast.LENGTH_SHORT).show();
             }
         });
-        binding.rlDistributor.setOnClickListener(v -> {
+        binding.selectDistributor.setOnClickListener(v -> {
             common_class.showCommonDialog(common_class.getDistList(), 2, this);
         });
-        binding.rlRoute.setOnClickListener(v -> {
-            if (FRoute_Master != null && FRoute_Master.size() > 1) {
-                common_class.showCommonDialog(FRoute_Master, 3, this);
-            }
+        binding.selectRoute.setOnClickListener(v -> {
+            common_class.showCommonDialog(FRoute_Master, 3, this);
         });
-        binding.btnDistEnter.setOnClickListener(v -> {
+        binding.validateDistributorCode.setOnClickListener(v -> {
             if (Shared_Common_Pref.Outler_AddFlag != null && !Shared_Common_Pref.Outler_AddFlag.equals("1")) {
                 AlertDialogBox.showDialog(com.saneforce.godairy.Activity_Hap.AddNewRetailer.this, HAPApp.Title, "Are You Sure Want to Update the Franchise Code?", "OK", "Cancel", false, new AlertBox() {
                     @Override
@@ -157,23 +157,26 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                 checkValidity();
             }
         });
+
         binding.cbFranchise.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
-                    binding.llFranchiseCode.setVisibility(View.VISIBLE);
+                    binding.distributorCodeLL.setVisibility(View.VISIBLE);
                 else
-                    binding.llFranchiseCode.setVisibility(View.GONE);
+                    binding.distributorCodeLL.setVisibility(View.GONE);
             }
         });
+
         binding.selectOutletCategory.setOnClickListener(v -> ShowDropdown("Select Outlet Category", categoryListArray));
         binding.selectOutletSubCategory.setOnClickListener(v -> ShowDropdown("Select Outlet Sub Category", filteredSubCategoryListArray));
-        binding.txOutletType.setOnClickListener(v -> ShowDropdown("Select Outlet Status", outletTypeArray));
+        binding.selectOutletStatus.setOnClickListener(v -> ShowDropdown("Select Outlet Status", outletTypeArray));
         binding.selectVisiCoolerAvailable.setOnClickListener(v -> ShowDropdown("Visi Cooler Available", yesNoArray));
-        binding.selectIceCreamFreezer.setOnClickListener(v -> ShowDropdown("Ice Cream Freezer Available", yesNoArray));
+        binding.selectVisiCoolerCompany.setOnClickListener(v -> ShowDropdown("Select Visi Cooler Company", visiCoolerCompanyArray));
+        binding.selectIceCreamFreezerAvailable.setOnClickListener(v -> ShowDropdown("Ice Cream Freezer Available", yesNoArray));
         binding.selectLactalisFreezerRequirement.setOnClickListener(v -> ShowDropdown("Select Lactalis Freezer Requirement", yesNoArray));
-        binding.rlDelvryType.setOnClickListener(v -> ShowDropdown("Select Delivery Type", deliveryTypeArray)); // txDelvryType
-        binding.rlState.setOnClickListener(v -> ShowDropdown("Select State", stateListArray)); // tvState
+        binding.selectDeliveryType.setOnClickListener(v -> ShowDropdown("Select Delivery Type", deliveryTypeArray)); // txDelvryType
+        binding.selectState.setOnClickListener(v -> ShowDropdown("Select State", stateListArray)); // tvState
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.route_map);
         if (mapFragment != null) {
@@ -211,9 +214,9 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                 strReturnedAddress.append(address.getAddressLine(i)).append("\n");
             }
-            binding.edtNewAddress.setText(strReturnedAddress.toString());
-            binding.edtNewCity.setText(address.getLocality());
-            binding.edtPinCode.setText(address.getPostalCode());
+            binding.enterAddress.setText(strReturnedAddress.toString().trim());
+            binding.enterLocation.setText(address.getLocality());
+            binding.enterPincode.setText(address.getPostalCode());
 
             centreMapOnLocation("Your Location");
         } catch (Exception e) {
@@ -287,7 +290,13 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                     try {
                         outletStatusID = arrayList.getJSONObject(position).getString("id");
                         outletStatusTITLE = arrayList.getJSONObject(position).getString("title");
-                        binding.txOutletType.setText(outletStatusTITLE);
+                        binding.selectOutletStatus.setText(outletStatusTITLE);
+                        if (outletStatusID.equals("3")) {
+                            binding.reasonForClosedLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.reasonForClosedLL.setVisibility(View.GONE);
+                            binding.enterReasonForClosed.setText("");
+                        }
                     } catch (JSONException ignored) {
                     }
                     break;
@@ -300,7 +309,18 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                             binding.visiCoolerCompanyLL.setVisibility(View.VISIBLE);
                         } else {
                             binding.visiCoolerCompanyLL.setVisibility(View.GONE);
+                            visiCoolerCompanyID = "";
+                            visiCoolerCompanyTITLE = "";
+                            binding.selectVisiCoolerCompany.setText(visiCoolerCompanyTITLE);
                         }
+                    } catch (JSONException ignored) {
+                    }
+                    break;
+                case "Select Visi Cooler Company":
+                    try {
+                        visiCoolerCompanyID = arrayList.getJSONObject(position).getString("id");
+                        visiCoolerCompanyTITLE = arrayList.getJSONObject(position).getString("title");
+                        binding.selectVisiCoolerCompany.setText(visiCoolerCompanyTITLE);
                     } catch (JSONException ignored) {
                     }
                     break;
@@ -308,11 +328,12 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                     try {
                         iceCreamFreezerID = arrayList.getJSONObject(position).getString("id");
                         iceCreamFreezerTITLE = arrayList.getJSONObject(position).getString("title");
-                        binding.selectIceCreamFreezer.setText(iceCreamFreezerTITLE);
+                        binding.selectIceCreamFreezerAvailable.setText(iceCreamFreezerTITLE);
                         if (iceCreamFreezerID.equals("1")) {
                             binding.iceCreamFreezerCompanyLL.setVisibility(View.VISIBLE);
                         } else {
                             binding.iceCreamFreezerCompanyLL.setVisibility(View.GONE);
+                            binding.enterIceCreamFreezerCompany.setText("");
                         }
                     } catch (JSONException ignored) {
                     }
@@ -329,7 +350,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                     try {
                         deliveryTypeID = arrayList.getJSONObject(position).getString("id");
                         deliveryTypeTITLE = arrayList.getJSONObject(position).getString("title");
-                        binding.txDelvryType.setText(deliveryTypeTITLE);
+                        binding.selectDeliveryType.setText(deliveryTypeTITLE);
                     } catch (JSONException ignored) {
                     }
                     break;
@@ -337,7 +358,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                     try {
                         stateID = arrayList.getJSONObject(position).getString("id");
                         stateTITLE = arrayList.getJSONObject(position).getString("title");
-                        binding.tvState.setText(stateTITLE);
+                        binding.selectState.setText(stateTITLE);
                     } catch (JSONException ignored) {
                     }
                     break;
@@ -366,7 +387,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             binding.btnRefLoc.stopAnimation();
             binding.btnRefLoc.revertAnimation();
             binding.btnRefLoc.setBackgroundResource((R.drawable.button_blueg));
-        } catch (Resources.NotFoundException ignored) { }
+        } catch (Resources.NotFoundException ignored) {
+        }
     }
 
     private void getDropdowns() {
@@ -383,6 +405,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         subCategoryListArray = jsonObject.getJSONArray("subCategoryList");
                         deliveryTypeArray = jsonObject.getJSONArray("deliveryType");
                         stateListArray = jsonObject.getJSONArray("stateList");
+                        visiCoolerCompanyArray = jsonObject.getJSONArray("visiCoolerCompany");
 
                         JSONObject object;
                         object = new JSONObject();
@@ -394,13 +417,287 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         object.put("title", "No");
                         yesNoArray.put(object);
 
-                    } catch (Exception ignored) { }
+                        runOnUiThread(() -> prepareViews());
+
+                    } catch (Exception ignored) {
+                    }
                 });
             }
 
             @Override
-            public void onFailure(String error) { }
+            public void onFailure(String error) {
+            }
         });
+    }
+
+    private void prepareViews() {
+        for (int i = 0; i < fieldDetailsArray.length(); i++) {
+            try {
+                JSONObject object = fieldDetailsArray.getJSONObject(i);
+                String title = object.optString("title");
+                String sName = object.optString("sName");
+                String visibility = object.optString("visibility");
+                String mandatory = object.optString("mandatory");
+                switch (sName) {
+                    case "category":
+                        if (visibility.equals("0")) {
+                            binding.outletCategoryLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.outletCategoryTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.outletCategoryTitle.setText(title);
+                        }
+                        break;
+                    case "deliveryType":
+                        if (visibility.equals("0")) {
+                            binding.deliveryTypeLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.deliveryTypeTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.deliveryTypeTitle.setText(title);
+                        }
+                        break;
+                    case "district":
+                        if (visibility.equals("0")) {
+                            binding.districtLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.districtTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.districtTitle.setText(title);
+                        }
+                        break;
+                    case "email":
+                        if (visibility.equals("0")) {
+                            binding.emailLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.emailTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.emailTitle.setText(title);
+                        }
+                        break;
+                    case "fssai":
+                        if (visibility.equals("0")) {
+                            binding.fssaiNumberLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.fssaiNumberTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.fssaiNumberTitle.setText(title);
+                        }
+                        break;
+                    case "gst":
+                        if (visibility.equals("0")) {
+                            binding.gstLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.gstTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.gstTitle.setText(title);
+                        }
+                        break;
+                    case "iceCreamAvail":
+                        if (visibility.equals("0")) {
+                            binding.iceCreamFreezerAvailableLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.iceCreamFreezerAvailableTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.iceCreamFreezerAvailableTitle.setText(title);
+                        }
+                        break;
+                    case "iceCreamComp":
+                        if (visibility.equals("0")) {
+                            binding.iceCreamFreezerCompanyLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.iceCreamFreezerCompanyTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.iceCreamFreezerCompanyTitle.setText(title);
+                        }
+                        break;
+                    case "lacFreezReq":
+                        if (visibility.equals("0")) {
+                            binding.lactalisFreezerRequirementLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.lactalisFreezerRequirementTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.lactalisFreezerRequirementTitle.setText(title);
+                        }
+                        break;
+                    case "location":
+                        if (visibility.equals("0")) {
+                            binding.locationLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.locationTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.locationTitle.setText(title);
+                        }
+                        break;
+                    case "mobile":
+                        if (visibility.equals("0")) {
+                            binding.mobileNumberLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.mobileNumberTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.mobileNumberTitle.setText(title);
+                        }
+                        break;
+                    case "outletName":
+                        if (visibility.equals("0")) {
+                            binding.outletNameLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.outletNameTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.outletNameTitle.setText(title);
+                        }
+                        break;
+                    case "outletType":
+                        if (visibility.equals("0")) {
+                            binding.outletStatusLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.outletStatusTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.outletStatusTitle.setText(title);
+                        }
+                        break;
+                    case "outstandingAmount":
+                        if (visibility.equals("0")) {
+                            binding.outstandingAmountLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.outstandingAmountTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.outstandingAmountTitle.setText(title);
+                        }
+                        break;
+                    case "pan":
+                        if (visibility.equals("0")) {
+                            binding.panNumberLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.panNumberTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.panNumberTitle.setText(title);
+                        }
+                        break;
+                    case "pincode":
+                        if (visibility.equals("0")) {
+                            binding.pincodeLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.pincodeTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.pincodeTitle.setText(title);
+                        }
+                        break;
+                    case "state":
+                        if (visibility.equals("0")) {
+                            binding.stateLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.stateTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.stateTitle.setText(title);
+                        }
+                        break;
+                    case "subCategory":
+                        if (visibility.equals("0")) {
+                            binding.outletSubCategoryLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.outletSubCategoryTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.outletSubCategoryTitle.setText(title);
+                        }
+                        break;
+                    case "visiCoolAvail":
+                        if (visibility.equals("0")) {
+                            binding.visiCoolerAvailableLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.visiCoolerAvailableTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.visiCoolerAvailableTitle.setText(title);
+                        }
+                        break;
+                    case "visiCoolComp":
+                        if (visibility.equals("0")) {
+                            binding.visiCoolerCompanyLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.visiCoolerCompanyTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.visiCoolerCompanyTitle.setText(title);
+                        }
+                        break;
+                    case "whatsapp":
+                        if (visibility.equals("0")) {
+                            binding.whatsappNumberLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.whatsappNumberTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.whatsappNumberTitle.setText(title);
+                        }
+                        break;
+                    case "outletAddress":
+                        if (visibility.equals("0")) {
+                            binding.addressLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.addressTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.addressTitle.setText(title);
+                        }
+                        break;
+                    case "ownerName":
+                        if (visibility.equals("0")) {
+                            binding.ownerNameLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.ownerNameTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.ownerNameTitle.setText(title);
+                        }
+                        break;
+                    case "route":
+                        if (visibility.equals("0")) {
+                            binding.routeLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.routeTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.routeTitle.setText(title);
+                        }
+                        break;
+                    case "secMobile":
+                        if (visibility.equals("0")) {
+                            binding.secMobileNumberLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory.equals("1")) {
+                            binding.secMobileNumberTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.secMobileNumberTitle.setText(title);
+                        }
+                        break;
+                    case "outletPhoto":
+                        if (visibility.equals("0")) {
+                            binding.photoLL.setVisibility(View.GONE);
+                        }
+                        break;
+                }
+
+            } catch (JSONException ignored) { }
+        }
     }
 
     @Override
@@ -408,11 +705,11 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         common_class.dismissCommonDialog(type);
         switch (type) {
             case 2:
-                binding.retailerType.setText("");
+                binding.enterOwnerName.setText("");
                 routeId = "";
                 routeName = "";
                 distGrpERP = myDataset.get(position).getCusSubGrpErp();
-                binding.distributorText.setText(myDataset.get(position).getName());
+                binding.selectDistributor.setText(myDataset.get(position).getName());
                 findViewById(R.id.rl_route).setVisibility(View.VISIBLE);
                 shared_common_pref.save(Constants.TEMP_DISTRIBUTOR_ID, myDataset.get(position).getId());
                 divERP = myDataset.get(position).getDivERP();
@@ -422,17 +719,17 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             case 3:
                 routeId = myDataset.get(position).getId();
                 routeName = myDataset.get(position).getName();
-                binding.retailerType.setText(myDataset.get(position).getName());
+                binding.enterOwnerName.setText(myDataset.get(position).getName());
                 break;
         }
     }
 
     private void checkValidity() {
-        if (Common_Class.isNullOrEmpty(binding.edtDistCode.getText().toString()))
-            common_class.showMsg(this, "Enter Customer Code");
+        if (Common_Class.isNullOrEmpty(binding.enterDistributorCode.getText().toString()))
+            common_class.showMsg(this, "Enter Distributor Code");
         else {
             JsonObject data = new JsonObject();
-            data.addProperty("customer_code", binding.edtDistCode.getText().toString().trim());
+            data.addProperty("customer_code", binding.enterDistributorCode.getText().toString().trim());
             data.addProperty("ERP_Code", distributorERP);
             common_class.getDb_310Data(Constants.CUSTOMER_DATA, this, data);
         }
@@ -443,12 +740,12 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             Toast.makeText(this, "Select Franchise", Toast.LENGTH_SHORT).show();
         }
         if (FRoute_Master.size() == 1) {
-            binding.ivRouteSpinner.setVisibility(View.INVISIBLE);
+//            binding.ivRouteSpinner.setVisibility(View.INVISIBLE);
             routeId = FRoute_Master.get(0).getId();
             routeName = FRoute_Master.get(0).getName();
-            binding.retailerType.setText(routeName);
+            binding.selectRoute.setText(routeName);
         } else {
-            binding.ivRouteSpinner.setVisibility(View.VISIBLE);
+//            binding.ivRouteSpinner.setVisibility(View.VISIBLE);
         }
     }
 
@@ -476,20 +773,21 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         if (cusObj.getBoolean("success")) {
                             JSONArray arr = cusObj.getJSONArray("Data");
                             JSONObject obj = arr.getJSONObject(0);
-                            binding.edtRetailerFssai.setText("" + obj.getString("Fssai_No"));
-                            binding.edtNewPhone.setText("" + obj.getString("Mobile"));
-                            binding.edtNewName.setText("" + obj.getString("Name"));
-                            binding.edtNewAddress.setText(obj.getString("Address"));
-                            binding.edtGst.setText("" + obj.getString("gstn"));
-                            binding.btnDistEnter.setText("Valid Code");
-                            customer_code = binding.edtDistCode.getText().toString();
+                            binding.enterFSSAINumber.setText("" + obj.getString("Fssai_No"));
+                            binding.enterMobileNumber.setText("" + obj.getString("Mobile"));
+                            binding.enterOutletName.setText("" + obj.getString("Name"));
+                            binding.enterAddress.setText(obj.getString("Address"));
+                            binding.enterGST.setText("" + obj.getString("gstn"));
+                            binding.validateDistributorCode.setText("Valid Code");
+                            customer_code = binding.enterDistributorCode.getText().toString();
                         } else {
-                            binding.btnDistEnter.setText("Invalid Code");
+                            binding.validateDistributorCode.setText("Invalid Code");
                             common_class.showMsg(this, cusObj.getString("Msg"));
                         }
                         break;
                 }
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
     }
 }

@@ -63,7 +63,7 @@ public class UniversalDropDownAdapter extends RecyclerView.Adapter<UniversalDrop
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                String query = constraint.toString().toLowerCase();
+                String query = constraint.toString().toLowerCase().trim();
                 JSONArray tempArray = new JSONArray();
                 for (int i = 0; i < array.length(); i++) {
                     try {
