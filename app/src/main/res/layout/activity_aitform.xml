@@ -251,6 +251,19 @@
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
                 android:paddingStart="10dp" />
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_blue"
+                android:textColor="@color/white"
+                android:fontFamily="@font/ubuntu"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
     </ScrollView>
 

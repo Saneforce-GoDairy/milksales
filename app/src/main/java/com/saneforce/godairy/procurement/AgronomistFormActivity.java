@@ -1,5 +1,7 @@
 package com.saneforce.godairy.procurement;
 
+import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -339,7 +341,10 @@ public class AgronomistFormActivity extends AppCompatActivity {
             public void run() {
                 progressDialog.dismiss();
                 Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(context, ProcurementHome.class));
+                //startActivity(new Intent(context, ProcurementHome.class));
+                Intent intent = new Intent(context, ProcurementHome.class);
+                intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
+                startActivity(intent);
                 finish();
             }
         }, 10000);

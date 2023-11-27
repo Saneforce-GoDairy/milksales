@@ -62,23 +62,43 @@ public class ProcurementHome extends AppCompatActivity {
     }
 
     private void loadHome() {
-
-        String userMode = getIntent().getStringExtra("proc_user");
-
-        if (userMode.equals(INTENT_PROCUREMENT_USER_DOC_MODE)){
-            dashboardImage = new ArrayList(Arrays.asList(
+            ArrayList dashboardImage = new ArrayList(Arrays.asList(
             R.drawable.doctor,
             R.drawable.ait_form,
             R.drawable.veterinary,
-                        R.drawable.ic_agent));
+            R.drawable.ic_quality,
+            R.drawable.ic_maintanence,
+            R.drawable.ic_agent,
+            R.drawable.ic_collection,
+            R.drawable.ic_procurement));
 
-            dashboardName = new ArrayList(Arrays.asList(
+    ArrayList dashboardName = new ArrayList(Arrays.asList(
             "Agronomist",
             "AIT Form",
             "Veterinary",
-            "Existing Agent Visit"
+            "Quality" ,
+            "Maintanence-Regular Form",
+            "Existing Agent Visit" ,
+            "Collection Center Location" ,
+            "Procurement Asset"
     ));
-        }
+
+//        String userMode = getIntent().getStringExtra("proc_user");
+//
+//        if (userMode.equals(INTENT_PROCUREMENT_USER_DOC_MODE)){
+//            dashboardImage = new ArrayList(Arrays.asList(
+//            R.drawable.doctor,
+//            R.drawable.ait_form,
+//            R.drawable.veterinary,
+//                        R.drawable.ic_agent));
+//
+//            dashboardName = new ArrayList(Arrays.asList(
+//            "Agronomist",
+//            "AIT Form",
+//            "Veterinary",
+//            "Existing Agent Visit"
+//    ));
+//        }
 
         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         binding.recyclerView.setHasFixedSize(true);
