@@ -2,6 +2,7 @@ package com.saneforce.godairy.Activity_Hap;
 
 import static android.widget.Toast.LENGTH_LONG;
 
+import static com.saneforce.godairy.common.AppConstants.INTENT_MODE_SFA;
 import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_MODE;
 import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
 
@@ -847,6 +848,7 @@ public class Login extends AppCompatActivity {
                         finish();
                     } else {
                         intent = new Intent(context, Dashboard.class);
+                        intent.putExtra("Mode", INTENT_MODE_SFA);
                         finish();
                     }
                 } else {

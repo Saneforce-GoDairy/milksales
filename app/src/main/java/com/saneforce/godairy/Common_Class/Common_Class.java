@@ -72,6 +72,7 @@ import com.saneforce.godairy.SFA_Activity.HistoryInfoActivity;
 import com.saneforce.godairy.SFA_Activity.Invoice_History;
 //import com.hap.checkinproc.SFA_Activity.POSViewEntryActivity;
 import com.saneforce.godairy.SFA_Activity.PosHistoryActivity;
+import com.saneforce.godairy.SFA_Activity.PrimaryOrderActivity;
 import com.saneforce.godairy.SFA_Activity.ProjectionHistoryActivity;
 import com.saneforce.godairy.SFA_Activity.TodayPrimOrdActivity;
 import com.saneforce.godairy.SFA_Activity.VanStockViewActivity;
@@ -1543,8 +1544,7 @@ public class Common_Class {
     }
 
     public List<Common_Model> getDistList() {
-        try {
-            List<Common_Model> distributor_master = new ArrayList<>();
+        try {  List<Common_Model> distributor_master = new ArrayList<>();
             Common_Model Model_Pojo;
             JSONArray jsonArray = new JSONArray(shared_common_pref.getvalue(Constants.Distributor_List));
             Log.v("distList:", jsonArray.toString());
@@ -1561,6 +1561,7 @@ public class Common_Class {
                 String DisFssai = jsonObject1.optString("FSSAI");
                 Model_Pojo = new Common_Model(name, id, flag, Add2, Mob, ERP_Code, DivERP,DisGst,DisFssai, jsonObject1.optString("Latlong"), jsonObject1.getString("CusSubGrpErp"));
                 distributor_master.add(Model_Pojo);
+
 
             }
             return distributor_master;
