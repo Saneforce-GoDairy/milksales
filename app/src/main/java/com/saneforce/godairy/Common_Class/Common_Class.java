@@ -1927,7 +1927,14 @@ public class Common_Class {
         } catch (Exception ignored) { }
     }
 
-    public static void makeApiCall(Map<String, String> params, String data, APIResult listener) {
+    public static void makeApiCall(Context context, Map<String, String> params, String data, APIResult listener) {
+        SharedPreferences UserDetails  = ((Activity) context).getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref(context);
+
+        params.put("stk", sharedCommonPref.getvalue(Constants.Distributor_Id));
+        params.put("sf", UserDetails.getString("Sfcode", ""));
+        params.put("div", UserDetails.getString("Divcode", ""));
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
         call.enqueue(new Callback<>() {

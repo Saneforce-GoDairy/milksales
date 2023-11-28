@@ -106,7 +106,7 @@
     <string name="outstanding_amt">Outstanding Amount</string>
     <string name="retailer_outstand_hint">Enter the Outstanding Amount</string>
     <string name="select_state">Select the State</string>
-    <string name="select_distributor">Select the Franchise</string>
+    <string name="select_distributor">Select the Distributor</string>
     <string name="select_route">Select the Route</string>
 
     <string name="projection_history">History &amp; Status </string>

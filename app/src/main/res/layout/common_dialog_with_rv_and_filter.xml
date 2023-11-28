@@ -31,7 +31,7 @@
         android:singleLine="true"
         android:inputType="text|textCapWords"
         android:background="@drawable/pjp_borderbg"
-        android:layout_margin="@dimen/C8dp"/>
+        android:layout_margin="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

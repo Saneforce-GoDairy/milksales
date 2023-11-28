@@ -177,7 +177,7 @@ public class WeekOff_Status_Activity extends AppCompatActivity {
         params.put("sfCode", Shared_Common_Pref.Sf_Code);
         params.put("tvStartDate", tvStartDate.getText().toString().trim());
         params.put("tvEndDate", tvEndDate.getText().toString().trim());
-        Common_Class.makeApiCall(params, "", new APIResult() {
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {

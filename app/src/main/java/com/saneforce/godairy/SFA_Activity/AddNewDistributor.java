@@ -665,10 +665,10 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             title.setText("Select State");
             AlertDialog dialog = builder.create();
             UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, stateArray);
-            adapter.setOnItemClick(position -> {
+            adapter.setOnItemClick((position, arrayList) -> {
                 try {
-                    select_state.setText(stateArray.getJSONObject(position).getString("title"));
-                    stateCodeStr = stateArray.getJSONObject(position).getString("id");
+                    select_state.setText(arrayList.getJSONObject(position).getString("title"));
+                    stateCodeStr = arrayList.getJSONObject(position).getString("id");
                     MyProgressDialog.dismiss();
                     dialog.dismiss();
                 } catch (JSONException e) {
@@ -827,11 +827,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AlertDialog dialog = builder.create();
             recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
             UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, filteredSubChannel);
-            adapter.setOnItemClick(position -> {
+            adapter.setOnItemClick((position, arrayList) -> {
                 try {
-                    subChannelIDStr = filteredSubChannel.getJSONObject(position).getString("id");
-                    subChannelNameStr = filteredSubChannel.getJSONObject(position).getString("title");
-                    select_sub_channel.setText(filteredSubChannel.getJSONObject(position).getString("title"));
+                    subChannelIDStr = arrayList.getJSONObject(position).getString("id");
+                    subChannelNameStr = arrayList.getJSONObject(position).getString("title");
+                    select_sub_channel.setText(arrayList.getJSONObject(position).getString("title"));
                     dialog.dismiss();
                 } catch (JSONException ignored) {
                 }
@@ -852,11 +852,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AlertDialog dialog = builder.create();
             recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
             UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, MasReportingVertArray);
-            adapter.setOnItemClick(position -> {
+            adapter.setOnItemClick((position, arrayList) -> {
                 try {
-                    ReportingVerticalsID = MasReportingVertArray.getJSONObject(position).getString("id");
-                    ReportingVerticalsStr = MasReportingVertArray.getJSONObject(position).getString("title");
-                    selectReportingVerticals.setText(MasReportingVertArray.getJSONObject(position).getString("title"));
+                    ReportingVerticalsID = arrayList.getJSONObject(position).getString("id");
+                    ReportingVerticalsStr = arrayList.getJSONObject(position).getString("title");
+                    selectReportingVerticals.setText(arrayList.getJSONObject(position).getString("title"));
                     dialog.dismiss();
                 } catch (JSONException ignored) {
                 }
@@ -883,9 +883,9 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AlertDialog dialog = builder.create();
             recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
             UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, uidTypeArray);
-            adapter.setOnItemClick(position -> {
+            adapter.setOnItemClick((position, arrayList) -> {
                 try {
-                    UIDType = uidTypeArray.getJSONObject(position).getString("title");
+                    UIDType = arrayList.getJSONObject(position).getString("title");
                     uidType.setText(UIDType);
                     if (!UIDType.equals("Aadhaar")) {
                         binding.aadhaarLL.setVisibility(View.GONE);
@@ -930,11 +930,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AlertDialog dialog = builder.create();
             recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
             UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, purchaseTypeArray);
-            adapter.setOnItemClick(position -> {
+            adapter.setOnItemClick((position, arrayList) -> {
                 try {
-                    purchaseTypeID = purchaseTypeArray.getJSONObject(position).getString("id");
-                    purchaseTypeName = purchaseTypeArray.getJSONObject(position).getString("title");
-                    purchaseType.setText(purchaseTypeArray.getJSONObject(position).getString("title"));
+                    purchaseTypeID = arrayList.getJSONObject(position).getString("id");
+                    purchaseTypeName = arrayList.getJSONObject(position).getString("title");
+                    purchaseType.setText(arrayList.getJSONObject(position).getString("title"));
                     dialog.dismiss();
                 } catch (JSONException ignored) {
                 }
@@ -1112,7 +1112,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         Map<String, String> params = new HashMap<>();
         params.put("axn", "get_stockist_info");
         params.put("stockistCode", stockistCode);
-        Common_Class.makeApiCall(params, "", new APIResult() {
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
