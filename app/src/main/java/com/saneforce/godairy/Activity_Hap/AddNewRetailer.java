@@ -68,7 +68,7 @@ import java.util.concurrent.Executors;
 public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallback, Master_Interface, UpdateResponseUI {
     ActivityAddNewRetailerBinding binding;
 
-    String categoryID = "", categoryTITLE = "", subCategoryID = "", subCategoryTITLE = "", outletStatusID = "", outletStatusTITLE = "", deliveryTypeID = "", deliveryTypeTITLE = "", stateID = "", stateTITLE = "", shopImageName = "", shopImageFullPath = "", distGrpERP = "", distributorERP = "", divERP = "", customer_code = "", visiCoolerCompanyID = "", visiCoolerCompanyTITLE = "", routeID = "", routeTITLE = "", distributorID = "", distributorTITLE = "", uniqueKey = "";
+    String categoryID = "", categoryTITLE = "", subCategoryID = "", subCategoryTITLE = "", outletStatusID = "", outletStatusTITLE = "", deliveryTypeID = "", deliveryTypeTITLE = "", stateID = "", stateTITLE = "", shopImageName = "", shopImageFullPath = "", distGrpERP = "", distributorERP = "", divERP = "", customer_code = "", visiCoolerCompanyID = "", visiCoolerCompanyTITLE = "", routeID = "", routeTITLE = "", distributorID = "", distributorTITLE = "", uniqueKey = "", outletCode = "", flag = "";
     double lat = 0, lng = 0;
     JSONArray fieldDetailsArray, outletTypeArray, categoryListArray, subCategoryListArray, filteredSubCategoryListArray, visiCoolerCompanyArray, deliveryTypeArray, stateListArray, routeListArray;
 
@@ -101,7 +101,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         distGrpERP = shared_common_pref.getvalue(Constants.CusSubGrpErp);
         distributorERP = shared_common_pref.getvalue(Constants.DistributorERP);
         divERP = shared_common_pref.getvalue(Constants.DivERP);
-        userDetails  = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        userDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
 
         binding.btnRefLoc.setOnClickListener(v -> {
             binding.btnRefLoc.startAnimation();
@@ -134,7 +134,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
 
         binding.validateDistributorCode.setOnClickListener(v -> {
             if (Shared_Common_Pref.Outler_AddFlag != null && !Shared_Common_Pref.Outler_AddFlag.equals("1")) {
-                AlertDialogBox.showDialog(com.saneforce.godairy.Activity_Hap.AddNewRetailer.this, HAPApp.Title, "Are You Sure Want to Update the Franchise Code?", "OK", "Cancel", false, new AlertBox() {
+                AlertDialogBox.showDialog(context, HAPApp.Title, "Are You Sure Want to Update the Franchise Code?", "OK", "Cancel", false, new AlertBox() {
                     @Override
                     public void PositiveMethod(DialogInterface dialog, int id) {
                         checkValidity();
@@ -221,8 +221,162 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
 
         uniqueKey = Common_Class.GetEkey();
 
-        setLocation();
+        if (getIntent().hasExtra("outletCode")) {
+            outletCode = getIntent().getStringExtra("outletCode");
+            flag = getIntent().getStringExtra("flag"); // 1 - View, 2 - Edit
+            if (flag.equals("1")) {
+                makeEditable(false);
+                binding.headtext.setText("Outlet Info");
+            } else if (flag.equals("2")) {
+                binding.headtext.setText("Edit Outlet");
+                binding.approveParentLL.setVisibility(View.VISIBLE);
+                makeEditable(true);
+
+            }
+            getOutletInfo();
+        } else {
+            binding.submitButton.setVisibility(View.VISIBLE);
+            setLocation();
+        }
+
         getDropdowns();
+    }
+
+    private void makeEditable(boolean b) {
+        binding.enterOutletName.setEnabled(b);
+        binding.enterOwnerName.setEnabled(b);
+        binding.enterAddress.setEnabled(b);
+        binding.enterLocation.setEnabled(b);
+        binding.enterDistrict.setEnabled(b);
+        binding.enterGST.setEnabled(b);
+        binding.enterMobileNumber.setEnabled(b);
+        binding.enterSecMobileNumber.setEnabled(b);
+        binding.enterEmail.setEnabled(b);
+        binding.enterFSSAINumber.setEnabled(b);
+        binding.enterPANNumber.setEnabled(b);
+        binding.enterOutstandingAmount.setEnabled(b);
+        binding.enterPincode.setEnabled(b);
+        binding.enterReasonForClosed.setEnabled(b);
+        binding.enterWhatsappNumber.setEnabled(b);
+        binding.enterIceCreamFreezerCompany.setEnabled(b);
+        binding.switchVisiCoolerAvailable.setEnabled(b);
+        binding.switchIceCreamFreezerAvailable.setEnabled(b);
+        binding.switchLactalisFreezerRequirement.setEnabled(b);
+        binding.selectDistributor.setEnabled(b);
+        binding.selectOutletStatus.setEnabled(b);
+        binding.selectRoute.setEnabled(b);
+        binding.selectState.setEnabled(b);
+        binding.selectDeliveryType.setEnabled(b);
+        binding.selectOutletCategory.setEnabled(b);
+        binding.selectOutletSubCategory.setEnabled(b);
+        binding.selectVisiCoolerCompany.setEnabled(b);
+        binding.ivShopPhoto.setEnabled(b);
+        binding.btnRefLoc.setEnabled(b);
+    }
+
+    private void getOutletInfo() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_outlet_info");
+        params.put("outletCode", outletCode);
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                AssignOutletDetails(jsonObject);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                MyAlertDialog.show(context, "", error, false, "Dismiss", "", new AlertBox() {
+                    @Override
+                    public void PositiveMethod(DialogInterface dialog, int id) {
+                        finish();
+                    }
+
+                    @Override
+                    public void NegativeMethod(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+    }
+
+    private void AssignOutletDetails(JSONObject object) {
+        Log.e("AssignOutletDetails", "AssignOutletDetails: " + object);
+        try {
+            JSONObject jsonObject = object.optJSONObject("response");
+            outletCode = jsonObject.optString("ListedDrCode");
+
+            binding.enterOutletName.setText(jsonObject.optString("ListedDr_Name"));
+            binding.enterOwnerName.setText(jsonObject.optString("Owner_Name"));
+            binding.enterAddress.setText(jsonObject.optString("ListedDr_Address1"));
+            binding.enterLocation.setText(jsonObject.optString("cityname"));
+            binding.enterDistrict.setText(jsonObject.optString("SDP"));
+            binding.enterGST.setText(jsonObject.optString("GST"));
+            binding.enterMobileNumber.setText(jsonObject.optString("ListedDr_Mobile"));
+            binding.enterSecMobileNumber.setText(jsonObject.optString("ListedDr_Phone"));
+            binding.enterEmail.setText(jsonObject.optString("ListedDr_Email"));
+            binding.enterFSSAINumber.setText(jsonObject.optString("FssiNo"));
+            binding.enterPANNumber.setText(jsonObject.optString("Pan_No"));
+            binding.enterOutstandingAmount.setText(jsonObject.optString("Outstanding"));
+            binding.enterPincode.setText(jsonObject.optString("pin_code"));
+            binding.enterReasonForClosed.setText(jsonObject.optString("closedReason"));
+            binding.enterWhatsappNumber.setText(jsonObject.optString("whatsapp"));
+            binding.enterIceCreamFreezerCompany.setText(jsonObject.optString("freezerCompany"));
+
+            binding.switchVisiCoolerAvailable.setChecked(jsonObject.optString("visiCoolerAvailability").equals("1"));
+            binding.switchIceCreamFreezerAvailable.setChecked(jsonObject.optString("iceCreamFreezerAvailability").equals("1"));
+            binding.switchLactalisFreezerRequirement.setChecked(jsonObject.optString("lactalisFreezerRequired").equals("1"));
+
+            distributorID = jsonObject.optString("Dist_name");
+            distributorTITLE = jsonObject.optString("distName");
+            binding.selectDistributor.setText(distributorTITLE);
+
+            outletStatusID = jsonObject.optString("Outlet_Type");
+            outletStatusTITLE = jsonObject.optString("outletStatus");
+            binding.selectOutletStatus.setText(outletStatusTITLE);
+            if (outletStatusTITLE.contains("Closed")) {
+                binding.enterReasonForClosed.setVisibility(View.VISIBLE);
+            } else {
+                binding.enterReasonForClosed.setVisibility(View.GONE);
+            }
+
+            routeID = jsonObject.optString("Territory_Code");
+            routeTITLE = jsonObject.optString("route");
+            binding.selectRoute.setText(routeTITLE);
+
+            stateID = jsonObject.optString("State_Code");
+            stateTITLE = jsonObject.optString("State_Name");
+            binding.selectState.setText(stateTITLE);
+
+            deliveryTypeID = jsonObject.optString("deliveryTypeId");
+            deliveryTypeTITLE = jsonObject.optString("Allowance_Type");
+            binding.selectDeliveryType.setText(deliveryTypeTITLE);
+
+            categoryID = jsonObject.optString("categoryId");
+            categoryTITLE = jsonObject.optString("Category_Universe_Name");
+            binding.selectOutletCategory.setText(categoryTITLE);
+
+            subCategoryID = jsonObject.optString("subCategoryId");
+            subCategoryTITLE = jsonObject.optString("Category_Universe_Remarks");
+            binding.selectOutletSubCategory.setText(subCategoryTITLE);
+
+            visiCoolerCompanyID = jsonObject.optString("visiCoolerCompanyId");
+            visiCoolerCompanyTITLE = jsonObject.optString("visiCoolerCompany");
+            binding.selectVisiCoolerCompany.setText(visiCoolerCompanyTITLE);
+
+            lat = jsonObject.optDouble("ListedDr_Class_Patients");
+            lng = jsonObject.optDouble("ListedDr_Consultation_Fee");
+            centreMapOnLocation("Your Location");
+
+            shopImageName = jsonObject.optString("ListedDr_Pin");
+            common_class.getImageFromS3Bucket(context, shopImageName, "outlet_info", (bmp, path) -> {
+                binding.ivShopPhoto.setImageBitmap(bmp);
+                shopImageFullPath = path;
+            });
+        } catch (Exception ignored) {
+
+        }
     }
 
     private String prepareTitle(String s) {
@@ -370,7 +524,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         object.put("lng", String.valueOf(lng));
                         object.put("sfCode", userDetails.getString("Sfcode", ""));
                         object.put("divisionCode", userDetails.getString("Divcode", "").split(",")[0]);
-                    } catch (JSONException ignored) { }
+                    } catch (JSONException ignored) {
+                    }
                     SaveOutlet(object);
                 }
 
@@ -904,7 +1059,6 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         }
                         break;
                 }
-                binding.submitButton.setVisibility(View.VISIBLE);
             } catch (JSONException ignored) {
             }
         }
