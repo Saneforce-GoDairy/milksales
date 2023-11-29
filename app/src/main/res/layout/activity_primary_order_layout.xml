@@ -6,59 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".SFA_Activity.PrimaryOrderActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
+        android:id="@+id/new_primary_list_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#edf1f4"
-        android:minHeight="?attr/actionBarSize"
-        app:theme="@style/AppBarCustomTheme" />
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:background="#edf1f4"
-        android:orientation="vertical">
-
-        <TextView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Primaey list"
-            android:fontFamily="@font/roboto_bold"
-            android:textStyle="bold"
-            android:layout_marginStart="20dp"/>
+            android:background="#edf1f4"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/AppBarCustomTheme" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:background="#edf1f4"
+            android:orientation="vertical">
 
-      <RelativeLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_marginTop="10dp"
-          android:background="@drawable/rounded_dialog_top_right_left"
-          >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Primary list"
+                android:fontFamily="@font/roboto_bold"
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"/>
 
-          <androidx.recyclerview.widget.RecyclerView
-              android:id="@+id/recycler_view"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/white"
-              android:layout_marginStart="30dp"
-              android:layout_marginEnd="30dp"
-              android:layout_marginTop="20dp"/>
-      </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_dialog_top_right_left"
+                >
 
-    </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="20dp"/>
+            </RelativeLayout>
 
-    <TextView
-        android:id="@+id/emptyView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="No Results"
-        android:textSize="20sp"
-        android:visibility="gone" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Results"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
 
 <!--    Previous design code. modified by prasanth assigned by anbu sir-->
     <RelativeLayout
+        android:id="@+id/old_primary_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
@@ -237,11 +246,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:drawableRight="@drawable/ic_round_arrow_drop_down_24"
-                                android:text="Hi! "
+                                android:text="@string/hi"
                                 android:textColor="@color/black"
                                 android:textSize="14sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                app:drawableRightCompat="@drawable/ic_round_arrow_drop_down_24" />
 
 
                             <ImageView
@@ -249,7 +258,7 @@
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_gravity="center"
-                                android:layout_marginRight="@dimen/C5dp"
+                                android:layout_marginEnd="@dimen/C5dp"
                                 android:src="@drawable/spin_down_arrow"
                                 android:visibility="gone"
                                 app:tint="@color/black" />

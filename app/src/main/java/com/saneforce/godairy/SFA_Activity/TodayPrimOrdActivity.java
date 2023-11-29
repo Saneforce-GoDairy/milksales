@@ -5,17 +5,31 @@ import static com.saneforce.godairy.Common_Class.Constants.Rout_List;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.CurrencySymbol;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.saneforce.godairy.Common_Class.Common_Class;
@@ -29,6 +43,15 @@ import com.saneforce.godairy.Interface.onListItemClick;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.PrimaryOrder_History_Adapter;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
+import com.saneforce.godairy.databinding.ActivityTodayPrimorderHistoryBinding;
+import com.saneforce.godairy.procurement.AITFormActivity;
+import com.saneforce.godairy.procurement.AgronomistFormActivity;
+import com.saneforce.godairy.procurement.ColletionCenterLocationActivity;
+import com.saneforce.godairy.procurement.ExistingAgentVisitActivity;
+import com.saneforce.godairy.procurement.MaintanenceIssuesFormActivity;
+import com.saneforce.godairy.procurement.ProcurementAssetActivity;
+import com.saneforce.godairy.procurement.QualityFormActivity;
+import com.saneforce.godairy.procurement.VeterinaryDoctorsFormActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,16 +59,16 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class TodayPrimOrdActivity extends AppCompatActivity implements Master_Interface, View.OnClickListener, UpdateResponseUI {
-
-    TextView tvStartDate, tvEndDate, distributor_text, route_text, tvGrandTot;
-    ;
+    private ActivityTodayPrimorderHistoryBinding binding;
+    private final Context context = this;
+    TextView tvStartDate, tvEndDate, distributor_text, route_text, tvGrandTot;;
     Common_Class common_class;
-
     PrimaryOrder_History_Adapter mReportViewAdapter;
     RecyclerView invoicerecyclerview, rvFilter;
     Shared_Common_Pref sharedCommonPref;
@@ -56,15 +79,16 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
     LinearLayout llDistributor, btnCmbRoute;
     List<Common_Model> FRoute_Master = new ArrayList<>();
     Common_Model Model_Pojo;
-
     String groupType = "All";
-
+    private Dialog noOrderDialog;
+    private Dialog purposeOfVisitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_today_primorder_history);
+            binding = ActivityTodayPrimorderHistoryBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
             mTdPriAct = this;
             sharedCommonPref = new Shared_Common_Pref(TodayPrimOrdActivity.this);
             common_class = new Common_Class(this);
@@ -116,6 +140,118 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
 
         }
 
+        binding.orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PrimaryOrderActivity.class);
+                intent.putExtra("Mode", "order_view");
+                startActivity(intent);
+            }
+        });
+
+        binding.noOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noOrderDialog = new Dialog(context);
+                noOrderDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                noOrderDialog.setContentView(R.layout.primary_order_no_dialog);
+                noOrderDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                noOrderDialog.setCancelable(false);
+                noOrderDialog.show();
+
+                RelativeLayout close = noOrderDialog.findViewById(R.id.close);
+                RelativeLayout submitBtn = noOrderDialog.findViewById(R.id.submit_button);
+                EditText nameEditText = noOrderDialog.findViewById(R.id.name_edit_text);
+                LinearLayout purposeOfVisit = noOrderDialog.findViewById(R.id.purpose_of_visit);
+
+                purposeOfVisit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ArrayList purposeOfVisit = new ArrayList(Arrays.asList(
+                                "Retail work for volume increase",
+                                "Other brand conversion",
+                                "Complaint Resolving",
+                                "Merchandising",
+                                "Sampling" ,
+                                "Event participation",
+                                "Training" ,
+                                "Collection Center Location"
+                        ));
+
+                        noOrderDialog.dismiss();
+
+                        purposeOfVisitDialog = new Dialog(context);
+                        purposeOfVisitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        purposeOfVisitDialog.setContentView(R.layout.model_purpose_of_visit_dialog);
+                        purposeOfVisitDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        purposeOfVisitDialog.setCancelable(false);
+                        purposeOfVisitDialog.show();
+
+                        RecyclerView recyclerView = purposeOfVisitDialog.findViewById(R.id.recycler_view);
+
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(linearLayoutManager);
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setItemViewCacheSize(20);
+                        PurposeOfVisitAdapter purposeOfVisitAdapter = new PurposeOfVisitAdapter(context, purposeOfVisit);
+                        recyclerView.setAdapter(purposeOfVisitAdapter);
+                    }
+                });
+
+                submitBtn.setOnClickListener(v12 -> {
+                    String mChannealName = nameEditText.getText().toString().trim();
+
+                    if ("". equals(mChannealName)){
+                        nameEditText.setError("Enter field");
+                        nameEditText.requestFocus();
+                        return;
+                    }
+                    Log.e("channel_", "valid channel name");
+                });
+                close.setOnClickListener(v1 -> noOrderDialog.dismiss());
+            }
+        });
+    }
+
+    public static class PurposeOfVisitAdapter extends RecyclerView.Adapter<PurposeOfVisitAdapter.ViewHolder> {
+        ArrayList exploreImage, exploreName;
+        Context context;
+
+        public PurposeOfVisitAdapter(Context context, ArrayList courseName) {
+            this.context = context;
+            this.exploreName = courseName;
+        }
+
+        @NonNull
+        @Override
+        public PurposeOfVisitAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_purpose_of_visit_item, parent, false);
+            PurposeOfVisitAdapter.ViewHolder viewHolder = new PurposeOfVisitAdapter.ViewHolder(view);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull PurposeOfVisitAdapter.ViewHolder holder, int position) {
+            holder.text.setText((String) exploreName.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return exploreName.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView text;
+            CardView layout;
+
+            public ViewHolder(View view) {
+                super(view);
+                text = view.findViewById(R.id.txt_name);
+//                layout = view.findViewById(R.id.layout);
+            }
+        }
     }
 
     @Override

@@ -197,6 +197,7 @@
     <string name="camera_button">Camera button</string>
     <string name="search">Search</string>
     <string name="a" />
+    <string name="hi">Hi!</string>
 
     <array name="company_array">
         <item>Select</item>

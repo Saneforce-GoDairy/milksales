@@ -29,6 +29,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -51,6 +53,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.saneforce.godairy.Activity_Hap.Dashboard;
+import com.saneforce.godairy.Activity_Hap.MainActivity;
 import com.saneforce.godairy.Activity_Hap.SFA_Activity;
 import com.saneforce.godairy.BuildConfig;
 import com.saneforce.godairy.CCAvenue.InitiatePaymentActivity;
@@ -162,6 +165,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     TextView payNowButton;
     private String PaymentMethod;
     Toolbar mToolbar;
+    private DistributerAdapter distributerAdapter;
+    String ordersViewMode = "";
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -174,6 +179,16 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             mToolbar = findViewById(R.id.toolbar);
             setSupportActionBar(mToolbar);
             getSupportActionBar().setTitle("Search");
+
+            ordersViewMode = getIntent().getStringExtra("Mode");
+
+            if (ordersViewMode != null){
+                 if ("order_view".equals(ordersViewMode)){
+                     Toast.makeText(context, "its order view mode", Toast.LENGTH_SHORT).show();
+                     binding.newPrimaryListLayout.setVisibility(View.GONE);
+                     binding.oldPrimaryLayout.setVisibility(View.VISIBLE);
+                 }
+            }
 
             primaryOrderActivity = this;
             selPOS = 0;
@@ -294,7 +309,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public boolean onQueryTextChange(String newText) {
-              //  mAdapter.getFilter().filter(newText);
+                distributerAdapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -727,7 +742,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 }
                 break;
             case R.id.llDistributor:
-              //  common_class.showCommonDialog(common_class.getDistList(), 2, this);
+                common_class.showCommonDialog(common_class.getDistList(), 2, this);
                 break;
             case R.id.llTodayPriOrd:
                 if (!Common_Class.isNullOrEmpty(getIntent().getStringExtra(Constants.ORDER_ID)))
@@ -832,19 +847,33 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setItemViewCacheSize(20);
-        DistributerAdapter adapter = new DistributerAdapter(context, distList, 2);
-        binding.recyclerView.setAdapter(adapter);
+        distributerAdapter = new DistributerAdapter(context, distList, 2);
+        binding.recyclerView.setAdapter(distributerAdapter);
     }
 
-    public static class DistributerAdapter extends RecyclerView.Adapter<DistributerAdapter.ViewHolder> {
+    public class DistributerAdapter extends RecyclerView.Adapter<DistributerAdapter.ViewHolder> implements Filterable {
         Context context;
         List<Common_Model> distList;
         int mType;
+        Activity activity;
+        private List<Common_Model> mFilteredList;
+        public MyFilter mFilter;
 
         public DistributerAdapter(Context context, List<Common_Model> distList, int i) {
             this.context = context;
             this.distList = distList;
             this.mType = i;
+            this.mFilteredList = new ArrayList<Common_Model>();
+        }
+
+        @Override
+        public Filter getFilter() {
+            if (mFilter == null){
+                mFilteredList.clear();
+                mFilteredList.addAll(this.distList);
+                mFilter = new DistributerAdapter.MyFilter(this,mFilteredList);
+            }
+            return mFilter;
         }
 
         @NonNull
@@ -863,6 +892,16 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             String distributerName = contact.getName();
 
             holder.firstLetterText.setText(distributerName.substring(0,1).toUpperCase());
+            holder.mainLayout.setOnClickListener(v -> {
+
+                sharedCommonPref.save(Constants.MAP_KEY, distList.get(position).getName());
+                OnclickMasterType(distList, position, mType);
+
+                if (!Common_Class.isNullOrEmpty(getIntent().getStringExtra(Constants.ORDER_ID)))
+                    common_class.commonDialog(activity, TodayPrimOrdActivity.class, "Primary Order?");
+                else
+                    startActivity(new Intent(getApplicationContext(), TodayPrimOrdActivity.class));
+            });
         }
 
         @Override
@@ -872,12 +911,54 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         }
         public class ViewHolder extends RecyclerView.ViewHolder {
             TextView text, firstLetterText, phoneText;
+            LinearLayout mainLayout;
 
             public ViewHolder(View view) {
                 super(view);
                 text = view.findViewById(R.id.txt_name);
                 firstLetterText = view.findViewById(R.id.first_letter);
                 phoneText = view.findViewById(R.id.txt_phone);
+                mainLayout = view.findViewById(R.id.layout);
+            }
+        }
+
+        private class MyFilter extends Filter {
+
+            private final DistributerAdapter myAdapter;
+            private final List<Common_Model> originalList;
+            private final List<Common_Model> filteredList;
+
+            private MyFilter(DistributerAdapter myAdapter, List<Common_Model> originalList) {
+                this.myAdapter = myAdapter;
+                this.originalList = originalList;
+                this.filteredList = new ArrayList<Common_Model>();
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                filteredList.clear();
+                final FilterResults results = new FilterResults();
+                if (charSequence.length() == 0){
+                    filteredList.addAll(originalList);
+                }else {
+                    final String filterPattern = charSequence.toString().toLowerCase().trim();
+                    for ( Common_Model user : originalList){
+                        if (user.getName().toLowerCase().contains(filterPattern)){
+                            filteredList.add(user);
+                        }
+                    }
+                }
+                results.values = filteredList;
+                results.count = filteredList.size();
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                myAdapter.distList.clear();
+                myAdapter.distList.addAll((ArrayList<Common_Model>)filterResults.values);
+                myAdapter.notifyDataSetChanged();
             }
         }
     }
