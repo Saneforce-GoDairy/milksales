@@ -1,11 +1,13 @@
 package com.saneforce.godairy.Activity_Hap;
 
+import static com.saneforce.godairy.Common_Class.Common_Class.UserDetail;
 import static com.saneforce.godairy.Common_Class.Constants.CUSTOMER_DATA;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -66,7 +68,7 @@ import java.util.concurrent.Executors;
 public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallback, Master_Interface, UpdateResponseUI {
     ActivityAddNewRetailerBinding binding;
 
-    String categoryID = "", categoryTITLE = "", subCategoryID = "", subCategoryTITLE = "", outletStatusID = "", outletStatusTITLE = "", deliveryTypeID = "", deliveryTypeTITLE = "", stateID = "", stateTITLE = "", shopImageName = "", shopImageFullPath = "", distGrpERP = "", distributorERP = "", divERP = "", customer_code = "", visiCoolerCompanyID = "", visiCoolerCompanyTITLE = "", routeID = "", routeTITLE = "", distributorID = "", distributorTITLE = "";
+    String categoryID = "", categoryTITLE = "", subCategoryID = "", subCategoryTITLE = "", outletStatusID = "", outletStatusTITLE = "", deliveryTypeID = "", deliveryTypeTITLE = "", stateID = "", stateTITLE = "", shopImageName = "", shopImageFullPath = "", distGrpERP = "", distributorERP = "", divERP = "", customer_code = "", visiCoolerCompanyID = "", visiCoolerCompanyTITLE = "", routeID = "", routeTITLE = "", distributorID = "", distributorTITLE = "", uniqueKey = "";
     double lat = 0, lng = 0;
     JSONArray fieldDetailsArray, outletTypeArray, categoryListArray, subCategoryListArray, filteredSubCategoryListArray, visiCoolerCompanyArray, deliveryTypeArray, stateListArray, routeListArray;
 
@@ -74,6 +76,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
 
     Common_Class common_class;
     Shared_Common_Pref shared_common_pref;
+    SharedPreferences userDetails;
     Context context = this;
     GoogleMap mGoogleMap;
 
@@ -98,6 +101,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         distGrpERP = shared_common_pref.getvalue(Constants.CusSubGrpErp);
         distributorERP = shared_common_pref.getvalue(Constants.DistributorERP);
         divERP = shared_common_pref.getvalue(Constants.DivERP);
+        userDetails  = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
 
         binding.btnRefLoc.setOnClickListener(v -> {
             binding.btnRefLoc.startAnimation();
@@ -128,10 +132,6 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
-        binding.selectDistributor.setOnClickListener(v -> {
-            common_class.showCommonDialog(common_class.getDistList(), 2, this);
-        });
-
         binding.validateDistributorCode.setOnClickListener(v -> {
             if (Shared_Common_Pref.Outler_AddFlag != null && !Shared_Common_Pref.Outler_AddFlag.equals("1")) {
                 AlertDialogBox.showDialog(com.saneforce.godairy.Activity_Hap.AddNewRetailer.this, HAPApp.Title, "Are You Sure Want to Update the Franchise Code?", "OK", "Cancel", false, new AlertBox() {
@@ -157,63 +157,29 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                 binding.distributorCodeLL.setVisibility(View.GONE);
         });
 
-        binding.selectOutletCategory.setOnClickListener(v -> {
-            if (categoryListArray.length() == 0) {
-                Toast.makeText(context, "Outlet category list is empty", Toast.LENGTH_SHORT).show();
-            } else {
-                ShowDropdown(prepareTitle(binding.outletCategoryTitle.getText().toString()), categoryListArray);
-            }
+        binding.selectDistributor.setOnClickListener(v -> {
+            common_class.showCommonDialog(common_class.getDistList(), 2, this);
         });
+
+        binding.selectOutletStatus.setOnClickListener(v -> ShowDropdown(1, prepareTitle(binding.outletStatusTitle.getText().toString()), outletTypeArray));
+
+        binding.selectRoute.setOnClickListener(v -> ShowDropdown(2, prepareTitle(binding.routeTitle.getText().toString()), routeListArray));
+
+        binding.selectState.setOnClickListener(v -> ShowDropdown(3, prepareTitle(binding.stateTitle.getText().toString()), stateListArray));
+
+        binding.selectDeliveryType.setOnClickListener(v -> ShowDropdown(4, prepareTitle(binding.deliveryTypeTitle.getText().toString()), deliveryTypeArray));
+
+        binding.selectOutletCategory.setOnClickListener(v -> ShowDropdown(5, prepareTitle(binding.outletCategoryTitle.getText().toString()), categoryListArray));
 
         binding.selectOutletSubCategory.setOnClickListener(v -> {
             if (binding.selectOutletCategory.getText().toString().trim().isEmpty()) {
-                Toast.makeText(context, "Please select outlet category first", Toast.LENGTH_SHORT).show();
-            } else if (filteredSubCategoryListArray.length() == 0) {
-                Toast.makeText(context, "Outlet sub category list is empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Please " + binding.selectOutletCategory.getHint().toString().trim() + " First", Toast.LENGTH_SHORT).show();
             } else {
-                ShowDropdown(prepareTitle(binding.outletSubCategoryTitle.getText().toString()), filteredSubCategoryListArray);
+                ShowDropdown(6, prepareTitle(binding.outletSubCategoryTitle.getText().toString()), filteredSubCategoryListArray);
             }
         });
 
-        binding.selectOutletStatus.setOnClickListener(v -> {
-            if (outletTypeArray.length() == 0) {
-                Toast.makeText(context, "Outlet status list is empty", Toast.LENGTH_SHORT).show();
-            } else {
-                ShowDropdown(prepareTitle(binding.outletStatusTitle.getText().toString()), outletTypeArray);
-            }
-        });
-
-        binding.selectVisiCoolerCompany.setOnClickListener(v -> {
-            if (visiCoolerCompanyArray.length() == 0) {
-                Toast.makeText(context, "Visi Cooler Company list is empty", Toast.LENGTH_SHORT).show();
-            } else {
-                ShowDropdown(prepareTitle(binding.visiCoolerCompanyTitle.getText().toString()), visiCoolerCompanyArray);
-            }
-        });
-
-        binding.selectDeliveryType.setOnClickListener(v -> {
-            if (deliveryTypeArray.length() == 0) {
-                Toast.makeText(context, "Delivery Type list is empty", Toast.LENGTH_SHORT).show();
-            } else {
-                ShowDropdown(prepareTitle(binding.deliveryTypeTitle.getText().toString()), deliveryTypeArray);
-            }
-        });
-
-        binding.selectState.setOnClickListener(v -> {
-            if (stateListArray.length() == 0) {
-                Toast.makeText(context, "State list is empty", Toast.LENGTH_SHORT).show();
-            } else {
-                ShowDropdown(prepareTitle(binding.stateTitle.getText().toString()), stateListArray);
-            }
-        });
-
-        binding.selectRoute.setOnClickListener(v -> {
-            if (routeListArray.length() == 0) {
-                Toast.makeText(context, "Route list is empty", Toast.LENGTH_SHORT).show();
-            } else {
-                ShowDropdown(prepareTitle(binding.routeTitle.getText().toString()), routeListArray);
-            }
-        });
+        binding.selectVisiCoolerCompany.setOnClickListener(v -> ShowDropdown(7, prepareTitle(binding.visiCoolerCompanyTitle.getText().toString()), visiCoolerCompanyArray));
 
         binding.switchVisiCoolerAvailable.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -253,6 +219,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             mapFragment.getMapAsync(this);
         }
 
+        uniqueKey = Common_Class.GetEkey();
+
         setLocation();
         getDropdowns();
     }
@@ -280,82 +248,79 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         String outstandingAmt = binding.enterOutstandingAmount.getText().toString().trim();
 
         if (binding.distributorLL.getVisibility() == View.VISIBLE && binding.distributorTitle.getText().toString().contains("*") && (distributorID.isEmpty() || distributorTITLE.isEmpty())) {
-            Toast.makeText(context, "Please select distributor", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.selectDistributor.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.selectDistributor.requestFocus();
         } else if (binding.outletNameLL.getVisibility() == View.VISIBLE && binding.outletNameTitle.getText().toString().contains("*") && outletName.isEmpty()) {
-            Toast.makeText(context, "Please enter outlet name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterOutletName.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterOutletName.requestFocus();
         } else if (binding.outletStatusLL.getVisibility() == View.VISIBLE && binding.outletStatusTitle.getText().toString().contains("*") && outletStatusTITLE.isEmpty()) {
-            Toast.makeText(context, "Please select outlet status", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.selectOutletStatus.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.selectOutletStatus.requestFocus();
         } else if (binding.reasonForClosedLL.getVisibility() == View.VISIBLE && binding.reasonForClosedTitle.getText().toString().contains("*") && reasonForClose.isEmpty()) {
-            Toast.makeText(context, "Please enter reason for close", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterReasonForClosed.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterReasonForClosed.requestFocus();
         } else if (binding.routeLL.getVisibility() == View.VISIBLE && binding.routeTitle.getText().toString().contains("*") && routeTITLE.isEmpty()) {
-            Toast.makeText(context, "Please select route", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.selectRoute.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.selectRoute.requestFocus();
         } else if (binding.ownerNameLL.getVisibility() == View.VISIBLE && binding.ownerNameTitle.getText().toString().contains("*") && ownerName.isEmpty()) {
-            Toast.makeText(context, "Please enter owner name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterOwnerName.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterOwnerName.requestFocus();
         } else if (binding.photoLL.getVisibility() == View.VISIBLE && shopImageName.isEmpty()) {
-            Toast.makeText(context, "Please capture shop photo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please Capture Shop Photo", Toast.LENGTH_SHORT).show();
             binding.ivShopPhoto.requestFocus();
         } else if (binding.addressLL.getVisibility() == View.VISIBLE && binding.addressTitle.getText().toString().contains("*") && outletAddress.isEmpty()) {
-            Toast.makeText(context, "Please enter the outlet address", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterAddress.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterAddress.requestFocus();
         } else if (binding.stateLL.getVisibility() == View.VISIBLE && binding.stateTitle.getText().toString().contains("*") && stateTITLE.isEmpty()) {
-            Toast.makeText(context, "Please select the state", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.selectState.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.selectState.requestFocus();
         } else if (binding.locationLL.getVisibility() == View.VISIBLE && binding.locationTitle.getText().toString().contains("*") && location.isEmpty()) {
-            Toast.makeText(context, "Please enter the location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterLocation.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterLocation.requestFocus();
         } else if (binding.districtLL.getVisibility() == View.VISIBLE && binding.districtTitle.getText().toString().contains("*") && district.isEmpty()) {
-            Toast.makeText(context, "Please enter the district", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterDistrict.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterDistrict.requestFocus();
         } else if (binding.pincodeLL.getVisibility() == View.VISIBLE && binding.pincodeTitle.getText().toString().contains("*") && pincode.isEmpty()) {
-            Toast.makeText(context, "Please enter the pincode", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterPincode.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterPincode.requestFocus();
         } else if (binding.gstLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && gst.length() != 15) {
-            Toast.makeText(context, "Please enter 15 digit GST number", Toast.LENGTH_SHORT).show();
-            binding.enterGST.requestFocus();
-        } else if (binding.gstLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && gst.length() != 15) {
-            Toast.makeText(context, "Please enter 15 digit GST number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterGST.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterGST.requestFocus();
         } else if (binding.mobileNumberLL.getVisibility() == View.VISIBLE && binding.mobileNumberTitle.getText().toString().contains("*") && mobile.length() != 10) {
-            Toast.makeText(context, "Please enter 10 digit mobile number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterMobileNumber.getHint().toString().trim() + " (10 Digits)", Toast.LENGTH_SHORT).show();
             binding.enterMobileNumber.requestFocus();
         } else if (binding.secMobileNumberLL.getVisibility() == View.VISIBLE && binding.secMobileNumberTitle.getText().toString().contains("*") && secMobile.length() != 10) {
-            Toast.makeText(context, "Please enter 10 digit secondary mobile number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterSecMobileNumber.getHint().toString().trim() + " (10 Digits)", Toast.LENGTH_SHORT).show();
             binding.enterSecMobileNumber.requestFocus();
         } else if (binding.whatsappNumberLL.getVisibility() == View.VISIBLE && binding.whatsappNumberTitle.getText().toString().contains("*") && whatsapp.length() != 10) {
-            Toast.makeText(context, "Please enter 10 digit whatsapp number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterWhatsappNumber.getHint().toString().trim() + " (10 Digits)", Toast.LENGTH_SHORT).show();
             binding.enterWhatsappNumber.requestFocus();
         } else if (binding.emailLL.getVisibility() == View.VISIBLE && binding.emailTitle.getText().toString().contains("*") && email.isEmpty()) {
-            Toast.makeText(context, "Please enter email address", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterEmail.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterEmail.requestFocus();
         } else if (binding.deliveryTypeLL.getVisibility() == View.VISIBLE && binding.deliveryTypeTitle.getText().toString().contains("*") && deliveryTypeTITLE.isEmpty()) {
-            Toast.makeText(context, "Please select the delivery type", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.selectDeliveryType.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.selectDeliveryType.requestFocus();
         } else if (binding.outletCategoryLL.getVisibility() == View.VISIBLE && binding.outletCategoryTitle.getText().toString().contains("*") && categoryTITLE.isEmpty()) {
-            Toast.makeText(context, "Please select outlet category", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.selectOutletCategory.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.selectOutletCategory.requestFocus();
         } else if (binding.outletSubCategoryLL.getVisibility() == View.VISIBLE && binding.outletSubCategoryTitle.getText().toString().contains("*") && subCategoryTITLE.isEmpty()) {
-            Toast.makeText(context, "Please select outlet sub category", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.selectOutletSubCategory.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.selectOutletSubCategory.requestFocus();
         } else if (binding.switchVisiCoolerAvailable.isChecked() && binding.visiCoolerCompanyLL.getVisibility() == View.VISIBLE && binding.visiCoolerCompanyTitle.getText().toString().contains("*") && visiCoolerCompanyTITLE.isEmpty()) {
-            Toast.makeText(context, "Please select visi cooler company", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.selectVisiCoolerCompany.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.selectVisiCoolerCompany.requestFocus();
         } else if (binding.switchIceCreamFreezerAvailable.isChecked() && binding.iceCreamFreezerCompanyLL.getVisibility() == View.VISIBLE && binding.iceCreamFreezerCompanyTitle.getText().toString().contains("*") && freezerCompany.isEmpty()) {
-            Toast.makeText(context, "Please select ice cream freezer company", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterIceCreamFreezerCompany.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterIceCreamFreezerCompany.requestFocus();
         } else if (binding.fssaiNumberLL.getVisibility() == View.VISIBLE && binding.fssaiNumberTitle.getText().toString().contains("*") && fssai.length() != 14) {
-            Toast.makeText(context, "Please enter 14 digit FSSAI number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterFSSAINumber.getHint().toString().trim() + " (14 Digits)", Toast.LENGTH_SHORT).show();
             binding.enterFSSAINumber.requestFocus();
         } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && pan.length() != 10) {
-            Toast.makeText(context, "Please enter 10 digit PAN number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterPANNumber.getHint().toString().trim() + " (10 Digits)", Toast.LENGTH_SHORT).show();
             binding.enterPANNumber.requestFocus();
         } else if (binding.outstandingAmountLL.getVisibility() == View.VISIBLE && binding.outstandingAmountTitle.getText().toString().contains("*") && outstandingAmt.isEmpty()) {
-            Toast.makeText(context, "Please enter outstanding amount", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please " + binding.enterOutstandingAmount.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterOutstandingAmount.requestFocus();
         } else {
             MyAlertDialog.show(context, "", "Are you sure you want to submit?", true, "Yes", "No", new AlertBox() {
@@ -399,6 +364,12 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         object.put("fssai", fssai);
                         object.put("pan", pan);
                         object.put("outstandingAmt", outstandingAmt);
+                        object.put("uniqueKey", uniqueKey);
+                        object.put("loginType", shared_common_pref.getvalue(Constants.LOGIN_TYPE));
+                        object.put("lat", String.valueOf(lat));
+                        object.put("lng", String.valueOf(lng));
+                        object.put("sfCode", userDetails.getString("Sfcode", ""));
+                        object.put("divisionCode", userDetails.getString("Divcode", "").split(",")[0]);
                     } catch (JSONException ignored) { }
                     SaveOutlet(object);
                 }
@@ -414,16 +385,37 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
     private void SaveOutlet(JSONObject object) {
         Log.e("SaveOutlet", "SaveOutlet: " + object.toString());
         Map<String, String> params = new HashMap<>();
-        params.put("axn", "save_outlet");
+        params.put("axn", "save_retailer");
         Common_Class.makeApiCall(context, params, object.toString(), new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
+                MyAlertDialog.show(context, "", "Outlet created successfully", false, "Okay", "", new AlertBox() {
+                    @Override
+                    public void PositiveMethod(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        finish();
+                    }
 
+                    @Override
+                    public void NegativeMethod(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
             }
 
             @Override
             public void onFailure(String error) {
+                MyAlertDialog.show(context, "", error, false, "Dismiss", "", new AlertBox() {
+                    @Override
+                    public void PositiveMethod(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
 
+                    @Override
+                    public void NegativeMethod(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
     }
@@ -461,7 +453,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    private void ShowDropdown(String dropdownTitle, JSONArray array) {
+    private void ShowDropdown(int which, String dropdownTitle, JSONArray array) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv_and_filter, null, false);
         builder.setView(view);
@@ -491,8 +483,46 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             }
         });
         adapter.setOnItemClick((position, arrayList) -> {
-            switch (dropdownTitle) {
-                case "Select Outlet Category":
+            switch (which) {
+                case 1:
+                    try {
+                        outletStatusID = arrayList.getJSONObject(position).getString("id");
+                        outletStatusTITLE = arrayList.getJSONObject(position).getString("title");
+                        binding.selectOutletStatus.setText(outletStatusTITLE);
+                        if (outletStatusID.equals("3")) {
+                            binding.reasonForClosedLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.reasonForClosedLL.setVisibility(View.GONE);
+                            binding.enterReasonForClosed.setText("");
+                        }
+                    } catch (JSONException ignored) {
+                    }
+                    break;
+                case 2:
+                    try {
+                        routeID = arrayList.getJSONObject(position).getString("id");
+                        routeTITLE = arrayList.getJSONObject(position).getString("title");
+                        binding.selectRoute.setText(routeTITLE);
+                    } catch (JSONException ignored) {
+                    }
+                    break;
+                case 3:
+                    try {
+                        stateID = arrayList.getJSONObject(position).getString("id");
+                        stateTITLE = arrayList.getJSONObject(position).getString("title");
+                        binding.selectState.setText(stateTITLE);
+                    } catch (JSONException ignored) {
+                    }
+                    break;
+                case 4:
+                    try {
+                        deliveryTypeID = arrayList.getJSONObject(position).getString("id");
+                        deliveryTypeTITLE = arrayList.getJSONObject(position).getString("title");
+                        binding.selectDeliveryType.setText(deliveryTypeTITLE);
+                    } catch (JSONException ignored) {
+                    }
+                    break;
+                case 5:
                     try {
                         categoryID = arrayList.getJSONObject(position).getString("id");
                         categoryTITLE = arrayList.getJSONObject(position).getString("title");
@@ -515,7 +545,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                     } catch (JSONException ignored) {
                     }
                     break;
-                case "Select Outlet Sub Category":
+                case 6:
                     try {
                         subCategoryID = arrayList.getJSONObject(position).getString("id");
                         subCategoryTITLE = arrayList.getJSONObject(position).getString("title");
@@ -523,49 +553,11 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                     } catch (JSONException ignored) {
                     }
                     break;
-                case "Select Outlet Status":
-                    try {
-                        outletStatusID = arrayList.getJSONObject(position).getString("id");
-                        outletStatusTITLE = arrayList.getJSONObject(position).getString("title");
-                        binding.selectOutletStatus.setText(outletStatusTITLE);
-                        if (outletStatusID.equals("3")) {
-                            binding.reasonForClosedLL.setVisibility(View.VISIBLE);
-                        } else {
-                            binding.reasonForClosedLL.setVisibility(View.GONE);
-                            binding.enterReasonForClosed.setText("");
-                        }
-                    } catch (JSONException ignored) {
-                    }
-                    break;
-                case "Select Visi Cooler Company":
+                case 7:
                     try {
                         visiCoolerCompanyID = arrayList.getJSONObject(position).getString("id");
                         visiCoolerCompanyTITLE = arrayList.getJSONObject(position).getString("title");
                         binding.selectVisiCoolerCompany.setText(visiCoolerCompanyTITLE);
-                    } catch (JSONException ignored) {
-                    }
-                    break;
-                case "Select Delivery Type":
-                    try {
-                        deliveryTypeID = arrayList.getJSONObject(position).getString("id");
-                        deliveryTypeTITLE = arrayList.getJSONObject(position).getString("title");
-                        binding.selectDeliveryType.setText(deliveryTypeTITLE);
-                    } catch (JSONException ignored) {
-                    }
-                    break;
-                case "Select State":
-                    try {
-                        stateID = arrayList.getJSONObject(position).getString("id");
-                        stateTITLE = arrayList.getJSONObject(position).getString("title");
-                        binding.selectState.setText(stateTITLE);
-                    } catch (JSONException ignored) {
-                    }
-                    break;
-                case "Select Route":
-                    try {
-                        routeID = arrayList.getJSONObject(position).getString("id");
-                        routeTITLE = arrayList.getJSONObject(position).getString("title");
-                        binding.selectRoute.setText(routeTITLE);
                     } catch (JSONException ignored) {
                     }
                     break;
@@ -998,5 +990,20 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             }
         } catch (Exception ignored) {
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        MyAlertDialog.show(context, "", "Are you sure you want to go back?", true, "Yes", "No", new AlertBox() {
+            @Override
+            public void PositiveMethod(DialogInterface dialog, int id) {
+                finish();
+            }
+
+            @Override
+            public void NegativeMethod(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
     }
 }
