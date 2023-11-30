@@ -1,5 +1,8 @@
 package com.saneforce.godairy.Activity_Hap;
 
+import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_MODE;
+import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,6 +53,8 @@ import com.saneforce.godairy.databinding.ActivityDashboardBinding;
 import com.saneforce.godairy.fragments.GateInOutFragment;
 import com.saneforce.godairy.fragments.MonthlyFragment;
 import com.saneforce.godairy.fragments.TodayFragment;
+import com.saneforce.godairy.procurement.ProcurementHome;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,7 +96,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     ArrayList<String> exploreName = new ArrayList<>(Arrays.asList(
             "Request & status",
             "TA & Claim",
-            "SFA",
+            "Activity",
             "Gate IN",
             "Gate OUT",
             "PJP"));
@@ -292,6 +297,14 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         break;
 
                     case 2:
+                        String mMode = getIntent().getStringExtra("Mode");
+
+                        if (mMode.equals(INTENT_PROCUREMENT_MODE)){
+                            Intent intent = new Intent(context, ProcurementHome.class);
+                            intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                            startActivity(intent);
+                            return;
+                        }
                         startActivity(new Intent(context, SFA_Activity.class));
                         break;
 

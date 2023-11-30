@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".procurement.AgronomistFormActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:elevation="20dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_35"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/back"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/ubuntu_medium"
+            android:text="@string/agronomist_form"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/select_company"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_company_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="Not valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="@string/select_plant"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_plant_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Not valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <Spinner
+                    android:id="@+id/spinner_plant"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu"
+                android:textStyle="bold"
+                android:text="@string/_1_name_of_the_village_center_name"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_center_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="@string/type"
+                android:text="Text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:importantForAutofill="no"
+                android:inputType="textAutoComplete" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu"
+                android:textStyle="bold"
+                android:text="@string/_2_farmer_code_farmer_name"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_farmer_code_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textAutoComplete"
+                android:hint="@string/type"
+                android:text="test"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="@string/_3_types_of_product"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_type_of_pro_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Not valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <Spinner
+                    android:id="@+id/spinner_type_of_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu"
+                android:textStyle="bold"
+                android:text="@string/_4_teat_dip_cup_amp_solution"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_teat_tip_cup"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="@string/type"
+                android:text="test"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="name"
+                android:inputType="textAutoComplete" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:textStyle="bold"
+                    android:text="@string/_5_type_of_service"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_type_of_service_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Not valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <Spinner
+                    android:id="@+id/spinner_type_of_service"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:textStyle="bold"
+                    android:text="@string/farmers_meeting"
+                    android:textColor="@color/grey" />
+
+                <TextView
+                    android:id="@+id/txt_farmers_image_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Not valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/camera_farmers_meeting"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/apple_camera"
+                    android:contentDescription="@string/farmers_meeting" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_formers_meeting_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_farmers_meeting"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"/>
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:textStyle="bold"
+                    android:text="@string/csr_activity"
+                    android:textColor="@color/grey" />
+
+                <TextView
+                    android:id="@+id/txt_csr_image_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Not valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/camera_csr_activity"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/apple_camera"
+                    android:contentDescription="@string/farmers_meeting" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_csr_activity_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_csr_activity"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"/>
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:textStyle="bold"
+                    android:text="@string/_6_fodder_development_acres"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_fodder_image_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Not valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/ed_fodder_development_acres"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="@string/type"
+                android:text="test"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="name"
+                android:inputType="textAutoComplete"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/camera_foder"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/apple_camera"
+                    android:contentDescription="@string/farmers_meeting" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_foder_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="3dp"
+                    android:layout_alignParentEnd="true"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_foder"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"/>
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu"
+                android:textStyle="bold"
+                android:text="@string/_7_no_of_farmers_enrolled"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_no_of_farmers_enrolled"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="@string/type"
+                android:text="test"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="name"
+                android:inputType="numberDecimal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu"
+                android:textStyle="bold"
+                android:text="@string/_8_no_of_farmers_inducted"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_no_of_farmers_inducted"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="@string/type"
+                android:text="test"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="name"
+                android:inputType="numberDecimal"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/txt_error_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Error Empty field found"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/button_blue"
+                android:textColor="@color/white"
+                android:fontFamily="@font/ubuntu"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

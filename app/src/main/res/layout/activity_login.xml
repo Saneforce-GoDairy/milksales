@@ -85,8 +85,8 @@
                 android:hint="Username / Email Address"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="5dp"
-                android:textColor="@color/black"
-                />
+                android:text="san-001"
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -142,6 +142,7 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
 
     boolean isSubmit = false;
     private String mUkey;
+    private final Context context = this;
 
     @SuppressLint("SetTextI18n")
     @Override
