@@ -1026,8 +1026,14 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                         sharedCommonPref.save(Constants.PrimaryTAXList, apiDataResponse);
                         if (UserDetails.getString("DeptType", "").equalsIgnoreCase("1"))
                             common_class.CommonIntentwithoutFinish(ProcPrimaryOrderActivity.class);
-                        else
-                            common_class.CommonIntentwithoutFinish(PrimaryOrderActivity.class);
+                        else{
+                            Intent intent = new Intent(SFA_Activity.this, PrimaryOrderActivity.class);
+                            if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE)==Constants.DISTRIBUTER_TYPE){
+                                intent.putExtra("Mode", "order_view");
+                            }
+                            startActivity(intent);
+                            //common_class.CommonIntentwithoutFinish(PrimaryOrderActivity.class);
+                        }
                         overridePendingTransition(R.anim.in, R.anim.out);
                         break;
 
