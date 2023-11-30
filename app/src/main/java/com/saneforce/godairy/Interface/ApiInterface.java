@@ -771,6 +771,12 @@ public interface ApiInterface {
     @POST("payments/jfs/v1/payments/intent")
     Call<ResponseBody> MakeTransaction(@HeaderMap Map<String, String> headerMap, @Body RequestBody jsonObject);
 
+    @POST("temp_no_order_reason_submit.php")
+    Call<ResponseBody> primaryNoOrderReasonSubmit(@Query("axn") String axn,
+                                                  @Query("reason") String reason,
+                                                  @Query("sf_code") String sfCode,
+                                                  @Query("time_date") String time_date);
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

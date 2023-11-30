@@ -184,7 +184,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             if (ordersViewMode != null){
                  if ("order_view".equals(ordersViewMode)){
-                     Toast.makeText(context, "its order view mode", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(context, "its order view mode", Toast.LENGTH_SHORT).show();
                      binding.newPrimaryListLayout.setVisibility(View.GONE);
                      binding.oldPrimaryLayout.setVisibility(View.VISIBLE);
                  }

@@ -1,5 +1,6 @@
 package com.saneforce.godairy.SFA_Activity;
 
+import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
 import static com.saneforce.godairy.Common_Class.Constants.GroupFilter;
 import static com.saneforce.godairy.Common_Class.Constants.Rout_List;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.CurrencySymbol;
@@ -8,6 +9,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +40,8 @@ import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AdapterOnClick;
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.Interface.onListItemClick;
@@ -54,8 +59,10 @@ import com.saneforce.godairy.procurement.QualityFormActivity;
 import com.saneforce.godairy.procurement.VeterinaryDoctorsFormActivity;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +70,15 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Part;
 
 public class TodayPrimOrdActivity extends AppCompatActivity implements Master_Interface, View.OnClickListener, UpdateResponseUI {
     private ActivityTodayPrimorderHistoryBinding binding;
@@ -82,6 +98,8 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
     String groupType = "All";
     private Dialog noOrderDialog;
     private Dialog purposeOfVisitDialog;
+    String mSelectedNoOrderReason;
+    EditText nameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,21 +138,26 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             common_class.gotoHomeScreen(this, ivToolbarHome);
             common_class.getDataFromApi(Constants.GetTodayPrimaryOrder_List, this, false);
 
-
+            int didts = 0;
             if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
                 llDistributor.setEnabled(false);
                 btnCmbRoute.setVisibility(View.GONE);
                 findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
                 distributor_text.setText("HI! " + sharedCommonPref.getvalue(Constants.Distributor_name, ""));
+                String nMstring = sharedCommonPref.getvalue(Constants.Distributor_name, "");
+                 didts = Integer.parseInt(nMstring.replaceAll("[\\D]", ""));
             } else {
                 if (!sharedCommonPref.getvalue(Constants.Distributor_Id).equals("")) {
                     common_class.getDb_310Data(Rout_List, this);
                     distributor_text.setText(/*"Hi! " +*/ sharedCommonPref.getvalue(Constants.Distributor_name, ""));
+                    String nMstring = sharedCommonPref.getvalue(Constants.Distributor_name, "");
+                     didts = Integer.parseInt(nMstring.replaceAll("[\\D]", ""));
                 } else {
                     btnCmbRoute.setVisibility(View.GONE);
                 }
             }
 
+            int dd = didts;
 
         } catch (Exception e) {
 
@@ -161,8 +184,15 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
 
                 RelativeLayout close = noOrderDialog.findViewById(R.id.close);
                 RelativeLayout submitBtn = noOrderDialog.findViewById(R.id.submit_button);
-                EditText nameEditText = noOrderDialog.findViewById(R.id.name_edit_text);
+                nameEditText = noOrderDialog.findViewById(R.id.name_edit_text);
                 LinearLayout purposeOfVisit = noOrderDialog.findViewById(R.id.purpose_of_visit);
+
+                submitBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                       // todo
+                    }
+                });
 
                 purposeOfVisit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -179,7 +209,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                                 "Collection Center Location"
                         ));
 
-                        noOrderDialog.dismiss();
+                      //  noOrderDialog.dismiss();
 
                         purposeOfVisitDialog = new Dialog(context);
                         purposeOfVisitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -204,18 +234,53 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                     String mChannealName = nameEditText.getText().toString().trim();
 
                     if ("". equals(mChannealName)){
-                        nameEditText.setError("Enter field");
                         nameEditText.requestFocus();
                         return;
                     }
-                    Log.e("channel_", "valid channel name");
+                    ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+                    String userInfo = "MyPrefs";
+                    SharedPreferences UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
+
+                    String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                    String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                    String mTimeDate  = mDate +" "+mTime;
+
+                    String mSFCode =UserDetails.getString("Sfcode","");
+
+
+                    Call<ResponseBody> call = apiInterface.primaryNoOrderReasonSubmit("save/no_order_reason", mSelectedNoOrderReason, mSFCode, mTimeDate);
+
+                    call.enqueue(new Callback<>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()){
+                                assert response.body() != null;
+                                String res = null;
+                                try {
+                                    res = response.body().string();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                // Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "sucess", Toast.LENGTH_SHORT).show();
+                                noOrderDialog.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            noOrderDialog.dismiss();
+                        }
+                    });
+
                 });
                 close.setOnClickListener(v1 -> noOrderDialog.dismiss());
             }
         });
     }
 
-    public static class PurposeOfVisitAdapter extends RecyclerView.Adapter<PurposeOfVisitAdapter.ViewHolder> {
+    public class PurposeOfVisitAdapter extends RecyclerView.Adapter<PurposeOfVisitAdapter.ViewHolder> {
         ArrayList exploreImage, exploreName;
         Context context;
 
@@ -235,6 +300,14 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
         @Override
         public void onBindViewHolder(@NonNull PurposeOfVisitAdapter.ViewHolder holder, int position) {
             holder.text.setText((String) exploreName.get(position));
+
+            holder.layout.setOnClickListener(v -> {
+                mSelectedNoOrderReason = exploreName.get(position).toString();
+
+                nameEditText.setText(mSelectedNoOrderReason);
+                purposeOfVisitDialog.dismiss();
+                noOrderDialog.show();
+            });
         }
 
         @Override
@@ -244,12 +317,12 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             TextView text;
-            CardView layout;
+            LinearLayout layout;
 
             public ViewHolder(View view) {
                 super(view);
                 text = view.findViewById(R.id.txt_name);
-//                layout = view.findViewById(R.id.layout);
+                layout = view.findViewById(R.id.layout);
             }
         }
     }
