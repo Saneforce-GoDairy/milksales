@@ -246,7 +246,7 @@ public class ChallanActivity extends AppCompatActivity {
         // ------------------------------------------------------------------------- Heading
 
         y += 25;
-        drawBIGTitleWithCenterAlign("Lactalis India Pvt Ltd", (float) pageWidth / 2, y);
+        drawBIGTitleWithCenterAlign("Tirumala Milk Products Pvt Ltd.", (float) pageWidth / 2, y);
 
         y += 20;
         drawTextWithCenterAlign(VERSION, (float) pageWidth / 2, y);
@@ -257,8 +257,8 @@ public class ChallanActivity extends AppCompatActivity {
         // ------------------------------------------------------------------------- Receipt No
 
         y += 30;
-        drawText("Receipt No: ", x, y);
-        float temp1 = paint.measureText("Receipt No: ");
+        drawText("DocNo: ", x, y);
+        float temp1 = paint.measureText("DocNo: ");
 
         drawTitle(DocNo, x + temp1 + 10, y);
         float temp2 = paint.measureText(DocNo);
