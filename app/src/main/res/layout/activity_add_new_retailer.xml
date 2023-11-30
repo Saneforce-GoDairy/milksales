@@ -32,16 +32,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingBottom="12dp"
-        android:clipToPadding="false"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <!--Distributor-->
@@ -79,6 +79,7 @@
 
                 <TextView
                     style="@style/myFormTitle"
+                    android:layout_marginBottom="5dp"
                     android:text="Franchise Code" />
 
                 <LinearLayout
@@ -134,6 +135,7 @@
                 <EditText
                     android:id="@+id/enterOutletName"
                     style="@style/myFormEditText"
+                    android:inputType="textCapCharacters"
                     android:hint="Enter the Outlet Name" />
 
             </LinearLayout>
@@ -173,6 +175,7 @@
                 <EditText
                     android:id="@+id/enterReasonForClosed"
                     style="@style/myFormEditText"
+                    android:inputType="textCapWords"
                     android:hint="Enter the Reason for Close" />
 
             </LinearLayout>
@@ -224,6 +227,7 @@
                         <EditText
                             android:id="@+id/enterOwnerName"
                             style="@style/myFormEditText"
+                            android:inputType="textCapCharacters"
                             android:hint="Enter Owner Name" />
 
                     </LinearLayout>
@@ -348,6 +352,7 @@
                 <EditText
                     android:id="@+id/enterLocation"
                     style="@style/myFormEditText"
+                    android:inputType="textCapWords"
                     android:hint="Enter the Location" />
 
             </LinearLayout>
@@ -367,6 +372,7 @@
                 <EditText
                     android:id="@+id/enterDistrict"
                     style="@style/myFormEditText"
+                    android:inputType="textCapWords"
                     android:hint="Enter the District" />
 
             </LinearLayout>
@@ -407,6 +413,7 @@
                 <EditText
                     android:id="@+id/enterGST"
                     style="@style/myFormEditText"
+                    android:inputType="textCapCharacters"
                     android:hint="Enter the GST Number"
                     android:maxLength="15" />
 
@@ -557,17 +564,24 @@
                 android:id="@+id/visiCoolerAvailableLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/visiCoolerAvailableTitle"
-                    style="@style/myFormTitle"
-                    android:text="Visi Cooler Available" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Visi Cooler Available"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/selectVisiCoolerAvailable"
-                    style="@style/myFormDropdown"
-                    android:hint="Select Visi Cooler Available" />
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchVisiCoolerAvailable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:checked="false" />
 
             </LinearLayout>
 
@@ -596,17 +610,24 @@
                 android:id="@+id/iceCreamFreezerAvailableLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/iceCreamFreezerAvailableTitle"
-                    style="@style/myFormTitle"
-                    android:text="Ice Cream Freezer Available" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Ice Cream Freezer Available"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/selectIceCreamFreezerAvailable"
-                    style="@style/myFormDropdown"
-                    android:hint="Select Ice Cream Freezer Available" />
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchIceCreamFreezerAvailable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:checked="false" />
 
             </LinearLayout>
 
@@ -626,6 +647,7 @@
                 <EditText
                     android:id="@+id/enterIceCreamFreezerCompany"
                     style="@style/myFormEditText"
+                    android:inputType="textCapWords"
                     android:hint="Enter Ice Cream Freezer Company" />
 
             </LinearLayout>
@@ -635,17 +657,24 @@
                 android:id="@+id/lactalisFreezerRequirementLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/lactalisFreezerRequirementTitle"
-                    style="@style/myFormTitle"
-                    android:text="Lactalis Freezer Requirement" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Lactalis Freezer Requirement"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/selectLactalisFreezerRequirement"
-                    style="@style/myFormDropdown"
-                    android:hint="Select Lactalis Freezer Requirement" />
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchLactalisFreezerRequirement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:checked="false" />
 
             </LinearLayout>
 
@@ -664,6 +693,8 @@
                 <EditText
                     android:id="@+id/enterFSSAINumber"
                     style="@style/myFormEditText"
+                    android:inputType="number"
+                    android:maxLength="14"
                     android:hint="Enter FSSAI Number" />
 
             </LinearLayout>
@@ -684,7 +715,7 @@
                     android:id="@+id/enterPANNumber"
                     style="@style/myFormEditText"
                     android:hint="Enter PAN Number"
-                    android:inputType="textCapWords"
+                    android:inputType="textCapCharacters"
                     android:maxLength="10" />
 
             </LinearLayout>
@@ -718,6 +749,7 @@
         style="@style/BottomButton"
         android:text="Submit"
         android:theme="@style/BluePrimaryButton"
+        android:visibility="gone"
         app:finalCornerAngle="50dp"
         app:initialCornerAngle="0dp"
         app:spinning_bar_color="#FFFFFFFF"

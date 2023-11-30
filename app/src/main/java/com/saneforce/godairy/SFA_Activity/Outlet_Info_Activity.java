@@ -437,21 +437,10 @@ public class Outlet_Info_Activity extends AppCompatActivity implements View.OnCl
                     public void onIntentClick(int position) {
                         try {
                             Intent intent = new Intent(getApplicationContext(), AddNewRetailer.class);
-                            Shared_Common_Pref.Outlet_Info_Flag = "1";
-                            Shared_Common_Pref.Editoutletflag = "1";
-                            Shared_Common_Pref.Outler_AddFlag = "0";
-                            Shared_Common_Pref.FromActivity = "Outlets";
-                            Shared_Common_Pref.OutletCode = String.valueOf(Retailer_Modal_ListFilter.get(position).getId());
-                            intent.putExtra("OutletCode", String.valueOf(Retailer_Modal_ListFilter.get(position).getId()));
-                            intent.putExtra("OutletName", Retailer_Modal_ListFilter.get(position).getName());
-                            intent.putExtra("OutletAddress", Retailer_Modal_ListFilter.get(position).getListedDrAddress1());
-                            intent.putExtra("OutletMobile", Retailer_Modal_ListFilter.get(position).getPrimary_No());
-                            intent.putExtra("OutletRoute", Retailer_Modal_ListFilter.get(position).getTownName());
-
+                            intent.putExtra("outletCode", String.valueOf(Retailer_Modal_ListFilter.get(position).getId()));
+                            intent.putExtra("flag", "1");
                             startActivity(intent);
-                            // finish();
-                        } catch (Exception e) {
-
+                        } catch (Exception ignored) {
                         }
 
                     }
