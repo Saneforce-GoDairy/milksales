@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/sfatoolbar"></include>
+        <include layout="@layout/sfatoolbar"/>
 
 
         <TextView
@@ -22,11 +22,11 @@
             android:background="@drawable/blue_bg"
             android:fontFamily="@font/basic"
             android:padding="@dimen/C8dp"
-            android:text="Primary Order History"
+            android:text="@string/primary_order_history"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="#FFF"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -44,25 +44,27 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/llDistributor"
+                    android:id="@+id/layout_distributer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
                     <TextView
-                        android:id="@+id/distributor_text"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txt_distributor"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/basic"
-                        android:hint="Select Franchise"
-                        android:paddingRight="@dimen/C5dp"
+                        android:hint="@string/select_franchise"
+                        android:paddingEnd="@dimen/C5dp"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        tools:ignore="RtlSymmetry" />
 
                     <ImageView
                         android:id="@+id/ivDistSpinner"
@@ -70,28 +72,32 @@
                         android:layout_height="7dp"
                         android:layout_gravity="center"
                         android:src="@drawable/spin_down_arrow"
-                        app:tint="@color/black">
+                        app:tint="@color/black"
+                        android:contentDescription="@string/todo">
 
                     </ImageView>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/btnCmbRoute"
+                    android:id="@+id/btn_cmb_route"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:ignore="UseCompoundDrawables">
 
                     <TextView
-                        android:id="@+id/route_text"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txt_route"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Select the Route"
-                        android:paddingRight="@dimen/C5dp"
+                        android:hint="@string/select_the_route"
+                        android:paddingEnd="@dimen/C5dp"
+                        android:paddingStart="@dimen/C5dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        android:textSize="9sp" />
+                        android:textSize="9sp"
+                        tools:ignore="SmallSp" />
 
                     <ImageView
                         android:id="@+id/ivRouteSpinner"
@@ -99,7 +105,8 @@
                         android:layout_height="@dimen/C7dp"
                         android:layout_gravity="center"
                         android:src="@drawable/spin_down_arrow"
-                        app:tint="@color/black">
+                        app:tint="@color/black"
+                        android:contentDescription="@string/todo">
 
                     </ImageView>
                 </LinearLayout>
@@ -113,29 +120,29 @@
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/tvStartDate"
+                    android:id="@+id/txt_start_date"
                     style="@style/TextStyle"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/textbox_bg"
-                    android:drawableRight="@drawable/ic_baseline_date_range_24"
-                    android:drawableTint="@color/colorPrimaryDark"
                     android:elevation="5dp"
-                    android:hint="Select  Start Date"
-                    android:padding="@dimen/C8dp" />
+                    android:hint="@string/select_start_date"
+                    android:padding="@dimen/C8dp"
+                    app:drawableRightCompat="@drawable/ic_baseline_date_range_24"
+                    app:drawableTint="@color/colorPrimaryDark" />
 
 
                 <TextView
-                    android:id="@+id/tvEndDate"
+                    android:id="@+id/txt_end_date"
                     style="@style/TextStyle"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:background="@drawable/textbox_bg"
-                    android:drawableRight="@drawable/ic_baseline_date_range_24"
-                    android:drawableTint="@color/colorPrimaryDark"
                     android:elevation="5dp"
-                    android:hint="Select  End Date"
-                    android:padding="@dimen/C8dp" />
+                    android:hint="@string/select_end_date"
+                    android:padding="@dimen/C8dp"
+                    app:drawableRightCompat="@drawable/ic_baseline_date_range_24"
+                    app:drawableTint="@color/colorPrimaryDark" />
 
             </LinearLayout>
 
@@ -149,13 +156,12 @@
                 app:cardCornerRadius="@dimen/C5dp">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvPrimOrdFilter"
+                    android:id="@+id/recyclerview_primary_order_filter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/C5dp"
                     android:orientation="horizontal"
-
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </androidx.cardview.widget.CardView>
 
@@ -172,12 +178,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/sno"
+                    android:layout_marginStart="@dimen/sno"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Invoice ID"
+                    android:text="@string/invoice_id"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/C14dp"></TextView>
+                    android:textSize="@dimen/C14dp"
+                    tools:ignore="SpUsage" />
 
 
                 <TextView
@@ -187,9 +194,10 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="Status"
+                    android:text="@string/status"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/C14dp"></TextView>
+                    android:textSize="@dimen/C14dp"
+                    tools:ignore="SpUsage" />
 
                 <TextView
                     android:id="@+id/txt_total"
@@ -198,20 +206,20 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="Value"
+                    android:text="@string/value"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/C14dp"></TextView>
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="0.8">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/invoicerecyclerview"
+                    android:id="@+id/recycler_view_invoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -240,7 +248,7 @@
                         android:layout_centerInParent="true"
                         android:textStyle="bold"
                         android:textColor="@color/white"
-                        android:text="ORDER"
+                        android:text="@string/order"
                         android:fontFamily="@font/ubuntu"/>
 
                 </RelativeLayout>
@@ -261,7 +269,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/ubuntu"
-                        android:text="NO ORDER"
+                        android:text="@string/no_order"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
 
@@ -274,7 +282,6 @@
                 android:id="@+id/cvTotParent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/C10dp"
                 app:cardCornerRadius="@dimen/C5dp">
 
@@ -287,15 +294,14 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Total"
+                        android:text="@string/total"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txtTotAmt"
+                        android:id="@+id/txt_grand_total"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
@@ -304,7 +310,8 @@
                         android:text="0.00"
                         android:textColor="@color/color_red"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
 
 
                 </RelativeLayout>

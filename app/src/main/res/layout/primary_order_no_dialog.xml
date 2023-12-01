@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
@@ -16,7 +16,7 @@
             android:background="#008eff"
             android:fontFamily="@font/ubuntu_medium"
             android:padding="10dp"
-            android:text="Reason for no order"
+            android:text="@string/reason_for_no_order"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="X"
+                android:text="@string/close_x"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reason"
+                android:text="@string/reason"
                 android:textColor="@color/black"
                 android:fontFamily="@font/ubuntu_medium"/>
 
@@ -69,12 +69,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_alignParentEnd="true">
+                android:layout_alignParentEnd="true"
+                tools:ignore="RelativeOverlap,UseCompoundDrawables">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select purpose"
+                    android:text="@string/select_purpose"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/black"
                     android:fontFamily="@font/ubuntu_medium"/>
@@ -84,7 +85,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/spin_down_arrow"/>
+                    android:src="@drawable/spin_down_arrow"
+                    android:contentDescription="@string/down_arrow" />
 
             </LinearLayout>
 
@@ -97,16 +99,19 @@
             android:id="@+id/name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Select"
+            android:hint="@string/select"
+            android:longClickable="false"
+            android:clickable="false"
             android:textCursorDrawable="@drawable/cursor_blue"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            />
+            android:autofillHints="none"
+            android:inputType="text" />
 
         <RelativeLayout
             android:id="@+id/submit_button"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_pg_dark_blue"
             android:paddingStart="@dimen/C10dp"
@@ -119,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/ubuntu"
-                android:text="SUBMIT"
+                android:text="@string/submit"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -142,10 +147,8 @@
             android:id="@+id/save_card_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             app:cardCornerRadius="30dp">
 
@@ -155,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:background="#008dff"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="continue"
+                android:text="@string/continue_"
                 android:textColor="#ffffff" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
