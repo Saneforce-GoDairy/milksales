@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.saneforce.godairy.Common_Class.Common_Class;
@@ -80,8 +81,8 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
     public static String stDate = "", endDate = "";
     private static final String TAG = "TodayPrimOrdActivity";
     private TextView tvStartDate, tvEndDate;
-    private ArrayList<PrimaryNoOrderList> primaryNoOrderListsMain;
-    private PrimaryNoOrderListAdapter purposeOfVisitAdapter;
+    private List<PrimaryNoOrderList> primaryNoOrderListsMain;
+    private PrimaryNoOrderListAdapter primaryNoOrderListAdapter;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -103,35 +104,50 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             endDate = Common_Class.GetDatewothouttime();
             binding.txtStartDate.setText(stDate);
             binding.txtEndDate.setText(endDate);
-
+            primaryNoOrderListsMain = new ArrayList<>();
             loadList();
-
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        binding.recyclerViewInvoice.setLayoutManager(linearLayoutManager);
-//        binding.recyclerViewInvoice.setHasFixedSize(true);
-//        binding.recyclerViewInvoice.setItemViewCacheSize(20);
-//        purposeOfVisitAdapter = new PrimaryNoOrderListAdapter(context, primaryNoOrderListsMain);
-//        binding.recyclerViewInvoice.setAdapter(purposeOfVisitAdapter);
     }
 
     private void loadList() {
         ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
-
-        Call<PrimaryNoOrderList> call = apiInterface.getPrimaryNoOrderList("get_no_orders_list", String.valueOf(mERPCode));
-
+        Call<ResponseBody> call = apiInterface.getPrimaryNoOrderList("get_no_orders_list", String.valueOf(mERPCode));
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(@NonNull Call<PrimaryNoOrderList> call, @NonNull Response<PrimaryNoOrderList> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    String  primaryNoOrderList;
+                    try {
+                        primaryNoOrderList = response.body().string();
+                        JSONArray jsonArray = new JSONArray(primaryNoOrderList);
 
+                        for (int i = 0; i<jsonArray.length(); i++) {
+                            PrimaryNoOrderList primaryNoOrderList1 = new PrimaryNoOrderList();
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            primaryNoOrderList1.setReason(object.getString("reason"));
+                            primaryNoOrderList1.setId(object.getString("distribute_name"));
+                            primaryNoOrderList1.setDateTime(object.getString("date_time"));
+                            primaryNoOrderListsMain.add(primaryNoOrderList1);
+                        }
+
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        binding.recyclerViewInvoice.setLayoutManager(linearLayoutManager);
+                        binding.recyclerViewInvoice.setHasFixedSize(true);
+                        binding.recyclerViewInvoice.setItemViewCacheSize(20);
+                        primaryNoOrderListAdapter = new PrimaryNoOrderListAdapter(context, primaryNoOrderListsMain);
+                        binding.recyclerViewInvoice.setAdapter(primaryNoOrderListAdapter);
+                        primaryNoOrderListAdapter.notifyDataSetChanged();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<PrimaryNoOrderList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Toast.makeText(TodayPrimOrdActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("ssd", t.getMessage());
             }
         });
 
@@ -284,24 +300,38 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
     }
 
     public static class PrimaryNoOrderListAdapter extends  RecyclerView.Adapter<PrimaryNoOrderListAdapter.ViewHolder>{
-        private ArrayList<PrimaryNoOrderList> primaryNoOrderListsA;
+        private List<PrimaryNoOrderList> primaryNoOrderListsA;
         private Context context;
 
-        public PrimaryNoOrderListAdapter(Context context, ArrayList<PrimaryNoOrderList> primaryNoOrderLists) {
+        public PrimaryNoOrderListAdapter(Context context, List<PrimaryNoOrderList> primaryNoOrderListsA) {
             this.context = context;
-            this.primaryNoOrderListsA = primaryNoOrderLists;
+            this.primaryNoOrderListsA = primaryNoOrderListsA;
         }
 
         @NonNull
         @Override
         public PrimaryNoOrderListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_purpose_of_visit_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_no_order_reason_list, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull PrimaryNoOrderListAdapter.ViewHolder holder, int position) {
+            holder.text.setText(primaryNoOrderListsA.get(position).getId());
+            holder.txtReason.setText(primaryNoOrderListsA.get(position).getReason());
 
+            String upToNCharacters = primaryNoOrderListsA.get(position).getDateTime().substring(0, Math.min(primaryNoOrderListsA.get(position).getDateTime().length(), 10));
+
+            holder.txtDate.setText(upToNCharacters);
+        }
+
+        @Override
+        public long getItemId(int position){
+            return position;
+        }
+        @Override
+        public int getItemViewType(int position){
+            return position;
         }
 
         @Override
@@ -309,14 +339,16 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             return primaryNoOrderListsA.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView text;
-            LinearLayout layout;
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            TextView text, txtReason, txtDate;
+            CardView layout;
 
             public ViewHolder(View view) {
                 super(view);
                 text = view.findViewById(R.id.txt_name);
                 layout = view.findViewById(R.id.layout);
+                txtReason = view.findViewById(R.id.txt_reason);
+                txtDate = view.findViewById(R.id.txt_date);
             }
         }
     }
@@ -558,7 +590,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                 }
             });
 
-            binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
+         //   binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
 
             double totAmt = 0;
             for (int i = 0; i < filterArr.length(); i++) {

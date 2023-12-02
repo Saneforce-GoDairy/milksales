@@ -783,7 +783,7 @@ public interface ApiInterface {
                                                   @Query("time_date") String time_date);
 
     @POST("temp_no_order_reason_submit.php")
-    Call<PrimaryNoOrderList> getPrimaryNoOrderList(@Query("axn") String axn,
+    Call<ResponseBody> getPrimaryNoOrderList(@Query("axn") String axn,
                                                    @Query("erp_code") String distribute_code);
 
     @GET(ApiClient.CONFIG_URL)
