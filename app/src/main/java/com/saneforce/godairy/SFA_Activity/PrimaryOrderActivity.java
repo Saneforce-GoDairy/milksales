@@ -46,6 +46,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atom.atompaynetzsdk.PayActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -56,7 +57,6 @@ import com.saneforce.godairy.Activity_Hap.Dashboard;
 import com.saneforce.godairy.Activity_Hap.MainActivity;
 import com.saneforce.godairy.Activity_Hap.SFA_Activity;
 import com.saneforce.godairy.BuildConfig;
-import com.saneforce.godairy.CCAvenue.InitiatePaymentActivity;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
@@ -69,7 +69,6 @@ import com.saneforce.godairy.Interface.LocationEvents;
 import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.Interface.onListItemClick;
-import com.saneforce.godairy.JioMoney.PaymentWebView;
 import com.saneforce.godairy.Model_Class.Datum;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
@@ -271,7 +270,33 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
-                if (PaymentMethod == null || PaymentMethod.equals("null")) {
+                Intent newPayIntent=new Intent (PrimaryOrderActivity.this, PayActivity.class);
+                newPayIntent.putExtra("merchantId", "317157");
+                newPayIntent.putExtra("password", "Test@123");
+                newPayIntent.putExtra("prodid", "Multi");
+                newPayIntent.putExtra("txncurr", "INR");
+                newPayIntent.putExtra("custacc", "100000036600");
+                newPayIntent.putExtra("amt","30.00");
+                newPayIntent.putExtra("txnid", Common_Class.GetEkey());
+                newPayIntent.putExtra("signature_request", "KEY1234567234");
+                newPayIntent.putExtra("signature_response", "KEYRESP123657234");
+                newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
+                newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
+                newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+                newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
+                newPayIntent.putExtra("isLive", false);
+                newPayIntent.putExtra("custFirstName", "test user");
+                newPayIntent.putExtra("customerEmailID", "test@gmail.com");
+                newPayIntent.putExtra("customerMobileNo", "8888888888");
+                newPayIntent.putExtra("udf1", "udf1");
+                newPayIntent.putExtra("udf2", "udf2");
+                newPayIntent.putExtra("udf3", "udf3");
+                newPayIntent.putExtra("udf4", "udf4");
+                newPayIntent.putExtra("udf5", "udf5");
+                startActivityForResult(newPayIntent,1);
+
+                /*if (PaymentMethod == null) {
                     Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
                 } else if (PaymentMethod.equalsIgnoreCase("CC")) {
                     Intent intent = new Intent(this, InitiatePaymentActivity.class);
@@ -285,7 +310,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     intent.putExtra("totalValues", 1.00);
                     startActivity(intent);
                     finish();
-                }
+                }*/
             });
 
         loadDistributer(common_class.getDistList(), 2);
@@ -387,6 +412,24 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         recyclerView = findViewById(R.id.orderrecyclerview);
         freeRecyclerview = findViewById(R.id.freeRecyclerview);
         ivToolbarHome = findViewById(R.id.toolbar_home);
+    }
+
+    public String createMultiProductData() {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObjOne = new JSONObject();
+        JSONObject jsonObjTwo = new JSONObject();
+        try {
+            jsonObjOne.put("prodName", "NSE");
+            jsonObjOne.put("prodAmount", 29.00);
+            jsonObjTwo.put("prodName", "AIPAY");
+            jsonObjTwo.put("prodAmount", 1.00);
+            jsonArray.put(jsonObjOne);
+            jsonArray.put(jsonObjTwo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("jsonArray from createMultiProductData = " + jsonArray.toString());
+        return jsonArray.toString();
     }
 
     private void getLastOrderedQty() {
@@ -945,6 +988,18 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("resultCode = "+resultCode);
+        System.out.println("onActivityResult data = "+data);
+        if(data != null && resultCode != 2 && requestCode == 1){
+            System.out.println("ArrayList data = "+data.getExtras().getString("response"));
+            if(resultCode == 1){
+                Toast.makeText(this,"Transaction Successful! \n" + data.getExtras().getString("response"), Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this,"Transaction Failed! \n"  + data.getExtras().getString("response"), Toast.LENGTH_LONG).show();
+            }
+        } else{
+            Toast.makeText(this,"Transaction Cancelled!", Toast.LENGTH_LONG).show();
+        }
         if (requestCode == 1000) {
             String sLoc = sharedCommonPref.getvalue("CurrLoc");
             if (sLoc.equalsIgnoreCase("")) {
