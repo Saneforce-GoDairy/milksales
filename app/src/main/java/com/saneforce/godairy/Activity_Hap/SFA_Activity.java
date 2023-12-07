@@ -1028,7 +1028,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                             common_class.CommonIntentwithoutFinish(ProcPrimaryOrderActivity.class);
                         else{
                             Intent intent = new Intent(SFA_Activity.this, PrimaryOrderActivity.class);
-                            if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE)==Constants.DISTRIBUTER_TYPE){
+                            if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)){
                                 intent.putExtra("Mode", "order_view");
                             }
                             startActivity(intent);

@@ -534,6 +534,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                         Shared_Common_Pref.TransSlNo = obj.getString("Trans_Sl_No");
                         Intent intent = new Intent(getBaseContext(), Print_Invoice_Activity.class);
                         sharedCommonPref.save(Constants.FLAG, "Primary Order");
+                        intent.putExtra("Mode", "order_view");
                         intent.putExtra("Order_Values", obj.getString("Order_Value"));
                         intent.putExtra("Invoice_Values", obj.getString("invoicevalues"));
                         //intent.putExtra("No_Of_Items", FilterOrderList.get(position).getNo_Of_items());
@@ -599,6 +600,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                     Intent intent = new Intent(this, PrimaryOrderActivity.class);
                     intent.putExtra(Constants.ORDER_ID, orderNo);
                     intent.putExtra(Constants.CATEGORY_TYPE, categoryType);
+                    intent.putExtra("Mode", "order_view");
                     Shared_Common_Pref.TransSlNo = orderNo;
                     startActivity(intent);
                     overridePendingTransition(R.anim.in, R.anim.out);
