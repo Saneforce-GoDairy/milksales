@@ -214,6 +214,8 @@
     <string name="value">Value</string>
     <string name="no_order">NO ORDER</string>
     <string name="total">Total</string>
+    <string name="not_valid">Not valid</string>
+    <string name="error_empty_field_found">Error Empty field found</string>
 
     <array name="company_array">
         <item>Select</item>
