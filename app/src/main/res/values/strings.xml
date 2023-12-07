@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">GoDairy</string>
     <string name="milk_sales_daily" translatable="false">GoDairy</string>
     <string name="milk_sales_check_in" translatable="false">GoDairy</string>
@@ -28,7 +28,7 @@
     <string name="launch_activity" translatable="false">open</string>
     <string name="location_updated" translatable="false">Updating</string>
     <string name="permission_rationale" translatable="false">Please Grant Location Permission</string>
-    <string name="ok" translatable="false">Ok</string>
+    <string name="ok" translatable="false" tools:ignore="ButtonCase">Ok</string>
     <string name="permission_denied_explanation" translatable="false">Permission Denied</string>
     <string name="settings" translatable="false">Settings</string>
     <string name="reason" translatable="false">Reason</string>
@@ -67,7 +67,7 @@
     <string name="Rep_orders">Reports</string>
     <string name="pri_orders">Orders</string>
     <string name="order_type">Order Type</string>
-    <string name="head_quater">Headquaters</string>
+    <string name="head_quater">Headquarters</string>
     <string name="route">Route  </string>
     <string name="retailer">Outlet Name </string>
     <string name="retailer_class">Outlet Class  </string>
@@ -105,7 +105,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="customer_photo">Customer Photo<font fgcolor='#E53935'> *</font></string>
     <string name="shop_photo">Shop Photo<font fgcolor='#E53935'> *</font></string>
-    <string name="region">TM1 Reporting Verticals<font fgcolor='#E53935'> *</font></string>
+    <string name="region">TM! Reporting Verticals<font fgcolor='#E53935'> *</font></string>
     <string name="sales_office_code">Sales Office Code<font fgcolor='#E53935'> *</font></string>
     <string name="sales_office_name">Sales Office<font fgcolor='#E53935'> *</font></string>
     <string name="route_code">Route Code<font fgcolor='#E53935'> *</font></string>
@@ -199,6 +199,24 @@
     <string name="search">Search</string>
     <string name="a" />
     <string name="hi">Hi!</string>
+    <string name="select">Select</string>
+    <string name="continue_">Continue</string>
+    <string name="select_purpose">Select purpose</string>
+    <string name="down_arrow">Down arrow</string>
+    <string name="close_x">X</string>
+    <string name="reason_for_no_order">Reason for no order</string>
+    <string name="primary_order_history">Primary Order History</string>
+    <string name="select_franchise">Select Franchise</string>
+    <string name="select_the_route">Select the route</string>
+    <string name="select_start_date">Select Start Date</string>
+    <string name="select_end_date">Select End Date</string>
+    <string name="invoice_id">Invoice ID</string>
+    <string name="status">Status</string>
+    <string name="value">Value</string>
+    <string name="no_order">NO ORDER</string>
+    <string name="total">Total</string>
+    <string name="not_valid">Not valid</string>
+    <string name="error_empty_field_found">Error Empty field found</string>
 
     <array name="company_array">
         <item>Select</item>

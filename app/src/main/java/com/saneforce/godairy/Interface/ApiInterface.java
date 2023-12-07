@@ -8,6 +8,7 @@ import com.saneforce.godairy.Model_Class.HeaderCat;
 import com.saneforce.godairy.Model_Class.Location;
 import com.saneforce.godairy.Model_Class.Model;
 import com.saneforce.godairy.Model_Class.POSDataList;
+import com.saneforce.godairy.Model_Class.PrimaryNoOrderList;
 import com.saneforce.godairy.Model_Class.ReportDataList;
 import com.saneforce.godairy.Model_Class.RetailerViewDetails;
 import com.saneforce.godairy.Model_Class.TpMyDayPlanExtra;
@@ -775,7 +776,15 @@ public interface ApiInterface {
     Call<ResponseBody> primaryNoOrderReasonSubmit(@Query("axn") String axn,
                                                   @Query("reason") String reason,
                                                   @Query("sf_code") String sfCode,
+                                                  @Query("erp_code") String distribute_code,
+                                                  @Query("distribute_name") String distribute_name,
+                                                  @Query("lat") String lat,
+                                                  @Query("lan") String lan,
                                                   @Query("time_date") String time_date);
+
+    @POST("temp_no_order_reason_submit.php")
+    Call<ResponseBody> getPrimaryNoOrderList(@Query("axn") String axn,
+                                                   @Query("erp_code") String distribute_code);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
