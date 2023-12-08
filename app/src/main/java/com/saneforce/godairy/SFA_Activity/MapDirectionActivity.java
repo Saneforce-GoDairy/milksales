@@ -656,8 +656,6 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             Log.v("get_dr_detttt", googlePlacesData + " :api: " + sb);
 
             Intent intent = new Intent(getApplicationContext(), AddNewRetailer.class);
-            Shared_Common_Pref.Outler_AddFlag = "1";
-            intent.putExtra(Constants.PLACE_ID, googlePlacesData);
             startActivity(intent);
         }
     }

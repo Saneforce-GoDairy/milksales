@@ -212,16 +212,8 @@ public class Route_View_Adapter extends RecyclerView.Adapter<Route_View_Adapter.
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, AddNewRetailer.class);
-                    Shared_Common_Pref.Outlet_Info_Flag = "1";
-                    Shared_Common_Pref.Editoutletflag = "1";
-                    Shared_Common_Pref.Outler_AddFlag = "0";
-                    Shared_Common_Pref.FromActivity = "Outlets";
-                    Shared_Common_Pref.OutletCode = String.valueOf(mRetailer_Modal_List.getId());
-                    intent.putExtra("OutletCode", String.valueOf(mRetailer_Modal_List.getId()));
-                    intent.putExtra("OutletName", mRetailer_Modal_List.getName());
-                    intent.putExtra("OutletAddress", mRetailer_Modal_List.getListedDrAddress1());
-                    intent.putExtra("OutletMobile", mRetailer_Modal_List.getPrimary_No());
-                    intent.putExtra("OutletRoute", mRetailer_Modal_List.getTownName());
+                    intent.putExtra("outletCode", String.valueOf(mRetailer_Modal_List.getId()));
+                    intent.putExtra("flag", "2");
                     context.startActivity(intent);
                 }
             });

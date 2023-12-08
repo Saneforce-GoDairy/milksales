@@ -229,7 +229,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                 binding.headtext.setText("Outlet Info");
             } else if (flag.equals("2")) {
                 binding.headtext.setText("Edit Outlet");
-                binding.approveParentLL.setVisibility(View.VISIBLE);
+                binding.updateButton.setVisibility(View.VISIBLE);
                 makeEditable(true);
 
             }

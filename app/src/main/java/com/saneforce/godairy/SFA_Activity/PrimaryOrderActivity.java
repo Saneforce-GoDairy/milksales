@@ -350,30 +350,56 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
                 Intent newPayIntent=new Intent (PrimaryOrderActivity.this, PayActivity.class);
-                newPayIntent.putExtra("merchantId", "317157");
+                newPayIntent.putExtra("merchantId", "317159");
                 newPayIntent.putExtra("password", "Test@123");
-                newPayIntent.putExtra("prodid", "Multi");
+                newPayIntent.putExtra("prodid", "NSE");
                 newPayIntent.putExtra("txncurr", "INR");
                 newPayIntent.putExtra("custacc", "100000036600");
                 newPayIntent.putExtra("amt","30.00");
                 newPayIntent.putExtra("txnid", Common_Class.GetEkey());
-                newPayIntent.putExtra("signature_request", "KEY1234567234");
+                newPayIntent.putExtra("signature_request", "KEY123657234");
                 newPayIntent.putExtra("signature_response", "KEYRESP123657234");
                 newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
                 newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
                 newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
                 newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
+//                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
                 newPayIntent.putExtra("isLive", false);
-                newPayIntent.putExtra("custFirstName", "test user");
+                newPayIntent.putExtra("custFirstName", "SANeForce");
                 newPayIntent.putExtra("customerEmailID", "test@gmail.com");
-                newPayIntent.putExtra("customerMobileNo", "8888888888");
+                newPayIntent.putExtra("customerMobileNo", "9876543210");
                 newPayIntent.putExtra("udf1", "udf1");
                 newPayIntent.putExtra("udf2", "udf2");
                 newPayIntent.putExtra("udf3", "udf3");
                 newPayIntent.putExtra("udf4", "udf4");
                 newPayIntent.putExtra("udf5", "udf5");
                 startActivityForResult(newPayIntent,1);
+
+
+                /*newPayIntent.putExtra("merchantId", "317159");
+                newPayIntent.putExtra("password", "Test@123");
+                newPayIntent.putExtra("prodid", "NSE");
+                newPayIntent.putExtra("txncurr", "INR");
+                newPayIntent.putExtra("custacc", "9876543210");
+                newPayIntent.putExtra("amt","30.00");
+                newPayIntent.putExtra("txnid", Common_Class.GetEkey());
+                newPayIntent.putExtra("signature_request", "KEY1234567234");
+                newPayIntent.putExtra("signature_response", "KERESPY1234567234");
+                newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
+                newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
+                newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+                newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
+                newPayIntent.putExtra("isLive", false);
+                newPayIntent.putExtra("custFirstName", "SANeForce");
+                newPayIntent.putExtra("customerEmailID", "test@gmail.com");
+                newPayIntent.putExtra("customerMobileNo", "9876543210");
+                newPayIntent.putExtra("udf1", "udf1");
+                newPayIntent.putExtra("udf2", "udf2");
+                newPayIntent.putExtra("udf3", "udf3");
+                newPayIntent.putExtra("udf4", "udf4");
+                newPayIntent.putExtra("udf5", "udf5");
+                startActivityForResult(newPayIntent,1);*/
 
                 /*if (PaymentMethod == null) {
                     Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
