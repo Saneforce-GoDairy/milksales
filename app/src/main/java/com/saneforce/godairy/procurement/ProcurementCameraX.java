@@ -168,6 +168,10 @@ public class ProcurementCameraX extends AppCompatActivity {
             case 3:
                 fodderDevAcres();
                 break;
+
+            case 4:
+                nameOfBreed();
+                break;
         }
 
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
@@ -207,6 +211,11 @@ public class ProcurementCameraX extends AppCompatActivity {
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    private void nameOfBreed() {
+        imageName = "NOB_123" + ".jpg";
+        file = new File(DIR, imageName);
     }
 
     private void fodderDevAcres() {

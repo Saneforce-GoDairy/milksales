@@ -4,6 +4,7 @@ import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.view.Window;
@@ -43,7 +46,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
     SharedPreferences UserDetails;
     public static final String MY_PREFERENCES = "MyPrefs";
     private Dialog progressDialog;
-    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
         initProgressDialog();
     }
 
+    @SuppressLint("SetTextI18n")
     private void initProgressDialog() {
         progressDialog = new Dialog(context);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -73,38 +76,11 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-        binding.back.setOnClickListener(view -> {
-            finish();
-        });
-    }
-
-    private void initSpinnerArray() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.company_array, R.layout.custom_spinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCompany.setAdapter(adapter);
-
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
-                R.array.plant_array, R.layout.custom_spinner);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter1);
-
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-                R.array.type_of_product_array, R.layout.custom_spinner);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTypeOfProduct.setAdapter(adapter2);
-
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
-                R.array.typs_of_service_array, R.layout.custom_spinner);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTypeOfService.setAdapter(adapter3);
-
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
                 saveNow();
             }
         });
-
         binding.spinnerCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -138,7 +114,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-
         binding.spinnerTypeOfService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -151,14 +126,17 @@ public class AgronomistFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        /*
+         /*
            Camera access id
 
-           Farmers meeting = 1
-           CSR Activity    = 2
-           Fodder Development Ac = 3
-         */
+           1, AgronomistFormActivity
+              Farmers meeting = 1
+              CSR Activity    = 2
+              Fodder Development Ac = 3
 
+           2, AITFormActivity
+              breed = 4
+         */
         binding.cameraFarmersMeeting.setOnClickListener(view -> {
             binding.txtFarmersImageNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -166,7 +144,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("camera_id", "1");
             startActivity(intent);
         });
-
         binding.cameraCsrActivity.setOnClickListener(view -> {
             binding.txtCsrImageNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -174,7 +151,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("camera_id", "2");
             startActivity(intent);
         });
-
         binding.cameraFoder.setOnClickListener(view -> {
             binding.txtFodderImageNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -182,7 +158,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("camera_id", "3");
             startActivity(intent);
         });
-
         binding.imageViewFormersMeetingLayout.setOnClickListener(view -> {
             String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "FAR_123.jpg";
 
@@ -191,7 +166,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("event_name", "Formers Meeting");
             startActivity(intent);
         });
-
         binding.imageViewCsrActivityLayout.setOnClickListener(view -> {
             String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "CSR_123.jpg";
 
@@ -200,7 +174,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("event_name", "CSR Activity");
             startActivity(intent);
         });
-
         binding.imageViewFoderLayout.setOnClickListener(view -> {
             String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "FDA_123.jpg";
 
@@ -209,6 +182,115 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("event_name", "Fodder Development Acres");
             startActivity(intent);
         });
+        binding.back.setOnClickListener(view -> {
+            finish();
+        });
+        binding.edCenterName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edFarmerCodeName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edTeatTipCup.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edFodderDevelopmentAcres.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edNoOfFarmersEnrolled.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edNoOfFarmersInducted.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void initSpinnerArray() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.company_array, R.layout.custom_spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerCompany.setAdapter(adapter);
+
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
+                R.array.plant_array, R.layout.custom_spinner);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerPlant.setAdapter(adapter1);
+
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.type_of_product_array, R.layout.custom_spinner);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerTypeOfProduct.setAdapter(adapter2);
+
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
+                R.array.typs_of_service_array, R.layout.custom_spinner);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerTypeOfService.setAdapter(adapter3);
     }
 
     private boolean validateInputs() {
@@ -335,7 +417,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
                     mTimeDate);
         }).start();
         progressDialog.show();
-        handler = new Handler();
+        Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
