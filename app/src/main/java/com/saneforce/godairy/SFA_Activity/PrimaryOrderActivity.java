@@ -2160,6 +2160,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 holder.productname.setText("" + ProductItem.getName().toUpperCase());
                 holder.Rate.setText(CurrencySymbol+" " + formatter.format(ProductItem.getSBRate() * (Integer.parseInt(ProductItem.getConversionFactor()))));// * (Integer.parseInt(Product_Details_Modal.getConversionFactor()))));
                 holder.Amount.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProductItem.getAmount()));
+                if(ProductItem.getTaxableAmt()==null) ProductItem.setTaxableAmt(0.0);
+                if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProductItem.getTaxableAmt()));
 
                 int oQty = ProductItem.getQty();
                 int eQty = ProductItem.getQty() * Integer.parseInt(ProductItem.getConversionFactor());
@@ -2193,7 +2195,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     }
 
 
-                    holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(eQty * ProductItem.getBillRate())); //* (Integer.parseInt(Product_Details_Modal.getConversionFactor())) * Product_Details_Modal.getQty()));
+                   ///// holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(eQty * ProductItem.getBillRate())); //* (Integer.parseInt(Product_Details_Modal.getConversionFactor())) * Product_Details_Modal.getQty()));
 
 
                     String name = "";
@@ -2298,7 +2300,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setTaxableAmt(tProdAmt);
                             if (CategoryType >= 0) {
 
-                                holder.QtyAmt.setText(CurrencySymbol+" "+ formatter.format(tProdAmt));
+                                //holder.QtyAmt.setText(CurrencySymbol+" "+ formatter.format(tProdAmt));
+                                holder.QtyAmt.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(tProdAmt));
                                 holder.totalQty.setText("Total Qty : " + (int) totQty);
 
                                 String name = "";
@@ -2447,6 +2450,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                 if (!(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getOff_Pro_name().equalsIgnoreCase(pna)))
                                 holder.llFreeProd.setVisibility(View.VISIBLE);
                                 holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
+                                if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()));
 
 
                             }
@@ -2470,6 +2474,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                             sumofTax(Product_Details_Modalitem, holder.getBindingAdapterPosition());
                             holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
+                            if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()));
                             holder.tvTaxLabel.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
                            // holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()-Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
                             updateToTALITEMUI();
@@ -2589,8 +2594,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     tvMultiple = view.findViewById(R.id.tvMultiple);
                     ImgVwProd = view.findViewById(R.id.ivAddShoppingCart);
                     lblRQty = view.findViewById(R.id.status);
-                    QtyAmt = view.findViewById(R.id.qtyAmt);
                     totalQty = view.findViewById(R.id.totalqty);
+                    QtyAmt = view.findViewById(R.id.qtyAmt);
                     tvMRP = view.findViewById(R.id.MrpRate);
                     tvUomName = view.findViewById(R.id.tvUomName);
                     tvUomQty = view.findViewById(R.id.tvUomQty);
