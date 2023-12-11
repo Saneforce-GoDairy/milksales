@@ -622,6 +622,13 @@ public class Common_Class {
                         data.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
                         break;
 
+                    case Constants.PRIMARY_VIEWALL:
+                        axnname = "get/primaryviewall";
+                        data.put("login_sfCode", UserDetails.getString("Sfcode", ""));
+                        data.put("Dt", Common_Class.GetDatewothouttime());
+                        //data.put("Grpcode", jparam.get("Grpcode").getAsString());
+                        data.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
+                        break;
                     case Constants.AUDIT_STOCK_ONHAND:
                         axnname = "get/getauditstock";
                         data.put("plant", jparam.get("plant").getAsString());

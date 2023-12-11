@@ -93,7 +93,7 @@ public class Print_Invoice_Activity extends AppCompatActivity implements View.On
     private ArrayList<Product_Details_Modal> taxList;
     private ArrayList<Product_Details_Modal> uomList;
 
-    double cashDisc, subTotalVal,NetTotAmt, outstandAmt;
+    double cashDisc, subTotalVal,NetTotAmt, outstandAmt,tsubTotalVal;
     LinearLayout llDistCal, llRetailCal;
     RelativeLayout rlTax;
     String[] strLoc;
@@ -2129,6 +2129,8 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                         }
 
                         amt = ((obj.getInt("Qty") * obj.getDouble("Price"))) + taxAmt;
+                        //tsubTotalVal+=((obj.getInt("Qty") * obj.getDouble("Price")))- Double.parseDouble(obj.getString("discount_price")) ;
+                        tsubTotalVal+=((obj.getInt("Qty") * obj.getDouble("Price")));//- Double.parseDouble(obj.getString("discount_price")) ;
                         subTotalVal += amt;
                     }
                     Order_Outlet_Filter.add(new Product_Details_Modal(obj.getString("PCode"), obj.getString("PDetails"), obj.getString("MRP"), obj.getString("HSN_Code"), 1, "1",
@@ -2152,7 +2154,6 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                         JSONObject obj = orderArr.getJSONObject(i);
                         total_qtytext += obj.getInt("Quantity");
                         subTotalVal += (obj.getDouble("value"));
-
                         tcsVal = obj.getDouble("TCS");
 
                         String paidAmt = "0";

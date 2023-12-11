@@ -59,6 +59,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".SFA_Activity.vwAllPrimaryOrders"
+            android:exported="false" />
+        <activity
             android:name=".procurement.ProcurementAssetActivity"
             android:exported="false" />
         <activity

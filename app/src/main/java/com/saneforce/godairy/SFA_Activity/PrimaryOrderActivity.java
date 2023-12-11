@@ -505,8 +505,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                     double ActBAL = jItem.get("LC_BAL").getAsDouble();
                                     ACBalance = jItem.get("Balance").getAsDouble();
                                     ACBalanceChk = jItem.get("BalanceChk").getAsBoolean();
-                                    if (ActBAL <= 0) ActBAL = Math.abs(ActBAL);
-                                    else ActBAL = 0 - ActBAL;
+//                                    if (ActBAL <= 0) ActBAL = Math.abs(ActBAL);
+//                                    else ActBAL = 0 - ActBAL;
                                     NumberFormat format1 = NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 
                                     // tvACBal.setText("₹" + new DecimalFormat("##0.00").format(ACBalance));
@@ -1267,6 +1267,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         try {
             TextView tvTotLabel = findViewById(R.id.tvTotLabel);
             TextView tvTax = findViewById(R.id.tvTaxVal);
+            TextView tvTaxableAmt = findViewById(R.id.tvTaxableAmt);
             TextView tvTaxLabel = findViewById(R.id.tvTaxLabel);
             TextView tvBillSubTotal = findViewById(R.id.subtotal);
             TextView tvSaveAmt = findViewById(R.id.tvSaveAmt);
@@ -1348,10 +1349,12 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 tvSaveAmt.setVisibility(View.GONE);
 
             int crtVal = 0;
+            double txblamt = 0.0;
             for (int l = 0; l < Getorder_Array_List.size(); l++) {
                 grpCode = "" + Getorder_Array_List.get(0).getProduct_Grp_Code();
 
                 if (Getorder_Array_List.get(l).getProductDetailsModal() != null) {
+                    txblamt = txblamt + Getorder_Array_List.get(l).getTaxableAmt();
                     for (int tax = 0; tax < Getorder_Array_List.get(l).getProductDetailsModal().size(); tax++) {
                         String label = Getorder_Array_List.get(l).getProductDetailsModal().get(tax).getTax_Type();
                         double amt = Getorder_Array_List.get(l).getProductDetailsModal().get(tax).getTax_Amt();
@@ -1448,6 +1451,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 label = label + orderTotTax.get(i).getTax_Type() + "\n";
                 amt = amt + CurrencySymbol+" " + String.valueOf(formatter.format(orderTotTax.get(i).getTax_Amt())) + "\n";
             }
+
             String uomName = "";
 
             String qtyLabel = "Total Qty" + "\n";
@@ -1498,6 +1502,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             }
 
+            tvTaxableAmt.setText(CurrencySymbol+" " + String.valueOf(formatter.format(txblamt)));
             if (sharedCommonPref.getvalue(Constants.DivERP).equalsIgnoreCase("21") && !isEditOrder) {
                 if (Getorder_Array_List.size() == 0)
                     grplistItems.notify(ProdGroups, this, "", new onListItemClick() {
@@ -1554,7 +1559,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     if (jsonObject1.getString("Product_Detail_Code").equals(Product_Details_Modalitem.get(pos).getId())) {
 
                         if (jsonObject1.getDouble("Tax_Val") > 0) {
-                            double taxCal = Product_Details_Modalitem.get(pos).getAmount() *
+                            double taxCal = Product_Details_Modalitem.get(pos).getTaxableAmt() *
                                     ((jsonObject1.getDouble("Tax_Val") / 100));
 
                             wholeTax += taxCal;
@@ -1910,6 +1915,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                             Product_Modal.get(pm).setAmount(Double.valueOf(formatter.format(Product_Modal.get(pm).getQty() *
                                     Product_Modal.get(pm).getSBRate())));
+                            Product_Modal.get(pm).setTaxableAmt(Double.valueOf(formatter.format(Product_Modal.get(pm).getQty() *
+                                    Product_Modal.get(pm).getBillRate())));
 
                             double enterQty = Product_Modal.get(pm).getQty();
                             String strSchemeList = sharedCommonPref.getvalue(Constants.PRIMARY_SCHEME);
@@ -1986,6 +1993,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                             } else {
                                 Product_Modal.get(pm).setAmount((Product_Modal.get(pm).getAmount()) -
+                                        Double.valueOf(Product_Modal.get(pm).getDiscount()));
+                                Product_Modal.get(pm).setTaxableAmt((Product_Modal.get(pm).getTaxableAmt()) -
                                         Double.valueOf(Product_Modal.get(pm).getDiscount()));
                             }
 
@@ -2153,6 +2162,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 holder.Amount.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProductItem.getAmount()));
 
                 int oQty = ProductItem.getQty();
+                int eQty = ProductItem.getQty() * Integer.parseInt(ProductItem.getConversionFactor());
                 String sQty = ProductItem.getQty().toString();
                 if (oQty <= 0) sQty = "";
                 holder.Qty.setText(sQty);
@@ -2183,7 +2193,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     }
 
 
-                    holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(oQty * ProductItem.getSBRate())); //* (Integer.parseInt(Product_Details_Modal.getConversionFactor())) * Product_Details_Modal.getQty()));
+                    holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(eQty * ProductItem.getBillRate())); //* (Integer.parseInt(Product_Details_Modal.getConversionFactor())) * Product_Details_Modal.getQty()));
 
 
                     String name = "";
@@ -2280,12 +2290,15 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             double totQty = (enterQty*Double.parseDouble(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getConversionFactor()));
                             //double ProdAmt = totQty * (Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getSBRate()*Double.parseDouble(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getConversionFactor()));
                             double ProdAmt = totQty * Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getSBRate();
+                            double tProdAmt = totQty * Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getBillRate();
                             double EARate = Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getSBRate() / Double.parseDouble(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getConversionFactor());
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setQty((int) enterQty);
                             holder.Amount.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProdAmt));
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount(ProdAmt);
+                            Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setTaxableAmt(tProdAmt);
                             if (CategoryType >= 0) {
-                                holder.QtyAmt.setText(CurrencySymbol+" "+ formatter.format(ProdAmt));
+
+                                holder.QtyAmt.setText(CurrencySymbol+" "+ formatter.format(tProdAmt));
                                 holder.totalQty.setText("Total Qty : " + (int) totQty);
 
                                 String name = "";
@@ -2425,6 +2438,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                 String pna=Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getName().toString();
                                 Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()) -
                                         (Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getDiscount()));
+                                Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setTaxableAmt((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()) -
+                                        (Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getDiscount()));
 
                                 holder.Free.setText("" + Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getFree() +" EA");
                                 holder.lblFreeNm.setText("" + Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getOff_Pro_name());
@@ -2446,6 +2461,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()) -
                                             EAAmt);
+                                    Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setTaxableAmt((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()) -
+                                            EAAmt);
                                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setReplace_qty(String.valueOf(itm.getInt("Qty")));
                                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setReplace_value(String.valueOf(EAAmt));
                                 }
@@ -2454,7 +2471,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             sumofTax(Product_Details_Modalitem, holder.getBindingAdapterPosition());
                             holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
                             holder.tvTaxLabel.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
-
+                           // holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()-Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
                             updateToTALITEMUI();
 
 
@@ -2519,6 +2536,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 updateToTALITEMUI();
+                //holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(ProductItem.getAmount()-ProductItem.getTax()));
 
                 if (inValidQty >= 0) {
 

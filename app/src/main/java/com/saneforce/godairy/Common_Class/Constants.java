@@ -178,6 +178,8 @@ public class Constants {
     public static final String WEEKLY_EXPENSE ="weeklyExpense" ;
     public static final String ONDUTY_STATUS = "ondutyStatus";
     public static final String PRIMARY_DASHBOARD = "primaryDashboard";
+    public static final String PRIMARY_VIEWALL = "primaryviewall";
+
     public static final String STOCK_AUDIT_MFSCFA ="stockAuditMFSCFA" ;
     public static final String AUDIT_STOCK_ONHAND ="auditStockOnHand" ;
     public static final String PROCUR_MENU = "procurementMenu";

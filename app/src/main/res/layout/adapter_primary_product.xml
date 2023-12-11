@@ -252,24 +252,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
-                            <TextView
-                                android:id="@+id/qtyAmt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginRight="@dimen/C5dp"
-                                android:autoSizeTextType="uniform"
-
-                                android:ellipsize="end"
-                                android:fontFamily="sans-serif"
-                                android:gravity="center_vertical"
-                                android:hint=""
-                                android:inputType="number"
-                                android:maxLines="1"
-                                android:text="₹0"
-                                android:textColor="@color/txt_color_black"
-                                android:textStyle="bold"
-                                android:visibility="visible" />
                         </RelativeLayout>
 
                     </LinearLayout>
@@ -569,7 +551,7 @@
 
                         <TextView
 
-                            android:id="@+id/tax"
+                            android:id="@+id/tax9"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_toRightOf="@+id/tvTaxTotAmt"
@@ -584,7 +566,7 @@
 
 
                         <TextView
-                            android:id="@+id/tvTaxTotAmt"
+                            android:id="@+id/qtyAmt"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
@@ -600,8 +582,77 @@
 
 
                     </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif"
+                            android:layout_weight="1"
+
+                            android:gravity="center_vertical"
+                            android:hint=""
+                            android:inputType="number"
+                            android:text="Tax Amount"
+                            android:textColor="@color/grey_800"
+                            android:visibility="visible" />
 
 
+                        <TextView
+
+                            android:id="@+id/tax"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center_vertical"
+
+                            android:hint=""
+                            android:inputType="number"
+                            android:text=""
+                            android:textColor="@color/grey_800"
+                            android:visibility="visible" />
+
+
+                        <TextView
+                            android:id="@+id/tvTaxTotAmt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/C10dp"
+                            android:fontFamily="sans-serif"
+                            android:gravity="center_vertical"
+                            android:hint=""
+                            android:inputType="number"
+                            android:text="₹0"
+                            android:textColor="@color/txt_color_black"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/ss"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/C5dp"
+                        android:autoSizeTextType="uniform"
+
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center_vertical"
+                        android:hint=""
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:text="₹0"
+                        android:textColor="@color/txt_color_black"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="2dp"

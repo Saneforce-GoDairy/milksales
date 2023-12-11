@@ -97,13 +97,13 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             common_class.getDb_310Data(Constants.GroupFilter, this);
             common_class.getDataFromApi(Constants.GetTodayPrimaryOrder_List, this, false);
             iniVariable();
-            onClickListener();
             intialize();
+            onClickListener();
             common_class.gotoHomeScreen(this, ivToolbarHome);
             stDate = Common_Class.GetDatewothouttime();
             endDate = Common_Class.GetDatewothouttime();
-            binding.txtStartDate.setText(stDate);
-            binding.txtEndDate.setText(endDate);
+            binding.tvStartDate.setText(stDate);
+            binding.tvEndDate.setText(endDate);
             primaryNoOrderListsMain = new ArrayList<>();
             loadList();
     }
@@ -160,12 +160,12 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             binding.btnCmbRoute.setVisibility(View.GONE);
             findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
             binding.txtDistributor.setText("HI! " + sharedCommonPref.getvalue(Constants.Distributor_name, ""));
-            distributerCode = sharedCommonPref.getvalue(Constants.Distributor_name, "");
+            distributerCode = sharedCommonPref.getvalue(Constants.Distributor_Id, "");
         } else {
             if (!sharedCommonPref.getvalue(Constants.Distributor_Id).equals("")) {
                 common_class.getDb_310Data(Rout_List, this);
                 binding.txtDistributor.setText(/*"Hi! " +*/ sharedCommonPref.getvalue(Constants.Distributor_name, ""));
-                distributerCode = sharedCommonPref.getvalue(Constants.Distributor_name, "");
+                distributerCode = sharedCommonPref.getvalue(Constants.Distributor_Id, "");
             } else {
                 binding.btnCmbRoute.setVisibility(View.GONE);
             }
@@ -287,8 +287,8 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             close.setOnClickListener(v1 -> noOrderDialog.dismiss());
         });
 
-        binding.txtStartDate.setOnClickListener(this);
-        binding.txtEndDate.setOnClickListener(this);
+        binding.tvStartDate.setOnClickListener(this);
+        binding.tvEndDate.setOnClickListener(this);
         binding.layoutDistributer.setOnClickListener(this);
         binding.btnCmbRoute.setOnClickListener(this);
     }
@@ -297,6 +297,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
         ivToolbarHome = findViewById(R.id.toolbar_home);
         tvStartDate = findViewById(R.id.tvStartDate);
         tvEndDate = findViewById(R.id.tvEndDate);
+
     }
 
     public static class PrimaryNoOrderListAdapter extends  RecyclerView.Adapter<PrimaryNoOrderListAdapter.ViewHolder>{

@@ -76,6 +76,7 @@ import com.saneforce.godairy.SFA_Activity.Reports_Distributor_Name;
 import com.saneforce.godairy.SFA_Activity.SFA_Dashboard;
 import com.saneforce.godairy.SFA_Activity.StockAuditCategorySelectActivity;
 import com.saneforce.godairy.SFA_Activity.VanSalesDashboardRoute;
+import com.saneforce.godairy.SFA_Activity.vwAllPrimaryOrders;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
 import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
 import com.saneforce.godairy.adapters.OffersAdapter;
@@ -125,7 +126,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerView;
     private TextView tvServiceOutlet, tvUniverseOutlet, tvNewSerOutlet, tvTotSerOutlet, tvExistSerOutlet, tvDate, tvTodayCalls, tvProCalls,
             tvCumTodayCalls, tvNewTodayCalls, tvCumProCalls, tvNewProCalls, tvAvgNewCalls, tvAvgTodayCalls, tvAvgCumCalls, tvUserName,
-            tvPrimOrder, tvNoOrder, tvTotalValOrder, tvUpdTime, lblSlideNo;
+            tvPrimOrder, tvNoOrder, tvTotalValOrder, tvUpdTime, lblSlideNo,txview_all;
     private DatePickerDialog fromDatePickerDialog;
     public static String sfa_date = "";
     private MenuAdapter menuAdapter;
@@ -158,8 +159,16 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         ryclOffers= findViewById(R.id.ryclOffers);
         lblSlideNo =findViewById(R.id.lblSlideNo);
         btnCloseOffer =findViewById(R.id.btnCloseOffer);
+        txview_all=findViewById(R.id.txview_all);
         init();
         setOnClickListener();
+        txview_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent vwall=new Intent(SFA_Activity.this, vwAllPrimaryOrders.class);
+                startActivity(vwall);
+            }
+        });
 
         String sOffShown=sharedCommonPref.getvalue(Constants.DB_OfferShownOn,"");
 
