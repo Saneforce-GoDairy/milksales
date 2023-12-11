@@ -172,6 +172,10 @@ public class ProcurementCameraX extends AppCompatActivity {
             case 4:
                 nameOfBreed();
                 break;
+
+            case 5:
+                collectionCenter();
+                break;
         }
 
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
@@ -211,6 +215,11 @@ public class ProcurementCameraX extends AppCompatActivity {
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    private void collectionCenter() {
+        imageName = "CC_123" + ".jpg";
+        file = new File(DIR, imageName);
     }
 
     private void nameOfBreed() {

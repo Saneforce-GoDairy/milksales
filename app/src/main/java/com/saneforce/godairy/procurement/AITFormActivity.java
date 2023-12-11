@@ -101,6 +101,9 @@ public class AITFormActivity extends AppCompatActivity {
 
            2, AITFormActivity
               breed = 4
+
+           3, CollectionCenterLocationActivity
+              Collection center image = 5
          */
 
         binding.cameraBreed.setOnClickListener(view -> {
@@ -335,6 +338,7 @@ public class AITFormActivity extends AppCompatActivity {
         }
         return true;
     }
+
     @Override
     protected void onResume() {
         super.onResume();

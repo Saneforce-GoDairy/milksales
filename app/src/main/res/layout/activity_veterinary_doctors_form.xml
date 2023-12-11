@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,39 +48,94 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu"
-                android:text="Select Company"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Spinner
-                android:id="@+id/spinner_company"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="@string/select_company"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_company_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="Not valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu"
-                android:text="Select Plant"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-            <Spinner
-                android:id="@+id/spinner_plant"
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="@string/select_plant"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_plant_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Not valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <Spinner
+                    android:id="@+id/spinner_plant"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:textStyle="bold"
                 android:text="1) Name of the village/ Center Name Visit"
                 android:textColor="@color/black" />
@@ -89,7 +143,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -99,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:textStyle="bold"
                 android:text="2) Farmer code, Farmer Name"
                 android:textColor="@color/black" />
@@ -107,53 +161,108 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
                 android:paddingStart="10dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
-                android:text="3) Type  of Service"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Spinner
-                android:id="@+id/spinner_service"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:textStyle="bold"
+                    android:text="3) Type of service"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_type_of_service_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/not_valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
 
+                <Spinner
+                    android:id="@+id/spinner_type_of_service"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </RelativeLayout>
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="5dp"
                 android:src="@drawable/apple_camera" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
-                android:text="4)Types of product: "
-                android:textStyle="bold"
-                android:textColor="@color/black" />
 
-            <Spinner
-                android:id="@+id/spinner_type_of_product"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="4)Types of product: "
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_type_of_pro_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="Not valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_type_of_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Seed Sale"
                 android:textStyle="bold"
                 android:textColor="@color/grey" />
@@ -161,17 +270,17 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
-                android:paddingStart="10dp" />
+                android:paddingStart="5dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Mineral mixture"
                 android:textStyle="bold"
                 android:textColor="@color/grey" />
@@ -179,7 +288,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -189,7 +298,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Fodder Setts Sales (KG)"
                 android:textStyle="bold"
                 android:textColor="@color/grey" />
@@ -197,7 +306,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -207,7 +316,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Cattle Feed Order(KG)"
                 android:textStyle="bold"
                 android:textColor="@color/grey" />
@@ -215,7 +324,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -225,7 +334,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:textStyle="bold"
                 android:text="5)Teat dip Cup &amp; Solution"
                 android:textColor="@color/black" />
@@ -234,26 +343,53 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
                 android:paddingStart="10dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
-                android:textStyle="bold"
-                android:text="6) Emergency treatment/EVM Treatment (Breed)"
-                android:textColor="@color/black" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Spinner
-                android:id="@+id/ttt"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:textStyle="bold"
+                    android:text="6) Emergency treatment/EVM Treatment (Breed)"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_emer_evm_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="Not valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_emer_evm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
 
             <ImageView
                 android:layout_width="35dp"
@@ -261,25 +397,52 @@
                 android:layout_marginTop="5dp"
                 android:src="@drawable/apple_camera" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
-                android:text="7)Types of cases:"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Spinner
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="7)Types of cases:"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_type_of_cases_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="Not valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_type_of_cases"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:textStyle="bold"
                 android:text="8)Family farm development"
                 android:textColor="@color/black" />
@@ -287,7 +450,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/ubuntu"
                 android:textStyle="bold"
                 android:text="(Identified farmers count)"
@@ -306,7 +469,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:textStyle="bold"
                 android:text="9)No of Farmers Enrolled"
                 android:textColor="@color/black" />
@@ -314,7 +477,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -324,7 +487,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:textStyle="bold"
                 android:text="10)No of Farmers Inducted"
                 android:textColor="@color/black" />
@@ -332,13 +495,46 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
                 android:paddingStart="10dp" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
 
+                <TextView
+                    android:id="@+id/txt_error_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Error Empty field found"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/button_blue"
+                android:textColor="@color/white"
+                android:fontFamily="@font/ubuntu"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
 
         </LinearLayout>
     </ScrollView>

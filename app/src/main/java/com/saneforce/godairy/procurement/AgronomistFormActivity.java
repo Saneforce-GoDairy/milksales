@@ -136,6 +136,9 @@ public class AgronomistFormActivity extends AppCompatActivity {
 
            2, AITFormActivity
               breed = 4
+
+           3, CollectionCenterLocationActivity
+              Collection center image = 5
          */
         binding.cameraFarmersMeeting.setOnClickListener(view -> {
             binding.txtFarmersImageNotValid.setVisibility(View.GONE);

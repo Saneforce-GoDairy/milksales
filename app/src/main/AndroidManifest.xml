@@ -62,7 +62,7 @@
             android:name=".procurement.ProcurementAssetActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.ColletionCenterLocationActivity"
+            android:name=".procurement.CollectionCenterLocationActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.ExistingAgentVisitActivity"

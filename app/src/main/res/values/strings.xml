@@ -270,4 +270,11 @@
         <item>December</item>
     </string-array>
 
+    <string-array name="competitor_array">
+        <item>Select</item>
+        <item>Hatsun</item>
+        <item>Dodla</item>
+        <item>Jersey</item>
+    </string-array>
+
 </resources>
