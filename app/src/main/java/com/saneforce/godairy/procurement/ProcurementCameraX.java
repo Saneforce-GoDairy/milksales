@@ -176,6 +176,34 @@ public class ProcurementCameraX extends AppCompatActivity {
             case 5:
                 collectionCenter();
                 break;
+
+            case 6:
+                VeteriDocFormTypeOfSer();
+                break;
+
+            case 7:
+                VeteriDocFormEVM();
+                break;
+
+            case 8:
+                qualityFormFat();
+                break;
+
+            case 9:
+                qualityFormSNF();
+                break;
+
+            case 10:
+                qualityReceivedNofVehicle();
+                break;
+
+            case 11:
+                qualityReceivedNofVehicleWithout();
+                break;
+
+            case 12:
+                qualityAws();
+                break;
         }
 
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
@@ -215,6 +243,41 @@ public class ProcurementCameraX extends AppCompatActivity {
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    private void qualityAws() {
+        imageName = "QUA_AWS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityReceivedNofVehicleWithout() {
+        imageName = "QUA_RNV_WITHOUT_HOODS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityReceivedNofVehicle() {
+        imageName = "QUA_RNV_WITH_HOODS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityFormSNF() {
+        imageName = "QUA_SNF_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityFormFat() {
+        imageName = "QUA_FAT_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void VeteriDocFormEVM() {
+        imageName = "VET_EVM_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void VeteriDocFormTypeOfSer() {
+        imageName = "VET_TOS_123" + ".jpg";
+        file = new File(DIR, imageName);
     }
 
     private void collectionCenter() {

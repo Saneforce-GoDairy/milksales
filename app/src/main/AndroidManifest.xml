@@ -59,6 +59,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".procurement.FarmerCreationActivity"
+            android:exported="false" />
+        <activity
             android:name=".procurement.ProcurementAssetActivity"
             android:exported="false" />
         <activity

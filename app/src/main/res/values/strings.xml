@@ -277,4 +277,36 @@
         <item>Jersey</item>
     </string-array>
 
+    <string-array name="veterinary_type_of_service_array">
+        <item>Select</item>
+        <item>Animal insurance</item>
+        <item>Farmer meeting</item>
+        <item>Free vet camp</item>
+        <item>None</item>
+    </string-array>
+
+    <string-array name="veterinary_type_of_product_array">
+        <item>Select</item>
+        <item>Seed sale</item>
+        <item>Mineral mixture</item>
+        <item>Fodder setts sales (KG)</item>
+        <item>Cattle feed order (KG)</item>
+    </string-array>
+
+    <string-array name="veterinary_evm_array">
+        <item>Select</item>
+        <item>JY</item>
+        <item>HF</item>
+        <item>JX</item>
+        <item>HFX</item>
+        <item>ND</item>
+    </string-array>
+
+    <string-array name="veterinary_type_of_case_array">
+        <item>Select</item>
+        <item>Clinical case</item>
+        <item>Gynaecological case</item>
+        <item>Surgical case</item>
+    </string-array>
+
 </resources>

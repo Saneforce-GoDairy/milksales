@@ -174,6 +174,17 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
            3, CollectionCenterLocationActivity
               Collection center image = 5
+
+           4, VeterinaryDoctorsFormActivity
+              Type of image image = 6
+              Emergency treatment/EVM Treatment (Breed) = 7
+
+            5, QualityFormActivity
+               Quality fat = 8
+               Quality snf = 9
+               No of vehicle received with hoods = 10
+               No of vehicle received without hoods = 11
+               Awareness program = 12
          */
 
         binding.cameraCollectCenter.setOnClickListener(view -> {
