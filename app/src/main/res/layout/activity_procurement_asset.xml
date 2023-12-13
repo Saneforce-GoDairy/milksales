@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#FFFFFF"
     tools:context=".procurement.ProcurementAssetActivity">
 
     <RelativeLayout
@@ -33,61 +33,129 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="none"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp">
-
         <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp">
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/ubuntu_medium"-->
+<!--                    android:text="@string/select_company"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="@color/black" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/txt_company_not_valid"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:fontFamily="More Fonts..."-->
+<!--                    android:text="Not valid"-->
+<!--                    android:textColor="#ff0130"-->
+<!--                    android:textSize="10sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:visibility="gone"-->
+<!--                    tools:ignore="SmallSp" />-->
+
+<!--            </RelativeLayout>-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu"
-                android:text="Select Company"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <Spinner
-                android:id="@+id/spinner_company"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:layout_marginTop="10dp"
-                android:text="Select Plant"
+                android:text="Select company"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
-            <Spinner
-                android:id="@+id/spinner_plant"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/ubuntu_medium"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="@string/select_plant"-->
+<!--                    android:textColor="@color/black" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/txt_plant_not_valid"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_alignParentBottom="true"-->
+<!--                    android:textSize="10sp"-->
+<!--                    android:fontFamily="@font/ubuntu"-->
+<!--                    android:text="Not valid"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="#ff0130"-->
+<!--                    tools:ignore="SmallSp"-->
+<!--                    android:visibility="gone"/>-->
+
+<!--            </RelativeLayout>-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="Select plant"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_plant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
                 android:layout_marginTop="10dp"
                 android:text="Type of Asset"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <RadioButton
+                android:id="@+id/type_of_asset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
@@ -96,13 +164,42 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Comments"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
+            <EditText
+                android:id="@+id/ed_comments"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
         </LinearLayout>
-    </ScrollView>
+
+
+
+        <Button
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:background="@drawable/button_blue"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:fontFamily="@font/ubuntu"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            tools:visibility="visible"/>
 
 </RelativeLayout>

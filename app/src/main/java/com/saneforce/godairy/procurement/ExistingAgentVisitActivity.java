@@ -49,8 +49,8 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mListSelectedCompany = binding.spinnerListCompany.getSelectedItem().toString();
-                binding.txtListCompanyNotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
+             //   binding.txtListCompanyNotValid.setVisibility(View.GONE);
+            //    binding.txtErrorFound.setVisibility(View.GONE);
             }
 
             @Override
@@ -100,44 +100,44 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
         if ("Select".equals(mListSelectedCompany)){
             ((TextView)binding.spinnerListCompany.getSelectedView()).setError("Select company");
             binding.spinnerListCompany.getSelectedView().requestFocus();
-            binding.txtListCompanyNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
+     //       binding.txtListCompanyNotValid.setVisibility(View.VISIBLE);
+     //       binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mTotalMilkAvailability)){
             binding.edTotalMilkAvai.setError("Enter Total Milk Availability");
             binding.edTotalMilkAvai.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
+      //      binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mOurCompanyLtrs)){
             binding.edOurCompanyLtrs.setError("Enter Company Ltrs");
             binding.edOurCompanyLtrs.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
+       //     binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mCompetitorRate)){
             binding.edCompetitorRate.setError("Enter Competitor Rate");
             binding.edCompetitorRate.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
+      //      binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mOurCompanyRate)){
             binding.edOurCompnyRate.setError("Enter Our Compny Rate");
             binding.edOurCompnyRate.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
+      //      binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mDemand)){
             binding.edDemand.setError("Enter Demand");
             binding.edDemand.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
+      //      binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mSupplyStartDate)){
             binding.edSupplyStartDate.setError("Enter Supply Start Date");
             binding.edSupplyStartDate.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
+    //        binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         return true;

@@ -309,4 +309,20 @@
         <item>Surgical case</item>
     </string-array>
 
+    <string-array name="farmer_gategory_array">
+        <item>Select</item>
+        <item>Pouring farmers</item>
+        <item>Non Pouring farmers</item>
+    </string-array>
+
+    <string-array name="type_of_repair_array">
+        <item>Select</item>
+        <item>Board issue</item>
+        <item>SMPS</item>
+        <item>Sensor issue</item>
+        <item>Motor issue</item>
+        <item>Weighing scales</item>
+        <item>Others</item>
+    </string-array>
+
 </resources>

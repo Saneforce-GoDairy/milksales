@@ -197,7 +197,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:importantForAutofill="no"
-            android:inputType="textAutoComplete" />
+            android:inputType="phone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -219,7 +219,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:importantForAutofill="no"
-            android:inputType="textAutoComplete" />
+            android:inputType="numberDecimal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -235,7 +235,7 @@
 
 
             <TextView
-                android:id="@+id/txt_collect_center_not_valid"
+                android:id="@+id/txt_farmer_image_not_valid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -249,14 +249,14 @@
                 tools:ignore="SmallSp" />
 
             <ImageView
-                android:id="@+id/camera_collect_center"
+                android:id="@+id/camera_farmer_image"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="5dp"
                 android:src="@drawable/apple_camera" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/image_view_collect_center_layout"
+                android:id="@+id/image_view_farmer_image_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -266,7 +266,7 @@
                 android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/image_collect_center"
+                    android:id="@+id/image_farmer_image"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:adjustViewBounds="true"
@@ -298,7 +298,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:importantForAutofill="no"
-            android:inputType="textAutoComplete" />
+            android:inputType="numberDecimal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -320,7 +320,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:importantForAutofill="no"
-            android:inputType="textAutoComplete" />
+            android:inputType="numberDecimal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -342,7 +342,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:importantForAutofill="no"
-            android:inputType="textAutoComplete" />
+            android:inputType="numberDecimal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -364,7 +364,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:importantForAutofill="no"
-            android:inputType="textAutoComplete" />
+            android:inputType="numberDecimal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -382,14 +382,14 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/aws_general"
+                android:id="@+id/ms_hatsun"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
                 android:text="Hatsun" />
 
             <CheckBox
-                android:id="@+id/aws_calibration"
+                android:id="@+id/ms_dolda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -397,7 +397,7 @@
                 android:text="Dolda" />
 
             <CheckBox
-                android:id="@+id/aws_audit"
+                android:id="@+id/ms_jersey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -412,14 +412,14 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/aws_field_intelligence_report"
+                android:id="@+id/ms_heritage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
                 android:text="Heritage" />
 
             <CheckBox
-                android:id="@+id/aws_health_camp"
+                android:id="@+id/ms_cooperative"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
@@ -434,14 +434,14 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/aws_clean_milk_production"
+                android:id="@+id/ms_mmda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
                 android:text="MMDA" />
 
             <CheckBox
-                android:id="@+id/aws_training"
+                android:id="@+id/ms_ska"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
@@ -450,7 +450,7 @@
         </LinearLayout>
 
         <CheckBox
-            android:id="@+id/aws_antibiotic_awareness"
+            android:id="@+id/ms_vijaya"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ubuntu"
@@ -471,14 +471,14 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/ag_exclusive_agent"
+                android:id="@+id/interested_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
                 android:text="Yes" />
 
             <RadioButton
-                android:id="@+id/ag_dual_agent"
+                android:id="@+id/interested_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

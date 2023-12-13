@@ -50,7 +50,7 @@ public class QualityFormActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-          /*
+         /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -74,6 +74,9 @@ public class QualityFormActivity extends AppCompatActivity {
                No of vehicle received with hoods = 10
                No of vehicle received without hoods = 11
                Awareness program = 12
+
+            6, FarmerCreationActivity
+               Farmer image = 13
          */
 
         // FAT
