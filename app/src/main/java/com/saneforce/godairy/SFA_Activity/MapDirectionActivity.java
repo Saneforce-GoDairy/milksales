@@ -208,8 +208,9 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                     else
                         AddressTextview.setText("" + getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
                     SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
-                    assert supportMapFragment != null;
-                    supportMapFragment.getMapAsync(MapDirectionActivity.this);
+                    if (supportMapFragment != null) {
+                        supportMapFragment.getMapAsync(MapDirectionActivity.this);
+                    }
                     //---------
                     /*
                        SFA_Activity -> MyTeamActivity -> ViewMap Direction Purpose
