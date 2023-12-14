@@ -122,7 +122,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     TextView worktype_text, distributor_text, route_text, text_tour_plancount, hq_text, shift_type, chilling_text, Remarkscaption, tourdate;
     String TpDate, worktype_id, Worktype_Button = "", Fieldworkflag = "", shifttypeid,  modeId = "", toId = "", startEnd = "";
     String STRCode = "", DriverNeed = "false", DriverMode = "", modeTypeVale = "", mode = "", modeVal = "";
-    String StartedKM = "", FromKm = "", ToKm = "";
+    String StartedKM = "", FromKm = "", ToKm = "", EKey = "";
     Button submitbutton, GetEmpId;
     ProgressBar progressbar;
     Common_Model Model_Pojo;
@@ -148,16 +148,12 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     String commaseparatedlistId;
     JointWorkSelectedAdapter jointWorkSelectedAdapter;
 
-    private String mUkey;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMydayplanBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        mUkey = Common_Class.GetEkey();
 
         initVariable();
         initOnClick();
@@ -170,6 +166,12 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
         sharedCommonPref = new Shared_Common_Pref(this);
         common_class = new Common_Class(this);
+
+        EKey = Common_Class.GetEkey();
+
+        jointWorkNameList = new ArrayList<>();
+        jointWorkIdList = new ArrayList<>();
+        jointWorkDesigList = new ArrayList<>();
 
         new Handler().postDelayed(() -> {
             loadWorkTypes();
@@ -252,8 +254,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     private void loadExtraField() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Map<String, String> params = new HashMap<>();
-        params.put("axn", GET_JOINT_WORK_LIST); // axn
-        params.put("sfCode", "MGR0201"); // sf code
+        params.put("axn", GET_JOINT_WORK_LIST);
+        params.put("sfCode", UserDetails.getString("Sfcode", ""));
         Call<ResponseBody> call = apiInterface.getUniversalData(params);
 
         call.enqueue(new Callback<>() {
@@ -485,7 +487,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     jsonobj.put("worktype_code", addquote(worktype_id));
                     jsonobj.put("dcr_activity_date", addquote(TpDate));
                     jsonobj.put("worktype_name", addquote(worktype_text.getText().toString()));
-                    jsonobj.put("Ukey", mUkey);
+                    jsonobj.put("Ekey", EKey);
                     jsonobj.put("objective", addquote(remarks));
                     jsonobj.put("Flag", addquote(Fieldworkflag));
                     jsonobj.put("Button_Access", Worktype_Button);

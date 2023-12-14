@@ -156,6 +156,11 @@ public class Product_Details_Modal {
     @Expose
     private Double Amount;
 
+
+    @SerializedName("TaxableAmt")
+    @Expose
+    private Double TaxableAmt;
+
     @SerializedName("Qty")
     @Expose
     private Integer Qty;
@@ -881,6 +886,13 @@ public class Product_Details_Modal {
         Amount = amount;
     }
 
+    public Double getTaxableAmt() {
+        return TaxableAmt;
+    }
+
+    public void setTaxableAmt(Double taxableAmt) {
+        TaxableAmt = taxableAmt;
+    }
     public Integer getQty() {
         return Qty;
     }

@@ -622,6 +622,13 @@ public class Common_Class {
                         data.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
                         break;
 
+                    case Constants.PRIMARY_VIEWALL:
+                        axnname = "get/primaryviewall";
+                        data.put("login_sfCode", UserDetails.getString("Sfcode", ""));
+                        data.put("Dt", Common_Class.GetDatewothouttime());
+                        //data.put("Grpcode", jparam.get("Grpcode").getAsString());
+                        data.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
+                        break;
                     case Constants.AUDIT_STOCK_ONHAND:
                         axnname = "get/getauditstock";
                         data.put("plant", jparam.get("plant").getAsString());
@@ -1798,17 +1805,23 @@ public class Common_Class {
         return null;
     }
 
-    public static void uploadToS3Bucket(Context context, String mFilePath, String FileName, String companyCode, String Mode) {
+    public static void uploadToS3Bucket(Context context, String FilePath, String FileName, String Folder) {
         try{
             Util util = new Util();
             TransferUtility transferUtility = util.getTransferUtility(context);
             File file;
-            if (mFilePath.contains(".png") || mFilePath.contains(".jpg") || mFilePath.contains(".jpeg")) {
-                file = new Compressor(context).compressToFile(new File(mFilePath));
+            if (FilePath.contains(".png") || FilePath.contains(".jpg") || FilePath.contains(".jpeg")) {
+                file = new Compressor(context).compressToFile(new File(FilePath));
             } else {
-                file = new File(mFilePath);
+                file = new File(FilePath);
             }
-            TransferObserver uploadObserver = transferUtility.upload("godairy",companyCode + "/" + Mode + "/" + FileName , file);
+            Shared_Common_Pref shared_common_pref = new Shared_Common_Pref((Activity) context);
+            String companyCode = shared_common_pref.getvalue("company_code");
+            if (companyCode.isEmpty()) {
+                Toast.makeText(context, "Company code invalid", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            TransferObserver uploadObserver = transferUtility.upload("godairy",companyCode + "/" + Folder + "/" + FileName , file);
             ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setCancelable(false);
             progressDialog.setMessage("Uploading...");
@@ -1844,14 +1857,20 @@ public class Common_Class {
         }
     }
 
-    public void getImageFromS3Bucket(Context context, String companyCode, String FileName,String Mode, OnDownloadImage onDownloadImage) {
+    public void getImageFromS3Bucket(Context context, String FileName, String Folder, OnDownloadImage onDownloadImage) {
         try{
             String[] names = FileName.split("\\.");
             String extension = names[names.length - 1];
             final File file = File.createTempFile(FileName, extension);
             Util util = new Util();
+            Shared_Common_Pref shared_common_pref = new Shared_Common_Pref((Activity) context);
+            String companyCode = shared_common_pref.getvalue("company_code");
+            if (companyCode.isEmpty()) {
+                Toast.makeText(context, "Company code invalid", Toast.LENGTH_SHORT).show();
+                return;
+            }
             TransferUtility transferUtility = util.getTransferUtility(context);
-            TransferObserver downloadObserver = transferUtility.download("godairy",companyCode + "/" + Mode + "/" + FileName, file);
+            TransferObserver downloadObserver = transferUtility.download("godairy",companyCode + "/" + Folder + "/" + FileName, file);
             downloadObserver.setTransferListener(new TransferListener() {
                 @Override
                 public void onStateChanged(int id, TransferState state) {
@@ -1916,7 +1935,14 @@ public class Common_Class {
         } catch (Exception ignored) { }
     }
 
-    public static void makeApiCall(Map<String, String> params, String data, APIResult listener) {
+    public static void makeApiCall(Context context, Map<String, String> params, String data, APIResult listener) {
+        SharedPreferences UserDetails  = ((Activity) context).getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref(context);
+
+        params.put("stk", sharedCommonPref.getvalue(Constants.Distributor_Id));
+        params.put("sf", UserDetails.getString("Sfcode", ""));
+        params.put("div", UserDetails.getString("Divcode", ""));
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
         call.enqueue(new Callback<>() {
@@ -1925,6 +1951,7 @@ public class Common_Class {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String result = response.body().string();
+                        Log.e("makeApiCall", "response: " + result);
                         JSONObject jsonObject = new JSONObject(result);
                         if (jsonObject.getBoolean("success")) {
                             listener.onSuccess(jsonObject);
@@ -1932,15 +1959,18 @@ public class Common_Class {
                             listener.onFailure(jsonObject.getString("msg"));
                         }
                     } catch (Exception e) {
+                        Log.e("makeApiCall", "Exception: " + e.getLocalizedMessage());
                         listener.onFailure(e.getLocalizedMessage());
                     }
                 } else {
+                    Log.e("makeApiCall", "Something went wrong");
                     listener.onFailure("Something went wrong");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.e("makeApiCall", "onFailure: " + t.getLocalizedMessage());
                 listener.onFailure(t.getLocalizedMessage());
             }
         });

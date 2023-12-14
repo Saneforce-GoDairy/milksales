@@ -92,7 +92,7 @@
     <string name="outstanding_amt">Outstanding Amount</string>
     <string name="retailer_outstand_hint">Enter the Outstanding Amount</string>
     <string name="select_state">Select the State</string>
-    <string name="select_distributor">Select the Franchise</string>
+    <string name="select_distributor">Select the Distributor</string>
     <string name="select_route">Select the Route</string>
     <string name="projection_history">History &amp; Status </string>
     <string name="title_activity_posstock_loading">POSStockLoadingActivity</string>
@@ -157,6 +157,7 @@
     <string name="ta_amp_claim"><![CDATA[TA & Claim]]></string>
     <string name="close">CLOSE</string>
     <string name="sub_channel">Sub Channel<font fgcolor='#E53935'> *</font></string>
+    <string name="del_address">Delivery Address<font fgcolor='#E53935'> *</font></string>
     <string name="account_group">Account Group<font fgcolor='#E53935'> *</font></string>
     <string name="distributor_channel">Distributor Channel<font fgcolor='#E53935'> *</font></string>
     <string name="sales_division">Division<font fgcolor='#E53935'> *</font></string>

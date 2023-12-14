@@ -246,8 +246,14 @@ public class ChallanActivity extends AppCompatActivity {
         // ------------------------------------------------------------------------- Heading
 
         y += 25;
-        drawBIGTitleWithCenterAlign("Lactalis India Pvt Ltd", (float) pageWidth / 2, y);
-
+        String clientNM= ApiClient.BASE_URL.toLowerCase();
+        if(clientNM.contains("thirumala")) {
+            drawBIGTitleWithCenterAlign("Thirumala Milk Products Pvt Ltd.", (float) pageWidth / 2, y);
+        }else if(clientNM.contains("anik")){
+            drawBIGTitleWithCenterAlign("Anik Milk Products Pvt Ltd.", (float) pageWidth / 2, y);
+        }else if(clientNM.contains("prabhat")){
+            drawBIGTitleWithCenterAlign("Sunfresh Agro Industries Ltd", (float) pageWidth / 2, y);
+        }
         y += 20;
         drawTextWithCenterAlign(VERSION, (float) pageWidth / 2, y);
 
@@ -257,8 +263,8 @@ public class ChallanActivity extends AppCompatActivity {
         // ------------------------------------------------------------------------- Receipt No
 
         y += 30;
-        drawText("Receipt No: ", x, y);
-        float temp1 = paint.measureText("Receipt No: ");
+        drawText("DocNo: ", x, y);
+        float temp1 = paint.measureText("DocNo: ");
 
         drawTitle(DocNo, x + temp1 + 10, y);
         float temp2 = paint.measureText(DocNo);

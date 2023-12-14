@@ -1370,8 +1370,7 @@
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/capture_fssai"
@@ -1545,8 +1544,7 @@
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/capture_gst"

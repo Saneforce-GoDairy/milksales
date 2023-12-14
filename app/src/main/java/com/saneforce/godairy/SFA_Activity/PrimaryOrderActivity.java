@@ -46,6 +46,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atom.atompaynetzsdk.PayActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -56,7 +57,6 @@ import com.saneforce.godairy.Activity_Hap.Dashboard;
 import com.saneforce.godairy.Activity_Hap.MainActivity;
 import com.saneforce.godairy.Activity_Hap.SFA_Activity;
 import com.saneforce.godairy.BuildConfig;
-import com.saneforce.godairy.CCAvenue.InitiatePaymentActivity;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
@@ -69,7 +69,6 @@ import com.saneforce.godairy.Interface.LocationEvents;
 import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.Interface.onListItemClick;
-import com.saneforce.godairy.JioMoney.PaymentWebView;
 import com.saneforce.godairy.Model_Class.Datum;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
@@ -262,6 +261,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             tvDistId.setText("" + sharedCommonPref.getvalue(Constants.DistributorERP));
             tvDate.setText(DT.GetDateTime(getApplicationContext(), "dd-MMM-yyyy"));
             orderId = getIntent().getStringExtra(Constants.ORDER_ID);
+            if(orderId==null) orderId = "";
 
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.POS_NETAMT_TAX)))
                 common_class.getDb_310Data(Constants.POS_NETAMT_TAX, this);
@@ -270,7 +270,33 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
-                if (PaymentMethod == null || PaymentMethod.equals("null")) {
+                Intent newPayIntent=new Intent (PrimaryOrderActivity.this, PayActivity.class);
+                newPayIntent.putExtra("merchantId", "317157");
+                newPayIntent.putExtra("password", "Test@123");
+                newPayIntent.putExtra("prodid", "Multi");
+                newPayIntent.putExtra("txncurr", "INR");
+                newPayIntent.putExtra("custacc", "100000036600");
+                newPayIntent.putExtra("amt","30.00");
+                newPayIntent.putExtra("txnid", Common_Class.GetEkey());
+                newPayIntent.putExtra("signature_request", "KEY1234567234");
+                newPayIntent.putExtra("signature_response", "KEYRESP123657234");
+                newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
+                newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
+                newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+                newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
+                newPayIntent.putExtra("isLive", false);
+                newPayIntent.putExtra("custFirstName", "test user");
+                newPayIntent.putExtra("customerEmailID", "test@gmail.com");
+                newPayIntent.putExtra("customerMobileNo", "8888888888");
+                newPayIntent.putExtra("udf1", "udf1");
+                newPayIntent.putExtra("udf2", "udf2");
+                newPayIntent.putExtra("udf3", "udf3");
+                newPayIntent.putExtra("udf4", "udf4");
+                newPayIntent.putExtra("udf5", "udf5");
+                startActivityForResult(newPayIntent,1);
+
+                /*if (PaymentMethod == null) {
                     Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
                 } else if (PaymentMethod.equalsIgnoreCase("CC")) {
                     Intent intent = new Intent(this, InitiatePaymentActivity.class);
@@ -284,7 +310,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     intent.putExtra("totalValues", 1.00);
                     startActivity(intent);
                     finish();
-                }
+                }*/
             });
 
         loadDistributer(common_class.getDistList(), 2);
@@ -388,6 +414,24 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         ivToolbarHome = findViewById(R.id.toolbar_home);
     }
 
+    public String createMultiProductData() {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObjOne = new JSONObject();
+        JSONObject jsonObjTwo = new JSONObject();
+        try {
+            jsonObjOne.put("prodName", "NSE");
+            jsonObjOne.put("prodAmount", 29.00);
+            jsonObjTwo.put("prodName", "AIPAY");
+            jsonObjTwo.put("prodAmount", 1.00);
+            jsonArray.put(jsonObjOne);
+            jsonArray.put(jsonObjTwo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("jsonArray from createMultiProductData = " + jsonArray.toString());
+        return jsonArray.toString();
+    }
+
     private void getLastOrderedQty() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Map<String, String> params = new HashMap<>();
@@ -461,8 +505,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                     double ActBAL = jItem.get("LC_BAL").getAsDouble();
                                     ACBalance = jItem.get("Balance").getAsDouble();
                                     ACBalanceChk = jItem.get("BalanceChk").getAsBoolean();
-                                    if (ActBAL <= 0) ActBAL = Math.abs(ActBAL);
-                                    else ActBAL = 0 - ActBAL;
+//                                    if (ActBAL <= 0) ActBAL = Math.abs(ActBAL);
+//                                    else ActBAL = 0 - ActBAL;
                                     NumberFormat format1 = NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 
                                     // tvACBal.setText("₹" + new DecimalFormat("##0.00").format(ACBalance));
@@ -590,11 +634,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                         Category_Modal);
                 categorygrid.setAdapter(customAdapteravail);
                 customAdapteravail.notifyDataSetChanged();
-                if (Common_Class.isNullOrEmpty(orderId)) {
+                if (orderId.equalsIgnoreCase("")) {
                     showOrderItemList(selectedPos, "");
                 } else {
-                    orderId = "";
-
                     common_class.getDataFromApi(Constants.PRIMARY_ORDER_EDIT, this, false);
                 }
             }
@@ -665,19 +707,16 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             Date d1 = sdf.parse(Common_Class.GetTime());
             Date d2 = sdf.parse(sharedCommonPref.getvalue(Constants.CUTOFF_TIME));
             long elapsed = d2.getTime() - d1.getTime();
-            double currentOrderVal = totalvalues - editTotValues;
-            if (((getIntent().getStringExtra(Constants.ORDER_ID) != null && (ACBalance < currentOrderVal)) ||
-                    (getIntent().getStringExtra(Constants.ORDER_ID) == null && (ACBalance < totalvalues))) && ACBalanceChk==true) {
+            double currentOrderVal = totalvalues;
+            if(orderId != null) currentOrderVal = totalvalues - editTotValues;
+            if (ACBalance < currentOrderVal && ACBalanceChk) {
                 ResetSubmitBtn(0);
                 common_class.showMsg(this, "Low A/C Balance...");
-
             } else if (elapsed < 0 || Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.CUTOFF_TIME)) ||
                     sharedCommonPref.getvalue(Constants.CUTOFF_TIME).equals("--:--:--")) {
                 ResetSubmitBtn(0);
                 common_class.showMsg(this, "Time UP...");
             }
-
-
             else {
                 String sLoc = sharedCommonPref.getvalue("CurrLoc");
                 if (sLoc.equalsIgnoreCase("")) {
@@ -711,7 +750,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_home:
-                if (!Common_Class.isNullOrEmpty(getIntent().getStringExtra(Constants.ORDER_ID))) {
+                if (!orderId.equalsIgnoreCase("")) {
                     SharedPreferences CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
                     Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
                     if (CheckIn == true) {
@@ -728,7 +767,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 common_class.showCommonDialog(common_class.getDistList(), 2, this);
                 break;
             case R.id.llTodayPriOrd:
-                if (!Common_Class.isNullOrEmpty(getIntent().getStringExtra(Constants.ORDER_ID)))
+                if (!orderId.equalsIgnoreCase(""))
                     common_class.commonDialog(this, TodayPrimOrdActivity.class, "Primary Order?");
                 else
                     startActivity(new Intent(getApplicationContext(), TodayPrimOrdActivity.class));
@@ -880,7 +919,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 sharedCommonPref.save(Constants.MAP_KEY, distList.get(position).getName());
                 OnclickMasterType(distList, position, mType);
 
-                if (!Common_Class.isNullOrEmpty(getIntent().getStringExtra(Constants.ORDER_ID)))
+                if (!orderId.equalsIgnoreCase(""))
                     common_class.commonDialog(activity, TodayPrimOrdActivity.class, "Primary Order?");
                 else
                     startActivity(new Intent(getApplicationContext(), TodayPrimOrdActivity.class));
@@ -949,6 +988,18 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("resultCode = "+resultCode);
+        System.out.println("onActivityResult data = "+data);
+        if(data != null && resultCode != 2 && requestCode == 1){
+            System.out.println("ArrayList data = "+data.getExtras().getString("response"));
+            if(resultCode == 1){
+                Toast.makeText(this,"Transaction Successful! \n" + data.getExtras().getString("response"), Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this,"Transaction Failed! \n"  + data.getExtras().getString("response"), Toast.LENGTH_LONG).show();
+            }
+        } else{
+            Toast.makeText(this,"Transaction Cancelled!", Toast.LENGTH_LONG).show();
+        }
         if (requestCode == 1000) {
             String sLoc = sharedCommonPref.getvalue("CurrLoc");
             if (sLoc.equalsIgnoreCase("")) {
@@ -1002,8 +1053,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             OutletItem.put("No_Of_items", tvBillTotItem.getText().toString());
                             OutletItem.put("Invoice_Flag", Shared_Common_Pref.Invoicetoorder);
                             OutletItem.put("ordertype", "order");
-                            OutletItem.put("orderId", getIntent().getStringExtra(Constants.ORDER_ID) == null ? "" : getIntent().getStringExtra(Constants.ORDER_ID));
-                            OutletItem.put("mode", getIntent().getStringExtra(Constants.ORDER_ID) == null ? "new" : "edit");
+                            OutletItem.put("orderId", orderId);
+                            OutletItem.put("mode", orderId.equalsIgnoreCase("") ? "new" : "edit");
                             OutletItem.put("cutoff_time", sharedCommonPref.getvalue(Constants.CUTOFF_TIME));
                             OutletItem.put("totAmtTax", formatter.format(totTax));
                             OutletItem.put("groupCode", grpCode);
@@ -1208,12 +1259,15 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         } else {
             findViewById(R.id.cdFreeQtyParent).setVisibility(View.GONE);
         }
+        findViewById(R.id.delAddressLL).setVisibility(View.VISIBLE);
+
     }
 
     public void updateToTALITEMUI() {
         try {
             TextView tvTotLabel = findViewById(R.id.tvTotLabel);
             TextView tvTax = findViewById(R.id.tvTaxVal);
+            TextView tvTaxableAmt = findViewById(R.id.tvTaxableAmt);
             TextView tvTaxLabel = findViewById(R.id.tvTaxLabel);
             TextView tvBillSubTotal = findViewById(R.id.subtotal);
             TextView tvSaveAmt = findViewById(R.id.tvSaveAmt);
@@ -1295,10 +1349,12 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 tvSaveAmt.setVisibility(View.GONE);
 
             int crtVal = 0;
+            double txblamt = 0.0;
             for (int l = 0; l < Getorder_Array_List.size(); l++) {
                 grpCode = "" + Getorder_Array_List.get(0).getProduct_Grp_Code();
 
                 if (Getorder_Array_List.get(l).getProductDetailsModal() != null) {
+                    txblamt = txblamt + Getorder_Array_List.get(l).getTaxableAmt();
                     for (int tax = 0; tax < Getorder_Array_List.get(l).getProductDetailsModal().size(); tax++) {
                         String label = Getorder_Array_List.get(l).getProductDetailsModal().get(tax).getTax_Type();
                         double amt = Getorder_Array_List.get(l).getProductDetailsModal().get(tax).getTax_Amt();
@@ -1395,6 +1451,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 label = label + orderTotTax.get(i).getTax_Type() + "\n";
                 amt = amt + CurrencySymbol+" " + String.valueOf(formatter.format(orderTotTax.get(i).getTax_Amt())) + "\n";
             }
+
             String uomName = "";
 
             String qtyLabel = "Total Qty" + "\n";
@@ -1445,6 +1502,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             }
 
+            tvTaxableAmt.setText(CurrencySymbol+" " + String.valueOf(formatter.format(txblamt)));
             if (sharedCommonPref.getvalue(Constants.DivERP).equalsIgnoreCase("21") && !isEditOrder) {
                 if (Getorder_Array_List.size() == 0)
                     grplistItems.notify(ProdGroups, this, "", new onListItemClick() {
@@ -1476,7 +1534,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     });
                 }
             }
-            if (Common_Class.isNullOrEmpty(getIntent().getStringExtra(Constants.ORDER_ID))) {
+            if (orderId.equalsIgnoreCase("")) {
                 String data = gson.toJson(Product_Modal);
                 sharedCommonPref.save(Constants.LOC_PRIMARY_DATA, data);
             }
@@ -1501,7 +1559,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     if (jsonObject1.getString("Product_Detail_Code").equals(Product_Details_Modalitem.get(pos).getId())) {
 
                         if (jsonObject1.getDouble("Tax_Val") > 0) {
-                            double taxCal = Product_Details_Modalitem.get(pos).getAmount() *
+                            double taxCal = Product_Details_Modalitem.get(pos).getTaxableAmt() *
                                     ((jsonObject1.getDouble("Tax_Val") / 100));
 
                             wholeTax += taxCal;
@@ -1513,8 +1571,11 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 Product_Details_Modalitem.get(pos).setProductDetailsModal(taxList);
-                Product_Details_Modalitem.get(pos).setAmount(Double.valueOf(formatter.format(Product_Details_Modalitem.get(pos).getAmount()
-                        + wholeTax)));
+
+
+               // Product_Details_Modalitem.get(pos).setAmount(Double.valueOf(formatter.format(Product_Details_Modalitem.get(pos).getAmount()
+               //         + wholeTax)));
+
                 Product_Details_Modalitem.get(pos).setTax(Double.parseDouble(formatter.format(wholeTax)));
             }
 
@@ -1832,6 +1893,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.llBillHeader).setVisibility(View.GONE);
         findViewById(R.id.llPayNetAmountDetail).setVisibility(View.GONE);
         findViewById(R.id.cdFreeQtyParent).setVisibility(View.GONE);
+        findViewById(R.id.delAddressLL).setVisibility(View.GONE);
         btnRepeat.setVisibility(View.VISIBLE);
         takeorder.setText("PROCEED");
         takeorder.setVisibility(View.VISIBLE);
@@ -1853,6 +1915,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                             Product_Modal.get(pm).setAmount(Double.valueOf(formatter.format(Product_Modal.get(pm).getQty() *
                                     Product_Modal.get(pm).getSBRate())));
+                            Product_Modal.get(pm).setTaxableAmt(Double.valueOf(formatter.format(Product_Modal.get(pm).getQty() *
+                                    Product_Modal.get(pm).getBillRate())));
 
                             double enterQty = Product_Modal.get(pm).getQty();
                             String strSchemeList = sharedCommonPref.getvalue(Constants.PRIMARY_SCHEME);
@@ -1929,6 +1993,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                             } else {
                                 Product_Modal.get(pm).setAmount((Product_Modal.get(pm).getAmount()) -
+                                        Double.valueOf(Product_Modal.get(pm).getDiscount()));
+                                Product_Modal.get(pm).setTaxableAmt((Product_Modal.get(pm).getTaxableAmt()) -
                                         Double.valueOf(Product_Modal.get(pm).getDiscount()));
                             }
 
@@ -2092,10 +2158,13 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                 Product_Details_Modal ProductItem = Product_Details_Modalitem.get(holder.getBindingAdapterPosition());
                 holder.productname.setText("" + ProductItem.getName().toUpperCase());
-                holder.Rate.setText(CurrencySymbol+" " + formatter.format(ProductItem.getSBRate()));// * (Integer.parseInt(Product_Details_Modal.getConversionFactor()))));
+                holder.Rate.setText(CurrencySymbol+" " + formatter.format(ProductItem.getSBRate() * (Integer.parseInt(ProductItem.getConversionFactor()))));// * (Integer.parseInt(Product_Details_Modal.getConversionFactor()))));
                 holder.Amount.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProductItem.getAmount()));
+                if(ProductItem.getTaxableAmt()==null) ProductItem.setTaxableAmt(0.0);
+                if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProductItem.getTaxableAmt()));
 
                 int oQty = ProductItem.getQty();
+                int eQty = ProductItem.getQty() * Integer.parseInt(ProductItem.getConversionFactor());
                 String sQty = ProductItem.getQty().toString();
                 if (oQty <= 0) sQty = "";
                 holder.Qty.setText(sQty);
@@ -2111,7 +2180,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 }
                 if (CategoryType >= 0) {
                     holder.tvProERPCode.setText("" + ProductItem.getERP_Code());
-                    holder.tvMRP.setText(CurrencySymbol+" "+ ProductItem.getMRP());
+                    holder.tvMRP.setText(CurrencySymbol+" "+ (Double.parseDouble( ProductItem.getMRP()) * (Integer.parseInt(ProductItem.getConversionFactor()))));
                     holder.totalQty.setText("Total Qty : " + (int) oQty);//((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getQty() * (Integer.parseInt(Product_Details_Modal.getConversionFactor())))));
 
                     if (!ProductItem.getPImage().equalsIgnoreCase("")) {
@@ -2126,7 +2195,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     }
 
 
-                    holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(oQty * ProductItem.getSBRate())); //* (Integer.parseInt(Product_Details_Modal.getConversionFactor())) * Product_Details_Modal.getQty()));
+                   ///// holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(eQty * ProductItem.getBillRate())); //* (Integer.parseInt(Product_Details_Modal.getConversionFactor())) * Product_Details_Modal.getQty()));
 
 
                     String name = "";
@@ -2220,14 +2289,19 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             if (!charSequence.toString().equals(""))
                                 enterQty = Double.parseDouble(charSequence.toString());
 
-                            double totQty = enterQty;//* Double.valueOf(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getConversionFactor()));
+                            double totQty = (enterQty*Double.parseDouble(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getConversionFactor()));
+                            //double ProdAmt = totQty * (Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getSBRate()*Double.parseDouble(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getConversionFactor()));
                             double ProdAmt = totQty * Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getSBRate();
+                            double tProdAmt = totQty * Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getBillRate();
                             double EARate = Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getSBRate() / Double.parseDouble(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getConversionFactor());
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setQty((int) enterQty);
                             holder.Amount.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProdAmt));
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount(ProdAmt);
+                            Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setTaxableAmt(tProdAmt);
                             if (CategoryType >= 0) {
-                                holder.QtyAmt.setText(CurrencySymbol+" "+ formatter.format(ProdAmt));
+
+                                //holder.QtyAmt.setText(CurrencySymbol+" "+ formatter.format(tProdAmt));
+                                holder.QtyAmt.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(tProdAmt));
                                 holder.totalQty.setText("Total Qty : " + (int) totQty);
 
                                 String name = "";
@@ -2367,6 +2441,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                 String pna=Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getName().toString();
                                 Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()) -
                                         (Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getDiscount()));
+                                Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setTaxableAmt((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()) -
+                                        (Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getDiscount()));
 
                                 holder.Free.setText("" + Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getFree() +" EA");
                                 holder.lblFreeNm.setText("" + Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getOff_Pro_name());
@@ -2374,6 +2450,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                 if (!(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getOff_Pro_name().equalsIgnoreCase(pna)))
                                 holder.llFreeProd.setVisibility(View.VISIBLE);
                                 holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
+                                if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()));
 
 
                             }
@@ -2388,6 +2465,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()) -
                                             EAAmt);
+                                    Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setTaxableAmt((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()) -
+                                            EAAmt);
                                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setReplace_qty(String.valueOf(itm.getInt("Qty")));
                                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setReplace_value(String.valueOf(EAAmt));
                                 }
@@ -2395,8 +2474,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                             sumofTax(Product_Details_Modalitem, holder.getBindingAdapterPosition());
                             holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
+                            if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()));
                             holder.tvTaxLabel.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
-
+                           // holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()-Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
                             updateToTALITEMUI();
 
 
@@ -2445,7 +2525,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                         public void PositiveMethod(DialogInterface dialog, int id) {
                                             Product_Details_Modalitem.get(position).setQty(0);
                                             Product_Details_Modalitem.remove(position);
-                                            notifyDataSetChanged();
+                                            notifyItemRemoved(position);
                                             updateToTALITEMUI();
                                         }
 
@@ -2461,6 +2541,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 updateToTALITEMUI();
+                //holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(ProductItem.getAmount()-ProductItem.getTax()));
 
                 if (inValidQty >= 0) {
 
@@ -2513,8 +2594,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     tvMultiple = view.findViewById(R.id.tvMultiple);
                     ImgVwProd = view.findViewById(R.id.ivAddShoppingCart);
                     lblRQty = view.findViewById(R.id.status);
-                    QtyAmt = view.findViewById(R.id.qtyAmt);
                     totalQty = view.findViewById(R.id.totalqty);
+                    QtyAmt = view.findViewById(R.id.qtyAmt);
                     tvMRP = view.findViewById(R.id.MrpRate);
                     tvUomName = view.findViewById(R.id.tvUomName);
                     tvUomQty = view.findViewById(R.id.tvUomQty);

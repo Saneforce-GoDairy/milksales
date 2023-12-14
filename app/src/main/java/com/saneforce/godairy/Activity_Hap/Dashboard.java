@@ -297,13 +297,15 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         break;
 
                     case 2:
-                        String mMode = getIntent().getStringExtra("Mode");
+                        if(getIntent().hasExtra("Mode")){
+                            String mMode = getIntent().getStringExtra("Mode");
 
-                        if (mMode.equals(INTENT_PROCUREMENT_MODE)){
-                            Intent intent = new Intent(context, ProcurementHome.class);
-                            intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
-                            startActivity(intent);
-                            return;
+                            if (mMode.equals(INTENT_PROCUREMENT_MODE)){
+                                Intent intent = new Intent(context, ProcurementHome.class);
+                                intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                                startActivity(intent);
+                                return;
+                            }
                         }
                         startActivity(new Intent(context, SFA_Activity.class));
                         break;
