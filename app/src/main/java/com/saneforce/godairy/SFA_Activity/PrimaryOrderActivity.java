@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -53,6 +54,7 @@ import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -69,6 +71,7 @@ import com.saneforce.godairy.SFA_Model_Class.Category_Universe_Modal;
 import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
+import com.saneforce.godairy.universal.UniversalDropDownAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,6 +87,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import okhttp3.ResponseBody;
@@ -102,7 +106,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     Type userType;
     Gson gson;
     CircularProgressButton takeorder, btnRepeat;
-    TextView Category_Nametext,
+    TextView Category_Nametext, selectDeliveryAddress,
             tvTimer, txBalAmt, txAmtWalt, txAvBal, tvDistId, tvDate, tvGrpName;
     LinearLayout lin_orderrecyclerview, lin_gridcategory, rlAddProduct, llTdPriOrd, btnRefACBal,vwRplcDetail,llProdRplc;
     Common_Class common_class;
@@ -153,6 +157,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     TextView payNowButton;
 
     String PaymentMethod;
+    Context context = this;
+    String _id = "", _title = "", _erpCode = "", _stateCode = "", _pincode = "";
+    JSONArray addressArray;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -197,6 +204,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             tvTotUOM = findViewById(R.id.tvTotUom);
             tvNetAmtTax = findViewById(R.id.tvNetAmtTax);
             tvTotalItems = findViewById(R.id.tvTotalItems);
+            selectDeliveryAddress = findViewById(R.id.selectDeliveryAddress);
 
             tvTotalAmount = findViewById(R.id.tvTotalAmount);
             llDistributor = findViewById(R.id.llDistributor);
@@ -243,6 +251,50 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             categorygrid.setLayoutManager(layoutManager);
+
+            getStockistAddress();
+            addressArray = new JSONArray();
+            selectDeliveryAddress.setOnClickListener(v -> {
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+                View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv_and_filter, null, false);
+                builder.setView(view);
+                builder.setCancelable(false);
+                android.app.AlertDialog dialog = builder.create();
+                TextView title = view.findViewById(R.id.title);
+                title.setText("Select Address");
+                RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+                UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, addressArray);
+                TextView close = view.findViewById(R.id.close);
+                close.setOnClickListener(v1 -> dialog.dismiss());
+                EditText eT_Filter = view.findViewById(R.id.eT_Filter);
+                eT_Filter.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                eT_Filter.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        adapter.getFilter().filter(s.toString());
+                    }
+                });
+                adapter.setOnItemClick((position, arrayList) -> {
+                    _id = arrayList.optJSONObject(position).optString("id");
+                    _title = arrayList.optJSONObject(position).optString("title");
+                    _erpCode = arrayList.optJSONObject(position).optString("erpCode");
+                    _stateCode = arrayList.optJSONObject(position).optString("stateCode");
+                    _pincode = arrayList.optJSONObject(position).optString("pincode");
+                    selectDeliveryAddress.setText(_title);
+                    dialog.dismiss();
+                });
+                recyclerView.setAdapter(adapter);
+                dialog.show();
+            });
 
             GetJsonData(String.valueOf(db.getMasterData(Constants.Todaydayplanresult)), "6", "");
 
@@ -421,6 +473,28 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         } catch (Exception e) {
             Log.v(TAG, " order oncreate: " + e.getMessage());
         }
+    }
+
+    private void getStockistAddress() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_stockist_address");
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                addressArray = new JSONArray();
+                Executors.newSingleThreadExecutor().execute(() -> {
+                    try {
+                        addressArray = jsonObject.getJSONArray("response");
+                    } catch (Exception ignored) {
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String error) {
+                addressArray = new JSONArray();
+            }
+        });
     }
 
     public String createMultiProductData() {
@@ -947,6 +1021,11 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             HeadItem.put("lastOrderedAmount", formatter.format(lastOrderedAmount));
                             HeadItem.put("DataSF", Shared_Common_Pref.Sf_Code);
                             HeadItem.put("AppVer", BuildConfig.VERSION_NAME);
+                            HeadItem.put("addressId", _id);
+                            HeadItem.put("title", _title);
+                            HeadItem.put("erpCode", _erpCode);
+                            HeadItem.put("stateCode", _stateCode);
+                            HeadItem.put("pincode", _pincode);
                             ActivityData.put("Activity_Report_Head", HeadItem);
 
                             JSONObject OutletItem = new JSONObject();
