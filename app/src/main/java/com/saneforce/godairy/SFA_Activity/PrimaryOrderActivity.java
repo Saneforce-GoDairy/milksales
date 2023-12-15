@@ -232,8 +232,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             common_class.getDb_310Data(Constants.Primary_Shortage_List, this);
             common_class.getDb_310Data(Constants.PaymentMethod, this);
-            if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.LOC_PRIMARY_DATA)))
+            if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.LOC_PRIMARY_DATA))){
+                common_class.ProgressdialogShow(1, "Loading Matrial Details");
                 common_class.getDb_310Data(Constants.Primary_Product_List, this);
+            }
             else {
                 Product_Modal = gson.fromJson(sharedCommonPref.getvalue(Constants.LOC_PRIMARY_DATA), userType);
                 boolean isHave = false;
@@ -1822,6 +1824,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                 case Constants.Primary_Product_List:
                     Product_Modal = gson.fromJson(apiDataResponse, userType);
+                    common_class.ProgressdialogShow(0, "");
                     loadCategoryData("NEW", "");
                     break;
 

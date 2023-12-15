@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(context, PrivacyPolicy.class);
                     startActivity(intent);
                 } else {
+
                     Intent intent = new Intent(context, LoginHome.class);
                     startActivity(intent);
                 }
@@ -47,4 +48,5 @@ public class MainActivity extends AppCompatActivity {
             Log.v("MainActivity:", Objects.requireNonNull(e.getMessage()));
         }
     }
+
 }
