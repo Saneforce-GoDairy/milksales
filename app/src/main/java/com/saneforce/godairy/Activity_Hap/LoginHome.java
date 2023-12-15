@@ -31,22 +31,11 @@ public class LoginHome extends AppCompatActivity {
         if (!shared_common_pref.getvalue("base_url").isEmpty()) {
             ApiClient.ChangeBaseURL(shared_common_pref.getvalue("base_url"));
         }
-        onClick();
-        sessionCheck();
-    }
 
-    private void onClick() {
-        binding.signIn.setOnClickListener(v -> {
-            Intent intent = new Intent(context, Login.class);
-            startActivity(intent);
-            overridePendingTransition(0,0);
-            finish();
-        });
-    }
+        binding.signIn.setOnClickListener(v -> loadHome());
 
-    private void sessionCheck() {
         boolean Login = SHARED_PREF.getBoolean("Login", false);
-        if (Login){
+        if (Login) {
             loadHome();
         }
     }

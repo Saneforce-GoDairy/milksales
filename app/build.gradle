@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
-//4.x.x//primary--distri
-//6.x.x//start hsfa--checkin
 android {
     defaultConfig {
         applicationId "com.saneforce.godairy"
@@ -18,28 +16,28 @@ android {
 
     lintOptions {
         checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError false
     }
 
     buildTypes {
         release {
-            //  multiDexKeepFile file('multidex-config.txt')
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11;
         targetCompatibility JavaVersion.VERSION_11;
     }
+
     packagingOptions {
         resources {
             excludes += ['LICENSE.txt', 'META-INF/DEPENDENCIES']
         }
     }
+
     buildFeatures {
         viewBinding true
     }
@@ -50,14 +48,8 @@ android {
             mavenCentral()
             jcenter()
             maven { url 'https://jitpack.io' }
-            //  maven { url 'https://maven.google.com' }
-            //maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-            ///maven { url "https://jitpack.io" }
 
         }
-    }
-    buildFeatures {
-        viewBinding true
     }
 }
 

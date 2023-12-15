@@ -113,6 +113,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     private Shared_Common_Pref mShared_common_pref;
     private GateEntryQREvents GateEvents;
     private Common_Class DT = new Common_Class();
+    boolean AgainCheckForMissedPunch = false;
 
     int cModMnth = 1;
     int LoadingCnt = 0;
@@ -1192,6 +1193,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                         mMessage = itm.get("Msg").getAsString();
                         JsonArray MissedItems = itm.getAsJsonArray("GetMissed");
                         if (MissedItems.size() > 0) {
+                            AgainCheckForMissedPunch = true;
                             AlertDialog alertDialog = new AlertDialog.Builder(Dashboard_Two.this)
                                     .setTitle(HAPApp.Title)
                                     .setMessage(Html.fromHtml(mMessage))
@@ -1212,9 +1214,9 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                     .show();
                         }
                         else {
-
                             JsonArray WKItems = itm.getAsJsonArray("CheckWK");
                             if (WKItems.size() > 0) {
+                                AgainCheckForMissedPunch = true;
                                 if (itm.get("WKFlg").getAsInt() == 1) {
                                     Log.d("WEEKOFF", String.valueOf(itm.get("WKFlg").getAsInt()));
 
@@ -1593,7 +1595,10 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        GetMissedPunch();
+        if (AgainCheckForMissedPunch) {
+            GetMissedPunch();
+            AgainCheckForMissedPunch = false;
+        }
         Log.v("LOG_IN_LOCATION", "ONRESTART");
     }
 

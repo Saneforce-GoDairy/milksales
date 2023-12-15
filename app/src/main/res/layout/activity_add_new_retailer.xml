@@ -757,6 +757,19 @@
         app:spinning_bar_width="5dp"
         tools:ignore="TouchTargetSizeCheck" />
 
+    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+        android:id="@+id/updateButton"
+        style="@style/BottomButton"
+        android:text="Update"
+        android:theme="@style/BluePrimaryButton"
+        android:visibility="gone"
+        app:finalCornerAngle="50dp"
+        app:initialCornerAngle="0dp"
+        app:spinning_bar_color="#FFFFFFFF"
+        app:spinning_bar_padding="5dp"
+        app:spinning_bar_width="5dp"
+        tools:ignore="TouchTargetSizeCheck" />
+
     <LinearLayout
         android:id="@+id/approveParentLL"
         android:layout_width="match_parent"
