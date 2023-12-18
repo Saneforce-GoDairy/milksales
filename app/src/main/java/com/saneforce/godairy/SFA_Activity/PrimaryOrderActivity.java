@@ -8,9 +8,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -36,6 +42,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,6 +79,7 @@ import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.universal.UniversalDropDownAdapter;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -971,15 +979,23 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("resultCode = "+resultCode);
         System.out.println("onActivityResult data = "+data);
-        if(data != null && resultCode != 2 && requestCode == 1){
-            System.out.println("ArrayList data = "+data.getExtras().getString("response"));
-            if(resultCode == 1){
-                Toast.makeText(this,"Transaction Successful! \n" + data.getExtras().getString("response"), Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(this,"Transaction Failed! \n"  + data.getExtras().getString("response"), Toast.LENGTH_LONG).show();
+        int type = 0;
+        String msg = "";
+        if (requestCode == 1) {
+            if(data != null && resultCode != 2){
+                System.out.println("ArrayList data = "+data.getExtras().getString("response"));
+                if(resultCode == 1){
+                    type = 1;
+                    msg = "Transaction Successful!";
+                }else{
+                    type = 2;
+                    msg = "Transaction Failed!";
+                }
+            } else{
+                type = 3;
+                msg = "Transaction Cancelled!";
             }
-        } else{
-            Toast.makeText(this,"Transaction Cancelled!", Toast.LENGTH_LONG).show();
+            showPaymentResult(type, msg);
         }
         if (requestCode == 1000) {
             String sLoc = sharedCommonPref.getvalue("CurrLoc");
@@ -996,6 +1012,47 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 SaveOrder();
             }
         }
+    }
+
+    private void showPaymentResult(int type, String msg) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_payment_result, null, false);
+        builder.setView(view);
+        builder.setCancelable(false);
+        android.app.AlertDialog dialog = builder.create();
+
+        ImageView image = view.findViewById(R.id.image);
+        TextView status = view.findViewById(R.id.status);
+        TextView close = view.findViewById(R.id.close);
+
+        status.setText(msg);
+        close.setOnClickListener(v1 -> {
+            dialog.dismiss();
+            finish();
+        });
+        switch (type) {
+            case 1:
+                Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_success);
+                Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.draw(canvas);
+                image.setImageBitmap(bitmap);
+                break;
+            case 2:
+            case 3:
+                Drawable drawables = ContextCompat.getDrawable(context, R.drawable.ic_cancel);
+                Bitmap bitmaps = Bitmap.createBitmap(drawables.getIntrinsicWidth(), drawables.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvass = new Canvas(bitmaps);
+                drawables.setBounds(0, 0, canvass.getWidth(), canvass.getHeight());
+                drawables.draw(canvass);
+                image.setImageBitmap(bitmaps);
+                break;
+        }
+
+        Window window = dialog.getWindow();
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     private void SaveOrder() {

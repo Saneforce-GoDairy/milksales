@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -108,7 +109,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     ArrayList<CommonModelWithFourString> officeList, filteredOfficeList, tempOfficeList, routeList, filteredRouteList, tempRouteList;
 
     GoogleMap googleMap;
-    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, uidTypeArray, MasSubMarketArray, MasCusTypeArray, stateArray;
+    JSONArray subChannelResponse, filteredSubChannel, cusACGroupResponse, distChannelResponse, salesDivisionResponse, MasDistrictArray, filteredMasDistrictArray, MasCusSalRegionArray, MasSalesGroupArray, filteredMasSalesGroupArray, MasCusGroupArray, MasBusinessTypeArray, MasBusinessDivisionArray, MasCusClassArray, MasReportingVertArray, uidTypeArray, MasSubMarketArray, MasCusTypeArray, stateArray, fieldDetails;
 
     DownloadReceiver downloadReceiver;
     DatePickerDialog fromDatePickerDialog;
@@ -360,6 +361,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         MasSubMarketArray = new JSONArray();
         MasCusTypeArray = new JSONArray();
         stateArray = new JSONArray();
+        fieldDetails = new JSONArray();
 
         capture_customer_photo.setOnClickListener(v -> {
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
@@ -1432,6 +1434,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                                     subChannelResponse = object.getJSONArray("subChannelResponse");
                                     stateArray = object.getJSONArray("MasState");
                                     MasReportingVertArray = object.getJSONArray("MasReportingVert");
+                                    fieldDetails = object.optJSONArray("fieldDetails");
+                                    runOnUiThread(() -> prepareViews());
                                 } catch (JSONException ignored) {
                                 }
                             }).start();
@@ -1451,6 +1455,398 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void prepareViews() {
+        if (fieldDetails == null) {
+            return;
+        }
+        for (int i = 0; i < fieldDetails.length(); i++) {
+            try {
+                JSONObject object = fieldDetails.getJSONObject(i);
+                String fieldCode = object.optString("fieldCode");
+                String fieldName = object.optString("fieldName");
+                int mandatory = object.optInt("mandatory");
+                int visibility = object.optInt("visibility");
+                switch (fieldCode) {
+                    case "customerPhoto":
+                        if (visibility == 1) {
+                            binding.customerPhotoLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.customerPhotoLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.customerPhotoTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.customerPhotoTitle.setText(fieldName);
+                        }
+                        break;
+                    case "shopPhoto":
+                        if (visibility == 1) {
+                            binding.shopPhotoLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.shopPhotoLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.shopPhotoTITLE.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.shopPhotoTITLE.setText(fieldName);
+                        }
+                        break;
+                    case "applicationPhoto":
+                        if (visibility == 1) {
+                            binding.applicationPhotoLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.applicationPhotoLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.applicationPhotoTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.applicationPhotoTitle.setText(fieldName);
+                        }
+                        break;
+                    case "state":
+                        if (visibility == 1) {
+                            binding.stateTitle.setVisibility(View.VISIBLE);
+                            binding.selectState.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.stateTitle.setVisibility(View.GONE);
+                            binding.selectState.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.stateTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.stateTitle.setText(fieldName);
+                        }
+                        break;
+                    case "salesOffice":
+                        if (visibility == 1) {
+                            binding.salesOfficeTitle.setVisibility(View.VISIBLE);
+                            binding.selectSalesOfficeName.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.salesOfficeTitle.setVisibility(View.GONE);
+                            binding.selectSalesOfficeName.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.salesOfficeTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.salesOfficeTitle.setText(fieldName);
+                        }
+                        break;
+                    case "route":
+                        if (visibility == 1) {
+                            binding.routeTitle.setVisibility(View.VISIBLE);
+                            binding.selectRouteName.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.routeTitle.setVisibility(View.GONE);
+                            binding.selectRouteName.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.routeTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.routeTitle.setText(fieldName);
+                        }
+                        break;
+                    case "channel":
+                        if (visibility == 1) {
+                            binding.channelTitle.setVisibility(View.VISIBLE);
+                            binding.selectChannel.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.channelTitle.setVisibility(View.GONE);
+                            binding.selectChannel.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.channelTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.channelTitle.setText(fieldName);
+                        }
+                        break;
+                    case "subChannel":
+                        if (visibility == 1) {
+                            binding.subChannelTitle.setVisibility(View.VISIBLE);
+                            binding.selectSubChannel.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.subChannelTitle.setVisibility(View.GONE);
+                            binding.selectSubChannel.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.subChannelTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.subChannelTitle.setText(fieldName);
+                        }
+                        break;
+                    case "verticals":
+                        if (visibility == 1) {
+                            binding.verticalsTitle.setVisibility(View.VISIBLE);
+                            binding.selectReportingVerticals.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.verticalsTitle.setVisibility(View.GONE);
+                            binding.selectReportingVerticals.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.verticalsTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.verticalsTitle.setText(fieldName);
+                        }
+                        break;
+                    case "city":
+                        if (visibility == 1) {
+                            binding.cityTitle.setVisibility(View.VISIBLE);
+                            binding.typeCity.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.cityTitle.setVisibility(View.GONE);
+                            binding.typeCity.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.cityTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.cityTitle.setText(fieldName);
+                        }
+                        break;
+                    case "businessName":
+                        if (visibility == 1) {
+                            binding.businessNameTitle.setVisibility(View.VISIBLE);
+                            binding.typeNameOfTheCustomer.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.businessNameTitle.setVisibility(View.GONE);
+                            binding.typeNameOfTheCustomer.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.businessNameTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.businessNameTitle.setText(fieldName);
+                        }
+                        break;
+                    case "ownerName":
+                        if (visibility == 1) {
+                            binding.ownerNameTitle.setVisibility(View.VISIBLE);
+                            binding.typeNameOfTheOwner.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.ownerNameTitle.setVisibility(View.GONE);
+                            binding.typeNameOfTheOwner.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.ownerNameTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.ownerNameTitle.setText(fieldName);
+                        }
+                        break;
+                    case "businessAddress":
+                        if (visibility == 1) {
+                            binding.businessAddressLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.businessAddressLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.businessAddressTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.businessAddressTitle.setText(fieldName);
+                        }
+                        break;
+                    case "ownerAddress":
+                        if (visibility == 1) {
+                            binding.ownerAddressLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.ownerAddressLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.ownerAddressTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.ownerAddressTitle.setText(fieldName);
+                        }
+                        break;
+                    case "mobile":
+                        if (visibility == 1) {
+                            binding.mobileTitle.setVisibility(View.VISIBLE);
+                            binding.typeMobileNumber.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.mobileTitle.setVisibility(View.GONE);
+                            binding.typeMobileNumber.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.mobileTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.mobileTitle.setText(fieldName);
+                        }
+                        break;
+                    case "email":
+                        if (visibility == 1) {
+                            binding.emailTitle.setVisibility(View.VISIBLE);
+                            binding.typeEmailId.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.emailTitle.setVisibility(View.GONE);
+                            binding.typeEmailId.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.emailTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.emailTitle.setText(fieldName);
+                        }
+                        break;
+                    case "salesExecutiveName":
+                        if (visibility == 1) {
+                            binding.salesExecutiveNameTitle.setVisibility(View.VISIBLE);
+                            binding.typeSalesExecutiveName.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.salesExecutiveNameTitle.setVisibility(View.GONE);
+                            binding.typeSalesExecutiveName.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.salesExecutiveNameTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.salesExecutiveNameTitle.setText(fieldName);
+                        }
+                        break;
+                    case "salesExecutiveCode":
+                        if (visibility == 1) {
+                            binding.salesExecutiveIDTitle.setVisibility(View.VISIBLE);
+                            binding.typeSalesExecutiveEmployeeId.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.salesExecutiveIDTitle.setVisibility(View.GONE);
+                            binding.typeSalesExecutiveEmployeeId.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.salesExecutiveIDTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.salesExecutiveIDTitle.setText(fieldName);
+                        }
+                        break;
+                    case "uidType":
+                        if (visibility == 1) {
+                            binding.uidTypeTitle.setVisibility(View.VISIBLE);
+                            binding.uidType.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.uidTypeTitle.setVisibility(View.GONE);
+                            binding.uidType.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.uidTypeTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.uidTypeTitle.setText(fieldName);
+                        }
+                        break;
+                    case "aadhaar":
+                        if (visibility == 1) {
+                            binding.aadhaarLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.aadhaarLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.aadhaarTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.aadhaarTitle.setText(fieldName);
+                        }
+                        break;
+                    case "pan":
+                        if (visibility == 1) {
+                            binding.panNumberLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.panNumberLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.panNumberTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.panNumberTitle.setText(fieldName);
+                        }
+                        break;
+                    case "panName":
+                        if (visibility == 1) {
+                            binding.panNameTitle.setVisibility(View.VISIBLE);
+                            binding.typePanName.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.panNameTitle.setVisibility(View.GONE);
+                            binding.typePanName.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.panNameTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.panNameTitle.setText(fieldName);
+                        }
+                        break;
+                    case "bank":
+                        if (visibility == 1) {
+                            binding.bankLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.bankLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.bankTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.bankTitle.setText(fieldName);
+                        }
+                        break;
+                    case "fssai":
+                        if (visibility == 1) {
+                            binding.fssaiMasterLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.fssaiMasterLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.fssaiNumberTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.fssaiNumberTitle.setText(fieldName);
+                        }
+                        break;
+                    case "fssaiDeclaration":
+                        break;
+                    case "gst":
+                        if (visibility == 1) {
+                            binding.gstMasterLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.gstMasterLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.gstTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.gstTitle.setText(fieldName);
+                        }
+                        break;
+                    case "gstDeclaration":
+                        break;
+                    case "tcs":
+                        if (visibility == 1) {
+                            binding.tcsMasterLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.tcsMasterLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.tcsTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.tcsTitle.setText(fieldName);
+                        }
+                        break;
+                    case "tcsDeclaration":
+                        break;
+                    case "agrementCopy":
+                        if (visibility == 1) {
+                            binding.agreementLL.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.agreementLL.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.agreementTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.agreementTitle.setText(fieldName);
+                        }
+                        break;
+                    case "purchaseType":
+                        if (visibility == 1) {
+                            binding.purchaseType.setVisibility(View.VISIBLE);
+                            binding.purchaseTypeTitle.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.purchaseType.setVisibility(View.GONE);
+                            binding.purchaseTypeTitle.setVisibility(View.GONE);
+                        }
+                        if (mandatory == 1) {
+                            binding.purchaseTypeTitle.setText(Html.fromHtml(fieldName + " " + "<span style=\"color:#E53935\">*</span>"));
+                        } else {
+                            binding.purchaseTypeTitle.setText(fieldName);
+                        }
+                        break;
+                }
+            } catch (JSONException ignored) {
+            }
+        }
     }
 
     private void showImage(String url) {
@@ -1535,14 +1931,12 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         bankDetailsStr = select_bank_details.getText().toString().trim();
         bankDetailsStr = Common_Class.validateField(bankDetailsStr);
 
-        fssaiFromStr = fssaiFromDate.getText().toString().trim();
-        fssaiFromStr = Common_Class.validateField(fssaiFromStr);
-
-        fssaitoStr = fssaiToDate.getText().toString().trim();
-        fssaitoStr = Common_Class.validateField(fssaitoStr);
-
         FSSAIDetailsStr = type_fssai.getText().toString().trim();
         FSSAIDetailsStr = Common_Class.validateField(FSSAIDetailsStr);
+        fssaiFromStr = fssaiFromDate.getText().toString().trim();
+        fssaiFromStr = Common_Class.validateField(fssaiFromStr);
+        fssaitoStr = fssaiToDate.getText().toString().trim();
+        fssaitoStr = Common_Class.validateField(fssaitoStr);
 
         GSTDetailsStr = type_gst.getText().toString().trim();
         GSTDetailsStr = Common_Class.validateField(GSTDetailsStr);
@@ -1553,91 +1947,101 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         purchaseTypeName = purchaseType.getText().toString().trim();
         purchaseTypeName = Common_Class.validateField(purchaseTypeName);
 
-        if (TextUtils.isEmpty(customer_photo_name) || TextUtils.isEmpty(customer_photo_url)) {
-            Toast.makeText(context, "Please Capture Customer Photo", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(shop_photo_name) || TextUtils.isEmpty(shop_photo_url)) {
-            Toast.makeText(context, "Please Capture Shop Photo", Toast.LENGTH_SHORT).show();
-        } else if (customerApplicationImageName.isEmpty() || customerApplicationImageFullPath.isEmpty()) {
+        if (binding.customerPhotoLL.getVisibility() == View.VISIBLE && binding.customerPhotoTitle.getText().toString().contains("*") && TextUtils.isEmpty(customer_photo_name)) {
+            Toast.makeText(context, "Please capture customer photo", Toast.LENGTH_SHORT).show();
+        } else if (binding.shopPhotoLL.getVisibility() == View.VISIBLE && binding.shopPhotoTITLE.getText().toString().contains("*") && TextUtils.isEmpty(shop_photo_name)) {
+            Toast.makeText(context, "Please capture shop photo", Toast.LENGTH_SHORT).show();
+        } else if (binding.applicationPhotoLL.getVisibility() == View.VISIBLE && binding.applicationPhotoTitle.getText().toString().contains("*") && customerApplicationImageName.isEmpty()) {
             Toast.makeText(context, "Please capture customer application photo", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(stateCodeStr) || TextUtils.isEmpty(stateNameStr)) {
-            Toast.makeText(context, "Please Select the State", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(officeNameStr) || TextUtils.isEmpty(officeCodeStr)) {
-            Toast.makeText(context, "Please Select the Sales Office", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(routeNameStr) || TextUtils.isEmpty(routeCodeStr)) {
-            Toast.makeText(context, "Please Select the Route Name", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(channelStr) || TextUtils.isEmpty(channelIDStr)) {
-            Toast.makeText(context, "Please Select the Channel", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(subChannelIDStr) || TextUtils.isEmpty(subChannelNameStr)) {
-            Toast.makeText(context, "Please Select Sub Channel", Toast.LENGTH_SHORT).show();
-        } else if (ReportingVerticalsID.isEmpty() || ReportingVerticalsStr.isEmpty()) {
-            Toast.makeText(context, "Please Select Verticals", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(cityStr)) {
-            Toast.makeText(context, "Please Select the City", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(customerNameStr)) {
-            Toast.makeText(context, "Please Enter the Business Name", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(ownerNameStr)) {
-            Toast.makeText(context, "Please Enter the Owner Name", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(businessAddressNoStr) || TextUtils.isEmpty(businessAddressCityStr) || TextUtils.isEmpty(businessAddressPincodeStr)) {
-            Toast.makeText(context, "Please Enter the Business Address", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(pincodeStr) || pincodeStr.length() != 6) {
-            Toast.makeText(context, "Please Enter 6 digit Pincode", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(ownerAddressNoStr) || TextUtils.isEmpty(ownerAddressCityStr) || TextUtils.isEmpty(ownerAddressPincodeStr)) {
-            Toast.makeText(context, "Please Enter the Owner Address", Toast.LENGTH_SHORT).show();
-        } else if (ownerAddressPincodeStr.length() != 6) {
-            Toast.makeText(context, "Please Enter 6 digit pincode", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(mobileNumberStr) || mobileNumberStr.length() != 10) {
-            Toast.makeText(context, "Please Enter 10 Digit Mobile Number", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(executiveNameStr)) {
-            Toast.makeText(context, "Please Enter the Sales Executive Name", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(employeeIdStr)) {
-            Toast.makeText(context, "Please Enter the Sales Executive - Employee ID", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(UIDType)) {
+        } else if (binding.stateTitle.getVisibility() == View.VISIBLE && binding.stateTitle.getText().toString().contains("*") && (TextUtils.isEmpty(stateCodeStr) || TextUtils.isEmpty(stateNameStr))) {
+            Toast.makeText(context, "Please select the state", Toast.LENGTH_SHORT).show();
+        } else if (binding.salesOfficeTitle.getVisibility() == View.VISIBLE && binding.salesOfficeTitle.getText().toString().contains("*") && (TextUtils.isEmpty(officeNameStr) || TextUtils.isEmpty(officeCodeStr))) {
+            Toast.makeText(context, "Please select the sales office", Toast.LENGTH_SHORT).show();
+        } else if (binding.routeTitle.getVisibility() == View.VISIBLE && binding.routeTitle.getText().toString().contains("*") && (TextUtils.isEmpty(routeNameStr) || TextUtils.isEmpty(routeCodeStr))) {
+            Toast.makeText(context, "Please select the route", Toast.LENGTH_SHORT).show();
+        } else if (binding.channelTitle.getVisibility() == View.VISIBLE && binding.channelTitle.getText().toString().contains("*") && (TextUtils.isEmpty(channelStr) || TextUtils.isEmpty(channelIDStr))) {
+            Toast.makeText(context, "Please select the channel", Toast.LENGTH_SHORT).show();
+        } else if (binding.subChannelTitle.getVisibility() == View.VISIBLE && binding.subChannelTitle.getText().toString().contains("*") && (TextUtils.isEmpty(subChannelIDStr) || TextUtils.isEmpty(subChannelNameStr))) {
+            Toast.makeText(context, "Please select the sub channel", Toast.LENGTH_SHORT).show();
+        } else if (binding.verticalsTitle.getVisibility() == View.VISIBLE && binding.verticalsTitle.getText().toString().contains("*") && (ReportingVerticalsID.isEmpty() || ReportingVerticalsStr.isEmpty())) {
+            Toast.makeText(context, "Please select the verticals", Toast.LENGTH_SHORT).show();
+        } else if (binding.cityTitle.getVisibility() == View.VISIBLE && binding.cityTitle.getText().toString().contains("*") && TextUtils.isEmpty(cityStr)) {
+            Toast.makeText(context, "Please select the city", Toast.LENGTH_SHORT).show();
+        } else if (binding.businessNameTitle.getVisibility() == View.VISIBLE && binding.businessNameTitle.getText().toString().contains("*") && TextUtils.isEmpty(customerNameStr)) {
+            Toast.makeText(context, "Please enter the business name", Toast.LENGTH_SHORT).show();
+        } else if (binding.ownerNameTitle.getVisibility() == View.VISIBLE && binding.ownerNameTitle.getText().toString().contains("*") && TextUtils.isEmpty(ownerNameStr)) {
+            Toast.makeText(context, "Please enter the owner name", Toast.LENGTH_SHORT).show();
+        } else if (binding.businessAddressLL.getVisibility() == View.VISIBLE && binding.businessAddressTitle.getText().toString().contains("*") && (TextUtils.isEmpty(businessAddressNoStr) || TextUtils.isEmpty(businessAddressCityStr) || TextUtils.isEmpty(businessAddressPincodeStr))) {
+            Toast.makeText(context, "Please enter the business address", Toast.LENGTH_SHORT).show();
+        } else if (binding.businessAddressLL.getVisibility() == View.VISIBLE && binding.businessAddressTitle.getText().toString().contains("*") && (TextUtils.isEmpty(pincodeStr) || pincodeStr.length() != 6)) {
+            Toast.makeText(context, "Please enter 6 digit pincode", Toast.LENGTH_SHORT).show();
+        } else if (binding.ownerAddressLL.getVisibility() == View.VISIBLE && binding.ownerAddressTitle.getText().toString().contains("*") && (TextUtils.isEmpty(ownerAddressNoStr) || TextUtils.isEmpty(ownerAddressCityStr) || TextUtils.isEmpty(ownerAddressPincodeStr))) {
+            Toast.makeText(context, "Please enter the owner address", Toast.LENGTH_SHORT).show();
+        } else if (binding.ownerAddressLL.getVisibility() == View.VISIBLE && binding.ownerAddressTitle.getText().toString().contains("*") && ownerAddressPincodeStr.length() != 6) {
+            Toast.makeText(context, "Please enter 6 digit pincode", Toast.LENGTH_SHORT).show();
+        } else if (binding.mobileTitle.getVisibility() == View.VISIBLE && binding.mobileTitle.getText().toString().contains("*") && (TextUtils.isEmpty(mobileNumberStr) || mobileNumberStr.length() != 10)) {
+            Toast.makeText(context, "Please enter 10 digit mobile number", Toast.LENGTH_SHORT).show();
+        } else if (binding.emailTitle.getVisibility() == View.VISIBLE && binding.emailTitle.getText().toString().contains("*") && TextUtils.isEmpty(emailAddressStr)) {
+            Toast.makeText(context, "Please enter email address", Toast.LENGTH_SHORT).show();
+        } else if (binding.salesExecutiveNameTitle.getVisibility() == View.VISIBLE && binding.salesExecutiveNameTitle.getText().toString().contains("*") && TextUtils.isEmpty(executiveNameStr)) {
+            Toast.makeText(context, "Please enter the sales executive name", Toast.LENGTH_SHORT).show();
+        } else if (binding.salesExecutiveIDTitle.getVisibility() == View.VISIBLE && binding.salesExecutiveIDTitle.getText().toString().contains("*") && TextUtils.isEmpty(employeeIdStr)) {
+            Toast.makeText(context, "Please enter the sales executive ID", Toast.LENGTH_SHORT).show();
+        } else if (binding.uidTypeTitle.getVisibility() == View.VISIBLE && binding.uidTypeTitle.getText().toString().contains("*") && TextUtils.isEmpty(UIDType)) {
             Toast.makeText(context, "Please select UID type", Toast.LENGTH_SHORT).show();
-        } else if (UIDType.equals("Aadhaar") && TextUtils.isEmpty(aadhaarStr)) {
-            Toast.makeText(context, "Please Enter the Aadhaar Number", Toast.LENGTH_SHORT).show();
-        } else if (UIDType.equals("Aadhaar") && aadhaarStr.length() != 12) {
-            Toast.makeText(context, "Please Enter 12 digit Aadhaar Number", Toast.LENGTH_SHORT).show();
-        } else if (UIDType.equals("Aadhaar") && (TextUtils.isEmpty(aadhaarImageName) || TextUtils.isEmpty(aadhaarImageFullPath))) {
-            Toast.makeText(context, "Please Capture the Aadhaar Image", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(PANStr)) {
-            Toast.makeText(context, "Please Enter the PAN Number", Toast.LENGTH_SHORT).show();
-        } else if (PANStr.length() != 10) {
-            Toast.makeText(context, "Please Enter 10 digit PAN Number", Toast.LENGTH_SHORT).show();
-        } else if (!PANStr.matches("[A-Z]{5}[0-9]{4}[A-Z]{1}")) {
-            Toast.makeText(context, "Please Enter valid PAN Number", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(panImageName) || TextUtils.isEmpty(panImageFullPath)) {
-            Toast.makeText(context, "Please Capture the PAN Image", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(PANName)) {
-            Toast.makeText(context, "Please enter PAN Name", Toast.LENGTH_SHORT).show();
+        } else if (binding.aadhaarLL.getVisibility() == View.VISIBLE && binding.aadhaarTitle.getText().toString().contains("*") && UIDType.equals("Aadhaar") && TextUtils.isEmpty(aadhaarStr)) {
+            Toast.makeText(context, "Please enter the aadhaar number", Toast.LENGTH_SHORT).show();
+        } else if (binding.aadhaarLL.getVisibility() == View.VISIBLE && binding.aadhaarTitle.getText().toString().contains("*") && UIDType.equals("Aadhaar") && aadhaarStr.length() != 12) {
+            Toast.makeText(context, "Please enter 12 digit aadhaar number", Toast.LENGTH_SHORT).show();
+        } else if (binding.aadhaarLL.getVisibility() == View.VISIBLE && binding.aadhaarTitle.getText().toString().contains("*") && UIDType.equals("Aadhaar") && (TextUtils.isEmpty(aadhaarImageName) || TextUtils.isEmpty(aadhaarImageFullPath))) {
+            Toast.makeText(context, "Please capture the aadhaar photo", Toast.LENGTH_SHORT).show();
+        } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && TextUtils.isEmpty(PANStr)) {
+            Toast.makeText(context, "Please enter the PAN number", Toast.LENGTH_SHORT).show();
+        } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && PANStr.length() != 10) {
+            Toast.makeText(context, "Please enter 10 digit PAN number", Toast.LENGTH_SHORT).show();
+        } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && !PANStr.matches("[A-Z]{5}[0-9]{4}[A-Z]{1}")) {
+            Toast.makeText(context, "Please enter valid PAN number", Toast.LENGTH_SHORT).show();
+        } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && (TextUtils.isEmpty(panImageName) || TextUtils.isEmpty(panImageFullPath))) {
+            Toast.makeText(context, "Please capture the PAN photo", Toast.LENGTH_SHORT).show();
+        } else if (binding.panNameTitle.getVisibility() == View.VISIBLE && binding.panNameTitle.getText().toString().contains("*") && TextUtils.isEmpty(PANName)) {
+            Toast.makeText(context, "Please enter the PAN name", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(bankDetailsStr) && bankImageName.isEmpty()) {
-            Toast.makeText(context, "Please Capture the Bank Details Image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please capture the bank details photo", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(bankDetailsStr) && !bankImageName.isEmpty()) {
-            Toast.makeText(context, "Please Enter Bank Details", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please enter the bank details", Toast.LENGTH_SHORT).show();
+        } else if (binding.bankLL.getVisibility() == View.VISIBLE && binding.bankTitle.getText().toString().contains("*") && (TextUtils.isEmpty(bankDetailsStr) || bankImageName.isEmpty())) {
+            Toast.makeText(context, "Please enter the bank details", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() != 14 && fssaiSwitch.isChecked()) {
-            Toast.makeText(context, "Please Enter 14 digit FSSAI Number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please enter 14 digit FSSAI number", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && FSSAIList.isEmpty()) {
-            Toast.makeText(context, "Please capture FSSAI License Certificate", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please capture FSSAI license certificate", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && (fssaiFromStr.isEmpty() || fssaitoStr.isEmpty())) {
             Toast.makeText(context, "Please select FSSAI valid dates", Toast.LENGTH_SHORT).show();
-        } else if (!fssaiSwitch.isChecked() && FSSAIDeclarationImageName.isEmpty()) {
+        } else if (binding.fssaiMasterLL.getVisibility() == View.VISIBLE && binding.fssaiNumberTitle.getText().toString().contains("*") && !fssaiSwitch.isChecked() && FSSAIDeclarationImageName.isEmpty()) {
             Toast.makeText(context, "Please capture FSSAI declaration", Toast.LENGTH_SHORT).show();
-        } else if (gstSwitch.isChecked() && GSTDetailsStr.length() != 15) {
-            Toast.makeText(context, "Please Enter 15 digit GST Number", Toast.LENGTH_SHORT).show();
-        } else if (gstSwitch.isChecked() && (!GSTDetailsStr.matches("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$"))) {
-            Toast.makeText(context, "Please Enter valid GST Number", Toast.LENGTH_SHORT).show();
-        } else if (gstSwitch.isChecked() && (GSTList.isEmpty())) {
-            Toast.makeText(context, "Please Capture the GST Certificate", Toast.LENGTH_SHORT).show();
-        } else if (!gstSwitch.isChecked() && (TextUtils.isEmpty(gstDeclarationImageName) || TextUtils.isEmpty(gstDeclarationImageFullPath))) {
-            Toast.makeText(context, "Please Capture the GST Declaration Certificate", Toast.LENGTH_SHORT).show();
+        } else if (binding.fssaiMasterLL.getVisibility() == View.VISIBLE && binding.fssaiNumberTitle.getText().toString().contains("*") && fssaiSwitch.isChecked() && (FSSAIDetailsStr.isEmpty() || FSSAIList.isEmpty() || fssaiFromStr.isEmpty() || fssaitoStr.isEmpty())) {
+            Toast.makeText(context, "Please provide valid FSSAI details", Toast.LENGTH_SHORT).show();
+        } else if (binding.gstMasterLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && gstSwitch.isChecked() && GSTDetailsStr.length() != 15) {
+            Toast.makeText(context, "Please enter 15 digit GST number", Toast.LENGTH_SHORT).show();
+        } else if (binding.gstMasterLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && gstSwitch.isChecked() && (!GSTDetailsStr.matches("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$"))) {
+            Toast.makeText(context, "Please enter valid GST number", Toast.LENGTH_SHORT).show();
+        } else if (binding.gstMasterLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && gstSwitch.isChecked() && (GSTList.isEmpty())) {
+            Toast.makeText(context, "Please capture the GST certificate", Toast.LENGTH_SHORT).show();
+        } else if (binding.gstMasterLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && !gstSwitch.isChecked() && TextUtils.isEmpty(gstDeclarationImageName)) {
+            Toast.makeText(context, "Please capture the GST declaration certificate", Toast.LENGTH_SHORT).show();
         } else if ((Lat == 0) || (Long == 0)) {
             Toast.makeText(context, "Location can't be fetched", Toast.LENGTH_SHORT).show();
-        } else if (!tcsSwitch.isChecked() && tcsDeclarationImageName.isEmpty()) {
-            Toast.makeText(context, "Please capture the TCS Declaration", Toast.LENGTH_SHORT).show();
+        } else if (binding.tcsMasterLL.getVisibility() == View.VISIBLE && binding.tcsTitle.getText().toString().contains("*") && !tcsSwitch.isChecked() && tcsDeclarationImageName.isEmpty()) {
+            Toast.makeText(context, "Please capture the TCS declaration", Toast.LENGTH_SHORT).show();
+        } else if (binding.agreementLL.getVisibility() == View.VISIBLE && binding.agreementTitle.getText().toString().contains("*") && agreementDetailsStr.isEmpty()) {
+            Toast.makeText(context, "Please select agreement copy", Toast.LENGTH_SHORT).show();
+        } else if (binding.agreementLL.getVisibility() == View.VISIBLE && binding.agreementTitle.getText().toString().contains("*") && agreementImageName.isEmpty()) {
+            Toast.makeText(context, "Please capture agreement copy", Toast.LENGTH_SHORT).show();
         } else if (agreementDetailsStr.isEmpty() && !agreementImageName.isEmpty()) {
             Toast.makeText(context, "Please select agreement copy", Toast.LENGTH_SHORT).show();
         } else if (!agreementDetailsStr.isEmpty() && agreementImageName.isEmpty()) {
             Toast.makeText(context, "Please capture the agreement copy", Toast.LENGTH_SHORT).show();
-        } else if (purchaseTypeID.isEmpty() || purchaseTypeName.isEmpty()) {
+        } else if (binding.purchaseTypeTitle.getVisibility() == View.VISIBLE && binding.purchaseTypeTitle.getText().toString().contains("*") && (purchaseTypeID.isEmpty() || purchaseTypeName.isEmpty())) {
             Toast.makeText(context, "Please select purchase type", Toast.LENGTH_SHORT).show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -1870,7 +2274,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         String line1 = doorNo + ", " + street + ", " + feature;
                         line1 = line1.replace(", , ", ", ");
                         if (line1.startsWith(", ")) line1 = line1.substring(2);
-                        if (line1.endsWith(", ")) line1 = line1.substring(0, line1.length()- 3);
+                        if (line1.endsWith(", ")) line1 = line1.substring(0, line1.length() - 3);
                         businessAddressNo.setText(line1);
 
                         if (!Common_Class.isNullOrEmpty(city) && !Common_Class.isNullOrEmpty(district)) {

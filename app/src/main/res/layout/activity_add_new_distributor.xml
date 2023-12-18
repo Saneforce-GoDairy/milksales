@@ -39,12 +39,14 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/customerPhotoLL"
                     android:layout_width="@dimen/C10dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/customerPhotoTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/C8dp"
@@ -81,12 +83,14 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/shopPhotoLL"
                     android:layout_width="@dimen/C10dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/shopPhotoTITLE"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/C8dp"
@@ -130,11 +134,13 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/applicationPhotoLL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/applicationPhotoTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/C8dp"
@@ -173,6 +179,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/stateTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -242,6 +249,7 @@
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
 
             <TextView
+                android:id="@+id/salesOfficeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -265,6 +273,7 @@
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
             <TextView
+                android:id="@+id/routeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -334,6 +343,7 @@
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
 
             <TextView
+                android:id="@+id/channelTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -357,6 +367,7 @@
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
             <TextView
+                android:id="@+id/subChannelTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -403,6 +414,7 @@
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
 
             <TextView
+                android:id="@+id/verticalsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -610,6 +622,7 @@
                 app:drawableEndCompat="@drawable/ic_arrow_drop_down" />-->
 
             <TextView
+                android:id="@+id/cityTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -627,7 +640,7 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:hint="Enter City"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
@@ -644,6 +657,7 @@
 
 
             <TextView
+                android:id="@+id/businessNameTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -661,13 +675,14 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:hint="Enter Business Name"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords"
                 android:maxLength="30"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
 
             <TextView
+                android:id="@+id/ownerNameTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -685,7 +700,7 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:hint="Enter Owner Name"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
@@ -693,156 +708,180 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:id="@+id/businessAddressLL">
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/address_of_the_shop"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold" />
+                    android:layout_marginHorizontal="@dimen/C8dp"
+                    android:layout_marginTop="@dimen/C15dp"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/refreshLocation"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/businessAddressTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/address_of_the_shop"
+                        android:textSize="@dimen/C14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/refreshLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_refresh" />
+
+                </LinearLayout>
+
+                <fragment
+                    android:id="@+id/route_map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginHorizontal="@dimen/C12dp"
+                    android:layout_marginTop="@dimen/C5dp" />
+
+                <EditText
+                    android:id="@+id/businessAddressNo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_refresh" />
+                    android:layout_marginHorizontal="@dimen/C10dp"
+                    android:layout_marginTop="@dimen/C8dp"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:gravity="start"
+                    android:hint="Business Address Line 1"
+                    android:maxLength="35"
+                    android:inputType="textCapSentences"
+                    android:padding="@dimen/C8dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/C13dp" />
+
+                <EditText
+                    android:id="@+id/businessAddressCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C10dp"
+                    android:layout_marginTop="@dimen/C8dp"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:gravity="start"
+                    android:maxLength="35"
+                    android:hint="Business Address Line 2"
+                    android:inputType="textCapSentences"
+                    android:padding="@dimen/C8dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/C13dp" />
+
+                <EditText
+                    android:id="@+id/businessAddressPincode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C10dp"
+                    android:layout_marginTop="@dimen/C8dp"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:gravity="start"
+                    android:inputType="textCapSentences"
+                    android:hint="Business Address Line 3"
+                    android:maxLength="35"
+                    android:padding="@dimen/C8dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/C13dp" />
+
+                <EditText
+                    android:id="@+id/type_pincode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C10dp"
+                    android:layout_marginBottom="@dimen/C10dp"
+                    android:layout_marginTop="@dimen/C8dp"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:hint="Enter Pincode"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:padding="@dimen/C8dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/C13dp" />
 
             </LinearLayout>
 
-            <fragment
-                android:id="@+id/route_map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:layout_marginHorizontal="@dimen/C12dp"
-                android:layout_marginTop="@dimen/C5dp" />
-
-            <EditText
-                android:id="@+id/businessAddressNo"
+            <LinearLayout
+                android:id="@+id/ownerAddressLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C8dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:gravity="start"
-                android:hint="Business Address Line 1"
-                android:maxLength="35"
-                android:inputType="textPostalAddress"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp" />
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/businessAddressCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C8dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:gravity="start"
-                android:maxLength="35"
-                android:hint="Business Address Line 2"
-                android:inputType="textPostalAddress"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp" />
+                <TextView
+                    android:id="@+id/ownerAddressTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C8dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/residence_address"
+                    android:textSize="@dimen/C14dp"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/businessAddressPincode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C8dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:gravity="start"
-                android:hint="Business Address Line 3"
-                android:maxLength="35"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp" />
+                <EditText
+                    android:id="@+id/ownerAddressNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C10dp"
+                    android:layout_marginTop="@dimen/C8dp"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:gravity="start"
+                    android:inputType="textCapSentences"
+                    android:hint="Owner Address Line 1"
+                    android:maxLength="35"
+                    android:padding="@dimen/C8dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/C13dp" />
 
-            <EditText
-                android:id="@+id/type_pincode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C8dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:hint="Enter Pincode"
-                android:inputType="number"
-                android:maxLength="6"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp" />
+                <EditText
+                    android:id="@+id/ownerAddressCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C10dp"
+                    android:layout_marginTop="@dimen/C8dp"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:gravity="start"
+                    android:hint="Owner Address Line 2"
+                    android:inputType="textCapSentences"
+                    android:maxLength="35"
+                    android:padding="@dimen/C8dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/C13dp" />
+
+                <EditText
+                    android:id="@+id/ownerAddressPincode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/C10dp"
+                    android:layout_marginBottom="@dimen/C10dp"
+                    android:layout_marginTop="@dimen/C8dp"
+                    android:background="@drawable/textbox_bg"
+                    android:elevation="5dp"
+                    android:gravity="start"
+                    android:inputType="number"
+                    android:hint="Pincode"
+                    android:maxLength="6"
+                    android:padding="@dimen/C8dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/C13dp" />
+
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/mobileTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
-                android:text="@string/residence_address"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/ownerAddressNo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C8dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:gravity="start"
-                android:hint="Owner Address Line 1"
-                android:maxLength="35"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp" />
-
-            <EditText
-                android:id="@+id/ownerAddressCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C8dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:gravity="start"
-                android:hint="Owner Address Line 2"
-                android:maxLength="35"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp" />
-
-            <EditText
-                android:id="@+id/ownerAddressPincode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C10dp"
-                android:layout_marginTop="@dimen/C8dp"
-                android:background="@drawable/textbox_bg"
-                android:elevation="5dp"
-                android:gravity="start"
-                android:inputType="number"
-                android:hint="Pincode"
-                android:maxLength="6"
-                android:padding="@dimen/C8dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/C13dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:layout_marginTop="@dimen/C15dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/mobile"
                 android:textSize="@dimen/C14dp"
                 android:textStyle="bold" />
@@ -863,6 +902,7 @@
                 android:textSize="@dimen/C13dp" />
 
             <TextView
+                android:id="@+id/emailTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -886,6 +926,7 @@
                 android:textSize="@dimen/C13dp" />
 
             <TextView
+                android:id="@+id/salesExecutiveNameTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -903,12 +944,13 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:hint="Enter Sales Executive Name"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
 
             <TextView
+                android:id="@+id/salesExecutiveIDTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -1028,6 +1070,7 @@
                 android:textSize="@dimen/C13dp" />
 
             <TextView
+                android:id="@+id/uidTypeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -1059,6 +1102,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/aadhaarTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/C8dp"
@@ -1109,56 +1153,66 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/C8dp"
-                android:text="@string/pan_number"
-                android:textSize="@dimen/C14dp"
-                android:textStyle="bold" />
-
             <LinearLayout
+                android:id="@+id/panNumberLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/type_pan_number"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/panNumberTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C10dp"
-                    android:layout_marginTop="@dimen/C5dp"
-                    android:layout_marginBottom="@dimen/C15dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textbox_bg"
-                    android:elevation="5dp"
-                    android:hint="Enter PAN Number"
-                    android:inputType="textCapCharacters"
-                    android:maxLength="10"
-                    android:padding="@dimen/C8dp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/C13dp" />
+                    android:layout_marginHorizontal="@dimen/C8dp"
+                    android:text="@string/pan_number"
+                    android:textSize="@dimen/C14dp"
+                    android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/display_pan_number"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="@dimen/C8dp"
-                    android:src="@drawable/ic_round_photo_camera_24"
-                    android:visibility="gone" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/capture_pan_number"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="@dimen/C8dp"
-                    android:src="@drawable/ic_round_photo_camera_24" />
+                    <EditText
+                        android:id="@+id/type_pan_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/C10dp"
+                        android:layout_marginTop="@dimen/C5dp"
+                        android:layout_marginBottom="@dimen/C15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/textbox_bg"
+                        android:elevation="5dp"
+                        android:hint="Enter PAN Number"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="10"
+                        android:padding="@dimen/C8dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/C13dp" />
+
+                    <ImageView
+                        android:id="@+id/display_pan_number"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/ic_round_photo_camera_24"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/capture_pan_number"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/ic_round_photo_camera_24" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/panNameTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
@@ -1175,354 +1229,530 @@
                 android:background="@drawable/textbox_bg"
                 android:elevation="5dp"
                 android:hint="Enter Name as per PAN"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords"
                 android:padding="@dimen/C8dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/C13dp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C8dp"
-                    android:text="@string/bank_details"
-                    android:layout_marginTop="@dimen/C15dp"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/clearBank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Clear"
-                    android:visibility="gone"
-                    android:layout_marginTop="@dimen/C15dp"
-                    android:gravity="center_vertical"
-                    android:textSize="13dp"
-                    android:drawablePadding="5dp"
-                    android:layout_marginHorizontal="@dimen/C8dp"
-                    app:drawableEndCompat="@drawable/ic_cancel" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/select_bank_details"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C10dp"
-                    android:layout_marginTop="@dimen/C5dp"
-                    android:layout_marginBottom="@dimen/C15dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textbox_bg"
-                    android:elevation="5dp"
-                    android:hint="Select Bank Details"
-                    android:padding="@dimen/C8dp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/C13dp"
-                    app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-                <ImageView
-                    android:id="@+id/display_bank_details"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="@dimen/C8dp"
-                    android:src="@drawable/ic_round_photo_camera_24"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/capture_bank_details"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="@dimen/C8dp"
-                    android:src="@drawable/ic_round_photo_camera_24" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/C5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C8dp"
-                    android:text="FSSAI Number"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/fssaiSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fssaiDeclarationLL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/C10dp"
-                android:layout_marginBottom="@dimen/C15dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/downloadfssaiDeclarationForm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/C8dp"
-                    android:background="@drawable/bottom_button"
-                    android:drawableEnd="@drawable/ic_download"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:paddingHorizontal="@dimen/C15dp"
-                    android:paddingVertical="@dimen/C5dp"
-                    android:text="Download FSSAI Declaration Form"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/C14dp" />
-
-                <ImageView
-                    android:id="@+id/fssaiInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/C8dp"
-                    android:gravity="end"
-                    android:src="@drawable/ic_info" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="10dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/previewfssaiDeclaration"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_round_photo_camera_24"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/capturefssaiDeclaration"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_round_photo_camera_24" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fssaiLL"
+                android:id="@+id/bankLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/bankTitle"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/C8dp"
+                        android:text="@string/bank_details"
+                        android:layout_marginTop="@dimen/C15dp"
+                        android:textSize="@dimen/C14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/clearBank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Clear"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/C15dp"
+                        android:gravity="center_vertical"
+                        android:textSize="13dp"
+                        android:drawablePadding="5dp"
+                        android:layout_marginHorizontal="@dimen/C8dp"
+                        app:drawableEndCompat="@drawable/ic_cancel" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/select_bank_details"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/C10dp"
+                        android:layout_marginTop="@dimen/C5dp"
+                        android:layout_marginBottom="@dimen/C15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/textbox_bg"
+                        android:elevation="5dp"
+                        android:hint="Select Bank Details"
+                        android:padding="@dimen/C8dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/C13dp"
+                        app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+                    <ImageView
+                        android:id="@+id/display_bank_details"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/ic_round_photo_camera_24"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/capture_bank_details"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/ic_round_photo_camera_24" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fssaiMasterLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/fssaiNumberLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/fssaiNumberTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/C8dp"
+                        android:text="FSSAI Number"
+                        android:textSize="@dimen/C14dp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/fssaiSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fssaiDeclarationLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/C10dp"
-                    android:text="@string/fssai_certificate_applied_details"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="@dimen/C15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/type_fssai"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/downloadfssaiDeclarationForm"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/C10dp"
-                        android:layout_marginTop="@dimen/C5dp"
-                        android:layout_marginBottom="@dimen/C15dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/textbox_bg"
-                        android:elevation="5dp"
-                        android:maxLength="14"
-                        android:hint="Enter FSSAI Certificate / Declaration"
-                        android:inputType="number"
-                        android:padding="@dimen/C8dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/C13dp" />
+                        android:layout_marginStart="@dimen/C8dp"
+                        android:background="@drawable/bottom_button"
+                        android:drawableEnd="@drawable/ic_download"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/C15dp"
+                        android:paddingVertical="@dimen/C5dp"
+                        android:text="Download FSSAI Declaration Form"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/C14dp" />
 
                     <ImageView
-                        android:id="@+id/display_fssai"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/image_preview_24" />
+                        android:id="@+id/fssaiInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/C8dp"
+                        android:gravity="end"
+                        android:src="@drawable/ic_info" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="1" />
 
                     <ImageView
-                        android:id="@+id/capture_fssai"
+                        android:id="@+id/previewfssaiDeclaration"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="@dimen/C8dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_round_photo_camera_24"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/capturefssaiDeclaration"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
                         android:src="@drawable/ic_round_photo_camera_24" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/fssaiDateLL"
+                    android:id="@+id/fssaiLL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="visible">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/fssaiFromDate"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/C10dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/C10dp"
-                        android:layout_marginBottom="@dimen/C10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/textbox_bg"
-                        android:drawableRight="@drawable/ic_baseline_date_range_24"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:elevation="5dp"
-                        android:gravity="center_vertical"
-                        android:hint="FSSAI From Date"
-                        android:padding="@dimen/C8dp"
-                        android:textSize="13sp" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/fssaiToDate"
-                        android:layout_width="0dp"
+                        <EditText
+                            android:id="@+id/type_fssai"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/C10dp"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:layout_marginBottom="@dimen/C15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textbox_bg"
+                            android:elevation="5dp"
+                            android:maxLength="14"
+                            android:hint="Enter FSSAI Certificate / Declaration"
+                            android:inputType="number"
+                            android:padding="@dimen/C8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C13dp" />
+
+                        <ImageView
+                            android:id="@+id/display_fssai"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="@dimen/C8dp"
+                            android:src="@drawable/image_preview_24" />
+
+                        <ImageView
+                            android:id="@+id/capture_fssai"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="@dimen/C8dp"
+                            android:src="@drawable/ic_round_photo_camera_24" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fssaiDateLL"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/C10dp"
-                        android:layout_marginBottom="@dimen/C10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/textbox_bg"
-                        android:drawableRight="@drawable/ic_baseline_date_range_24"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:elevation="5dp"
-                        android:gravity="center_vertical"
-                        android:hint="FSSAI To Date"
-                        android:padding="@dimen/C8dp"
-                        android:textSize="13sp" />
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/fssaiFromDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/C10dp"
+                            android:layout_marginBottom="@dimen/C10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textbox_bg"
+                            android:drawableRight="@drawable/ic_baseline_date_range_24"
+                            android:drawableTint="@color/colorPrimaryDark"
+                            android:elevation="5dp"
+                            android:gravity="center_vertical"
+                            android:hint="FSSAI From Date"
+                            android:padding="@dimen/C8dp"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/fssaiToDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/C10dp"
+                            android:layout_marginBottom="@dimen/C10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textbox_bg"
+                            android:drawableRight="@drawable/ic_baseline_date_range_24"
+                            android:drawableTint="@color/colorPrimaryDark"
+                            android:elevation="5dp"
+                            android:gravity="center_vertical"
+                            android:hint="FSSAI To Date"
+                            android:padding="@dimen/C8dp"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/C5dp"
-                android:layout_marginBottom="@dimen/C15dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C8dp"
-                    android:text="GST Tax"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/gstSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/gstDeclarationLL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/C15dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/downloadGSTDeclarationForm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/C8dp"
-                    android:background="@drawable/bottom_button"
-                    android:drawableEnd="@drawable/ic_download"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:paddingHorizontal="@dimen/C15dp"
-                    android:paddingVertical="@dimen/C5dp"
-                    android:text="Download GST Declaration Form"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/C14dp" />
-
-                <ImageView
-                    android:id="@+id/gstInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/C8dp"
-                    android:gravity="end"
-                    android:src="@drawable/ic_info" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="10dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/previewGSTDeclaration"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_round_photo_camera_24"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/captureGSTDeclaration"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_round_photo_camera_24" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/gstLL"
+                android:id="@+id/gstMasterLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C8dp"
-                    android:text="@string/gst_certificate_declaration"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:layout_marginBottom="@dimen/C15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/gstTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/C8dp"
+                        android:text="GST Tax"
+                        android:textSize="@dimen/C14dp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/gstSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/gstDeclarationLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/C15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/downloadGSTDeclarationForm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/C8dp"
+                        android:background="@drawable/bottom_button"
+                        android:drawableEnd="@drawable/ic_download"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/C15dp"
+                        android:paddingVertical="@dimen/C5dp"
+                        android:text="Download GST Declaration Form"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/C14dp" />
+
+                    <ImageView
+                        android:id="@+id/gstInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/C8dp"
+                        android:gravity="end"
+                        android:src="@drawable/ic_info" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/previewGSTDeclaration"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_round_photo_camera_24"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/captureGSTDeclaration"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_round_photo_camera_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/gstLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/type_gst"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/C10dp"
+                            android:layout_marginTop="@dimen/C5dp"
+                            android:layout_marginBottom="@dimen/C15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/textbox_bg"
+                            android:elevation="5dp"
+                            android:hint="Enter GST Certificate / Declaration"
+                            android:inputType="textCapCharacters"
+                            android:maxLength="15"
+                            android:padding="@dimen/C8dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C13dp" />
+
+                        <ImageView
+                            android:id="@+id/display_gst"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="@dimen/C8dp"
+                            android:src="@drawable/image_preview_24" />
+
+                        <ImageView
+                            android:id="@+id/capture_gst"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="@dimen/C8dp"
+                            android:src="@drawable/ic_round_photo_camera_24" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tcsMasterLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/C5dp"
+                    android:layout_marginBottom="@dimen/C15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tcsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/C8dp"
+                        android:text="TCS Tax"
+                        android:textSize="@dimen/C14dp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/tcsSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tcsDeclarationLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/C15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/downloadTCSDeclarationForm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/C8dp"
+                        android:background="@drawable/bottom_button"
+                        android:drawableEnd="@drawable/ic_download"
+                        android:drawablePadding="8dp"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/C15dp"
+                        android:paddingVertical="@dimen/C5dp"
+                        android:text="Download TCS Declaration Form"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/C14dp" />
+
+                    <ImageView
+                        android:id="@+id/tcsInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/C8dp"
+                        android:gravity="end"
+                        android:src="@drawable/ic_info" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/previewTCSDeclaration"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_round_photo_camera_24"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/captureTCSDeclaration"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_round_photo_camera_24" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/agreementLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/agreementTitle"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/C8dp"
+                        android:text="@string/agreement_copy"
+                        android:textSize="@dimen/C14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/clearAgreement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Clear"
+                        android:gravity="center_vertical"
+                        android:textSize="13dp"
+                        android:visibility="gone"
+                        android:drawablePadding="5dp"
+                        android:layout_marginHorizontal="@dimen/C8dp"
+                        app:drawableEndCompat="@drawable/ic_cancel" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/type_gst"
+                    <TextView
+                        android:id="@+id/select_agreement_copy"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/C10dp"
@@ -1531,23 +1761,23 @@
                         android:layout_weight="1"
                         android:background="@drawable/textbox_bg"
                         android:elevation="5dp"
-                        android:hint="Enter GST Certificate / Declaration"
-                        android:inputType="textCapCharacters"
-                        android:maxLength="15"
+                        android:hint="Select Agreement Copy"
                         android:padding="@dimen/C8dp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/C13dp" />
+                        android:textSize="@dimen/C13dp"
+                        app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
                     <ImageView
-                        android:id="@+id/display_gst"
+                        android:id="@+id/display_agreement_copy"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/image_preview_24" />
+                        android:src="@drawable/ic_round_photo_camera_24"
+                        android:visibility="gone" />
 
                     <ImageView
-                        android:id="@+id/capture_gst"
+                        android:id="@+id/capture_agreement_copy"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"
@@ -1555,152 +1785,6 @@
                         android:src="@drawable/ic_round_photo_camera_24" />
 
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/C5dp"
-                android:layout_marginBottom="@dimen/C15dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C8dp"
-                    android:text="TCS Tax"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/tcsSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tcsDeclarationLL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/C15dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/downloadTCSDeclarationForm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/C8dp"
-                    android:background="@drawable/bottom_button"
-                    android:drawableEnd="@drawable/ic_download"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:paddingHorizontal="@dimen/C15dp"
-                    android:paddingVertical="@dimen/C5dp"
-                    android:text="Download TCS Declaration Form"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/C14dp" />
-
-                <ImageView
-                    android:id="@+id/tcsInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/C8dp"
-                    android:gravity="end"
-                    android:src="@drawable/ic_info" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="10dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/previewTCSDeclaration"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_round_photo_camera_24"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/captureTCSDeclaration"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_round_photo_camera_24" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C8dp"
-                    android:text="@string/agreement_copy"
-                    android:textSize="@dimen/C14dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/clearAgreement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Clear"
-                    android:gravity="center_vertical"
-                    android:textSize="13dp"
-                    android:visibility="gone"
-                    android:drawablePadding="5dp"
-                    android:layout_marginHorizontal="@dimen/C8dp"
-                    app:drawableEndCompat="@drawable/ic_cancel" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/select_agreement_copy"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/C10dp"
-                    android:layout_marginTop="@dimen/C5dp"
-                    android:layout_marginBottom="@dimen/C15dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textbox_bg"
-                    android:elevation="5dp"
-                    android:hint="Select Agreement Copy"
-                    android:padding="@dimen/C8dp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/C13dp"
-                    app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-                <ImageView
-                    android:id="@+id/display_agreement_copy"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="@dimen/C8dp"
-                    android:src="@drawable/ic_round_photo_camera_24"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/capture_agreement_copy"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="@dimen/C8dp"
-                    android:src="@drawable/ic_round_photo_camera_24" />
 
             </LinearLayout>
 
@@ -1776,6 +1860,7 @@
             </LinearLayout>-->
 
             <TextView
+                android:id="@+id/purchaseTypeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/C8dp"
