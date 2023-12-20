@@ -105,6 +105,11 @@ import retrofit2.Response;
 
 public class PrimaryOrderActivity extends AppCompatActivity implements View.OnClickListener, UpdateResponseUI, Master_Interface {
 
+    public static final String UserDetail = "MyPrefs";
+    private static final DecimalFormat qtyFormat = new DecimalFormat("#.##");
+    public static PrimaryOrderActivity primaryOrderActivity;
+    public static int selPOS = 0;
+    final Handler handler = new Handler();
     List<Category_Universe_Modal> Category_Modal = new ArrayList<>();
     List<Product_Details_Modal> Product_Modal;
     List<Product_Details_Modal> Product_ModalSetAdapter;
@@ -116,7 +121,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     CircularProgressButton takeorder, btnRepeat;
     TextView Category_Nametext, selectDeliveryAddress,
             tvTimer, txBalAmt, txAmtWalt, txAvBal, tvDistId, tvDate, tvGrpName;
-    LinearLayout lin_orderrecyclerview, lin_gridcategory, rlAddProduct, llTdPriOrd, btnRefACBal,vwRplcDetail,llProdRplc;
+    LinearLayout lin_orderrecyclerview, lin_gridcategory, rlAddProduct, llTdPriOrd, btnRefACBal, vwRplcDetail, llProdRplc;
     Common_Class common_class;
     String Ukey;
     String[] strLoc;
@@ -126,48 +131,41 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     String TAG = "PRIMARY_ORDER";
     DatabaseHandler db;
     RelativeLayout rlCategoryItemSearch, balDetwin;
-    ImageView ivClose, btnClose,btnRplcClose, ivToolbarHome;
+    ImageView ivClose, btnClose, btnRplcClose, ivToolbarHome;
     EditText etCategoryItemSearch;
     double cashDiscount;
-    boolean bRmRow = false,ACBalanceChk=true;
+    boolean bRmRow = false, ACBalanceChk = true;
     NumberFormat formatter = new DecimalFormat("##0.00");
-    private static final DecimalFormat qtyFormat = new DecimalFormat("#.##");
-    private RecyclerView recyclerView, categorygrid, freeRecyclerview, Grpgrid, Brndgrid,rvShortageData;
+    double ACBalance = 0.0;
+    com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
+    SharedPreferences UserDetails;
+    List<Product_Details_Modal> multiList;
+    String orderId = "", orderType = "";
+    Boolean boolMinu18 = false;
+    String grpName = "", grpCode = "";
+    LinearLayout llDistributor;
+    boolean isSubmit = false;
+    int lastOrderedQty = 0;
+    double lastOrderedAmount = 0;
+    TextView payNowButton;
+    String PaymentMethod;
+    Context context = this;
+    String _id = "", _title = "", _erpCode = "", _stateCode = "", _pincode = "";
+    JSONArray addressArray;
+    private RecyclerView recyclerView, categorygrid, freeRecyclerview, Grpgrid, Brndgrid, rvShortageData;
     private int selectedPos = 0;
     private TextView tvTotalAmount, tvACBal, tvNetAmtTax, tvTotalItems, distributor_text;
     private double totalvalues, taxVal, editTotValues;
     private Integer totalQty;
     private TextView tvBillTotItem, tvTotUOM, tvBillTotQty, tvTotQtyLabel;
-    double ACBalance = 0.0;
-    final Handler handler = new Handler();
-    com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
-    public static final String UserDetail = "MyPrefs";
-    SharedPreferences UserDetails;
     private ArrayList<Product_Details_Modal> orderTotTax;
     private ArrayList<Product_Details_Modal> orderTotUOM;
-    List<Product_Details_Modal> multiList;
-    String orderId = "", orderType = "";
     private boolean isEditOrder = false;
     private int inValidQty = -1;
     private double totTax;
     private JSONArray ProdGroups, ShortageData;
     private RyclGrpListItemAdb grplistItems;
     private RyclShortageListItemAdb ShortagelistItems;
-    public static PrimaryOrderActivity primaryOrderActivity;
-    public static int selPOS = 0;
-    Boolean boolMinu18 = false;
-    String grpName = "", grpCode = "";
-    LinearLayout llDistributor;
-
-    boolean isSubmit = false;
-    int lastOrderedQty = 0;
-    double lastOrderedAmount = 0;
-    TextView payNowButton;
-
-    String PaymentMethod;
-    Context context = this;
-    String _id = "", _title = "", _erpCode = "", _stateCode = "", _pincode = "";
-    JSONArray addressArray;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -409,13 +407,13 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
-                Intent newPayIntent=new Intent (PrimaryOrderActivity.this, PayActivity.class);
+                Intent newPayIntent = new Intent(PrimaryOrderActivity.this, PayActivity.class);
                 newPayIntent.putExtra("merchantId", "317159");
                 newPayIntent.putExtra("password", "Test@123");
                 newPayIntent.putExtra("prodid", "NSE");
                 newPayIntent.putExtra("txncurr", "INR");
                 newPayIntent.putExtra("custacc", "100000036600");
-                newPayIntent.putExtra("amt","30.00");
+                newPayIntent.putExtra("amt", "30.00");
                 newPayIntent.putExtra("txnid", Common_Class.GetEkey());
                 newPayIntent.putExtra("signature_request", "KEY123657234");
                 newPayIntent.putExtra("signature_response", "KEYRESP123657234");
@@ -433,7 +431,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 newPayIntent.putExtra("udf3", "udf3");
                 newPayIntent.putExtra("udf4", "udf4");
                 newPayIntent.putExtra("udf5", "udf5");
-                startActivityForResult(newPayIntent,1);
+                startActivityForResult(newPayIntent, 1);
 
 
                 /*newPayIntent.putExtra("merchantId", "317159");
@@ -578,10 +576,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         JSONObject jParam = new JSONObject();
         try {
             jParam.put("StkERP", sharedCommonPref.getvalue(Constants.DistributorERP));
-            tvACBal.setText(CurrencySymbol+" 0.00");
-            txBalAmt.setText(CurrencySymbol+" 0.00");
-            txAmtWalt.setText(CurrencySymbol+" 0.00");
-            txAvBal.setText(CurrencySymbol+" 0.00");
+            tvACBal.setText(CurrencySymbol + " 0.00");
+            txBalAmt.setText(CurrencySymbol + " 0.00");
+            txAmtWalt.setText(CurrencySymbol + " 0.00");
+            txAvBal.setText(CurrencySymbol + " 0.00");
 
             ApiClient.getClient().create(ApiInterface.class)
                     .getDataArrayList("get/custbalance", jParam.toString())
@@ -594,7 +592,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                     JsonObject jItem = res.get(0).getAsJsonObject();
                                     double ActBAL = jItem.get("LC_BAL").getAsDouble();
                                     ACBalance = jItem.get("Balance").getAsDouble();
-                                    ACBalanceChk=jItem.get("BalanceChk").getAsBoolean();
+                                    ACBalanceChk = jItem.get("BalanceChk").getAsBoolean();
                                     if (ACBalance <= 0) ACBalance = Math.abs(ACBalance);
                                     else ACBalance = 0 - ACBalance;
                                     if (ActBAL <= 0) ActBAL = Math.abs(ActBAL);
@@ -603,9 +601,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                                     // tvACBal.setText("₹" + new DecimalFormat("##0.00").format(ACBalance));
                                     tvACBal.setText(format1.format(ACBalance));
-                                    txBalAmt.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ACBalance));
-                                    txAmtWalt.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(jItem.get("Pending").getAsDouble()));
-                                    txAvBal.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ActBAL));
+                                    txBalAmt.setText(CurrencySymbol + " " + new DecimalFormat("##0.00").format(ACBalance));
+                                    txAmtWalt.setText(CurrencySymbol + " " + new DecimalFormat("##0.00").format(jItem.get("Pending").getAsDouble()));
+                                    txAvBal.setText(CurrencySymbol + " " + new DecimalFormat("##0.00").format(ActBAL));
                                 } catch (Exception e) {
 
                                 }
@@ -817,7 +815,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             long elapsed = d2.getTime() - d1.getTime();
             double currentOrderVal = totalvalues - editTotValues;
             if (((getIntent().getStringExtra(Constants.ORDER_ID) != null && (ACBalance < currentOrderVal)) ||
-                    (getIntent().getStringExtra(Constants.ORDER_ID) == null && (ACBalance < totalvalues))) && ACBalanceChk==true) {
+                    (getIntent().getStringExtra(Constants.ORDER_ID) == null && (ACBalance < totalvalues))) && ACBalanceChk == true) {
                 ResetSubmitBtn(0);
                 common_class.showMsg(this, "Low A/C Balance...");
 
@@ -825,10 +823,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     sharedCommonPref.getvalue(Constants.CUTOFF_TIME).equals("--:--:--")) {
                 ResetSubmitBtn(0);
                 common_class.showMsg(this, "Time UP...");
-            }
-
-
-            else {
+            } else {
                 String sLoc = sharedCommonPref.getvalue("CurrLoc");
                 if (sLoc.equalsIgnoreCase("")) {
                     new LocationFinder(getApplication(), new LocationEvents() {
@@ -977,25 +972,27 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("resultCode = "+resultCode);
-        System.out.println("onActivityResult data = "+data);
-        int type = 0;
-        String msg = "";
-        if (requestCode == 1) {
-            if(data != null && resultCode != 2){
-                System.out.println("ArrayList data = "+data.getExtras().getString("response"));
-                if(resultCode == 1){
-                    type = 1;
-                    msg = "Transaction Successful!";
-                }else{
-                    type = 2;
-                    msg = "Transaction Failed!";
+        Log.e("requestCode", "requestCode: " + requestCode);
+        Log.e("resultCode", "resultCode: " + resultCode);
+        try {
+            Log.e("nttdataTransaction", data.getExtras().getString("response"));
+        } catch (Exception e) {}
+        if (requestCode == 1 && resultCode != 2) {
+            Log.e("nttdataTransaction", data.getExtras().getString("response"));
+            JSONObject object = PreparePaymentSave(data);
+            Map<String, String> params = new HashMap<>();
+            params.put("axn", "save_nttdata_transaction");
+            Common_Class.makeApiCall(context, params, object.toString(), new APIResult() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) {
+                    ShowPaymentResult(data);
                 }
-            } else{
-                type = 3;
-                msg = "Transaction Cancelled!";
-            }
-            showPaymentResult(type, msg);
+
+                @Override
+                public void onFailure(String error) {
+                    ShowPaymentResult(data);
+                }
+            });
         }
         if (requestCode == 1000) {
             String sLoc = sharedCommonPref.getvalue("CurrLoc");
@@ -1014,45 +1011,133 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void showPaymentResult(int type, String msg) {
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_payment_result, null, false);
-        builder.setView(view);
-        builder.setCancelable(false);
-        android.app.AlertDialog dialog = builder.create();
+    private void ShowPaymentResult(Intent data) {
+        try {
+            JSONObject jsonObject = new JSONObject(data.getExtras().getString("response"));
+            String merchTxnId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("merchDetails")
+                    .optString("merchTxnId");
 
-        ImageView image = view.findViewById(R.id.image);
-        TextView status = view.findViewById(R.id.status);
-        TextView close = view.findViewById(R.id.close);
+            String totalAmount = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("totalAmount");
 
-        status.setText(msg);
-        close.setOnClickListener(v1 -> {
-            dialog.dismiss();
+            String txnCompleteDate = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("txnCompleteDate");
+
+            String message = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("responseDetails")
+                    .optString("message");
+
+            Intent intent = new Intent(context, PaymentResult.class);
+            intent.putExtra("status", message);
+            intent.putExtra("transactionId", merchTxnId);
+            intent.putExtra("transactionAmount", totalAmount);
+            intent.putExtra("transactionDate", txnCompleteDate);
+            startActivity(intent);
             finish();
-        });
-        switch (type) {
-            case 1:
-                Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_success);
-                Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);
-                image.setImageBitmap(bitmap);
-                break;
-            case 2:
-            case 3:
-                Drawable drawables = ContextCompat.getDrawable(context, R.drawable.ic_cancel);
-                Bitmap bitmaps = Bitmap.createBitmap(drawables.getIntrinsicWidth(), drawables.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvass = new Canvas(bitmaps);
-                drawables.setBounds(0, 0, canvass.getWidth(), canvass.getHeight());
-                drawables.draw(canvass);
-                image.setImageBitmap(bitmaps);
-                break;
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+    }
 
-        Window window = dialog.getWindow();
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+    private JSONObject PreparePaymentSave(Intent data) {
+        JSONObject requestBody = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = new JSONObject(data.getExtras().getString("response"));
+            String merchId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("merchDetails")
+                    .optString("merchId");
+
+            String merchTxnId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("merchDetails")
+                    .optString("merchTxnId");
+
+            String merchTxnDate = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("merchDetails")
+                    .optString("merchTxnDate");
+
+            String atomTxnId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("atomTxnId");
+
+            String totalAmount = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("totalAmount");
+
+            String custAccNo = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("custAccNo");
+
+            String txnInitDate = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("txnInitDate");
+
+            String txnCompleteDate = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("txnCompleteDate");
+
+            String otsBankId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("otsBankId");
+
+            String otsBankName = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("otsBankName");
+
+            String bankTxnId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("bankTxnId");
+
+            String cardType = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("cardType");
+
+            String cardMaskNumber = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("cardMaskNumber");
+
+            String statusCode = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("responseDetails")
+                    .optString("statusCode");
+
+            String message = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("responseDetails")
+                    .optString("message");
+
+            String description = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("responseDetails")
+                    .optString("description");
+
+            requestBody.put("stockistCode", sharedCommonPref.getvalue(Constants.Distributor_Id));
+            requestBody.put("stockistName", sharedCommonPref.getvalue(Constants.Distributor_name));
+            requestBody.put("merchId", merchId);
+            requestBody.put("merchTxnId", merchTxnId);
+            requestBody.put("merchTxnDate", merchTxnDate);
+            requestBody.put("atomTxnId", atomTxnId);
+            requestBody.put("totalAmount", totalAmount);
+            requestBody.put("custAccNo", custAccNo);
+            requestBody.put("txnInitDate", txnInitDate);
+            requestBody.put("txnCompleteDate", txnCompleteDate);
+            requestBody.put("otsBankId", otsBankId);
+            requestBody.put("otsBankName", otsBankName);
+            requestBody.put("bankTxnId", bankTxnId);
+            requestBody.put("cardType", cardType);
+            requestBody.put("cardMaskNumber", cardMaskNumber);
+            requestBody.put("statusCode", statusCode);
+            requestBody.put("message", message);
+            requestBody.put("description", description);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return requestBody;
     }
 
     private void SaveOrder() {
@@ -1119,7 +1204,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                             for (int z = 0; z < Getorder_Array_List.size(); z++) {
                                 JSONObject ProdItem = new JSONObject();
-                               // ProdItem.put("product_Name", Getorder_Array_List.get(z).getName());
+                                // ProdItem.put("product_Name", Getorder_Array_List.get(z).getName());
                                 ProdItem.put("product_code", Getorder_Array_List.get(z).getId());
                                 ProdItem.put("Product_ERP", Getorder_Array_List.get(z).getERP_Code());
                                 ProdItem.put("Product_Qty", Getorder_Array_List.get(z).getQty());
@@ -1411,8 +1496,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             totalvalues = totalvalues + totTax;
 
-            tvNetAmtTax.setText(CurrencySymbol+" " + formatter.format(totTax));
-            tvTotalAmount.setText(CurrencySymbol+" " + formatter.format(totalvalues));
+            tvNetAmtTax.setText(CurrencySymbol + " " + formatter.format(totTax));
+            tvTotalAmount.setText(CurrencySymbol + " " + formatter.format(totalvalues));
 
 
             if (isEditOrder) {
@@ -1429,16 +1514,16 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 tvTotLabel.setText("Price (" + Getorder_Array_List.size() + " items)");
             tvBillTotQty.setText("" + totalQty);
 
-            tvBillSubTotal.setText(CurrencySymbol+" " + formatter.format(totalvalues));
+            tvBillSubTotal.setText(CurrencySymbol + " " + formatter.format(totalvalues));
             tvBillTotItem.setText("" + Getorder_Array_List.size());
-            tvBillToPay.setText(CurrencySymbol+" " + formatter.format(totalvalues));
-            tvCashDiscount.setText(CurrencySymbol+" " + formatter.format(cashDiscount));
-            tvTax.setText(CurrencySymbol+" "+ formatter.format(taxVal));
+            tvBillToPay.setText(CurrencySymbol + " " + formatter.format(totalvalues));
+            tvCashDiscount.setText(CurrencySymbol + " " + formatter.format(cashDiscount));
+            tvTax.setText(CurrencySymbol + " " + formatter.format(taxVal));
 
 
             if (cashDiscount > 0) {
                 tvSaveAmt.setVisibility(View.VISIBLE);
-                tvSaveAmt.setText("You will save "+CurrencySymbol+" " + formatter.format(cashDiscount) + " on this order.");
+                tvSaveAmt.setText("You will save " + CurrencySymbol + " " + formatter.format(cashDiscount) + " on this order.");
             } else
                 tvSaveAmt.setVisibility(View.GONE);
 
@@ -1561,7 +1646,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             String amt = "";
             for (int i = 0; i < orderTotTax.size(); i++) {
                 label = label + orderTotTax.get(i).getTax_Type() + "\n";
-                amt = amt + CurrencySymbol+" " + String.valueOf(formatter.format(orderTotTax.get(i).getTax_Amt())) + "\n";
+                amt = amt + CurrencySymbol + " " + String.valueOf(formatter.format(orderTotTax.get(i).getTax_Amt())) + "\n";
             }
             String uomName = "";
 
@@ -1738,7 +1823,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             }
             lin_orderrecyclerview.setVisibility(View.VISIBLE);
             Category_Nametext.setVisibility(View.VISIBLE);
-            Category_Nametext.setText(listt.get(categoryPos).getName()+" ( " + String.valueOf(Product_ModalSetAdapter.size()) + " )");
+            Category_Nametext.setText(listt.get(categoryPos).getName() + " ( " + String.valueOf(Product_ModalSetAdapter.size()) + " )");
 
             mProdct_Adapter = new Prodct_Adapter(Product_ModalSetAdapter, R.layout.adapter_primary_product, getApplicationContext(), categoryPos);
             recyclerView.setAdapter(mProdct_Adapter);
@@ -1827,7 +1912,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             selPOS = 0;
             sharedCommonPref.clear_pref(Constants.LOC_PRIMARY_DATA);
             distributor_text.setText(myDataset.get(position).getName());
-            tvTotalAmount.setText(CurrencySymbol+" 0.00");
+            tvTotalAmount.setText(CurrencySymbol + " 0.00");
             tvTotalItems.setText("Items : 0");
             sharedCommonPref.save(Constants.Route_name, "");
             sharedCommonPref.save(Constants.Route_Id, "");
@@ -1971,10 +2056,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     loadCategoryData("NEW", "");
                     break;
                 case Constants.Primary_Shortage_List:
-                    ShortageData= new JSONArray(apiDataResponse);
-                    Log.d("ShortageData",ShortageData.toString());
+                    ShortageData = new JSONArray(apiDataResponse);
+                    Log.d("ShortageData", ShortageData.toString());
 
-                    ShortagelistItems = new RyclShortageListItemAdb(this,ShortageData);
+                    ShortagelistItems = new RyclShortageListItemAdb(this, ShortageData);
                     rvShortageData.setAdapter(ShortagelistItems);
                     //sharedCommonPref.save("ShortageData",apiDataResponse);
 
@@ -2330,8 +2415,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                 Product_Details_Modal ProductItem = Product_Details_Modalitem.get(holder.getBindingAdapterPosition());
                 holder.productname.setText("" + ProductItem.getName().toUpperCase());
-                holder.Rate.setText(CurrencySymbol+" " + formatter.format(ProductItem.getSBRate()));// * (Integer.parseInt(Product_Details_Modal.getConversionFactor()))));
-                holder.Amount.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProductItem.getAmount()));
+                holder.Rate.setText(CurrencySymbol + " " + formatter.format(ProductItem.getSBRate()));// * (Integer.parseInt(Product_Details_Modal.getConversionFactor()))));
+                holder.Amount.setText(CurrencySymbol + " " + new DecimalFormat("##0.00").format(ProductItem.getAmount()));
 
                 int oQty = ProductItem.getQty();
                 String sQty = ProductItem.getQty().toString();
@@ -2343,13 +2428,13 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 //                holder.tvUomName
 
                 holder.llFreeProd.setVisibility(View.GONE);
-                if (ProductItem.getOff_Pro_name()!=null) {
+                if (ProductItem.getOff_Pro_name() != null) {
                     if (!(ProductItem.getOff_Pro_name().equalsIgnoreCase(ProductItem.getName())))
                         holder.llFreeProd.setVisibility(View.VISIBLE);
                 }
                 if (CategoryType >= 0) {
                     holder.tvProERPCode.setText("" + ProductItem.getERP_Code());
-                    holder.tvMRP.setText(CurrencySymbol+" "+ ProductItem.getMRP());
+                    holder.tvMRP.setText(CurrencySymbol + " " + ProductItem.getMRP());
                     holder.totalQty.setText("Total Qty : " + (int) oQty);//((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getQty() * (Integer.parseInt(Product_Details_Modal.getConversionFactor())))));
 
                     if (!ProductItem.getPImage().equalsIgnoreCase("")) {
@@ -2364,7 +2449,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     }
 
 
-                    holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(oQty * ProductItem.getSBRate())); //* (Integer.parseInt(Product_Details_Modal.getConversionFactor())) * Product_Details_Modal.getQty()));
+                    holder.QtyAmt.setText(CurrencySymbol + " " + formatter.format(oQty * ProductItem.getSBRate())); //* (Integer.parseInt(Product_Details_Modal.getConversionFactor())) * Product_Details_Modal.getQty()));
 
 
                     String name = "";
@@ -2382,7 +2467,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                 }
 
-                holder.tvTaxLabel.setText(CurrencySymbol+" " + formatter.format(ProductItem.getTax()));
+                holder.tvTaxLabel.setText(CurrencySymbol + " " + formatter.format(ProductItem.getTax()));
 
 
                 if (Common_Class.isNullOrEmpty(ProductItem.getFree()))
@@ -2391,7 +2476,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     holder.Free.setText("" + ProductItem.getFree());
 
 
-                holder.Disc.setText(CurrencySymbol+" " + formatter.format(ProductItem.getDiscount()));
+                holder.Disc.setText(CurrencySymbol + " " + formatter.format(ProductItem.getDiscount()));
 
 
                 holder.QtyPls.setOnClickListener(new View.OnClickListener() {
@@ -2472,10 +2557,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             double ProdAmt = totQty * Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getSBRate();
                             double EARate = Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getSBRate() / Double.parseDouble(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getConversionFactor());
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setQty((int) enterQty);
-                            holder.Amount.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(ProdAmt));
+                            holder.Amount.setText(CurrencySymbol + " " + new DecimalFormat("##0.00").format(ProdAmt));
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount(ProdAmt);
                             if (CategoryType >= 0) {
-                                holder.QtyAmt.setText(CurrencySymbol+" "+ formatter.format(ProdAmt));
+                                holder.QtyAmt.setText(CurrencySymbol + " " + formatter.format(ProdAmt));
                                 holder.totalQty.setText("Total Qty : " + (int) totQty);
 
                                 String name = "";
@@ -2570,7 +2655,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
 
                                                 } else {
-                                                    holder.Disc.setText(CurrencySymbol+" 0.00");
+                                                    holder.Disc.setText(CurrencySymbol + " 0.00");
                                                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setDiscount(0.00);
 
                                                 }
@@ -2582,7 +2667,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                             holder.Free.setText("0");
                                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setFree("0");
 
-                                            holder.Disc.setText(CurrencySymbol+" 0.00");
+                                            holder.Disc.setText(CurrencySymbol + " 0.00");
                                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setDiscount(0.00);
 
 
@@ -2599,7 +2684,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             holder.llFreeProd.setVisibility(View.GONE);
                             if (!haveVal) {
                                 holder.Free.setText("0");
-                                holder.Disc.setText(CurrencySymbol+" 0.00");
+                                holder.Disc.setText(CurrencySymbol + " 0.00");
                                 holder.lblFreeNm.setText("");
                                 Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setFree("0");
                                 Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setDiscount(0.00);
@@ -2612,27 +2697,27 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
 
                             } else {
-                                String pna=Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getName().toString();
+                                String pna = Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getName().toString();
                                 Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()) -
                                         (Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getDiscount()));
 
-                                holder.Free.setText("" + Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getFree() +" EA");
+                                holder.Free.setText("" + Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getFree() + " EA");
                                 holder.lblFreeNm.setText("" + Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getOff_Pro_name());
-                                holder.Disc.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getDiscount()));
+                                holder.Disc.setText(CurrencySymbol + " " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getDiscount()));
                                 if (!(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getOff_Pro_name().equalsIgnoreCase(pna)))
-                                holder.llFreeProd.setVisibility(View.VISIBLE);
-                                holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
+                                    holder.llFreeProd.setVisibility(View.VISIBLE);
+                                holder.Amount.setText(CurrencySymbol + " " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
 
 
                             }
-                            double EAAmt=0.0;
+                            double EAAmt = 0.0;
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setReplace_qty("0");
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setReplace_value("0.00");
-                            for(int ish=0;ish<ShortageData.length();ish++){
-                              JSONObject itm=ShortageData.getJSONObject(ish);
+                            for (int ish = 0; ish < ShortageData.length(); ish++) {
+                                JSONObject itm = ShortageData.getJSONObject(ish);
                                 if (itm.getString("Product_code").equalsIgnoreCase(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getId())) {
                                     holder.tvReplcQty.setText(String.valueOf(itm.getInt("Qty")));
-                                    EAAmt=itm.getInt("Qty") * EARate;
+                                    EAAmt = itm.getInt("Qty") * EARate;
 
                                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setAmount((Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()) -
                                             EAAmt);
@@ -2642,8 +2727,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             }
 
                             sumofTax(Product_Details_Modalitem, holder.getBindingAdapterPosition());
-                            holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
-                            holder.tvTaxLabel.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
+                            holder.Amount.setText(CurrencySymbol + " " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
+                            holder.tvTaxLabel.setText(CurrencySymbol + " " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
 
                             updateToTALITEMUI();
 
@@ -2735,8 +2820,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView productname, Rate, Amount, Disc, Free, lblRQty, productQty,lblFreeNm,
-                    QtyAmt, totalQty, tvTaxLabel, tvMRP, tvDefUOM, tvUomName, tvUomQty, tvMultiple, tvProERPCode,tvReplcQty;
+            public TextView productname, Rate, Amount, Disc, Free, lblRQty, productQty, lblFreeNm,
+                    QtyAmt, totalQty, tvTaxLabel, tvMRP, tvDefUOM, tvUomName, tvUomQty, tvMultiple, tvProERPCode, tvReplcQty;
             ImageView ImgVwProd, QtyPls, QtyMns, ivDel;
             EditText Qty;
             LinearLayout llFreeProd;
@@ -2755,7 +2840,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 Disc = view.findViewById(R.id.Disc);
                 tvTaxLabel = view.findViewById(R.id.tvTaxTotAmt);
                 tvDefUOM = view.findViewById(R.id.tvUOM);
-                lblFreeNm=view.findViewById(R.id.tvFreeProd);
+                lblFreeNm = view.findViewById(R.id.tvFreeProd);
 
                 if (CategoryType >= 0) {
                     tvMultiple = view.findViewById(R.id.tvMultiple);
@@ -2778,9 +2863,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     }
 
     public class Free_Adapter extends RecyclerView.Adapter<Free_Adapter.MyViewHolder> {
-        Context context;
         private final List<Product_Details_Modal> Product_Details_Modalitem;
         private final int rowLayout;
+        Context context;
 
 
         public Free_Adapter(List<Product_Details_Modal> Product_Details_Modalitem, int rowLayout, Context context, int Categorycolor) {
