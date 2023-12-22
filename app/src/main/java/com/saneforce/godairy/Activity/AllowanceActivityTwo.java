@@ -522,6 +522,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                                 //if (!ClosingCon.equals("")) {
                                 if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null")) && Common_Class.GetDate() != ClosingDate) {
                                     startActivity(new Intent(getApplicationContext(), Mydayplan_Activity.class));
+                                    finish();
                                 } else {
                                     Intent takePhoto = new Intent(AllowanceActivityTwo.this, Login.class);
                                     startActivity(takePhoto);

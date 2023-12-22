@@ -56,6 +56,7 @@ import com.google.gson.reflect.TypeToken;
 import com.saneforce.godairy.Activity_Hap.Dashboard;
 import com.saneforce.godairy.Activity_Hap.SFA_Activity;
 import com.saneforce.godairy.BuildConfig;
+import com.saneforce.godairy.CCAvenue.InitiatePaymentActivity;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
@@ -69,6 +70,7 @@ import com.saneforce.godairy.Interface.LocationEvents;
 import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.Interface.onListItemClick;
+import com.saneforce.godairy.JioMoney.PaymentWebView;
 import com.saneforce.godairy.Model_Class.Datum;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
@@ -166,6 +168,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     private JSONArray ProdGroups, ShortageData;
     private RyclGrpListItemAdb grplistItems;
     private RyclShortageListItemAdb ShortagelistItems;
+
+    String NTTDATAMerchantId = "", NTTDATAPassword = "", NTTDATAReqHashKey = "", NTTDATAResHashKey = "", NTTDATAProdID = "", NTTDATAAmount = "30.00";
+    boolean isLive = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -407,59 +412,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
-                Intent newPayIntent = new Intent(PrimaryOrderActivity.this, PayActivity.class);
-                newPayIntent.putExtra("merchantId", "317159");
-                newPayIntent.putExtra("password", "Test@123");
-                newPayIntent.putExtra("prodid", "NSE");
-                newPayIntent.putExtra("txncurr", "INR");
-                newPayIntent.putExtra("custacc", "100000036600");
-                newPayIntent.putExtra("amt", "30.00");
-                newPayIntent.putExtra("txnid", Common_Class.GetEkey());
-                newPayIntent.putExtra("signature_request", "KEY123657234");
-                newPayIntent.putExtra("signature_response", "KEYRESP123657234");
-                newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
-                newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
-                newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-                newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-//                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
-                newPayIntent.putExtra("isLive", false);
-                newPayIntent.putExtra("custFirstName", "SANeForce");
-                newPayIntent.putExtra("customerEmailID", "test@gmail.com");
-                newPayIntent.putExtra("customerMobileNo", "9876543210");
-                newPayIntent.putExtra("udf1", "udf1");
-                newPayIntent.putExtra("udf2", "udf2");
-                newPayIntent.putExtra("udf3", "udf3");
-                newPayIntent.putExtra("udf4", "udf4");
-                newPayIntent.putExtra("udf5", "udf5");
-                startActivityForResult(newPayIntent, 1);
-
-
-                /*newPayIntent.putExtra("merchantId", "317159");
-                newPayIntent.putExtra("password", "Test@123");
-                newPayIntent.putExtra("prodid", "NSE");
-                newPayIntent.putExtra("txncurr", "INR");
-                newPayIntent.putExtra("custacc", "9876543210");
-                newPayIntent.putExtra("amt","30.00");
-                newPayIntent.putExtra("txnid", Common_Class.GetEkey());
-                newPayIntent.putExtra("signature_request", "KEY1234567234");
-                newPayIntent.putExtra("signature_response", "KERESPY1234567234");
-                newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
-                newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
-                newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-                newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
-                newPayIntent.putExtra("isLive", false);
-                newPayIntent.putExtra("custFirstName", "SANeForce");
-                newPayIntent.putExtra("customerEmailID", "test@gmail.com");
-                newPayIntent.putExtra("customerMobileNo", "9876543210");
-                newPayIntent.putExtra("udf1", "udf1");
-                newPayIntent.putExtra("udf2", "udf2");
-                newPayIntent.putExtra("udf3", "udf3");
-                newPayIntent.putExtra("udf4", "udf4");
-                newPayIntent.putExtra("udf5", "udf5");
-                startActivityForResult(newPayIntent,1);*/
-
-                /*if (PaymentMethod == null) {
+                if (PaymentMethod == null) {
                     Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
                 } else if (PaymentMethod.equalsIgnoreCase("CC")) {
                     Intent intent = new Intent(this, InitiatePaymentActivity.class);
@@ -473,12 +426,67 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     intent.putExtra("totalValues", 1.00);
                     startActivity(intent);
                     finish();
-                }*/
+                } else if (PaymentMethod.equalsIgnoreCase("nd")) {
+                    StartNTTDataPayment();
+                }
             });
 
         } catch (Exception e) {
             Log.v(TAG, " order oncreate: " + e.getMessage());
         }
+    }
+
+    private void getNTTDataCredentials() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_nttdata_credentials");
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                try {
+                    Log.e("getNTTDataCredentials", "getNTTDataCredentials: " + jsonObject);
+                    JSONObject object = jsonObject.getJSONObject("response");
+                    NTTDATAMerchantId = object.optString("merchantID");
+                    NTTDATAPassword = object.optString("password");
+                    NTTDATAReqHashKey = object.optString("requestHashKey");
+                    NTTDATAResHashKey = object.optString("responseHashKey");
+                    NTTDATAProdID = object.optString("prodID");
+                    isLive = object.optBoolean("isLive");
+                } catch (JSONException ignored) { }
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
+    }
+
+    private void StartNTTDataPayment() { // Todo: StartNTTDataPayment
+        Intent newPayIntent = new Intent(PrimaryOrderActivity.this, PayActivity.class);
+        newPayIntent.putExtra("merchantId", NTTDATAMerchantId);
+        newPayIntent.putExtra("password", NTTDATAPassword);
+        newPayIntent.putExtra("signature_request", NTTDATAReqHashKey);
+        newPayIntent.putExtra("signature_response", NTTDATAResHashKey);
+        newPayIntent.putExtra("prodid", NTTDATAProdID);
+        newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
+        newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
+        newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+        newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+        newPayIntent.putExtra("amt", NTTDATAAmount);
+        newPayIntent.putExtra("isLive", isLive);
+        newPayIntent.putExtra("txnid", Common_Class.GetEkey());
+        newPayIntent.putExtra("custFirstName", sharedCommonPref.getvalue(Constants.Distributor_name));
+        newPayIntent.putExtra("customerMobileNo", sharedCommonPref.getvalue(Constants.Distributor_phone));
+        newPayIntent.putExtra("customerEmailID", "test@gmail.com");
+        newPayIntent.putExtra("txncurr", "INR");
+        newPayIntent.putExtra("custacc", "100000036600");
+//        newPayIntent.putExtra("udf1", "udf1");
+//        newPayIntent.putExtra("udf2", "udf2");
+//        newPayIntent.putExtra("udf3", "udf3");
+//        newPayIntent.putExtra("udf4", "udf4");
+//        newPayIntent.putExtra("udf5", "udf5");
+//        newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
+        startActivityForResult(newPayIntent, 1);
     }
 
     private void getStockistAddress() {
@@ -974,25 +982,30 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         Log.e("requestCode", "requestCode: " + requestCode);
         Log.e("resultCode", "resultCode: " + resultCode);
-        try {
-            Log.e("nttdataTransaction", data.getExtras().getString("response"));
-        } catch (Exception e) {}
-        if (requestCode == 1 && resultCode != 2) {
-            Log.e("nttdataTransaction", data.getExtras().getString("response"));
-            JSONObject object = PreparePaymentSave(data);
-            Map<String, String> params = new HashMap<>();
-            params.put("axn", "save_nttdata_transaction");
-            Common_Class.makeApiCall(context, params, object.toString(), new APIResult() {
-                @Override
-                public void onSuccess(JSONObject jsonObject) {
-                    ShowPaymentResult(data);
-                }
+        if (requestCode == 1) {
+            try {
+                Log.e("nttdataTransaction", data.getExtras().getString("response"));
+            } catch (Exception ignored) {}
+            if (resultCode == 2) {
+                Toast.makeText(context, "Transaction cancelled by user...", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == 1) {
+                JSONObject object = PreparePaymentSave(data);
+                Map<String, String> params = new HashMap<>();
+                params.put("axn", "save_nttdata_transaction");
+                Common_Class.makeApiCall(context, params, object.toString(), new APIResult() {
+                    @Override
+                    public void onSuccess(JSONObject jsonObject) {
+                        ShowPaymentResult(data);
+                    }
 
-                @Override
-                public void onFailure(String error) {
-                    ShowPaymentResult(data);
-                }
-            });
+                    @Override
+                    public void onFailure(String error) {
+                        ShowPaymentResult(data);
+                    }
+                });
+            } else {
+                Toast.makeText(context, "Transaction failed...", Toast.LENGTH_SHORT).show();
+            }
         }
         if (requestCode == 1000) {
             String sLoc = sharedCommonPref.getvalue("CurrLoc");
@@ -2069,6 +2082,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     if (myObject != null) {
                         JSONObject me = myObject.optJSONObject("response");
                         PaymentMethod = me.optString("PaymentGateway");
+                        if (PaymentMethod.equalsIgnoreCase("nd")) {
+                            getNTTDataCredentials();
+                        }
                     }
                     break;
                 case Constants.PRIMARY_SCHEME:
