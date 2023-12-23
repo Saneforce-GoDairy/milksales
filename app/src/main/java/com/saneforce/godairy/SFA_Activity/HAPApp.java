@@ -11,10 +11,12 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.JsonObject;
+import com.saneforce.godairy.BuildConfig;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
@@ -23,6 +25,7 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.ConnectivityReceiver;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.TimerService;
+import com.saneforce.godairy.universal.Constant;
 
 import org.json.JSONArray;
 
@@ -94,7 +97,6 @@ public class HAPApp extends Application {
                 Shared_Common_Pref.Sf_Name = CommUserDetails.getString("SfName", "");
                 Shared_Common_Pref.Div_Code = CommUserDetails.getString("Divcode", "");
                 Shared_Common_Pref.StateCode = CommUserDetails.getString("State_Code", "");
-
                 StockCheck=CommUserDetails.getString("StockCheck", "0");
                 CurrencySymbol = getActiveActivity().getResources().getString(R.string.Currency); //"₹";//₹
                 MRPCap = getActiveActivity().getResources().getString(R.string.MRPCAP);//₹ B$
@@ -107,6 +109,10 @@ public class HAPApp extends Application {
             @Override
             public void onActivityStarted(Activity activity) {
 
+                TextView txVer=activity.findViewById(R.id.appDVersion);
+                if(txVer!=null){
+                    txVer.setText("App ver :" +BuildConfig.VERSION_NAME);
+                }
 
             }
 
@@ -115,6 +121,10 @@ public class HAPApp extends Application {
                 activeActivity = activity;
                 try
                 {
+                    TextView txVer=activity.findViewById(R.id.appDVersion);
+                    if(txVer!=null){
+                        txVer.setText("Version "+BuildConfig.VERSION_NAME);
+                    }
                     if(!CommUserDetails.getString("Sfcode","").equalsIgnoreCase("")) {
                         startService(new Intent(activeActivity, TimerService.class));
                     }
@@ -144,6 +154,17 @@ public class HAPApp extends Application {
         });
     }
 
+    public static void  printUsrLog(String Id,String Msg){
+        if (Constant.DEBUG_MODE){
+            try{
+                if(activeActivity!=null){
+                    Log.v("Print Log "+activeActivity.getClass().getSimpleName()+" : "+Id,Msg);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
     public static HAPApp getApplication() {
         return sharedInstance;
     }

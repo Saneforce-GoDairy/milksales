@@ -580,8 +580,8 @@ public class Common_Class {
 
                     } catch (Exception e) {
                         Log.e("Common class:", key + " response: " + e.getMessage());
-                        updateUi = ((UpdateResponseUI) activity);
-                        updateUi.onLoadDataUpdateUI(gson.toJson(response.body()), key);
+                       // updateUi = ((UpdateResponseUI) activity);
+                       // updateUi.onLoadDataUpdateUI(gson.toJson(response.body()), key);
 
                     }
                 }

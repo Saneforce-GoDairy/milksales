@@ -592,7 +592,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                 }
             });
 
-         //   binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
+            binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
 
             double totAmt = 0;
             for (int i = 0; i < filterArr.length(); i++) {

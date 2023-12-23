@@ -147,7 +147,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     private ArrayList<Product_Details_Modal> orderTotTax;
     private ArrayList<Product_Details_Modal> orderTotUOM;
     List<Product_Details_Modal> multiList;
-    String orderId = "", orderType = "";
+    String orderId = "",edOrderId = "", orderType = "";
     private boolean isEditOrder = false;
     private int inValidQty = -1;
     private double totTax;
@@ -232,8 +232,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             common_class.getDb_310Data(Constants.Primary_Shortage_List, this);
             common_class.getDb_310Data(Constants.PaymentMethod, this);
-            if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.LOC_PRIMARY_DATA)))
+            if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.LOC_PRIMARY_DATA))){
+                common_class.ProgressdialogShow(1, "Loading Matrial Details");
                 common_class.getDb_310Data(Constants.Primary_Product_List, this);
+            }
             else {
                 Product_Modal = gson.fromJson(sharedCommonPref.getvalue(Constants.LOC_PRIMARY_DATA), userType);
                 boolean isHave = false;
@@ -263,6 +265,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             orderId = getIntent().getStringExtra(Constants.ORDER_ID);
             if(orderId==null) orderId = "";
 
+        edOrderId=orderId;
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.POS_NETAMT_TAX)))
                 common_class.getDb_310Data(Constants.POS_NETAMT_TAX, this);
 
@@ -583,10 +586,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             }
 
             String filterId = "";
-            if (TypGroups.length() > 0)
+            if (TypGroups.length() > 0) {
                 filterId = TypGroups.getJSONObject(0).getString("id");
-            GetJsonData(String.valueOf(db.getMasterData(Constants.Category_List)), "1", filterId);
-
+                GetJsonData(String.valueOf(db.getMasterData(Constants.Category_List)), "1", filterId);
+            }
             RyclBrandListItemAdb TyplistItems = new RyclBrandListItemAdb(TypGroups, this, new onListItemClick() {
                 @Override
                 public void onItemClick(JSONObject item) {
@@ -637,6 +640,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 if (orderId.equalsIgnoreCase("")) {
                     showOrderItemList(selectedPos, "");
                 } else {
+                    edOrderId=orderId;
+                    orderId = "";
                     common_class.getDataFromApi(Constants.PRIMARY_ORDER_EDIT, this, false);
                 }
             }
@@ -708,7 +713,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             Date d2 = sdf.parse(sharedCommonPref.getvalue(Constants.CUTOFF_TIME));
             long elapsed = d2.getTime() - d1.getTime();
             double currentOrderVal = totalvalues;
-            if(orderId != null) currentOrderVal = totalvalues - editTotValues;
+            if(edOrderId != null) currentOrderVal = totalvalues - editTotValues;
             if (ACBalance < currentOrderVal && ACBalanceChk) {
                 ResetSubmitBtn(0);
                 common_class.showMsg(this, "Low A/C Balance...");
@@ -1053,8 +1058,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             OutletItem.put("No_Of_items", tvBillTotItem.getText().toString());
                             OutletItem.put("Invoice_Flag", Shared_Common_Pref.Invoicetoorder);
                             OutletItem.put("ordertype", "order");
-                            OutletItem.put("orderId", orderId);
-                            OutletItem.put("mode", orderId.equalsIgnoreCase("") ? "new" : "edit");
+                            OutletItem.put("orderId", edOrderId);
+                            OutletItem.put("mode", edOrderId.equalsIgnoreCase("") ? "new" : "edit");
                             OutletItem.put("cutoff_time", sharedCommonPref.getvalue(Constants.CUTOFF_TIME));
                             OutletItem.put("totAmtTax", formatter.format(totTax));
                             OutletItem.put("groupCode", grpCode);
@@ -1815,13 +1820,14 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 case Constants.PRIMARY_ORDER_EDIT:
                     sharedCommonPref.clear_pref(Constants.PRIMARY_ORDER);
                     orderType = getIntent().getStringExtra(Constants.CATEGORY_TYPE);
+                    isEditOrder = true;
                     loadCategoryData("EDIT", "");
                     loadData(apiDataResponse);
-                    isEditOrder = true;
                     break;
 
                 case Constants.Primary_Product_List:
                     Product_Modal = gson.fromJson(apiDataResponse, userType);
+                    common_class.ProgressdialogShow(0, "");
                     loadCategoryData("NEW", "");
                     break;
 
@@ -1913,9 +1919,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             Product_Modal.get(pm).setQty(
                                     jsonObject1.getInt("Quantity"));
 
-                            Product_Modal.get(pm).setAmount(Double.valueOf(formatter.format(Product_Modal.get(pm).getQty() *
+                            Product_Modal.get(pm).setAmount(Double.valueOf(formatter.format((Product_Modal.get(pm).getQty() * Double.parseDouble( Product_Modal.get(pm).getConversionFactor()) )*
                                     Product_Modal.get(pm).getSBRate())));
-                            Product_Modal.get(pm).setTaxableAmt(Double.valueOf(formatter.format(Product_Modal.get(pm).getQty() *
+                            Product_Modal.get(pm).setTaxableAmt(Double.valueOf(formatter.format((Product_Modal.get(pm).getQty()  * Double.parseDouble( Product_Modal.get(pm).getConversionFactor()) )*
                                     Product_Modal.get(pm).getBillRate())));
 
                             double enterQty = Product_Modal.get(pm).getQty();

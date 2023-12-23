@@ -29,10 +29,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/appDVersion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/AppTitle"
-                android:text="@string/tool_app_ver"
                 android:textColor="@color/white"
                 android:textSize="8sp" />
         </LinearLayout>
