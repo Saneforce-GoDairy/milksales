@@ -1,9 +1,14 @@
 package com.saneforce.godairy.procurement;
 
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_POST_COLL_CENTER_LOCATION;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,10 +18,30 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Model_Class.PrimaryNoOrderList;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityColletionCenterLocationBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CollectionCenterLocationActivity extends AppCompatActivity {
     private ActivityColletionCenterLocationBinding binding;
@@ -43,35 +68,70 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
 
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-                R.array.plant_array, R.layout.custom_spinner);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter2);
+        loadPlant();
+
+//        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+//                R.array.plant_array, R.layout.custom_spinner);
+//        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        binding.spinnerPlant.setAdapter(adapter2);
 
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
                 R.array.competitor_array, R.layout.custom_spinner);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompetitorLpd1.setAdapter(adapter3);
+    }
 
-        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,
-                R.array.competitor_array, R.layout.custom_spinner);
-        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCompetitorLpd2.setAdapter(adapter4);
+    private void loadPlant() {
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
-        ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(this,
-                R.array.competitor_array, R.layout.custom_spinner);
-        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCompetitorLpd3.setAdapter(adapter5);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String plantList;
+                    try {
+                        plantList = response.body().string();
 
-        ArrayAdapter<CharSequence> adapter6 = ArrayAdapter.createFromResource(this,
-                R.array.competitor_array, R.layout.custom_spinner);
-        adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCompetitorLpd4.setAdapter(adapter6);
+                        JSONArray jsonArray = new JSONArray(plantList);
+                        List<String> list = new ArrayList<>();
+                        list.add("Select");
 
-        ArrayAdapter<CharSequence> adapter7 = ArrayAdapter.createFromResource(this,
-                R.array.competitor_array, R.layout.custom_spinner);
-        adapter7.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCompetitorLpd5.setAdapter(adapter7);
+                        for (int i = 0; i<jsonArray.length(); i++) {
+                            PlantModel plantModel = new PlantModel();
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            String plantName = object.optString("Plant_Name");
+
+                            binding.spinnerPlant.setPrompt(plantName);
+                            list.add(plantName);
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, list);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spinnerPlant.setAdapter(adapter);
+                    } catch (IOException | JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    public class PlantModel {
+        private String Plant_Name;
+
+        public String getPlant_Name() {
+            return Plant_Name;
+        }
+
+        public void setPlant_Name(String plant_Name) {
+            Plant_Name = plant_Name;
+        }
     }
 
     private void onClick() {
@@ -105,53 +165,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mPlant = binding.spinnerCompetitorLpd1.getSelectedItem().toString();
                 binding.txtCompetitorLpd1NotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-        binding.spinnerCompetitorLpd2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerCompetitorLpd2.getSelectedItem().toString();
-                binding.txtCompetitorLpd2NotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        binding.spinnerCompetitorLpd3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerCompetitorLpd3.getSelectedItem().toString();
-                binding.txtCompetitorLpd3NotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        binding.spinnerCompetitorLpd4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerCompetitorLpd4.getSelectedItem().toString();
-                binding.txtCompetitorLpd4NotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        binding.spinnerCompetitorLpd5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerCompetitorLpd5.getSelectedItem().toString();
-                binding.txtCompetitorLpd5NotValid.setVisibility(View.GONE);
                 binding.txtErrorFound.setVisibility(View.GONE);
             }
 
@@ -202,7 +215,7 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
-                Toast.makeText(context, "valid", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(context, "valid", Toast.LENGTH_SHORT).show();
                 saveNow();
             }
         });
@@ -218,7 +231,55 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
+//        RequestBody requestBody = new MultipartBody.Builder()
+//                .setType(MultipartBody.FORM)
+//                .addFormDataPart("axn", PROCUREMENT_POST_COLL_CENTER_LOCATION)
+//                .addFormDataPart("company", "mCompanyName")
+//                .build();
 
+        String mActiveFlag = "1";
+
+        String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        String mTimeDate  = mDate +" "+mTime;
+
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcCollectionCenterLo(PROCUREMENT_POST_COLL_CENTER_LOCATION,
+                                                                            mCompanyName,
+                                                                            mPlant,
+                                                                            mSapCenterCode,
+                                                                            mSapCenterName,
+                                                                            mCenterAddress,
+                                                                            mPotentialLpd,
+                                                                            mNoOfFarmersEnrolled,
+                                                                            mCompetitorLpdSinner1,
+                                                                            mCompetitorLpdEdText1,
+                                                                            mActiveFlag,
+                                                                            mTimeDate);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+
+                    try {
+                        res = response.body().string();
+
+                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean validateInputs() {
@@ -232,18 +293,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
         mCompetitorLpdSinner1 = binding.spinnerCompetitorLpd1.getSelectedItem().toString();
         mCompetitorLpdEdText1 = binding.edCompetitorLpd1.getText().toString().trim();
-
-        mCompetitorLpdSinner2 = binding.spinnerCompetitorLpd2.getSelectedItem().toString();
-        mCompetitorLpdEdText2 = binding.edCompetitorLpd2.getText().toString().trim();
-
-        mCompetitorLpdSinner3 = binding.spinnerCompetitorLpd3.getSelectedItem().toString();
-        mCompetitorLpdEdText3 = binding.edCompetitorLpd3.getText().toString().trim();
-
-        mCompetitorLpdSinner4 = binding.spinnerCompetitorLpd4.getSelectedItem().toString();
-        mCompetitorLpdEdText4 = binding.edCompetitorLpd4.getText().toString().trim();
-
-        mCompetitorLpdSinner5 = binding.spinnerCompetitorLpd5.getSelectedItem().toString();
-        mCompetitorLpdEdText5 = binding.edCompetitorLpd5.getText().toString().trim();
 
         if ("Select".equals(mCompanyName)){
             ((TextView)binding.spinnerCompany.getSelectedView()).setError("Select company");
@@ -259,11 +308,11 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-        if (bitmapCollectCenter == null){
-            binding.txtCollectCenterNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
+//        if (bitmapCollectCenter == null){
+//            binding.txtCollectCenterNotValid.setVisibility(View.VISIBLE);
+//            binding.txtErrorFound.setVisibility(View.VISIBLE);
+//            return false;
+//        }
         if ("".equals(mSapCenterCode)){
             binding.edSapCenterCode.setError("Enter Sap Center Code");
             binding.edSapCenterCode.requestFocus();
@@ -301,64 +350,13 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-        if ("".equals(mCompetitorLpdEdText1)){
-            binding.edCompetitorLpd1.setError("Enter Competitor LPD1");
-            binding.edCompetitorLpd1.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mCompetitorLpdSinner2)){
-            ((TextView)binding.spinnerCompetitorLpd2.getSelectedView()).setError("Select Competitor LPD1");
-            binding.spinnerCompetitorLpd2.getSelectedView().requestFocus();
-            binding.txtCompetitorLpd2NotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mCompetitorLpdEdText2)){
-            binding.edCompetitorLpd2.setError("Enter Competitor LPD1");
-            binding.edCompetitorLpd2.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mCompetitorLpdSinner3)){
-            ((TextView)binding.spinnerCompetitorLpd3.getSelectedView()).setError("Select Competitor LPD1");
-            binding.spinnerCompetitorLpd3.getSelectedView().requestFocus();
-            binding.txtCompetitorLpd3NotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mCompetitorLpdEdText3)){
-            binding.edCompetitorLpd3.setError("Enter Competitor LPD1");
-            binding.edCompetitorLpd3.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mCompetitorLpdSinner4)){
-            ((TextView)binding.spinnerCompetitorLpd4.getSelectedView()).setError("Select Competitor LPD1");
-            binding.spinnerCompetitorLpd4.getSelectedView().requestFocus();
-            binding.txtCompetitorLpd4NotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mCompetitorLpdEdText4)){
-            binding.edCompetitorLpd4.setError("Enter Competitor LPD1");
-            binding.edCompetitorLpd4.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mCompetitorLpdSinner5)){
-            ((TextView)binding.spinnerCompetitorLpd5.getSelectedView()).setError("Select Competitor LPD1");
-            binding.spinnerCompetitorLpd5.getSelectedView().requestFocus();
-            binding.txtCompetitorLpd5NotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mCompetitorLpdEdText5)){
-            binding.edCompetitorLpd5.setError("Enter Competitor LPD1");
-            binding.edCompetitorLpd5.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
+//        if ("".equals(mCompetitorLpdEdText1)){
+//            binding.edCompetitorLpd1.setError("Enter Competitor LPD1");
+//            binding.edCompetitorLpd1.requestFocus();
+//            binding.txtErrorFound.setVisibility(View.VISIBLE);
+//            return false;
+//        }
+
         return true;
     }
 

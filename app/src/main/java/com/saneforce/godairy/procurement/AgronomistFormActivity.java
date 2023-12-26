@@ -25,6 +25,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityAgronomistFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
@@ -34,6 +36,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 public class AgronomistFormActivity extends AppCompatActivity {
     private ActivityAgronomistFormBinding binding;
@@ -404,51 +409,71 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
-        UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
-        String mSFCode = "DEMO ID";
-        String mSFName = "DEMO_NAME";
+//        UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+//        String mSFCode = "DEMO ID";
+//        String mSFName = "DEMO_NAME";
+//
+//            String mFarmersMeetingBase64Image =  bitmapToBase64_1(bitmapFormersMeeting);
+//            String mCSRActivityBase64Image =  bitmapToBase64_2(bitmapCSRActivity);
+//            String mFodderDevAcresBase64Image =  bitmapToBase64_3(bitmapFodderDevAcres);
+//
+//            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+//            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+//            String mTimeDate  = mDate +" "+mTime;
+//
+//        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+//        Call<ResponseBody> call = apiInterface.agronomistSubmit("agro",
+//                                  mSFCode,
+//                                  mCompanyName,
+//                                  mPlant,
+//                                  mCenterName,
+//                                  mFarmerCodeName,
+//                                  mTypeOfProduct,
+//                                  mTeatTipCup,
+//                                  mTypeOfService,
+//                                  mee)
 
-        new Thread(() -> {
-            String mFarmersMeetingBase64Image =  bitmapToBase64_1(bitmapFormersMeeting);
-            String mCSRActivityBase64Image =  bitmapToBase64_2(bitmapCSRActivity);
-            String mFodderDevAcresBase64Image =  bitmapToBase64_3(bitmapFodderDevAcres);
-
-            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-            String mTimeDate  = mDate +" "+mTime;
-
-            databaseManager.saveProcAgronomist(
-                    mSFCode,
-                    mSFName,
-                    mCompanyName,
-                    mPlant,
-                    mCenterName,
-                    mFarmerCodeName,
-                    mTypeOfProduct,
-                    mTeatTipCup,
-                    mTypeOfService,
-                    mFarmersMeetingBase64Image,
-                    mCSRActivityBase64Image,
-                    mFodderDev,
-                    mFodderDevAcresBase64Image,
-                    mNoOfFarmersEnrolled,
-                    mNoOfFarmersInducted,
-                    mTimeDate);
-        }).start();
-        progressDialog.show();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.dismiss();
-                Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-                //startActivity(new Intent(context, ProcurementHome.class));
-                Intent intent = new Intent(context, ProcurementHome.class);
-                intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
-                startActivity(intent);
-                finish();
-            }
-        }, 10000);
+//        new Thread(() -> {
+//            String mFarmersMeetingBase64Image =  bitmapToBase64_1(bitmapFormersMeeting);
+//            String mCSRActivityBase64Image =  bitmapToBase64_2(bitmapCSRActivity);
+//            String mFodderDevAcresBase64Image =  bitmapToBase64_3(bitmapFodderDevAcres);
+//
+//            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+//            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+//            String mTimeDate  = mDate +" "+mTime;
+//
+//            databaseManager.saveProcAgronomist(
+//                    mSFCode,
+//                    mSFName,
+//                    mCompanyName,
+//                    mPlant,
+//                    mCenterName,
+//                    mFarmerCodeName,
+//                    mTypeOfProduct,
+//                    mTeatTipCup,
+//                    mTypeOfService,
+//                    mFarmersMeetingBase64Image,
+//                    mCSRActivityBase64Image,
+//                    mFodderDev,
+//                    mFodderDevAcresBase64Image,
+//                    mNoOfFarmersEnrolled,
+//                    mNoOfFarmersInducted,
+//                    mTimeDate);
+//        }).start();
+//        progressDialog.show();
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                progressDialog.dismiss();
+//                Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+//                //startActivity(new Intent(context, ProcurementHome.class));
+//                Intent intent = new Intent(context, ProcurementHome.class);
+//                intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
+//                startActivity(intent);
+//                finish();
+//            }
+//        }, 10000);
     }
 
     private String bitmapToBase64_1(Bitmap bitmap) {

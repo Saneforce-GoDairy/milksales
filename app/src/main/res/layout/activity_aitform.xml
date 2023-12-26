@@ -125,7 +125,7 @@
                 android:background="@drawable/edit_text_common"
                 android:layout_marginTop="2dp">
 
-                <Spinner
+                <com.saneforce.godairy.common.CustomSpinner
                     android:id="@+id/spinner_plant"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

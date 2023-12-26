@@ -377,7 +377,7 @@
         <activity
             android:name=".Activity_Hap.Advance_Approval_Reject"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".Activity_Hap.Advance_Approval"
             android:exported="false"

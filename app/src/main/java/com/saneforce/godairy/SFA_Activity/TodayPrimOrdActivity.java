@@ -150,7 +150,6 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                 Toast.makeText(TodayPrimOrdActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @SuppressLint("SetTextI18n")
