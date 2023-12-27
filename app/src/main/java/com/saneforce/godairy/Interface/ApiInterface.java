@@ -789,6 +789,7 @@ public interface ApiInterface {
     @POST("Db_v310.php")
     Call<ResponseBody> getProcPlant(@Query("axn") String axn);
 
+    @Multipart
     @POST("Db_v310.php")
     Call<ResponseBody> submitProcCollectionCenterLo(@Query("axn") String axn,
                                                     @Query("company") String company,
@@ -801,24 +802,8 @@ public interface ApiInterface {
                                                     @Query("competitor1") String competitor1,
                                                     @Query("competitor1_txt") String competitor1_txt,
                                                     @Query("active_flag") String active_flag,
-                                                    @Query("created_dt") String created_dt);
-
-//    // Procurement
-//    @POST("procurement.php")
-//    Call<ResponseBody> agronomistSubmit(@Query("axn") String axn,
-//                                                  @Query("sf_code") String sf_code,
-//                                                  @Query("company") String company,
-//                                                  @Query("plant") String plant,
-//                                                  @Query("center_name") String center_name,
-//                                                  @Query("farmer_name") String farmer_name,
-//                                                  @Query("product_type") String product_type,
-//                                                  @Query("teat_dip_solution") String teat_dip_solution,
-//                                                  @Query("service_type") String service_type,
-//                                                  @Query("farmer_meeting") String farmer_meeting,
-//                                                  @Query("csr") String csr,
-//                                                  @Query("fodder_dev_acres") String fodder_dev_acres,
-//                                                  @Query("farmers_enrolled") String no_of_farmers_enrolled,
-//                                                  @Query("farmers_inducted") String no_of_farmers_inducted);
+                                                    @Query("created_dt") String created_dt,
+                                                    @Part MultipartBody.Part image);
 
 
     @GET(ApiClient.CONFIG_URL)

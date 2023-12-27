@@ -5,6 +5,7 @@ import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_POST_COLL_CE
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.PrimaryNoOrderList;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityColletionCenterLocationBinding;
 
 import org.json.JSONArray;
@@ -107,7 +109,7 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
                         }
 
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, list);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter.setDropDownViewResource(R.layout.custom_spinner);
                         binding.spinnerPlant.setAdapter(adapter);
                     } catch (IOException | JSONException e) {
                         throw new RuntimeException(e);
@@ -231,55 +233,66 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
-//        RequestBody requestBody = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("axn", PROCUREMENT_POST_COLL_CENTER_LOCATION)
-//                .addFormDataPart("company", "mCompanyName")
-//                .build();
 
-        String mActiveFlag = "1";
+         String mActiveFlag = "1";
 
         String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
         String mTimeDate  = mDate +" "+mTime;
+//
+//
+//        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+//
+//        Call<ResponseBody> call = apiInterface.submitProcCollectionCenterLo(PROCUREMENT_POST_COLL_CENTER_LOCATION,
+//                                                                            mCompanyName,
+//                                                                            mPlant,
+//                                                                            mSapCenterCode,
+//                                                                            mSapCenterName,
+//                                                                            mCenterAddress,
+//                                                                            mPotentialLpd,
+//                                                                            mNoOfFarmersEnrolled,
+//                                                                            mCompetitorLpdSinner1,
+//                                                                            mCompetitorLpdEdText1,
+//                                                                            mActiveFlag,
+//                                                                            mTimeDate);
+//
+//        call.enqueue(new Callback<>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+//                if (response.isSuccessful()) {
+//                    String res;
+//
+//                    try {
+//                        res = response.body().string();
+//
+//                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+//                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
+        String dir = getExternalFilesDir("/").getPath() + "/" + ".skyblue/";
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
-
-        Call<ResponseBody> call = apiInterface.submitProcCollectionCenterLo(PROCUREMENT_POST_COLL_CENTER_LOCATION,
-                                                                            mCompanyName,
-                                                                            mPlant,
-                                                                            mSapCenterCode,
-                                                                            mSapCenterName,
-                                                                            mCenterAddress,
-                                                                            mPotentialLpd,
-                                                                            mNoOfFarmersEnrolled,
-                                                                            mCompetitorLpdSinner1,
-                                                                            mCompetitorLpdEdText1,
-                                                                            mActiveFlag,
-                                                                            mTimeDate);
-
-        call.enqueue(new Callback<>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    String res;
-
-                    try {
-                        res = response.body().string();
-
-                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        Intent serviceIntent = new Intent(this, FileUploadService2.class);
+        serviceIntent.putExtra("company", mCompanyName);
+        serviceIntent.putExtra("plant", mPlant);
+        serviceIntent.putExtra("center_code", mSapCenterCode);
+        serviceIntent.putExtra("center_name", mSapCenterName);
+        serviceIntent.putExtra("center_addr", mCenterAddress);
+        serviceIntent.putExtra("potential_lpd", mPotentialLpd);
+        serviceIntent.putExtra("farmers_enrolled", mNoOfFarmersEnrolled);
+        serviceIntent.putExtra("competitor_lpd", mCompetitorLpdSinner1);
+        serviceIntent.putExtra("competitor_lpd1", mCompetitorLpdEdText1);
+        serviceIntent.putExtra("active_flag", mActiveFlag);
+        serviceIntent.putExtra("time_date", mTimeDate);
+        ContextCompat.startForegroundService(this, serviceIntent);
     }
 
     private boolean validateInputs() {
