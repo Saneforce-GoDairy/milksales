@@ -805,6 +805,27 @@ public interface ApiInterface {
                                                     @Query("created_dt") String created_dt,
                                                     @Part MultipartBody.Part image);
 
+    @POST("Db_v310.php")
+    Call<ResponseBody> getProcCenterList(@Query("axn") String axn);
+
+    @Multipart
+    @POST("Db_v310.php")
+    Call<ResponseBody> submitProcFarmerCreation(@Query("axn") String axn,
+                                                    @Query("center") String center,
+                                                    @Query("farmer_gategory") String plant,
+                                                    @Query("farmer_name") String farmer_name,
+                                                    @Query("farmer_address") String farmer_address,
+                                                    @Query("phone_number") String phone_number,
+                                                    @Query("pin_code") String pin_code,
+                                                    @Query("cow_total") String cow_total,
+                                                    @Query("buffalo_total") String buffalo_total,
+                                                    @Query("cow_available_ltrs") String cow_available_ltrs,
+                                                    @Query("buffalo_available_ltrs") String buffalo_available_ltrs,
+                                                    @Query("milk_supply_company") String milk_supply_company,
+                                                    @Query("interested_supply") String interested_supply,
+                                                    @Query("active_flag") String active_flag,
+                                                    @Query("created_dt") String created_dt,
+                                                    @Part MultipartBody.Part image);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

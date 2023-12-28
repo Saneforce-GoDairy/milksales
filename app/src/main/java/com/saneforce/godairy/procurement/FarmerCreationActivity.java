@@ -1,6 +1,11 @@
 package com.saneforce.godairy.procurement;
 
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_CENTER;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +18,25 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityFarmerCreationBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FarmerCreationActivity extends AppCompatActivity {
     private ActivityFarmerCreationBinding binding;
@@ -240,10 +260,10 @@ public class FarmerCreationActivity extends AppCompatActivity {
             }
         });
 
-        binding.spinnerVillageCenter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinVillageCenter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mCenter = binding.spinnerVillageCenter.getSelectedItem().toString();
+                mCenter = binding.spinVillageCenter.getSelectedItem().toString();
                 binding.txtVillageCenterNotValid.setVisibility(View.GONE);
                 binding.txtErrorFound.setVisibility(View.GONE);
             }
@@ -269,12 +289,26 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
-
-
+        Intent serviceIntent = new Intent(this, FileUploadService2.class);
+        serviceIntent.putExtra("center", mCenter);
+        serviceIntent.putExtra("farmer_gategory", mFarmerGategory);
+        serviceIntent.putExtra("farmer_name", mFarmerName);
+        serviceIntent.putExtra("farmer_address", mAddress);
+        serviceIntent.putExtra("phone_number", mPhoneNumber);
+        serviceIntent.putExtra("pin_code", mPinCode);
+        serviceIntent.putExtra("cow_total", mNoOfAnimalsCow);
+        serviceIntent.putExtra("buffalo_total", mNoOfAnimalsBuffalo);
+        serviceIntent.putExtra("cow_available_ltrs", mMilkAvailabilityCowLtrs);
+        serviceIntent.putExtra("buffalo_available_ltrs", mMilkAvailabilityBuffaloLtrs);
+        serviceIntent.putExtra("milk_supply_company", mMilkSupplyCompany);
+        serviceIntent.putExtra("interested_supply", mInterestedForSupply);
+        serviceIntent.putExtra("active_flag", "1");
+        serviceIntent.putExtra("upload_service_id", "2");
+        ContextCompat.startForegroundService(this, serviceIntent);
     }
 
     private boolean validateInputs() {
-        mCenter = binding.spinnerVillageCenter.getSelectedItem().toString();
+        mCenter = binding.spinVillageCenter.getSelectedItem().toString();
         mFarmerGategory = binding.spinnerFarmerGategory.getSelectedItem().toString();
 
         mFarmerName = binding.edFarmerName.getText().toString().trim();
@@ -290,8 +324,8 @@ public class FarmerCreationActivity extends AppCompatActivity {
         mMilkAvailabilityBuffaloLtrs = binding.edMilkAvailabilityBuffalo.getText().toString().trim();
 
         if ("Select".equals(mCenter)){
-            ((TextView)binding.spinnerVillageCenter.getSelectedView()).setError("Select center/village");
-            binding.spinnerVillageCenter.getSelectedView().requestFocus();
+            ((TextView)binding.spinVillageCenter.getSelectedView()).setError("Select center/village");
+            binding.spinVillageCenter.getSelectedView().requestFocus();
             binding.txtVillageCenterNotValid.setVisibility(View.VISIBLE);
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
@@ -367,16 +401,59 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void initSpinnerArray() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.company_array, R.layout.custom_spinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerVillageCenter.setAdapter(adapter);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.company_array, R.layout.custom_spinner);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        binding.spinVillageCenter.setAdapter(adapter);
+
+        loadCenterList();
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
                 R.array.farmer_gategory_array, R.layout.custom_spinner);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerFarmerGategory.setAdapter(adapter1);
     }
+
+    private void loadCenterList() {
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getProcCenterList(PROCUREMENT_GET_CENTER);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String plantList;
+                    try {
+                        plantList = response.body().string();
+
+                        JSONArray jsonArray = new JSONArray(plantList);
+                        List<String> list = new ArrayList<>();
+                        list.add("Select");
+
+                        for (int i = 0; i<jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            String plantName = object.optString("sap_center_name");
+
+                            binding.spinVillageCenter.setPrompt(plantName);
+                            list.add(plantName);
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spinVillageCenter.setAdapter(adapter);
+                    } catch (IOException | JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
 
     @Override
     protected void onResume() {

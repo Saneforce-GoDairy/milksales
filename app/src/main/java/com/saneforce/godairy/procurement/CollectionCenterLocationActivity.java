@@ -1,7 +1,6 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_POST_COLL_CENTER_LOCATION;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +8,6 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,11 +15,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.Model_Class.PrimaryNoOrderList;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityColletionCenterLocationBinding;
@@ -38,8 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -100,7 +94,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
                         list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
-                            PlantModel plantModel = new PlantModel();
                             JSONObject object = jsonArray.getJSONObject(i);
                             String plantName = object.optString("Plant_Name");
 
@@ -108,8 +101,8 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
                             list.add(plantName);
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, list);
-                        adapter.setDropDownViewResource(R.layout.custom_spinner);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spinnerPlant.setAdapter(adapter);
                     } catch (IOException | JSONException e) {
                         throw new RuntimeException(e);
@@ -124,17 +117,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         });
     }
 
-    public class PlantModel {
-        private String Plant_Name;
-
-        public String getPlant_Name() {
-            return Plant_Name;
-        }
-
-        public void setPlant_Name(String plant_Name) {
-            Plant_Name = plant_Name;
-        }
-    }
 
     private void onClick() {
 
@@ -234,51 +216,10 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
     private void saveNow() {
 
-         String mActiveFlag = "1";
-
+        String mActiveFlag = "1";
         String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
         String mTimeDate  = mDate +" "+mTime;
-//
-//
-//        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
-//
-//        Call<ResponseBody> call = apiInterface.submitProcCollectionCenterLo(PROCUREMENT_POST_COLL_CENTER_LOCATION,
-//                                                                            mCompanyName,
-//                                                                            mPlant,
-//                                                                            mSapCenterCode,
-//                                                                            mSapCenterName,
-//                                                                            mCenterAddress,
-//                                                                            mPotentialLpd,
-//                                                                            mNoOfFarmersEnrolled,
-//                                                                            mCompetitorLpdSinner1,
-//                                                                            mCompetitorLpdEdText1,
-//                                                                            mActiveFlag,
-//                                                                            mTimeDate);
-//
-//        call.enqueue(new Callback<>() {
-//            @Override
-//            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-//                if (response.isSuccessful()) {
-//                    String res;
-//
-//                    try {
-//                        res = response.body().string();
-//
-//                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-//                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-        String dir = getExternalFilesDir("/").getPath() + "/" + ".skyblue/";
 
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
         serviceIntent.putExtra("company", mCompanyName);
@@ -292,6 +233,7 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         serviceIntent.putExtra("competitor_lpd1", mCompetitorLpdEdText1);
         serviceIntent.putExtra("active_flag", mActiveFlag);
         serviceIntent.putExtra("time_date", mTimeDate);
+        serviceIntent.putExtra("upload_service_id", "1");
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 

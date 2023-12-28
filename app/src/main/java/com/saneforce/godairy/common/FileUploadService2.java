@@ -1,6 +1,7 @@
 package com.saneforce.godairy.common;
 
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_POST_COLL_CENTER_LOCATION;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_FARMER_CREATION;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -9,7 +10,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -50,6 +49,11 @@ public class FileUploadService2 extends Service {
     Context context = this;
     Notification notification;
 
+    // upload date
+    String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+    String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+    String mTimeDate  = mDate +" "+mTime;
+
     @Override
     public void onCreate() {
         createNotificationChannel();
@@ -59,6 +63,133 @@ public class FileUploadService2 extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
      // do heavy work on background thread
+
+        String service_id = intent.getStringExtra("upload_service_id");
+
+        if (service_id != null){
+            switch (Integer.parseInt(service_id)){
+                case 1:
+                    procCollectionCenter(intent);
+                    break;
+
+                case 2:
+                    procFarmerCreation(intent);
+                    break;
+
+                default:
+                    Toast.makeText(context, "service id is empty", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+        }else {
+          //  Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
+            Intent Intent = new Intent();
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , Intent, PendingIntent.FLAG_IMMUTABLE);
+
+            notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setOnlyAlertOnce(true)
+                    .setContentTitle("File uploading error")
+                    .setContentText("Service id is missing")
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentIntent(pendingIntent)
+                    .build();
+
+            startForeground(1, notification);
+            Toast.makeText(context, "Service id is empty", Toast.LENGTH_SHORT).show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    stopForeground(true);
+                }
+            }, 5000);
+        }
+
+        // stopself
+        return START_NOT_STICKY;
+    }
+
+    private void procFarmerCreation(Intent intent) {
+
+        String mCenter = intent.getStringExtra("center");
+        String mFarmerGategory = intent.getStringExtra("farmer_gategory");
+        String mFarmerName = intent.getStringExtra("farmer_name");
+        String mFarmerAddress = intent.getStringExtra("farmer_address");
+        String mPhoneNumber = intent.getStringExtra("phone_number");
+        String mPinCode = intent.getStringExtra("pin_code");
+        String mBuffaloTotal = intent.getStringExtra("buffalo_total");
+        String mCowTotal = intent.getStringExtra("cow_total");
+        String mCowMilkAvailable = intent.getStringExtra("cow_available_ltrs");
+        String mBuffaloMilkAvailable = intent.getStringExtra("buffalo_available_ltrs");
+        String mMilkSupplyCompany = intent.getStringExtra("milk_supply_company");
+        String mInterestedSupply = intent.getStringExtra("interested_supply");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+        Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+        File file_image = new File(dir, "FAMC_123" + ".jpg");
+
+        ProgressRequestBody progressRequestBody = new ProgressRequestBody(file_image);
+        MultipartBody.Part thumbnailPart = MultipartBody.Part.createFormData("image",file_image.getName(),progressRequestBody);
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcFarmerCreation(
+                PROCUREMENT_SUBMIT_FARMER_CREATION,
+                mCenter,
+                mFarmerGategory,
+                mFarmerName,
+                mFarmerAddress,
+                mPhoneNumber,
+                mPinCode,
+                mCowTotal,
+                mBuffaloTotal,
+                mCowMilkAvailable,
+                mBuffaloMilkAvailable,
+                mMilkSupplyCompany,
+                mInterestedSupply,
+                mActiveFlag,
+                mTimeDate,
+                thumbnailPart);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void procCollectionCenter(Intent intent) {
         String mCompany = intent.getStringExtra("company");
         String mPlant = intent.getStringExtra("plant");
         String mCenterCode = intent.getStringExtra("center_code");
@@ -83,11 +214,6 @@ public class FileUploadService2 extends Service {
 
         startForeground(1, notification);
 
-        // upload date
-        String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-        String mTimeDate  = mDate +" "+mTime;
-
         String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
         File file_image = new File(dir, "CC_123" + ".jpg");
 
@@ -96,7 +222,7 @@ public class FileUploadService2 extends Service {
 
         ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
 
-        Call<ResponseBody> call = apiInterface.submitProcCollectionCenterLo(PROCUREMENT_POST_COLL_CENTER_LOCATION,
+        Call<ResponseBody> call = apiInterface.submitProcCollectionCenterLo(PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION,
                 mCompany,
                 mPlant,
                 mCenterCode,
@@ -132,8 +258,6 @@ public class FileUploadService2 extends Service {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        // stopself
-        return START_NOT_STICKY;
     }
 
 
