@@ -1,38 +1,33 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_CENTER;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityFarmerCreationBinding;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +39,7 @@ public class FarmerCreationActivity extends AppCompatActivity {
     private String mCenter, mFarmerGategory, mFarmerName, mAddress, mPhoneNumber, mPinCode, mNoOfAnimalsCow, mNoOfAnimalsBuffalo, mMilkAvailabilityCowLtrs;
     private String mMilkAvailabilityBuffaloLtrs, mMilkSupplyCompany = "", mInterestedForSupply = "";
     private Bitmap bitmapFarmerImage;
-    private File fileFarmerImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,159 +98,124 @@ public class FarmerCreationActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.msHatsun.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Hatsun", Toast.LENGTH_SHORT).show();
-                mMilkSupplyCompany = "Hatsun";
+        binding.msHatsun.setOnClickListener(v -> {
+            Toast.makeText(context, "Hatsun", Toast.LENGTH_SHORT).show();
+            mMilkSupplyCompany = "Hatsun";
 
-                binding.msDolda.setChecked(false);
-                binding.msJersey.setChecked(false);
-                binding.msHeritage.setChecked(false);
-                binding.msCooperative.setChecked(false);
-                binding.msMmda.setChecked(false);
-                binding.msSka.setChecked(false);
-                binding.msVijaya.setChecked(false);
-            }
+            binding.msDolda.setChecked(false);
+            binding.msJersey.setChecked(false);
+            binding.msHeritage.setChecked(false);
+            binding.msCooperative.setChecked(false);
+            binding.msMmda.setChecked(false);
+            binding.msSka.setChecked(false);
+            binding.msVijaya.setChecked(false);
         });
 
-        binding.msDolda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Dolda", Toast.LENGTH_SHORT).show();
-                mMilkSupplyCompany = "Dolda";
+        binding.msDolda.setOnClickListener(v -> {
+            Toast.makeText(context, "Dolda", Toast.LENGTH_SHORT).show();
+            mMilkSupplyCompany = "Dolda";
 
-                binding.msHatsun.setChecked(false);
-                binding.msJersey.setChecked(false);
-                binding.msHeritage.setChecked(false);
-                binding.msCooperative.setChecked(false);
-                binding.msMmda.setChecked(false);
-                binding.msSka.setChecked(false);
-                binding.msVijaya.setChecked(false);
-            }
+            binding.msHatsun.setChecked(false);
+            binding.msJersey.setChecked(false);
+            binding.msHeritage.setChecked(false);
+            binding.msCooperative.setChecked(false);
+            binding.msMmda.setChecked(false);
+            binding.msSka.setChecked(false);
+            binding.msVijaya.setChecked(false);
         });
 
-        binding.msJersey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Jersey", Toast.LENGTH_SHORT).show();
-                mMilkSupplyCompany = "Jersey";
+        binding.msJersey.setOnClickListener(v -> {
+            Toast.makeText(context, "Jersey", Toast.LENGTH_SHORT).show();
+            mMilkSupplyCompany = "Jersey";
 
-                binding.msHatsun.setChecked(false);
-                binding.msDolda.setChecked(false);
-                binding.msHeritage.setChecked(false);
-                binding.msCooperative.setChecked(false);
-                binding.msMmda.setChecked(false);
-                binding.msSka.setChecked(false);
-                binding.msVijaya.setChecked(false);
-            }
+            binding.msHatsun.setChecked(false);
+            binding.msDolda.setChecked(false);
+            binding.msHeritage.setChecked(false);
+            binding.msCooperative.setChecked(false);
+            binding.msMmda.setChecked(false);
+            binding.msSka.setChecked(false);
+            binding.msVijaya.setChecked(false);
         });
 
-        binding.msHeritage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Heritage", Toast.LENGTH_SHORT).show();
-                mMilkSupplyCompany = "Heritage";
+        binding.msHeritage.setOnClickListener(v -> {
+            Toast.makeText(context, "Heritage", Toast.LENGTH_SHORT).show();
+            mMilkSupplyCompany = "Heritage";
 
-                binding.msHatsun.setChecked(false);
-                binding.msDolda.setChecked(false);
-                binding.msJersey.setChecked(false);
-                binding.msCooperative.setChecked(false);
-                binding.msMmda.setChecked(false);
-                binding.msSka.setChecked(false);
-                binding.msVijaya.setChecked(false);
-            }
+            binding.msHatsun.setChecked(false);
+            binding.msDolda.setChecked(false);
+            binding.msJersey.setChecked(false);
+            binding.msCooperative.setChecked(false);
+            binding.msMmda.setChecked(false);
+            binding.msSka.setChecked(false);
+            binding.msVijaya.setChecked(false);
         });
 
-        binding.msCooperative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Cooperative", Toast.LENGTH_SHORT).show();
-                mMilkSupplyCompany = "Cooperative";
+        binding.msCooperative.setOnClickListener(v -> {
+            Toast.makeText(context, "Cooperative", Toast.LENGTH_SHORT).show();
+            mMilkSupplyCompany = "Cooperative";
 
-                binding.msHatsun.setChecked(false);
-                binding.msDolda.setChecked(false);
-                binding.msJersey.setChecked(false);
-                binding.msHeritage.setChecked(false);
-                binding.msMmda.setChecked(false);
-                binding.msSka.setChecked(false);
-                binding.msVijaya.setChecked(false);
-            }
+            binding.msHatsun.setChecked(false);
+            binding.msDolda.setChecked(false);
+            binding.msJersey.setChecked(false);
+            binding.msHeritage.setChecked(false);
+            binding.msMmda.setChecked(false);
+            binding.msSka.setChecked(false);
+            binding.msVijaya.setChecked(false);
         });
 
-        binding.msMmda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "MMDA", Toast.LENGTH_SHORT).show();
-                mMilkSupplyCompany = "MMDA";
+        binding.msMmda.setOnClickListener(v -> {
+            Toast.makeText(context, "MMDA", Toast.LENGTH_SHORT).show();
+            mMilkSupplyCompany = "MMDA";
 
-                binding.msHatsun.setChecked(false);
-                binding.msDolda.setChecked(false);
-                binding.msJersey.setChecked(false);
-                binding.msHeritage.setChecked(false);
-                binding.msCooperative.setChecked(false);
-                binding.msSka.setChecked(false);
-                binding.msVijaya.setChecked(false);
-            }
+            binding.msHatsun.setChecked(false);
+            binding.msDolda.setChecked(false);
+            binding.msJersey.setChecked(false);
+            binding.msHeritage.setChecked(false);
+            binding.msCooperative.setChecked(false);
+            binding.msSka.setChecked(false);
+            binding.msVijaya.setChecked(false);
         });
 
-        binding.msSka.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "SKA", Toast.LENGTH_SHORT).show();
-                mMilkSupplyCompany = "SKA";
+        binding.msSka.setOnClickListener(v -> {
+            Toast.makeText(context, "SKA", Toast.LENGTH_SHORT).show();
+            mMilkSupplyCompany = "SKA";
 
-                binding.msHatsun.setChecked(false);
-                binding.msDolda.setChecked(false);
-                binding.msJersey.setChecked(false);
-                binding.msHeritage.setChecked(false);
-                binding.msCooperative.setChecked(false);
-                binding.msMmda.setChecked(false);
-                binding.msVijaya.setChecked(false);
-            }
+            binding.msHatsun.setChecked(false);
+            binding.msDolda.setChecked(false);
+            binding.msJersey.setChecked(false);
+            binding.msHeritage.setChecked(false);
+            binding.msCooperative.setChecked(false);
+            binding.msMmda.setChecked(false);
+            binding.msVijaya.setChecked(false);
         });
 
-        binding.msVijaya.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Vijaya", Toast.LENGTH_SHORT).show();
-                mMilkSupplyCompany = "Vijaya";
+        binding.msVijaya.setOnClickListener(v -> {
+            Toast.makeText(context, "Vijaya", Toast.LENGTH_SHORT).show();
+            mMilkSupplyCompany = "Vijaya";
 
-                binding.msHatsun.setChecked(false);
-                binding.msDolda.setChecked(false);
-                binding.msJersey.setChecked(false);
-                binding.msHeritage.setChecked(false);
-                binding.msCooperative.setChecked(false);
-                binding.msMmda.setChecked(false);
-                binding.msSka.setChecked(false);
-            }
+            binding.msHatsun.setChecked(false);
+            binding.msDolda.setChecked(false);
+            binding.msJersey.setChecked(false);
+            binding.msHeritage.setChecked(false);
+            binding.msCooperative.setChecked(false);
+            binding.msMmda.setChecked(false);
+            binding.msSka.setChecked(false);
         });
 
-        binding.interestedYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show();
-
-                binding.interestedNo.setChecked(false);
-
-                mInterestedForSupply = "Yes";
-            }
+        binding.interestedYes.setOnClickListener(v -> {
+            Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show();
+            binding.interestedNo.setChecked(false);
+            mInterestedForSupply = "Yes";
         });
 
-        binding.interestedNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "No", Toast.LENGTH_SHORT).show();
-
-                binding.interestedYes.setChecked(false);
-
-                mInterestedForSupply = "No";
-            }
+        binding.interestedNo.setOnClickListener(v -> {
+            Toast.makeText(context, "No", Toast.LENGTH_SHORT).show();
+            binding.interestedYes.setChecked(false);
+            mInterestedForSupply = "No";
         });
 
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
-                Toast.makeText(context, "valid", Toast.LENGTH_SHORT).show();
                 saveNow();
             }
         });
@@ -283,8 +243,127 @@ public class FarmerCreationActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-
         binding.back.setOnClickListener(view -> finish());
+
+        binding.edFarmerName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edPhoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edPinCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edNoOfAnimalsCow.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edNoOfAnimalsBuffalo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edMilkAvailabilityCow.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edMilkAvailabilityBuffalo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
     }
 
@@ -305,21 +384,20 @@ public class FarmerCreationActivity extends AppCompatActivity {
         serviceIntent.putExtra("active_flag", "1");
         serviceIntent.putExtra("upload_service_id", "2");
         ContextCompat.startForegroundService(this, serviceIntent);
+
+        finish();
+        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
     }
 
     private boolean validateInputs() {
         mCenter = binding.spinVillageCenter.getSelectedItem().toString();
         mFarmerGategory = binding.spinnerFarmerGategory.getSelectedItem().toString();
-
         mFarmerName = binding.edFarmerName.getText().toString().trim();
         mAddress = binding.edAddress.getText().toString().trim();
-
         mPhoneNumber = binding.edPhoneNumber.getText().toString().trim();
         mPinCode = binding.edPinCode.getText().toString().trim();
-
         mNoOfAnimalsCow = binding.edNoOfAnimalsCow.getText().toString().trim();
         mNoOfAnimalsBuffalo = binding.edNoOfAnimalsBuffalo.getText().toString().trim();
-
         mMilkAvailabilityCowLtrs = binding.edMilkAvailabilityCow.getText().toString().trim();
         mMilkAvailabilityBuffaloLtrs = binding.edMilkAvailabilityBuffalo.getText().toString().trim();
 
@@ -363,6 +441,7 @@ public class FarmerCreationActivity extends AppCompatActivity {
         }
         if (bitmapFarmerImage == null){
             binding.txtFarmerImageNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mNoOfAnimalsCow)){
@@ -401,11 +480,6 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void initSpinnerArray() {
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.company_array, R.layout.custom_spinner);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        binding.spinVillageCenter.setAdapter(adapter);
-
         loadCenterList();
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
@@ -418,7 +492,7 @@ public class FarmerCreationActivity extends AppCompatActivity {
         ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcCenterList(PROCUREMENT_GET_CENTER);
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -430,7 +504,7 @@ public class FarmerCreationActivity extends AppCompatActivity {
                         List<String> list = new ArrayList<>();
                         list.add("Select");
 
-                        for (int i = 0; i<jsonArray.length(); i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             String plantName = object.optString("sap_center_name");
 
@@ -449,22 +523,21 @@ public class FarmerCreationActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-        fileFarmerImage = new File(getExternalFilesDir(null), "/procurement/" + "FAMC_123.jpg");
+        File fileFarmerImage = new File(getExternalFilesDir(null), "/procurement/" + "FAMC_123.jpg");
         bitmapFarmerImage = BitmapFactory.decodeFile(fileFarmerImage.getAbsolutePath());
-
         if (bitmapFarmerImage != null){
             binding.imageViewFarmerImageLayout.setVisibility(View.VISIBLE);
             binding.imageFarmerImage.setImageBitmap(bitmapFarmerImage);
             binding.txtFarmerImageNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
     }
 }

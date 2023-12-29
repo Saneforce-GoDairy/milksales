@@ -29,7 +29,7 @@
             android:layout_toEndOf="@id/back"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="Farmer creation"
+            android:text="@string/farmer_creation"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="1) Select village / Center"
+                android:text="@string/_1_select_village_center"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="2) Select Farmer gategory"
+                android:text="@string/_2_select_farmer_gategory"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -139,7 +139,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="3) Farmer name"
+            android:text="@string/_3_farmer_name"
             android:textColor="@color/black" />
 
         <EditText
@@ -161,7 +161,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="4) Address"
+            android:text="@string/_4_address"
             android:textColor="@color/black" />
 
         <EditText
@@ -183,7 +183,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="5) Phone number"
+            android:text="@string/_5_phone_number"
             android:textColor="@color/black" />
 
         <EditText
@@ -205,7 +205,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="6) Pin code"
+            android:text="@string/_6_pin_code"
             android:textColor="@color/black" />
 
         <EditText
@@ -226,7 +226,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
-            android:text="7, Farmer image"
+            android:text="@string/_7_farmer_image"
             android:fontFamily="@font/ubuntu_medium"
             android:textColor="@color/black" />
         <RelativeLayout
@@ -253,7 +253,8 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/apple_camera" />
+                android:src="@drawable/apple_camera"
+                android:contentDescription="@string/farmer_image" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/image_view_farmer_image_layout"
@@ -284,7 +285,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="8) No of animals (Cow)"
+            android:text="@string/_8_no_of_animals_cow"
             android:textColor="@color/black" />
 
         <EditText
@@ -306,7 +307,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="9) No of animals (Buffalo)"
+            android:text="@string/_9_no_of_animals_buffalo"
             android:textColor="@color/black" />
 
         <EditText
@@ -328,7 +329,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="10) Milk availability in ltr (Cow)"
+            android:text="@string/_10_milk_availability_in_ltr_cow"
             android:textColor="@color/black" />
 
         <EditText
@@ -350,7 +351,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="11) Milk availability in ltr (Buffalo)"
+            android:text="@string/_11_milk_availability_in_ltr_buffalo"
             android:textColor="@color/black" />
 
         <EditText
@@ -372,7 +373,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="12) Milk Supply Company"
+            android:text="@string/_12_milk_supply_company"
             android:textColor="@color/black" />
 
         <LinearLayout
@@ -386,7 +387,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
-                android:text="Hatsun" />
+                android:text="@string/hatsun" />
 
             <CheckBox
                 android:id="@+id/ms_dolda"
@@ -394,7 +395,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/ubuntu"
-                android:text="Dolda" />
+                android:text="@string/dolda" />
 
             <CheckBox
                 android:id="@+id/ms_jersey"
@@ -402,7 +403,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/ubuntu"
-                android:text="Jersey" />
+                android:text="@string/jersey" />
         </LinearLayout>
 
         <LinearLayout
@@ -416,14 +417,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
-                android:text="Heritage" />
+                android:text="@string/heritage" />
 
             <CheckBox
                 android:id="@+id/ms_cooperative"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
-                android:text="Cooperative" />
+                android:text="@string/cooperative" />
 
         </LinearLayout>
 
@@ -438,14 +439,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
-                android:text="MMDA" />
+                android:text="@string/mmda" />
 
             <CheckBox
                 android:id="@+id/ms_ska"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
-                android:text="SKA" />
+                android:text="@string/ska" />
 
         </LinearLayout>
 
@@ -454,7 +455,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ubuntu"
-            android:text="Vijaya" />
+            android:text="@string/vijaya" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -462,7 +463,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/ubuntu_medium"
             android:textStyle="bold"
-            android:text="13) Interested for Supply"
+            android:text="@string/_13_interested_for_supply"
             android:textColor="@color/black" />
 
         <LinearLayout
@@ -475,7 +476,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu"
-                android:text="Yes" />
+                android:text="@string/yes" />
 
             <RadioButton
                 android:id="@+id/interested_no"
@@ -483,7 +484,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/ubuntu"
-                android:text="No" />
+                android:text="@string/no" />
 
         </LinearLayout>
 
@@ -501,7 +502,7 @@
                 android:layout_alignParentBottom="true"
                 android:textSize="10sp"
                 android:fontFamily="@font/ubuntu"
-                android:text="Error Empty field found"
+                android:text="@string/error_empty_field_found"
                 android:textStyle="bold"
                 android:textColor="#ff0130"
                 tools:ignore="SmallSp"
@@ -520,7 +521,8 @@
             android:fontFamily="@font/ubuntu"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true" />
+            android:focusable="true"
+            tools:ignore="UnusedAttribute" />
     </LinearLayout>
 
     </ScrollView>

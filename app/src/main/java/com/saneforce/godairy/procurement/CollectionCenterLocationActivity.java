@@ -5,27 +5,27 @@ import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityColletionCenterLocationBinding;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,11 +41,9 @@ import retrofit2.Response;
 public class CollectionCenterLocationActivity extends AppCompatActivity {
     private ActivityColletionCenterLocationBinding binding;
     private String mCompanyName, mPlant, mSapCenterCode, mSapCenterName, mCenterAddress, mPotentialLpd;
-    private String mNoOfFarmersEnrolled, mCompetitorLpdSinner1, mCompetitorLpdSinner2, mCompetitorLpdSinner3, mCompetitorLpdSinner4, mCompetitorLpdSinner5;
-    private String mCompetitorLpdEdText1, mCompetitorLpdEdText2, mCompetitorLpdEdText3, mCompetitorLpdEdText4, mCompetitorLpdEdText5;
+    private String mNoOfFarmersEnrolled, mCompetitorLpdSinner1, mCompetitorLpdEdText1;
     private final Context context = this;
     private Bitmap bitmapCollectCenter;
-    private File fileCollectCenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +56,12 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
     }
 
     private void initSpinnerArray() {
+        loadPlant();
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.company_array, R.layout.custom_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
-
-        loadPlant();
-
-//        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-//                R.array.plant_array, R.layout.custom_spinner);
-//        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        binding.spinnerPlant.setAdapter(adapter2);
 
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
                 R.array.competitor_array, R.layout.custom_spinner);
@@ -119,7 +111,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
 
     private void onClick() {
-
         binding.spinnerCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -199,7 +190,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
-              //  Toast.makeText(context, "valid", Toast.LENGTH_SHORT).show();
                 saveNow();
             }
         });
@@ -212,15 +202,100 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             intent.putExtra("event_name", "Collection Center");
             startActivity(intent);
         });
+
+        binding.edSapCenterCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edSapCenterName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edSapAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edPotentialLpd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edEnrolled.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edCompetitorLpd1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void saveNow() {
-
         String mActiveFlag = "1";
-        String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-        String mTimeDate  = mDate +" "+mTime;
-
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
         serviceIntent.putExtra("company", mCompanyName);
         serviceIntent.putExtra("plant", mPlant);
@@ -232,9 +307,11 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         serviceIntent.putExtra("competitor_lpd", mCompetitorLpdSinner1);
         serviceIntent.putExtra("competitor_lpd1", mCompetitorLpdEdText1);
         serviceIntent.putExtra("active_flag", mActiveFlag);
-        serviceIntent.putExtra("time_date", mTimeDate);
         serviceIntent.putExtra("upload_service_id", "1");
         ContextCompat.startForegroundService(this, serviceIntent);
+
+        finish();
+        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
     }
 
     private boolean validateInputs() {
@@ -245,7 +322,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         mCenterAddress = binding.edSapAddress.getText().toString().trim();
         mPotentialLpd = binding.edPotentialLpd.getText().toString().trim();
         mNoOfFarmersEnrolled = binding.edEnrolled.getText().toString().trim();
-
         mCompetitorLpdSinner1 = binding.spinnerCompetitorLpd1.getSelectedItem().toString();
         mCompetitorLpdEdText1 = binding.edCompetitorLpd1.getText().toString().trim();
 
@@ -263,11 +339,11 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-//        if (bitmapCollectCenter == null){
-//            binding.txtCollectCenterNotValid.setVisibility(View.VISIBLE);
-//            binding.txtErrorFound.setVisibility(View.VISIBLE);
-//            return false;
-//        }
+        if (bitmapCollectCenter == null){
+            binding.txtCollectCenterNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
+            return false;
+        }
         if ("".equals(mSapCenterCode)){
             binding.edSapCenterCode.setError("Enter Sap Center Code");
             binding.edSapCenterCode.requestFocus();
@@ -305,22 +381,19 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-//        if ("".equals(mCompetitorLpdEdText1)){
-//            binding.edCompetitorLpd1.setError("Enter Competitor LPD1");
-//            binding.edCompetitorLpd1.requestFocus();
-//            binding.txtErrorFound.setVisibility(View.VISIBLE);
-//            return false;
-//        }
-
+        if ("".equals(mCompetitorLpdEdText1)){
+            binding.edCompetitorLpd1.setError("Enter Competitor LPD1");
+            binding.edCompetitorLpd1.requestFocus();
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
+            return false;
+        }
         return true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // Farmers meeting
-        fileCollectCenter = new File(getExternalFilesDir(null), "/procurement/" + "CC_123.jpg");
+        File fileCollectCenter = new File(getExternalFilesDir(null), "/procurement/" + "CC_123.jpg");
         bitmapCollectCenter = BitmapFactory.decodeFile(fileCollectCenter.getAbsolutePath());
 
         if (bitmapCollectCenter != null){

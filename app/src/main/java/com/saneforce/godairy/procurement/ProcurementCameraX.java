@@ -75,6 +75,15 @@ public class ProcurementCameraX extends AppCompatActivity {
     }
 
     private void onClick() {
+        binding.buttonSwitchCam.setOnClickListener(v -> {
+            if (cameraFacing == CameraSelector.LENS_FACING_BACK) {
+                cameraFacing = CameraSelector.LENS_FACING_FRONT;
+            } else {
+                cameraFacing = CameraSelector.LENS_FACING_BACK;
+            }
+            startCamera(cameraFacing);
+        });
+
         binding.cameraxRightControls.setOnClickListener(v -> {
             startCamera(cameraFacing);
             binding.imageView.setVisibility(View.GONE);

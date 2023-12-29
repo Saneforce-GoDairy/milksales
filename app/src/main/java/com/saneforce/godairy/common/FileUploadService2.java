@@ -15,23 +15,19 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.procurement.CollectionCenterLocationActivity;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -111,7 +107,6 @@ public class FileUploadService2 extends Service {
     }
 
     private void procFarmerCreation(Intent intent) {
-
         String mCenter = intent.getStringExtra("center");
         String mFarmerGategory = intent.getStringExtra("farmer_gategory");
         String mFarmerName = intent.getStringExtra("farmer_name");
@@ -173,7 +168,7 @@ public class FileUploadService2 extends Service {
                     stopForeground(true);
                     try {
                         res = response.body().string();
-                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Farmer creation form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -245,7 +240,7 @@ public class FileUploadService2 extends Service {
                     stopForeground(true);
                     try {
                         res = response.body().string();
-                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Collection form submitted success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
