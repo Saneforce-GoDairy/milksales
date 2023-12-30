@@ -1,5 +1,6 @@
 package com.saneforce.godairy.common;
 
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGRONOMIST;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_FARMER_CREATION;
 
@@ -72,6 +73,10 @@ public class FileUploadService2 extends Service {
                     procFarmerCreation(intent);
                     break;
 
+                case 3:
+                    procAgronomist(intent);
+                    break;
+
                 default:
                     Toast.makeText(context, "service id is empty", Toast.LENGTH_SHORT).show();
                     break;
@@ -104,6 +109,94 @@ public class FileUploadService2 extends Service {
 
         // stopself
         return START_NOT_STICKY;
+    }
+
+    private void procAgronomist(Intent intent) {
+        String mCompany = intent.getStringExtra("company");
+        String mPlant = intent.getStringExtra("plant");
+        String mCenterName = intent.getStringExtra("center_name");
+
+        String mFarmerName = intent.getStringExtra("farmer_name");
+        String mProductType = intent.getStringExtra("product_type");
+        String mTeatDip = intent.getStringExtra("teat_dip");
+        String mServiceType = intent.getStringExtra("service_type");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        // Farmer meeting image
+        File file_image_farmer_meeting = new File(dir, "FAR_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyFarmerMeeting = new ProgressRequestBody(file_image_farmer_meeting);
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_farmer_meeting.getName(),progressRequestBodyFarmerMeeting);
+
+        // CSR image
+        File file_image_csr = new File(dir, "CSR_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyCSR = new ProgressRequestBody(file_image_csr);
+        MultipartBody.Part imagePart2 = MultipartBody.Part.createFormData("image2",file_image_csr.getName(),progressRequestBodyCSR);
+
+        // Fodder image
+        File file_image_fodder = new File(dir, "FDA_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyFodder = new ProgressRequestBody(file_image_fodder);
+        MultipartBody.Part imagePart3 = MultipartBody.Part.createFormData("image3",file_image_fodder.getName(),progressRequestBodyFodder);
+
+        String mFodderDevAcres = intent.getStringExtra("fodder_dev_acres");
+
+
+        Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+
+        Call<ResponseBody> call = apiInterface.submitProcAgronomist(
+                PROCUREMENT_SUBMIT_AGRONOMIST,
+                mCompany,
+                mPlant,
+                mCenterName,
+                mFarmerName,
+                mProductType,
+                mTeatDip,
+                mServiceType,
+                imagePart1,
+                imagePart2,
+                mFodderDevAcres,
+                imagePart3,
+                mActiveFlag,
+                mTimeDate);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "Farmer agronomist form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void procFarmerCreation(Intent intent) {

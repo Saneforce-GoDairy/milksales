@@ -827,6 +827,23 @@ public interface ApiInterface {
                                                     @Query("created_dt") String created_dt,
                                                     @Part MultipartBody.Part image);
 
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcAgronomist(@Query("axn") String axn,
+                                                @Query("company") String company,
+                                                @Query("plant") String plant,
+                                                @Query("center_name") String center_name,
+                                                @Query("farmer_name") String farmer_name,
+                                                @Query("product_type") String product_type,
+                                                @Query("teat_dip") String teat_dip,
+                                                @Query("service_type") String service_type,
+                                                @Part MultipartBody.Part image1,
+                                                @Part MultipartBody.Part image2,
+                                                @Query("fodder_dev_acres") String fodder_dev_acres,
+                                                @Part MultipartBody.Part image3,
+                                                @Query("active_flag") String active_flag,
+                                                @Query("created_dt") String created_dt);
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

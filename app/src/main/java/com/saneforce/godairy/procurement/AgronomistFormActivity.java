@@ -1,8 +1,6 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
-
-import androidx.appcompat.app.AppCompatActivity;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -14,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -25,32 +22,39 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityAgronomistFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AgronomistFormActivity extends AppCompatActivity {
     private ActivityAgronomistFormBinding binding;
     private String mCompanyName, mPlant, mCenterName, mFarmerCodeName, mTypeOfProduct, mTeatTipCup, mTypeOfService, mFodderDev;
-    private String mNoOfFarmersEnrolled, mNoOfFarmersInducted, mFarmersMeetingBase64Image;
+    private String mNoOfFarmersEnrolled, mNoOfFarmersInducted;
     private final Context context = this;
     private File fileFormersMeeting, fileCSRActivity, fileFodderDevAcres;
     private Bitmap bitmapFormersMeeting, bitmapCSRActivity , bitmapFodderDevAcres;
-    private DatabaseManager databaseManager;
-    SharedPreferences UserDetails;
-    public static final String MY_PREFERENCES = "MyPrefs";
-    private Dialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,26 +62,11 @@ public class AgronomistFormActivity extends AppCompatActivity {
         binding = ActivityAgronomistFormBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        databaseManager = new DatabaseManager(this);
+        DatabaseManager databaseManager = new DatabaseManager(this);
         databaseManager.open();
 
         initSpinnerArray();
         onClick();
-        initProgressDialog();
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void initProgressDialog() {
-        progressDialog = new Dialog(context);
-        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressDialog.setContentView(R.layout.model_dialog_custom_progress);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        progressDialog.setCancelable(false);
-
-        TextView textView = progressDialog.findViewById(R.id.message1);
-        textView.setEnabled(true);
-        textView.setText("Please wait. form saving");
-        // customProgressDialog.show();
     }
 
     private void onClick() {
@@ -301,10 +290,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
 
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
-                R.array.plant_array, R.layout.custom_spinner);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter1);
+        loadPlant();
 
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
                 R.array.type_of_product_array, R.layout.custom_spinner);
@@ -315,6 +301,46 @@ public class AgronomistFormActivity extends AppCompatActivity {
                 R.array.typs_of_service_array, R.layout.custom_spinner);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTypeOfService.setAdapter(adapter3);
+    }
+
+    private void loadPlant() {
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String plantList;
+                    try {
+                        plantList = response.body().string();
+
+                        JSONArray jsonArray = new JSONArray(plantList);
+                        List<String> list = new ArrayList<>();
+                        list.add("Select");
+
+                        for (int i = 0; i<jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            String plantName = object.optString("Plant_Name");
+
+                            binding.spinnerPlant.setPrompt(plantName);
+                            list.add(plantName);
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spinnerPlant.setAdapter(adapter);
+                    } catch (IOException | JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
     private boolean validateInputs() {
@@ -377,10 +403,12 @@ public class AgronomistFormActivity extends AppCompatActivity {
         }
         if (bitmapFormersMeeting == null){
             binding.txtFarmersImageNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if (bitmapCSRActivity == null){
             binding.txtCsrImageNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mFodderDev)){
@@ -391,6 +419,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
         }
         if (bitmapFodderDevAcres == null){
             binding.txtFodderImageNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mNoOfFarmersEnrolled)){
@@ -409,93 +438,26 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
-//        UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
-//        String mSFCode = "DEMO ID";
-//        String mSFName = "DEMO_NAME";
-//
-//            String mFarmersMeetingBase64Image =  bitmapToBase64_1(bitmapFormersMeeting);
-//            String mCSRActivityBase64Image =  bitmapToBase64_2(bitmapCSRActivity);
-//            String mFodderDevAcresBase64Image =  bitmapToBase64_3(bitmapFodderDevAcres);
-//
-//            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-//            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-//            String mTimeDate  = mDate +" "+mTime;
-//
-//        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
-//        Call<ResponseBody> call = apiInterface.agronomistSubmit("agro",
-//                                  mSFCode,
-//                                  mCompanyName,
-//                                  mPlant,
-//                                  mCenterName,
-//                                  mFarmerCodeName,
-//                                  mTypeOfProduct,
-//                                  mTeatTipCup,
-//                                  mTypeOfService,
-//                                  mee)
+        String mActiveFlag = "1";
+        Intent serviceIntent = new Intent(this, FileUploadService2.class);
+        serviceIntent.putExtra("company", mCompanyName);
+        serviceIntent.putExtra("plant", mPlant);
+        serviceIntent.putExtra("center_name", mCenterName);
 
-//        new Thread(() -> {
-//            String mFarmersMeetingBase64Image =  bitmapToBase64_1(bitmapFormersMeeting);
-//            String mCSRActivityBase64Image =  bitmapToBase64_2(bitmapCSRActivity);
-//            String mFodderDevAcresBase64Image =  bitmapToBase64_3(bitmapFodderDevAcres);
-//
-//            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-//            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-//            String mTimeDate  = mDate +" "+mTime;
-//
-//            databaseManager.saveProcAgronomist(
-//                    mSFCode,
-//                    mSFName,
-//                    mCompanyName,
-//                    mPlant,
-//                    mCenterName,
-//                    mFarmerCodeName,
-//                    mTypeOfProduct,
-//                    mTeatTipCup,
-//                    mTypeOfService,
-//                    mFarmersMeetingBase64Image,
-//                    mCSRActivityBase64Image,
-//                    mFodderDev,
-//                    mFodderDevAcresBase64Image,
-//                    mNoOfFarmersEnrolled,
-//                    mNoOfFarmersInducted,
-//                    mTimeDate);
-//        }).start();
-//        progressDialog.show();
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                progressDialog.dismiss();
-//                Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-//                //startActivity(new Intent(context, ProcurementHome.class));
-//                Intent intent = new Intent(context, ProcurementHome.class);
-//                intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
-//                startActivity(intent);
-//                finish();
-//            }
-//        }, 10000);
-    }
+        serviceIntent.putExtra("farmer_name", mFarmerCodeName);
+        serviceIntent.putExtra("product_type", mTypeOfProduct);
+        serviceIntent.putExtra("teat_dip", mTeatTipCup);
+        serviceIntent.putExtra("service_type", mTypeOfService);
 
-    private String bitmapToBase64_1(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-    private String bitmapToBase64_2(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
+        serviceIntent.putExtra("fodder_dev_acres", mFodderDev);
 
 
-    private String bitmapToBase64_3(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        serviceIntent.putExtra("active_flag", mActiveFlag);
+        serviceIntent.putExtra("upload_service_id", "3");
+        ContextCompat.startForegroundService(this, serviceIntent);
+
+        finish();
+        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -518,16 +480,19 @@ public class AgronomistFormActivity extends AppCompatActivity {
         if (bitmapFormersMeeting != null){
             binding.imageViewFormersMeetingLayout.setVisibility(View.VISIBLE);
             binding.imageFarmersMeeting.setImageBitmap(bitmapFormersMeeting);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapCSRActivity != null){
             binding.imageViewCsrActivityLayout.setVisibility(View.VISIBLE);
             binding.imageCsrActivity.setImageBitmap(bitmapCSRActivity);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapFodderDevAcres != null){
             binding.imageViewFoderLayout.setVisibility(View.VISIBLE);
             binding.imageFoder.setImageBitmap(bitmapFodderDevAcres);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
     }
 }
