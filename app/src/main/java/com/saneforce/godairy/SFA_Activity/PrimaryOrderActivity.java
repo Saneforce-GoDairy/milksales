@@ -469,23 +469,22 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         newPayIntent.putExtra("signature_response", NTTDATAResHashKey);
         newPayIntent.putExtra("prodid", NTTDATAProdID);
         newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
+        newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
         newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
         newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-        newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
         newPayIntent.putExtra("amt", NTTDATAAmount);
         newPayIntent.putExtra("isLive", isLive);
         newPayIntent.putExtra("txnid", Common_Class.GetEkey());
         newPayIntent.putExtra("custFirstName", sharedCommonPref.getvalue(Constants.Distributor_name));
         newPayIntent.putExtra("customerMobileNo", sharedCommonPref.getvalue(Constants.Distributor_phone));
-        newPayIntent.putExtra("customerEmailID", "test@gmail.com");
+        newPayIntent.putExtra("customerEmailID", "ragusaneforce@gmail.com");
         newPayIntent.putExtra("txncurr", "INR");
         newPayIntent.putExtra("custacc", "100000036600");
-//        newPayIntent.putExtra("udf1", "udf1");
-//        newPayIntent.putExtra("udf2", "udf2");
-//        newPayIntent.putExtra("udf3", "udf3");
-//        newPayIntent.putExtra("udf4", "udf4");
-//        newPayIntent.putExtra("udf5", "udf5");
-//        newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
+        newPayIntent.putExtra("udf1", "");
+        newPayIntent.putExtra("udf2", "");
+        newPayIntent.putExtra("udf3", "");
+        newPayIntent.putExtra("udf4", "");
+        newPayIntent.putExtra("udf5", "");
         startActivityForResult(newPayIntent, 1);
     }
 
@@ -984,6 +983,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         Log.e("resultCode", "resultCode: " + resultCode);
         if (requestCode == 1) {
             try {
+                // Todo: nttdataTransaction
+                // Todo: generated JSON string
                 Log.e("nttdataTransaction", data.getExtras().getString("response"));
             } catch (Exception ignored) {}
             if (resultCode == 2) {
