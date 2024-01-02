@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".procurement.QualityFormActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:elevation="20dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/baseline_arrow_back_35" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/back"
+            android:fontFamily="@font/ubuntu_medium"
+            android:text="Quality Form"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="@string/select_company"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_company_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="Not valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="@string/select_plant"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_plant_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Not valid"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_plant"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="1, Mass Balance"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_mass_balance"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="2, Milk collection"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_milk_collection"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="3, Fat"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_img_fat_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+                <ImageView
+                    android:id="@+id/camera_fat"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/apple_camera" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_fat_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="5dp"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_fat"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"
+                        android:contentDescription="@string/todo" />
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="4, Snf"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_img_snf_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+                <ImageView
+                    android:id="@+id/camera_snf"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/apple_camera" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_snf_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="5dp"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_snf"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"
+                        android:contentDescription="@string/todo" />
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="5, MBRT"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_mbrt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="6, Rejection"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_rejection"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="7, Special cleaning"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_special_cleaning"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="8, Cleaning efficiency"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_efficiency"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:text="9, No of vehicles receieved"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="With hood"
+                android:textStyle="bold"
+                android:textColor="#2E2E2E" />
+
+            <EditText
+                android:id="@+id/ed_with_hood"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_img_with_hood_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+                <ImageView
+                    android:id="@+id/camera_with_hood"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/apple_camera" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_with_hood_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="5dp"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_with_hood"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"
+                        android:contentDescription="@string/todo" />
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Without hood"
+                android:textStyle="bold"
+                android:textColor="#2E2E2E" />
+
+            <EditText
+                android:id="@+id/ed_without_hood"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_img_without_hood_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+                <ImageView
+                    android:id="@+id/camera_without_hood"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/apple_camera" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_without_hood_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="5dp"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_without_hood"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"
+                        android:contentDescription="@string/todo" />
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="10) Records"
+                android:textStyle="bold"
+                android:textColor="#2E2E2E" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Chemicals"
+                android:textStyle="bold"
+                android:textColor="@color/grey" />
+
+            <EditText
+                android:id="@+id/ed_record_chemicals"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Stock"
+                android:textStyle="bold"
+                android:textColor="@color/grey" />
+
+            <EditText
+                android:id="@+id/ed_record_stock"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Milk"
+                android:textStyle="bold"
+                android:textColor="@color/grey" />
+
+            <EditText
+                android:id="@+id/ed_record_milk"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="11) Awareness Program"
+                android:textStyle="bold"
+                android:textColor="#2E2E2E" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/aws_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="General" />
+
+                <RadioButton
+                    android:id="@+id/aws_calibration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Calibration" />
+
+                <RadioButton
+                    android:id="@+id/aws_audit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Audit" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/aws_field_intelligence_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Field Intelligence report" />
+
+                <RadioButton
+                    android:id="@+id/aws_health_camp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Health camp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/aws_clean_milk_production"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Clean milk production" />
+
+                <RadioButton
+                    android:id="@+id/aws_training"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Training" />
+
+            </LinearLayout>
+
+            <RadioButton
+                android:id="@+id/aws_antibiotic_awareness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu"
+                android:text="Antibiotics Awareness" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_img_awarenes_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+                <ImageView
+                    android:id="@+id/camera_awarenes"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/apple_camera" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_awarenes_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="5dp"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_awarenes"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"
+                        android:contentDescription="@string/todo" />
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="12) Samples Calibiration"
+                android:textStyle="bold"
+                android:textColor="#2E2E2E" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="No of fat"
+                android:textStyle="bold"
+                android:textColor="@color/grey" />
+
+            <EditText
+                android:id="@+id/ed_no_of_fat"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="No of snf"
+                android:textStyle="bold"
+                android:textColor="@color/grey" />
+
+            <EditText
+                android:id="@+id/ed_no_of_snf"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="No of weight"
+                android:textStyle="bold"
+                android:textColor="@color/grey" />
+
+            <EditText
+                android:id="@+id/ed_no_of_weight"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Type"
+                android:paddingStart="10dp" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/txt_error_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Error Empty field found"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/button_blue"
+                android:textColor="@color/white"
+                android:fontFamily="@font/ubuntu"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

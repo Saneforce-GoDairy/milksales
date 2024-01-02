@@ -1,7 +1,9 @@
 package com.saneforce.godairy.Activity_Hap;
 
+import static com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAILABLE;
 import static com.saneforce.godairy.Common_Class.Constants.GroupFilter;
 import static com.saneforce.godairy.Common_Class.Constants.VAN_STOCK;
+import static com.saneforce.godairy.SFA_Activity.HAPApp.printUsrLog;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.setAppLogos;
 
 import android.app.Activity;
@@ -10,6 +12,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -37,6 +40,11 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -76,6 +84,7 @@ import com.saneforce.godairy.SFA_Activity.Reports_Distributor_Name;
 import com.saneforce.godairy.SFA_Activity.SFA_Dashboard;
 import com.saneforce.godairy.SFA_Activity.StockAuditCategorySelectActivity;
 import com.saneforce.godairy.SFA_Activity.VanSalesDashboardRoute;
+import com.saneforce.godairy.SFA_Activity.vwAllPrimaryOrders;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
 import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
 import com.saneforce.godairy.adapters.OffersAdapter;
@@ -125,7 +134,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerView;
     private TextView tvServiceOutlet, tvUniverseOutlet, tvNewSerOutlet, tvTotSerOutlet, tvExistSerOutlet, tvDate, tvTodayCalls, tvProCalls,
             tvCumTodayCalls, tvNewTodayCalls, tvCumProCalls, tvNewProCalls, tvAvgNewCalls, tvAvgTodayCalls, tvAvgCumCalls, tvUserName,
-            tvPrimOrder, tvNoOrder, tvTotalValOrder, tvUpdTime, lblSlideNo;
+            tvPrimOrder, tvNoOrder, tvTotalValOrder, tvUpdTime, lblSlideNo,txview_all;
     private DatePickerDialog fromDatePickerDialog;
     public static String sfa_date = "";
     private MenuAdapter menuAdapter;
@@ -136,6 +145,13 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     private ApiInterface apiService;
     int menuItem = 0;
     private Shared_Common_Pref shared_common_pref;
+
+    TextView update_text;
+    LinearLayout lnupdate_text;
+    private AppUpdateManager appUpdateManager;
+    public  static final int APP_UPDATE=100;
+    int update_available = 0;
+    int version;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,8 +174,16 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         ryclOffers= findViewById(R.id.ryclOffers);
         lblSlideNo =findViewById(R.id.lblSlideNo);
         btnCloseOffer =findViewById(R.id.btnCloseOffer);
+        txview_all=findViewById(R.id.txview_all);
         init();
         setOnClickListener();
+        txview_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent vwall=new Intent(SFA_Activity.this, vwAllPrimaryOrders.class);
+                startActivity(vwall);
+            }
+        });
 
         String sOffShown=sharedCommonPref.getvalue(Constants.DB_OfferShownOn,"");
 
@@ -244,9 +268,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
                     menuList.add(new ListModel("", "Distributor", "", "", "", R.drawable.ic_distributor_sf));
                     menuList.add(new ListModel("", "My Team", "", "", "", R.drawable.ic_my_team_sf));
-                    menuList.add(new ListModel("", "Projection", "", "", "", R.drawable.ic_projection_sf));
+                    //menuList.add(new ListModel("", "Projection", "", "", "", R.drawable.ic_projection_sf));
                     // menuList.add(new ListModel("", "Stock Audit", "", "", "", R.drawable.ic_stock_audit));
-                    menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop_sf));
+                   // menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop_sf));
                     menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_feedback_sf));
                     if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.Distributor_Id)))
                         common_class.getDb_310Data(Constants.Distributor_List, this);
@@ -255,12 +279,12 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 case Constants.DISTRIBUTER_TYPE:
                     menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_projection_sf));
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
-                    menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
+                   /// menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
                     menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
                     menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
-                    menuList.add(new ListModel("", "Counter Sales", "", "", "", R.drawable.ic_outline_assignment_48));
-                    menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
+                    //menuList.add(new ListModel("", "Counter Sales", "", "", "", R.drawable.ic_outline_assignment_48));
+                    //menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
                     menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_feedback_sf));
 //                  menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop));
                     common_class.getPOSProduct(this);
@@ -283,6 +307,29 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         }
         getNotify();
 
+        update_text = findViewById(R.id.update_available);
+        lnupdate_text = findViewById(R.id.updateAvailable);
+        appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
+        checkUpdates();
+        update_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+                    @Override
+                    public void onSuccess(AppUpdateInfo result) {
+
+                        if (result.updateAvailability() == UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                            try {
+                                appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, SFA_Activity.this, APP_UPDATE);
+                            } catch (IntentSender.SendIntentException e) {
+                                e.printStackTrace();
+                            }
+                        }else
+                            lnupdate_text.setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
         binding.logout.setOnClickListener(v -> {
             common_class.clearLocData(SFA_Activity.this);
             shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
@@ -295,6 +342,37 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void checkUpdates() {
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+
+                if (result.updateAvailability() == UPDATE_AVAILABLE ){
+
+                    version = result.availableVersionCode();
+                    printUsrLog("Version", String.valueOf(version));
+
+                    lnupdate_text.setVisibility(View.VISIBLE);
+
+                    /*if (Constant.getInstance().getSetup(StringConstants.IS_FORCE_UPDATE, 0, new DBController(MainActivity.this)) == version) {
+                        try {
+                            if(result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                                appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, Dashboard.this, APP_UPDATE);
+                            }else{
+                                appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.FLEXIBLE, Dashboard.this, APP_UPDATE);
+                            }
+                        } catch (IntentSender.SendIntentException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        update_available = 1;
+                    }
+                    */
+                }else
+                    lnupdate_text.setVisibility(View.GONE);
+            }
+        });
+    }
     private void loadImage(String mProfileImage){
         Glide.with(this)
                 .load(mProfileImage)
@@ -1026,8 +1104,14 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                         sharedCommonPref.save(Constants.PrimaryTAXList, apiDataResponse);
                         if (UserDetails.getString("DeptType", "").equalsIgnoreCase("1"))
                             common_class.CommonIntentwithoutFinish(ProcPrimaryOrderActivity.class);
-                        else
-                            common_class.CommonIntentwithoutFinish(PrimaryOrderActivity.class);
+                        else{
+                            Intent intent = new Intent(SFA_Activity.this, PrimaryOrderActivity.class);
+                            if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)){
+                                intent.putExtra("Mode", "order_view");
+                            }
+                            startActivity(intent);
+                            //common_class.CommonIntentwithoutFinish(PrimaryOrderActivity.class);
+                        }
                         overridePendingTransition(R.anim.in, R.anim.out);
                         break;
 

@@ -2550,9 +2550,9 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                             StrDailyAllowance = jsonObject.get("dailyAllowance").getAsString();
                             strFuelAmount = jsonObject.get("FuelAmt").getAsString();
                             allowanceAmt = jsonObject.get("Allowance_Value").getAsString();
-                            //myldgEliAmt = jsonObject.get("myLdgAmt").getAsString();
+                            myldgEliAmt = jsonObject.get("myLdgAmt").getAsString();
                             myBrdEliAmt = jsonObject.get("myBrdAmt").getAsString();
-                            //drvldgEliAmt = jsonObject.get("drvLdgAmt").getAsString();
+                            drvldgEliAmt = jsonObject.get("drvLdgAmt").getAsString();
                             sDALocId = jsonObject.get("To_Place").getAsString();
                             sDALocName = jsonObject.get("To_Place_Id").getAsString();
                             String AttaFlg = jsonObject.get("AttaFL").getAsString();

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#008eff"
+        android:fontFamily="@font/ubuntu_medium"
+        android:padding="10dp"
+        android:text="Select purpose of visit"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/ok_btn"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="35dp"-->
+<!--        android:layout_below="@id/main_container"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        android:background="@drawable/button_primary">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="OK"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_centerHorizontal="true"/>-->
+
+<!--    </RelativeLayout>-->
+
+
+
+</RelativeLayout>

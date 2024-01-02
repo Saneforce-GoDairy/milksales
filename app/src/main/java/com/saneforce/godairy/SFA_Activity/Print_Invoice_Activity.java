@@ -84,7 +84,7 @@ public class Print_Invoice_Activity extends AppCompatActivity implements View.On
     List<Product_Details_Modal> Order_Outlet_Filter;
     TextView netamount, returnNetAmt, cashdiscount, gstLabel, gstrate, totalfreeqty, totalqty, totalitem, subtotal, invoicedate, retaileAddress, billnumber, retailername,
             retailerroute, back, tvOrderType, tvRetailorPhone, tvDistributorPh, tvDistributorName, tvOutstanding, tvPaidAmt, tvHeader, tvDistId,
-            tvDistAdd, returngstLabel, returngstrate, returntotalqty, returntotalitem, returnsubtotal, tvDisGST, tvDisFSSAI, tvRetGST, tvRetFSSAI;
+            tvDistAdd, returngstLabel, returngstrate, returntotalqty, returntotalitem, returnsubtotal, tvDisGST, tvDisFSSAI, tvRetGST, tvRetFSSAI,baseAmt;
     ImageView ok, ivPrint;
     public static Print_Invoice_Activity mPrint_invoice_activity;
     CircularProgressButton btnInvoice;
@@ -93,7 +93,7 @@ public class Print_Invoice_Activity extends AppCompatActivity implements View.On
     private ArrayList<Product_Details_Modal> taxList;
     private ArrayList<Product_Details_Modal> uomList;
 
-    double cashDisc, subTotalVal,NetTotAmt, outstandAmt;
+    double cashDisc, subTotalVal,NetTotAmt, outstandAmt,tsubTotalVal;
     LinearLayout llDistCal, llRetailCal;
     RelativeLayout rlTax;
     String[] strLoc;
@@ -162,6 +162,7 @@ public class Print_Invoice_Activity extends AppCompatActivity implements View.On
             returnNetAmt = findViewById(R.id.tvReturnAmt);
             ivStockCapture = findViewById(R.id.ivStockCapture);
             rvStockCapture = findViewById(R.id.rvStockFiles);
+            baseAmt = findViewById(R.id.baseAmt);
             rlTax = findViewById(R.id.rlTax);
 
             RetailCode=sharedCommonPref.getvalue(Constants.Retailor_ERP_Code);
@@ -965,12 +966,15 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                 printama.addNewLine(2);
 
                 String subTotal = "           " + formatter.format(subTotalVal);
+                String tsubTotal = "           " + formatter.format(tsubTotalVal);
                 String totItem = "           " + totalitem.getText().toString();
                 String totqty = "           " + totalqty.getText().toString();
                 String discount = "           " + cashDisc;
                 String outstand = "           " + outstandAmt;
 
                 printama.printText("SubTotal" + "                            " + subTotal.substring(String.valueOf(formatter.format(subTotalVal)).length(), subTotal.length()));
+                printama.addNewLine();
+                printama.printText("Taxable Amount" + "                      " + tsubTotal.substring(String.valueOf(formatter.format(tsubTotalVal)).length(), subTotal.length()));
                 printama.addNewLine();
                 printama.printText("Total Qty" + "                           " + totqty.substring(totalqty.getText().toString().length(), totqty.length()));
                 printama.addNewLine();
@@ -1398,6 +1402,12 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                 }
 
             }
+
+            y = y + 30;
+            paint.setTextAlign(Paint.Align.LEFT);
+            canvas.drawText("Taxable Amount", x, y, paint);
+            paint.setTextAlign(Paint.Align.RIGHT);
+            canvas.drawText(baseAmt.getText().toString(), xTot, y, paint);
 
 //            y = y + 30;
 //            canvas.drawText("Gst Rate", x, y, paint);
@@ -2129,6 +2139,8 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                         }
 
                         amt = ((obj.getInt("Qty") * obj.getDouble("Price"))) + taxAmt;
+
+                        //tsubTotalVal+=((obj.getInt("Qty") * obj.getDouble("Price")))- Double.parseDouble(obj.getString("discount_price")) ;
                         subTotalVal += amt;
                     }
                     Order_Outlet_Filter.add(new Product_Details_Modal(obj.getString("PCode"), obj.getString("PDetails"), obj.getString("MRP"), obj.getString("HSN_Code"), 1, "1",
@@ -2152,6 +2164,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                         JSONObject obj = orderArr.getJSONObject(i);
                         total_qtytext += obj.getInt("Quantity");
                         subTotalVal += (obj.getDouble("value"));
+                        tsubTotalVal=obj.getDouble("SubTotal");
 
                         tcsVal = obj.getDouble("TCS");
 
@@ -2326,6 +2339,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
 
             totalqty.setText("" + String.valueOf(total_qtytext));
             totalitem.setText("" + Order_Outlet_Filter.size());
+            baseAmt.setText(CurrencySymbol + " " + formatter.format(tsubTotalVal));
             subtotal.setText(CurrencySymbol + " " + formatter.format(subTotalVal));
             NetTotAmt = subTotalVal - cashDisc;
             netamount.setText(CurrencySymbol + " " + formatter.format(NetTotAmt));

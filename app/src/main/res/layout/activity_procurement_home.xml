@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".procurement.ProcurementHome">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/ubuntu_medium"
+        android:text="Procurement form"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/logout"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:src="@drawable/logout3"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"/>
+
+  </RelativeLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        />
+
+    <View
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="#CACACA"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      android:orientation="horizontal"
+        android:layout_marginStart="10dp">
+
+      <androidx.cardview.widget.CardView
+          android:id="@+id/layout"
+          android:layout_width="110dp"
+          android:layout_height="110dp"
+          android:layout_marginEnd="10dp"
+          android:layout_marginTop="10dp"
+          app:cardBackgroundColor="#C1E3FF"
+          android:foreground="?android:attr/selectableItemBackground"
+          android:clickable="true"
+          app:cardCornerRadius="10dp"
+          android:focusable="true">
+
+        <!--    app:cardBackgroundColor="#43ACFF"-->
+        <!--    app:cardBackgroundColor="#FFBED4"-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              android:layout_centerInParent="true"
+              android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/iconImageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_report_new"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#858585"
+                android:text="Form Reports"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/ubuntu_medium"
+                tools:text="Form Reports" />
+
+          </LinearLayout>
+
+        </RelativeLayout>
+
+      </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginEnd="5dp"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+    <Button
+        android:id="@+id/one_agronomist_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d1d1d1"
+        android:text="1, Agronomist Form"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/ait_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#d1d1d1"
+        android:text="2, AIT Form"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/veterinary_doctor_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#d1d1d1"
+        android:text="3, Veterinary-Doctors Form"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/quality_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#d1d1d1"
+        android:text="4, Quality Form"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/maintence_requlation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#d1d1d1"
+        android:text="5, Maintanence-Regular Form"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/existing_agent_visit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#d1d1d1"
+        android:text="6, Existing Agent Visit"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/collection_center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#d1d1d1"
+        android:text="7, Collection Center Location"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/procurement_asset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#d1d1d1"
+        android:text="8, Procurement Asset"
+        android:textColor="@color/black" />
+  </LinearLayout>
+
+  </LinearLayout>

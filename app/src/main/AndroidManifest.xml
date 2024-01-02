@@ -62,6 +62,42 @@
             android:name=".SFA_Activity.PaymentResult"
             android:exported="false" />
         <activity
+            android:name=".procurement.FarmerCreationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.ProcurementAssetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.CollectionCenterLocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.ExistingAgentVisitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.MaintanenceIssuesFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.QualityFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.VeterinaryDoctorsFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.ImageViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.ProcurementCameraX"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.AITFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.AgronomistFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.ProcurementHome"
+            android:exported="false" />
+        <activity
             android:name=".SFA_Activity.ChallanActivity"
             android:exported="true">
             <meta-data
@@ -914,6 +950,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <service
+            android:name=".common.FileUploadService2"
+            android:exported="false" />
     </application>
 
 </manifest>

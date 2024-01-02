@@ -2249,7 +2249,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
                 if (addresses != null && addresses.size() > 0) {
                     Address returnedAddress = addresses.get(0);
-                    Log.e("returnedAddress", returnedAddress.toString());
                     doorNo = returnedAddress.getSubThoroughfare();
                     street = returnedAddress.getThoroughfare();
                     feature = returnedAddress.getFeatureName();

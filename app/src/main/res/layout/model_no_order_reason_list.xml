@@ -1,0 +1,92 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="105dp"
+    android:layout_margin="2dp"
+    android:background="@drawable/bottom_border"
+    android:clickable="true"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/white"
+    android:focusable="true">
+
+    <LinearLayout
+        android:id="@+id/linear_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="@dimen/C10dp"
+        tools:ignore="MissingConstraints">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Distributer name"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:textSize="12sp"
+                    android:textColor="#7E7E7E"/>
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:textSize="13sp"
+                    android:textColor="@android:color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Reason :"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:textSize="12sp"
+                    android:textColor="#7E7E7E"/>
+
+                <TextView
+                    android:id="@+id/txt_reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:textSize="13sp"
+                    android:textColor="@color/color_red"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.20dp"
+        android:background="#E1E1E1"/>
+</androidx.cardview.widget.CardView>

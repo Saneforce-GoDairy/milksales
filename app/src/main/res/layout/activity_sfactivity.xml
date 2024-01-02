@@ -115,14 +115,45 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/C30dp">
 
+                <LinearLayout
+                    android:id="@+id/updateAvailable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_margin="@dimen/C10dp"
+                    android:padding="@dimen/C8dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/sfa_card_bg"
+                    android:visibility="gone">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="New Update Available !"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/C16dp"
+                        />
+                    <TextView
+                        android:id="@+id/update_available"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Update App Now"
+                        android:textAlignment="center"
+                        android:layout_marginBottom="@dimen/C16dp"
+                        android:padding="@dimen/C8dp"
+                        android:background="@drawable/button_blue1"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
                 <RelativeLayout
                     android:id="@+id/outlet_summary_container"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:layout_marginStart="@dimen/C10dp"
-                    android:layout_marginTop="@dimen/C30dp"
                     android:layout_marginEnd="@dimen/C10dp"
                     android:layout_marginBottom="@dimen/C10dp"
                     android:background="@drawable/sfa_card_bg">
@@ -643,6 +674,7 @@
                             android:textSize="16sp" />
 
                         <TextView
+                            android:id="@+id/txview_all"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -821,10 +853,10 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/appDVersion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/AppTitle"
-                    android:text="@string/tool_app_ver"
                     android:textColor="@color/white"
                     android:textSize="8sp" />
             </LinearLayout>

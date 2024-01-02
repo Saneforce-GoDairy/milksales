@@ -1,57 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-<!--    <color name="colorAccent">#3949AB</color>-->
-<!--    <color name="colorPrimary">#4E5FCA</color>-->
-<!--    <color name="colorPrimaryDark">#3949AB</color>#00A5C3-->
-
     <color name="colorAccent">#43A047</color>
     <color name="colorPrimary">#7CB342</color>
     <color name="colorPrimaryDark">#0089BD</color>
     <color name="ButtonDefault">#FFC744</color>
-
-
     <color name="disabled">#B6B6B6</color>
-<!--
-    <color name="colorAccent">#43A047</color>
-    <color name="colorPrimary">#7CB342</color>
-    <color name="colorPrimaryDark">#056162</color>
-    <color name="ButtonDefault">#FFC744</color>-->
-
-
-
-
-    <!--        <color name="colorAccent">#4A87EE</color>017E6F-->
-<!--        <color name="colorPrimary">#FFC107</color>-->
-<!--        <color name="colorPrimaryDark">#ff9819</color>-->
-
-<!--        <color name="colorAccent">#4A87EE</color>-->
-<!--        <color name="colorPrimary">#5691F4</color>-->
-<!--        <color name="colorPrimaryDark">#1068D6</color>-->
-
-    <!--    <color name="colorAccent">#009688</color>-->
-    <!--    <color name="colorPrimary">#009688</color>-->
-    <!--    <color name="colorPrimaryDark">#009688</color>-->
-
-
-    <!--    <color name="subExpHeader">#43A047</color>-->
-
-    <!--    <color name="subExpHeader">#03A9F4</color>-->
-    <!--    <color name="subExpHeader">#009688</color>-->
     <color name="subExpHeader">#BB52D8</color>
     <color name="GrandTotal">#4CAF50</color>
     <color name="ApproveGreen">#4CAF50</color>
     <color name="Pending_yellow">#ff9819</color>
-
     <color name="background">#dddddd</color>
-
     <color name="white">#fff</color>
     <color name="monthly_arrow">#979797</color>
     <color name="awhite">#A8FFFFFF</color>
     <color name="a80white">#40FFFFFF</color>
-
     <color name="a50white">#B3FFFFFF</color>
-
     <color name="ablack">#5E1C1C1C</color>
     <color name="black">#1C1C1C</color>
     <color name="printbackcolor">#D7D7D7</color>
@@ -60,11 +23,9 @@
     <color name="dark_grey">#3E3E3E</color>
     <color name="dark_greys">#C83E3E3E</color>
     <color name="color_white">#FFFFFF</color>
-
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_400">#BDBDBD</color>
     <color name="statuscolor">#716e6e</color>
-
     <color name="grey_500">#9E9E9E</color>
     <color name="green">#008000</color>
     <color name="color_red">#E53935</color>
@@ -73,74 +34,48 @@
     <color name="greyColor">#2C000000</color>
     <color name="subHeader">#9C000000</color>
     <color name="checkout">#D04736</color>
-
-
     <color name="Hap_location">#10B2C7</color>
-
-
     <color name="greeninvoicecolor">#C5EBC4</color>
     <color name="greentrans">#80C5EBC4</color>
     <color name="greentext">#145A32</color>
-
-
     <color name="invoiceordercolor">#80FFD2B5</color>
-
-    <!--button Colors-->
     <color name="Request">#840013</color>
     <color name="Reports">#3f48ca</color>
     <color name="OnDuty">#01a5e4</color>
     <color name="Approvals">#014143</color>
     <color name="TAClaim">#a14b9f</color>
     <color name="Extended">#fd8024</color>
-
     <color name="Allbackround">#F5EDEE</color>
     <color name="jointowrk_title_bg_color">#DDDCDC</color>
-
     <color name="txt_hintcolor">#E6E2E2</color>
     <color name="greenColor">#72D043</color>
     <color name="admin_card_strokecolor">#706F6F</color>
     <color name="txt_template_color">#F8AB58</color>
     <color name="layout_bg_color">#F2F2F2</color>
-    <!--    <color name="view_bg_color">#43A047</color>-->
     <color name="view_bg_color">#3949AB</color>
-    <!--    <color name="view_bg_color">#009688</color>-->
     <color name="view_bg_header">#F4F3F4</color>
     <color name="view_division">#F1E7E7</color>
-
     <color name="status_bar">#4257CA</color>
-
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_200">#EEEEEE</color>
-
     <color name="orderbackroundcolor">#EFEFEF</color>
     <color name="grey_50">#FAFAFA</color>
-
     <color name="grey_600">#757575</color>
     <color name="grey_700">#616161</color>
     <color name="grey_800">#424242</color>
     <color name="grey_900">#212121</color>
-
     <color name="color_light_red">#F5B6B6</color>
     <color name="lightBlue">#CACBE0</color>
-
     <color name="darkBlue">#FF50606F</color>
     <color name="red">#1AFF0000</color>
-
     <color name="dividerList">#FAFAFA</color>
-
-
-    <!--button Colors-->
     <color name="mDyPlan">#0080ff</color>
     <color name="CheckIn">#009688</color>
-
     <color name="Exit">#d34836</color>
-
     <color name="black_80">#CC000000</color>
-
-    <!-- new ui -->
     <color name="primaryDark">#2E3032</color>
     <color name="primaryBlurLight">#89c7e4</color>
     <color name="secondary_orange">#DA600C</color>
-
-
+    <color name="grey">#6C6C6C</color>
+    <color name="primaryColor">#009BE1</color>
 </resources>

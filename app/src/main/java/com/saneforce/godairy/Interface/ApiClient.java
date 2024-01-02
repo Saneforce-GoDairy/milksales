@@ -14,6 +14,7 @@ public class ApiClient {
     // Base URL
     public static String BASE_URL = "https://lactalisindia.salesjump.in/server/";
     private static Retrofit retrofit = null;
+    private static Retrofit retrofit1 = null;
 
     // Initialize Retrofit
     public static Retrofit getClient() {
@@ -25,6 +26,17 @@ public class ApiClient {
                     .build();
         }
         return retrofit;
+    }
+
+    public static Retrofit getClientThirumala() {
+        if (retrofit1 == null) {
+            retrofit1 = new Retrofit.Builder()
+                    .baseUrl("https://thirumala.salesjump.in/server/")
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                    .build();
+        }
+        return retrofit1;
     }
 
     // Re-Initialize Retrofit

@@ -1,5 +1,6 @@
 package com.saneforce.godairy.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -27,19 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolder> implements Filterable {
-
     Master_Interface updateUi;
-    private List<Common_Model> contactList;
+    private final List<Common_Model> contactList;
     private List<Common_Model> contactListFiltered;
     int typeName;
-
+    @SuppressLint("StaticFieldLeak")
     private static CheckBox lastChecked = null;
     private static int lastCheckedPos = 0;
-
     Context mContext;
-
     Shared_Common_Pref shared_common_pref;
-
 
     public DataAdapter(List<Common_Model> myDataset, Context context, int type) {
         contactList = myDataset;
@@ -49,9 +46,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolde
             mContext = context;
         } else {
             updateUi = ((Master_Interface) context);
-
         }
-
     }
 
     @NonNull
@@ -61,6 +56,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolde
         return new FruitViewHolder(v);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(FruitViewHolder fruitViewHolder, final int position) {
         if (fruitViewHolder.getBindingAdapterPosition() >= contactListFiltered.size()) return;
@@ -84,7 +80,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolde
 
         if (typeName == 1000) {
             shared_common_pref = new Shared_Common_Pref(mContext);
-
             fruitViewHolder.checkboxLin.setVisibility(View.VISIBLE);
             fruitViewHolder.cbTextName.setText(contact.getName());
             fruitViewHolder.mTextName.setVisibility(View.GONE);
@@ -173,6 +168,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolde
                 return filterResults;
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 contactListFiltered = (ArrayList<Common_Model>) filterResults.values;
@@ -182,7 +178,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolde
     }
 
     public class FruitViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView mTextName, mTextPhone, mTextAddress, Checkboxname;
+        public TextView mTextName, mTextPhone, mTextAddress;
         LinearLayout checkboxLin, linear_row;
         CheckBox checkBox_select;
         TextView cbTextName, tvPerDay;
@@ -190,7 +186,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolde
         public FruitViewHolder(View v) {
             super(v);
             mTextName = v.findViewById(R.id.txt_name);
-            Checkboxname = v.findViewById(R.id.Checkboxname);
             checkBox_select = v.findViewById(R.id.checkBox_select);
             mTextPhone = v.findViewById(R.id.txt_phone);
             mTextAddress = v.findViewById(R.id.txt_address);
@@ -199,15 +194,11 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolde
             linear_row = v.findViewById(R.id.linear_row);
             tvPerDay = v.findViewById(R.id.txt_per_day);
             v.setOnClickListener(this);
-
-
         }
 
         @Override
         public void onClick(View v) {
             try {
-
-
                 if (typeName == 1000) {
 
                 } else {
@@ -221,9 +212,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.FruitViewHolde
     }
 
     public static boolean isNullOrEmpty(String str) {
-        if (str != null && !str.isEmpty())
-            return false;
-        return true;
+        return str == null || str.isEmpty();
     }
 
 }

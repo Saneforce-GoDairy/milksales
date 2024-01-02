@@ -72,6 +72,7 @@ import com.saneforce.godairy.SFA_Activity.HistoryInfoActivity;
 import com.saneforce.godairy.SFA_Activity.Invoice_History;
 //import com.hap.checkinproc.SFA_Activity.POSViewEntryActivity;
 import com.saneforce.godairy.SFA_Activity.PosHistoryActivity;
+import com.saneforce.godairy.SFA_Activity.PrimaryOrderActivity;
 import com.saneforce.godairy.SFA_Activity.ProjectionHistoryActivity;
 import com.saneforce.godairy.SFA_Activity.TodayPrimOrdActivity;
 import com.saneforce.godairy.SFA_Activity.VanStockViewActivity;
@@ -579,8 +580,8 @@ public class Common_Class {
 
                     } catch (Exception e) {
                         Log.e("Common class:", key + " response: " + e.getMessage());
-                        updateUi = ((UpdateResponseUI) activity);
-                        updateUi.onLoadDataUpdateUI(gson.toJson(response.body()), key);
+                       // updateUi = ((UpdateResponseUI) activity);
+                       // updateUi.onLoadDataUpdateUI(gson.toJson(response.body()), key);
 
                     }
                 }
@@ -621,6 +622,13 @@ public class Common_Class {
                         data.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
                         break;
 
+                    case Constants.PRIMARY_VIEWALL:
+                        axnname = "get/primaryviewall";
+                        data.put("login_sfCode", UserDetails.getString("Sfcode", ""));
+                        data.put("Dt", Common_Class.GetDatewothouttime());
+                        //data.put("Grpcode", jparam.get("Grpcode").getAsString());
+                        data.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
+                        break;
                     case Constants.AUDIT_STOCK_ONHAND:
                         axnname = "get/getauditstock";
                         data.put("plant", jparam.get("plant").getAsString());
@@ -1543,8 +1551,7 @@ public class Common_Class {
     }
 
     public List<Common_Model> getDistList() {
-        try {
-            List<Common_Model> distributor_master = new ArrayList<>();
+        try {  List<Common_Model> distributor_master = new ArrayList<>();
             Common_Model Model_Pojo;
             JSONArray jsonArray = new JSONArray(shared_common_pref.getvalue(Constants.Distributor_List));
             Log.v("distList:", jsonArray.toString());
@@ -1561,6 +1568,7 @@ public class Common_Class {
                 String DisFssai = jsonObject1.optString("FSSAI");
                 Model_Pojo = new Common_Model(name, id, flag, Add2, Mob, ERP_Code, DivERP,DisGst,DisFssai, jsonObject1.optString("Latlong"), jsonObject1.getString("CusSubGrpErp"));
                 distributor_master.add(Model_Pojo);
+
 
             }
             return distributor_master;

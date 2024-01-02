@@ -1,25 +1,22 @@
 package com.saneforce.godairy.common;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
-
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.saneforce.godairy.Common_Class.Util;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-
+import org.jetbrains.annotations.Contract;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
-
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
@@ -33,28 +30,21 @@ import okhttp3.MediaType;
 public class FileUploadService extends JobIntentService {
     private static final String TAG = "FileUploadService: ";
     Disposable mDisposable;
-    private SharedPreferences UserDetails;
-
     static TransferUtility transferUtility;
-    // Reference to the utility class
     static Util util;
-
     String mFilePath,mSF,FileName,Mode;
     public static final String MyPREFERENCES = "MyPrefs";
+    private static final int JOB_ID = 102;
 
-
-    /**
-     * Unique job ID for this service.
-     */
     public enum MIMEType {
         IMAGE("image/*"), VIDEO("video/*");
-        public String value;
+        public final String value;
 
         MIMEType(String value) {
             this.value = value;
         }
     }
-    private static final int JOB_ID = 102;
+
     public static void enqueueWork(Context context, Intent intent) {
         enqueueWork(context, FileUploadService.class, JOB_ID, intent);
     }
@@ -71,61 +61,37 @@ public class FileUploadService extends JobIntentService {
                 return;
             }
 
-            final File file = new File(mFilePath);
-           /* TransferObserver uploadObserver =
-                    transferUtility.upload("happic","TAPhotos/" + FileName , file);
-
-            uploadObserver.setTransferListener(new TransferListener() {
-
-                @Override
-                public void onStateChanged(int id, TransferState state) {
-                    if (TransferState.COMPLETED == state) {
-                        Toast.makeText(getApplicationContext(), "Upload Completed!", Toast.LENGTH_SHORT).show();
-                        sendOtherPhotos();
-                    } else if (TransferState.FAILED == state) {
-
-                    }
-                }
-
-                @Override
-                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                    float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
-                    int percentDone = (int) percentDonef;
-
-                    //tvFileName.setText("ID:" + id + "|bytesCurrent: " + bytesCurrent + "|bytesTotal: " + bytesTotal + "|" + percentDone + "%");
-                }
-
-                @Override
-                public void onError(int id, Exception ex) {
-                    ex.printStackTrace();
-                }
-
-            });*/
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Flowable<Double> fileObservable = Flowable.create(emitter -> {
+            @SuppressLint("CheckResult") Flowable<Double> fileObservable = Flowable.create(emitter -> {
                 apiInterface.onFileUpload(mSF,FileName,Mode,
                         createMultipartBody(mFilePath, emitter)).blockingGet();
                 emitter.onComplete();
             }, BackpressureStrategy.LATEST);
             mDisposable = fileObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(progress -> onProgress(progress), throwable -> onErrors(throwable),
-                        () -> onSuccess());
+                .subscribe(this::onProgress, this::onErrors,
+                        this::onSuccess);
         }
         catch (Exception e){
             Log.e(TAG,e.getMessage());
         }
 
+        if (Mode.equals("PROF" )){
+          updateProfileSession();
+        }
+        if (Mode.equals("PF")){
+            updateProfileSession();
+        }
+    }
+
+    private void updateProfileSession() {
         String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/" + FileName;
-
-        UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor userEditor = UserDetails.edit();
-
+        SharedPreferences userDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor userEditor = userDetails.edit();
         userEditor.putString("Profile", mBasePath);
         userEditor.apply();
-
-        Log.i("profile_url", mBasePath);
     }
+
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         mFilePath = intent.getStringExtra("mFilePath");
@@ -133,48 +99,13 @@ public class FileUploadService extends JobIntentService {
         FileName=intent.getStringExtra("FileName");
         Mode=intent.getStringExtra("Mode");
 
-        DatabaseHandler db=new DatabaseHandler(FileUploadService.this);
-        db.addPhotoDetails(FileName.replaceAll(".jpg",""),mSF,Mode,FileName,mFilePath);
-
-        UploadPhoto();
-        /*
-        if (mFilePath == null) {
-            Log.e(TAG, "onHandleWork: Invalid file URI");
-            return;
+        try (DatabaseHandler db = new DatabaseHandler(FileUploadService.this)) {
+            db.addPhotoDetails(FileName.replaceAll(".jpg", ""), mSF, Mode, FileName, mFilePath);
         }
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Flowable<Double> fileObservable = Flowable.create(emitter -> {
-            apiInterface.onFileUpload(mSF,FileName,Mode,
-                    createMultipartBody(mFilePath, emitter)).blockingGet();
-            emitter.onComplete();
-        }, BackpressureStrategy.LATEST);
-        mDisposable = fileObservable.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(progress -> onProgress(progress), throwable -> onErrors(throwable),
-                        () -> onSuccess());*/
+        UploadPhoto();
     }
     private void onErrors(Throwable throwable) {
-    //sendBroadcastMeaasge("Error in file upload " + throwable.getMessage());
-        //if(throwable.getMessage().indexOf("No such file or directory")>-1){
-            //sendBroadcastMeaasge(throwable.getMessage());
-
             sendOtherPhotos();
-        //}else {
-            //if(Err>3)UploadPhoto();
-        //}
-
-        //ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        /*apiInterface.sendUpldPhotoErrorMsg("send/photouplerr",throwable.getMessage())
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                    }
-                });*/
         Log.e(TAG, "onErrors: ", throwable);
     }
     private void onProgress(Double progress) {
@@ -183,20 +114,17 @@ public class FileUploadService extends JobIntentService {
     }
     private void onSuccess() {
         sendOtherPhotos();
-
         sendBroadcastMeaasge("File uploading successful ");
-        Log.i(TAG, "onSuccess: File Uploaded");
-
     }
 public void sendOtherPhotos(){
-    DatabaseHandler db=new DatabaseHandler(FileUploadService.this);
-    db.deletePhotoDetails(FileName.replaceAll(".jpg",""));
-
-    JSONArray pendingPhotos=db.getAllPendingPhotos();
+    JSONArray pendingPhotos;
+    try (DatabaseHandler db = new DatabaseHandler(FileUploadService.this)) {
+        db.deletePhotoDetails(FileName.replaceAll(".jpg", ""));
+        pendingPhotos = db.getAllPendingPhotos();
+    }
     if(pendingPhotos.length()>0){
         try {
             JSONObject itm=pendingPhotos.getJSONObject(0);
-
             mFilePath=itm.getString("FileURI");
             mSF=itm.getString("SFCode");
             FileName= itm.getString("FileName");
@@ -209,24 +137,21 @@ public void sendOtherPhotos(){
 }
     public void sendBroadcastMeaasge(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-     //   Intent localIntent = new Intent("my.own.broadcast");
-     //   localIntent.putExtra("result", message);
-     //   LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
     }
+    @NonNull
+    @Contract("_, _ -> new")
     private RequestBody createRequestBodyFromFile(File file, String mimeType) {
         return RequestBody.create(MediaType.parse(mimeType), file);
     }
-    private RequestBody createRequestBodyFromText(String mText) {
-        return RequestBody.create(MediaType.parse("text/plain"), mText);
-    }
-    /**
-     * return multi part body in format of FlowableEmitter
-     */
+
+    @NonNull
     private MultipartBody.Part createMultipartBody(String filePath, FlowableEmitter<Double> emitter) {
         File file = new File(filePath);
         return MultipartBody.Part.createFormData("file", file.getName(),
                 createCountingRequestBody(file, MIMEType.IMAGE.value, emitter));
     }
+
+    @NonNull
     private RequestBody createCountingRequestBody(File file, String mimeType,
                                                   FlowableEmitter<Double> emitter) {
         RequestBody requestBody = createRequestBodyFromFile(file, mimeType);

@@ -1,9 +1,15 @@
 package com.saneforce.godairy.Activity_Hap;
 
+import static com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAILABLE;
+import static com.saneforce.godairy.SFA_Activity.HAPApp.printUsrLog;
+import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_MODE;
+import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +35,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -50,6 +62,9 @@ import com.saneforce.godairy.databinding.ActivityDashboardBinding;
 import com.saneforce.godairy.fragments.GateInOutFragment;
 import com.saneforce.godairy.fragments.MonthlyFragment;
 import com.saneforce.godairy.fragments.TodayFragment;
+import com.saneforce.godairy.procurement.ProcurementHome;
+import com.saneforce.godairy.universal.Constant;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,10 +106,16 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     ArrayList<String> exploreName = new ArrayList<>(Arrays.asList(
             "Request & status",
             "TA & Claim",
-            "SFA",
+            "Activity",
             "Gate IN",
             "Gate OUT",
             "PJP"));
+    TextView update_text;
+    LinearLayout lnupdate_text;
+    private AppUpdateManager appUpdateManager;
+    public  static final int APP_UPDATE=100;
+    int update_available = 0;
+    int version;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +239,29 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         });
 
+        update_text = findViewById(R.id.update_available);
+        lnupdate_text = findViewById(R.id.updateAvailable);
+        appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
+        checkUpdates();
+        update_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+                    @Override
+                    public void onSuccess(AppUpdateInfo result) {
+
+                        if (result.updateAvailability() == UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                            try {
+                                appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, Dashboard.this, APP_UPDATE);
+                            } catch (IntentSender.SendIntentException e) {
+                                e.printStackTrace();
+                            }
+                        }else
+                            lnupdate_text.setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
         binding.linMydayPlan.setOnClickListener(this);
         binding.linCheckIn.setOnClickListener(this);
         linRequstStaus.setOnClickListener(this);
@@ -241,6 +285,37 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    private void checkUpdates() {
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+
+                if (result.updateAvailability() == UPDATE_AVAILABLE ){
+
+                    version = result.availableVersionCode();
+                    printUsrLog("Version", String.valueOf(version));
+
+                    lnupdate_text.setVisibility(View.VISIBLE);
+
+                    /*if (Constant.getInstance().getSetup(StringConstants.IS_FORCE_UPDATE, 0, new DBController(MainActivity.this)) == version) {
+                        try {
+                            if(result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                                appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, Dashboard.this, APP_UPDATE);
+                            }else{
+                                appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.FLEXIBLE, Dashboard.this, APP_UPDATE);
+                            }
+                        } catch (IntentSender.SendIntentException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        update_available = 1;
+                    }
+                    */
+                }else
+                    lnupdate_text.setVisibility(View.GONE);
+            }
+        });
+    }
     private void loadImage(String mProfileImage) {
         Glide.with(this.context)
                 .load(mProfileImage)
@@ -292,6 +367,16 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         break;
 
                     case 2:
+                        if(getIntent().hasExtra("Mode")){
+                            String mMode = getIntent().getStringExtra("Mode");
+
+                            if (mMode.equals(INTENT_PROCUREMENT_MODE)){
+                                Intent intent = new Intent(context, ProcurementHome.class);
+                                intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                                startActivity(intent);
+                                return;
+                            }
+                        }
                         startActivity(new Intent(context, SFA_Activity.class));
                         break;
 
@@ -860,7 +945,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
-                common_class.ProgressdialogShow(2, "");
+                 common_class.ProgressdialogShow(2, "");
             }
         });
     }

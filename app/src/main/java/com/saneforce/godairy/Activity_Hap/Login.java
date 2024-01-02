@@ -2,6 +2,10 @@ package com.saneforce.godairy.Activity_Hap;
 
 import static android.widget.Toast.LENGTH_LONG;
 
+import static com.saneforce.godairy.common.AppConstants.INTENT_MODE_SFA;
+import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_MODE;
+import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -11,6 +15,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -64,6 +69,7 @@ import com.saneforce.godairy.common.LocationReceiver;
 import com.saneforce.godairy.common.SANGPSTracker;
 import com.saneforce.godairy.common.TimerService;
 import com.saneforce.godairy.databinding.ActivityLoginBinding;
+import com.saneforce.godairy.procurement.ProcurementHome;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -259,6 +265,21 @@ public class Login extends AppCompatActivity {
             SUserID = binding.userEmail.getText().toString().trim();
             eMail = binding.userEmail.getText().toString().trim();
             SPwd = binding.userPassword.getText().toString().trim();
+
+            /*
+              Doctor login
+              username : san-001
+              password : 001
+             */
+
+            if ("san-001".equalsIgnoreCase(SUserID) && SPwd.equals("001")){
+                Intent intent = new Intent(context, Dashboard.class);
+                intent.putExtra("Mode", INTENT_PROCUREMENT_MODE);
+                intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
+                startActivity(intent);
+                return;
+            }
+
             if (TextUtils.isEmpty(eMail)) {
                 Toast.makeText(this, "Email Address Required", Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(SPwd)) {
@@ -272,6 +293,8 @@ public class Login extends AppCompatActivity {
                 MakeInvisible();
                 login(1);
             }
+
+
         });
 
         Boolean Login = UserDetails.getBoolean("Login", false);
@@ -827,6 +850,7 @@ public class Login extends AppCompatActivity {
                         finish();
                     } else {
                         intent = new Intent(context, Dashboard.class);
+                        intent.putExtra("Mode", INTENT_MODE_SFA);
                         finish();
                     }
                 } else {
