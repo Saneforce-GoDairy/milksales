@@ -33,21 +33,13 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="none"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="55dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
 
 
             <LinearLayout
@@ -56,12 +48,14 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/ag_exclusive_agent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ubuntu"
                     android:text="Exclusive Agent" />
 
                 <RadioButton
+                    android:id="@+id/ag_dual_agent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -70,34 +64,35 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
-                android:text="List of Company"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
 
-            <Spinner
-                android:id="@+id/spinner_company"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="2dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_list_company"
+                    android:layout_centerVertical="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Total Milk Availability"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/ed_total_milk_avai"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -107,15 +102,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Our company Ltrs"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/ed_our_company_ltrs"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -125,15 +121,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="What is competitor rate ?"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/ed_competitor_rate"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -143,15 +140,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="What is our company rate ?"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/ed_our_compny_rate"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -161,16 +159,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Demand"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
 
             <EditText
+                android:id="@+id/ed_demand"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
@@ -180,22 +179,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu"
+                android:fontFamily="@font/ubuntu_medium"
                 android:text="Supply start date"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
 
             <EditText
+                android:id="@+id/ed_supply_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:hint="Type"
                 android:paddingStart="10dp" />
 
         </LinearLayout>
-    </ScrollView>
 
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/button_blue"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/C10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/ubuntu"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true" />
 </RelativeLayout>

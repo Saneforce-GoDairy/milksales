@@ -28,6 +28,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -721,6 +722,10 @@ public interface ApiInterface {
     @POST("MyPHP.php?")
     Call<ResponseBody> getUniversalData(@QueryMap Map<String, String> params);
 
+    @FormUrlEncoded
+    @POST("MyPHP.php?")
+    Call<ResponseBody> getDataFromMyPHP(@FieldMap Map<String, Object> params);
+
     // - - - - - - - - - - - - - - - - - - - - -
 
     //    @FormUrlEncoded
@@ -776,7 +781,7 @@ public interface ApiInterface {
     @POST("payments/jfs/v1/payments/intent")
     Call<ResponseBody> MakeTransaction(@HeaderMap Map<String, String> headerMap, @Body RequestBody jsonObject);
 
-    @POST("temp_no_order_reason_submit.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> primaryNoOrderReasonSubmit(@Query("axn") String axn,
                                                   @Query("reason") String reason,
                                                   @Query("sf_code") String sfCode,
@@ -786,9 +791,67 @@ public interface ApiInterface {
                                                   @Query("lan") String lan,
                                                   @Query("time_date") String time_date);
 
-    @POST("temp_no_order_reason_submit.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> getPrimaryNoOrderList(@Query("axn") String axn,
                                                    @Query("erp_code") String distribute_code);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getProcPlant(@Query("axn") String axn);
+
+    @Multipart
+    @POST("Db_v310.php")
+    Call<ResponseBody> submitProcCollectionCenterLo(@Query("axn") String axn,
+                                                    @Query("company") String company,
+                                                    @Query("plant") String plant,
+                                                    @Query("sap_center_code") String sap_center_code,
+                                                    @Query("sap_center_name") String sap_center_name,
+                                                    @Query("center_address") String center_address,
+                                                    @Query("lactlis_potential_lpd") String lactlis_potential_lpd,
+                                                    @Query("no_enrolled_farmers") String no_enrolled_farmers,
+                                                    @Query("competitor1") String competitor1,
+                                                    @Query("competitor1_txt") String competitor1_txt,
+                                                    @Query("active_flag") String active_flag,
+                                                    @Query("created_dt") String created_dt,
+                                                    @Part MultipartBody.Part image);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getProcCenterList(@Query("axn") String axn);
+
+    @Multipart
+    @POST("Db_v310.php")
+    Call<ResponseBody> submitProcFarmerCreation(@Query("axn") String axn,
+                                                    @Query("center") String center,
+                                                    @Query("farmer_gategory") String plant,
+                                                    @Query("farmer_name") String farmer_name,
+                                                    @Query("farmer_address") String farmer_address,
+                                                    @Query("phone_number") String phone_number,
+                                                    @Query("pin_code") String pin_code,
+                                                    @Query("cow_total") String cow_total,
+                                                    @Query("buffalo_total") String buffalo_total,
+                                                    @Query("cow_available_ltrs") String cow_available_ltrs,
+                                                    @Query("buffalo_available_ltrs") String buffalo_available_ltrs,
+                                                    @Query("milk_supply_company") String milk_supply_company,
+                                                    @Query("interested_supply") String interested_supply,
+                                                    @Query("active_flag") String active_flag,
+                                                    @Query("created_dt") String created_dt,
+                                                    @Part MultipartBody.Part image);
+
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcAgronomist(@Query("axn") String axn,
+                                                @Query("company") String company,
+                                                @Query("plant") String plant,
+                                                @Query("center_name") String center_name,
+                                                @Query("farmer_name") String farmer_name,
+                                                @Query("product_type") String product_type,
+                                                @Query("teat_dip") String teat_dip,
+                                                @Query("service_type") String service_type,
+                                                @Part MultipartBody.Part image1,
+                                                @Part MultipartBody.Part image2,
+                                                @Query("fodder_dev_acres") String fodder_dev_acres,
+                                                @Part MultipartBody.Part image3,
+                                                @Query("active_flag") String active_flag,
+                                                @Query("created_dt") String created_dt);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

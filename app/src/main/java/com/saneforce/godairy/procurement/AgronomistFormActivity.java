@@ -1,9 +1,8 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.view.Window;
@@ -22,28 +22,39 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityAgronomistFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AgronomistFormActivity extends AppCompatActivity {
     private ActivityAgronomistFormBinding binding;
     private String mCompanyName, mPlant, mCenterName, mFarmerCodeName, mTypeOfProduct, mTeatTipCup, mTypeOfService, mFodderDev;
-    private String mNoOfFarmersEnrolled, mNoOfFarmersInducted, mFarmersMeetingBase64Image;
+    private String mNoOfFarmersEnrolled, mNoOfFarmersInducted;
     private final Context context = this;
     private File fileFormersMeeting, fileCSRActivity, fileFodderDevAcres;
     private Bitmap bitmapFormersMeeting, bitmapCSRActivity , bitmapFodderDevAcres;
-    private DatabaseManager databaseManager;
-    SharedPreferences UserDetails;
-    public static final String MY_PREFERENCES = "MyPrefs";
-    private Dialog progressDialog;
-    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,60 +62,19 @@ public class AgronomistFormActivity extends AppCompatActivity {
         binding = ActivityAgronomistFormBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        databaseManager = new DatabaseManager(this);
+        DatabaseManager databaseManager = new DatabaseManager(this);
         databaseManager.open();
 
         initSpinnerArray();
         onClick();
-        initProgressDialog();
-    }
-
-    private void initProgressDialog() {
-        progressDialog = new Dialog(context);
-        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressDialog.setContentView(R.layout.model_dialog_custom_progress);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        progressDialog.setCancelable(false);
-
-        TextView textView = progressDialog.findViewById(R.id.message1);
-        textView.setEnabled(true);
-        textView.setText("Please wait. form saving");
-        // customProgressDialog.show();
     }
 
     private void onClick() {
-        binding.back.setOnClickListener(view -> {
-            finish();
-        });
-    }
-
-    private void initSpinnerArray() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.company_array, R.layout.custom_spinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCompany.setAdapter(adapter);
-
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
-                R.array.plant_array, R.layout.custom_spinner);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter1);
-
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-                R.array.type_of_product_array, R.layout.custom_spinner);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTypeOfProduct.setAdapter(adapter2);
-
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
-                R.array.typs_of_service_array, R.layout.custom_spinner);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTypeOfService.setAdapter(adapter3);
-
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
                 saveNow();
             }
         });
-
         binding.spinnerCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -138,7 +108,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-
         binding.spinnerTypeOfService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -151,13 +120,35 @@ public class AgronomistFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        /*
+           /*
            Camera access id
 
-           Farmers meeting = 1
-           CSR Activity    = 2
-           Fodder Development Ac = 3
+           1, AgronomistFormActivity
+              Farmers meeting = 1
+              CSR Activity    = 2
+              Fodder Development Ac = 3
+
+           2, AITFormActivity
+              breed = 4
+
+           3, CollectionCenterLocationActivity
+              Collection center image = 5
+
+           4, VeterinaryDoctorsFormActivity
+              Type of image image = 6
+              Emergency treatment/EVM Treatment (Breed) = 7
+
+            5, QualityFormActivity
+               Quality fat = 8
+               Quality snf = 9
+               No of vehicle received with hoods = 10
+               No of vehicle received without hoods = 11
+               Awareness program = 12
+
+            6, FarmerCreationActivity
+               Farmer image = 13
          */
+
 
         binding.cameraFarmersMeeting.setOnClickListener(view -> {
             binding.txtFarmersImageNotValid.setVisibility(View.GONE);
@@ -166,7 +157,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("camera_id", "1");
             startActivity(intent);
         });
-
         binding.cameraCsrActivity.setOnClickListener(view -> {
             binding.txtCsrImageNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -174,7 +164,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("camera_id", "2");
             startActivity(intent);
         });
-
         binding.cameraFoder.setOnClickListener(view -> {
             binding.txtFodderImageNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -182,7 +171,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("camera_id", "3");
             startActivity(intent);
         });
-
         binding.imageViewFormersMeetingLayout.setOnClickListener(view -> {
             String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "FAR_123.jpg";
 
@@ -191,7 +179,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("event_name", "Formers Meeting");
             startActivity(intent);
         });
-
         binding.imageViewCsrActivityLayout.setOnClickListener(view -> {
             String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "CSR_123.jpg";
 
@@ -200,7 +187,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("event_name", "CSR Activity");
             startActivity(intent);
         });
-
         binding.imageViewFoderLayout.setOnClickListener(view -> {
             String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "FDA_123.jpg";
 
@@ -208,6 +194,152 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("uri", imagePath);
             intent.putExtra("event_name", "Fodder Development Acres");
             startActivity(intent);
+        });
+        binding.back.setOnClickListener(view -> {
+            finish();
+        });
+        binding.edCenterName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edFarmerCodeName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edTeatTipCup.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edFodderDevelopmentAcres.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edNoOfFarmersEnrolled.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        binding.edNoOfFarmersInducted.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void initSpinnerArray() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.company_array, R.layout.custom_spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerCompany.setAdapter(adapter);
+
+        loadPlant();
+
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.type_of_product_array, R.layout.custom_spinner);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerTypeOfProduct.setAdapter(adapter2);
+
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
+                R.array.typs_of_service_array, R.layout.custom_spinner);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerTypeOfService.setAdapter(adapter3);
+    }
+
+    private void loadPlant() {
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String plantList;
+                    try {
+                        plantList = response.body().string();
+
+                        JSONArray jsonArray = new JSONArray(plantList);
+                        List<String> list = new ArrayList<>();
+                        list.add("Select");
+
+                        for (int i = 0; i<jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            String plantName = object.optString("Plant_Name");
+
+                            binding.spinnerPlant.setPrompt(plantName);
+                            list.add(plantName);
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spinnerPlant.setAdapter(adapter);
+                    } catch (IOException | JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
+            }
         });
     }
 
@@ -271,10 +403,12 @@ public class AgronomistFormActivity extends AppCompatActivity {
         }
         if (bitmapFormersMeeting == null){
             binding.txtFarmersImageNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if (bitmapCSRActivity == null){
             binding.txtCsrImageNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mFodderDev)){
@@ -285,6 +419,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
         }
         if (bitmapFodderDevAcres == null){
             binding.txtFodderImageNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mNoOfFarmersEnrolled)){
@@ -303,73 +438,26 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
-        UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
-        String mSFCode = "DEMO ID";
-        String mSFName = "DEMO_NAME";
+        String mActiveFlag = "1";
+        Intent serviceIntent = new Intent(this, FileUploadService2.class);
+        serviceIntent.putExtra("company", mCompanyName);
+        serviceIntent.putExtra("plant", mPlant);
+        serviceIntent.putExtra("center_name", mCenterName);
 
-        new Thread(() -> {
-            String mFarmersMeetingBase64Image =  bitmapToBase64_1(bitmapFormersMeeting);
-            String mCSRActivityBase64Image =  bitmapToBase64_2(bitmapCSRActivity);
-            String mFodderDevAcresBase64Image =  bitmapToBase64_3(bitmapFodderDevAcres);
+        serviceIntent.putExtra("farmer_name", mFarmerCodeName);
+        serviceIntent.putExtra("product_type", mTypeOfProduct);
+        serviceIntent.putExtra("teat_dip", mTeatTipCup);
+        serviceIntent.putExtra("service_type", mTypeOfService);
 
-            String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-            String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-            String mTimeDate  = mDate +" "+mTime;
-
-            databaseManager.saveProcAgronomist(
-                    mSFCode,
-                    mSFName,
-                    mCompanyName,
-                    mPlant,
-                    mCenterName,
-                    mFarmerCodeName,
-                    mTypeOfProduct,
-                    mTeatTipCup,
-                    mTypeOfService,
-                    mFarmersMeetingBase64Image,
-                    mCSRActivityBase64Image,
-                    mFodderDev,
-                    mFodderDevAcresBase64Image,
-                    mNoOfFarmersEnrolled,
-                    mNoOfFarmersInducted,
-                    mTimeDate);
-        }).start();
-        progressDialog.show();
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.dismiss();
-                Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-                //startActivity(new Intent(context, ProcurementHome.class));
-                Intent intent = new Intent(context, ProcurementHome.class);
-                intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
-                startActivity(intent);
-                finish();
-            }
-        }, 10000);
-    }
-
-    private String bitmapToBase64_1(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-    private String bitmapToBase64_2(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
+        serviceIntent.putExtra("fodder_dev_acres", mFodderDev);
 
 
-    private String bitmapToBase64_3(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        serviceIntent.putExtra("active_flag", mActiveFlag);
+        serviceIntent.putExtra("upload_service_id", "3");
+        ContextCompat.startForegroundService(this, serviceIntent);
+
+        finish();
+        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -392,16 +480,19 @@ public class AgronomistFormActivity extends AppCompatActivity {
         if (bitmapFormersMeeting != null){
             binding.imageViewFormersMeetingLayout.setVisibility(View.VISIBLE);
             binding.imageFarmersMeeting.setImageBitmap(bitmapFormersMeeting);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapCSRActivity != null){
             binding.imageViewCsrActivityLayout.setVisibility(View.VISIBLE);
             binding.imageCsrActivity.setImageBitmap(bitmapCSRActivity);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapFodderDevAcres != null){
             binding.imageViewFoderLayout.setVisibility(View.VISIBLE);
             binding.imageFoder.setImageBitmap(bitmapFodderDevAcres);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
     }
 }

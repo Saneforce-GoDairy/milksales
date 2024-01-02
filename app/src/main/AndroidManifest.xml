@@ -59,13 +59,16 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name=".SFA_Activity.vwAllPrimaryOrders"
+            android:name=".SFA_Activity.PaymentResult"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.FarmerCreationActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.ProcurementAssetActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.ColletionCenterLocationActivity"
+            android:name=".procurement.CollectionCenterLocationActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.ExistingAgentVisitActivity"
@@ -951,6 +954,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <service
+            android:name=".common.FileUploadService2"
+            android:exported="false" />
     </application>
 
 </manifest>

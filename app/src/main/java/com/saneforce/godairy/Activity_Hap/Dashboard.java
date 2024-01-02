@@ -945,7 +945,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
-                common_class.ProgressdialogShow(2, "");
+                 common_class.ProgressdialogShow(2, "");
             }
         });
     }

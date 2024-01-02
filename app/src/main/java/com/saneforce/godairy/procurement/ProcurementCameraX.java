@@ -75,6 +75,15 @@ public class ProcurementCameraX extends AppCompatActivity {
     }
 
     private void onClick() {
+        binding.buttonSwitchCam.setOnClickListener(v -> {
+            if (cameraFacing == CameraSelector.LENS_FACING_BACK) {
+                cameraFacing = CameraSelector.LENS_FACING_FRONT;
+            } else {
+                cameraFacing = CameraSelector.LENS_FACING_BACK;
+            }
+            startCamera(cameraFacing);
+        });
+
         binding.cameraxRightControls.setOnClickListener(v -> {
             startCamera(cameraFacing);
             binding.imageView.setVisibility(View.GONE);
@@ -168,6 +177,46 @@ public class ProcurementCameraX extends AppCompatActivity {
             case 3:
                 fodderDevAcres();
                 break;
+
+            case 4:
+                nameOfBreed();
+                break;
+
+            case 5:
+                collectionCenter();
+                break;
+
+            case 6:
+                VeteriDocFormTypeOfSer();
+                break;
+
+            case 7:
+                VeteriDocFormEVM();
+                break;
+
+            case 8:
+                qualityFormFat();
+                break;
+
+            case 9:
+                qualityFormSNF();
+                break;
+
+            case 10:
+                qualityReceivedNofVehicle();
+                break;
+
+            case 11:
+                qualityReceivedNofVehicleWithout();
+                break;
+
+            case 12:
+                qualityAws();
+                break;
+
+            case 13:
+                farmerCreation();
+                break;
         }
 
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
@@ -207,6 +256,56 @@ public class ProcurementCameraX extends AppCompatActivity {
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    private void farmerCreation() {
+        imageName = "FAMC_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityAws() {
+        imageName = "QUA_AWS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityReceivedNofVehicleWithout() {
+        imageName = "QUA_RNV_WITHOUT_HOODS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityReceivedNofVehicle() {
+        imageName = "QUA_RNV_WITH_HOODS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityFormSNF() {
+        imageName = "QUA_SNF_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void qualityFormFat() {
+        imageName = "QUA_FAT_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void VeteriDocFormEVM() {
+        imageName = "VET_EVM_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void VeteriDocFormTypeOfSer() {
+        imageName = "VET_TOS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void collectionCenter() {
+        imageName = "CC_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void nameOfBreed() {
+        imageName = "NOB_123" + ".jpg";
+        file = new File(DIR, imageName);
     }
 
     private void fodderDevAcres() {

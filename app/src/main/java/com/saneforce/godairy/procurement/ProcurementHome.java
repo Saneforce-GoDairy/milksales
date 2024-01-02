@@ -1,7 +1,5 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -70,7 +68,8 @@ public class ProcurementHome extends AppCompatActivity {
             R.drawable.ic_maintanence,
             R.drawable.ic_agent,
             R.drawable.ic_collection,
-            R.drawable.ic_procurement));
+            R.drawable.ic_procurement,
+                    R.drawable.ic_procurement));
 
     ArrayList dashboardName = new ArrayList(Arrays.asList(
             "Agronomist",
@@ -80,7 +79,8 @@ public class ProcurementHome extends AppCompatActivity {
             "Maintanence-Regular Form",
             "Existing Agent Visit" ,
             "Collection Center Location" ,
-            "Procurement Asset"
+            "Procurement Asset",
+            "Farmer creation"
     ));
 
 //        String userMode = getIntent().getStringExtra("proc_user");
@@ -108,6 +108,13 @@ public class ProcurementHome extends AppCompatActivity {
     }
 
     private void onClick() {
+
+        binding.logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();             
+            }
+        });
         binding.oneAgronomistForm.setOnClickListener(v -> {
             Intent intent = new Intent(context, AgronomistFormActivity.class);
             startActivity(intent);
@@ -139,7 +146,7 @@ public class ProcurementHome extends AppCompatActivity {
         });
 
         binding.collectionCenter.setOnClickListener(view -> {
-            Intent intent = new Intent(context, ColletionCenterLocationActivity.class);
+            Intent intent = new Intent(context, CollectionCenterLocationActivity.class);
             startActivity(intent);
         });
 
@@ -200,11 +207,15 @@ public class ProcurementHome extends AppCompatActivity {
                         break;
 
                     case 6:
-                        startActivity(new Intent(context, ColletionCenterLocationActivity.class));
+                        startActivity(new Intent(context, CollectionCenterLocationActivity.class));
                         break;
 
                     case 7:
                         startActivity(new Intent(context, ProcurementAssetActivity.class));
+                        break;
+
+                    case 8:
+                        startActivity(new Intent(context, FarmerCreationActivity.class));
                         break;
 
                 }
