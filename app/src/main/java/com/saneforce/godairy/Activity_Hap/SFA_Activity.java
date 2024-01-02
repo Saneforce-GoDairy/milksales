@@ -214,21 +214,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         binding.designation.setText(SFDesig );
         tvUpdTime.setText("Last Updated On : " + updateTime);
 
-        /*new Thread(() -> {
-            try {
-                URLConnection connection = new URL(mProfileUrl).openConnection();
-                String contentType = connection.getHeaderField("Content-Type");
-                boolean image = contentType.startsWith("image/");
-                if (image){
-                    runOnUiThread(() -> {
-                        loadImage(mProfileUrl);
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();*/
-
         common_class.getProductDetails(this);
         getNoOrderRemarks();
         showDashboardData();

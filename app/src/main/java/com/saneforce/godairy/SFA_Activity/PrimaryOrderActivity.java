@@ -316,7 +316,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             orderId = getIntent().getStringExtra(Constants.ORDER_ID);
             if(orderId==null) orderId = "";
 
-        edOrderId=orderId;
+            edOrderId=orderId;
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.POS_NETAMT_TAX)))
                 common_class.getDb_310Data(Constants.POS_NETAMT_TAX, this);
 
