@@ -248,7 +248,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
         getStockistAddress();
         addressArray = new JSONArray();
-        selectDeliveryAddress.setOnClickListener(v -> {
+        binding.selectDeliveryAddress.setOnClickListener(v -> {
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
             View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv_and_filter, null, false);
             builder.setView(view);
@@ -339,7 +339,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         getLastOrderedQty();
 
         // Todo: Select Payment Method
-        payNowButton.setOnClickListener(v -> {
+        binding.payNowButton.setOnClickListener(v -> {
             if (PaymentMethod == null) {
                 Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
             } else if (PaymentMethod.equalsIgnoreCase("CC")) {

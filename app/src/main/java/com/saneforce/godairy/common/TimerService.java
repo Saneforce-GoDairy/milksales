@@ -466,7 +466,6 @@ public class TimerService extends Service {
                     SharedPreferences UserDetails = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                     if (UserDetails.getString("Sfcode", "") != "") {
                         //Log.d("Minitue",String.valueOf(intMin));
-                        Log.e("sendOFFlineLocations", "Timer: " + intMin);
                         if(intMin>=(60*3)) {
                             DatabaseHandler db = new DatabaseHandler(context);
                             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -474,7 +473,6 @@ public class TimerService extends Service {
                             if (locations.length() > 0 && UpdtFlag == false) {
                                 try {
                                     UpdtFlag = true;
-                                    Log.e("sendOFFlineLocations", "sendOFFlineLocations Called from TimerService...");
                                     Call<JsonObject> call = apiInterface.JsonSave("save/trackall", "3", com.saneforce.godairy.Common_Class.Common_Class.GetEkey(), UserDetails.getString("Sfcode", ""), "", "", locations.toString());
                                     call.enqueue(new Callback<JsonObject>() {
                                         @Override

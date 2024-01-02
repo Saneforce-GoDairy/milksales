@@ -556,7 +556,6 @@ public class SANGPSTracker extends Service {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("sendOFFlineLocations", "Location fetched...");
         db.addTrackDetails(paramObject);
         /*jsonarray.put(paramObject);
         SharedPreferences UserDetails = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
