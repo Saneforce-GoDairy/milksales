@@ -126,6 +126,10 @@ public interface ApiInterface {
     Call<JsonObject> getDataList(@Query("axn") String axn, @Query("divisionCode") String divisionCode, @Query("sfCode") String Sf_code, @Query("rSF") String rSF, @Query("State_Code") String State_code, @Query("desig") String desig, @Field("data") String body);
 
     @FormUrlEncoded
+    @POST("Db_v310.php?")
+    Call<JsonObject> getData310List(@Query("axn") String axn, @Query("divisionCode") String divisionCode, @Query("sfCode") String Sf_code, @Query("rSF") String rSF, @Query("State_Code") String State_code, @Query("desig") String desig, @Field("data") String body);
+
+    @FormUrlEncoded
     @POST("Db_v300.php?")
     Call<JsonArray> getDataArrayList(@Query("axn") String axn, @Query("divisionCode") String divisionCode, @Query("sfCode") String Sf_code, @Query("rSF") String rSF, @Query("State_Code") String State_code, @Query("desig") String desig, @Field("data") String body);
 

@@ -171,7 +171,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     private DistributerAdapter distributerAdapter;
     private String ordersViewMode = "";
 
-    Context context = this;
     String _id = "", _title = "", _erpCode = "", _stateCode = "", _pincode = "";
     JSONArray addressArray;
 
