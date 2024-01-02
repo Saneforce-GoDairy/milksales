@@ -267,11 +267,17 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                             assert response.body() != null;
                             String res = null;
                             try {
-                                res = response.body().string();
+                                res = response.body().stri ng();
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                             Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+                          if (primaryNoOrderListsMain.isEmpty()){
+                              loadList();
+                          }else {
+                              primaryNoOrderListsMain.clear();
+                              loadList();
+                          }
                             noOrderDialog.dismiss();
                         }
                     }
@@ -591,7 +597,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                 }
             });
 
-            binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
+         //   binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
 
             double totAmt = 0;
             for (int i = 0; i < filterArr.length(); i++) {
