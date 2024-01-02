@@ -267,7 +267,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                             assert response.body() != null;
                             String res = null;
                             try {
-                                res = response.body().stri ng();
+                                res = response.body().string();
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
