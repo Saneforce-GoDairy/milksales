@@ -217,8 +217,9 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                      */
                     
                     SupportMapFragment supportMapFragment1 = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.my_team_map);
-                    assert supportMapFragment1 != null;
-                    supportMapFragment1.getMapAsync(MapDirectionActivity.this);
+                    if (supportMapFragment1 != null) {
+                        supportMapFragment1.getMapAsync(MapDirectionActivity.this);
+                    }
                 }
             } catch (Exception ignored) {
             }
@@ -255,14 +256,14 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
             mGoogleMap.setMyLocationEnabled(true);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(laty, lngy), 15));
-            if (status.equalsIgnoreCase("GEO"))
+            if (status.equalsIgnoreCase("GEO")) {
                 AddressTextview.setText("" + getCompleteAddressString(Double.parseDouble(getIntent().getStringExtra(Constants.DEST_LAT))
                         , Double.valueOf(getIntent().getStringExtra(Constants.DEST_LNG))));
-
-            else
+            } else {
                 AddressTextview.setText("" + getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
                 binding.currentAddressFull.setText(""+ getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
                 binding.tvStartDirection.setVisibility(View.VISIBLE);
+            }
 
             if (currentLocationMarker != null)
                 currentLocationMarker.remove();

@@ -152,6 +152,7 @@ public class HAPApp extends Application {
     }
 
     public static void sendOFFlineLocations(){
+        Log.e("sendOFFlineLocations", "sendOFFlineLocations Called...");
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         DatabaseHandler db = new DatabaseHandler(activeActivity);
         JSONArray locations = db.getAllPendingTrackDetails();
