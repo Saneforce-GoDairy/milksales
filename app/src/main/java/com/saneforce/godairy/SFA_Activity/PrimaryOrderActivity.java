@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -62,6 +63,7 @@ import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -79,6 +81,7 @@ import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityPrimaryOrderLayoutBinding;
+import com.saneforce.godairy.universal.UniversalDropDownAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,6 +97,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import okhttp3.ResponseBody;
@@ -113,7 +117,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     Type userType;
     Gson gson;
     CircularProgressButton takeorder, btnRepeat;
-    TextView Category_Nametext,
+    TextView Category_Nametext, selectDeliveryAddress,
             tvTimer, txBalAmt, txAmtWalt, txAvBal, tvDistId, tvDate, tvGrpName;
     LinearLayout lin_orderrecyclerview, lin_gridcategory, rlAddProduct, llTdPriOrd, btnRefACBal,vwRplcDetail,llProdRplc;
     Common_Class common_class;
@@ -166,6 +170,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     private Toolbar mToolbar;
     private DistributerAdapter distributerAdapter;
     private String ordersViewMode = "";
+
+    String _id = "", _title = "", _erpCode = "", _stateCode = "", _pincode = "";
+    JSONArray addressArray;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -223,6 +230,50 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             categorygrid.setLayoutManager(layoutManager);
 
+            getStockistAddress();
+            addressArray = new JSONArray();
+            selectDeliveryAddress.setOnClickListener(v -> {
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+                View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv_and_filter, null, false);
+                builder.setView(view);
+                builder.setCancelable(false);
+                android.app.AlertDialog dialog = builder.create();
+                TextView title = view.findViewById(R.id.title);
+                title.setText("Select Address");
+                RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+                UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, addressArray);
+                TextView close = view.findViewById(R.id.close);
+                close.setOnClickListener(v1 -> dialog.dismiss());
+                EditText eT_Filter = view.findViewById(R.id.eT_Filter);
+                eT_Filter.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                eT_Filter.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        adapter.getFilter().filter(s.toString());
+                    }
+                });
+                adapter.setOnItemClick((position, arrayList) -> {
+                    _id = arrayList.optJSONObject(position).optString("id");
+                    _title = arrayList.optJSONObject(position).optString("title");
+                    _erpCode = arrayList.optJSONObject(position).optString("erpCode");
+                    _stateCode = arrayList.optJSONObject(position).optString("stateCode");
+                    _pincode = arrayList.optJSONObject(position).optString("pincode");
+                    selectDeliveryAddress.setText(_title);
+                    dialog.dismiss();
+                });
+                recyclerView.setAdapter(adapter);
+                dialog.show();
+            });
+
             GetJsonData(String.valueOf(db.getMasterData(Constants.Todaydayplanresult)), "6", "");
 
             common_class.getProductDetails(this);
@@ -265,7 +316,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             orderId = getIntent().getStringExtra(Constants.ORDER_ID);
             if(orderId==null) orderId = "";
 
-        edOrderId=orderId;
+            edOrderId=orderId;
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.POS_NETAMT_TAX)))
                 common_class.getDb_310Data(Constants.POS_NETAMT_TAX, this);
 
@@ -274,30 +325,56 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             // Todo: Select Payment Method
             payNowButton.setOnClickListener(v -> {
                 Intent newPayIntent=new Intent (PrimaryOrderActivity.this, PayActivity.class);
-                newPayIntent.putExtra("merchantId", "317157");
+                newPayIntent.putExtra("merchantId", "317159");
                 newPayIntent.putExtra("password", "Test@123");
-                newPayIntent.putExtra("prodid", "Multi");
+                newPayIntent.putExtra("prodid", "NSE");
                 newPayIntent.putExtra("txncurr", "INR");
                 newPayIntent.putExtra("custacc", "100000036600");
                 newPayIntent.putExtra("amt","30.00");
                 newPayIntent.putExtra("txnid", Common_Class.GetEkey());
-                newPayIntent.putExtra("signature_request", "KEY1234567234");
+                newPayIntent.putExtra("signature_request", "KEY123657234");
                 newPayIntent.putExtra("signature_response", "KEYRESP123657234");
                 newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
                 newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
                 newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
                 newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
+//                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
                 newPayIntent.putExtra("isLive", false);
-                newPayIntent.putExtra("custFirstName", "test user");
+                newPayIntent.putExtra("custFirstName", "SANeForce");
                 newPayIntent.putExtra("customerEmailID", "test@gmail.com");
-                newPayIntent.putExtra("customerMobileNo", "8888888888");
+                newPayIntent.putExtra("customerMobileNo", "9876543210");
                 newPayIntent.putExtra("udf1", "udf1");
                 newPayIntent.putExtra("udf2", "udf2");
                 newPayIntent.putExtra("udf3", "udf3");
                 newPayIntent.putExtra("udf4", "udf4");
                 newPayIntent.putExtra("udf5", "udf5");
                 startActivityForResult(newPayIntent,1);
+
+
+                /*newPayIntent.putExtra("merchantId", "317159");
+                newPayIntent.putExtra("password", "Test@123");
+                newPayIntent.putExtra("prodid", "NSE");
+                newPayIntent.putExtra("txncurr", "INR");
+                newPayIntent.putExtra("custacc", "9876543210");
+                newPayIntent.putExtra("amt","30.00");
+                newPayIntent.putExtra("txnid", Common_Class.GetEkey());
+                newPayIntent.putExtra("signature_request", "KEY1234567234");
+                newPayIntent.putExtra("signature_response", "KERESPY1234567234");
+                newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
+                newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
+                newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+                newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
+                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
+                newPayIntent.putExtra("isLive", false);
+                newPayIntent.putExtra("custFirstName", "SANeForce");
+                newPayIntent.putExtra("customerEmailID", "test@gmail.com");
+                newPayIntent.putExtra("customerMobileNo", "9876543210");
+                newPayIntent.putExtra("udf1", "udf1");
+                newPayIntent.putExtra("udf2", "udf2");
+                newPayIntent.putExtra("udf3", "udf3");
+                newPayIntent.putExtra("udf4", "udf4");
+                newPayIntent.putExtra("udf5", "udf5");
+                startActivityForResult(newPayIntent,1);*/
 
                 /*if (PaymentMethod == null) {
                     Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
@@ -415,6 +492,30 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         recyclerView = findViewById(R.id.orderrecyclerview);
         freeRecyclerview = findViewById(R.id.freeRecyclerview);
         ivToolbarHome = findViewById(R.id.toolbar_home);
+        selectDeliveryAddress = findViewById(R.id.selectDeliveryAddress);
+
+    }
+
+    private void getStockistAddress() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_stockist_address");
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                addressArray = new JSONArray();
+                Executors.newSingleThreadExecutor().execute(() -> {
+                    try {
+                        addressArray = jsonObject.getJSONArray("response");
+                    } catch (Exception ignored) {
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String error) {
+                addressArray = new JSONArray();
+            }
+        });
     }
 
     public String createMultiProductData() {
@@ -1045,6 +1146,11 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             HeadItem.put("lastOrderedAmount", formatter.format(lastOrderedAmount));
                             HeadItem.put("DataSF", Shared_Common_Pref.Sf_Code);
                             HeadItem.put("AppVer", BuildConfig.VERSION_NAME);
+                            HeadItem.put("addressId", _id);
+                            HeadItem.put("title", _title);
+                            HeadItem.put("erpCode", _erpCode);
+                            HeadItem.put("stateCode", _stateCode);
+                            HeadItem.put("pincode", _pincode);
                             ActivityData.put("Activity_Report_Head", HeadItem);
 
                             JSONObject OutletItem = new JSONObject();

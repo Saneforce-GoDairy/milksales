@@ -300,12 +300,9 @@ public class Nearby_Outlets extends AppCompatActivity implements View.OnClickLis
     }
 
     void callRetailUpdateScreen(JsonObject jItem) {
-        Intent intent = new Intent(this, AddNewRetailer.class);
-        intent.putExtra("OutletCode", jItem.get("Code").getAsString());
-        intent.putExtra("OutletName", jItem.get("Name").getAsString());
-        intent.putExtra("OutletAddress", jItem.get("Add1").getAsString());
-        intent.putExtra("OutletMobile", jItem.get("Mobile").getAsString());
-        intent.putExtra("OutletRoute", "");
+        Intent intent = new Intent(getApplicationContext(), AddNewRetailer.class);
+        intent.putExtra("outletCode", jItem.get("Code").getAsString());
+        intent.putExtra("flag", "2");
         startActivity(intent);
     }
 
@@ -599,15 +596,9 @@ public class Nearby_Outlets extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.Createoutlet:
-                Shared_Common_Pref.OutletAvail = "";
-                Shared_Common_Pref.OutletUniv = "";
-                Shared_Common_Pref.Outler_AddFlag = "1";
-                Shared_Common_Pref.Editoutletflag = "0";
-                Shared_Common_Pref.OutletAvail = "";
-                Shared_Common_Pref.OutletUniv = "";
-                Shared_Common_Pref.Outlet_Info_Flag = "0";
-                common_class.CommonIntentwithFinish(AddNewRetailer.class);
-                //startActivity (Nearby_Outlets.this, AddNewRetailer.class);
+                Intent intent = new Intent(getApplicationContext(), AddNewRetailer.class);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.llNearMe:
                 llExplore.setBackgroundColor(Color.TRANSPARENT);
