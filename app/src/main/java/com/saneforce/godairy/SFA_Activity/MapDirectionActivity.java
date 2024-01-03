@@ -217,7 +217,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                      */
                     
                     SupportMapFragment supportMapFragment1 = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.my_team_map);
-                    if (supportMapFragment1 != null) {
+                    if(supportMapFragment1 != null) {
                         supportMapFragment1.getMapAsync(MapDirectionActivity.this);
                     }
                 }
