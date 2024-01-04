@@ -848,6 +848,47 @@ public interface ApiInterface {
                                                 @Query("active_flag") String active_flag,
                                                 @Query("created_dt") String created_dt);
 
+
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcVeterinary(@Query("axn") String axn,
+                                            @Query("company") String company,
+                                            @Query("plant") String plant,
+                                            @Query("center_name") String center_name,
+                                            @Query("farmer_name") String farmer_name,
+                                            @Query("service_type") String service_type,
+                                            @Part MultipartBody.Part image1,
+                                            @Query("product_type") String product_type,
+                                            @Query("seed_sale") String seed_sale,
+                                            @Query("mineral_mixture") String mineral_mixture,
+                                            @Query("fodder_setts_sale_kg") String fodder_setts_sale_kg,
+                                            @Query("cattle_feed_order_kg") String cattle_feed_order_kg,
+                                            @Query("teat_dip_cup") String teat_dip_cup,
+                                            @Query("evm_treatment") String evm_treatment,
+                                            @Query("case_type") String case_type,
+                                            @Query("identified_farmer_count") String identified_farmer_count,
+                                            @Query("farmer_enrolled") String farmer_enrolled,
+                                            @Query("farmer_inducted") String farmer_inducted);
+
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcAIT(@Query("axn") String axn,
+                                     @Query("company") String company,
+                                     @Query("plant") String plant,
+                                     @Query("center_name") String center_name,
+                                     @Query("farmer_name_code") String farmer_name_code,
+                                     @Query("breed_name") String breed_name,
+                                     @Part MultipartBody.Part image1,
+                                     @Query("service_type_ai") String service_type_ai,
+                                     @Query("service_type2") String service_type2,
+                                     @Query("pd_verification") String pd_verification,
+                                     @Query("calfbirth_verification") String calfbirth_verification,
+                                     @Query("mineral_mixture_kg") String mineral_mixture_kg,
+                                     @Query("seed_sales") String seed_sales,
+                                     @Query("active_flag") String active_flag,
+                                     @Query("created_dt") String created_dt);
+
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

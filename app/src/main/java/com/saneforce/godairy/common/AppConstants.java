@@ -13,6 +13,8 @@ public class AppConstants {
  public static final String PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION = "save/proc_coll_center";
  public static final String PROCUREMENT_SUBMIT_FARMER_CREATION = "save/proc_farmer_creation";
  public static final String PROCUREMENT_SUBMIT_AGRONOMIST = "save/proc_agronomist";
+ public static final String PROCUREMENT_SUBMIT_VETERINARY = "save/proc_veterinary";
+ public static final String PROCUREMENT_SUBMIT_AIT = "save/proc_ait";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}

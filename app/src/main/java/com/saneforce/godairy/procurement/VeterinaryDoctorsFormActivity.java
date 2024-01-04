@@ -1,22 +1,43 @@
 package com.saneforce.godairy.procurement;
 
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityVeterinaryDoctorsFormBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
     private ActivityVeterinaryDoctorsFormBinding binding;
@@ -43,10 +64,7 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
 
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-                R.array.plant_array, R.layout.custom_spinner);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter2);
+        loadPlant();
 
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
                 R.array.veterinary_type_of_service_array, R.layout.custom_spinner);
@@ -69,6 +87,46 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         binding.spinnerTypeOfCases.setAdapter(adapter5);
 
 
+    }
+
+    private void loadPlant() {
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String plantList;
+                    try {
+                        plantList = response.body().string();
+
+                        JSONArray jsonArray = new JSONArray(plantList);
+                        List<String> list = new ArrayList<>();
+                        list.add("Select");
+
+                        for (int i = 0; i<jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            String plantName = object.optString("Plant_Name");
+
+                            binding.spinnerPlant.setPrompt(plantName);
+                            list.add(plantName);
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spinnerPlant.setAdapter(adapter);
+                    } catch (IOException | JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
     private void onClick() {
@@ -122,7 +180,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
 
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
-                Toast.makeText(context, "valid", Toast.LENGTH_SHORT).show();
                 saveNow();
             }
         });
@@ -199,12 +256,186 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
+        binding.edCenterNameVisit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edFarmerCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edSeedSale.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edMineralMixture.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edFodderSettsSale.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edCattleFeedOrder.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edTeatDipCup.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edFamilyFarmDev.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+
+        binding.edNoOfFarmerEnrolled.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edNoOfFarmerInducted.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
 
         binding.back.setOnClickListener(view -> finish());
     }
 
     private void saveNow() {
+        String mActiveFlag = "1";
+        Intent serviceIntent = new Intent(this, FileUploadService2.class);
+        serviceIntent.putExtra("company", mCompanyName);
+        serviceIntent.putExtra("plant", mPlant);
+        serviceIntent.putExtra("center_name", mCenterName);
+        serviceIntent.putExtra("farmer_name", mFarmerName);
+        serviceIntent.putExtra("service_type", mTypeOfService);
+        serviceIntent.putExtra("product_type", mTypeOfProduct);
+        serviceIntent.putExtra("seed_sale", mSeedSales);
+        serviceIntent.putExtra("mineral_mixture", mMinaralMixture);
+        serviceIntent.putExtra("fodder_setts_sale_kg", mFodderSales);
+        serviceIntent.putExtra("cattle_feed_order_kg", mCattleOrder);
+        serviceIntent.putExtra("teat_dip_cup", mTeatTipCup);
+        serviceIntent.putExtra("evm_treatment", mEmergencyEvm);
+        serviceIntent.putExtra("case_type", mTypesOfCases);
+        serviceIntent.putExtra("identified_farmer_count", mFamilyFarmDev);
+        serviceIntent.putExtra("farmer_enrolled", mNoOfFarmersEnrolled);
+        serviceIntent.putExtra("farmer_inducted", mNoOfFarmersInducted);
+        serviceIntent.putExtra("active_flag", mActiveFlag);
+        serviceIntent.putExtra("upload_service_id", "4");
+        ContextCompat.startForegroundService(this, serviceIntent);
 
+        finish();
+        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
     }
 
     private boolean validateInputs() {
@@ -266,6 +497,7 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         }
         if (bitmapTypeOfSer == null){
             binding.txtImgTypeOfServiceNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("Select".equals(mTypeOfProduct)){
@@ -314,6 +546,7 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         }
         if (bitmapEVM == null){
             binding.txtImgEmerEvmNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("Select".equals(mTypesOfCases)){
@@ -357,12 +590,14 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
             binding.imageViewTypeOfServiceLayout.setVisibility(View.VISIBLE);
             binding.imageTypeOfService.setImageBitmap(bitmapTypeOfSer);
             binding.txtImgTypeOfServiceNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapEVM != null){
             binding.imageViewEmerEvmLayout.setVisibility(View.VISIBLE);
             binding.imageEmerEvm.setImageBitmap(bitmapEVM);
             binding.txtImgEmerEvmNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
     }
 }
