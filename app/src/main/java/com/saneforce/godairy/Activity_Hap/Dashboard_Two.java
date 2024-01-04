@@ -204,7 +204,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                             Thread.sleep(1000);
                             runOnUiThread(() -> {
                                 checkInTimer();
-                                Log.e(TAG, "Time counter : updated");
                             });
                         }
                     } catch (InterruptedException ignored) {
@@ -609,7 +608,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     }
     private void checkInTimer() {
         String checkInTimeStamp = timerDate + " " + timerTime;
-        Log.e(TAG, "Check in TimeStamp : " + checkInTimeStamp);
 
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
         Date d1;
