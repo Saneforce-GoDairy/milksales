@@ -9,9 +9,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +32,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -44,6 +50,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,6 +65,7 @@ import com.saneforce.godairy.Activity_Hap.Dashboard;
 import com.saneforce.godairy.Activity_Hap.MainActivity;
 import com.saneforce.godairy.Activity_Hap.SFA_Activity;
 import com.saneforce.godairy.BuildConfig;
+import com.saneforce.godairy.CCAvenue.InitiatePaymentActivity;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
@@ -71,6 +79,7 @@ import com.saneforce.godairy.Interface.LocationEvents;
 import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.Interface.onListItemClick;
+import com.saneforce.godairy.JioMoney.PaymentWebView;
 import com.saneforce.godairy.Model_Class.Datum;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
@@ -82,6 +91,7 @@ import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityPrimaryOrderLayoutBinding;
 import com.saneforce.godairy.universal.UniversalDropDownAdapter;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,7 +129,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     CircularProgressButton takeorder, btnRepeat;
     TextView Category_Nametext, selectDeliveryAddress,
             tvTimer, txBalAmt, txAmtWalt, txAvBal, tvDistId, tvDate, tvGrpName;
-    LinearLayout lin_orderrecyclerview, lin_gridcategory, rlAddProduct, llTdPriOrd, btnRefACBal,vwRplcDetail,llProdRplc;
+    LinearLayout lin_orderrecyclerview, lin_gridcategory, rlAddProduct, llTdPriOrd, btnRefACBal, vwRplcDetail, llProdRplc;
     Common_Class common_class;
     String Ukey;
     String[] strLoc;
@@ -173,6 +183,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
     String _id = "", _title = "", _erpCode = "", _stateCode = "", _pincode = "";
     JSONArray addressArray;
+    private RyclShortageListItemAdb ShortagelistItems;
+
+    String NTTDATAMerchantId = "", NTTDATAPassword = "", NTTDATAReqHashKey = "", encSaltRequest = "", encSaltResponse = "", NTTDATAResHashKey = "", NTTDATAProdID = "", NTTDATAAmount = "30.00";
+    boolean isLive = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -181,76 +195,76 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             binding = ActivityPrimaryOrderLayoutBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
 
-            // SearchView
-            mToolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setTitle("Search");
+        // SearchView
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Search");
 
-            ordersViewMode = getIntent().getStringExtra("Mode");
+        ordersViewMode = getIntent().getStringExtra("Mode");
 
-            // return to order view screen
-            if (ordersViewMode != null){
-                 if ("order_view".equals(ordersViewMode)){
-                     binding.newPrimaryListLayout.setVisibility(View.GONE);
-                     binding.oldPrimaryLayout.setVisibility(View.VISIBLE);
-                 }
+        // return to order view screen
+        if (ordersViewMode != null){
+            if ("order_view".equals(ordersViewMode)){
+                binding.newPrimaryListLayout.setVisibility(View.GONE);
+                binding.oldPrimaryLayout.setVisibility(View.VISIBLE);
             }
+        }
 
-            primaryOrderActivity = this;
-            selPOS = 0;
-            db = new DatabaseHandler(this);
-            sharedCommonPref = new Shared_Common_Pref(PrimaryOrderActivity.this);
-            UserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
-            common_class = new Common_Class(this);
+        primaryOrderActivity = this;
+        selPOS = 0;
+        db = new DatabaseHandler(this);
+        sharedCommonPref = new Shared_Common_Pref(PrimaryOrderActivity.this);
+        UserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        common_class = new Common_Class(this);
 
             iniVariable();
             initOnClickListner();
 
 
-            if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)) {
-                distributor_text.setText("HI! " + sharedCommonPref.getvalue(Constants.Distributor_name, ""));
-                distributor_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
-                tvTimer.setVisibility(View.VISIBLE);
-            } else {
-                distributor_text.setText(sharedCommonPref.getvalue(Constants.Distributor_name, ""));
-                distributor_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_round_arrow_drop_down_24, 0);
-                findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
-                tvTimer.setVisibility(View.VISIBLE);
-            }
+        if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)) {
+            distributor_text.setText("HI! " + sharedCommonPref.getvalue(Constants.Distributor_name, ""));
+            distributor_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
+            tvTimer.setVisibility(View.VISIBLE);
+        } else {
+            distributor_text.setText(sharedCommonPref.getvalue(Constants.Distributor_name, ""));
+            distributor_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_round_arrow_drop_down_24, 0);
+            findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
+            tvTimer.setVisibility(View.VISIBLE);
+        }
 
-            Product_ModalSetAdapter = new ArrayList<>();
-            gson = new Gson();
-            userType = new TypeToken<ArrayList<Product_Details_Modal>>() {
-            }.getType();
+        Product_ModalSetAdapter = new ArrayList<>();
+        gson = new Gson();
+        userType = new TypeToken<ArrayList<Product_Details_Modal>>() {
+        }.getType();
 
-            Ukey = Common_Class.GetEkey();
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            categorygrid.setLayoutManager(layoutManager);
+        Ukey = Common_Class.GetEkey();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        categorygrid.setLayoutManager(layoutManager);
 
-            getStockistAddress();
-            addressArray = new JSONArray();
-            selectDeliveryAddress.setOnClickListener(v -> {
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
-                View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv_and_filter, null, false);
-                builder.setView(view);
-                builder.setCancelable(false);
-                android.app.AlertDialog dialog = builder.create();
-                TextView title = view.findViewById(R.id.title);
-                title.setText("Select Address");
-                RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-                UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, addressArray);
-                TextView close = view.findViewById(R.id.close);
-                close.setOnClickListener(v1 -> dialog.dismiss());
-                EditText eT_Filter = view.findViewById(R.id.eT_Filter);
-                eT_Filter.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                eT_Filter.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
+        getStockistAddress();
+        addressArray = new JSONArray();
+        binding.selectDeliveryAddress.setOnClickListener(v -> {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv_and_filter, null, false);
+            builder.setView(view);
+            builder.setCancelable(false);
+            android.app.AlertDialog dialog = builder.create();
+            TextView title = view.findViewById(R.id.title);
+            title.setText("Select Address");
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, addressArray);
+            TextView close = view.findViewById(R.id.close);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            EditText eT_Filter = view.findViewById(R.id.eT_Filter);
+            eT_Filter.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            eT_Filter.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -320,78 +334,28 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.POS_NETAMT_TAX)))
                 common_class.getDb_310Data(Constants.POS_NETAMT_TAX, this);
 
-            getLastOrderedQty();
+        getLastOrderedQty();
 
-            // Todo: Select Payment Method
-            payNowButton.setOnClickListener(v -> {
-                Intent newPayIntent=new Intent (PrimaryOrderActivity.this, PayActivity.class);
-                newPayIntent.putExtra("merchantId", "317159");
-                newPayIntent.putExtra("password", "Test@123");
-                newPayIntent.putExtra("prodid", "NSE");
-                newPayIntent.putExtra("txncurr", "INR");
-                newPayIntent.putExtra("custacc", "100000036600");
-                newPayIntent.putExtra("amt","30.00");
-                newPayIntent.putExtra("txnid", Common_Class.GetEkey());
-                newPayIntent.putExtra("signature_request", "KEY123657234");
-                newPayIntent.putExtra("signature_response", "KEYRESP123657234");
-                newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
-                newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
-                newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-                newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-//                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
-                newPayIntent.putExtra("isLive", false);
-                newPayIntent.putExtra("custFirstName", "SANeForce");
-                newPayIntent.putExtra("customerEmailID", "test@gmail.com");
-                newPayIntent.putExtra("customerMobileNo", "9876543210");
-                newPayIntent.putExtra("udf1", "udf1");
-                newPayIntent.putExtra("udf2", "udf2");
-                newPayIntent.putExtra("udf3", "udf3");
-                newPayIntent.putExtra("udf4", "udf4");
-                newPayIntent.putExtra("udf5", "udf5");
-                startActivityForResult(newPayIntent,1);
-
-
-                /*newPayIntent.putExtra("merchantId", "317159");
-                newPayIntent.putExtra("password", "Test@123");
-                newPayIntent.putExtra("prodid", "NSE");
-                newPayIntent.putExtra("txncurr", "INR");
-                newPayIntent.putExtra("custacc", "9876543210");
-                newPayIntent.putExtra("amt","30.00");
-                newPayIntent.putExtra("txnid", Common_Class.GetEkey());
-                newPayIntent.putExtra("signature_request", "KEY1234567234");
-                newPayIntent.putExtra("signature_response", "KERESPY1234567234");
-                newPayIntent.putExtra("enc_request", "A4476C2062FFA58980DC8F79EB6A799E");
-                newPayIntent.putExtra("salt_request", "A4476C2062FFA58980DC8F79EB6A799E");
-                newPayIntent.putExtra("salt_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-                newPayIntent.putExtra("enc_response", "75AEF0FA1B94B3C10D4F5B268F757F11");
-                newPayIntent.putExtra("multi_products", createMultiProductData());  // comment this line if not required
-                newPayIntent.putExtra("isLive", false);
-                newPayIntent.putExtra("custFirstName", "SANeForce");
-                newPayIntent.putExtra("customerEmailID", "test@gmail.com");
-                newPayIntent.putExtra("customerMobileNo", "9876543210");
-                newPayIntent.putExtra("udf1", "udf1");
-                newPayIntent.putExtra("udf2", "udf2");
-                newPayIntent.putExtra("udf3", "udf3");
-                newPayIntent.putExtra("udf4", "udf4");
-                newPayIntent.putExtra("udf5", "udf5");
-                startActivityForResult(newPayIntent,1);*/
-
-                /*if (PaymentMethod == null) {
-                    Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
-                } else if (PaymentMethod.equalsIgnoreCase("CC")) {
-                    Intent intent = new Intent(this, InitiatePaymentActivity.class);
-                    intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
-                    intent.putExtra("totalValues", 1.00);
-                    startActivity(intent);
-                    finish();
-                } else if (PaymentMethod.equalsIgnoreCase("JM")) {
-                    Intent intent = new Intent(this, PaymentWebView.class);
-                    intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
-                    intent.putExtra("totalValues", 1.00);
-                    startActivity(intent);
-                    finish();
-                }*/
-            });
+        // Todo: Select Payment Method
+        binding.payNowButton.setOnClickListener(v -> {
+            if (PaymentMethod == null) {
+                Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
+            } else if (PaymentMethod.equalsIgnoreCase("CC")) {
+                Intent intent = new Intent(this, InitiatePaymentActivity.class);
+                intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
+                intent.putExtra("totalValues", 1.00);
+                startActivity(intent);
+                finish();
+            } else if (PaymentMethod.equalsIgnoreCase("JM")) {
+                Intent intent = new Intent(this, PaymentWebView.class);
+                intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
+                intent.putExtra("totalValues", 1.00);
+                startActivity(intent);
+                finish();
+            } else if (PaymentMethod.equalsIgnoreCase("nd")) {
+                StartNTTDataPayment();
+            }
+        });
 
         loadDistributer(common_class.getDistList(), 2);
     }
@@ -496,6 +460,60 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+    private void getNTTDataCredentials() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "get_nttdata_credentials");
+        Common_Class.makeApiCall(context, params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                try {
+                    Log.e("getNTTDataCredentials", "getNTTDataCredentials: " + jsonObject);
+                    JSONObject object = jsonObject.getJSONObject("response");
+                    NTTDATAMerchantId = object.optString("merchantID");
+                    NTTDATAPassword = object.optString("password");
+                    NTTDATAReqHashKey = object.optString("requestHashKey");
+                    NTTDATAResHashKey = object.optString("responseHashKey");
+                    encSaltRequest = object.optString("encSaltRequest");
+                    encSaltResponse = object.optString("encSaltResponse");
+                    NTTDATAProdID = object.optString("prodID");
+                    isLive = object.optBoolean("isLive");
+                } catch (JSONException ignored) { }
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
+    }
+
+    private void StartNTTDataPayment() { // Todo: StartNTTDataPayment
+        Intent newPayIntent = new Intent(PrimaryOrderActivity.this, PayActivity.class);
+        newPayIntent.putExtra("merchantId", NTTDATAMerchantId);
+        newPayIntent.putExtra("password", NTTDATAPassword);
+        newPayIntent.putExtra("signature_request", NTTDATAReqHashKey);
+        newPayIntent.putExtra("signature_response", NTTDATAResHashKey);
+        newPayIntent.putExtra("prodid", NTTDATAProdID);
+        newPayIntent.putExtra("enc_request", encSaltRequest);
+        newPayIntent.putExtra("enc_response", encSaltResponse);
+        newPayIntent.putExtra("salt_request", encSaltRequest);
+        newPayIntent.putExtra("salt_response", encSaltResponse);
+        newPayIntent.putExtra("amt", NTTDATAAmount);
+        newPayIntent.putExtra("isLive", isLive);
+        newPayIntent.putExtra("txnid", Common_Class.GetEkey());
+        newPayIntent.putExtra("custFirstName", sharedCommonPref.getvalue(Constants.Distributor_name));
+        newPayIntent.putExtra("customerMobileNo", sharedCommonPref.getvalue(Constants.Distributor_phone));
+        newPayIntent.putExtra("customerEmailID", "ragusaneforce@gmail.com");
+        newPayIntent.putExtra("txncurr", "INR");
+        newPayIntent.putExtra("custacc", "100000036600");
+        newPayIntent.putExtra("udf1", "");
+        newPayIntent.putExtra("udf2", "");
+        newPayIntent.putExtra("udf3", "");
+        newPayIntent.putExtra("udf4", "");
+        newPayIntent.putExtra("udf5", "");
+        startActivityForResult(newPayIntent, 1);
+    }
+
     private void getStockistAddress() {
         Map<String, String> params = new HashMap<>();
         params.put("axn", "get_stockist_address");
@@ -516,24 +534,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 addressArray = new JSONArray();
             }
         });
-    }
-
-    public String createMultiProductData() {
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObjOne = new JSONObject();
-        JSONObject jsonObjTwo = new JSONObject();
-        try {
-            jsonObjOne.put("prodName", "NSE");
-            jsonObjOne.put("prodAmount", 29.00);
-            jsonObjTwo.put("prodName", "AIPAY");
-            jsonObjTwo.put("prodAmount", 1.00);
-            jsonArray.put(jsonObjOne);
-            jsonArray.put(jsonObjTwo);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println("jsonArray from createMultiProductData = " + jsonArray.toString());
-        return jsonArray.toString();
     }
 
     private void getLastOrderedQty() {
@@ -1094,17 +1094,34 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("resultCode = "+resultCode);
-        System.out.println("onActivityResult data = "+data);
-        if(data != null && resultCode != 2 && requestCode == 1){
-            System.out.println("ArrayList data = "+data.getExtras().getString("response"));
-            if(resultCode == 1){
-                Toast.makeText(this,"Transaction Successful! \n" + data.getExtras().getString("response"), Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(this,"Transaction Failed! \n"  + data.getExtras().getString("response"), Toast.LENGTH_LONG).show();
+        Log.e("requestCode", "requestCode: " + requestCode);
+        Log.e("resultCode", "resultCode: " + resultCode);
+        if (requestCode == 1) {
+            try {
+                // Todo: nttdataTransaction
+                // Todo: generated JSON string
+                Log.e("nttdataTransaction", data.getExtras().getString("response"));
+            } catch (Exception ignored) {}
+            if (resultCode == 2) {
+                Toast.makeText(context, "Transaction cancelled by user...", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == 1) {
+                JSONObject object = PreparePaymentSave(data);
+                Map<String, String> params = new HashMap<>();
+                params.put("axn", "save_nttdata_transaction");
+                Common_Class.makeApiCall(context, params, object.toString(), new APIResult() {
+                    @Override
+                    public void onSuccess(JSONObject jsonObject) {
+                        ShowPaymentResult(data);
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        ShowPaymentResult(data);
+                    }
+                });
+            } else {
+                Toast.makeText(context, "Transaction failed...", Toast.LENGTH_SHORT).show();
             }
-        } else{
-            Toast.makeText(this,"Transaction Cancelled!", Toast.LENGTH_LONG).show();
         }
         if (requestCode == 1000) {
             String sLoc = sharedCommonPref.getvalue("CurrLoc");
@@ -1121,6 +1138,135 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 SaveOrder();
             }
         }
+    }
+
+    private void ShowPaymentResult(Intent data) {
+        try {
+            JSONObject jsonObject = new JSONObject(data.getExtras().getString("response"));
+            String merchTxnId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("merchDetails")
+                    .optString("merchTxnId");
+
+            String totalAmount = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("totalAmount");
+
+            String txnCompleteDate = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("txnCompleteDate");
+
+            String message = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("responseDetails")
+                    .optString("message");
+
+            Intent intent = new Intent(context, PaymentResult.class);
+            intent.putExtra("status", message);
+            intent.putExtra("transactionId", merchTxnId);
+            intent.putExtra("transactionAmount", totalAmount);
+            intent.putExtra("transactionDate", txnCompleteDate);
+            startActivity(intent);
+            finish();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JSONObject PreparePaymentSave(Intent data) {
+        JSONObject requestBody = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = new JSONObject(data.getExtras().getString("response"));
+            String merchId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("merchDetails")
+                    .optString("merchId");
+
+            String merchTxnId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("merchDetails")
+                    .optString("merchTxnId");
+
+            String merchTxnDate = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("merchDetails")
+                    .optString("merchTxnDate");
+
+            String atomTxnId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("atomTxnId");
+
+            String totalAmount = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("totalAmount");
+
+            String custAccNo = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("custAccNo");
+
+            String txnInitDate = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("txnInitDate");
+
+            String txnCompleteDate = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payDetails")
+                    .optString("txnCompleteDate");
+
+            String otsBankId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("otsBankId");
+
+            String otsBankName = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("otsBankName");
+
+            String bankTxnId = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("bankTxnId");
+
+            String cardType = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("cardType");
+
+            String cardMaskNumber = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("payModeSpecificData")
+                    .getJSONObject("bankDetails")
+                    .optString("cardMaskNumber");
+
+            String statusCode = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("responseDetails")
+                    .optString("statusCode");
+
+            String message = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("responseDetails")
+                    .optString("message");
+
+            String description = jsonObject.getJSONObject("payInstrument")
+                    .getJSONObject("responseDetails")
+                    .optString("description");
+
+            requestBody.put("stockistCode", sharedCommonPref.getvalue(Constants.Distributor_Id));
+            requestBody.put("stockistName", sharedCommonPref.getvalue(Constants.Distributor_name));
+            requestBody.put("merchId", merchId);
+            requestBody.put("merchTxnId", merchTxnId);
+            requestBody.put("merchTxnDate", merchTxnDate);
+            requestBody.put("atomTxnId", atomTxnId);
+            requestBody.put("totalAmount", totalAmount);
+            requestBody.put("custAccNo", custAccNo);
+            requestBody.put("txnInitDate", txnInitDate);
+            requestBody.put("txnCompleteDate", txnCompleteDate);
+            requestBody.put("otsBankId", otsBankId);
+            requestBody.put("otsBankName", otsBankName);
+            requestBody.put("bankTxnId", bankTxnId);
+            requestBody.put("cardType", cardType);
+            requestBody.put("cardMaskNumber", cardMaskNumber);
+            requestBody.put("statusCode", statusCode);
+            requestBody.put("message", message);
+            requestBody.put("description", description);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return requestBody;
     }
 
     private void SaveOrder() {
@@ -1185,7 +1331,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
                             for (int z = 0; z < Getorder_Array_List.size(); z++) {
                                 JSONObject ProdItem = new JSONObject();
-                               // ProdItem.put("product_Name", Getorder_Array_List.get(z).getName());
+                                // ProdItem.put("product_Name", Getorder_Array_List.get(z).getName());
                                 ProdItem.put("product_code", Getorder_Array_List.get(z).getId());
                                 ProdItem.put("Product_ERP", Getorder_Array_List.get(z).getERP_Code());
                                 ProdItem.put("Product_Qty", Getorder_Array_List.get(z).getQty());
@@ -1684,8 +1830,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 Product_Details_Modalitem.get(pos).setProductDetailsModal(taxList);
 
 
-               // Product_Details_Modalitem.get(pos).setAmount(Double.valueOf(formatter.format(Product_Details_Modalitem.get(pos).getAmount()
-               //         + wholeTax)));
+                // Product_Details_Modalitem.get(pos).setAmount(Double.valueOf(formatter.format(Product_Details_Modalitem.get(pos).getAmount()
+                //         + wholeTax)));
 
                 Product_Details_Modalitem.get(pos).setTax(Double.parseDouble(formatter.format(wholeTax)));
             }
@@ -1796,7 +1942,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             selPOS = 0;
             sharedCommonPref.clear_pref(Constants.LOC_PRIMARY_DATA);
             distributor_text.setText(myDataset.get(position).getName());
-            tvTotalAmount.setText(CurrencySymbol+" 0.00");
+            tvTotalAmount.setText(CurrencySymbol + " 0.00");
             tvTotalItems.setText("Items : 0");
             sharedCommonPref.save(Constants.Route_name, "");
             sharedCommonPref.save(Constants.Route_Id, "");
@@ -1951,6 +2097,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     if (myObject != null) {
                         JSONObject me = myObject.optJSONObject("response");
                         PaymentMethod = me.optString("PaymentGateway");
+                        if (PaymentMethod.equalsIgnoreCase("nd")) {
+                            getNTTDataCredentials();
+                        }
                     }
                     break;
 
@@ -2564,7 +2713,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                 holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
                                 if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()));
 
-
                             }
                             double EAAmt=0.0;
                             Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setReplace_qty("0");
@@ -2588,7 +2736,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
                             if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()));
                             holder.tvTaxLabel.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
-                           // holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()-Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
+                            // holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()-Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTax()));
                             updateToTALITEMUI();
 
 
@@ -2637,7 +2785,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                         public void PositiveMethod(DialogInterface dialog, int id) {
                                             Product_Details_Modalitem.get(position).setQty(0);
                                             Product_Details_Modalitem.remove(position);
-                                            notifyItemRemoved(position);
+                                            notifyDataSetChanged();
                                             updateToTALITEMUI();
                                         }
 
@@ -2680,8 +2828,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView productname, Rate, Amount, Disc, Free, lblRQty, productQty,lblFreeNm,
-                    QtyAmt, totalQty, tvTaxLabel, tvMRP, tvDefUOM, tvUomName, tvUomQty, tvMultiple, tvProERPCode,tvReplcQty;
+            public TextView productname, Rate, Amount, Disc, Free, lblRQty, productQty, lblFreeNm,
+                    QtyAmt, totalQty, tvTaxLabel, tvMRP, tvDefUOM, tvUomName, tvUomQty, tvMultiple, tvProERPCode, tvReplcQty;
             ImageView ImgVwProd, QtyPls, QtyMns, ivDel;
             EditText Qty;
             LinearLayout llFreeProd;
@@ -2700,7 +2848,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 Disc = view.findViewById(R.id.Disc);
                 tvTaxLabel = view.findViewById(R.id.tvTaxTotAmt);
                 tvDefUOM = view.findViewById(R.id.tvUOM);
-                lblFreeNm=view.findViewById(R.id.tvFreeProd);
+                lblFreeNm = view.findViewById(R.id.tvFreeProd);
 
                 if (CategoryType >= 0) {
                     tvMultiple = view.findViewById(R.id.tvMultiple);
@@ -2723,9 +2871,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     }
 
     public class Free_Adapter extends RecyclerView.Adapter<Free_Adapter.MyViewHolder> {
-        Context context;
         private final List<Product_Details_Modal> Product_Details_Modalitem;
         private final int rowLayout;
+        Context context;
 
 
         public Free_Adapter(List<Product_Details_Modal> Product_Details_Modalitem, int rowLayout, Context context, int Categorycolor) {
