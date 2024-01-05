@@ -231,7 +231,7 @@ public class FileUploadService2 extends Service {
         String mFarmerCount = intent.getStringExtra("identified_farmer_count");
         String mFarmerEnrolled = intent.getStringExtra("farmer_enrolled");
         String mFarmerInducted = intent.getStringExtra("farmer_inducted");
-
+        String mActiveFlag = intent.getStringExtra("active_flag");
 
         Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -265,7 +265,9 @@ public class FileUploadService2 extends Service {
                 mCaseType,
                 mFarmerCount,
                 mFarmerEnrolled,
-                mFarmerInducted);
+                mFarmerInducted,
+                mActiveFlag,
+                mTimeDate);
 
         call.enqueue(new Callback<>() {
             @Override

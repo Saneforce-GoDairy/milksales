@@ -288,7 +288,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                 binding.currentLocationName.setText(addresses.get(0).getFeatureName() + ", " + addresses.get(0).getLocality() +", " + addresses.get(0).getAdminArea() + ", " + addresses.get(0).getCountryName());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+           // throw new RuntimeException(e);
+            Toast.makeText(context, "Location error!", Toast.LENGTH_SHORT).show();
         }
 
         //new

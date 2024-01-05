@@ -832,7 +832,7 @@ public interface ApiInterface {
                                                     @Part MultipartBody.Part image);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcAgronomist(@Query("axn") String axn,
                                                 @Query("company") String company,
                                                 @Query("plant") String plant,
@@ -850,7 +850,7 @@ public interface ApiInterface {
 
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcVeterinary(@Query("axn") String axn,
                                             @Query("company") String company,
                                             @Query("plant") String plant,
@@ -868,10 +868,12 @@ public interface ApiInterface {
                                             @Query("case_type") String case_type,
                                             @Query("identified_farmer_count") String identified_farmer_count,
                                             @Query("farmer_enrolled") String farmer_enrolled,
-                                            @Query("farmer_inducted") String farmer_inducted);
+                                            @Query("farmer_inducted") String farmer_inducted,
+                                            @Query("active_flag") String active_flag,
+                                            @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcAIT(@Query("axn") String axn,
                                      @Query("company") String company,
                                      @Query("plant") String plant,
