@@ -890,6 +890,19 @@ public interface ApiInterface {
                                      @Query("active_flag") String active_flag,
                                      @Query("created_dt") String created_dt);
 
+    @POST("Db_v310.php")
+    Call<ResponseBody> submitProcAgentVisit(@Query("axn") String axn,
+                                     @Query("visit_agent") String visit_agent,
+                                     @Query("company") String company,
+                                     @Query("total_milk_available") String total_milk_available,
+                                     @Query("our_company_ltrs") String our_company_ltrs,
+                                     @Query("competitor_rate") String competitor_rate,
+                                     @Query("our_company_rate") String our_company_rate,
+                                     @Query("demand") String demand,
+                                     @Query("supply_start_dt") String supply_start_dt,
+                                     @Query("active_flag") String active_flag,
+                                     @Query("created_dt") String created_dt);
+
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
