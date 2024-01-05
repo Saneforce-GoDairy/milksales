@@ -2,6 +2,7 @@ package com.saneforce.godairy.Activity_Hap;
 
 import static com.saneforce.godairy.Common_Class.Common_Class.UserDetail;
 import static com.saneforce.godairy.Common_Class.Constants.CUSTOMER_DATA;
+import static com.saneforce.godairy.Common_Class.Constants.Retailer_OutletList;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -51,6 +52,7 @@ import com.saneforce.godairy.Interface.OnImagePickListener;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.HAPApp;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityAddNewRetailerBinding;
 import com.saneforce.godairy.universal.UniversalDropDownAdapter;
@@ -65,7 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
-public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallback, Master_Interface {
+public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallback, Master_Interface, UpdateResponseUI {
     ActivityAddNewRetailerBinding binding;
 
     String categoryID = "", categoryTITLE = "", subCategoryID = "", subCategoryTITLE = "", outletStatusID = "", outletStatusTITLE = "", deliveryTypeID = "", deliveryTypeTITLE = "", stateID = "", stateTITLE = "", shopImageName = "", shopImageFullPath = "", distGrpERP = "", distributorERP = "", divERP = "", customer_code = "", visiCoolerCompanyID = "", visiCoolerCompanyTITLE = "", routeID = "", routeTITLE = "", distributorID = "", distributorTITLE = "", uniqueKey = "", outletCode = "", flag = "";
@@ -73,6 +75,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
     JSONArray fieldDetailsArray, outletTypeArray, categoryListArray, subCategoryListArray, filteredSubCategoryListArray, visiCoolerCompanyArray, deliveryTypeArray, stateListArray, routeListArray;
 
     UniversalDropDownAdapter adapter;
+    AssistantClass assistantClass;
 
     Common_Class common_class;
     Shared_Common_Pref shared_common_pref;
@@ -96,6 +99,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         stateListArray = new JSONArray();
         routeListArray = new JSONArray();
 
+        assistantClass = new AssistantClass(context);
         common_class = new Common_Class(this);
         shared_common_pref = new Shared_Common_Pref(this);
         distGrpERP = shared_common_pref.getvalue(Constants.CusSubGrpErp);
@@ -457,6 +461,9 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                 public void PositiveMethod(DialogInterface dialog, int id) {
                     JSONObject object = new JSONObject();
                     try {
+                        if (flag.equals("2")) {
+                            object.put("outletCode", outletCode);
+                        }
                         object.put("distId", distributorID);
                         object.put("distName", distributorTITLE);
                         object.put("outletName", outletName);
@@ -513,6 +520,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void SaveOutlet(JSONObject object) {
+        assistantClass.showProgressDialog("Saving...", false);
         Log.e("SaveOutlet", "SaveOutlet: " + object.toString());
         Map<String, String> params = new HashMap<>();
         if (flag.equals("2")) {
@@ -524,33 +532,15 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         Common_Class.makeApiCall(context, params, object.toString(), new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
-                MyAlertDialog.show(context, "", jsonObject.optString("msg"), false, "Okay", "", new AlertBox() {
-                    @Override
-                    public void PositiveMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        finish();
-                    }
-
-                    @Override
-                    public void NegativeMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+                common_class.getDataFromApi(Retailer_OutletList, AddNewRetailer.this, false);
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithFinish(jsonObject.optString("msg"));
             }
 
             @Override
             public void onFailure(String error) {
-                MyAlertDialog.show(context, "", error, false, "Dismiss", "", new AlertBox() {
-                    @Override
-                    public void PositiveMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-
-                    @Override
-                    public void NegativeMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithDismiss(error);
             }
         });
     }
@@ -1100,5 +1090,10 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                 dialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void onLoadDataUpdateUI(String apiDataResponse, String key) {
+
     }
 }

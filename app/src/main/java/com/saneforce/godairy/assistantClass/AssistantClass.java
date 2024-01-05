@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -340,6 +342,15 @@ public class AssistantClass extends AppCompatActivity {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
             fusedLocationProviderClient = null;
             locationCallback = null;
+        }
+    }
+
+    public static void clearAppData(Context context) {
+        try {
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec("pm clear " + context.getPackageName());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

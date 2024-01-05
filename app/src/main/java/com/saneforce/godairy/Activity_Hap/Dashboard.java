@@ -56,6 +56,7 @@ import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.HAPApp;
 import com.saneforce.godairy.SFA_Activity.MapDirectionActivity;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.SANGPSTracker;
 import com.saneforce.godairy.databinding.ActivityDashboardBinding;
@@ -524,11 +525,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.notification.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
         binding.logout.setOnClickListener(v -> {
-                    common_class.clearLocData(Dashboard.this);
-                    shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
-                    shared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
-                    shared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
-                    shared_common_pref.clear_pref(Constants.LOGIN_DATA);
+                    db.deleteAllMasterData();
+                    shared_common_pref.clearAll();
+                    UserDetails.edit().clear().apply();
                     finishAffinity();
                     Intent Dashboard = new Intent(context, Login.class);
                     startActivity(Dashboard);
