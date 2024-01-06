@@ -96,7 +96,7 @@ public class AssistantClass extends AppCompatActivity {
         return adminInfo.getBoolean(key, false);
     }
 
-    public void makeApiCall(Map<String, Object> params, APIResult result) {
+    public void makeApiCall(Map<String, String> params, String data, APIResult result) {
         if (!isConnected()) {
             dismissProgressDialog();
             showAlertDialog("", "Internet connection required...", false, "Turn on", "", new AlertDialogClickListener() {
@@ -116,7 +116,7 @@ public class AssistantClass extends AppCompatActivity {
             return;
         }
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseBody> call = apiInterface.getDataFromMyPHP(params);
+        Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
