@@ -281,10 +281,10 @@ public class Dashboard_Route extends AppCompatActivity implements View.OnClickLi
                 public void onClick(View v) {
                     if(fltrView.getVisibility()==View.GONE) {
                         fltrView.setVisibility(View.VISIBLE);
-                        btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_btnfilter_off));
+                        btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_btnfilter));
                     }else{
                         fltrView.setVisibility(View.GONE);
-                        btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_btnfilter));
+                        btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_btnfilter_off));
                     }
                 }
             });
@@ -817,6 +817,104 @@ public class Dashboard_Route extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.CHECKIN_TYPE)) {
+            tvDistributor.setVisibility(View.GONE);
+        }
+        userTypeRetailor = new TypeToken<ArrayList<Retailer_Modal_List>>() {
+        }.getType();
+
+        if (shared_common_pref.getvalue(Shared_Common_Pref.DCRMode).equalsIgnoreCase("SR")) {
+            headtext.setText("SALES RETURN");
+        }
+
+        Retailer_Modal_ListFilter = new ArrayList<>();
+        Retailer_Modal_List = new ArrayList<>();
+        if (!shared_common_pref.getvalue(Constants.Distributor_Id).equals("")) {
+
+            if (shared_common_pref.getvalue(Constants.DivERP).equalsIgnoreCase("21")) {
+                categoryType = "-18";
+                findViewById(R.id.cvCatTypeParent).setVisibility(View.VISIBLE);
+            } else
+                findViewById(R.id.cvCatTypeParent).setVisibility(View.GONE);
+
+            common_class.getDb_310Data(Constants.RETAILER_STATUS, this);
+            common_class.getDb_310Data(Rout_List, this);
+            getLastInvoiceData();
+            String outletserializableob = shared_common_pref.getvalue(Constants.Retailer_OutletList);
+            Retailer_Modal_List = gson.fromJson(outletserializableob, userTypeRetailor);
+            distributor_text.setText(shared_common_pref.getvalue(Constants.Distributor_name));
+            tvDistributor.setText(shared_common_pref.getvalue(Constants.Distributor_name));
+            loadroute();
+
+
+            if (!shared_common_pref.getvalue(Route_Id).equals("")) {
+                route_text.setText(shared_common_pref.getvalue(Constants.Route_name));
+            }
+            if (Retailer_Modal_List != null) {
+
+                String todayorderliost = String.valueOf(db.getMasterData(Constants.Outlet_Total_Orders));
+
+                userTypeReport = new TypeToken<ArrayList<OutletReport_View_Modal>>() {
+                }.getType();
+                Retailer_Order_List = gson.fromJson(todayorderliost, userTypeReport);
+                if (Retailer_Modal_List != null && Retailer_Modal_List.size() > 0) {
+                    for (int i = 0; Retailer_Modal_List.size() > i; i++) {
+                        for (int j = 0; Retailer_Order_List.size() > j; j++) {
+                            if (Retailer_Modal_List.get(i).getId().equals(Retailer_Order_List.get(j).getOutletCode())) {
+                                Log.e("Invoice_Flag", Retailer_Order_List.get(j).getInvoice_Flag());
+                                if (Retailer_Order_List.get(j).getInvoice_Flag().equals("2")) {
+                                    Retailer_Modal_List.get(i).setInvoiceDate(Retailer_Order_List.get(j).getOrderDate());
+                                    Retailer_Modal_List.get(i).setInvoiceValues(String.valueOf(Retailer_Order_List.get(j).getInvoicevalues()));
+                                    Retailer_Modal_List.get(i).setStatusname(String.valueOf(Retailer_Order_List.get(j).getStatus()));
+                                    Retailer_Modal_List.get(i).setInvoice_Flag(Retailer_Order_List.get(j).getInvoice_Flag());
+                                    Retailer_Modal_List.get(i).setValuesinv("" + Retailer_Order_List.get(j).getOrderValue());
+                                } else {
+                                    Retailer_Modal_List.get(i).setInvoice_Flag(Retailer_Order_List.get(j).getInvoice_Flag());
+                                }
+                            }
+                        }
+                    }
+                }
+                Retailer_Modal_ListFilter.clear();
+                sDeptType = UserDetails.getString("DeptType", "");
+                sDeptType = "1";
+                btnCmbRoute.setVisibility(View.VISIBLE);
+
+            }
+
+
+        } else {
+            btnCmbRoute.setVisibility(View.GONE);
+        }
+
+        setPagerAdapter(false);
+        createTabFragment();
+
+        if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+            distributor_text.setEnabled(false);
+            findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
+        }
+
+        Type commonType = new TypeToken<ArrayList<Common_Model>>() {
+        }.getType();
+
+        //  if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.RETAIL_CHANNEL)))//subCategory
+        //  getRetailerChannel();
+
+//            else {
+//                modelRetailChannel = gson.fromJson(shared_common_pref.getvalue(Constants.RETAIL_CHANNEL), commonType);
+//                rvMasterCategory.setAdapter(new OutletCategoryFilterAdapter(modelRetailChannel, this, new AdapterOnClick() {
+//                    @Override
+//                    public void CallMobile(String categoryName) {
+//                        setOutletCategoryAdapter();
+//                    }
+//                }));
+
+        // }
+
+
+        setOutletCategoryAdapter();
+        getGroupOutletCategory();
 
         if (!Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.Distributor_Id)) && !distributor_text.getText().toString().equalsIgnoreCase(shared_common_pref.getvalue(Constants.Distributor_name))) {
             route_text.setText(shared_common_pref.getvalue(Constants.Route_name));
