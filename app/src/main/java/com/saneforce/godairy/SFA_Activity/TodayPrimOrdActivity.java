@@ -105,13 +105,13 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             sharedCommonPref = new Shared_Common_Pref(TodayPrimOrdActivity.this);
             common_class = new Common_Class(this);
             common_class.getDb_310Data(Constants.GroupFilter, this);
-            common_class.getDataFromApi(Constants.GetTodayPrimaryOrder_List, this, false);
             iniVariable();
             intialize();
             onClickListener();
             common_class.gotoHomeScreen(this, ivToolbarHome);
             stDate = Common_Class.GetDatewothouttime();
             endDate = Common_Class.GetDatewothouttime();
+            common_class.getDataFromApi(Constants.GetTodayPrimaryOrder_List, this, false);
             binding.tvStartDate.setText(stDate);
             binding.tvEndDate.setText(endDate);
             primaryNoOrderListsMain = new ArrayList<>();
