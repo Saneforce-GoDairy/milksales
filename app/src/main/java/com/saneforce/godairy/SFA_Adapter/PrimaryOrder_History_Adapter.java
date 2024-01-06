@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.saneforce.godairy.Interface.AdapterOnClick;
@@ -38,44 +39,64 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOrder_History_Adapter.MyViewHolder> {
+public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
     JSONArray mDate;
     AdapterOnClick mAdapterOnClick;
+
+    private static final int VIEW_TYPE_ONE = 1;
+    private static final int VIEW_TYPE_TWO = 2;
 
 
     public PrimaryOrder_History_Adapter(Context context, JSONArray mDate, AdapterOnClick mAdapterOnClick) {
         this.context = context;
         this.mDate = mDate;
         this.mAdapterOnClick = mAdapterOnClick;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        try {
+            if (mDate.getJSONObject(position).optString("Status").equalsIgnoreCase("order")) {
+                return VIEW_TYPE_ONE;
+            }
+        } catch (JSONException ignored) { }
+        return VIEW_TYPE_TWO;
     }
 
     @NonNull
     @Override
-    public PrimaryOrder_History_Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem = layoutInflater.inflate(R.layout.primaryorder_history_recyclerview, null, false);
-
-        return new PrimaryOrder_History_Adapter.MyViewHolder(listItem);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_ONE) {
+            return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.primaryorder_history_recyclerview, parent, false));
+        }
+        return new MyViewHolder2(LayoutInflater.from(context).inflate(R.layout.model_no_order_reason_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(PrimaryOrder_History_Adapter.MyViewHolder holder, int position) {
-        try {
-            JSONObject obj = mDate.getJSONObject(position);
-            holder.txtOrderDate.setText("" + obj.getString("Order_Date"));
-            holder.txtOrderID.setText(obj.getString("OrderNo"));
-            holder.txtValue.setText("" + new DecimalFormat("##0.00").format(Double.parseDouble(obj.getString("Order_Value"))));
-            holder.Itemcountinvoice.setText(obj.getString("Status"));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (holder.getItemViewType()) {
+            case VIEW_TYPE_TWO:
+                ((MyViewHolder2) holder).text.setText(mDate.optJSONObject(holder.getBindingAdapterPosition()).optString("distribute_name"));
+                ((MyViewHolder2) holder).txtReason.setText(mDate.optJSONObject(holder.getBindingAdapterPosition()).optString("reason"));
+                ((MyViewHolder2) holder).txtDate.setText(mDate.optJSONObject(holder.getBindingAdapterPosition()).optString("date_time"));
+                return;
+        }
 
-            String isPaid = mDate.getJSONObject(holder.getBindingAdapterPosition()).optString("isPaid");
+        try {
+            JSONObject obj = mDate.getJSONObject(holder.getBindingAdapterPosition());
+            ((MyViewHolder) holder).txtOrderDate.setText("" + obj.getString("Order_Date"));
+            ((MyViewHolder) holder).txtOrderID.setText(obj.getString("OrderNo"));
+            ((MyViewHolder) holder).txtValue.setText("" + new DecimalFormat("##0.00").format(Double.parseDouble(obj.getString("Order_Value"))));
+            ((MyViewHolder) holder).Itemcountinvoice.setText(obj.getString("Status"));
+
+            String isPaid = mDate.getJSONObject(((MyViewHolder) holder).getBindingAdapterPosition()).optString("isPaid");
             if (isPaid.equalsIgnoreCase("")) {
-                holder.payNow.setText("Pay Now");
-                holder.payNow.setBackground(context.getResources().getDrawable(R.drawable.app_theme_button));
-                holder.payNow.setVisibility(View.VISIBLE);
-                holder.payNow.setOnClickListener(v -> {
+                ((MyViewHolder) holder).payNow.setText("Pay Now");
+                ((MyViewHolder) holder).payNow.setBackground(context.getResources().getDrawable(R.drawable.app_theme_button));
+                ((MyViewHolder) holder).payNow.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).payNow.setOnClickListener(v -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setCancelable(true);
                     builder.setMessage("Select a payment method to continue");
@@ -86,7 +107,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
                         AlertDialog.Builder builders = new AlertDialog.Builder(context);
                         builders.setCancelable(true);
                         builders.setMessage("In offline payment, a challan will be created. You can make payment using this challan at your nearest Axis bank. Do you want to create a challan?");
-                        builders.setPositiveButton("Yes", (dialog1, which1) -> CreateChallan(holder.getBindingAdapterPosition()));
+                        builders.setPositiveButton("Yes", (dialog1, which1) -> CreateChallan(((MyViewHolder) holder).getBindingAdapterPosition()));
                         builders.setNegativeButton("No", (dialog1, which1) -> dialog.dismiss());
                         builders.create().show();
                     });
@@ -94,9 +115,9 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
                     builder.create().show();
                 });
             } else if (isPaid.equalsIgnoreCase("paid")) {
-                holder.payNow.setText("PAID");
-                holder.payNow.setBackground(context.getResources().getDrawable(R.drawable.button_success));
-                holder.payNow.setOnClickListener(v -> {
+                ((MyViewHolder) holder).payNow.setText("PAID");
+                ((MyViewHolder) holder).payNow.setBackground(context.getResources().getDrawable(R.drawable.button_success));
+                ((MyViewHolder) holder).payNow.setOnClickListener(v -> {
                     try {
                         Intent intent = new Intent(context, ChallanActivity.class);
                         intent.putExtra("invoice", obj.getString("OrderNo"));
@@ -106,9 +127,9 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
                     }
                 });
             } else {
-                holder.payNow.setText("PENDING");
-                holder.payNow.setBackground(context.getResources().getDrawable(R.drawable.button_pending));
-                holder.payNow.setOnClickListener(v -> {
+                ((MyViewHolder) holder).payNow.setText("PENDING");
+                ((MyViewHolder) holder).payNow.setBackground(context.getResources().getDrawable(R.drawable.button_pending));
+                ((MyViewHolder) holder).payNow.setOnClickListener(v -> {
                     try {
                         Intent intent = new Intent(context, ChallanActivity.class);
                         intent.putExtra("invoice", obj.getString("OrderNo"));
@@ -121,34 +142,34 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
 
             try {
                 if (obj.getInt("editmode") == 0)
-                    holder.llEdit.setVisibility(View.VISIBLE);
+                    ((MyViewHolder) holder).llEdit.setVisibility(View.VISIBLE);
                 else
-                    holder.llEdit.setVisibility(View.GONE);
+                    ((MyViewHolder) holder).llEdit.setVisibility(View.GONE);
             } catch (Exception e) {
 
             }
 
-            if (mDate.getJSONObject(holder.getBindingAdapterPosition()).optDouble("Order_Value") < mDate.getJSONObject(holder.getBindingAdapterPosition()).optDouble("lastOrderedValue")) {
-                holder.lowOrder.setVisibility(View.VISIBLE);
+            if (mDate.getJSONObject(((MyViewHolder) holder).getBindingAdapterPosition()).optDouble("Order_Value") < mDate.getJSONObject(holder.getBindingAdapterPosition()).optDouble("lastOrderedValue")) {
+                ((MyViewHolder) holder).lowOrder.setVisibility(View.VISIBLE);
             } else {
-                holder.lowOrder.setVisibility(View.GONE);
+                ((MyViewHolder) holder).lowOrder.setVisibility(View.GONE);
             }
 
 
-            holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            ((MyViewHolder) holder).linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mAdapterOnClick.onIntentClick(position);
+                    mAdapterOnClick.onIntentClick(holder.getBindingAdapterPosition());
                 }
             });
 
-            holder.llEdit.setOnClickListener(new View.OnClickListener() {
+            ((MyViewHolder) holder).llEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
-                        mAdapterOnClick.onEditOrder(mDate.getJSONObject(position).getString("Trans_Sl_No"),
-                                mDate.getJSONObject(position).getString("cutoff_time"),
-                                mDate.getJSONObject(position).getString("category_type"));
+                        mAdapterOnClick.onEditOrder(mDate.getJSONObject(holder.getBindingAdapterPosition()).getString("Trans_Sl_No"),
+                                mDate.getJSONObject(holder.getBindingAdapterPosition()).getString("cutoff_time"),
+                                mDate.getJSONObject(holder.getBindingAdapterPosition()).getString("category_type"));
                     } catch (Exception e) {
 
                     }
@@ -156,7 +177,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
                 }
             });
 
-            holder.tvCutoff.setText("Cutoff Time:" + obj.getString("cutoff_time"));
+            ((MyViewHolder) holder).tvCutoff.setText("Cutoff Time:" + obj.getString("cutoff_time"));
 
         } catch (Exception e) {
             Log.v("primAdapter:", e.getMessage());
@@ -237,11 +258,23 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
         return mDate.length();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder2 extends RecyclerView.ViewHolder {
+        TextView text, txtReason, txtDate;
+        CardView layout;
+
+        public MyViewHolder2(View view) {
+            super(view);
+            text = view.findViewById(R.id.txt_name);
+            layout = view.findViewById(R.id.layout);
+            txtReason = view.findViewById(R.id.txt_reason);
+            txtDate = view.findViewById(R.id.txt_date);
+        }
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView txtOrderDate, txtOrderID, txtValue, Itemcountinvoice, tvCutoff, payNow;
         LinearLayout linearLayout, llEdit;
         View lowOrder;
-
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -254,8 +287,6 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
             tvCutoff = itemView.findViewById(R.id.tvCutOffTime);
             lowOrder = itemView.findViewById(R.id.lowOrder);
             payNow = itemView.findViewById(R.id.payNow);
-
-
         }
     }
 }
