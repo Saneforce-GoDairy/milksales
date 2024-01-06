@@ -785,7 +785,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 Date d1 = sdf.parse(Common_Class.GetTime());
                 Date d2 = sdf.parse(slotList.get(i).getTm());
                 long elapsed = d2.getTime() - d1.getTime();
-                Log.v(TAG + "time:" + slotList.get(i).getTm(), "Elapse:" + elapsed + ":val" + val);
+                ///Log.v(TAG + "time:" + slotList.get(i).getTm(), "Elapse:" + elapsed + ":val" + val);
                 if ((val == 0 && elapsed > 0) || (elapsed < val && elapsed > 0)) {
                     val = elapsed;
                     time = slotList.get(i).getTm();
