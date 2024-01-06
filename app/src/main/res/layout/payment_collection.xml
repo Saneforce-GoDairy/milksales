@@ -27,7 +27,7 @@
                     android:id="@+id/AppTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="HAP DAILY"
+                    android:text="@string/app_name"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -185,10 +185,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/pay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pay Now Selected Bills"
                 android:background="@drawable/button_green"
+                android:backgroundTint="@color/button_color_with_disable"
                 android:textColor="@color/white"
                 android:padding="@dimen/C16dp"
                 android:textAlignment="center"

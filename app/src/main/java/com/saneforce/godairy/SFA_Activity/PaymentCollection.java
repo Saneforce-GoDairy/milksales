@@ -1,6 +1,7 @@
 package com.saneforce.godairy.SFA_Activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,22 +25,30 @@ import com.saneforce.godairy.Activity_Hap.Common_Class;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AdapterOnClick;
+import com.saneforce.godairy.Interface.AdapterSingleClickListener;
+import com.saneforce.godairy.Interface.AdapterTwoClickListener;
+import com.saneforce.godairy.Interface.AlertDialogClickListener;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.OutletCategoryFilterAdapter;
+import com.saneforce.godairy.SFA_Model_Class.ModelPaymentCollection;
+import com.saneforce.godairy.assistantClass.AssistantClass;
+import com.saneforce.godairy.databinding.PaymentCollectionBinding;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PaymentCollection extends AppCompatActivity {
+    PaymentCollectionBinding binding;
     private SharedPreferences CheckInDetails, UserDetails;
     public static final String CheckInDetail = "CheckInDetail";
     public static final String UserDetail = "MyPrefs";
@@ -45,13 +56,22 @@ public class PaymentCollection extends AppCompatActivity {
     Shared_Common_Pref shared_common_pref;
     RecyclerView rvBillDets;
     TextView tvACBal,outlet_name,tvDistId;
+    ArrayList<ModelPaymentCollection> list;
+    AssistantClass assistantClass;
+    Context context = this;
+    boolean isMultipleSelected;
+    Bills_Adapter adapter;
 @Override
 protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.payment_collection);
+    binding = PaymentCollectionBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
     CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
     UserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
 
+    isMultipleSelected = false;
+    list = new ArrayList<>();
+    assistantClass = new AssistantClass(context);
     shared_common_pref = new Shared_Common_Pref(this);
     rvBillDets=findViewById(R.id.rvBillDets);
     tvACBal=findViewById(R.id.tvACBal);
@@ -66,6 +86,9 @@ protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
 //    }
     getPndBills();
+    binding.pay.setOnClickListener(v -> {
+        Toast.makeText(context, "Multiple Payment Clicked", Toast.LENGTH_SHORT).show();
+    });
 
 }
 
@@ -82,12 +105,47 @@ protected void onCreate(@Nullable Bundle savedInstanceState) {
                     Log.d("Pending Bills", String.valueOf(res));
                    JSONArray PndBills= res.getJSONArray("response");
                    double totAmt=0.0;
+                   list = new ArrayList<>();
                    for(int li=0;li<PndBills.length();li++){
                        JSONObject item = PndBills.getJSONObject(li);
+                       String InvoiceNo = item.optString("InvoiceNo");
+                       String InvDate = item.optString("InvDate");
+                       double BillAmount = item.optDouble("BillAmount");
+                       double PendAmt = item.optDouble("PendAmt");
+                       list.add(new ModelPaymentCollection(InvoiceNo, InvDate, BillAmount, PendAmt, false));
                        totAmt+=item.getDouble("PendAmt");
                    }
                     tvACBal.setText(new DecimalFormat("##0.00").format(totAmt));
-                    rvBillDets.setAdapter(new Bills_Adapter(PndBills,R.layout.ada_payprimarybills, PaymentCollection.this));
+                    adapter = new Bills_Adapter(list, R.layout.ada_payprimarybills, PaymentCollection.this, new AdapterTwoClickListener() {
+                        @Override
+                        public void onClickOne(int position) {
+                            assistantClass.showAlertDialog(PndBills.optJSONObject(position).optString("InvoiceNo"), "Select a payment mode", true, "Online", "Offline", new AlertDialogClickListener() {
+                                @Override
+                                public void onPositiveButtonClick(DialogInterface dialog) {
+                                    Toast.makeText(context, "Online Payment method selected", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onNegativeButtonClick(DialogInterface dialog) {
+                                    Toast.makeText(context, "Offline Payment method selected", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onClickTwo(int position) {
+                            int checked = 0;
+                            for (ModelPaymentCollection item : list) {
+                                if (item.isChecked()) {
+                                    checked ++;
+                                }
+                            }
+                            isMultipleSelected = checked > 1;
+                            binding.pay.setEnabled(isMultipleSelected);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                    rvBillDets.setAdapter(adapter);
                 } catch (Exception ignored) {
                 }
             }
@@ -98,18 +156,18 @@ protected void onCreate(@Nullable Bundle savedInstanceState) {
             }
         });
     }
+
     public class Bills_Adapter extends RecyclerView.Adapter<Bills_Adapter.MyViewHolder> {
         Context context;
-        JSONArray dataList;
+        ArrayList<ModelPaymentCollection> list;
         private final int rowLayout;
+        AdapterTwoClickListener listener;
 
-
-        public Bills_Adapter(JSONArray data, int rowLayout, Context context) {
-            this.dataList = data;
+        public Bills_Adapter(ArrayList<ModelPaymentCollection> list, int rowLayout, Context context, AdapterTwoClickListener listener) {
+            this.list = list;
             this.rowLayout = rowLayout;
             this.context = context;
-
-
+            this.listener = listener;
         }
 
         @Override
@@ -131,28 +189,30 @@ protected void onCreate(@Nullable Bundle savedInstanceState) {
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
             try {
-
-
-                JSONObject item = dataList.getJSONObject(position);
-                holder.txInvNo.setText("" + item.getString("InvoiceNo"));
-                holder.txInvDate.setText("" + item.getString("InvDate"));
-                holder.txInvAmt.setText("" + item.getString("BillAmount"));
-                holder.txInvPAmt.setText("" + item.getString("PendAmt"));
-
+                ModelPaymentCollection item = list.get(holder.getBindingAdapterPosition());
+                holder.txInvNo.setText(item.getInvoice());
+                holder.payNow.setEnabled(!isMultipleSelected);
+                holder.txInvDate.setText(item.getInvoiceDate());
+                holder.txInvAmt.setText("" + item.getInvoiceAmt());
+                holder.txInvPAmt.setText("" + item.getInvoicePAmt());
+                holder.payNow.setOnClickListener(v -> listener.onClickOne(holder.getBindingAdapterPosition()));
+                holder.cbPndBill.setChecked(item.isChecked());
+                holder.cbPndBill.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    item.setChecked(isChecked);
+                    listener.onClickTwo(holder.getBindingAdapterPosition());
+                });
             } catch (Exception e) {
                 Log.e("Pri.Payment", "adapterProduct: " + e.getMessage());
             }
-
-
         }
 
         @Override
         public int getItemCount() {
-            return dataList.length();
+            return list.size();
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView txInvNo, txInvAmt,txInvDate,txInvPAmt;
+            public TextView txInvNo, txInvAmt,txInvDate,txInvPAmt, payNow;
             public CheckBox cbPndBill;
 
             public MyViewHolder(View view) {
@@ -162,7 +222,7 @@ protected void onCreate(@Nullable Bundle savedInstanceState) {
                 txInvDate = view.findViewById(R.id.txInvDate);
                 txInvPAmt = view.findViewById(R.id.txInvPAmt);
                 cbPndBill = view.findViewById(R.id.cbPndBill);
-
+                payNow = view.findViewById(R.id.payNow);
             }
         }
     }
