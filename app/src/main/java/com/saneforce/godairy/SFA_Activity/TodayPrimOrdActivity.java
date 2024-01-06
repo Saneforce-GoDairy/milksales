@@ -237,7 +237,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                     nameEditText.requestFocus();
                     return;
                 }
-                ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
                 String userInfo = "MyPrefs";
                 SharedPreferences UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
@@ -268,12 +268,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                                 throw new RuntimeException(e);
                             }
                             Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-                          if (primaryNoOrderListsMain.isEmpty()){
-                              loadList();
-                          }else {
-                              primaryNoOrderListsMain.clear();
-                              loadList();
-                          }
+                            common_class.getDataFromApi(Constants.GetTodayPrimaryOrder_List, TodayPrimOrdActivity.this, false);
                             noOrderDialog.dismiss();
                         }
                     }
