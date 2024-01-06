@@ -83,6 +83,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
     private TextView tvStartDate, tvEndDate;
     private List<PrimaryNoOrderList> primaryNoOrderListsMain;
     private PrimaryNoOrderListAdapter primaryNoOrderListAdapter;
+    private LinearLayout navbtns;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -106,6 +107,11 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             binding.tvEndDate.setText(endDate);
             primaryNoOrderListsMain = new ArrayList<>();
             loadList();
+            navbtns=findViewById(R.id.navbtns);
+            navbtns.setVisibility(View.VISIBLE);
+            if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)){
+               navbtns.setVisibility(View.GONE);
+           }
     }
 
     private void loadList() {
@@ -204,7 +210,6 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             LinearLayout noOrderPurposeOfVisit = noOrderDialog.findViewById(R.id.purpose_of_visit);
 
             noOrderPurposeOfVisit.setOnClickListener(v13 -> {
-
                 ArrayList<String> noOrderVisitList = new ArrayList<>(Arrays.asList(
                         "Retail work for volume increase",
                         "Other brand conversion",
@@ -595,9 +600,39 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                     }
 
                 }
+
+                @Override
+                public void onEditOrder(String orderNo, String cutoff_time, String categoryType) {
+                    AdapterOnClick.super.onEditOrder(orderNo, cutoff_time, categoryType);
+                    try {
+                        if (Common_Class.isNullOrEmpty(cutoff_time)) {
+                            common_class.showMsg(TodayPrimOrdActivity.this, "Time UP...");
+                        } else {
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                            Date d1 = sdf.parse(Common_Class.GetTime());
+                            Date d2 = sdf.parse(cutoff_time);
+                            long elapsed = d2.getTime() - d1.getTime();
+                            if (elapsed >= 0) {
+                                sharedCommonPref.clear_pref(Constants.LOC_PRIMARY_DATA);
+                                Intent intent = new Intent(TodayPrimOrdActivity.this, PrimaryOrderActivity.class);
+                                intent.putExtra(Constants.ORDER_ID, orderNo);
+                                intent.putExtra(Constants.CATEGORY_TYPE, categoryType);
+                                intent.putExtra("Mode", "order_view");
+                                Shared_Common_Pref.TransSlNo = orderNo;
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.in, R.anim.out);
+
+                            } else {
+                                common_class.showMsg(TodayPrimOrdActivity.this, "Time UP...");
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.v("Edit Order ", e.getMessage());
+                    }
+                }
             });
 
-         //   binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
+            binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
 
             double totAmt = 0;
             for (int i = 0; i < filterArr.length(); i++) {
@@ -623,33 +658,5 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             return true;
         }
         return false;
-    }
-
-    public void updateData(String orderNo, String cutoff_time, String categoryType) {
-        try {
-            if (Common_Class.isNullOrEmpty(cutoff_time)) {
-                common_class.showMsg(this, "Time UP...");
-            } else {
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                Date d1 = sdf.parse(Common_Class.GetTime());
-                Date d2 = sdf.parse(cutoff_time);
-                long elapsed = d2.getTime() - d1.getTime();
-                if (elapsed >= 0) {
-                    sharedCommonPref.clear_pref(Constants.LOC_PRIMARY_DATA);
-                    Intent intent = new Intent(this, PrimaryOrderActivity.class);
-                    intent.putExtra(Constants.ORDER_ID, orderNo);
-                    intent.putExtra(Constants.CATEGORY_TYPE, categoryType);
-                    intent.putExtra("Mode", "order_view");
-                    Shared_Common_Pref.TransSlNo = orderNo;
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.in, R.anim.out);
-
-                } else {
-                    common_class.showMsg(this, "Time UP...");
-                }
-            }
-        } catch (Exception e) {
-            Log.v(TAG, e.getMessage());
-        }
     }
 }

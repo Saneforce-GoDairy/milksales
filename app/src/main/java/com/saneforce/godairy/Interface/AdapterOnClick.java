@@ -17,6 +17,10 @@ public interface AdapterOnClick {
     default void onIntentClick(int Name){
 
     };
+
+    default void onEditOrder(String orderNo, String cutoff_time, String categoryType){
+
+    };
     default void CallMobile(String MobileNo){
 
     };

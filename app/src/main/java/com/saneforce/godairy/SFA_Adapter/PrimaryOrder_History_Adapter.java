@@ -146,8 +146,9 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<PrimaryOr
                 @Override
                 public void onClick(View v) {
                     try {
-                        TodayPrimOrdActivity.mTdPriAct.updateData(mDate.getJSONObject(position).getString("Trans_Sl_No"),
-                                mDate.getJSONObject(position).getString("cutoff_time"), mDate.getJSONObject(position).getString("category_type"));
+                        mAdapterOnClick.onEditOrder(mDate.getJSONObject(position).getString("Trans_Sl_No"),
+                                mDate.getJSONObject(position).getString("cutoff_time"),
+                                mDate.getJSONObject(position).getString("category_type"));
                     } catch (Exception e) {
 
                     }

@@ -32,6 +32,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Interface,UpdateResponseUI {
@@ -138,6 +140,36 @@ public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Inte
                         Log.v("TAG", e.getMessage());
                     }
 
+                }
+
+                @Override
+                public void onEditOrder(String orderNo, String cutoff_time, String categoryType) {
+                    AdapterOnClick.super.onEditOrder(orderNo, cutoff_time, categoryType);
+                    try {
+                        if (Common_Class.isNullOrEmpty(cutoff_time)) {
+                            common_class.showMsg(vwAllPrimaryOrders.this, "Time UP...");
+                        } else {
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                            Date d1 = sdf.parse(Common_Class.GetTime());
+                            Date d2 = sdf.parse(cutoff_time);
+                            long elapsed = d2.getTime() - d1.getTime();
+                            if (elapsed >= 0) {
+                                sharedCommonPref.clear_pref(Constants.LOC_PRIMARY_DATA);
+                                Intent intent = new Intent(vwAllPrimaryOrders.this, PrimaryOrderActivity.class);
+                                intent.putExtra(Constants.ORDER_ID, orderNo);
+                                intent.putExtra(Constants.CATEGORY_TYPE, categoryType);
+                                intent.putExtra("Mode", "order_view");
+                                Shared_Common_Pref.TransSlNo = orderNo;
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.in, R.anim.out);
+
+                            } else {
+                                common_class.showMsg(vwAllPrimaryOrders.this, "Time UP...");
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.v("Edit Order ", e.getMessage());
+                    }
                 }
             });
             recyclerView.setAdapter(mReportViewAdapter);
