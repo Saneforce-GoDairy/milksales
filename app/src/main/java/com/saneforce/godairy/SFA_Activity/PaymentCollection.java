@@ -79,12 +79,12 @@ protected void onCreate(@Nullable Bundle savedInstanceState) {
     tvDistId=findViewById(R.id.tvDistId);
     //if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)) {
         outlet_name.setText(shared_common_pref.getvalue(Constants.Distributor_name, ""));
-    tvDistId.setText("" + shared_common_pref.getvalue(Constants.DistributorERP));
-//    } else {
-//        distributor_text.setText(shared_common_pref.getvalue(Constants.Distributor_name, ""));
-//        distributor_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_round_arrow_drop_down_24, 0);
-//        findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
-//    }
+        tvDistId.setText("" + shared_common_pref.getvalue(Constants.DistributorERP));
+    //    } else {
+    //        distributor_text.setText(shared_common_pref.getvalue(Constants.Distributor_name, ""));
+    //        distributor_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_round_arrow_drop_down_24, 0);
+    //        findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
+    //    }
     getPndBills();
     binding.pay.setOnClickListener(v -> {
         Toast.makeText(context, "Multiple Payment Clicked", Toast.LENGTH_SHORT).show();
