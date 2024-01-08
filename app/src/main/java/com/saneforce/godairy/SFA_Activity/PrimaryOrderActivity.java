@@ -175,8 +175,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     boolean isSubmit = false;
     int lastOrderedQty = 0;
     double lastOrderedAmount = 0;
-    TextView payNowButton;
-    private String PaymentMethod;
     private Toolbar mToolbar;
     private DistributerAdapter distributerAdapter;
     private String ordersViewMode = "";
@@ -184,9 +182,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     String _id = "", _title = "", _erpCode = "", _stateCode = "", _pincode = "";
     JSONArray addressArray;
     private RyclShortageListItemAdb ShortagelistItems;
-
-    String NTTDATAMerchantId = "", NTTDATAPassword = "", NTTDATAReqHashKey = "", encSaltRequest = "", encSaltResponse = "", NTTDATAResHashKey = "", NTTDATAProdID = "", NTTDATAAmount = "30.00";
-    boolean isLive = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -336,27 +331,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
         getLastOrderedQty();
 
-        // Todo: Select Payment Method
-        binding.payNowButton.setOnClickListener(v -> {
-            if (PaymentMethod == null) {
-                Toast.makeText(this, "Can't get the payment mode", Toast.LENGTH_SHORT).show();
-            } else if (PaymentMethod.equalsIgnoreCase("CC")) {
-                Intent intent = new Intent(this, InitiatePaymentActivity.class);
-                intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
-                intent.putExtra("totalValues", 1.00);
-                startActivity(intent);
-                finish();
-            } else if (PaymentMethod.equalsIgnoreCase("JM")) {
-                Intent intent = new Intent(this, PaymentWebView.class);
-                intent.putExtra("Trans_Sl_No", Common_Class.GetDatemonthyearformat());
-                intent.putExtra("totalValues", 1.00);
-                startActivity(intent);
-                finish();
-            } else if (PaymentMethod.equalsIgnoreCase("nd")) {
-                StartNTTDataPayment();
-            }
-        });
-
         loadDistributer(common_class.getDistList(), 2);
     }
 
@@ -452,66 +426,11 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         llDistributor = findViewById(R.id.llDistributor);
         etCategoryItemSearch = findViewById(R.id.searchView);
         tvTimer = findViewById(R.id.tvTimer);
-        payNowButton = findViewById(R.id.payNowButton);
         recyclerView = findViewById(R.id.orderrecyclerview);
         freeRecyclerview = findViewById(R.id.freeRecyclerview);
         ivToolbarHome = findViewById(R.id.toolbar_home);
         selectDeliveryAddress = findViewById(R.id.selectDeliveryAddress);
 
-    }
-
-    private void getNTTDataCredentials() {
-        Map<String, String> params = new HashMap<>();
-        params.put("axn", "get_nttdata_credentials");
-        Common_Class.makeApiCall(context, params, "", new APIResult() {
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-                try {
-                    Log.e("getNTTDataCredentials", "getNTTDataCredentials: " + jsonObject);
-                    JSONObject object = jsonObject.getJSONObject("response");
-                    NTTDATAMerchantId = object.optString("merchantID");
-                    NTTDATAPassword = object.optString("password");
-                    NTTDATAReqHashKey = object.optString("requestHashKey");
-                    NTTDATAResHashKey = object.optString("responseHashKey");
-                    encSaltRequest = object.optString("encSaltRequest");
-                    encSaltResponse = object.optString("encSaltResponse");
-                    NTTDATAProdID = object.optString("prodID");
-                    isLive = object.optBoolean("isLive");
-                } catch (JSONException ignored) { }
-            }
-
-            @Override
-            public void onFailure(String error) {
-
-            }
-        });
-    }
-
-    private void StartNTTDataPayment() { // Todo: StartNTTDataPayment
-        Intent newPayIntent = new Intent(PrimaryOrderActivity.this, PayActivity.class);
-        newPayIntent.putExtra("merchantId", NTTDATAMerchantId);
-        newPayIntent.putExtra("password", NTTDATAPassword);
-        newPayIntent.putExtra("signature_request", NTTDATAReqHashKey);
-        newPayIntent.putExtra("signature_response", NTTDATAResHashKey);
-        newPayIntent.putExtra("prodid", NTTDATAProdID);
-        newPayIntent.putExtra("enc_request", encSaltRequest);
-        newPayIntent.putExtra("enc_response", encSaltResponse);
-        newPayIntent.putExtra("salt_request", encSaltRequest);
-        newPayIntent.putExtra("salt_response", encSaltResponse);
-        newPayIntent.putExtra("amt", NTTDATAAmount);
-        newPayIntent.putExtra("isLive", isLive);
-        newPayIntent.putExtra("txnid", Common_Class.GetEkey());
-        newPayIntent.putExtra("custFirstName", sharedCommonPref.getvalue(Constants.Distributor_name));
-        newPayIntent.putExtra("customerMobileNo", sharedCommonPref.getvalue(Constants.Distributor_phone));
-        newPayIntent.putExtra("customerEmailID", "ragusaneforce@gmail.com");
-        newPayIntent.putExtra("txncurr", "INR");
-        newPayIntent.putExtra("custacc", "100000036600");
-        newPayIntent.putExtra("udf1", "");
-        newPayIntent.putExtra("udf2", "");
-        newPayIntent.putExtra("udf3", "");
-        newPayIntent.putExtra("udf4", "");
-        newPayIntent.putExtra("udf5", "");
-        startActivityForResult(newPayIntent, 1);
     }
 
     private void getStockistAddress() {
@@ -1096,33 +1015,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         Log.e("requestCode", "requestCode: " + requestCode);
         Log.e("resultCode", "resultCode: " + resultCode);
-        if (requestCode == 1) {
-            try {
-                // Todo: nttdataTransaction
-                // Todo: generated JSON string
-                Log.e("nttdataTransaction", data.getExtras().getString("response"));
-            } catch (Exception ignored) {}
-            if (resultCode == 2) {
-                Toast.makeText(context, "Transaction cancelled by user...", Toast.LENGTH_SHORT).show();
-            } else if (resultCode == 1) {
-                JSONObject object = PreparePaymentSave(data);
-                Map<String, String> params = new HashMap<>();
-                params.put("axn", "save_nttdata_transaction");
-                Common_Class.makeApiCall(context, params, object.toString(), new APIResult() {
-                    @Override
-                    public void onSuccess(JSONObject jsonObject) {
-                        ShowPaymentResult(data);
-                    }
-
-                    @Override
-                    public void onFailure(String error) {
-                        ShowPaymentResult(data);
-                    }
-                });
-            } else {
-                Toast.makeText(context, "Transaction failed...", Toast.LENGTH_SHORT).show();
-            }
-        }
         if (requestCode == 1000) {
             String sLoc = sharedCommonPref.getvalue("CurrLoc");
             if (sLoc.equalsIgnoreCase("")) {
@@ -1138,135 +1030,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 SaveOrder();
             }
         }
-    }
-
-    private void ShowPaymentResult(Intent data) {
-        try {
-            JSONObject jsonObject = new JSONObject(data.getExtras().getString("response"));
-            String merchTxnId = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("merchDetails")
-                    .optString("merchTxnId");
-
-            String totalAmount = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payDetails")
-                    .optString("totalAmount");
-
-            String txnCompleteDate = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payDetails")
-                    .optString("txnCompleteDate");
-
-            String message = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("responseDetails")
-                    .optString("message");
-
-            Intent intent = new Intent(context, PaymentResult.class);
-            intent.putExtra("status", message);
-            intent.putExtra("transactionId", merchTxnId);
-            intent.putExtra("transactionAmount", totalAmount);
-            intent.putExtra("transactionDate", txnCompleteDate);
-            startActivity(intent);
-            finish();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private JSONObject PreparePaymentSave(Intent data) {
-        JSONObject requestBody = new JSONObject();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject = new JSONObject(data.getExtras().getString("response"));
-            String merchId = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("merchDetails")
-                    .optString("merchId");
-
-            String merchTxnId = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("merchDetails")
-                    .optString("merchTxnId");
-
-            String merchTxnDate = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("merchDetails")
-                    .optString("merchTxnDate");
-
-            String atomTxnId = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payDetails")
-                    .optString("atomTxnId");
-
-            String totalAmount = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payDetails")
-                    .optString("totalAmount");
-
-            String custAccNo = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payDetails")
-                    .optString("custAccNo");
-
-            String txnInitDate = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payDetails")
-                    .optString("txnInitDate");
-
-            String txnCompleteDate = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payDetails")
-                    .optString("txnCompleteDate");
-
-            String otsBankId = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payModeSpecificData")
-                    .getJSONObject("bankDetails")
-                    .optString("otsBankId");
-
-            String otsBankName = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payModeSpecificData")
-                    .getJSONObject("bankDetails")
-                    .optString("otsBankName");
-
-            String bankTxnId = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payModeSpecificData")
-                    .getJSONObject("bankDetails")
-                    .optString("bankTxnId");
-
-            String cardType = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payModeSpecificData")
-                    .getJSONObject("bankDetails")
-                    .optString("cardType");
-
-            String cardMaskNumber = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("payModeSpecificData")
-                    .getJSONObject("bankDetails")
-                    .optString("cardMaskNumber");
-
-            String statusCode = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("responseDetails")
-                    .optString("statusCode");
-
-            String message = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("responseDetails")
-                    .optString("message");
-
-            String description = jsonObject.getJSONObject("payInstrument")
-                    .getJSONObject("responseDetails")
-                    .optString("description");
-
-            requestBody.put("stockistCode", sharedCommonPref.getvalue(Constants.Distributor_Id));
-            requestBody.put("stockistName", sharedCommonPref.getvalue(Constants.Distributor_name));
-            requestBody.put("merchId", merchId);
-            requestBody.put("merchTxnId", merchTxnId);
-            requestBody.put("merchTxnDate", merchTxnDate);
-            requestBody.put("atomTxnId", atomTxnId);
-            requestBody.put("totalAmount", totalAmount);
-            requestBody.put("custAccNo", custAccNo);
-            requestBody.put("txnInitDate", txnInitDate);
-            requestBody.put("txnCompleteDate", txnCompleteDate);
-            requestBody.put("otsBankId", otsBankId);
-            requestBody.put("otsBankName", otsBankName);
-            requestBody.put("bankTxnId", bankTxnId);
-            requestBody.put("cardType", cardType);
-            requestBody.put("cardMaskNumber", cardMaskNumber);
-            requestBody.put("statusCode", statusCode);
-            requestBody.put("message", message);
-            requestBody.put("description", description);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return requestBody;
     }
 
     private void SaveOrder() {
@@ -2090,17 +1853,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     rvShortageData.setLayoutManager(shrtgridlayManager);
                     RyclShortageListItemAdb shortagelistItems = new RyclShortageListItemAdb(this, ShortageData);
                     rvShortageData.setAdapter(shortagelistItems);
-                    break;
-
-                case Constants.PaymentMethod:
-                    JSONObject myObject = new JSONObject(apiDataResponse);
-                    if (myObject != null) {
-                        JSONObject me = myObject.optJSONObject("response");
-                        PaymentMethod = me.optString("PaymentGateway");
-                        if (PaymentMethod.equalsIgnoreCase("nd")) {
-                            getNTTDataCredentials();
-                        }
-                    }
                     break;
 
                 case Constants.PRIMARY_SCHEME:

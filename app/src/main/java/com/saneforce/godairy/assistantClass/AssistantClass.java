@@ -303,30 +303,32 @@ public class AssistantClass extends AppCompatActivity {
 
     @SuppressLint("MissingPermission")
     public void getLocation(LocationResponse result) {
-        isLocationFound = false;
-        LocationRequest locationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(5000).setFastestInterval(2000);
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        isLocationFound = true;
-                        stopLocationUpdates();
-                        if (location.isFromMockProvider()) {
-                            dismissProgressDialog();
-                            showAlertDialogWithDismiss("Please disable mock location provider...");
-                        } else {
-                            result.onSuccess(location.getLatitude(), location.getLongitude());
+        if (!isLocationPermissionGranted()) {
+            showAlertDialogWithDismiss("Please grant location permission...");
+        } else if (!isGpsEnabled()) {
+            showAlertDialogWithDismiss("Please turn on location...");
+        } else {
+            isLocationFound = false;
+            LocationRequest locationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(5000).setFastestInterval(2500);
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    for (Location location : locationResult.getLocations()) {
+                        if (location != null) {
+                            isLocationFound = true;
+                            stopLocationUpdates();
+                            if (location.isFromMockProvider()) {
+                                dismissProgressDialog();
+                                showAlertDialogWithDismiss("Please disable mock location provider...");
+                            } else {
+                                result.onSuccess(location.getLatitude(), location.getLongitude());
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
-            }
-        };
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient((Activity) context);
-        if (isLocationPermissionGranted()) {
+            };
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient((Activity) context);
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
             new Handler().postDelayed(() -> {
                 if (!isLocationFound) {
