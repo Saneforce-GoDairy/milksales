@@ -107,6 +107,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         distributorERP = shared_common_pref.getvalue(Constants.DistributorERP);
         divERP = shared_common_pref.getvalue(Constants.DivERP);
         userDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        common_class.gotoHomeScreen(context, binding.toolbar.toolbarHome);
 
         binding.btnRefLoc.setOnClickListener(v -> {
             binding.btnRefLoc.startAnimation();
@@ -219,6 +220,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             setLocation();
         }
 
+        binding.distributorTitle.setText(Html.fromHtml("Distributor " + "<span style=\"color:#E53935\">*</span>"));
         getDropdowns();
     }
 

@@ -53,7 +53,9 @@ import com.saneforce.godairy.Activity_Hap.SFA_Activity;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.LocationResponse;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityMapDirectionBinding;
 
@@ -76,7 +78,6 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     private CircleOptions circleOptions;
     private static final int REQUEST_CODE = 101;
     static String googlePlacesData;
-    private Location currentLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private GoogleMap mGoogleMap;
     private TextView AddressTextview, ReachedOutlet;
@@ -90,6 +91,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     private SharedPreferences UserDetails, CheckInDetails;
     private com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
     private double radius = 0.0;
+    AssistantClass assistantClass;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -102,6 +104,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
 
             setOnClick();
 
+            assistantClass = new AssistantClass(context);
             status = getIntent().getStringExtra(Constants.NEW_OUTLET);
             status = status == null ? "" : status;
 
@@ -169,59 +172,57 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     @Override
     protected void onResume() {
         super.onResume();
-        new LocationFinder(getApplication(), location -> {
-            try {
-                currentLocation = location;
-                Shared_Common_Pref.Outletlat = currentLocation.getLatitude();
-                Shared_Common_Pref.Outletlong = currentLocation.getLongitude();
+        assistantClass.getLocation(new LocationResponse() {
+            @Override
+            public void onSuccess(double lat, double lng) {
+                Shared_Common_Pref.Outletlat = lat;
+                Shared_Common_Pref.Outletlong = lng;
                 fetchLocation();
                 DownloadTask downloadTask = new DownloadTask();
                 String url = common_class.getDirectionsUrl(getIntent().getStringExtra(Constants.DEST_LAT) + "," +
                         getIntent().getStringExtra(Constants.DEST_LNG), MapDirectionActivity.this);
                 downloadTask.execute(url);
-            } catch (Exception e) {
-                Log.v(TAG, e.getMessage());
+            }
+
+            @Override
+            public void onFailure() {
+
             }
         });
     }
 
     private void fetchLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-            return;
-        }
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(location -> {
-            try {
-                if (location != null) {
-                    currentLocation = location;
-                    Shared_Common_Pref.Outletlat = currentLocation.getLatitude();
-                    Shared_Common_Pref.Outletlong = currentLocation.getLongitude();
-                    Shared_Common_Pref.OutletAddress = getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude());
+        assistantClass.getLocation(new LocationResponse() {
+            @Override
+            public void onSuccess(double lat, double lng) {
+                Shared_Common_Pref.Outletlat = lat;
+                Shared_Common_Pref.Outletlong = lng;
+                Shared_Common_Pref.OutletAddress = getCompleteAddressString(lat, lng);
 
-                    if (status.equalsIgnoreCase("GEO"))
-                        AddressTextview.setText("" + getCompleteAddressString(Double.parseDouble(getIntent().getStringExtra(Constants.DEST_LAT))
-                                , Double.valueOf(getIntent().getStringExtra(Constants.DEST_LNG))));
+                if (status.equalsIgnoreCase("GEO"))
+                    AddressTextview.setText("" + getCompleteAddressString(Double.parseDouble(getIntent().getStringExtra(Constants.DEST_LAT))
+                            , Double.valueOf(getIntent().getStringExtra(Constants.DEST_LNG))));
 
-                    else
-                        AddressTextview.setText("" + getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
-                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
-                    if (supportMapFragment != null) {
-                        supportMapFragment.getMapAsync(MapDirectionActivity.this);
-                    }
-                    //---------
+                else
+                    AddressTextview.setText("" + getCompleteAddressString(lat, lng));
+                SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
+                if (supportMapFragment != null) {
+                    supportMapFragment.getMapAsync(MapDirectionActivity.this);
+                }
+                //---------
                     /*
                        SFA_Activity -> MyTeamActivity -> ViewMap Direction Purpose
                      */
-                    
-                    SupportMapFragment supportMapFragment1 = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.my_team_map);
-                    if(supportMapFragment1 != null) {
-                        supportMapFragment1.getMapAsync(MapDirectionActivity.this);
-                    }
+
+                SupportMapFragment supportMapFragment1 = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.my_team_map);
+                if(supportMapFragment1 != null) {
+                    supportMapFragment1.getMapAsync(MapDirectionActivity.this);
                 }
-            } catch (Exception ignored) {
+            }
+
+            @Override
+            public void onFailure() {
+
             }
         });
     }
@@ -238,7 +239,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         try {
-            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            LatLng latLng = new LatLng(Shared_Common_Pref.Outletlat, Shared_Common_Pref.Outletlong);
             mGoogleMap = googleMap;
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -254,14 +255,14 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
                 return;
             }
             mGoogleMap.setMyLocationEnabled(true);
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(Shared_Common_Pref.Outletlat, Shared_Common_Pref.Outletlong)));
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(laty, lngy), 15));
             if (status.equalsIgnoreCase("GEO")) {
                 AddressTextview.setText("" + getCompleteAddressString(Double.parseDouble(getIntent().getStringExtra(Constants.DEST_LAT))
                         , Double.valueOf(getIntent().getStringExtra(Constants.DEST_LNG))));
             } else {
-                AddressTextview.setText("" + getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
-                binding.currentAddressFull.setText(""+ getCompleteAddressString(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                AddressTextview.setText("" + getCompleteAddressString(Shared_Common_Pref.Outletlat, Shared_Common_Pref.Outletlong));
+                binding.currentAddressFull.setText(""+ getCompleteAddressString(Shared_Common_Pref.Outletlat, Shared_Common_Pref.Outletlong));
                 binding.tvStartDirection.setVisibility(View.VISIBLE);
             }
 
@@ -279,7 +280,7 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
         try {
 
             Geocoder geo = new Geocoder(this.getApplicationContext(), Locale.getDefault());
-            List<Address> addresses = geo.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+            List<Address> addresses = geo.getFromLocation(Shared_Common_Pref.Outletlat, Shared_Common_Pref.Outletlong, 1);
             assert addresses != null;
             if (addresses.isEmpty()) {
                 binding.currentLocationName.setText("Waiting for Location");
@@ -505,8 +506,8 @@ public class MapDirectionActivity extends FragmentActivity implements OnMapReady
     @SuppressLint("SetTextI18n")
     double distance() {
         Location startPoint = new Location("point A");
-        startPoint.setLatitude(currentLocation.getLatitude());
-        startPoint.setLongitude(currentLocation.getLongitude());
+        startPoint.setLatitude(Shared_Common_Pref.Outletlat);
+        startPoint.setLongitude(Shared_Common_Pref.Outletlong);
 
         Location endPoint = new Location("point B");
         endPoint.setLatitude(Double.parseDouble(getIntent().getStringExtra(Constants.DEST_LAT)));

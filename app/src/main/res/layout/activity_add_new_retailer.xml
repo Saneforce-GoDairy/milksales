@@ -7,7 +7,8 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText,SpUsage,Autofill,TextFields,TooManyViews">
 
-    <include layout="@layout/sfatoolbar" />
+    <include layout="@layout/sfatoolbar"
+        android:id="@+id/toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
