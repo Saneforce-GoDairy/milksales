@@ -147,6 +147,9 @@ public class AgronomistFormActivity extends AppCompatActivity {
 
             6, FarmerCreationActivity
                Farmer image = 13
+
+            7, MaintenanceIssueActivity
+               Type of repair image = 14
          */
 
 
@@ -157,6 +160,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("camera_id", "1");
             startActivity(intent);
         });
+
         binding.cameraCsrActivity.setOnClickListener(view -> {
             binding.txtCsrImageNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);

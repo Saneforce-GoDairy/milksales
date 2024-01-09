@@ -903,6 +903,53 @@ public interface ApiInterface {
                                      @Query("active_flag") String active_flag,
                                      @Query("created_dt") String created_dt);
 
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcQuality(@Query("axn") String axn,
+                                            @Query("company") String company,
+                                            @Query("plant") String plant,
+                                            @Query("mass_balance") String mass_balance,
+                                            @Query("milk_collection") String milk_collection,
+                                            @Part MultipartBody.Part image1,
+                                            @Part MultipartBody.Part image2,
+                                            @Query("mbrt") String mbrt,
+                                            @Query("rejection") String rejection,
+                                            @Query("spl_cleaning") String spl_cleaning,
+                                            @Query("cleaning_efficiency") String cleaning_efficiency,
+                                            @Query("vehicle_with_hood") String vehicle_with_hood,
+                                            @Part MultipartBody.Part image3,
+                                            @Query("vehicle_without_hood") String vehicle_without_hood,
+                                            @Part MultipartBody.Part image4,
+                                            @Query("chemicals") String chemicals,
+                                            @Query("stock") String stock,
+                                            @Query("milk") String milk,
+                                            @Query("awareness_program") String awareness_program,
+                                            @Query("no_of_fat") String no_of_fat,
+                                            @Query("no_of_snf") String no_of_snf,
+                                            @Query("no_of_weight") String no_of_weight,
+                                            @Query("active_flag") String active_flag,
+                                            @Query("created_dt") String created_dt
+                                         );
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcMaintenance(@Query("axn") String axn,
+                                             @Query("company") String company,
+                                             @Query("plant") String plant,
+                                             @Query("equipment") String equipment,
+                                             @Query("repair_type") String repair_type,
+                                             @Part MultipartBody.Part image1,
+                                             @Query("active_flag") String active_flag,
+                                             @Query("created_dt") String created_dt);
+
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcAsset(@Query("axn") String axn,
+                                             @Query("company") String company,
+                                             @Query("plant") String plant,
+                                             @Query("asset_type") String asset_type,
+                                             @Query("comments") String comments,
+                                             @Query("active_flag") String active_flag,
+                                             @Query("created_dt") String created_dt
+    );
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

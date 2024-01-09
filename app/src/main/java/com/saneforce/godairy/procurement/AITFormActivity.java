@@ -112,7 +112,7 @@ public class AITFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-          /*
+                   /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -139,6 +139,9 @@ public class AITFormActivity extends AppCompatActivity {
 
             6, FarmerCreationActivity
                Farmer image = 13
+
+            7, MaintenanceIssueActivity
+               Type of repair image = 14
          */
 
 

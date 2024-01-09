@@ -16,6 +16,9 @@ public class AppConstants {
  public static final String PROCUREMENT_SUBMIT_VETERINARY = "save/proc_veterinary";
  public static final String PROCUREMENT_SUBMIT_AIT = "save/proc_ait";
  public static final String PROCUREMENT_SUBMIT_AGENT_VISIT = "save/proc_agent_visit";
+ public static final String PROCUREMENT_SUBMIT_QUALITY = "save/proc_quality";
+ public static final String PROCUREMENT_SUBMIT_MAINTENANCE = "save/proc_maintenance";
+ public static final String PROCUREMENT_SUBMIT_ASSET = "save/proc_asset";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}
