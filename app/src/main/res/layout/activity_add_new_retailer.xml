@@ -255,12 +255,20 @@
             </LinearLayout>
 
             <!--Map-->
-            <fragment
-                android:id="@+id/route_map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <LinearLayout
+                android:id="@+id/mapLL"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <fragment
+                    android:id="@+id/route_map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginBottom="12dp" />
+
+            </LinearLayout>
 
             <!--State-->
             <LinearLayout
