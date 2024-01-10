@@ -793,6 +793,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
                                     if (san.equals("true")) {
                                         sharedCommonPref.clear_pref(Constants.LOC_SECONDARY_DATA);
                                         common_class.CommonIntentwithFinish(Invoice_History.class);
+                                        finish();
                                     }
                                     common_class.showMsg(Order_Category_Select.this, jsonObjects.getString("Msg"));
 

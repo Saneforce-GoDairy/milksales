@@ -436,6 +436,10 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String workType = binding.spinnerWorkType.getSelectedItem().toString();
+                for(int il=0;il<worktypelist.size();il++){
+                    if(worktypelist.get(il).getName().equalsIgnoreCase(workType))
+                        worktype_id=worktypelist.get(il).getId();
+                }
                 if (workType.equals("Joint Work")){
                     binding.jointWorkExtraFieldLayout.setVisibility(View.VISIBLE);
                     initJointWorkDialog3();

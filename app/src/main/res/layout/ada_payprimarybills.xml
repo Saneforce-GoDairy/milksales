@@ -101,10 +101,12 @@
                     android:layout_gravity="end"
                     >
                     <TextView
+                        android:id="@+id/payNow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Pay Now"
                         android:background="@drawable/button_blueg"
+                        android:backgroundTint="@color/button_color_with_disable"
                         android:textColor="@color/white"
                         android:paddingLeft="@dimen/C18dp"
                         android:paddingRight="@dimen/C18dp"

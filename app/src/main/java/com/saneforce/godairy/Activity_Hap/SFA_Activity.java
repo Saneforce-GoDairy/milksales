@@ -317,14 +317,20 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
+
+        if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.CHECKIN_TYPE)) {
+            binding.logout.setVisibility(View.GONE);
+        }
+
         binding.logout.setOnClickListener(v -> {
-            common_class.clearLocData(SFA_Activity.this);
-            shared_common_pref.clear_pref(Constants.DB_TWO_GET_MREPORTS);
-            shared_common_pref.clear_pref(Constants.DB_TWO_GET_DYREPORTS);
-            shared_common_pref.clear_pref(Constants.DB_TWO_GET_NOTIFY);
-            shared_common_pref.clear_pref(Constants.LOGIN_DATA);
+            String eMail = UserDetails.getString("email", "");
+            db.deleteAllMasterData();
+            shared_common_pref.clearAll();
+            UserDetails.edit().clear().apply();
+            CheckInDetails.edit().clear().apply();
             finishAffinity();
-            Intent Dashboard = new Intent(SFA_Activity.this, Login.class);
+            UserDetails.edit().putString("email", eMail).apply();
+            Intent Dashboard = new Intent(this, Login.class);
             startActivity(Dashboard);
         });
     }

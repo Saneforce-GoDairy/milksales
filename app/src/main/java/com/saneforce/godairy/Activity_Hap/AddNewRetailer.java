@@ -2,6 +2,7 @@ package com.saneforce.godairy.Activity_Hap;
 
 import static com.saneforce.godairy.Common_Class.Common_Class.UserDetail;
 import static com.saneforce.godairy.Common_Class.Constants.CUSTOMER_DATA;
+import static com.saneforce.godairy.Common_Class.Constants.Retailer_OutletList;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -51,6 +52,7 @@ import com.saneforce.godairy.Interface.OnImagePickListener;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.HAPApp;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityAddNewRetailerBinding;
 import com.saneforce.godairy.universal.UniversalDropDownAdapter;
@@ -73,12 +75,14 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
     JSONArray fieldDetailsArray, outletTypeArray, categoryListArray, subCategoryListArray, filteredSubCategoryListArray, visiCoolerCompanyArray, deliveryTypeArray, stateListArray, routeListArray;
 
     UniversalDropDownAdapter adapter;
+    AssistantClass assistantClass;
 
     Common_Class common_class;
     Shared_Common_Pref shared_common_pref;
     SharedPreferences userDetails;
     Context context = this;
     GoogleMap mGoogleMap;
+    boolean isPhotoMandatory = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +100,14 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         stateListArray = new JSONArray();
         routeListArray = new JSONArray();
 
+        assistantClass = new AssistantClass(context);
         common_class = new Common_Class(this);
         shared_common_pref = new Shared_Common_Pref(this);
         distGrpERP = shared_common_pref.getvalue(Constants.CusSubGrpErp);
         distributorERP = shared_common_pref.getvalue(Constants.DistributorERP);
         divERP = shared_common_pref.getvalue(Constants.DivERP);
         userDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        common_class.gotoHomeScreen(context, binding.toolbar.toolbarHome);
 
         binding.btnRefLoc.setOnClickListener(v -> {
             binding.btnRefLoc.startAnimation();
@@ -130,31 +136,6 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             } else {
                 Toast.makeText(context, "Please capture shop photo", Toast.LENGTH_SHORT).show();
             }
-        });
-
-        binding.validateDistributorCode.setOnClickListener(v -> {
-            if (Shared_Common_Pref.Outler_AddFlag != null && !Shared_Common_Pref.Outler_AddFlag.equals("1")) {
-                AlertDialogBox.showDialog(context, HAPApp.Title, "Are You Sure Want to Update the Franchise Code?", "OK", "Cancel", false, new AlertBox() {
-                    @Override
-                    public void PositiveMethod(DialogInterface dialog, int id) {
-                        checkValidity();
-                    }
-
-                    @Override
-                    public void NegativeMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-            } else {
-                checkValidity();
-            }
-        });
-
-        binding.cbFranchise.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
-                binding.distributorCodeLL.setVisibility(View.VISIBLE);
-            else
-                binding.distributorCodeLL.setVisibility(View.GONE);
         });
 
         binding.selectDistributor.setOnClickListener(v -> {
@@ -225,13 +206,13 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             outletCode = getIntent().getStringExtra("outletCode");
             flag = getIntent().getStringExtra("flag"); // 1 - View, 2 - Edit
             if (flag.equals("1")) {
-                makeEditable(false);
                 binding.headtext.setText("Outlet Info");
+                makeEditable(false);
             } else if (flag.equals("2")) {
                 binding.headtext.setText("Edit Outlet");
-                binding.updateButton.setVisibility(View.VISIBLE);
+                binding.submitButton.setText("Update");
+                binding.submitButton.setVisibility(View.VISIBLE);
                 makeEditable(true);
-
             }
             getOutletInfo();
         } else {
@@ -239,6 +220,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             setLocation();
         }
 
+        binding.distributorTitle.setText(Html.fromHtml("Distributor " + "<span style=\"color:#E53935\">*</span>"));
         getDropdowns();
     }
 
@@ -419,7 +401,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         } else if (binding.ownerNameLL.getVisibility() == View.VISIBLE && binding.ownerNameTitle.getText().toString().contains("*") && ownerName.isEmpty()) {
             Toast.makeText(context, "Please " + binding.enterOwnerName.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterOwnerName.requestFocus();
-        } else if (binding.photoLL.getVisibility() == View.VISIBLE && shopImageName.isEmpty()) {
+        } else if (binding.photoLL.getVisibility() == View.VISIBLE && isPhotoMandatory && shopImageName.isEmpty()) {
             Toast.makeText(context, "Please Capture Shop Photo", Toast.LENGTH_SHORT).show();
             binding.ivShopPhoto.requestFocus();
         } else if (binding.addressLL.getVisibility() == View.VISIBLE && binding.addressTitle.getText().toString().contains("*") && outletAddress.isEmpty()) {
@@ -477,11 +459,14 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             Toast.makeText(context, "Please " + binding.enterOutstandingAmount.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterOutstandingAmount.requestFocus();
         } else {
-            MyAlertDialog.show(context, "", "Are you sure you want to submit?", true, "Yes", "No", new AlertBox() {
+            MyAlertDialog.show(context, "", "Are you sure you want to " + (flag.equals("2") ? "update?" : "submit?"), true, "Yes", "No", new AlertBox() {
                 @Override
                 public void PositiveMethod(DialogInterface dialog, int id) {
                     JSONObject object = new JSONObject();
                     try {
+                        if (flag.equals("2")) {
+                            object.put("outletCode", outletCode);
+                        }
                         object.put("distId", distributorID);
                         object.put("distName", distributorTITLE);
                         object.put("outletName", outletName);
@@ -538,39 +523,27 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void SaveOutlet(JSONObject object) {
+        assistantClass.showProgressDialog("Saving...", false);
         Log.e("SaveOutlet", "SaveOutlet: " + object.toString());
         Map<String, String> params = new HashMap<>();
-        params.put("axn", "save_retailer");
+        if (flag.equals("2")) {
+            params.put("axn", "update_retailer");
+            params.put("outletCode", outletCode);
+        } else {
+            params.put("axn", "save_retailer");
+        }
         Common_Class.makeApiCall(context, params, object.toString(), new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
-                MyAlertDialog.show(context, "", "Outlet created successfully", false, "Okay", "", new AlertBox() {
-                    @Override
-                    public void PositiveMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        finish();
-                    }
-
-                    @Override
-                    public void NegativeMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+                common_class.getDataFromApi(Retailer_OutletList, AddNewRetailer.this, false);
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithFinish(jsonObject.optString("msg"));
             }
 
             @Override
             public void onFailure(String error) {
-                MyAlertDialog.show(context, "", error, false, "Dismiss", "", new AlertBox() {
-                    @Override
-                    public void PositiveMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-
-                    @Override
-                    public void NegativeMethod(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithDismiss(error);
             }
         });
     }
@@ -853,6 +826,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         }
                         if (mandatory.equals("1")) {
                             binding.iceCreamFreezerAvailableTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                            binding.switchIceCreamFreezerAvailable.setChecked(true);
+                            binding.switchIceCreamFreezerAvailable.setEnabled(false);
                         } else {
                             binding.iceCreamFreezerAvailableTitle.setText(title);
                         }
@@ -874,6 +849,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         }
                         if (mandatory.equals("1")) {
                             binding.lactalisFreezerRequirementTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                            binding.switchLactalisFreezerRequirement.setChecked(true);
+                            binding.switchLactalisFreezerRequirement.setEnabled(false);
                         } else {
                             binding.lactalisFreezerRequirementTitle.setText(title);
                         }
@@ -983,6 +960,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         }
                         if (mandatory.equals("1")) {
                             binding.visiCoolerAvailableTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                            binding.switchVisiCoolerAvailable.setChecked(true);
+                            binding.switchVisiCoolerAvailable.setEnabled(false);
                         } else {
                             binding.visiCoolerAvailableTitle.setText(title);
                         }
@@ -1012,6 +991,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                     case "outletAddress":
                         if (visibility.equals("0")) {
                             binding.addressLL.setVisibility(View.GONE);
+                            binding.mapLL.setVisibility(View.GONE);
+                            binding.btnRefLoc.setVisibility(View.GONE);
                         }
                         if (mandatory.equals("1")) {
                             binding.addressTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
@@ -1057,6 +1038,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         if (visibility.equals("0")) {
                             binding.photoLL.setVisibility(View.GONE);
                         }
+                        isPhotoMandatory = mandatory.equals("1");
                         break;
                 }
             } catch (JSONException ignored) {
@@ -1107,45 +1089,6 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-    private void checkValidity() {
-        if (Common_Class.isNullOrEmpty(binding.enterDistributorCode.getText().toString()))
-            common_class.showMsg(this, "Enter Distributor Code");
-        else {
-            JsonObject data = new JsonObject();
-            data.addProperty("customer_code", binding.enterDistributorCode.getText().toString().trim());
-            data.addProperty("ERP_Code", distributorERP);
-            common_class.getDb_310Data(Constants.CUSTOMER_DATA, this, data);
-        }
-    }
-
-    @Override
-    public void onLoadDataUpdateUI(String apiDataResponse, String key) {
-        try {
-            if (apiDataResponse != null) {
-                switch (key) {
-                    case CUSTOMER_DATA:
-                        JSONObject cusObj = new JSONObject(apiDataResponse);
-                        if (cusObj.getBoolean("success")) {
-                            JSONArray arr = cusObj.getJSONArray("Data");
-                            JSONObject obj = arr.getJSONObject(0);
-                            binding.enterFSSAINumber.setText("" + obj.getString("Fssai_No"));
-                            binding.enterMobileNumber.setText("" + obj.getString("Mobile"));
-                            binding.enterOutletName.setText("" + obj.getString("Name"));
-                            binding.enterAddress.setText(obj.getString("Address"));
-                            binding.enterGST.setText("" + obj.getString("gstn"));
-                            binding.validateDistributorCode.setText("Valid Code");
-                            customer_code = binding.enterDistributorCode.getText().toString();
-                        } else {
-                            binding.validateDistributorCode.setText("Invalid Code");
-                            common_class.showMsg(this, cusObj.getString("Msg"));
-                        }
-                        break;
-                }
-            }
-        } catch (Exception ignored) {
-        }
-    }
-
     @Override
     public void onBackPressed() {
         MyAlertDialog.show(context, "", "Are you sure you want to go back?", true, "Yes", "No", new AlertBox() {
@@ -1159,5 +1102,10 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                 dialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void onLoadDataUpdateUI(String apiDataResponse, String key) {
+
     }
 }

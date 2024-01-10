@@ -131,6 +131,9 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
     }
 
     void setAdapter(JSONArray arr) {
+        if (arr == null) {
+            return;
+        }
         if (arr.length() == 0) {
             animationView.playAnimation();
             animationView.setVisibility(View.VISIBLE);
@@ -228,6 +231,9 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
                         //  JSONArray arr = new JSONArray(shared_common_pref.getvalue(Constants.Distributor_List));
 
 
+                        if (loc_Arr == null) {
+                            return;
+                        }
                         for (int i = 0; i < loc_Arr.length(); i++) {
                             JSONObject loc_obj = loc_Arr.getJSONObject(i);
                             if (dist_id == loc_obj.getInt("id")) {
@@ -241,6 +247,9 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
 
                         JSONArray distArr = new JSONArray(shared_common_pref.getvalue(Constants.Distributor_List));
 
+                        if (distArr == null) {
+                            return;
+                        }
                         for (int d = 0; d < distArr.length(); d++) {
 
                             if (dist_id ==

@@ -28,6 +28,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -720,6 +721,10 @@ public interface ApiInterface {
 
     @POST("MyPHP.php?")
     Call<ResponseBody> getUniversalData(@QueryMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("MyPHP.php?")
+    Call<ResponseBody> getDataFromMyPHP(@FieldMap Map<String, Object> params);
 
     // - - - - - - - - - - - - - - - - - - - - -
 

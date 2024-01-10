@@ -137,6 +137,7 @@ public class Login extends AppCompatActivity {
 
         db = new DatabaseHandler(this);
         shared_common_pref = new Shared_Common_Pref(this);
+        binding.version.setText(com.saneforce.godairy.BuildConfig.VERSION_NAME);
 
         if (com.saneforce.godairy.Common_Class.Common_Class.GetDatewothouttime().equalsIgnoreCase(shared_common_pref.getvalue(Constants.LOGIN_DATE))) {
             Shared_Common_Pref.LOGINTYPE = shared_common_pref.getvalue(Constants.LOGIN_TYPE);

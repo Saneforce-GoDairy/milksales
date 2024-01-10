@@ -104,6 +104,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(selectQuery);
     }
 
+    public void deleteAllMasterData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "delete from " + TABLE_Masters;
+        db.execSQL(selectQuery);
+    }
+
     public void addMasterData(String Key, JsonArray uData) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();

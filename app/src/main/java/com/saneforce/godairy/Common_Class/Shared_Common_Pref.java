@@ -136,6 +136,10 @@ public class Shared_Common_Pref {
         return val;
     }
 
+    public void clearAll() {
+        Common_pref.edit().clear().apply();
+    }
+
     public void clear_pref(String key) {
         try {
             Common_pref.edit().remove(key).apply();

@@ -7,7 +7,8 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText,SpUsage,Autofill,TextFields,TooManyViews">
 
-    <include layout="@layout/sfatoolbar" />
+    <include layout="@layout/sfatoolbar"
+        android:id="@+id/toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,63 +61,6 @@
                     android:id="@+id/selectDistributor"
                     style="@style/myFormDropdown"
                     android:hint="@string/select_distributor" />
-
-            </LinearLayout>
-
-            <!--Is GoDairy Distributor-->
-            <CheckBox
-                android:id="@+id/cbFranchise"
-                style="@style/myFormCheckbox"
-                android:text="@string/milk_sales_franchise" />
-
-            <!--Distributor Code-->
-            <LinearLayout
-                android:id="@+id/distributorCodeLL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/myFormTitle"
-                    android:layout_marginBottom="5dp"
-                    android:text="Franchise Code" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/enterDistributorCode"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/text_bg_grey"
-                        android:gravity="start"
-                        android:hint="Enter Distributor Code"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:padding="10dp"
-                        android:textSize="13dp" />
-
-                    <Button
-                        android:id="@+id/validateDistributorCode"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bottom_button"
-                        android:padding="10dp"
-                        android:text="Validate"
-                        android:textColor="@color/white"
-                        android:textSize="13dp"
-                        android:visibility="visible" />
-
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -184,6 +128,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="150dp"
                 android:layout_marginBottom="12dp"
                 android:orientation="horizontal">
 
@@ -311,12 +256,20 @@
             </LinearLayout>
 
             <!--Map-->
-            <fragment
-                android:id="@+id/route_map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <LinearLayout
+                android:id="@+id/mapLL"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <fragment
+                    android:id="@+id/route_map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginBottom="12dp" />
+
+            </LinearLayout>
 
             <!--State-->
             <LinearLayout
@@ -748,19 +701,6 @@
         android:id="@+id/submitButton"
         style="@style/BottomButton"
         android:text="Submit"
-        android:theme="@style/BluePrimaryButton"
-        android:visibility="gone"
-        app:finalCornerAngle="50dp"
-        app:initialCornerAngle="0dp"
-        app:spinning_bar_color="#FFFFFFFF"
-        app:spinning_bar_padding="5dp"
-        app:spinning_bar_width="5dp"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-        android:id="@+id/updateButton"
-        style="@style/BottomButton"
-        android:text="Update"
         android:theme="@style/BluePrimaryButton"
         android:visibility="gone"
         app:finalCornerAngle="50dp"

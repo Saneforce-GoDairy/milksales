@@ -59,6 +59,12 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".SFA_Activity.vwAllPrimaryOrders"
+            android:exported="false" />
+        <activity
+            android:name=".SFA_Activity.PaymentResult"
+            android:exported="false" />
+        <activity
             android:name=".procurement.FarmerCreationActivity"
             android:exported="false" />
         <activity
@@ -377,7 +383,7 @@
         <activity
             android:name=".Activity_Hap.Advance_Approval_Reject"
             android:exported="false"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity_Hap.Advance_Approval"
             android:exported="false"

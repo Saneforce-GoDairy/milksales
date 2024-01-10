@@ -35,6 +35,7 @@ import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AdapterOnClick;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -44,6 +45,7 @@ import com.saneforce.godairy.Model_Class.PrimaryNoOrderList;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.PrimaryOrder_History_Adapter;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityTodayPrimorderHistoryBinding;
 import org.json.JSONArray;
@@ -56,8 +58,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -83,6 +88,10 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
     private TextView tvStartDate, tvEndDate;
     private List<PrimaryNoOrderList> primaryNoOrderListsMain;
     private PrimaryNoOrderListAdapter primaryNoOrderListAdapter;
+    private LinearLayout navbtns;
+    AssistantClass assistantClass;
+    JSONArray filterArr;
+    PrimaryOrder_History_Adapter mReportViewAdapter;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -91,63 +100,51 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             binding = ActivityTodayPrimorderHistoryBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
 
+            assistantClass = new AssistantClass(context);
             mTdPriAct = this;
             sharedCommonPref = new Shared_Common_Pref(TodayPrimOrdActivity.this);
             common_class = new Common_Class(this);
             common_class.getDb_310Data(Constants.GroupFilter, this);
-            common_class.getDataFromApi(Constants.GetTodayPrimaryOrder_List, this, false);
             iniVariable();
             intialize();
             onClickListener();
             common_class.gotoHomeScreen(this, ivToolbarHome);
             stDate = Common_Class.GetDatewothouttime();
             endDate = Common_Class.GetDatewothouttime();
+            common_class.getDataFromApi(Constants.GetTodayPrimaryOrder_List, this, false);
             binding.tvStartDate.setText(stDate);
             binding.tvEndDate.setText(endDate);
             primaryNoOrderListsMain = new ArrayList<>();
-            loadList();
+            navbtns=findViewById(R.id.navbtns);
+            navbtns.setVisibility(View.VISIBLE);
+            if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)){
+               navbtns.setVisibility(View.GONE);
+           }
     }
 
     private void loadList() {
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
-        Call<ResponseBody> call = apiInterface.getPrimaryNoOrderList("get_no_orders_list", String.valueOf(mERPCode));
-        call.enqueue(new Callback<>() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getNoOrders");
+        params.put("erpCode", "" + mERPCode);
+        params.put("from", stDate);
+        params.put("to", endDate);
+        assistantClass.makeApiCall(params, "", new APIResult() {
             @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    String  primaryNoOrderList;
-                    try {
-                        primaryNoOrderList = response.body().string();
-                        JSONArray jsonArray = new JSONArray(primaryNoOrderList);
-
-                        for (int i = 0; i<jsonArray.length(); i++) {
-                            PrimaryNoOrderList primaryNoOrderList1 = new PrimaryNoOrderList();
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            primaryNoOrderList1.setReason(object.getString("reason"));
-                            primaryNoOrderList1.setId(object.getString("distribute_name"));
-                            primaryNoOrderList1.setDateTime(object.getString("date_time"));
-                            primaryNoOrderListsMain.add(primaryNoOrderList1);
-                        }
-
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        binding.recyclerViewInvoice.setLayoutManager(linearLayoutManager);
-                        binding.recyclerViewInvoice.setHasFixedSize(true);
-                        binding.recyclerViewInvoice.setItemViewCacheSize(20);
-                        primaryNoOrderListAdapter = new PrimaryNoOrderListAdapter(context, primaryNoOrderListsMain);
-                        binding.recyclerViewInvoice.setAdapter(primaryNoOrderListAdapter);
-                        primaryNoOrderListAdapter.notifyDataSetChanged();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
+            public void onSuccess(JSONObject jsonObject) {
+                try {
+                    JSONArray array = jsonObject.getJSONArray("response");
+                    for (int i = 0; i < array.length(); i++) {
+                        filterArr.put(array.getJSONObject(i));
                     }
+                    mReportViewAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    Log.e("makeApiCall", e.getLocalizedMessage());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(TodayPrimOrdActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(String error) {
+
             }
         });
     }
@@ -204,7 +201,6 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             LinearLayout noOrderPurposeOfVisit = noOrderDialog.findViewById(R.id.purpose_of_visit);
 
             noOrderPurposeOfVisit.setOnClickListener(v13 -> {
-
                 ArrayList<String> noOrderVisitList = new ArrayList<>(Arrays.asList(
                         "Retail work for volume increase",
                         "Other brand conversion",
@@ -241,7 +237,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                     nameEditText.requestFocus();
                     return;
                 }
-                ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
                 String userInfo = "MyPrefs";
                 SharedPreferences UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
@@ -272,12 +268,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                                 throw new RuntimeException(e);
                             }
                             Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-                          if (primaryNoOrderListsMain.isEmpty()){
-                              loadList();
-                          }else {
-                              primaryNoOrderListsMain.clear();
-                              loadList();
-                          }
+                            common_class.getDataFromApi(Constants.GetTodayPrimaryOrder_List, TodayPrimOrdActivity.this, false);
                             noOrderDialog.dismiss();
                         }
                     }
@@ -555,6 +546,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                         Log.v(TAG, apiDataResponse);
                         sharedCommonPref.save(Constants.GetTodayPrimaryOrder_List, apiDataResponse);
                         setHistoryAdapter(new JSONArray(apiDataResponse));
+                        loadList();
                 }
             }
         } catch (Exception e) {
@@ -565,14 +557,14 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
     @SuppressLint("SetTextI18n")
     void setHistoryAdapter(JSONArray arr) {
         try {
-            JSONArray filterArr = new JSONArray();
+            filterArr = new JSONArray();
             for (int i = 0; i < arr.length(); i++) {
                 if (Common_Class.isNullOrEmpty(groupType) || groupType.equalsIgnoreCase("All") || groupType.equalsIgnoreCase(arr.getJSONObject(i).getString("category_type"))) {
                     filterArr.put(arr.getJSONObject(i));
                 }
             }
 
-            PrimaryOrder_History_Adapter mReportViewAdapter = new PrimaryOrder_History_Adapter(TodayPrimOrdActivity.this, filterArr, new AdapterOnClick() {
+            mReportViewAdapter = new PrimaryOrder_History_Adapter(TodayPrimOrdActivity.this, filterArr, new AdapterOnClick() {
                 @Override
                 public void onIntentClick(int position) {
                     try {
@@ -595,9 +587,39 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                     }
 
                 }
+
+                @Override
+                public void onEditOrder(String orderNo, String cutoff_time, String categoryType) {
+                    AdapterOnClick.super.onEditOrder(orderNo, cutoff_time, categoryType);
+                    try {
+                        if (Common_Class.isNullOrEmpty(cutoff_time)) {
+                            common_class.showMsg(TodayPrimOrdActivity.this, "Time UP...");
+                        } else {
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                            Date d1 = sdf.parse(Common_Class.GetTime());
+                            Date d2 = sdf.parse(cutoff_time);
+                            long elapsed = d2.getTime() - d1.getTime();
+                            if (elapsed >= 0) {
+                                sharedCommonPref.clear_pref(Constants.LOC_PRIMARY_DATA);
+                                Intent intent = new Intent(TodayPrimOrdActivity.this, PrimaryOrderActivity.class);
+                                intent.putExtra(Constants.ORDER_ID, orderNo);
+                                intent.putExtra(Constants.CATEGORY_TYPE, categoryType);
+                                intent.putExtra("Mode", "order_view");
+                                Shared_Common_Pref.TransSlNo = orderNo;
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.in, R.anim.out);
+
+                            } else {
+                                common_class.showMsg(TodayPrimOrdActivity.this, "Time UP...");
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.v("Edit Order ", e.getMessage());
+                    }
+                }
             });
 
-         //   binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
+            binding.recyclerViewInvoice.setAdapter(mReportViewAdapter);
 
             double totAmt = 0;
             for (int i = 0; i < filterArr.length(); i++) {
@@ -623,33 +645,5 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             return true;
         }
         return false;
-    }
-
-    public void updateData(String orderNo, String cutoff_time, String categoryType) {
-        try {
-            if (Common_Class.isNullOrEmpty(cutoff_time)) {
-                common_class.showMsg(this, "Time UP...");
-            } else {
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                Date d1 = sdf.parse(Common_Class.GetTime());
-                Date d2 = sdf.parse(cutoff_time);
-                long elapsed = d2.getTime() - d1.getTime();
-                if (elapsed >= 0) {
-                    sharedCommonPref.clear_pref(Constants.LOC_PRIMARY_DATA);
-                    Intent intent = new Intent(this, PrimaryOrderActivity.class);
-                    intent.putExtra(Constants.ORDER_ID, orderNo);
-                    intent.putExtra(Constants.CATEGORY_TYPE, categoryType);
-                    intent.putExtra("Mode", "order_view");
-                    Shared_Common_Pref.TransSlNo = orderNo;
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.in, R.anim.out);
-
-                } else {
-                    common_class.showMsg(this, "Time UP...");
-                }
-            }
-        } catch (Exception e) {
-            Log.v(TAG, e.getMessage());
-        }
     }
 }
