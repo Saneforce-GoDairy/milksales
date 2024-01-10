@@ -138,12 +138,7 @@ public class FileUploadService2 extends Service {
             Toast.makeText(context, "Service id is empty", Toast.LENGTH_SHORT).show();
 
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    stopForeground(true);
-                }
-            }, 5000);
+            handler.postDelayed(() -> stopForeground(true), 5000);
         }
 
         // stopself

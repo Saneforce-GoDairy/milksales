@@ -308,6 +308,13 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void loadPlant() {
+        List<String> list = new ArrayList<>();
+        list.add("Select");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerPlant.setAdapter(adapter);
+
         ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -317,6 +324,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String plantList;
                     try {
+                        binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
@@ -342,7 +350,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
