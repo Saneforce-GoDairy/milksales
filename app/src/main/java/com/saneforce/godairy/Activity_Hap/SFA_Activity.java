@@ -266,7 +266,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_projection_sf));
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
                     // menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
-                    //menuList.add(new ListModel("", "Pay Bills", "", "", "", R.drawable.ic_secondary_order_sf));
+                    menuList.add(new ListModel("", "Pay Bills", "", "", "", R.drawable.ic_secondary_order_sf));
                     menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
                     menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
@@ -317,11 +317,19 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
+
+        if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.CHECKIN_TYPE)) {
+            binding.logout.setVisibility(View.GONE);
+        }
+
         binding.logout.setOnClickListener(v -> {
+            String eMail = UserDetails.getString("email", "");
             db.deleteAllMasterData();
             shared_common_pref.clearAll();
             UserDetails.edit().clear().apply();
+            CheckInDetails.edit().clear().apply();
             finishAffinity();
+            UserDetails.edit().putString("email", eMail).apply();
             Intent Dashboard = new Intent(this, Login.class);
             startActivity(Dashboard);
         });

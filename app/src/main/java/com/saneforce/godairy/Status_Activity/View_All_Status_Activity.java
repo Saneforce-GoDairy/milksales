@@ -116,27 +116,9 @@ public class View_All_Status_Activity extends AppCompatActivity {
         textColorAnim.setRepeatCount(ValueAnimator.INFINITE);
         textColorAnim.setRepeatMode(ValueAnimator.REVERSE);
         textColorAnim.start();
-        imgHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
-                Shared_Common_Pref.Sf_Code = UserDetails.getString("Sfcode", "");
-                Shared_Common_Pref.Sf_Name = UserDetails.getString("SfName", "");
-                Shared_Common_Pref.Div_Code = UserDetails.getString("Divcode", "");
-                Shared_Common_Pref.StateCode = UserDetails.getString("State_Code", "");
-
-                if (CheckIn == true) {
-                    Intent Dashboard = new Intent(View_All_Status_Activity.this, Dashboard_Two.class);
-                    Dashboard.putExtra("Mode", "CIN");
-                    startActivity(Dashboard);
-                } else
-                    startActivity(new Intent(getApplicationContext(), Dashboard_Two.class));
-
-
-            }
-        });
         recyclerView = findViewById(R.id.viewallstatus);
         common_class = new Common_Class(this);
+        common_class.gotoHomeScreen(this, imgHome);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         gson = new Gson();

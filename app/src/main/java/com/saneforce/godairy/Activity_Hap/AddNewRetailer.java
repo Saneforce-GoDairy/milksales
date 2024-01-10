@@ -82,6 +82,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
     SharedPreferences userDetails;
     Context context = this;
     GoogleMap mGoogleMap;
+    boolean isPhotoMandatory = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         distributorERP = shared_common_pref.getvalue(Constants.DistributorERP);
         divERP = shared_common_pref.getvalue(Constants.DivERP);
         userDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        common_class.gotoHomeScreen(context, binding.toolbar.toolbarHome);
 
         binding.btnRefLoc.setOnClickListener(v -> {
             binding.btnRefLoc.startAnimation();
@@ -218,6 +220,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             setLocation();
         }
 
+        binding.distributorTitle.setText(Html.fromHtml("Distributor " + "<span style=\"color:#E53935\">*</span>"));
         getDropdowns();
     }
 
@@ -398,7 +401,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
         } else if (binding.ownerNameLL.getVisibility() == View.VISIBLE && binding.ownerNameTitle.getText().toString().contains("*") && ownerName.isEmpty()) {
             Toast.makeText(context, "Please " + binding.enterOwnerName.getHint().toString().trim(), Toast.LENGTH_SHORT).show();
             binding.enterOwnerName.requestFocus();
-        } else if (binding.photoLL.getVisibility() == View.VISIBLE && shopImageName.isEmpty()) {
+        } else if (binding.photoLL.getVisibility() == View.VISIBLE && isPhotoMandatory && shopImageName.isEmpty()) {
             Toast.makeText(context, "Please Capture Shop Photo", Toast.LENGTH_SHORT).show();
             binding.ivShopPhoto.requestFocus();
         } else if (binding.addressLL.getVisibility() == View.VISIBLE && binding.addressTitle.getText().toString().contains("*") && outletAddress.isEmpty()) {
@@ -823,6 +826,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         }
                         if (mandatory.equals("1")) {
                             binding.iceCreamFreezerAvailableTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                            binding.switchIceCreamFreezerAvailable.setChecked(true);
+                            binding.switchIceCreamFreezerAvailable.setEnabled(false);
                         } else {
                             binding.iceCreamFreezerAvailableTitle.setText(title);
                         }
@@ -844,6 +849,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         }
                         if (mandatory.equals("1")) {
                             binding.lactalisFreezerRequirementTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                            binding.switchLactalisFreezerRequirement.setChecked(true);
+                            binding.switchLactalisFreezerRequirement.setEnabled(false);
                         } else {
                             binding.lactalisFreezerRequirementTitle.setText(title);
                         }
@@ -953,6 +960,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         }
                         if (mandatory.equals("1")) {
                             binding.visiCoolerAvailableTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
+                            binding.switchVisiCoolerAvailable.setChecked(true);
+                            binding.switchVisiCoolerAvailable.setEnabled(false);
                         } else {
                             binding.visiCoolerAvailableTitle.setText(title);
                         }
@@ -982,6 +991,8 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                     case "outletAddress":
                         if (visibility.equals("0")) {
                             binding.addressLL.setVisibility(View.GONE);
+                            binding.mapLL.setVisibility(View.GONE);
+                            binding.btnRefLoc.setVisibility(View.GONE);
                         }
                         if (mandatory.equals("1")) {
                             binding.addressTitle.setText(Html.fromHtml(title + " " + "<span style=\"color:#E53935\">*</span>"));
@@ -1027,6 +1038,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
                         if (visibility.equals("0")) {
                             binding.photoLL.setVisibility(View.GONE);
                         }
+                        isPhotoMandatory = mandatory.equals("1");
                         break;
                 }
             } catch (JSONException ignored) {

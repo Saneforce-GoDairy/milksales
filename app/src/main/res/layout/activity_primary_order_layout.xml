@@ -362,19 +362,6 @@
                                 android:textStyle="bold"
                                 tools:ignore="RtlCompat" />
 
-                            <TextView
-                                android:id="@+id/payNowButton"
-                                android:layout_width="@dimen/C50dp"
-                                android:layout_height="wrap_content"
-                                android:textAlignment="center"
-                                android:text="Pay"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/C12dp"
-                                android:background="@drawable/button_blueg"
-                                android:paddingHorizontal="@dimen/C10dp"
-                                android:layout_marginStart="8dp"/>
-
-
                         </LinearLayout>
 
                         <LinearLayout

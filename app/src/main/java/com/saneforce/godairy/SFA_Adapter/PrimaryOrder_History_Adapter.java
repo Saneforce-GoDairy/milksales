@@ -104,12 +104,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
                         Toast.makeText(context, "...", Toast.LENGTH_SHORT).show();
                     });
                     builder.setNegativeButton("Offline", (dialog, which) -> {
-                        AlertDialog.Builder builders = new AlertDialog.Builder(context);
-                        builders.setCancelable(true);
-                        builders.setMessage("In offline payment, a challan will be created. You can make payment using this challan at your nearest Axis bank. Do you want to create a challan?");
-                        builders.setPositiveButton("Yes", (dialog1, which1) -> CreateChallan(((MyViewHolder) holder).getBindingAdapterPosition()));
-                        builders.setNegativeButton("No", (dialog1, which1) -> dialog.dismiss());
-                        builders.create().show();
+
                     });
                     builder.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
                     builder.create().show();
@@ -182,60 +177,6 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
         } catch (Exception e) {
             Log.v("primAdapter:", e.getMessage());
         }
-    }
-
-    private void CreateChallan(int bindingAdapterPosition) {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Creating challan");
-        progressDialog.show();
-        try {
-            JSONObject object = mDate.getJSONObject(bindingAdapterPosition);
-            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Map<String, String> params = new HashMap<>();
-            params.put("axn", "save_new_offline_trans");
-            params.put("invoice", object.getString("OrderNo"));
-            Call<ResponseBody> call = apiInterface.getUniversalData(params);
-            call.enqueue(new Callback<>() {
-                @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        try {
-                            if (response.body() == null) {
-                                progressDialog.dismiss();
-                                Toast.makeText(context, "Response is Null", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            String result = response.body().string();
-                            JSONObject jsonObject = new JSONObject(result);
-                            if (jsonObject.getBoolean("success")) {
-                                object.put("isPaid", jsonObject.getString("status"));
-                                notifyItemChanged(bindingAdapterPosition);
-                                Intent intent = new Intent(context, ChallanActivity.class);
-                                intent.putExtra("invoice", object.getString("OrderNo"));
-                                context.startActivity(intent);
-                                Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(context, "Error while parsing response: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(context, "Response Not Success", Toast.LENGTH_SHORT).show();
-                    }
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    Toast.makeText(context, "Response Failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                }
-            });
-        } catch (JSONException ignored) { }
-
-
     }
 
     public int isToday(String date) {

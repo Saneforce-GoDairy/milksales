@@ -54,6 +54,7 @@ import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Interface.LocationResponse;
 import com.saneforce.godairy.Interface.OnImagePickListener;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.AdapterShowMultipleImages;
@@ -62,6 +63,7 @@ import com.saneforce.godairy.SFA_Adapter.CommonAdapterForDropdownWithFilter;
 import com.saneforce.godairy.SFA_Model_Class.CommonModelForDropDown;
 import com.saneforce.godairy.SFA_Model_Class.CommonModelWithFourString;
 import com.saneforce.godairy.SFA_Model_Class.CommonModelWithThreeString;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityAddNewDistributorBinding;
 import com.saneforce.godairy.universal.UniversalDropDownAdapter;
@@ -101,6 +103,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     Common_Class common_class;
     Shared_Common_Pref pref;
     SharedPreferences UserDetails;
+    AssistantClass assistantClass;
 
     CommonAdapterForDropdown adapter;
     CommonAdapterForDropdownWithFilter filterAdapter;
@@ -202,6 +205,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         type_pan_name = findViewById(R.id.type_pan_name);
         uidType = findViewById(R.id.uidType);
 
+        assistantClass = new AssistantClass(context);
         common_class = new Common_Class(this);
         pref = new Shared_Common_Pref(this);
         UserDetails = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -1334,13 +1338,18 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void getLocation() {
-        new LocationFinder(this, location -> {
-            try {
-                Lat = location.getLatitude();
-                Long = location.getLongitude();
+        assistantClass.getLocation(new LocationResponse() {
+            @Override
+            public void onSuccess(double lat, double lng) {
+                Lat = lat;
+                Long = lng;
                 getCompleteAddressString(Lat, Long);
                 SetMap();
-            } catch (Exception ignored) {
+            }
+
+            @Override
+            public void onFailure() {
+                assistantClass.showAlertDialogWithDismiss("Can't fetch your location...");
             }
         });
     }
