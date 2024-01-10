@@ -8,10 +8,8 @@ import com.saneforce.godairy.Model_Class.HeaderCat;
 import com.saneforce.godairy.Model_Class.Location;
 import com.saneforce.godairy.Model_Class.Model;
 import com.saneforce.godairy.Model_Class.POSDataList;
-import com.saneforce.godairy.Model_Class.PrimaryNoOrderList;
 import com.saneforce.godairy.Model_Class.ReportDataList;
 import com.saneforce.godairy.Model_Class.RetailerViewDetails;
-import com.saneforce.godairy.Model_Class.TpMyDayPlanExtra;
 
 import org.json.JSONArray;
 
@@ -175,6 +173,17 @@ public interface ApiInterface {
     @Multipart
     @POST("Db_v300.php")
     Call<Result> uploadImage(@Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("Db_v300.php")
+    Call<Result> addImage(@Part MultipartBody.Part file);
+
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> updatePassword(@Query("axn") String axn,
+                                      @Query("sf_code") String sf_code,
+                                      @Query("old_password") String old_password,
+                                      @Query("new_password") String new_password);
 
     @FormUrlEncoded
     @POST("Db_v300.php?axn=dcr/save")
