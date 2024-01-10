@@ -95,6 +95,11 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
         outlet_name.setText(shared_common_pref.getvalue(Constants.Distributor_name, ""));
         tvDistId.setText("" + shared_common_pref.getvalue(Constants.DistributorERP));
         getPndBills();
+        common_class.gotoHomeScreen(context, binding.toolbarHome);
+        binding.historyLL.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PaymentHistory.class);
+            startActivity(intent);
+        });
         binding.pay.setOnClickListener(v -> {
             double amt = 0;
             for (ModelPaymentCollection item : list) {
