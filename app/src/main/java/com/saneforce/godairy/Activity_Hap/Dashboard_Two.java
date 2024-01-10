@@ -457,18 +457,13 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
 
         mProfileUrl = mShared_common_pref.getvalue("mProfile");
-        Log.e("hgfhg", mProfileUrl);
-        if (!com.saneforce.godairy.Common_Class.Common_Class.isNullOrEmpty(mProfileUrl)) {
-            String[] image = mProfileUrl.split("/");
-            if (image.length > 0 && image[(image.length - 1)].contains(".")) {
-                loadImage(mProfileUrl);
-            }
-        }
+        loadImage(mProfileUrl);
     }
 
     private void loadImage(String mProfileUrl) {
         Glide.with(this.context)
                 .load(mProfileUrl)
+                .placeholder(R.drawable.person_placeholder_0)
                 .apply(RequestOptions.circleCropTransform())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(profileImageView);

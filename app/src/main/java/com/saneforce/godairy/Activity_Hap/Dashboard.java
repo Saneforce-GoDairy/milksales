@@ -153,27 +153,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.headQuarters.setText(SFDesig);
         binding.lblEmail.setText(eMail);
 
-        int mCount = 0;
-
-        for (int i = 0; i<mProfileImage.length(); i++){
-            if(mProfileImage.charAt(i) != ' ')
-                mCount++;
-        }
-
-        new Thread(() -> {
-            try {
-                URLConnection connection = new URL(mProfileImage).openConnection();
-                String contentType = connection.getHeaderField("Content-Type");
-                boolean image = contentType.startsWith("image/");
-                if (image){
-                    runOnUiThread(() -> {
-                        loadImage(mProfileImage);
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        Glide.with(this.context)
+                .load(mProfileImage)
+                .placeholder(R.drawable.person_placeholder_0)
+                .apply(RequestOptions.circleCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.userImage);
 
         binding.userImage.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
@@ -316,13 +301,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     lnupdate_text.setVisibility(View.GONE);
             }
         });
-    }
-    private void loadImage(String mProfileImage) {
-        Glide.with(this.context)
-                .load(mProfileImage)
-                .apply(RequestOptions.circleCropTransform())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.userImage);
     }
 
     private void loadExploreGrid() {
