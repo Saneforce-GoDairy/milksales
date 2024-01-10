@@ -268,6 +268,11 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(context, CateenToken.class);
                 startActivity(intent);
             });
+            //later
+            profileImageView.setOnClickListener(view1 -> {
+                Intent intent = new Intent(context,ProfileActivity.class);
+                startActivity(intent);
+            });
 
             Calendar c = Calendar.getInstance();
             SimpleDateFormat dpln = new SimpleDateFormat("yyyy-MM-dd");
@@ -1023,12 +1028,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             CircleImageView ivCheckOut = findViewById(R.id.iv_checkout);
             checkInUrl = ApiClient.BASE_URL.replaceAll("server/", "");
             checkInUrl = checkInUrl + fItm.get("ImgName").getAsString();
-
-            profileImageView.setOnClickListener(v -> {
-                Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
-                intent.putExtra("ImageUrl", mProfileUrl);
-                startActivity(intent);
-            });
 
             ivCheckOut.setOnClickListener(new View.OnClickListener() {
                 @Override
