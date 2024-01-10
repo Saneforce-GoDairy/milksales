@@ -149,8 +149,7 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
         binding.back.setOnClickListener(view -> finish());
 
-          /*
-            /*
+                    /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -177,6 +176,9 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
             6, FarmerCreationActivity
                Farmer image = 13
+
+            7, MaintenanceIssueActivity
+               Type of repair image = 14
          */
 
 

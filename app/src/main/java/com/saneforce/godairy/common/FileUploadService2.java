@@ -1,8 +1,14 @@
 package com.saneforce.godairy.common;
 
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGENT_VISIT;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGRONOMIST;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_ASSET;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_FARMER_CREATION;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_MAINTENANCE;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_QUALITY;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_VETERINARY;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AIT;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -22,7 +28,16 @@ import androidx.core.app.NotificationCompat;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.procurement.AITFormActivity;
+import com.saneforce.godairy.procurement.AgronomistFormActivity;
 import com.saneforce.godairy.procurement.CollectionCenterLocationActivity;
+import com.saneforce.godairy.procurement.ExistingAgentVisitActivity;
+import com.saneforce.godairy.procurement.FarmerCreationActivity;
+import com.saneforce.godairy.procurement.MaintanenceIssuesFormActivity;
+import com.saneforce.godairy.procurement.ProcurementAssetActivity;
+import com.saneforce.godairy.procurement.QualityFormActivity;
+import com.saneforce.godairy.procurement.VeterinaryDoctorsFormActivity;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -77,6 +92,30 @@ public class FileUploadService2 extends Service {
                     procAgronomist(intent);
                     break;
 
+                case 4:
+                    procVeterinary(intent);
+                    break;
+
+                case 5:
+                    procAIT(intent);
+                    break;
+
+                case 6:
+                    procAgentVisit(intent);
+                    break;
+
+                case 7:
+                    procQuality(intent);
+                    break;
+
+                case 8:
+                    procMaintenanceIssue(intent);
+                    break;
+
+                case 9:
+                    procAsset(intent);
+                    break;
+
                 default:
                     Toast.makeText(context, "service id is empty", Toast.LENGTH_SHORT).show();
                     break;
@@ -111,11 +150,472 @@ public class FileUploadService2 extends Service {
         return START_NOT_STICKY;
     }
 
+    private void procAsset(Intent intent) {
+        String mCompany = intent.getStringExtra("company");
+        String mPlant = intent.getStringExtra("plant");
+        String mAssetType = intent.getStringExtra("asset_type");
+        String mComments = intent.getStringExtra("comments");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        Intent notificationIntent = new Intent(this, ProcurementAssetActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcAsset(PROCUREMENT_SUBMIT_ASSET,
+                mCompany,
+                mPlant,
+                mAssetType,
+                mComments,
+                mActiveFlag,
+                mTimeDate);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "Asset form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void procMaintenanceIssue(Intent intent) {
+        String mCompany = intent.getStringExtra("company");
+        String mPlant = intent.getStringExtra("plant");
+        String mEquipment = intent.getStringExtra("equipment");
+        String mRepairType = intent.getStringExtra("repair_type");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        // Maintenance repair image
+        File file_image_repair = new File(dir, "MAIN_RE_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image_repair);
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_repair.getName(),progressRequestBodyRepair);
+
+        Intent notificationIntent = new Intent(this, MaintanenceIssuesFormActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcMaintenance(PROCUREMENT_SUBMIT_MAINTENANCE,
+                mCompany,
+                mPlant,
+                mEquipment,
+                mRepairType,
+                imagePart1,
+                mActiveFlag,
+                mTimeDate);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "Maintenance form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }  if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "Maintenance form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void procQuality(Intent intent) {
+        String mCompany = intent.getStringExtra("company");
+        String mPlant = intent.getStringExtra("plant");
+        String mMassBalance = intent.getStringExtra("mass_balance");
+        String mMilkColl = intent.getStringExtra("milk_collection");
+        String mMbrt = intent.getStringExtra("mbrt");
+        String mRejection = intent.getStringExtra("rejection");
+        String mSplCleaning = intent.getStringExtra("spl_cleaning");
+        String mCleaningEff = intent.getStringExtra("cleaning_efficiency");
+        String mVehicleWithHood = intent.getStringExtra("vehicle_with_hood");
+        String mVehicleWithoutHood = intent.getStringExtra("vehicle_without_hood");
+        String mChemicals = intent.getStringExtra("chemicals");
+        String mStocks = intent.getStringExtra("stock");
+        String mMilk = intent.getStringExtra("milk");
+        String mAwsProgram = intent.getStringExtra("awareness_program");
+        String mNoOfFat = intent.getStringExtra("no_of_fat");
+        String mNoOfSnf = intent.getStringExtra("no_of_snf");
+        String mNoOfWeight = intent.getStringExtra("no_of_weight");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        // Quality fat image
+        File file_image_fat = new File(dir, "QUA_FAT_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyFat = new ProgressRequestBody(file_image_fat);
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_fat.getName(),progressRequestBodyFat);
+
+        // Quality snf image
+        File file_image_snf = new File(dir, "QUA_SNF_123" + ".jpg");
+        ProgressRequestBody progressRequestBodySnf = new ProgressRequestBody(file_image_snf);
+        MultipartBody.Part imagePart2 = MultipartBody.Part.createFormData("image2",file_image_snf.getName(),progressRequestBodySnf);
+
+        // With hood image
+        File file_image_withhood = new File(dir, "QUA_RNV_WITH_HOODS_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyWithHood = new ProgressRequestBody(file_image_withhood);
+        MultipartBody.Part imagePart3 = MultipartBody.Part.createFormData("image3",file_image_withhood.getName(),progressRequestBodyWithHood);
+
+        // Without hood image
+        File file_image_withouthood = new File(dir, "QUA_RNV_WITHOUT_HOODS_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyWithOutHood = new ProgressRequestBody(file_image_withouthood);
+        MultipartBody.Part imagePart4 = MultipartBody.Part.createFormData("image4",file_image_withouthood.getName(),progressRequestBodyWithOutHood);
+
+        Intent notificationIntent = new Intent(this, QualityFormActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcQuality(PROCUREMENT_SUBMIT_QUALITY,
+                mCompany,
+                mPlant,
+                mMassBalance,
+                mMilkColl,
+                imagePart1,
+                imagePart2,
+                mMbrt,
+                mRejection,
+                mSplCleaning,
+                mCleaningEff,
+                mVehicleWithHood,
+                imagePart3,
+                mVehicleWithoutHood,
+                imagePart4,
+                mChemicals,
+                mStocks,
+                mMilk,
+                mAwsProgram,
+                mNoOfFat,
+                mNoOfSnf,
+                mNoOfWeight,
+                mActiveFlag,
+                mTimeDate);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "Quality form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void procAgentVisit(Intent intent) {
+        String mAgentVisit = intent.getStringExtra("visit_agent");
+        String mCompany = intent.getStringExtra("company");
+        String mTotalMilkAvai = intent.getStringExtra("total_milk_available");
+        String mOurCompLtrs = intent.getStringExtra("our_company_ltrs");
+        String mCompetitorRate = intent.getStringExtra("competitor_rate");
+        String mCompanyRate = intent.getStringExtra("our_company_rate");
+        String mDemand = intent.getStringExtra("demand");
+        String mSupplyStartDate = intent.getStringExtra("supply_start_dt");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        Intent notificationIntent = new Intent(this, ExistingAgentVisitActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcAgentVisit(PROCUREMENT_SUBMIT_AGENT_VISIT,
+                mAgentVisit,
+                mCompany,
+                mTotalMilkAvai,
+                mOurCompLtrs,
+                mCompetitorRate,
+                mCompanyRate,
+                mDemand,
+                mSupplyStartDate,
+                mActiveFlag,
+                mTimeDate);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "Agent visit form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void procAIT(Intent intent) {
+        String mCompany = intent.getStringExtra("company");
+        String mPlant = intent.getStringExtra("plant");
+        String mCenterName = intent.getStringExtra("center_name");
+        String mFarmerCode = intent.getStringExtra("farmer_name_code");
+        String mBreedName = intent.getStringExtra("breed_name");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        // Breed image
+        File file_image_service_type = new File(dir, "NOB_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyServiceType = new ProgressRequestBody(file_image_service_type);
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_service_type.getName(),progressRequestBodyServiceType);
+
+        String mServiceAI = intent.getStringExtra("service_type_ai");
+        String mNoOfBullNos = intent.getStringExtra("service_type2");
+        String mPdVerification = intent.getStringExtra("pd_verification");
+        String mCalfbirthVeri = intent.getStringExtra("calfbirth_verification");
+        String mMineralMix = intent.getStringExtra("mineral_mixture_kg");
+        String mSeedSales = intent.getStringExtra("seed_sales");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        Intent notificationIntent = new Intent(this, AITFormActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcAIT(PROCUREMENT_SUBMIT_AIT,
+                mCompany,
+                mPlant,
+                mCenterName,
+                mFarmerCode,
+                mBreedName,
+                imagePart1,
+                mServiceAI,
+                mNoOfBullNos,
+                mPdVerification,
+                mCalfbirthVeri,
+                mMineralMix,
+                mSeedSales,
+                mActiveFlag,
+                mTimeDate);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "AIT form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void procVeterinary(Intent intent) {
+        String mCompany = intent.getStringExtra("company");
+        String mPlant = intent.getStringExtra("plant");
+        String mCenterName = intent.getStringExtra("center_name");
+        String mFarmerName = intent.getStringExtra("farmer_name");
+        String mServiceType = intent.getStringExtra("service_type");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        // Service type image
+        File file_image_service_type = new File(dir, "VET_TOS_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyServiceType = new ProgressRequestBody(file_image_service_type);
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_service_type.getName(),progressRequestBodyServiceType);
+
+        String mProductType = intent.getStringExtra("product_type");
+        String mSeedSale = intent.getStringExtra("seed_sale");
+        String mMineralMixture = intent.getStringExtra("mineral_mixture");
+        String mFodderSetts = intent.getStringExtra("fodder_setts_sale_kg");
+        String mCattleFeed = intent.getStringExtra("cattle_feed_order_kg");
+        String mTeatDip = intent.getStringExtra("teat_dip_cup");
+        String mEvm = intent.getStringExtra("evm_treatment");
+        String mCaseType = intent.getStringExtra("case_type");
+        String mFarmerCount = intent.getStringExtra("identified_farmer_count");
+        String mFarmerEnrolled = intent.getStringExtra("farmer_enrolled");
+        String mFarmerInducted = intent.getStringExtra("farmer_inducted");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        Intent notificationIntent = new Intent(this, VeterinaryDoctorsFormActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcVeterinary(PROCUREMENT_SUBMIT_VETERINARY,
+                                                                    mCompany,
+                                                                    mPlant,
+                mCenterName,
+                mFarmerName,
+                mServiceType,
+                imagePart1,
+                mProductType,
+                mSeedSale,
+                mMineralMixture,
+                mFodderSetts,
+                mCattleFeed,
+                mTeatDip,
+                mEvm,
+                mCaseType,
+                mFarmerCount,
+                mFarmerEnrolled,
+                mFarmerInducted,
+                mActiveFlag,
+                mTimeDate);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "Veterinary form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void procAgronomist(Intent intent) {
         String mCompany = intent.getStringExtra("company");
         String mPlant = intent.getStringExtra("plant");
         String mCenterName = intent.getStringExtra("center_name");
-
         String mFarmerName = intent.getStringExtra("farmer_name");
         String mProductType = intent.getStringExtra("product_type");
         String mTeatDip = intent.getStringExtra("teat_dip");
@@ -141,8 +641,7 @@ public class FileUploadService2 extends Service {
 
         String mFodderDevAcres = intent.getStringExtra("fodder_dev_acres");
 
-
-        Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
+        Intent notificationIntent = new Intent(this, AgronomistFormActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         notification = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -156,7 +655,6 @@ public class FileUploadService2 extends Service {
         startForeground(1, notification);
 
         ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
-
 
         Call<ResponseBody> call = apiInterface.submitProcAgronomist(
                 PROCUREMENT_SUBMIT_AGRONOMIST,
@@ -213,7 +711,8 @@ public class FileUploadService2 extends Service {
         String mMilkSupplyCompany = intent.getStringExtra("milk_supply_company");
         String mInterestedSupply = intent.getStringExtra("interested_supply");
         String mActiveFlag = intent.getStringExtra("active_flag");
-        Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
+
+        Intent notificationIntent = new Intent(this, FarmerCreationActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         notification = new NotificationCompat.Builder(this, CHANNEL_ID)

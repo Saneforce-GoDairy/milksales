@@ -837,7 +837,7 @@ public interface ApiInterface {
                                                     @Part MultipartBody.Part image);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcAgronomist(@Query("axn") String axn,
                                                 @Query("company") String company,
                                                 @Query("plant") String plant,
@@ -852,6 +852,109 @@ public interface ApiInterface {
                                                 @Part MultipartBody.Part image3,
                                                 @Query("active_flag") String active_flag,
                                                 @Query("created_dt") String created_dt);
+
+
+    @Multipart
+    @POST("Db_v310.php")
+    Call<ResponseBody> submitProcVeterinary(@Query("axn") String axn,
+                                            @Query("company") String company,
+                                            @Query("plant") String plant,
+                                            @Query("center_name") String center_name,
+                                            @Query("farmer_name") String farmer_name,
+                                            @Query("service_type") String service_type,
+                                            @Part MultipartBody.Part image1,
+                                            @Query("product_type") String product_type,
+                                            @Query("seed_sale") String seed_sale,
+                                            @Query("mineral_mixture") String mineral_mixture,
+                                            @Query("fodder_setts_sale_kg") String fodder_setts_sale_kg,
+                                            @Query("cattle_feed_order_kg") String cattle_feed_order_kg,
+                                            @Query("teat_dip_cup") String teat_dip_cup,
+                                            @Query("evm_treatment") String evm_treatment,
+                                            @Query("case_type") String case_type,
+                                            @Query("identified_farmer_count") String identified_farmer_count,
+                                            @Query("farmer_enrolled") String farmer_enrolled,
+                                            @Query("farmer_inducted") String farmer_inducted,
+                                            @Query("active_flag") String active_flag,
+                                            @Query("created_dt") String created_dt);
+
+    @Multipart
+    @POST("Db_v310.php")
+    Call<ResponseBody> submitProcAIT(@Query("axn") String axn,
+                                     @Query("company") String company,
+                                     @Query("plant") String plant,
+                                     @Query("center_name") String center_name,
+                                     @Query("farmer_name_code") String farmer_name_code,
+                                     @Query("breed_name") String breed_name,
+                                     @Part MultipartBody.Part image1,
+                                     @Query("service_type_ai") String service_type_ai,
+                                     @Query("service_type2") String service_type2,
+                                     @Query("pd_verification") String pd_verification,
+                                     @Query("calfbirth_verification") String calfbirth_verification,
+                                     @Query("mineral_mixture_kg") String mineral_mixture_kg,
+                                     @Query("seed_sales") String seed_sales,
+                                     @Query("active_flag") String active_flag,
+                                     @Query("created_dt") String created_dt);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> submitProcAgentVisit(@Query("axn") String axn,
+                                     @Query("visit_agent") String visit_agent,
+                                     @Query("company") String company,
+                                     @Query("total_milk_available") String total_milk_available,
+                                     @Query("our_company_ltrs") String our_company_ltrs,
+                                     @Query("competitor_rate") String competitor_rate,
+                                     @Query("our_company_rate") String our_company_rate,
+                                     @Query("demand") String demand,
+                                     @Query("supply_start_dt") String supply_start_dt,
+                                     @Query("active_flag") String active_flag,
+                                     @Query("created_dt") String created_dt);
+
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcQuality(@Query("axn") String axn,
+                                            @Query("company") String company,
+                                            @Query("plant") String plant,
+                                            @Query("mass_balance") String mass_balance,
+                                            @Query("milk_collection") String milk_collection,
+                                            @Part MultipartBody.Part image1,
+                                            @Part MultipartBody.Part image2,
+                                            @Query("mbrt") String mbrt,
+                                            @Query("rejection") String rejection,
+                                            @Query("spl_cleaning") String spl_cleaning,
+                                            @Query("cleaning_efficiency") String cleaning_efficiency,
+                                            @Query("vehicle_with_hood") String vehicle_with_hood,
+                                            @Part MultipartBody.Part image3,
+                                            @Query("vehicle_without_hood") String vehicle_without_hood,
+                                            @Part MultipartBody.Part image4,
+                                            @Query("chemicals") String chemicals,
+                                            @Query("stock") String stock,
+                                            @Query("milk") String milk,
+                                            @Query("awareness_program") String awareness_program,
+                                            @Query("no_of_fat") String no_of_fat,
+                                            @Query("no_of_snf") String no_of_snf,
+                                            @Query("no_of_weight") String no_of_weight,
+                                            @Query("active_flag") String active_flag,
+                                            @Query("created_dt") String created_dt
+                                         );
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcMaintenance(@Query("axn") String axn,
+                                             @Query("company") String company,
+                                             @Query("plant") String plant,
+                                             @Query("equipment") String equipment,
+                                             @Query("repair_type") String repair_type,
+                                             @Part MultipartBody.Part image1,
+                                             @Query("active_flag") String active_flag,
+                                             @Query("created_dt") String created_dt);
+
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcAsset(@Query("axn") String axn,
+                                             @Query("company") String company,
+                                             @Query("plant") String plant,
+                                             @Query("asset_type") String asset_type,
+                                             @Query("comments") String comments,
+                                             @Query("active_flag") String active_flag,
+                                             @Query("created_dt") String created_dt
+    );
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

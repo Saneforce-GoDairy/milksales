@@ -1,22 +1,43 @@
 package com.saneforce.godairy.procurement;
 
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityQualityFormBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class QualityFormActivity extends AppCompatActivity {
     private ActivityQualityFormBinding binding;
@@ -43,14 +64,51 @@ public class QualityFormActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
 
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-                R.array.plant_array, R.layout.custom_spinner);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter2);
+        loadPlant();
+    }
+
+    private void loadPlant() {
+        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String plantList;
+                    try {
+                        plantList = response.body().string();
+
+                        JSONArray jsonArray = new JSONArray(plantList);
+                        List<String> list = new ArrayList<>();
+                        list.add("Select");
+
+                        for (int i = 0; i<jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            String plantName = object.optString("Plant_Name");
+
+                            binding.spinnerPlant.setPrompt(plantName);
+                            list.add(plantName);
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spinnerPlant.setAdapter(adapter);
+                    } catch (IOException | JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
     private void onClick() {
-         /*
+                   /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -77,8 +135,10 @@ public class QualityFormActivity extends AppCompatActivity {
 
             6, FarmerCreationActivity
                Farmer image = 13
-         */
 
+            7, MaintenanceIssueActivity
+               Type of repair image = 14
+         */
         // FAT
         binding.cameraFat.setOnClickListener(view -> {
             binding.txtImgFatNotValid.setVisibility(View.GONE);
@@ -322,9 +382,218 @@ public class QualityFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
+        binding.edMassBalance.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edMilkCollection.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edMbrt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edRejection.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edSpecialCleaning.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edEfficiency.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edWithHood.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edWithoutHood.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edRecordChemicals.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edRecordStock.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edRecordMilk.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edNoOfFat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edNoOfSnf.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        binding.edNoOfWeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.txtErrorFound.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
-                Toast.makeText(context, "valid", Toast.LENGTH_SHORT).show();
                 saveNow();
             }
         });
@@ -333,7 +602,30 @@ public class QualityFormActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
-
+        String mActiveFlag = "1";
+        Intent serviceIntent = new Intent(this, FileUploadService2.class);
+        serviceIntent.putExtra("company", mCompanyName);
+        serviceIntent.putExtra("plant", mPlant);
+        serviceIntent.putExtra("mass_balance", mMassBalance);
+        serviceIntent.putExtra("milk_collection", mMilkCollection);
+        serviceIntent.putExtra("mbrt", mMBRT);
+        serviceIntent.putExtra("rejection", mRejection);
+        serviceIntent.putExtra("spl_cleaning", mSpecialCleaning);
+        serviceIntent.putExtra("cleaning_efficiency", mCleaningEfficiency);
+        serviceIntent.putExtra("vehicle_with_hood", mNoOfVehiclesReceivedWithHood);
+        serviceIntent.putExtra("vehicle_without_hood", mNoOfVehiclesReceivedWithOutHood);
+        serviceIntent.putExtra("chemicals", mRecordChemicals);
+        serviceIntent.putExtra("stock", mRecordStock);
+        serviceIntent.putExtra("milk", mRecordMilk);
+        serviceIntent.putExtra("awareness_program", mAwarenessProgram);
+        serviceIntent.putExtra("no_of_fat", mSamplesCalibrationNoOfFat);
+        serviceIntent.putExtra("no_of_snf", mSamplesCalibrationNoOfSnf);
+        serviceIntent.putExtra("no_of_weight", mSamplesCalibrationNoOfWeight);
+        serviceIntent.putExtra("active_flag", mActiveFlag);
+        serviceIntent.putExtra("upload_service_id", "7");
+        ContextCompat.startForegroundService(this, serviceIntent);
+        finish();
+        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
     }
 
     private boolean validateInputs() {
@@ -388,10 +680,12 @@ public class QualityFormActivity extends AppCompatActivity {
         }
         if (bitmapFat == null){
             binding.txtImgFatNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if (bitmapSnf == null){
             binding.txtImgSnfNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mMBRT)){
@@ -426,6 +720,7 @@ public class QualityFormActivity extends AppCompatActivity {
         }
         if (bitmapWithHood == null){
             binding.txtImgWithHoodNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mNoOfVehiclesReceivedWithOutHood)){
@@ -436,6 +731,7 @@ public class QualityFormActivity extends AppCompatActivity {
         }
         if (bitmapWithoutHood == null){
             binding.txtImgWithoutHoodNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mRecordChemicals)){
@@ -462,6 +758,7 @@ public class QualityFormActivity extends AppCompatActivity {
         }
         if (bitmapAwarenessProgram == null){
             binding.txtImgAwarenesNotValid.setVisibility(View.VISIBLE);
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
         if ("".equals(mSamplesCalibrationNoOfFat)){
@@ -508,30 +805,35 @@ public class QualityFormActivity extends AppCompatActivity {
             binding.imageViewFatLayout.setVisibility(View.VISIBLE);
             binding.imageFat.setImageBitmap(bitmapFat);
             binding.txtImgFatNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapSnf != null){
             binding.imageViewSnfLayout.setVisibility(View.VISIBLE);
             binding.imageSnf.setImageBitmap(bitmapSnf);
             binding.txtImgSnfNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapWithHood != null){
             binding.imageViewWithHoodLayout.setVisibility(View.VISIBLE);
             binding.imageWithHood.setImageBitmap(bitmapWithHood);
             binding.txtImgWithHoodNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapWithoutHood != null){
             binding.imageViewWithoutHoodLayout.setVisibility(View.VISIBLE);
             binding.imageWithoutHood.setImageBitmap(bitmapWithoutHood);
             binding.txtImgWithoutHoodNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
 
         if (bitmapAwarenessProgram != null){
             binding.imageViewAwarenesLayout.setVisibility(View.VISIBLE);
             binding.imageAwarenes.setImageBitmap(bitmapAwarenessProgram);
             binding.txtImgAwarenesNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
     }
 }
