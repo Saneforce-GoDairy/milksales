@@ -178,11 +178,11 @@ public interface ApiInterface {
     Call<Result> addImage(@Part MultipartBody.Part file);
 
 
-    @POST("Db_v310.php")
-    Call<ResponseBody> updatePassword(@Query("axn") String axn,
-                                      @Query("sf_code") String sf_code,
+    @POST("Db_v300_usha.php")
+    Call<ResponseBody> changePassword(@Query("axn") String axn,
+                                      @Query("sfCode") String sf_code,
                                       @Query("old_password") String old_password,
-                                      @Query("new_password") String new_password);
+                                      @Query("new_password") String new_password,@Query("divisionCode") String divisionCode);
 
     @FormUrlEncoded
     @POST("Db_v300.php?axn=dcr/save")

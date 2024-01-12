@@ -262,6 +262,7 @@ public class Login extends AppCompatActivity {
         });
 
         binding.submitButton.setOnClickListener(v -> {
+            Log.e("datalogin", toString());
             SUserID = binding.userEmail.getText().toString().trim();
             eMail = binding.userEmail.getText().toString().trim();
             SPwd = binding.userPassword.getText().toString().trim();
@@ -618,6 +619,7 @@ public class Login extends AppCompatActivity {
                 modelCall.enqueue(new Callback<Model>() {
                     @Override
                     public void onResponse(Call<Model> call, Response<Model> response) {
+                        Log.e("datalogin", response.toString());
                         try {
                             if (response.isSuccessful()) {
 
@@ -860,7 +862,8 @@ public class Login extends AppCompatActivity {
                     intent.putExtra("Mode", "RPT");
                     finish();
                 }
-
+                Constants.Sf_Code=response.getData().get(0).getSfCode();
+                Constants.div_Code=response.getData().get(0).getDivisionCode();
                 String code = response.getData().get(0).getSfCode();
                 String Sf_type = String.valueOf(response.getData().get(0).getSFFType());
                 String empID = response.getData().get(0).getSfEmpId();
@@ -880,6 +883,8 @@ public class Login extends AppCompatActivity {
                 String SFHQCode = response.getData().get(0).getHQCode();
                 String SFHQLoc = response.getData().get(0).getHOLocation();
                 int THrsPerm = response.getData().get(0).getTHrsPerm();
+
+
 
                 String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/";
 
