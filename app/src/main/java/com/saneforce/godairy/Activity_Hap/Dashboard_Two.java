@@ -83,6 +83,7 @@ import com.saneforce.godairy.databinding.ActivityDashboardTwoBinding;
 import com.saneforce.godairy.fragments.GateInOutFragment;
 import com.saneforce.godairy.fragments.MonthlyFragment;
 import com.saneforce.godairy.fragments.TodayFragment;
+import com.saneforce.godairy.procurement.ProcurementHome;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -554,7 +555,13 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                         break;
 
                     case 2:
-                        startActivity(new Intent(context, SFA_Activity.class));
+                        if(sSFType.equalsIgnoreCase("2")){
+                            Intent intent = new Intent(context, ProcurementHome.class);
+                            intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                            startActivity(intent);
+                        }else {
+                            startActivity(new Intent(context, SFA_Activity.class));
+                        }
                         break;
 
                     case 3:
@@ -639,7 +646,13 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(context, TAClaimActivity.class)); //Travel_Allowance
         });
         binding.sfa.setOnClickListener(v -> {
-            startActivity(new Intent(context, SFA_Activity.class));
+            if(sSFType.equalsIgnoreCase("2")){
+                Intent intent = new Intent(context, ProcurementHome.class);
+                intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                startActivity(intent);
+            }else {
+                startActivity(new Intent(context, SFA_Activity.class));
+            }
         });
         /*binding.canteenScan.setOnClickListener(v -> {
             Intent intent = new Intent(context, CateenToken.class);
@@ -1412,11 +1425,11 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                             Log.d(TAG, "DeptType : " + sDeptType);
 
                             mShared_common_pref.save("ActivityStart", "true");
-                            if (sDeptType.equalsIgnoreCase("1")) {
-//                                    aIntent = new Intent(getApplicationContext(), ProcurementDashboardActivity.class);
-//                                    startActivity(aIntent);
-                                startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
-                            } else {
+                            if(sSFType.equalsIgnoreCase("2")){
+                                Intent ProcIntent = new Intent(context, ProcurementHome.class);
+                                ProcIntent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                                startActivity(ProcIntent);
+                            }else{
                                 startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
 
 //                                    JSONObject jParam = new JSONObject();

@@ -273,14 +273,6 @@ public class Login extends AppCompatActivity {
               password : 001
              */
 
-            if ("san-001".equalsIgnoreCase(SUserID) && SPwd.equals("001")){
-                Intent intent = new Intent(context, Dashboard.class);
-                intent.putExtra("Mode", INTENT_PROCUREMENT_MODE);
-                intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
-                startActivity(intent);
-                return;
-            }
-
             if (TextUtils.isEmpty(eMail)) {
                 Toast.makeText(this, "Email Address Required", Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(SPwd)) {
@@ -600,19 +592,6 @@ public class Login extends AppCompatActivity {
                         return;
                     }
                 }
-/*
-                eMail= "haptest4@hap.in";
-                eMail="sivakumar.s@hap.in";
-                eMail="sajan@hap.in";
-                eMail="iplusadmin@hap.in";
-                eMail="1014700@hap.in";
-                eMail="anandaraj.s@hap.in";
-                eMail="1023176@hap.in";
-                eMail="1025499@hap.in";
-                eMail="1014604@hap.in";
-                eMail="harishbabu.bh@hap.in";
-                eMail="ciadmin@hap.in";
-*/
                 Call<Model> modelCall = apiInterface.login("get/GoogleLogin", eMail, SUserID, SPwd, BuildConfig.VERSION_NAME, deviceToken);
                 modelCall.enqueue(new Callback<Model>() {
                     @Override
@@ -839,6 +818,7 @@ public class Login extends AppCompatActivity {
                 }
 
 
+                String Sf_type = String.valueOf(response.getData().get(0).getSFFType());
                 if (requestCode == RC_SIGN_IN) {
                     if (CheckIn == true) {
                         intent = new Intent(context, Dashboard_Two.class);
@@ -851,9 +831,15 @@ public class Login extends AppCompatActivity {
                         finish();
                     } else {
                         intent = new Intent(context, Dashboard.class);
-                        intent.putExtra("Mode", INTENT_MODE_SFA);
+                        if (Sf_type.equalsIgnoreCase("P")){
+                            intent.putExtra("Mode", INTENT_PROCUREMENT_MODE);
+                            intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
+                        }else {
+                            intent.putExtra("Mode", INTENT_MODE_SFA);
+                        }
                         finish();
                     }
+
                 } else {
                     intent = new Intent(context, Dashboard_Two.class);
                     intent.putExtra("Mode", "RPT");
@@ -861,7 +847,6 @@ public class Login extends AppCompatActivity {
                 }
 
                 String code = response.getData().get(0).getSfCode();
-                String Sf_type = String.valueOf(response.getData().get(0).getSFFType());
                 String empID = response.getData().get(0).getSfEmpId();
                 String sName = response.getData().get(0).getSfName();
                 String div = response.getData().get(0).getDivisionCode();

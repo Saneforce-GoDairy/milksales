@@ -41,7 +41,8 @@
                     android:layout_height="wrap_content"
                     android:hint="V. Mohana Krishnan"
                     android:textColor="@color/primaryDark"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
+                    android:lines="1"
                     android:gravity="start"
                     android:fontFamily="@font/poppins_semibold"/>
 

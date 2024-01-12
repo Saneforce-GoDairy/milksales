@@ -173,7 +173,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         Log.e("Dashboard", "sSFType :" + sSFType);
 
 
-        if (sSFType.equals("1")) {
+        if (!(sSFType.equalsIgnoreCase("0"))) {
             binding.linMydayPlan.setVisibility(View.VISIBLE);
             binding.linHolidayWorking.setVisibility(View.GONE);
             binding.linCheckIn.setVisibility(View.GONE);
@@ -207,7 +207,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         if (OTFlg == 1) linExtShift.setVisibility(View.VISIBLE);
         Button linTourPlan = (findViewById(R.id.lin_tour_plan));
         linTourPlan.setVisibility(View.GONE);
-        if (sSFType.equals("1")) linTourPlan.setVisibility(View.VISIBLE);
+        if (!(sSFType.equalsIgnoreCase("0"))) linTourPlan.setVisibility(View.VISIBLE);
         Button linExit = (findViewById(R.id.lin_exit));
 
         if (UserDetails.getInt("CheckCount", 0) <= 0) {
@@ -346,17 +346,22 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         break;
 
                     case 2:
-                        if(getIntent().hasExtra("Mode")){
-                            String mMode = getIntent().getStringExtra("Mode");
-
-                            if (mMode.equals(INTENT_PROCUREMENT_MODE)){
-                                Intent intent = new Intent(context, ProcurementHome.class);
-                                intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
-                                startActivity(intent);
-                                return;
-                            }
+//                        if(getIntent().hasExtra("Mode")){
+//                            String mMode = getIntent().getStringExtra("Mode");
+//                            if (mMode.equals(INTENT_PROCUREMENT_MODE)){
+//                                Intent intent = new Intent(context, ProcurementHome.class);
+//                                intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+//                                startActivity(intent);
+//                                return;
+//                            }
+//                        }
+                        if(sSFType.equalsIgnoreCase("2")){
+                            Intent intent = new Intent(context, ProcurementHome.class);
+                            intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                            startActivity(intent);
+                        }else{
+                            startActivity(new Intent(context, SFA_Activity.class));
                         }
-                        startActivity(new Intent(context, SFA_Activity.class));
                         break;
 
                     case 3:
@@ -408,7 +413,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.linCheckIn.setOnClickListener(v -> {
             int val = UserDetails.getInt("checkRadius", 0);
             Log.v("CHECKIN:", "" + val);
-            if (/*sSFType.equals("0")*/UserDetails.getInt("checkRadius", 0) == 1) {
+            if (UserDetails.getInt("checkRadius", 0) == 1) {
                 String[] latlongs = UserDetails.getString("HOLocation", "").split(":");
                 Intent intent = new Intent(context, MapDirectionActivity.class);
                 intent.putExtra(Constants.DEST_LAT, latlongs[0]);
@@ -635,7 +640,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 break;
 
             case R.id.lin_sfa:
-                startActivity(new Intent(context, SFA_Activity.class));
+                if(sSFType.equalsIgnoreCase("2")){
+                    Intent ProcIntent = new Intent(context, ProcurementHome.class);
+                    ProcIntent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                    startActivity(ProcIntent);
+                }else{
+                    startActivity(new Intent(context, SFA_Activity.class));
+                }
                 break;
 
             case R.id.lin_exit:
@@ -817,7 +828,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
                     binding.linCheckIn.setVisibility(View.VISIBLE);
                     binding.linHolidayWorking.setVisibility(View.VISIBLE);
-                    if (flag == 1 && sSFType.equals("1")) {
+                    if (flag == 1 && !(sSFType.equalsIgnoreCase("0"))) {
                         JSONArray jsoncc = jsonObject.getJSONArray("Checkdayplan");
                         if (jsoncc.length() > 0) {
                             if (jsoncc.getJSONObject(0).getInt("Cnt") < 1) {
@@ -940,10 +951,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             String ActStarted = shared_common_pref.getvalue("ActivityStart");
             if (ActStarted.equalsIgnoreCase("true")) {
                 Intent aIntent;
-                String sDeptType = UserDetails.getString("DeptType", "");
-                if (sDeptType.equalsIgnoreCase("1")) {
+                if(sSFType.equalsIgnoreCase("2")) {
                     //   aIntent = new Intent(Dashboard.this, ProcurementDashboardActivity.class);
-                    aIntent = (new Intent(getApplicationContext(), SFA_Activity.class));
+                    aIntent = (new Intent(getApplicationContext(), ProcurementHome.class));
 
                 } else {
                     Shared_Common_Pref.Sync_Flag = "0";
