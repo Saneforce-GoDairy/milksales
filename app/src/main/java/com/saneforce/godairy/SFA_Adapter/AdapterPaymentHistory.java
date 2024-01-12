@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.R;
 
 import org.json.JSONArray;
@@ -19,10 +20,12 @@ import java.text.DecimalFormat;
 public class AdapterPaymentHistory extends RecyclerView.Adapter<AdapterPaymentHistory.ViewHolder> {
     Context context;
     JSONArray array;
+    Common_Class common_class;
 
     public AdapterPaymentHistory(Context context, JSONArray array) {
         this.context = context;
         this.array = array;
+        common_class = new Common_Class(context);
     }
 
     @NonNull
@@ -37,7 +40,7 @@ public class AdapterPaymentHistory extends RecyclerView.Adapter<AdapterPaymentHi
         if (object != null) {
             holder.createdOn.setText(object.optString("createdOn"));
             holder.invoiceNumber.setText(object.optString("invoiceNumber"));
-            holder.invoiceAmount.setText(new DecimalFormat("0.00").format(object.optDouble("invoiceAmount")));
+            holder.invoiceAmount.setText(common_class.formatCurrency(object.optDouble("invoiceAmount")));
             holder.paymentMethod.setText(object.optString("paymentMethod"));
             holder.paymentStatus.setText(object.optString("paymentStatus"));
             holder.transactionId.setText(object.optString("transactionId"));

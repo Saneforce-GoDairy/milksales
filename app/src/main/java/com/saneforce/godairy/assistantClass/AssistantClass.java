@@ -199,7 +199,9 @@ public class AssistantClass extends AppCompatActivity {
         if (!negative.isEmpty()) {
             builder.setNegativeButton(negative, (dialog, which) -> dialogClickListener.onNegativeButtonClick(dialog));
         }
-        builder.create().show();
+        try {
+            builder.create().show();
+        } catch (Exception ignored) { }
     }
 
     public void showAlertDialogWithFinish(String message) {
@@ -209,7 +211,9 @@ public class AssistantClass extends AppCompatActivity {
         }
         builder.setCancelable(false);
         builder.setPositiveButton("Close", (dialog, which) -> ((Activity) context).finish());
-        builder.create().show();
+        try {
+            builder.create().show();
+        } catch (Exception ignored) { }
     }
 
     public void showAlertDialogWithDismiss(String message) {
@@ -219,7 +223,9 @@ public class AssistantClass extends AppCompatActivity {
         }
         builder.setCancelable(false);
         builder.setPositiveButton("Dismiss", (dialog, which) -> dialog.dismiss());
-        builder.create().show();
+        try {
+            builder.create().show();
+        } catch (Exception ignored) { }
     }
 
     public void showProgressDialog(String msg, boolean isCancelable) {
@@ -227,7 +233,9 @@ public class AssistantClass extends AppCompatActivity {
             progressDialog.setMessage(msg);
         }
         progressDialog.setCancelable(isCancelable);
-        progressDialog.show();
+        try {
+            progressDialog.show();
+        } catch (Exception ignored) { }
     }
 
     public void dismissProgressDialog() {
@@ -356,9 +364,7 @@ public class AssistantClass extends AppCompatActivity {
         try {
             Runtime runtime = Runtime.getRuntime();
             runtime.exec("pm clear " + context.getPackageName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) { }
     }
 
     public String formatDateToDB(String ddMMyyyy) {
