@@ -1,6 +1,12 @@
 package com.saneforce.godairy.Activity_Hap;
 
 
+
+import static com.saneforce.godairy.Common_Class.Constants.Change_Password;
+import static com.saneforce.godairy.SFA_Activity.HAPApp.printUsrLog;
+
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,11 +33,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.BuildConfig;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.saneforce.godairy.Common_Class.Common_Class;
+import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.Model_Class.Model;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.universal.Constant;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.ref.Reference;
@@ -47,7 +61,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public class ChangePasswordActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity implements UpdateResponseUI {
 
     private SharedPreferences UserDetails;
     public static final String UserDetail = "MyPrefs";
@@ -56,7 +70,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText oldPasswordEditText, newPasswordEditText, confirmPasswordEditText;
     private Shared_Common_Pref mShared_common_pref;
 
-    private TextView tvUserName;
+    private TextView tvUserName,etOldPassword,etNewPassword,etConfirmPassword;
 
     private final Context context = this;
 
@@ -64,6 +78,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private ImageView userImage;
     private String mProfileUrl;
 
+    private Common_Class common_class;
+    private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +92,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         tvUserName = findViewById(R.id.user_name);
         userImage = findViewById(R.id.user_image);
         Button updateButton = findViewById(R.id.btn_update);
-
+        common_class = new Common_Class(this);
         String mProfileImage = UserDetails.getString("Profile", "");
         String sUName = UserDetails.getString("SfName", "");
 
@@ -109,6 +125,124 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 .apply(RequestOptions.circleCropTransform())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(userImage);
+    }
+
+    @Override
+    public void onLoadDataUpdateUI(String apiDataResponse, String key) {
+        try {
+            if (apiDataResponse != null){
+                switch (key){
+                    case Change_Password:
+                        JSONObject changepassword = new JSONObject(apiDataResponse);
+                        JSONArray arr = changepassword.getJSONArray("Data");
+                        Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        } catch (Exception e) {
+             Log.e("error", e.toString());
+        }
+
+    }
+
+/*    private void updatePasswordApi(String response) {
+        try {
+//        JSONObject jsonObject = new JSONObject(response);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.changePassword(
+                "change_Password",
+                Shared_Common_Pref.Sf_Code,
+                Shared_Common_Pref.mOldPassword,
+                Shared_Common_Pref.mNewPasswpord);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Log.e("error", e.toString());
+                    }
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        } catch (Exception e) {
+            Log.v("error", e.getMessage());
+        }
+    }*/
+/*public void changePsw(){
+    JsonArray jsonArray = new JsonArray();
+    JsonObject jsonObject = new JsonObject();
+    jsonObject.addProperty("username",tvUserName.getText().toString());
+    jsonObject.addProperty("oldpassword",etOldPassword.getText().toString());
+    jsonObject.addProperty("newpassword",etNewPassword.getText().toString());
+    jsonObject.addProperty("confirmpassword",etConfirmPassword.getText().toString());
+
+    JsonObject jsonObject1 = new JsonObject();
+    jsonObject1.add("ChangePassword",jsonObject);
+    jsonArray.add(jsonObject1);
+    printUsrLog("MyProfileFragment","jsonArray:"+jsonArray);
+
+
+
+    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+ */
+    /*   Call<ResponseBody> call = request.saveJSONArray(toRequestBody(jsonArray),"dcr/save",*//*
+    Call<ResponseBody> call = apiInterface.changePassword(
+            Constant.DIVISION_CODE,
+            Constant.SF_CODE,
+            Constant.STATE_CODE,
+            Constant.DESIG);
+    call.enqueue(new Callback<ResponseBody>() {
+
+        @Override
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            try {
+                String responseBody = response.body().string();
+
+                printUsrLog("MyProfileFragment", "Change password responseBody:" + responseBody);
+                if (responseBody != null) {
+                    try {
+                        JSONObject jsonArray = new JSONObject(responseBody);
+
+                        if (jsonArray.getBoolean("success")) {
+                            Toast.makeText(context, "Password Change Successfully", Toast.LENGTH_SHORT).show();
+//                            logout();
+                        } else {
+                            Toast.makeText(context, "Response : null", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+            call.cancel();
+            Toast.makeText(context, "Exception 2 " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        }
+    });
+}*/
+
+
+    @Override
+    public void onErrorData(String msg) {
+        UpdateResponseUI.super.onErrorData(msg);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 
     public class Adapter extends RecyclerView.Adapter<Dashboard.Adapter.ViewHolder> {
@@ -147,40 +281,104 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
         }
     }
+ /*   public void changePsw(){
+        JsonArray jsonArray = new JsonArray();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("username",tvUserName.getText().toString());
+        jsonObject.addProperty("oldpassword",etOldPassword.getText().toString());
+        jsonObject.addProperty("newpassword",etNewPassword.getText().toString());
+        jsonObject.addProperty("confirmpassword",etConfirmPassword.getText().toString());
 
-    private void updatePasswordApi() {
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
-        Call<ResponseBody> call = apiInterface.updatePassword(
-                "update_password",
-                Shared_Common_Pref.Sf_Code,
-                Shared_Common_Pref.mOldPassword,
-                Shared_Common_Pref.mNewPasswpord);
-        call.enqueue(new Callback<>() {
+        JsonObject jsonObject1 = new JsonObject();
+        jsonObject1.add("ChangePassword",jsonObject);
+        jsonArray.add(jsonObject1);
+        printUsrLog("MyProfileFragment","jsonArray:"+jsonArray);
+
+
+
+        ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = request.saveJSONArray(toRequestBody(jsonArray),"dcr/save",
+                Constant.DIVISION_CODE,
+                Constant.SF_CODE,
+                Constant.STATE_CODE,
+                Constant.DESIG);
+        call.enqueue(new Callback<ResponseBody>() {
+
             @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    String res;
-                    try {
-                        res = response.body().string();
-                        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String responseBody = response.body().string();
+
+                    printUsrLog("MyProfileFragment", "Change password responseBody:" + responseBody);
+                    if (responseBody != null) {
+                        try {
+                            JSONObject jsonArray = new JSONObject(responseBody);
+
+                            if (jsonArray.getBoolean("success")) {
+                                Toast.makeText(getContext(), "Password Change Successfully", Toast.LENGTH_SHORT).show();
+                                logout();
+                            } else {
+                                Toast.makeText(getContext(), "Response : null", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
+
             @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getContext(), "Exception 2 " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
+    }*/
+
+
+       private void updatePasswordApi(String oldPassword,String newpassword) {
+           ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+           Call<ResponseBody> call = apiInterface.changePassword(
+                   "Change_Password",
+                   Constants.Sf_Code,
+                   oldPassword,
+                   newpassword,
+                   Constants.div_Code);
+           call.enqueue(new Callback<>() {
+               @Override
+               public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                   if (response.isSuccessful()) {
+                       String res;
+                       try {
+                           res = response.body().string();
+                           Log.e("login", "res " + response);
+                           Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+                       } catch (IOException e) {
+                           throw new RuntimeException(e);
+                       }
+                   }
+               }
+               @Override
+               public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                   Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+               }
+           });
+       }
   private void updatePassword(){
         String oldPassword = oldPasswordEditText.getText().toString().trim();
         String newPassword = newPasswordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
+   /*   editor = UserDetails.edit();
+      editor.putString("old_password",oldPassword);
+      editor.putString("new_password",newPassword);
+      editor.commit();
+      editor.apply();*/
+
         if (TextUtils.isEmpty(oldPassword) || TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(confirmPassword)) {
-            showAlertDialog("Fields Required", "All fields are required");
+            showAlertDialog("Fields Required", "Some field are empty");
 
         }else if (!isValidOldPassword(oldPassword)) {
             showAlertDialog("Invalid Old Password", "Please enter a valid old password.");
@@ -192,9 +390,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
             showAlertDialog("Password Mismatch", "New password and confirm password do not match.");
 //            Toast.makeText(this, "New password and confirm password do not match", Toast.LENGTH_SHORT).show();
 
-        }else{
+        }else if (newPassword.equals(confirmPassword)) {
 
-            updatePasswordApi();
+
+            updatePasswordApi(oldPassword,newPassword);
 
         }
 
@@ -202,6 +401,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         // Your code to update the password goes here
 
         // Show success message
+//      Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show();
 
 
 
