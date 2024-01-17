@@ -177,27 +177,4 @@
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/or"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:gravity="center_horizontal"
-        android:text="or" />
-
-    <TextView
-        android:id="@+id/payUsingOnline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/C15dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/button_greenbg"
-        android:foreground="?attr/selectableItemBackground"
-        android:gravity="center_horizontal"
-        android:visibility="gone"
-        android:paddingVertical="@dimen/C10dp"
-        android:text="Pay using online"
-        android:textColor="@color/white" />
-
 </LinearLayout>
