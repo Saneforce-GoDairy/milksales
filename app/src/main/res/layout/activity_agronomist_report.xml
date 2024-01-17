@@ -24,6 +24,38 @@
 
     </RelativeLayout>
 
+
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--add  several shimmer placeholder layout -->
+
+            <include layout="@layout/m_agronomist_report_shimmer"></include>
+
+            <include layout="@layout/m_agronomist_report_shimmer"></include>
+
+            <include layout="@layout/m_agronomist_report_shimmer"></include>
+
+            <include layout="@layout/m_agronomist_report_shimmer"></include>
+
+            <include layout="@layout/m_agronomist_report_shimmer"></include>
+
+            <include layout="@layout/m_agronomist_report_shimmer"></include>
+
+            <include layout="@layout/m_agronomist_report_shimmer"></include>
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/agronomist_recycler_view"
         android:layout_width="match_parent"

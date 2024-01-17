@@ -112,12 +112,13 @@ public class AgronomistReportActivity extends AppCompatActivity {
     }
 
     private void loadList() {
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getAgronomistReportList(PROCUREMENT_GET_AGRONOMIST);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    binding.shimmerLayout.setVisibility(View.GONE);
                     String  agronomistList;
                     try {
                         agronomistList = response.body().string();
