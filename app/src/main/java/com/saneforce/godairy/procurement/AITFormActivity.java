@@ -274,7 +274,6 @@ public class AITFormActivity extends AppCompatActivity {
 
         loadPlant();
 
-
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
                 R.array.calf_birth_veri_array, R.layout.custom_spinner);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

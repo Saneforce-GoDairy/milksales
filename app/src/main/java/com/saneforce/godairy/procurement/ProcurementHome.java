@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
+import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,6 +153,11 @@ public class ProcurementHome extends AppCompatActivity {
 
         binding.procurementAsset.setOnClickListener(view -> {
             Intent intent = new Intent(context, ProcurementAssetActivity.class);
+            startActivity(intent);
+        });
+
+        binding.reports.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ProcReportsHomeActivity.class);
             startActivity(intent);
         });
     }

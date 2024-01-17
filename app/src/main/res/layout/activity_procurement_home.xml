@@ -48,21 +48,21 @@
         />
 
     <View
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
         android:background="#CACACA"
         android:layout_marginTop="10dp"/>
 
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
       android:orientation="horizontal"
         android:layout_marginStart="10dp">
 
       <androidx.cardview.widget.CardView
-          android:id="@+id/layout"
+          android:id="@+id/reports"
           android:layout_width="110dp"
           android:layout_height="110dp"
           android:layout_marginEnd="10dp"
@@ -83,9 +83,9 @@
           <LinearLayout
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
               android:gravity="center_horizontal"
               android:orientation="vertical"
-              android:layout_centerInParent="true"
               android:padding="10dp">
 
             <ImageView
@@ -99,11 +99,11 @@
                 android:id="@+id/name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="#858585"
-                android:text="Form Reports"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/ubuntu_medium"
+                android:text="Form Reports"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#858585"
                 tools:text="Form Reports" />
 
           </LinearLayout>

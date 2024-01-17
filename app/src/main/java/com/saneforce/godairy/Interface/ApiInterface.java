@@ -956,6 +956,9 @@ public interface ApiInterface {
                                              @Query("created_dt") String created_dt
     );
 
+    @POST("test_prasanth.php")
+    Call<ResponseBody> getAgronomistReportList(@Query("axn") String axn);
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }
