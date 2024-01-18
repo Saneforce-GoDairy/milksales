@@ -201,14 +201,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         String sUName = UserDetails.getString("SfName", "");
         String SFDesig = UserDetails.getString("SFDesig", "");
         String mProfileUrl = sharedCommonPref.getvalue("mProfile");
+        loadImage(mProfileUrl);
 
-        Log.e("hgfhg", mProfileUrl);
-        if (!Common_Class.isNullOrEmpty(mProfileUrl)) {
-            String[] image = mProfileUrl.split("/"); // https://lactalisindia.salesjump.in/SalesForce_Profile_Img/TRMUMGR0009_1697262524.jpg
-            if (image.length > 0 && image[(image.length - 1)].contains(".")) {
-                loadImage(mProfileUrl);
-            }
-        }
         tvUserName.setText(sUName);
         binding.userName.setText(sUName);
         binding.designation.setText(SFDesig );
@@ -369,6 +363,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     private void loadImage(String mProfileImage){
         Glide.with(this)
                 .load(mProfileImage)
+                .placeholder(R.drawable.person_placeholder_0)
                 .apply(RequestOptions.circleCropTransform())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.profileImg);

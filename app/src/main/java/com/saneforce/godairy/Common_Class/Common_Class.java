@@ -202,7 +202,9 @@ public class Common_Class {
 
 
         } else {
-            nDialog.dismiss();
+            if (nDialog != null) {
+                nDialog.dismiss();
+            }
         }
     }
 

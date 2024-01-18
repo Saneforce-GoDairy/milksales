@@ -397,6 +397,10 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".SFA_Activity.PaymentHistory"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".SFA_Activity.PaymentCollection"
             android:exported="true"
             android:screenOrientation="portrait" />
