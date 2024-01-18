@@ -492,7 +492,7 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void loadCenterList() {
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcCenterList(PROCUREMENT_GET_CENTER);
 
         call.enqueue(new Callback<>() {

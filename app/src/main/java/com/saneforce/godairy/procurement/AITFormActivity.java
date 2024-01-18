@@ -287,7 +287,7 @@ public class AITFormActivity extends AppCompatActivity {
     }
 
     private void loadPlant() {
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
         call.enqueue(new Callback<>() {
