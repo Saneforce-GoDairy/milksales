@@ -24,11 +24,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp">
 
             <LinearLayout
                 android:id="@+id/last_cn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -36,10 +37,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Company name"
                     android:fontFamily="@font/ubuntu_medium"
-                    android:textSize="12sp"
-                    android:textColor="#7E7E7E"/>
+                    android:text="Company name"
+                    android:textColor="#7E7E7E"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/txt_company_name"
@@ -47,15 +48,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/ubuntu_medium"
-                    android:textSize="13sp"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -65,18 +66,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Farmer name"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:textSize="12sp"
-                            android:textColor="#7E7E7E"/>
+                            android:text="Farmer name"
+                            android:textColor="#7E7E7E"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/txt_farmer_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:textSize="13sp"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
@@ -89,18 +90,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Center name"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:textSize="12sp"
-                            android:textColor="#7E7E7E"/>
+                            android:text="Center name"
+                            android:textColor="#7E7E7E"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/txt_center_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:textSize="13sp"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
@@ -109,9 +110,9 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -121,18 +122,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Service type"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:textSize="12sp"
-                            android:textColor="#7E7E7E"/>
+                            android:text="Service type"
+                            android:textColor="#7E7E7E"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/txt_service_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:textSize="13sp"
-                            android:textColor="#2E7A0E"/>
+                            android:textColor="#2E7A0E"
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
@@ -145,18 +146,268 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Product type"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:textSize="12sp"
-                            android:textColor="#7E7E7E"/>
+                            android:text="Product type"
+                            android:textColor="#7E7E7E"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/txt_product_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:textSize="13sp"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/second_cn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_radius_proc_img"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/C50dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/farmers_img_cn"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/C50dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:fontFamily="@font/ubuntu_medium"
+                                    android:text="Farmers meeting" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="@dimen/C40dp"
+                                    android:layout_height="@dimen/C40dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="5dp"
+                                    app:cardCornerRadius="10dp">
+
+                                    <ImageView
+                                        android:id="@+id/farmers_meeting_img"
+                                        android:layout_width="@dimen/C40dp"
+                                        android:layout_height="@dimen/C40dp"
+                                        android:adjustViewBounds="true"
+                                        android:scaleType="fitXY" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <!-- next image -->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/C50dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/C50dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:fontFamily="@font/ubuntu_medium"
+                                    android:text="CSR Activity" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="@dimen/C40dp"
+                                    android:layout_height="@dimen/C40dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="5dp"
+                                    app:cardCornerRadius="10dp">
+
+                                    <ImageView
+                                        android:id="@+id/csr_activity_img"
+                                        android:layout_width="@dimen/C40dp"
+                                        android:layout_height="@dimen/C40dp"
+                                        android:adjustViewBounds="true"
+                                        android:scaleType="fitXY" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <!-- next image -->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/C50dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/C50dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:fontFamily="@font/ubuntu_medium"
+                                    android:text="Fodder dev acres" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="@dimen/C40dp"
+                                    android:layout_height="@dimen/C40dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="5dp"
+                                    app:cardCornerRadius="10dp">
+
+                                    <ImageView
+                                        android:id="@+id/fodder_acres_img"
+                                        android:layout_width="@dimen/C40dp"
+                                        android:layout_height="@dimen/C40dp"
+                                        android:adjustViewBounds="true"
+                                        android:scaleType="centerCrop" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Plant name"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_plant_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Teat dip cup &amp; solution"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_teat_dip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Fodder dev acres"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_fodder_dev_acres"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="No of farmers enrolled"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_farmers_enrolled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -187,8 +438,21 @@
                 android:textSize="13sp"
                 android:textColor="#007CB5"/>
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/txt_view_less"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_below="@id/last_cn"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:text="View less"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textSize="13sp"
+                android:textColor="#007CB5"
+                android:visibility="gone"/>
 
+        </RelativeLayout>
 
     </LinearLayout>
 

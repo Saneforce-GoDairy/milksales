@@ -165,7 +165,7 @@ public class FileUploadService2 extends Service {
 
         startForeground(1, notification);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcAsset(PROCUREMENT_SUBMIT_ASSET,
                 mCompany,
@@ -228,7 +228,7 @@ public class FileUploadService2 extends Service {
 
         startForeground(1, notification);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcMaintenance(PROCUREMENT_SUBMIT_MAINTENANCE,
                 mCompany,
@@ -243,16 +243,6 @@ public class FileUploadService2 extends Service {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    String res;
-                    showUploadCompleteNotification();
-                    stopForeground(true);
-                    try {
-                        res = response.body().string();
-                        Toast.makeText(context, "Maintenance form submit success", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }  if (response.isSuccessful()) {
                     String res;
                     showUploadCompleteNotification();
                     stopForeground(true);
@@ -328,7 +318,7 @@ public class FileUploadService2 extends Service {
 
         startForeground(1, notification);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcQuality(PROCUREMENT_SUBMIT_QUALITY,
                 mCompany,
@@ -404,7 +394,7 @@ public class FileUploadService2 extends Service {
 
         startForeground(1, notification);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcAgentVisit(PROCUREMENT_SUBMIT_AGENT_VISIT,
                 mAgentVisit,
@@ -478,7 +468,7 @@ public class FileUploadService2 extends Service {
 
         startForeground(1, notification);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcAIT(PROCUREMENT_SUBMIT_AIT,
                 mCompany,
@@ -560,7 +550,7 @@ public class FileUploadService2 extends Service {
 
         startForeground(1, notification);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcVeterinary(PROCUREMENT_SUBMIT_VETERINARY,
                                                                     mCompany,
@@ -649,7 +639,7 @@ public class FileUploadService2 extends Service {
 
         startForeground(1, notification);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcAgronomist(
                 PROCUREMENT_SUBMIT_AGRONOMIST,
@@ -726,7 +716,7 @@ public class FileUploadService2 extends Service {
         ProgressRequestBody progressRequestBody = new ProgressRequestBody(file_image);
         MultipartBody.Part thumbnailPart = MultipartBody.Part.createFormData("image",file_image.getName(),progressRequestBody);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcFarmerCreation(
                 PROCUREMENT_SUBMIT_FARMER_CREATION,
@@ -802,7 +792,7 @@ public class FileUploadService2 extends Service {
         ProgressRequestBody progressRequestBody = new ProgressRequestBody(file_image);
         MultipartBody.Part thumbnailPart = MultipartBody.Part.createFormData("image",file_image.getName(),progressRequestBody);
 
-        ApiInterface apiInterface = ApiClient.getClientThirumala().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcCollectionCenterLo(PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION,
                 mCompany,

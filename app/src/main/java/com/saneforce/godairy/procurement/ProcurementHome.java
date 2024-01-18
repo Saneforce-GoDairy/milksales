@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
 import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
