@@ -532,6 +532,15 @@ public class Common_Class {
                     QueryString.put("fromdate", Common_Class.GetDatewothouttime());
                     QueryString.put("todate", Common_Class.GetDatewothouttime());
                     break;
+                    //Change Password
+                case  Constants.Change_Password:
+                    axnname = "get/changepassword";
+                    QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
+//                    QueryString.put("divisionCode", UserDetails.getString("Divcode", ""));
+//                    QueryString.put("old_password", UserDetails.getString("old_password",""));
+//                    QueryString.put("new_password",UserDetails.getString("new_password",""));
+                    QueryString.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
+                    break;
             }
 
             QueryString.put("axn", axnname);
