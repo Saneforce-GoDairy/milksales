@@ -284,6 +284,11 @@ public class Datum {
     public String getSfName() {
         return sfName;
     }
+
+    public void setSfMobile(String sfMobile) {
+        this.sfMobile = sfMobile;
+    }
+
     public String getSFMobile(){
         return sfMobile;
     }

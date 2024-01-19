@@ -87,7 +87,7 @@
 
                     <!-- Place the camera icon at the bottom right corner -->
                     <ImageView
-                        android:id="@+id/edit"
+                        android:id="@+id/btn_camera"
                         android:layout_width="48dp"
                         android:layout_height="50dp"
                         android:layout_gravity="bottom|end"
@@ -185,7 +185,7 @@
             android:background="@color/cardview_light_background">
 
             <TextView
-                android:id="@+id/tv_head_quarters"
+                android:id="@+id/designation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="  "
@@ -214,7 +214,7 @@
             android:background="@color/cardview_light_background"
             android:padding="15dp">
             <TextView
-                android:id="@+id/tv_mob_no"
+                android:id="@+id/mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="90866"
@@ -271,7 +271,7 @@
             android:background="@color/cardview_light_background"
             android:padding="15dp">
             <TextView
-                android:id="@+id/tv_report"
+                android:id="@+id/reporting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Manager"
@@ -283,7 +283,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_change_password"
+            android:id="@+id/change_password_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -292,7 +292,7 @@
             android:padding="15dp">
 
             <TextView
-                android:id="@+id/tv_change_password"
+                android:id="@+id/change_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Change Password"
@@ -305,11 +305,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content">
                 <ImageView
-
-                    android:id="@+id/iv_arrow"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                   android:layout_alignParentRight="true"
+                   android:layout_alignParentEnd="true"
                     android:src="@drawable/arrow_right" />
             </RelativeLayout>
 

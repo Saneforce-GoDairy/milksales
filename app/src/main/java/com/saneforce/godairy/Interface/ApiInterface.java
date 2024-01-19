@@ -40,7 +40,7 @@ import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
 
-    @GET("Db_v300.php?")
+    @GET("Db_v300_usha.php?")
     Call<Model> login(@Query("axn") String axn, @Query("Email") String Email, @Query("UserID") String UserID, @Query("Pwd") String Password, @Query("AppVer") String AppVer, @Query("DvID") String deveiceId);
 
 
@@ -181,9 +181,10 @@ public interface ApiInterface {
 
     @POST("Db_v300_usha.php")
     Call<ResponseBody> changePassword(@Query("axn") String axn,
-                                      @Query("sfCode") String sf_code,
+                                      @Query("sf_code") String sf_code,
+                                      @Query("div_Code") String divisionCode,
                                       @Query("old_password") String old_password,
-                                      @Query("new_password") String new_password,@Query("divisionCode") String divisionCode);
+                                      @Query("new_password") String new_password);
 
     @FormUrlEncoded
     @POST("Db_v300.php?axn=dcr/save")

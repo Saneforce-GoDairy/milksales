@@ -263,7 +263,6 @@ public class Login extends AppCompatActivity {
         });
 
         binding.submitButton.setOnClickListener(v -> {
-            Log.e("datalogin", toString());
             SUserID = binding.userEmail.getText().toString().trim();
             eMail = binding.userEmail.getText().toString().trim();
             SPwd = binding.userPassword.getText().toString().trim();
@@ -328,8 +327,6 @@ public class Login extends AppCompatActivity {
                 Shared_Common_Pref.Div_Code = UserDetails.getString("Divcode", "");
                 Shared_Common_Pref.StateCode = UserDetails.getString("State_Code", "");
                 Shared_Common_Pref.SFCutoff = UserDetails.getString("SFCutoff", "");
-                Shared_Common_Pref.Reporting_Sf_Code = UserDetails.getString("Reporting_To_SF", "");
-                Shared_Common_Pref.SF_Mobile = UserDetails.getString("SF_Mobile", "");
 
                 String ActStarted = shared_common_pref.getvalue("ActivityStart");
 
@@ -599,7 +596,6 @@ public class Login extends AppCompatActivity {
                 modelCall.enqueue(new Callback<Model>() {
                     @Override
                     public void onResponse(Call<Model> call, Response<Model> response) {
-                        Log.e("datalogin", response.toString());
                         try {
                             if (response.isSuccessful()) {
 
@@ -757,6 +753,7 @@ public class Login extends AppCompatActivity {
                 userEditor.putString("Sfcode", response.getData().get(0).getDistCode());
                 userEditor.putString("Divcode", response.getData().get(0).getDivisionCode());
                 userEditor.putString("State_Code", response.getData().get(0).getState_Code());
+                userEditor.putString("SFMobile", response.getData().get(0).getSFMobile());
                 userEditor.putInt("FlightAllowed", 0);
 
                 Shared_Common_Pref.Sf_Code = response.getData().get(0).getDistCode();
@@ -849,9 +846,9 @@ public class Login extends AppCompatActivity {
                     intent.putExtra("Mode", "RPT");
                     finish();
                 }
-                Constants.Sf_Code=response.getData().get(0).getSfCode();
-                Constants.div_Code=response.getData().get(0).getDivisionCode();
+
                 String code = response.getData().get(0).getSfCode();
+                String mMobile = response.getData().get(0).getSFMobile();
                 String empID = response.getData().get(0).getSfEmpId();
                 String sName = response.getData().get(0).getSfName();
                 String div = response.getData().get(0).getDivisionCode();
@@ -861,8 +858,6 @@ public class Login extends AppCompatActivity {
                 String SFRptNm = response.getData().get(0).getSfRptName();
                 String DeptCd = response.getData().get(0).getSFDept();
                 String DeptNm = response.getData().get(0).getDeptName();
-                String SFMobile = response.getData().get(0).getSFMobile();
-                Log.e("sfmob",response.getData().get(0).getSFMobile());
                 String DeptType = response.getData().get(0).getDeptType();
                 String SFHQ = response.getData().get(0).getsFHQ();
                 String SFHQID = response.getData().get(0).getHQID();
@@ -870,7 +865,7 @@ public class Login extends AppCompatActivity {
                 String SFHQLoc = response.getData().get(0).getHOLocation();
                 int THrsPerm = response.getData().get(0).getTHrsPerm();
 
-
+                Log.e("mobile_", mMobile);
 
                 String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/";
 
@@ -889,8 +884,6 @@ public class Login extends AppCompatActivity {
                 /* Unwanted Lines */
                 Shared_Common_Pref.Sf_Code = code;
                 Shared_Common_Pref.Sf_Name = response.getData().get(0).getSfName();
-                Shared_Common_Pref.SF_Mobile = response.getData().get(0).getSFMobile();
-                Shared_Common_Pref.Reporting_Sf_Code = response.getData().get(0).getSfRptName();
                 Shared_Common_Pref.Div_Code = div;
                 Shared_Common_Pref.StateCode = Sf_type;
                 shared_common_pref.save(Shared_Common_Pref.Sf_Code, code); //l
@@ -902,17 +895,15 @@ public class Login extends AppCompatActivity {
                 shared_common_pref.save(Shared_Common_Pref.SF_DESIG, response.getData().get(0).getSfDesignationShortName()); //l
                 shared_common_pref.save(Shared_Common_Pref.CHECK_COUNT, String.valueOf(type)); //l
                 shared_common_pref.save(Shared_Common_Pref.Sf_Code, code); //l
-                shared_common_pref.save(Shared_Common_Pref.SF_Mobile, response.getData().get(0).getSFMobile());
-                shared_common_pref.save(Shared_Common_Pref.Reporting_Sf_Code, response.getData().get(0).getSfRptName());
                 Shared_Common_Pref.Dept_Type = DeptType;
                 Shared_Common_Pref.SF_Type = Sf_type;
                 // Endof Unwanted Lines
 
                 userEditor.putString("Sf_Type", Sf_type);
                 userEditor.putString("Sfcode", code);
+                userEditor.putString("SFMobile", mMobile);
                 userEditor.putString("EmpId", empID);
                 userEditor.putString("SfName", sName);
-                userEditor.putString("SFMobile",SFMobile);
                 userEditor.putString("SFDesig", DesigNm);
                 userEditor.putString("SFRptCode", SFRptNm);
                 userEditor.putString("SFRptName", SFRptNm);

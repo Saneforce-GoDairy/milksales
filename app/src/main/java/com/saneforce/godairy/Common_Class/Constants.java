@@ -261,8 +261,5 @@ public class Constants {
     public static final String GroupFilter="groupFilter";
     public static final String Freezer_Mandatory="freezerMandatory";
     public static final String VanSalOrderList="vansalOrderList";
-    // Change Password
-    public static final String Change_Password = "changePassword";
-    public static String Sf_Code = "Sf_Code";
-    public static String div_Code = "div_Code";
+
 }
