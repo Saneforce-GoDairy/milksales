@@ -178,12 +178,17 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 e.printStackTrace();
             }
         }).start();
-
+/*
         binding.userImage.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
             intent.putExtra("ImageUrl", mProfileImage);
             startActivity(intent);
 
+        });*/
+        binding.userImage.setOnClickListener(v->{
+            Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+            intent.putExtra("ImageUrl", mProfileImage);
+            startActivity(intent);
         });
 
         ImageView btMyQR = findViewById(R.id.myQR);
