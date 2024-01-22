@@ -64,6 +64,7 @@ import com.saneforce.godairy.fragments.GateInOutFragment;
 import com.saneforce.godairy.fragments.MonthlyFragment;
 import com.saneforce.godairy.fragments.TodayFragment;
 import com.saneforce.godairy.procurement.ProcurementHome;
+import com.saneforce.godairy.test.ProfileActivity;
 import com.saneforce.godairy.universal.Constant;
 
 import org.json.JSONArray;
@@ -153,6 +154,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.headQuarters.setText(SFDesig);
         binding.lblEmail.setText(eMail);
 
+        binding.userImage.setOnClickListener(view1 -> {
+            Intent intent = new Intent(context, ProfileActivity.class);
+            startActivity(intent);
+        });
+
         int mCount = 0;
 
         for (int i = 0; i<mProfileImage.length(); i++){
@@ -175,12 +181,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             }
         }).start();
 
-        binding.userImage.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
-            intent.putExtra("ImageUrl", mProfileImage);
-            startActivity(intent);
-
-        });
+//        binding.userImage.setOnClickListener(v -> {
+//            Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
+//            intent.putExtra("ImageUrl", mProfileImage);
+//            startActivity(intent);
+//
+//        });
 
         ImageView btMyQR = findViewById(R.id.myQR);
         binding.linMydayPlan.setVisibility(View.GONE);

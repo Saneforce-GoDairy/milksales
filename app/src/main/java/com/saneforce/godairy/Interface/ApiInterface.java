@@ -958,6 +958,9 @@ public interface ApiInterface {
 
     @POST("test_prasanth.php")
     Call<ResponseBody> getAgronomistReportList(@Query("axn") String axn);
+    @POST("test_prasanth.php")
+
+    Call<ResponseBody> getAITReportList(@Query("axn") String axn);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

@@ -29,5 +29,10 @@ public class ProcReportsHomeActivity extends AppCompatActivity {
            Intent intent = new Intent(context, AgronomistReportActivity.class);
            startActivity(intent);
        });
+
+       binding.ait.setOnClickListener(v -> {
+           Intent intent = new Intent(context, AITReportActivity.class);
+           startActivity(intent);
+       });
     }
 }

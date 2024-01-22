@@ -58,6 +58,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/ait"
             android:layout_width="match_parent"
             android:layout_height="@dimen/C50dp"
             android:orientation="horizontal">

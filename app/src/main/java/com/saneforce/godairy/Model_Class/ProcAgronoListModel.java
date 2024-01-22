@@ -1,6 +1,6 @@
 package com.saneforce.godairy.Model_Class;
 
-public class AgronomistListModel {
+public class ProcAgronoListModel {
     private String created_dt;
     private String company;
     private String farmer_name;

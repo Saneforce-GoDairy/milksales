@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.Model_Class.AgronomistListModel;
+import com.saneforce.godairy.Model_Class.ProcAgronoListModel;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityAgronomistReportBinding;
 import com.saneforce.godairy.procurement.ImageViewActivity;
@@ -43,7 +43,7 @@ import retrofit2.Response;
 public class AgronomistReportActivity extends AppCompatActivity {
     private ActivityAgronomistReportBinding binding;
     private final Context context = this;
-    private List<AgronomistListModel> agronomistListsMain;
+    private List<ProcAgronoListModel> agronomistListsMain;
     private AgronomistListAdapter primaryNoOrderListAdapter;
 
     @Override
@@ -57,10 +57,10 @@ public class AgronomistReportActivity extends AppCompatActivity {
     }
 
     public static class AgronomistListAdapter extends  RecyclerView.Adapter<AgronomistListAdapter.ViewHolder>{
-        private final List<AgronomistListModel> agronomistListModel;
+        private final List<ProcAgronoListModel> agronomistListModel;
         private final Context context;
 
-        public AgronomistListAdapter(Context context, List<AgronomistListModel> agronomistListModel) {
+        public AgronomistListAdapter(Context context, List<ProcAgronoListModel> agronomistListModel) {
             this.context = context;
             this.agronomistListModel = agronomistListModel;
         }
@@ -68,7 +68,7 @@ public class AgronomistReportActivity extends AppCompatActivity {
         @NonNull
         @Override
         public AgronomistListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.proc_agronomist_report, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_agronomist_report, parent, false);
             return new ViewHolder(view);
         }
 
@@ -211,7 +211,7 @@ public class AgronomistReportActivity extends AppCompatActivity {
                         JSONArray jsonArray = new JSONArray(agronomistList);
 
                         for (int i = 0; i<jsonArray.length(); i++) {
-                            AgronomistListModel agronomistListModel = new AgronomistListModel();
+                            ProcAgronoListModel agronomistListModel = new ProcAgronoListModel();
                             JSONObject object = jsonArray.getJSONObject(i);
                             agronomistListModel.setCreated_dt(object.getString("created_dt"));
                             agronomistListModel.setCompany(object.getString("company"));

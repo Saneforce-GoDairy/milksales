@@ -110,7 +110,7 @@ public class ProcurementHome extends AppCompatActivity {
         binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();             
+                finish();
             }
         });
         binding.oneAgronomistForm.setOnClickListener(v -> {

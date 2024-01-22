@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".procurement.reports.AgronomistReportActivity">
+    tools:context=".procurement.reports.AITReportActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,13 +18,11 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="Agronomist Reports"
+            android:text="@string/ait_reports"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
     </RelativeLayout>
-
-
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerLayout"
@@ -49,9 +47,10 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/agronomist_recycler_view"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         />
+
 </LinearLayout>
