@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/back"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="15dp"
         android:src="@drawable/arrow_left"
         app:tint="@color/white" />
@@ -20,11 +20,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center_vertical"
         android:layout_marginHorizontal="15dp"
+        android:paddingBottom="2dp"
         android:textStyle="bold"
         android:text="@string/milk_sales_daily"
         android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/home"

@@ -59,6 +59,12 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".Activity.TravelPunchHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.TravelPunchLocationActivity"
+            android:exported="false" />
+        <activity
             android:name=".SFA_Activity.vwAllPrimaryOrders"
             android:exported="false" />
         <activity
