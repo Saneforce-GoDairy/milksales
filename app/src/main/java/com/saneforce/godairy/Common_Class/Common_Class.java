@@ -415,6 +415,7 @@ public class Common_Class {
                     QueryString.put("distributorERP",shared_common_pref.getvalue(Constants.DistributorERP));
                     break;
 
+
                 case Constants.GetGrn_OrderDetails:
                     QuerySTring1 = "{\"tableName\":\"getgrnorderdetails\",\"coloumns\":\"[\\\"Category_Code as id\\\", \\\"Category_Name as name\\\"]\",\"sfCode\":0,\"orderBy\":\"[\\\"name asc\\\"]\",\"desig\":\"mgr\"}";
                     QueryString.put("orderID",Shared_Common_Pref.TransSlNo);
@@ -533,6 +534,15 @@ public class Common_Class {
                     QueryString.put("fromdate", Common_Class.GetDatewothouttime());
                     QueryString.put("todate", Common_Class.GetDatewothouttime());
                     break;
+                    //Change Password
+                case  Constants.Change_Password:
+                    axnname = "get/changepassword";
+                    QueryString.put("sfCode", Shared_Common_Pref.Sf_Code);
+//                    QueryString.put("divisionCode", UserDetails.getString("Divcode", ""));
+//                    QueryString.put("old_password", UserDetails.getString("old_password",""));
+//                    QueryString.put("new_password",UserDetails.getString("new_password",""));
+                    QueryString.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
+                    break;
             }
 
             QueryString.put("axn", axnname);
@@ -604,6 +614,7 @@ public class Common_Class {
     public void getDb_310Data(String key, Activity activity) {
         getDb_310Data(key, activity, null);
     }
+
 
     public void getDb_310Data(String key, Activity activity, JsonObject jparam) {
         try {
@@ -913,6 +924,15 @@ public class Common_Class {
                         data.put("sfCode", Shared_Common_Pref.Sf_Code);
                         data.put("divCode", UserDetails.getString("Divcode", ""));
                         data.put("dt", sfa_date);
+                        data.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
+                        break;
+                        //change password
+                    case  Constants.Change_Password:
+                        axnname = "get/changepassword";
+                        data.put(Constants.SF_Code, Shared_Common_Pref.Sf_Code);
+                        data.put("divisionCode", UserDetails.getString("Divcode", ""));
+                        data.put("old_password", UserDetails.getString("old_password",""));
+                        data.put("new_password",UserDetails.getString("new_password",""));
                         data.put(Constants.LOGIN_TYPE, shared_common_pref.getvalue(Constants.LOGIN_TYPE));
                         break;
                     case Constants.SFA_DASHBOARD:

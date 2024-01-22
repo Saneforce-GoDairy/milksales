@@ -118,6 +118,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     private ActivitySfactivityBinding binding;
     LinearLayout Lin_Route, Lin_Lead, Lin_Dashboard, Logout, SyncButon, linorders;
     Gson gson;
+    private final Context context = this;
+    private String mProfileUrl;
     private SANGPSTracker mLUService;
     private LocationReceiver myReceiver;
     private boolean mBound = false;

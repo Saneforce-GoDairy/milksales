@@ -91,6 +91,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     private Shared_Common_Pref shared_common_pref;
     private final com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
     private DatabaseHandler db;
+    private String mProfileUrl;
+
+    private ImageView userImage;
 
     ArrayList<Integer> exploreImage = new ArrayList<>(Arrays.asList(
             R.drawable.request_status_ic,
@@ -126,6 +129,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         db = new DatabaseHandler(context);
 
+        userImage = findViewById(R.id.user_image);
+
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
@@ -156,12 +161,32 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.userImage);
 
-//        binding.userImage.setOnClickListener(v -> {
-//            Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
-//            intent.putExtra("ImageUrl", mProfileImage);
-//            startActivity(intent);
-//
-//        });
+        new Thread(() -> {
+            try {
+                URLConnection connection = new URL(mProfileImage).openConnection();
+                String contentType = connection.getHeaderField("Content-Type");
+                boolean image = contentType.startsWith("image/");
+                if (image){
+                    runOnUiThread(() -> {
+                        loadImage(mProfileImage);
+                    });
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+/*
+        binding.userImage.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
+            intent.putExtra("ImageUrl", mProfileImage);
+            startActivity(intent);
+
+        });*/
+        binding.userImage.setOnClickListener(v->{
+            Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+            intent.putExtra("ImageUrl", mProfileImage);
+            startActivity(intent);
+        });
 
         ImageView btMyQR = findViewById(R.id.myQR);
         binding.linMydayPlan.setVisibility(View.GONE);
@@ -218,6 +243,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         btMyQR.setOnClickListener(v -> {
             Intent intent = new Intent(context, CateenToken.class);
+            startActivity(intent);
+        });
+        userImage.setOnClickListener(view1 -> {
+            Intent intent = new Intent(context,ProfileActivity.class);
             startActivity(intent);
         });
 
@@ -950,8 +979,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         if (CheckIn) {
             Shared_Common_Pref.Sf_Code = UserDetails.getString("Sfcode", "");
             Shared_Common_Pref.Sf_Name = UserDetails.getString("SfName", "");
+            Shared_Common_Pref.Reporting_Sf_Code = UserDetails.getString("Reporting_To_SF", "");
             Shared_Common_Pref.Div_Code = UserDetails.getString("Divcode", "");
             Shared_Common_Pref.StateCode = UserDetails.getString("State_Code", "");
+            Shared_Common_Pref.SF_Mobile = UserDetails.getString("SF_Mobile", "");
 
             String ActStarted = shared_common_pref.getvalue("ActivityStart");
             if (ActStarted.equalsIgnoreCase("true")) {

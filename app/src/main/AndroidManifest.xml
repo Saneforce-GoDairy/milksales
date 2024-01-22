@@ -68,6 +68,12 @@
             android:name=".procurement.reports.ProcReportsHomeActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity_Hap.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_Hap.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".SFA_Activity.vwAllPrimaryOrders"
             android:exported="false" />
         <activity

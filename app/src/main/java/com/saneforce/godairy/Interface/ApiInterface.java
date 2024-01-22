@@ -8,10 +8,8 @@ import com.saneforce.godairy.Model_Class.HeaderCat;
 import com.saneforce.godairy.Model_Class.Location;
 import com.saneforce.godairy.Model_Class.Model;
 import com.saneforce.godairy.Model_Class.POSDataList;
-import com.saneforce.godairy.Model_Class.PrimaryNoOrderList;
 import com.saneforce.godairy.Model_Class.ReportDataList;
 import com.saneforce.godairy.Model_Class.RetailerViewDetails;
-import com.saneforce.godairy.Model_Class.TpMyDayPlanExtra;
 
 import org.json.JSONArray;
 
@@ -42,7 +40,7 @@ import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
 
-    @GET("Db_v300.php?")
+    @GET("Db_v300_usha.php?")
     Call<Model> login(@Query("axn") String axn, @Query("Email") String Email, @Query("UserID") String UserID, @Query("Pwd") String Password, @Query("AppVer") String AppVer, @Query("DvID") String deveiceId);
 
 
@@ -175,6 +173,18 @@ public interface ApiInterface {
     @Multipart
     @POST("Db_v300.php")
     Call<Result> uploadImage(@Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("Db_v300.php")
+    Call<Result> addImage(@Part MultipartBody.Part file);
+
+
+    @POST("Db_v300_usha.php")
+    Call<ResponseBody> changePassword(@Query("axn") String axn,
+                                      @Query("sf_code") String sf_code,
+                                      @Query("div_Code") String divisionCode,
+                                      @Query("old_password") String old_password,
+                                      @Query("new_password") String new_password);
 
     @FormUrlEncoded
     @POST("Db_v300.php?axn=dcr/save")

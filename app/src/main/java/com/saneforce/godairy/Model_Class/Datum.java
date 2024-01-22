@@ -57,6 +57,9 @@ public class Datum {
     @SerializedName("Sf_Name")
     @Expose
     private String sfName;
+    @SerializedName("SFMobile")
+    @Expose
+    private String sfMobile;
     @SerializedName("Sf_Password")
     @Expose
     private String sfPassword;
@@ -282,6 +285,13 @@ public class Datum {
         return sfName;
     }
 
+    public void setSfMobile(String sfMobile) {
+        this.sfMobile = sfMobile;
+    }
+
+    public String getSFMobile(){
+        return sfMobile;
+    }
     public void setSfName(String sfName) {
         this.sfName = sfName;
     }

@@ -753,6 +753,7 @@ public class Login extends AppCompatActivity {
                 userEditor.putString("Sfcode", response.getData().get(0).getDistCode());
                 userEditor.putString("Divcode", response.getData().get(0).getDivisionCode());
                 userEditor.putString("State_Code", response.getData().get(0).getState_Code());
+                userEditor.putString("SFMobile", response.getData().get(0).getSFMobile());
                 userEditor.putInt("FlightAllowed", 0);
 
                 Shared_Common_Pref.Sf_Code = response.getData().get(0).getDistCode();
@@ -847,6 +848,7 @@ public class Login extends AppCompatActivity {
                 }
 
                 String code = response.getData().get(0).getSfCode();
+                String mMobile = response.getData().get(0).getSFMobile();
                 String empID = response.getData().get(0).getSfEmpId();
                 String sName = response.getData().get(0).getSfName();
                 String div = response.getData().get(0).getDivisionCode();
@@ -862,6 +864,8 @@ public class Login extends AppCompatActivity {
                 String SFHQCode = response.getData().get(0).getHQCode();
                 String SFHQLoc = response.getData().get(0).getHOLocation();
                 int THrsPerm = response.getData().get(0).getTHrsPerm();
+
+                Log.e("mobile_", mMobile);
 
                 String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/";
 
@@ -897,6 +901,7 @@ public class Login extends AppCompatActivity {
 
                 userEditor.putString("Sf_Type", Sf_type);
                 userEditor.putString("Sfcode", code);
+                userEditor.putString("SFMobile", mMobile);
                 userEditor.putString("EmpId", empID);
                 userEditor.putString("SfName", sName);
                 userEditor.putString("SFDesig", DesigNm);
