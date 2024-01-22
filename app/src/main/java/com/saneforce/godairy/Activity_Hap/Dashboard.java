@@ -2,9 +2,6 @@ package com.saneforce.godairy.Activity_Hap;
 
 import static com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAILABLE;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.printUsrLog;
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_MODE;
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,8 +61,6 @@ import com.saneforce.godairy.fragments.GateInOutFragment;
 import com.saneforce.godairy.fragments.MonthlyFragment;
 import com.saneforce.godairy.fragments.TodayFragment;
 import com.saneforce.godairy.procurement.ProcurementHome;
-import com.saneforce.godairy.test.ProfileActivity;
-import com.saneforce.godairy.universal.Constant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -153,11 +148,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.userName.setText(sSFName);
         binding.headQuarters.setText(SFDesig);
         binding.lblEmail.setText(eMail);
-
-        binding.userImage.setOnClickListener(view1 -> {
-            Intent intent = new Intent(context, ProfileActivity.class);
-            startActivity(intent);
-        });
 
         int mCount = 0;
 

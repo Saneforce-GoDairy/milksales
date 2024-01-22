@@ -67,12 +67,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:text="Farmer name"
+                            android:text="Plant"
                             android:textColor="#7E7E7E"
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/txt_farmer_name"
+                            android:id="@+id/txt_plant"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
@@ -91,12 +91,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:text="Center name"
+                            android:text="Farmer name"
                             android:textColor="#7E7E7E"
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/txt_center_name"
+                            android:id="@+id/txt_farmer_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
@@ -123,12 +123,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:text="Service type"
+                            android:text="Center name"
                             android:textColor="#7E7E7E"
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/txt_service_type"
+                            android:id="@+id/txt_center_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
@@ -147,12 +147,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:text="Product type"
+                            android:text="Breed name"
                             android:textColor="#7E7E7E"
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/txt_product_type"
+                            android:id="@+id/txt_breed_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
@@ -194,7 +194,7 @@
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="10dp"
                                     android:fontFamily="@font/ubuntu_medium"
-                                    android:text="Farmers meeting" />
+                                    android:text="Breed image" />
 
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="@dimen/C40dp"
@@ -205,91 +205,11 @@
                                     app:cardCornerRadius="10dp">
 
                                     <ImageView
-                                        android:id="@+id/farmers_meeting_img"
+                                        android:id="@+id/breed_img"
                                         android:layout_width="@dimen/C40dp"
                                         android:layout_height="@dimen/C40dp"
                                         android:adjustViewBounds="true"
                                         android:scaleType="fitXY" />
-
-                                </androidx.cardview.widget.CardView>
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <!-- next image -->
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/C50dp"
-                            android:orientation="vertical">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/C50dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginStart="10dp"
-                                    android:fontFamily="@font/ubuntu_medium"
-                                    android:text="CSR Activity" />
-
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="@dimen/C40dp"
-                                    android:layout_height="@dimen/C40dp"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginEnd="5dp"
-                                    app:cardCornerRadius="10dp">
-
-                                    <ImageView
-                                        android:id="@+id/csr_activity_img"
-                                        android:layout_width="@dimen/C40dp"
-                                        android:layout_height="@dimen/C40dp"
-                                        android:adjustViewBounds="true"
-                                        android:scaleType="fitXY" />
-
-                                </androidx.cardview.widget.CardView>
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <!-- next image -->
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/C50dp"
-                            android:orientation="vertical">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/C50dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginStart="10dp"
-                                    android:fontFamily="@font/ubuntu_medium"
-                                    android:text="Fodder dev acres" />
-
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="@dimen/C40dp"
-                                    android:layout_height="@dimen/C40dp"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginEnd="5dp"
-                                    app:cardCornerRadius="10dp">
-
-                                    <ImageView
-                                        android:id="@+id/fodder_acres_img"
-                                        android:layout_width="@dimen/C40dp"
-                                        android:layout_height="@dimen/C40dp"
-                                        android:adjustViewBounds="true"
-                                        android:scaleType="centerCrop" />
 
                                 </androidx.cardview.widget.CardView>
 
@@ -298,6 +218,14 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Service type"
+                        android:layout_marginTop="@dimen/C5dp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="10dp"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -315,12 +243,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
-                                android:text="Plant name"
+                                android:text="No of AI"
                                 android:textColor="#7E7E7E"
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/txt_plant_name"
+                                android:id="@+id/txt_no_of_ai"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
@@ -339,12 +267,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
-                                android:text="Teat dip cup &amp; solution"
+                                android:text="Bull no"
                                 android:textColor="#7E7E7E"
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/txt_teat_dip"
+                                android:id="@+id/txt_bull_nos"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
@@ -371,12 +299,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
-                                android:text="Fodder dev acres"
+                                android:text="PD Verification"
                                 android:textColor="#7E7E7E"
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/txt_fodder_dev_acres"
+                                android:id="@+id/txt_pd_verification"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
@@ -395,12 +323,68 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
-                                android:text="No of farmers enrolled"
+                                android:text="Calfbirth verification"
                                 android:textColor="#7E7E7E"
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/txt_farmers_enrolled"
+                                android:id="@+id/txt_calfbirth_verification"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Mineral mixture sale"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_mineral_mix_sale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Seed sales"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_seed_sales"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"

@@ -208,6 +208,11 @@ public class AgronomistReportActivity extends AppCompatActivity {
                     String  agronomistList;
                     try {
                         agronomistList = response.body().string();
+                        if (agronomistList.equals("\r\n")){
+                            Toast.makeText(context, "list load error!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         JSONArray jsonArray = new JSONArray(agronomistList);
 
                         for (int i = 0; i<jsonArray.length(); i++) {
