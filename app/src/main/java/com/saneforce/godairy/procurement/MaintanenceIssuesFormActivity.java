@@ -2,38 +2,31 @@ package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityMaintanenceIssuesFormBinding;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +38,7 @@ public class MaintanenceIssuesFormActivity extends AppCompatActivity {
     private final Context context = this;
     private Bitmap bitmapRepair;
     private File fileRepair;
+    private final List<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +65,10 @@ public class MaintanenceIssuesFormActivity extends AppCompatActivity {
     }
 
     private void loadPlant() {
+        list.add("Select");
+
+        updatePlant();
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -80,23 +78,25 @@ public class MaintanenceIssuesFormActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String plantList;
                     try {
+                        binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
 
+                        if (plantList.equals("\r\n")){
+                            Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
+                            updatePlant();
+                            return;
+                        }
                         JSONArray jsonArray = new JSONArray(plantList);
-                        List<String> list = new ArrayList<>();
-                        list.add("Select");
+                        //  list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            String plantName = object.optString("Plant_Name");
+                            String plantName = object.optString("plant_name");
 
                             binding.spinnerPlant.setPrompt(plantName);
                             list.add(plantName);
                         }
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerPlant.setAdapter(adapter);
+                        updatePlant();
                     } catch (IOException | JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -105,9 +105,15 @@ public class MaintanenceIssuesFormActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updatePlant() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerPlant.setAdapter(adapter);
     }
 
     private void onClick() {

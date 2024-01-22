@@ -28,8 +28,6 @@ import android.widget.Toast;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementCameraXBinding;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;

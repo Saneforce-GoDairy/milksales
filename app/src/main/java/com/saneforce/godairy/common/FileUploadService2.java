@@ -138,12 +138,7 @@ public class FileUploadService2 extends Service {
             Toast.makeText(context, "Service id is empty", Toast.LENGTH_SHORT).show();
 
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    stopForeground(true);
-                }
-            }, 5000);
+            handler.postDelayed(() -> stopForeground(true), 5000);
         }
 
         // stopself
@@ -248,16 +243,6 @@ public class FileUploadService2 extends Service {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    String res;
-                    showUploadCompleteNotification();
-                    stopForeground(true);
-                    try {
-                        res = response.body().string();
-                        Toast.makeText(context, "Maintenance form submit success", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }  if (response.isSuccessful()) {
                     String res;
                     showUploadCompleteNotification();
                     stopForeground(true);

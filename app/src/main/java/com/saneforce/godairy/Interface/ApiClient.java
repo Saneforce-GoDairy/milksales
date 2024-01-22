@@ -28,17 +28,6 @@ public class ApiClient {
         return retrofit;
     }
 
-    public static Retrofit getClientThirumala() {
-        if (retrofit1 == null) {
-            retrofit1 = new Retrofit.Builder()
-                    .baseUrl("https://thirumala.salesjump.in/server/")
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
-                    .build();
-        }
-        return retrofit1;
-    }
-
     // Re-Initialize Retrofit
     public static void ChangeBaseURL(String BaseURL) {
         BASE_URL = BaseURL + "server/";

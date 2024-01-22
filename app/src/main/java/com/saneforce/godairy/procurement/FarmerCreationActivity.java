@@ -51,7 +51,6 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-
                    /*
            Camera access id
 

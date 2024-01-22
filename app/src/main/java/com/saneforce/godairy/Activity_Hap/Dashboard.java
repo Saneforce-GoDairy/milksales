@@ -2,9 +2,6 @@ package com.saneforce.godairy.Activity_Hap;
 
 import static com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAILABLE;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.printUsrLog;
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_MODE;
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,7 +61,6 @@ import com.saneforce.godairy.fragments.GateInOutFragment;
 import com.saneforce.godairy.fragments.MonthlyFragment;
 import com.saneforce.godairy.fragments.TodayFragment;
 import com.saneforce.godairy.procurement.ProcurementHome;
-import com.saneforce.godairy.universal.Constant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -160,12 +156,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.userImage);
 
-        binding.userImage.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
-            intent.putExtra("ImageUrl", mProfileImage);
-            startActivity(intent);
-
-        });
+//        binding.userImage.setOnClickListener(v -> {
+//            Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
+//            intent.putExtra("ImageUrl", mProfileImage);
+//            startActivity(intent);
+//
+//        });
 
         ImageView btMyQR = findViewById(R.id.myQR);
         binding.linMydayPlan.setVisibility(View.GONE);
@@ -521,6 +517,15 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             public void onClick(View v) {
                 Shared_Common_Pref.Tp_Approvalflag = "0";
                 Intent intent = new Intent(context, Tp_Calander.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.proc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProcurementHome.class);
+                intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
                 startActivity(intent);
             }
         });
