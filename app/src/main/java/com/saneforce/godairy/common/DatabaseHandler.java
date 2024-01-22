@@ -152,7 +152,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getReadableDatabase();
 
 
-            String selectQuery = "SELECT  " + Data + " FROM " + TABLE_Masters + " WHERE " + ID + "='" + Key + "'" + " LIMIT 10";
+            String selectQuery = "SELECT  " + Data + " FROM " + TABLE_Masters + " WHERE " + ID + "='" + Key + "'" + " LIMIT 100";
 
             // selectQuery = "SELECT substr(blobcolumn,       1, 1000000) FROM mytable WHERE id = 123\n";
 
