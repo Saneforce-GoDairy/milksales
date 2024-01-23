@@ -146,6 +146,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         String eMail = UserDetails.getString("email", "");
         String sSFName = UserDetails.getString("SfName", "");
         String SFDesig = UserDetails.getString("SFDesig", "");
+
         sSFType = UserDetails.getString("Sf_Type", "");
         int OTFlg = UserDetails.getInt("OTFlg", 0);
         String mProfileImage = UserDetails.getString("Profile", "");

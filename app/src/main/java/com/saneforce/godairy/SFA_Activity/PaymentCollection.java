@@ -84,7 +84,8 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
 
-        common_class = new Common_Class(context);
+        //common_class = new Common_Class(context);
+        common_class = new Common_Class(this);
         isMultipleSelected = false;
         list = new ArrayList<>();
         assistantClass = new AssistantClass(context);
@@ -123,6 +124,8 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
     }
 
     private void getPndBills() {
+        common_class.ProgressdialogShow(1, "Loading Pending Bills");
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> rptCall = apiInterface.getData310List("get/pripndbills",
                 UserDetails.getString("Divcode", ""),
@@ -197,7 +200,9 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
                         }
                     });
                     rvBillDets.setAdapter(adapter);
+                    common_class.ProgressdialogShow(0, "");
                 } catch (Exception ignored) {
+                    common_class.ProgressdialogShow(0, "");
                 }
             }
 

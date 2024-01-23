@@ -2200,11 +2200,12 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                         holder.ImgVwProd.clearColorFilter();
                         Glide.with(this.context)
                                 .load(ProductItem.getPImage())
+                                .placeholder(getResources().getDrawable(R.drawable.delivery_svg_low))
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.ImgVwProd);
                     } else {
-                        holder.ImgVwProd.setImageDrawable(getResources().getDrawable(R.drawable.product_logo));
-                        holder.ImgVwProd.setColorFilter(getResources().getColor(R.color.grey_500));
+                        holder.ImgVwProd.setImageDrawable(getResources().getDrawable(R.drawable.delivery_svg_low));
+                        //holder.ImgVwProd.setColorFilter(getResources().getColor(R.color.grey_500));
                     }
 
 
