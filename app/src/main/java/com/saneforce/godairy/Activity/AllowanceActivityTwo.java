@@ -291,18 +291,18 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
         submitAllowance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitAllowance.startAnimation();
-                common_class.ProgressdialogShow(1, "Validating Please wait...");
+                assistantClass.showProgressDialog("Validating Please wait...", false);
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        common_class.ProgressdialogShow(1, "Getting location please wait...");
+                        assistantClass.showProgressDialog("Getting location please wait...", false);
                         assistantClass.getLocation(new LocationResponse() {
                             @Override
                             public void onSuccess(double _lat, double _lng) {
                                 lat = _lat;
                                 lng = _lng;
-                                common_class.ProgressdialogShow(1, "Submitting Please wait...");
+                                assistantClass.showProgressDialog("Submitting Please wait...", false);
+                                submitAllowance.startAnimation();
                                 if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) {
                                     submitData(ClosingDate);
                                 } else {
@@ -312,6 +312,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 
                             @Override
                             public void onFailure() {
+                                assistantClass.dismissProgressDialog();
                                 ResetSubmitBtn(0);
                             }
                         });
@@ -531,6 +532,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
     }
 
     public void ResetSubmitBtn(int resetMode) {
+        assistantClass.dismissProgressDialog();
         common_class.ProgressdialogShow(0, "");
         long dely = 100;
         //if(resetMode!=0) dely=1000;

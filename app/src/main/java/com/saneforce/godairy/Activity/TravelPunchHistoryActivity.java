@@ -1,7 +1,14 @@
 package com.saneforce.godairy.Activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +17,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -87,11 +96,17 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
         mGoogleMap.clear();
         if (array != null && array.length() > 0) {
             PolygonOptions polygonOptions = new PolygonOptions();
+            int label = 1;
             for (int i = 0; i < array.length(); i++) {
                 try {
-                    mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng"))).title(array.optJSONObject(i).optString("title")));
                     polygonOptions.add(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")));
-                } catch (Exception ignored) {
+                    mGoogleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")))
+                            .title(array.optJSONObject(i).optString("title"))
+                            .icon(getCustomMarkerIcon(label)));
+                    label++;
+                } catch (Exception e) {
+                    assistantClass.log(e.getLocalizedMessage());
                 }
             }
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -102,5 +117,26 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
             mGoogleMap.addPolygon(polygonOptions);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
         }
+    }
+
+    private BitmapDescriptor getCustomMarkerIcon(int label) {
+        View markerLayout = getLayoutInflater().inflate(R.layout.custom_icon_for_travel_punch, null);
+        TextView markerLabel = markerLayout.findViewById(R.id.caption);
+        markerLabel.setText(String.valueOf(label));
+        Bitmap image = createDrawableFromView(context, markerLayout);
+        return BitmapDescriptorFactory.fromBitmap(image);
+    }
+
+    private Bitmap createDrawableFromView(Context context, View view) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
     }
 }
