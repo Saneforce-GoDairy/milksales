@@ -34,5 +34,10 @@ public class ProcReportsHomeActivity extends AppCompatActivity {
            Intent intent = new Intent(context, AITReportActivity.class);
            startActivity(intent);
        });
+
+        binding.veterinary.setOnClickListener(v -> {
+            Intent intent = new Intent(context, VeterinaryReportActivity.class);
+            startActivity(intent);
+        });
     }
 }

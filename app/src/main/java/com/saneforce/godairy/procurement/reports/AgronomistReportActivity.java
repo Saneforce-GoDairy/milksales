@@ -198,7 +198,7 @@ public class AgronomistReportActivity extends AppCompatActivity {
 
     private void loadList() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseBody> call = apiInterface.getAgronomistReportList(PROCUREMENT_GET_AGRONOMIST);
+        Call<ResponseBody> call = apiInterface.getAgronomistReport(PROCUREMENT_GET_AGRONOMIST);
         call.enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
