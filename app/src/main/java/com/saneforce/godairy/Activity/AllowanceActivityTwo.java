@@ -46,11 +46,11 @@ import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Common_Class.Util;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.Interface.LocationEvents;
+import com.saneforce.godairy.Interface.LocationResponse;
 import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
-import com.saneforce.godairy.common.LocationFinder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,8 +104,10 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
     Common_Model mCommon_model_spinner;
     Common_Class common_class;
     List<Common_Model> modelRetailDetails = new ArrayList<>();
-    Location mlocation;
     Bitmap bitmap;
+    AssistantClass assistantClass;
+    Context context = this;
+    double lat = 0, lng = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 
         util = new Util();
         transferUtility = util.getTransferUtility(this);
+        assistantClass = new AssistantClass(context);
 
         sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         CheckInDetails = getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
@@ -142,13 +145,6 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
 /*
         closingIntet.putExtra("Cls_con","cls");
         closingIntet.putExtra("Cls_dte","");*/
-
-        new LocationFinder(getApplication(), new LocationEvents() {
-            @Override
-            public void OnLocationRecived(Location location) {
-                mlocation = location;
-            }
-        });
 
         ClosingCon = String.valueOf(getIntent().getSerializableExtra("Cls_con"));
         ClosingDate = String.valueOf(getIntent().getSerializableExtra("Cls_dte"));
@@ -300,56 +296,25 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mlocation != null) {
-                            common_class.ProgressdialogShow(1, "Submitting Please wait...");
-                            if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) {
-                                submitData(ClosingDate);
-                            } else {
-                                submitData(Common_Class.GetDate());
-                            }
-                        } else {
-                            common_class.ProgressdialogShow(1, "Getting location please wait...");
-                            new LocationFinder(getApplication(), new LocationEvents() {
-                                @Override
-                                public void OnLocationRecived(Location location) {
-                                    mlocation = location;
-//                                if (!ClosingDate.equals("")) {
-                                    common_class.ProgressdialogShow(1, "Submitting Please wait...");
-                                    if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) {
-                                        submitData(ClosingDate);
-                                    } else {
-                                        submitData(Common_Class.GetDate());
-                                    }
+                        common_class.ProgressdialogShow(1, "Getting location please wait...");
+                        assistantClass.getLocation(new LocationResponse() {
+                            @Override
+                            public void onSuccess(double _lat, double _lng) {
+                                lat = _lat;
+                                lng = _lng;
+                                common_class.ProgressdialogShow(1, "Submitting Please wait...");
+                                if (!(ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) {
+                                    submitData(ClosingDate);
+                                } else {
+                                    submitData(Common_Class.GetDate());
                                 }
-                            });
-                        }
-                        /*if (imageConvert.matches("")) { //if (EndedImage.matches("") && ((ClosingDate.equals("") || ClosingDate.equalsIgnoreCase("null"))) )
-                            Toast.makeText(AllowanceActivityTwo.this, "Choose End photo", Toast.LENGTH_SHORT).show();
-                            ResetSubmitBtn(0);
-                            return;
-                        } else {
-                            *//*try {
-                                stKM = Integer.valueOf(TextStartedKm.getText().toString());
-                            } catch (NumberFormatException ex) { // handle your exception
                             }
-                            endKm = Integer.valueOf(EndedEditText.getText().toString());
-                            String pkm=PersonalKmEdit.getText().toString();
-                            if(pkm.equals("")) pkm="0";
-                            personalKM = Integer.valueOf(pkm);*//*
 
-                            *//*if (stKM < endKm) {
-                                if (((endKm-StartedKM)-personalKM)>maxKM) {
-                                    Toast.makeText(AllowanceActivityTwo.this, "KM Limit is Exceeded", Toast.LENGTH_SHORT).show();
-                                    ResetSubmitBtn(0);
-                                    return;
-                                }
-
-                            } else {
+                            @Override
+                            public void onFailure() {
                                 ResetSubmitBtn(0);
-                                Toast.makeText(AllowanceActivityTwo.this, "Should be greater then Started Km", Toast.LENGTH_SHORT).show();
-
-                            }*//*
-                        }*/
+                            }
+                        });
                     }
                 }, 100);
             }
@@ -480,7 +445,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
             jj.put("to_code", StrToCode);
             jj.put("fare", "");
             jj.put("Activity_Date", date);
-            jj.put("location", mlocation.getLatitude() + ":" + mlocation.getLongitude());
+            jj.put("location", lat + ":" + lng);
             //saveAllowance
             Log.v("printing_allow", jj.toString());
             Call<ResponseBody> Callto;

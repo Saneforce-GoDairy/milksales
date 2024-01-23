@@ -62,6 +62,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.saneforce.godairy.Activity.TAClaimActivity;
+import com.saneforce.godairy.Activity.TravelPunchLocationActivity;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
@@ -463,18 +464,13 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
         btnCloseOffer.setOnClickListener(view -> linOffer.setVisibility(View.GONE));
 
         mProfileUrl = mShared_common_pref.getvalue("mProfile");
-        Log.e("hgfhg", mProfileUrl);
-        if (!com.saneforce.godairy.Common_Class.Common_Class.isNullOrEmpty(mProfileUrl)) {
-            String[] image = mProfileUrl.split("/");
-            if (image.length > 0 && image[(image.length - 1)].contains(".")) {
-                loadImage(mProfileUrl);
-            }
-        }
+        loadImage(mProfileUrl);
     }
 
     private void loadImage(String mProfileUrl) {
         Glide.with(this.context)
                 .load(mProfileUrl)
+                .placeholder(R.drawable.person_placeholder_0)
                 .apply(RequestOptions.circleCropTransform())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(profileImageView);
@@ -683,11 +679,8 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
         binding.leaveRequestStatus.setOnClickListener(v -> startActivity(new Intent(context, Leave_Dashboard.class)));
 
-        binding.notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show();
-            }
+        binding.punchLocation.setOnClickListener(v -> {
+            startActivity(new Intent(context, TravelPunchLocationActivity.class));
         });
 
         binding.pjp.setOnClickListener(new View.OnClickListener() {

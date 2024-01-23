@@ -239,12 +239,13 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                 }
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-                String userInfo = "MyPrefs";
-                SharedPreferences UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
+
                 String mDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                 String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                 String mTimeDate  = mDate +" "+mTime;
 
+                String userInfo = "MyPrefs";
+                SharedPreferences UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
                 String mSFCode =UserDetails.getString("Sfcode","");
 
                 Call<ResponseBody> call = apiInterface.primaryNoOrderReasonSubmit("save/no_order_reason",

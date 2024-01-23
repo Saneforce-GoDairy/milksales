@@ -1260,11 +1260,12 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
                         holder.ImgVwProd.clearColorFilter();
                         Glide.with(this.context)
                                 .load(Product_Details_Modal.getPImage())
+                                .placeholder(getResources().getDrawable(R.drawable.delivery_svg_low))
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.ImgVwProd);
                     } else {
                         holder.ImgVwProd.setImageDrawable(getResources().getDrawable(R.drawable.product_logo));
-                        holder.ImgVwProd.setColorFilter(getResources().getColor(R.color.grey_500));
+                        //holder.ImgVwProd.setColorFilter(getResources().getColor(R.color.grey_500));
                     }
 
 

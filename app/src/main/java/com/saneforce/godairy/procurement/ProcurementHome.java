@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
-
+import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -112,7 +110,7 @@ public class ProcurementHome extends AppCompatActivity {
         binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();             
+                finish();
             }
         });
         binding.oneAgronomistForm.setOnClickListener(v -> {
@@ -152,6 +150,11 @@ public class ProcurementHome extends AppCompatActivity {
 
         binding.procurementAsset.setOnClickListener(view -> {
             Intent intent = new Intent(context, ProcurementAssetActivity.class);
+            startActivity(intent);
+        });
+
+        binding.reports.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ProcReportsHomeActivity.class);
             startActivity(intent);
         });
     }

@@ -40,7 +40,7 @@ import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
 
-    @GET("Db_v300_usha.php?")
+    @GET("Db_v300.php?")
     Call<Model> login(@Query("axn") String axn, @Query("Email") String Email, @Query("UserID") String UserID, @Query("Pwd") String Password, @Query("AppVer") String AppVer, @Query("DvID") String deveiceId);
 
 
@@ -880,6 +880,7 @@ public interface ApiInterface {
                                             @Query("cattle_feed_order_kg") String cattle_feed_order_kg,
                                             @Query("teat_dip_cup") String teat_dip_cup,
                                             @Query("evm_treatment") String evm_treatment,
+                                            @Part MultipartBody.Part image2,
                                             @Query("case_type") String case_type,
                                             @Query("identified_farmer_count") String identified_farmer_count,
                                             @Query("farmer_enrolled") String farmer_enrolled,
@@ -919,7 +920,7 @@ public interface ApiInterface {
                                      @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcQuality(@Query("axn") String axn,
                                             @Query("company") String company,
                                             @Query("plant") String plant,
@@ -946,7 +947,7 @@ public interface ApiInterface {
                                             @Query("created_dt") String created_dt
                                          );
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcMaintenance(@Query("axn") String axn,
                                              @Query("company") String company,
                                              @Query("plant") String plant,
@@ -956,7 +957,7 @@ public interface ApiInterface {
                                              @Query("active_flag") String active_flag,
                                              @Query("created_dt") String created_dt);
 
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcAsset(@Query("axn") String axn,
                                              @Query("company") String company,
                                              @Query("plant") String plant,
@@ -965,6 +966,14 @@ public interface ApiInterface {
                                              @Query("active_flag") String active_flag,
                                              @Query("created_dt") String created_dt
     );
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getAgronomistReport(@Query("axn") String axn);
+    @POST("Db_v310.php")
+
+    Call<ResponseBody> getAITReport(@Query("axn") String axn);
+
+    Call<ResponseBody> getVeterinaryReport(@Query("axn") String axn);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

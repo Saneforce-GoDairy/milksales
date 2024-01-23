@@ -149,11 +149,10 @@
                 android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
                 android:importantForAutofill="no"
-                android:inputType="textAutoComplete" />
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -169,13 +168,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="2dp"
+                android:autofillHints="none"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:inputType="textAutoComplete"
-                android:hint="@string/type"
+                android:inputType="text"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:autofillHints="none" />
+                android:paddingEnd="10dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -235,13 +233,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="2dp"
+                android:autofillHints="name"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
+                android:inputType="textAutoComplete"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:autofillHints="name"
-                android:inputType="textAutoComplete" />
+                android:paddingEnd="10dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -432,13 +429,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
+                android:autofillHints="name"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
+                android:inputType="textAutoComplete"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:autofillHints="name"
-                android:inputType="textAutoComplete"/>
+                android:paddingEnd="10dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -503,13 +499,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="2dp"
+                android:autofillHints="name"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
+                android:inputType="numberDecimal"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:autofillHints="name"
-                android:inputType="numberDecimal"/>
+                android:paddingEnd="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -525,13 +520,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="2dp"
+                android:autofillHints="name"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
+                android:inputType="numberDecimal"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:autofillHints="name"
-                android:inputType="numberDecimal"/>
+                android:paddingEnd="10dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

@@ -136,6 +136,9 @@ public class Datum {
     @SerializedName("SFFType")
     @Expose
     private Integer sFFType;
+    @SerializedName("FFType")
+    @Expose
+    private String ffType;
     @SerializedName("SFDept")
     @Expose
     private String sFDept;
@@ -342,6 +345,12 @@ public class Datum {
 
     public void setGeoFencing(Integer geoFencing) {
         this.geoFencing = geoFencing;
+    }
+    public String getFFType() {
+        return ffType;
+    }
+    public void setFFType(String sffType){
+        this.ffType=sffType;
     }
 
     public Integer getSFFType() {

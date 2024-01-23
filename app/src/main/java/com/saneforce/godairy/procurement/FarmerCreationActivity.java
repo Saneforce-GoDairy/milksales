@@ -51,7 +51,6 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-
                    /*
            Camera access id
 
@@ -519,7 +518,8 @@ public class FarmerCreationActivity extends AppCompatActivity {
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spinVillageCenter.setAdapter(adapter);
                     } catch (IOException | JSONException e) {
-                        throw new RuntimeException(e);
+                       // throw new RuntimeException(e);
+                        Toast.makeText(context, "Center list load error!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

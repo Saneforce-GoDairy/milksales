@@ -95,7 +95,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
             if (isPaid.equalsIgnoreCase("")) {
                 ((MyViewHolder) holder).payNow.setText("Pay Now");
                 ((MyViewHolder) holder).payNow.setBackground(context.getResources().getDrawable(R.drawable.app_theme_button));
-                ((MyViewHolder) holder).payNow.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).payNow.setVisibility(View.GONE);
                 ((MyViewHolder) holder).payNow.setOnClickListener(v -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setCancelable(true);

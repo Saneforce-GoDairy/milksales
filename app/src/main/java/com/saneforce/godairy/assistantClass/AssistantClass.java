@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -48,8 +49,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -115,8 +119,11 @@ public class AssistantClass extends AppCompatActivity {
             });
             return;
         }
+        SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        params.put("sfc", UserDetails.getString("Sfcode", ""));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
+        log(call.request().toString());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -194,7 +201,9 @@ public class AssistantClass extends AppCompatActivity {
         if (!negative.isEmpty()) {
             builder.setNegativeButton(negative, (dialog, which) -> dialogClickListener.onNegativeButtonClick(dialog));
         }
-        builder.create().show();
+        try {
+            builder.create().show();
+        } catch (Exception ignored) { }
     }
 
     public void showAlertDialogWithFinish(String message) {
@@ -204,7 +213,9 @@ public class AssistantClass extends AppCompatActivity {
         }
         builder.setCancelable(false);
         builder.setPositiveButton("Close", (dialog, which) -> ((Activity) context).finish());
-        builder.create().show();
+        try {
+            builder.create().show();
+        } catch (Exception ignored) { }
     }
 
     public void showAlertDialogWithDismiss(String message) {
@@ -214,7 +225,9 @@ public class AssistantClass extends AppCompatActivity {
         }
         builder.setCancelable(false);
         builder.setPositiveButton("Dismiss", (dialog, which) -> dialog.dismiss());
-        builder.create().show();
+        try {
+            builder.create().show();
+        } catch (Exception ignored) { }
     }
 
     public void showProgressDialog(String msg, boolean isCancelable) {
@@ -222,7 +235,9 @@ public class AssistantClass extends AppCompatActivity {
             progressDialog.setMessage(msg);
         }
         progressDialog.setCancelable(isCancelable);
-        progressDialog.show();
+        try {
+            progressDialog.show();
+        } catch (Exception ignored) { }
     }
 
     public void dismissProgressDialog() {
@@ -304,8 +319,14 @@ public class AssistantClass extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     public void getLocation(LocationResponse result) {
         if (!isLocationPermissionGranted()) {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                dismissProgressDialog();
+            }
             showAlertDialogWithDismiss("Please grant location permission...");
         } else if (!isGpsEnabled()) {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                dismissProgressDialog();
+            }
             showAlertDialogWithDismiss("Please turn on location...");
         } else {
             isLocationFound = false;
@@ -351,9 +372,32 @@ public class AssistantClass extends AppCompatActivity {
         try {
             Runtime runtime = Runtime.getRuntime();
             runtime.exec("pm clear " + context.getPackageName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) { }
     }
 
+    public String formatDateToDB(String ddMMyyyy) {
+        String formattedDate = "";
+        try {
+            Date fromDATE = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(ddMMyyyy);
+            if (fromDATE != null) {
+                formattedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(fromDATE);
+            }
+        } catch (Exception ignored) { }
+        return formattedDate;
+    }
+
+    public String formatDateToLocal(String yyyyMMdd) {
+        String formattedDate = "";
+        try {
+            Date fromDATE = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(yyyyMMdd);
+            if (fromDATE != null) {
+                formattedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(fromDATE);
+            }
+        } catch (Exception ignored) { }
+        return formattedDate;
+    }
+
+    public void log(String toString) {
+        Log.e("checkMyLog", toString);
+    }
 }

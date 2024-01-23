@@ -55,6 +55,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
     private final Context context = this;
     private File fileFormersMeeting, fileCSRActivity, fileFodderDevAcres;
     private Bitmap bitmapFormersMeeting, bitmapCSRActivity , bitmapFodderDevAcres;
+    private final List<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,6 +309,10 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void loadPlant() {
+        list.add("Select");
+
+        updatePlant();
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -317,34 +322,38 @@ public class AgronomistFormActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String plantList;
                     try {
+                        binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
-                        List<String> list = new ArrayList<>();
-                        list.add("Select");
+                      //  list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            String plantName = object.optString("Plant_Name");
+                            String plantName = object.optString("plant_name");
 
                             binding.spinnerPlant.setPrompt(plantName);
                             list.add(plantName);
                         }
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerPlant.setAdapter(adapter);
+                        updatePlant();
                     } catch (IOException | JSONException e) {
-                        throw new RuntimeException(e);
+                      //  throw new RuntimeException(e);
+                        Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updatePlant() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerPlant.setAdapter(adapter);
     }
 
     private boolean validateInputs() {

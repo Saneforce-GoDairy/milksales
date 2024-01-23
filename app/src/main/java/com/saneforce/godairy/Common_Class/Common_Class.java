@@ -202,7 +202,9 @@ public class Common_Class {
 
 
         } else {
-            nDialog.dismiss();
+            if (nDialog != null) {
+                nDialog.dismiss();
+            }
         }
     }
 
@@ -1765,8 +1767,8 @@ public class Common_Class {
     }
 
 
-    public void gotoHomeScreen(Context context, View ivToolbarHome) {
-        ivToolbarHome.setOnClickListener(v -> {
+    public void gotoHomeScreen(Context context, View view) {
+        view.setOnClickListener(v -> {
             SharedPreferences CheckInDetails = context.getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
             boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
             Intent intent;
