@@ -74,6 +74,12 @@
             android:name=".Activity_Hap.ProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.TravelPunchHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.TravelPunchLocationActivity"
+            android:exported="false" />
+        <activity
             android:name=".SFA_Activity.vwAllPrimaryOrders"
             android:exported="false" />
         <activity

@@ -119,6 +119,8 @@ public class AssistantClass extends AppCompatActivity {
             });
             return;
         }
+        SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        params.put("sfc", UserDetails.getString("Sfcode", ""));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
         log(call.request().toString());
@@ -317,8 +319,14 @@ public class AssistantClass extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     public void getLocation(LocationResponse result) {
         if (!isLocationPermissionGranted()) {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                dismissProgressDialog();
+            }
             showAlertDialogWithDismiss("Please grant location permission...");
         } else if (!isGpsEnabled()) {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                dismissProgressDialog();
+            }
             showAlertDialogWithDismiss("Please turn on location...");
         } else {
             isLocationFound = false;

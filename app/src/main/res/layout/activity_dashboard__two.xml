@@ -73,14 +73,13 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/notification"
-                    android:layout_width="@dimen/C40dp"
-                    android:layout_height="@dimen/C40dp"
+                    android:id="@+id/punchLocation"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:contentDescription="@null"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_notification2"
+                    android:src="@drawable/ic_punch_location"
                     android:layout_marginEnd="10dp"/>
 
 
