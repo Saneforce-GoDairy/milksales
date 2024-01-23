@@ -249,6 +249,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ait_reports">AIT Reports</string>
+    <string name="veterinary_report">Veterinary Report</string>
 
     <array name="company_array">
         <item>Select</item>

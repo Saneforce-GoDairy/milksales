@@ -524,6 +524,11 @@ public class FileUploadService2 extends Service {
         ProgressRequestBody progressRequestBodyServiceType = new ProgressRequestBody(file_image_service_type);
         MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_service_type.getName(),progressRequestBodyServiceType);
 
+        // EVM image
+        File file_image_evm = new File(dir, "VET_EVM_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyEVM = new ProgressRequestBody(file_image_evm);
+        MultipartBody.Part imagePart2 = MultipartBody.Part.createFormData("image2",file_image_evm.getName(),progressRequestBodyEVM);
+
         String mProductType = intent.getStringExtra("product_type");
         String mSeedSale = intent.getStringExtra("seed_sale");
         String mMineralMixture = intent.getStringExtra("mineral_mixture");
@@ -566,6 +571,7 @@ public class FileUploadService2 extends Service {
                 mCattleFeed,
                 mTeatDip,
                 mEvm,
+                imagePart2,
                 mCaseType,
                 mFarmerCount,
                 mFarmerEnrolled,

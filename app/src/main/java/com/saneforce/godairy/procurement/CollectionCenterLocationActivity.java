@@ -82,11 +82,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
                         binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
 
-                        if (plantList.equals("\r\n")){
-                            Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
-                            updatePlant();
-                            return;
-                        }
                         JSONArray jsonArray = new JSONArray(plantList);
                         //  list.add("Select");
 
@@ -99,7 +94,8 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
                         }
                         updatePlant();
                     } catch (IOException | JSONException e) {
-                        throw new RuntimeException(e);
+                       // throw new RuntimeException(e);
+                        Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

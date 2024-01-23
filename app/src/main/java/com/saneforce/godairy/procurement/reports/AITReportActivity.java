@@ -63,7 +63,7 @@ public class AITReportActivity extends AppCompatActivity {
 
     private void loadList() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseBody> call = apiInterface.getAITReportList(PROCUREMENT_GET_AIT_REPORT);
+        Call<ResponseBody> call = apiInterface.getAITReport(PROCUREMENT_GET_AIT_REPORT);
 
         call.enqueue(new Callback<>() {
             @Override
@@ -94,7 +94,6 @@ public class AITReportActivity extends AppCompatActivity {
                             procAITReport.setCalfbirth_verification(object.getString("calfbirth_verification"));
                             procAITReport.setMineral_mixture_sale(object.getString("mineral_mixture_kg"));
                             procAITReport.setSeed_sales(object.getString("seed_sales"));
-
                             procAITReportList.add(procAITReport);
                         }
 
@@ -128,7 +127,6 @@ public class AITReportActivity extends AppCompatActivity {
             this.aitReportList = aitReportList;
             this.context = context;
         }
-
 
         @NonNull
         @Override
@@ -170,7 +168,6 @@ public class AITReportActivity extends AppCompatActivity {
                     .load(BASE_URL_PROCUREMENT_IMG + aitReportList.get(position).getBreed_image())
                     .into(holder.imgBreed);
 
-
             holder.txtViewDetails.setOnClickListener(v -> {
                 holder.viewSecondLayout.setVisibility(View.VISIBLE);
                 holder.txtViewDetails.setVisibility(GONE);
@@ -187,7 +184,7 @@ public class AITReportActivity extends AppCompatActivity {
                 String imageUrl = BASE_URL_PROCUREMENT_IMG + aitReportList.get(position).getBreed_image();
                 Intent intent = new Intent(context, ImageViewActivity.class);
                 intent.putExtra("access_id", "1"); // 1 for url ( without access for URI storage image )
-                intent.putExtra("event_name", "Breed image"); // This is url ( not URI )
+                intent.putExtra("event_name", "Breed image");
                 intent.putExtra("url", imageUrl); // url not URI
                 context.startActivity(intent);
             });

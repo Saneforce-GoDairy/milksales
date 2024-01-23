@@ -8,10 +8,8 @@ import com.saneforce.godairy.Model_Class.HeaderCat;
 import com.saneforce.godairy.Model_Class.Location;
 import com.saneforce.godairy.Model_Class.Model;
 import com.saneforce.godairy.Model_Class.POSDataList;
-import com.saneforce.godairy.Model_Class.PrimaryNoOrderList;
 import com.saneforce.godairy.Model_Class.ReportDataList;
 import com.saneforce.godairy.Model_Class.RetailerViewDetails;
-import com.saneforce.godairy.Model_Class.TpMyDayPlanExtra;
 
 import org.json.JSONArray;
 
@@ -870,6 +868,7 @@ public interface ApiInterface {
                                             @Query("cattle_feed_order_kg") String cattle_feed_order_kg,
                                             @Query("teat_dip_cup") String teat_dip_cup,
                                             @Query("evm_treatment") String evm_treatment,
+                                            @Part MultipartBody.Part image2,
                                             @Query("case_type") String case_type,
                                             @Query("identified_farmer_count") String identified_farmer_count,
                                             @Query("farmer_enrolled") String farmer_enrolled,
@@ -909,7 +908,7 @@ public interface ApiInterface {
                                      @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcQuality(@Query("axn") String axn,
                                             @Query("company") String company,
                                             @Query("plant") String plant,
@@ -936,7 +935,7 @@ public interface ApiInterface {
                                             @Query("created_dt") String created_dt
                                          );
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcMaintenance(@Query("axn") String axn,
                                              @Query("company") String company,
                                              @Query("plant") String plant,
@@ -946,7 +945,7 @@ public interface ApiInterface {
                                              @Query("active_flag") String active_flag,
                                              @Query("created_dt") String created_dt);
 
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcAsset(@Query("axn") String axn,
                                              @Query("company") String company,
                                              @Query("plant") String plant,
@@ -956,11 +955,13 @@ public interface ApiInterface {
                                              @Query("created_dt") String created_dt
     );
 
-    @POST("test_prasanth.php")
-    Call<ResponseBody> getAgronomistReportList(@Query("axn") String axn);
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
+    Call<ResponseBody> getAgronomistReport(@Query("axn") String axn);
+    @POST("Db_v310.php")
 
-    Call<ResponseBody> getAITReportList(@Query("axn") String axn);
+    Call<ResponseBody> getAITReport(@Query("axn") String axn);
+
+    Call<ResponseBody> getVeterinaryReport(@Query("axn") String axn);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

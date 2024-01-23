@@ -21,6 +21,7 @@ public class AppConstants {
  public static final String PROCUREMENT_SUBMIT_ASSET = "save/proc_asset";
  public static final String PROCUREMENT_GET_AGRONOMIST = "get_agronomist";
  public static final String PROCUREMENT_GET_AIT_REPORT = "get_ait_report";
+ public static final String PROCUREMENT_GET_VETERINARY_REPORT = "get_veterinary_report";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}
