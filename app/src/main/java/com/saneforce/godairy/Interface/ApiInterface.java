@@ -40,7 +40,7 @@ import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
 
-    @GET("Db_v300_usha.php?")
+    @GET("Db_v300.php?")
     Call<Model> login(@Query("axn") String axn, @Query("Email") String Email, @Query("UserID") String UserID, @Query("Pwd") String Password, @Query("AppVer") String AppVer, @Query("DvID") String deveiceId);
 
 

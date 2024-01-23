@@ -818,7 +818,7 @@ public class Login extends AppCompatActivity {
                     cInEditor.apply();
                 }
 
-
+                String FFType = String.valueOf(response.getData().get(0).getFFType());
                 String Sf_type = String.valueOf(response.getData().get(0).getSFFType());
                 if (requestCode == RC_SIGN_IN) {
                     if (CheckIn == true) {
@@ -832,7 +832,8 @@ public class Login extends AppCompatActivity {
                         finish();
                     } else {
                         intent = new Intent(context, Dashboard.class);
-                        if (Sf_type.equalsIgnoreCase("P")){
+                        if (FFType.equalsIgnoreCase("P")){
+                            Sf_type="2";
                             intent.putExtra("Mode", INTENT_PROCUREMENT_MODE);
                             intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
                         }else {
@@ -864,8 +865,6 @@ public class Login extends AppCompatActivity {
                 String SFHQCode = response.getData().get(0).getHQCode();
                 String SFHQLoc = response.getData().get(0).getHOLocation();
                 int THrsPerm = response.getData().get(0).getTHrsPerm();
-
-                Log.e("mobile_", mMobile);
 
                 String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/";
 

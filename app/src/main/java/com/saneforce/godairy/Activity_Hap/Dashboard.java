@@ -160,21 +160,21 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 .apply(RequestOptions.circleCropTransform())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.userImage);
-
-        new Thread(() -> {
-            try {
-                URLConnection connection = new URL(mProfileImage).openConnection();
-                String contentType = connection.getHeaderField("Content-Type");
-                boolean image = contentType.startsWith("image/");
-                if (image){
-                    runOnUiThread(() -> {
-                        loadImage(mProfileImage);
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+//
+//        new Thread(() -> {
+//            try {
+//                URLConnection connection = new URL(mProfileImage).openConnection();
+//                String contentType = connection.getHeaderField("Content-Type");
+//                boolean image = contentType.startsWith("image/");
+//                if (image){
+//                    runOnUiThread(() -> {
+//                        loadImage(mProfileImage);
+//                    });
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
 /*
         binding.userImage.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
