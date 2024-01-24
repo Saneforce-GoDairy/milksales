@@ -21,7 +21,7 @@ import com.saneforce.godairy.databinding.ActivityExistingAgentVisitBinding;
 public class ExistingAgentVisitActivity extends AppCompatActivity {
     private ActivityExistingAgentVisitBinding binding;
     private final Context context = this;
-    private String mAgent = "", mListSelectedCompany, mTotalMilkAvailability, mOurCompanyLtrs, mCompetitorRate, mOurCompanyRate;
+    private String mAgent = "", mTotalMilkAvailability, mOurCompanyLtrs, mCompetitorRate, mOurCompanyRate;
     private String mDemand, mSupplyStartDate, mCompanyName;
 
     @Override
@@ -61,24 +61,18 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        binding.agExclusiveAgent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Exclusive Agent", Toast.LENGTH_SHORT).show();
-                mAgent = "Exclusive Agent";
+        binding.agExclusiveAgent.setOnClickListener(v -> {
+            Toast.makeText(context, "Exclusive Agent", Toast.LENGTH_SHORT).show();
+            mAgent = "Exclusive Agent";
 
-                binding.agDualAgent.setChecked(false);
-            }
+            binding.agDualAgent.setChecked(false);
         });
 
-        binding.agDualAgent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Dual Agent", Toast.LENGTH_SHORT).show();
-                mAgent = "Dual Agent";
+        binding.agDualAgent.setOnClickListener(v -> {
+            Toast.makeText(context, "Dual Agent", Toast.LENGTH_SHORT).show();
+            mAgent = "Dual Agent";
 
-                binding.agExclusiveAgent.setChecked(false);
-            }
+            binding.agExclusiveAgent.setChecked(false);
         });
 
         binding.edTotalMilkAvai.addTextChangedListener(new TextWatcher() {

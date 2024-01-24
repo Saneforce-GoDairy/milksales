@@ -40,7 +40,6 @@ public class QualityFormActivity extends AppCompatActivity {
     private String mNoOfVehiclesReceivedWithHood, mNoOfVehiclesReceivedWithOutHood,mRecordChemicals, mRecordStock, mRecordMilk;
     private String mAwarenessProgram = "", mSamplesCalibrationNoOfFat, mSamplesCalibrationNoOfSnf, mSamplesCalibrationNoOfWeight;
     private Bitmap bitmapFat, bitmapSnf, bitmapWithHood, bitmapWithoutHood, bitmapAwarenessProgram;
-    private File fileFat, fileSnf, fileWithHoods, fileWithoutHoods, fileAwarenessProgram;
     private final Context context = this;
     private final List<String> list = new ArrayList<>();
 
@@ -81,7 +80,6 @@ public class QualityFormActivity extends AppCompatActivity {
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
-                        //  list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -789,19 +787,19 @@ public class QualityFormActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fileFat = new File(getExternalFilesDir(null), "/procurement/" + "QUA_FAT_123.jpg");
+        File fileFat = new File(getExternalFilesDir(null), "/procurement/" + "QUA_FAT_123.jpg");
         bitmapFat = BitmapFactory.decodeFile(fileFat.getAbsolutePath());
 
-        fileSnf = new File(getExternalFilesDir(null), "/procurement/" + "QUA_SNF_123.jpg");
+        File fileSnf = new File(getExternalFilesDir(null), "/procurement/" + "QUA_SNF_123.jpg");
         bitmapSnf = BitmapFactory.decodeFile(fileSnf.getAbsolutePath());
 
-        fileWithHoods = new File(getExternalFilesDir(null), "/procurement/" + "QUA_RNV_WITH_HOODS_123.jpg");
+        File fileWithHoods = new File(getExternalFilesDir(null), "/procurement/" + "QUA_RNV_WITH_HOODS_123.jpg");
         bitmapWithHood = BitmapFactory.decodeFile(fileWithHoods.getAbsolutePath());
 
-        fileWithoutHoods = new File(getExternalFilesDir(null), "/procurement/" + "QUA_RNV_WITHOUT_HOODS_123.jpg");
+        File fileWithoutHoods = new File(getExternalFilesDir(null), "/procurement/" + "QUA_RNV_WITHOUT_HOODS_123.jpg");
         bitmapWithoutHood = BitmapFactory.decodeFile(fileWithoutHoods.getAbsolutePath());
 
-        fileAwarenessProgram = new File(getExternalFilesDir(null), "/procurement/" + "QUA_AWS_123.jpg");
+        File fileAwarenessProgram = new File(getExternalFilesDir(null), "/procurement/" + "QUA_AWS_123.jpg");
         bitmapAwarenessProgram = BitmapFactory.decodeFile(fileAwarenessProgram.getAbsolutePath());
 
 

@@ -210,11 +210,11 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
                 android:paddingStart="10dp"
                 android:paddingEnd="@dimen/C10dp"
                 android:autofillHints="phone"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -232,11 +232,11 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
                 android:paddingStart="10dp"
                 android:paddingEnd="@dimen/C10dp"
                 android:autofillHints="name"
-                android:inputType="text" />
+                android:inputType="text"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -255,10 +255,10 @@
                 android:background="@drawable/edit_text_common"
                 android:inputType="textPostalAddress"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
                 android:paddingStart="10dp"
                 android:paddingEnd="@dimen/C10dp"
-                android:autofillHints="postalAddress" />
+                android:autofillHints="postalAddress"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -276,11 +276,11 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
                 android:paddingStart="10dp"
                 android:paddingEnd="@dimen/C10dp"
                 android:autofillHints="name"
-                android:inputType="text" />
+                android:inputType="text"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -298,11 +298,11 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
                 android:paddingStart="10dp"
                 android:paddingEnd="@dimen/C10dp"
                 android:autofillHints="name"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                tools:ignore="LabelFor" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -352,11 +352,11 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="@string/type"
                 android:paddingStart="10dp"
                 android:paddingEnd="@dimen/C10dp"
                 android:autofillHints="name"
-                android:inputType="text" />
+                android:inputType="text"
+                tools:ignore="LabelFor" />
 
             
             <RelativeLayout

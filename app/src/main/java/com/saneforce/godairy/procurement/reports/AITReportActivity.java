@@ -72,12 +72,9 @@ public class AITReportActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     binding.shimmerLayout2.setVisibility(GONE);
                     String  aitList;
-
                     try {
                         aitList = response.body().string();
-
                         JSONArray jsonArray = new JSONArray(aitList);
-
                         for (int i = 0; i<jsonArray.length(); i++) {
                             ProcAITReport procAITReport = new ProcAITReport();
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -96,7 +93,6 @@ public class AITReportActivity extends AppCompatActivity {
                             procAITReport.setSeed_sales(object.getString("seed_sales"));
                             procAITReportList.add(procAITReport);
                         }
-
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                         binding.recyclerView.setLayoutManager(linearLayoutManager);

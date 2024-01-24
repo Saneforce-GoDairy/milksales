@@ -57,9 +57,7 @@ public class ProcurementAssetActivity extends AppCompatActivity {
 
     private void loadPlant() {
         list.add("Select");
-
         updatePlant();
-
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -73,7 +71,6 @@ public class ProcurementAssetActivity extends AppCompatActivity {
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
-                        //  list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -114,7 +111,6 @@ public class ProcurementAssetActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mCompany = binding.spinnerCompany.getSelectedItem().toString();
-          //      binding.txtCompanyNotValid.setVisibility(View.GONE);
             }
 
             @Override
@@ -125,20 +121,15 @@ public class ProcurementAssetActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mPlant = binding.spinnerPlant.getSelectedItem().toString();
-        //        binding.txtPlantNotValid.setVisibility(View.GONE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        binding.typeOfAsset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show();
-
-                mTypeOfAsset = "Yes";
-            }
+        binding.typeOfAsset.setOnClickListener(v -> {
+            Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show();
+            mTypeOfAsset = "Yes";
         });
 
         binding.back.setOnClickListener(view -> finish());

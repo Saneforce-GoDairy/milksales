@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +18,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="Reports"
+            android:text="@string/reports"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -36,24 +35,28 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/C50dp"
             android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true">
+            android:clickable="true"
+            tools:ignore="UnusedAttribute"
+            android:focusable="true">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Agronomist"
+                android:text="@string/agronomist"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/arrow_right"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/back" />
 
         </RelativeLayout>
 
@@ -66,19 +69,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AIT Form"
+                android:text="@string/ait_form"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrow_right"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/selection" />
 
         </RelativeLayout>
 
@@ -91,19 +96,48 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Veterinary"
+                android:text="@string/veterinary"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrow_right"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/selection"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/quality"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/C50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quality"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrow_right"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/selection"/>
 
         </RelativeLayout>
 
@@ -115,19 +149,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quality"
+                android:text="@string/maintenance_regular"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrow_right"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/selection"/>
 
         </RelativeLayout>
 
@@ -139,19 +175,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Maintanence-Regular"
+                android:text="@string/existing_agent_visit"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrow_right"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/selection"/>
 
         </RelativeLayout>
 
@@ -163,19 +201,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Existing Agent Visit"
+                android:text="@string/collection_center_location"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrow_right"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/selection" />
 
         </RelativeLayout>
 
@@ -187,19 +227,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Collection Center Location"
+                android:text="@string/procurement_asset"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrow_right"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/selection"/>
 
         </RelativeLayout>
 
@@ -211,43 +253,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Procurement Asset"
+                android:text="@string/farmer_creation"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrow_right"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/C50dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Farmer creation"
-                android:textSize="15sp"
-                android:textColor="@color/black"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_medium"/>
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/arrow_right"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"/>
+                android:contentDescription="@string/selection"/>
 
         </RelativeLayout>
     </LinearLayout>

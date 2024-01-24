@@ -3,12 +3,6 @@ package com.saneforce.godairy.procurement.reports;
 import static android.view.View.GONE;
 import static com.saneforce.godairy.Interface.ApiClient.BASE_URL;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_VETERINARY_REPORT;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -18,27 +12,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.Model_Class.ProcAITReport;
 import com.saneforce.godairy.Model_Class.ProcVeterinaryReport;
 import com.saneforce.godairy.databinding.ActivityVeterinaryReportBinding;
 import com.saneforce.godairy.databinding.ModelVeterinaryReportBinding;
-import com.saneforce.godairy.databinding.ShiftListItemBinding;
 import com.saneforce.godairy.procurement.ImageViewActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +54,7 @@ public class VeterinaryReportActivity extends AppCompatActivity {
 
     private void loadList() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseBody> call = apiInterface.getAITReport(PROCUREMENT_GET_VETERINARY_REPORT);
+        Call<ResponseBody> call = apiInterface.getVeterinaryReport(PROCUREMENT_GET_VETERINARY_REPORT);
 
         call.enqueue(new Callback<>() {
             @Override
@@ -71,12 +63,9 @@ public class VeterinaryReportActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     binding.shimmerLayout2.setVisibility(GONE);
                     String  veterinaryList;
-
                     try {
                         veterinaryList = response.body().string();
-
                         JSONArray jsonArray = new JSONArray(veterinaryList);
-
                         for (int i = 0; i<jsonArray.length(); i++) {
                             ProcVeterinaryReport veterinaryReport = new ProcVeterinaryReport();
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -101,7 +90,6 @@ public class VeterinaryReportActivity extends AppCompatActivity {
                             veterinaryReport.setCreated_date(object.getString("created_dt"));
                             veterinaryReportList.add(veterinaryReport);
                         }
-
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                         binding.recyclerView.setLayoutManager(linearLayoutManager);
@@ -112,14 +100,14 @@ public class VeterinaryReportActivity extends AppCompatActivity {
                         veterinaryReportAdapter.notifyDataSetChanged();
                     } catch (IOException | JSONException e) {
                         //  throw new RuntimeException(e);
-                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "List load error :" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -9,7 +9,6 @@ import com.saneforce.godairy.databinding.ActivityImageViewBinding;
 
 public class ImageViewActivity extends AppCompatActivity {
     private ActivityImageViewBinding binding;
-    private final Context context = this;
 
 
     @Override

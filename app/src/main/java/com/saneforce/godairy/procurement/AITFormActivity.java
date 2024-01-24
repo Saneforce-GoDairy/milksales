@@ -39,7 +39,6 @@ public class AITFormActivity extends AppCompatActivity {
     private String mCompanyName, mPlant, mCenterName, mFarmerCode, mBreed, mNoOfAi, mBullNos;
     private String mPdVerification = "", mCalfBirthVerification, mMineralMixtureSale, mSeedSale;
     private final Context context = this;
-    private File fileBreed;
     private Bitmap bitmapBreed;
     private final List<String> list = new ArrayList<>();
 
@@ -299,7 +298,6 @@ public class AITFormActivity extends AppCompatActivity {
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
-                        //  list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -445,7 +443,7 @@ public class AITFormActivity extends AppCompatActivity {
         super.onResume();
 
         // Farmers meeting
-        fileBreed = new File(getExternalFilesDir(null), "/procurement/" + "NOB_123.jpg");
+        File fileBreed = new File(getExternalFilesDir(null), "/procurement/" + "NOB_123.jpg");
         bitmapBreed = BitmapFactory.decodeFile(fileBreed.getAbsolutePath());
 
         if (bitmapBreed != null){

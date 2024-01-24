@@ -2,47 +2,34 @@ package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityAgronomistFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,9 +38,7 @@ import retrofit2.Response;
 public class AgronomistFormActivity extends AppCompatActivity {
     private ActivityAgronomistFormBinding binding;
     private String mCompanyName, mPlant, mCenterName, mFarmerCodeName, mTypeOfProduct, mTeatTipCup, mTypeOfService, mFodderDev;
-    private String mNoOfFarmersEnrolled, mNoOfFarmersInducted;
     private final Context context = this;
-    private File fileFormersMeeting, fileCSRActivity, fileFodderDevAcres;
     private Bitmap bitmapFormersMeeting, bitmapCSRActivity , bitmapFodderDevAcres;
     private final List<String> list = new ArrayList<>();
 
@@ -310,9 +295,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
 
     private void loadPlant() {
         list.add("Select");
-
         updatePlant();
-
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -326,7 +309,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
-                      //  list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -365,8 +347,8 @@ public class AgronomistFormActivity extends AppCompatActivity {
         mTeatTipCup = binding.edTeatTipCup.getText().toString().trim();
         mTypeOfService = binding.spinnerTypeOfService.getSelectedItem().toString();
         mFodderDev = binding.edFodderDevelopmentAcres.getText().toString();
-        mNoOfFarmersEnrolled = binding.edNoOfFarmersEnrolled.getText().toString().trim();
-        mNoOfFarmersInducted = binding.edNoOfFarmersInducted.getText().toString().trim();
+        String mNoOfFarmersEnrolled = binding.edNoOfFarmersEnrolled.getText().toString().trim();
+        String mNoOfFarmersInducted = binding.edNoOfFarmersInducted.getText().toString().trim();
 
         if ("Select".equals(mCompanyName)){
             ((TextView)binding.spinnerCompany.getSelectedView()).setError("Select company");
@@ -479,15 +461,15 @@ public class AgronomistFormActivity extends AppCompatActivity {
         super.onResume();
 
         // Farmers meeting
-        fileFormersMeeting = new File(getExternalFilesDir(null), "/procurement/" +"FAR_123.jpg");
+        File fileFormersMeeting = new File(getExternalFilesDir(null), "/procurement/" + "FAR_123.jpg");
         bitmapFormersMeeting = BitmapFactory.decodeFile(fileFormersMeeting.getAbsolutePath());
 
         // CSR Activity
-        fileCSRActivity = new File(getExternalFilesDir(null), "/procurement/" +"CSR_123.jpg");
+        File fileCSRActivity = new File(getExternalFilesDir(null), "/procurement/" + "CSR_123.jpg");
         bitmapCSRActivity = BitmapFactory.decodeFile(fileCSRActivity.getAbsolutePath());
 
         // Fodder dev acres
-        fileFodderDevAcres = new File(getExternalFilesDir(null), "/procurement/" +"FDA_123.jpg");
+        File fileFodderDevAcres = new File(getExternalFilesDir(null), "/procurement/" + "FDA_123.jpg");
         bitmapFodderDevAcres = BitmapFactory.decodeFile(fileFodderDevAcres.getAbsolutePath());
 
         if (bitmapFormersMeeting != null){

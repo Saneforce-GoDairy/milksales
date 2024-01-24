@@ -20,9 +20,10 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:fontFamily="@font/ubuntu_medium"
-        android:text="Procurement form"
+        android:text="@string/procurement_form"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        tools:ignore="RelativeOverlap" />
 
     <ImageView
         android:id="@+id/logout"
@@ -31,7 +32,8 @@
         android:src="@drawable/logout3"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"/>
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/logout" />
 
   </RelativeLayout>
 
@@ -73,9 +75,6 @@
           app:cardCornerRadius="10dp"
           android:focusable="true">
 
-        <!--    app:cardBackgroundColor="#43ACFF"-->
-        <!--    app:cardBackgroundColor="#FFBED4"-->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -86,14 +85,16 @@
               android:layout_centerInParent="true"
               android:gravity="center_horizontal"
               android:orientation="vertical"
-              android:padding="10dp">
+              android:padding="10dp"
+              tools:ignore="UseCompoundDrawables,UselessParent">
 
             <ImageView
                 android:id="@+id/iconImageView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_report_new"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:contentDescription="@string/icon" />
 
             <TextView
                 android:id="@+id/name_text"
@@ -101,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="Form Reports"
+                android:text="@string/form_reports"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#858585"
                 tools:text="Form Reports" />
@@ -129,7 +130,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#d1d1d1"
-        android:text="1, Agronomist Form"
+        android:text="@string/_1_agronomist_form"
         android:textColor="@color/black" />
 
     <Button
@@ -138,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="#d1d1d1"
-        android:text="2, AIT Form"
+        android:text="@string/_2_ait_form"
         android:textColor="@color/black" />
 
     <Button
@@ -147,7 +148,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="#d1d1d1"
-        android:text="3, Veterinary-Doctors Form"
+        android:text="@string/_3_veterinary_doctors_form"
         android:textColor="@color/black" />
 
     <Button
@@ -156,7 +157,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="#d1d1d1"
-        android:text="4, Quality Form"
+        android:text="@string/_4_quality_form"
         android:textColor="@color/black" />
 
     <Button
@@ -165,7 +166,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="#d1d1d1"
-        android:text="5, Maintanence-Regular Form"
+        android:text="@string/_5_maintanence_regular_form"
         android:textColor="@color/black" />
 
     <Button
@@ -174,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="#d1d1d1"
-        android:text="6, Existing Agent Visit"
+        android:text="@string/_6_existing_agent_visit"
         android:textColor="@color/black" />
 
     <Button
@@ -183,7 +184,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="#d1d1d1"
-        android:text="7, Collection Center Location"
+        android:text="@string/_7_collection_center_location"
         android:textColor="@color/black" />
 
     <Button
@@ -192,7 +193,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="#d1d1d1"
-        android:text="8, Procurement Asset"
+        android:text="@string/_8_procurement_asset"
         android:textColor="@color/black" />
   </LinearLayout>
 

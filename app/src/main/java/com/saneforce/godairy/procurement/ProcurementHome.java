@@ -21,31 +21,7 @@ import java.util.Arrays;
 
 public class ProcurementHome extends AppCompatActivity {
     private ActivityProcurementHomeBinding binding;
-    private Context context = this;
-
-//    ArrayList dashboardImage = new ArrayList(Arrays.asList(
-//            R.drawable.doctor,
-//            R.drawable.ait_form,
-//            R.drawable.veterinary,
-//            R.drawable.ic_quality,
-//            R.drawable.ic_maintanence,
-//            R.drawable.ic_agent,
-//            R.drawable.ic_collection,
-//            R.drawable.ic_procurement));
-//
-//    ArrayList dashboardName = new ArrayList(Arrays.asList(
-//            "Agronomist",
-//            "AIT Form",
-//            "Veterinary",
-//            "Quality" ,
-//            "Maintanence-Regular Form",
-//            "Existing Agent Visit" ,
-//            "Collection Center Location" ,
-//            "Procurement Asset"
-//    ));
-
-    ArrayList dashboardImage;
-    ArrayList dashboardName;
+    private final Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +34,7 @@ public class ProcurementHome extends AppCompatActivity {
     }
 
     private void loadHome() {
-            ArrayList dashboardImage = new ArrayList(Arrays.asList(
+            ArrayList<Integer> dashboardImage = new ArrayList<>(Arrays.asList(
             R.drawable.doctor,
             R.drawable.ait_form,
             R.drawable.veterinary,
@@ -69,7 +45,7 @@ public class ProcurementHome extends AppCompatActivity {
             R.drawable.ic_procurement,
                     R.drawable.ic_procurement));
 
-    ArrayList dashboardName = new ArrayList(Arrays.asList(
+    ArrayList<String> dashboardName = new ArrayList<>(Arrays.asList(
             "Agronomist",
             "AIT Form",
             "Veterinary",
@@ -80,24 +56,6 @@ public class ProcurementHome extends AppCompatActivity {
             "Procurement Asset",
             "Farmer creation"
     ));
-
-//        String userMode = getIntent().getStringExtra("proc_user");
-//
-//        if (userMode.equals(INTENT_PROCUREMENT_USER_DOC_MODE)){
-//            dashboardImage = new ArrayList(Arrays.asList(
-//            R.drawable.doctor,
-//            R.drawable.ait_form,
-//            R.drawable.veterinary,
-//                        R.drawable.ic_agent));
-//
-//            dashboardName = new ArrayList(Arrays.asList(
-//            "Agronomist",
-//            "AIT Form",
-//            "Veterinary",
-//            "Existing Agent Visit"
-//    ));
-//        }
-
         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setItemViewCacheSize(20);
@@ -160,10 +118,11 @@ public class ProcurementHome extends AppCompatActivity {
     }
 
     public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        ArrayList exploreImage, exploreName;
+        ArrayList<Integer> exploreImage;
+        ArrayList<String> exploreName;
         Context context;
 
-        public Adapter(Context context, ArrayList courseImg, ArrayList courseName) {
+        public Adapter(Context context, ArrayList<Integer> courseImg, ArrayList<String> courseName) {
             this.context = context;
             this.exploreImage = courseImg;
             this.exploreName = courseName;
@@ -173,15 +132,14 @@ public class ProcurementHome extends AppCompatActivity {
         @Override
         public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_dash_item, parent, false);
-            Adapter.ViewHolder viewHolder = new Adapter.ViewHolder(view);
-            return viewHolder;
+            return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position) {
-            int res = (int) exploreImage.get(position);
+            int res = exploreImage.get(position);
             holder.images.setImageResource(res);
-            holder.text.setText((String) exploreName.get(position));
+            holder.text.setText(exploreName.get(position));
 
             holder.layout.setOnClickListener(v -> {
                 switch (position){

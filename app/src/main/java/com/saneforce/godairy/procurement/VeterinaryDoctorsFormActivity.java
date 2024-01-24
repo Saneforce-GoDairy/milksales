@@ -41,7 +41,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
     private String mMinaralMixture, mFodderSales, mCattleOrder, mTeatTipCup, mEmergencyEvm, mTypesOfCases;
     private String mFamilyFarmDev, mNoOfFarmersEnrolled, mNoOfFarmersInducted;
     private Bitmap bitmapTypeOfSer, bitmapEVM;
-    private File fileTypeOfSer, fileEVM;
     private final List<String> list = new ArrayList<>();
 
     @Override
@@ -103,7 +102,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
-                        //  list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -586,10 +584,10 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fileTypeOfSer = new File(getExternalFilesDir(null), "/procurement/" + "VET_TOS_123.jpg");
+        File fileTypeOfSer = new File(getExternalFilesDir(null), "/procurement/" + "VET_TOS_123.jpg");
         bitmapTypeOfSer = BitmapFactory.decodeFile(fileTypeOfSer.getAbsolutePath());
 
-        fileEVM = new File(getExternalFilesDir(null), "/procurement/" + "VET_EVM_123.jpg");
+        File fileEVM = new File(getExternalFilesDir(null), "/procurement/" + "VET_EVM_123.jpg");
         bitmapEVM = BitmapFactory.decodeFile(fileEVM.getAbsolutePath());
 
         if (bitmapTypeOfSer != null){

@@ -152,7 +152,8 @@
                 android:importantForAutofill="no"
                 android:inputType="textAutoComplete"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -173,7 +174,8 @@
                 android:fontFamily="@font/ubuntu"
                 android:inputType="text"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp"
+                tools:ignore="LabelFor" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -238,7 +240,8 @@
                 android:fontFamily="@font/ubuntu"
                 android:inputType="textAutoComplete"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp"
+                tools:ignore="LabelFor" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -434,7 +437,8 @@
                 android:fontFamily="@font/ubuntu"
                 android:inputType="textAutoComplete"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp"
+                tools:ignore="LabelFor" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -504,7 +508,8 @@
                 android:fontFamily="@font/ubuntu"
                 android:inputType="numberDecimal"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -525,7 +530,8 @@
                 android:fontFamily="@font/ubuntu"
                 android:inputType="numberDecimal"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp"
+                tools:ignore="LabelFor" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

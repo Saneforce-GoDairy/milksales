@@ -18,7 +18,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="Agronomist Reports"
+            android:text="@string/agronomist_reports"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
