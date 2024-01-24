@@ -30,7 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Day_Report_Activity extends AppCompatActivity implements UpdateResponseUI {
+public class Day_Report_Activity extends AppCompatActivity {
     private ActivityDayReportBinding binding;
     public  static  String mDate = "";
     private DatePickerDialog datePickerDialog;
@@ -53,48 +53,22 @@ public class Day_Report_Activity extends AppCompatActivity implements UpdateResp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDayReportBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
 
-        db = new DatabaseHandler(this);
-        gson = new Gson();
         shared_common_pref = new Shared_Common_Pref(Day_Report_Activity.this);
         common_class = new Common_Class(this);
 
         initViews();
-        initAdapter();
-
 
         tvdaydate.setText(DT.getDateWithFormat(new Date(), "dd-MMM-yyyy"));
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sheetDialog=new BottomSheetDialog(Day_Report_Activity.this,R.style.AppBottomSheetDialogTheme) ;
-
-                sheetDialog.setContentView(R.layout.day_bottom_sheet);
-
-                sheetDialog.show();
-
-
-            }
+        binding.viewSummary.setOnClickListener(v -> {
+            sheetDialog=new BottomSheetDialog(Day_Report_Activity.this,R.style.AppBottomSheetDialogTheme) ;
+            sheetDialog.setContentView(R.layout.day_bottom_sheet);
+            sheetDialog.show();
         });
     }
-
-    public void initAdapter() {
-      /*  dayReportAdapter = new DayReportAdapter(Day_Report_Activity.this, Dayreport, new AdapterOnClick() {
-            @Override
-            public void onIntentClick(int position) {
-
-
-            }
-
-        });
-        day_report_recycler.setAdapter(dayReportAdapter);*/
-    }
-
 
     private void initViews() {
-        button=findViewById(R.id.button);
         tvSFADate = findViewById(R.id.tvSFADate);
         tvdaydate = findViewById(R.id.txtdayDate);
         tvempname =  findViewById(R.id.emp_name);
@@ -109,23 +83,18 @@ public class Day_Report_Activity extends AppCompatActivity implements UpdateResp
         tvorderedoutlet =  findViewById(R.id.ordered_outlet);
         tvinvoicedist =  findViewById(R.id.invoiced_distributor);
         tvinvoiceoutlet =  findViewById(R.id.invoiced_outlet);
-//        rvdayreportrecycler = findViewById(R.id.dayreportrecycler);
 
-    }
-
-    @Override
-    public void onLoadDataUpdateUI(String apiDataResponse, String key) {
-
-    }
-
-    @Override
-    public void onErrorData(String msg) {
-        UpdateResponseUI.super.onErrorData(msg);
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-        super.onPointerCaptureChanged(hasCapture);
+        binding.txtdayDate.setOnClickListener(v -> {
+            Calendar newCalendar = Calendar.getInstance();
+            datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    int month = monthOfYear + 1;
+                    txtDate.setText("" + year + "-" + month + "-" + dayOfMonth);
+                    mDate = tvDate.getText().toString();
+                }
+            }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+        });
     }
 }
 

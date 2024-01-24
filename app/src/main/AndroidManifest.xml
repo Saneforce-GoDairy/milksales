@@ -59,10 +59,31 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".Activity_Hap.Day_Report_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.VeterinaryReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.AITReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.AgronomistReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.ProcReportsHomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity_Hap.ChangePasswordActivity"
             android:exported="false" />
         <activity
             android:name=".Activity_Hap.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.TravelPunchHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.TravelPunchLocationActivity"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.vwAllPrimaryOrders"
@@ -400,6 +421,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".SFA_Activity.PaymentActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.PaymentHistory"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
