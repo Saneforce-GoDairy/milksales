@@ -188,46 +188,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-            <!--    <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/C5dp"
-                    app:cardCornerRadius="@dimen/C4dp">
-
-                &lt;!&ndash;    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingLeft="@dimen/C8dp"
-                        android:paddingTop="@dimen/C5dp"
-                        android:paddingRight="@dimen/C8dp"
-                        android:paddingBottom="@dimen/C5dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:letterSpacing="0.09"
-                            android:text="Date"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/txtdayDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:letterSpacing="0.09"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>&ndash;&gt;
-                </androidx.cardview.widget.CardView>-->
-
 
                 <RelativeLayout
                     android:id="@+id/top2"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/forword"
@@ -291,6 +256,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
                                 android:layout_marginBottom="5dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="2dp"
                                 android:orientation="horizontal">
                                 <TextView
                                     android:layout_width="match_parent"
@@ -319,6 +287,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
                                 android:layout_marginBottom="5dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="2dp"
                                 android:orientation="horizontal">
                                 <TextView
                                     android:id="@+id/emp_name"
@@ -353,6 +324,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
                                 android:layout_marginBottom="5dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="2dp"
                                 android:orientation="horizontal">
                                 <TextView
                                     android:layout_width="match_parent"
@@ -381,6 +355,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
                                 android:layout_marginBottom="5dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginEnd="2dp"
                                 android:orientation="horizontal">
                                 <TextView
                                     android:id="@+id/emp_id_deg"
@@ -425,6 +402,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="3"
                                         android:layout_marginBottom="5dp"
+                                        android:layout_marginTop="3dp"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_marginEnd="2dp"
                                         android:orientation="horizontal">
                                         <TextView
                                             android:layout_width="match_parent"
@@ -465,7 +445,10 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="3"
+                                        android:layout_marginTop="2dp"
                                         android:layout_marginBottom="5dp"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_marginEnd="2dp"
                                         android:orientation="horizontal">
                                         <TextView
                                             android:layout_width="match_parent"
@@ -508,6 +491,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="3"
                                         android:layout_marginBottom="5dp"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_marginEnd="2dp"
                                         android:background="@color/lightBlue"
                                         android:orientation="horizontal">
                                         <TextView
@@ -549,6 +535,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="3"
                                         android:layout_marginBottom="5dp"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_marginEnd="2dp"
                                         android:orientation="horizontal">
                                         <TextView
                                             android:layout_width="match_parent"
@@ -639,6 +628,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="3"
                                         android:layout_marginBottom="5dp"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_marginEnd="2dp"
                                         android:orientation="horizontal">
                                         <TextView
                                             android:layout_width="match_parent"
@@ -665,6 +657,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="3"
                                         android:layout_marginBottom="5dp"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_marginEnd="2dp"
                                         android:orientation="horizontal">
                                         <TextView
                                             android:layout_width="match_parent"
@@ -706,8 +701,10 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="3"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_marginEnd="2dp"
                                         android:background="@color/lightBlue"
-
                                         android:orientation="horizontal">
                                         <TextView
                                             android:layout_width="match_parent"
@@ -759,18 +756,38 @@
                     android:background="?android:attr/listDivider"
                     android:outlineSpotShadowColor="@color/black"/>
 
-                <RelativeLayout
+                <FrameLayout
+                    android:id="@+id/bottomAnc"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_gravity="end|center"
+                    android:layout_marginTop="@dimen/C10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/day_rounded"
+                    app:layout_behavior= "com.google.android.matrial.bottomsheet.BottomSheetBehavior"
+                    android:layout_marginBottom="@dimen/C10dp"
+                  >
+                    <ImageView
+                        android:layout_width="@dimen/C15dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_double_arrow_down"
+                        android:scaleType="centerCrop"
+                        android:nextFocusRight="@id/back"
+                        android:layout_gravity="top|center">
+                    </ImageView>
 
-                    <Button
-                        android:id="@+id/view_summary"
+                    <TextView
+                        android:id="@+id/viewSummary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="View Summary"
-                        android:textSize="17sp" />
-                </RelativeLayout>
+                        android:layout_marginTop="@dimen/C20dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_gravity="center|top"
+                        android:textStyle="bold" />
+                </FrameLayout>
 
 
             </LinearLayout>
