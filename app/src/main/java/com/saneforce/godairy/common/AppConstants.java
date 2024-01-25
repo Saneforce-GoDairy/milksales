@@ -23,6 +23,11 @@ public class AppConstants {
  public static final String PROCUREMENT_GET_AIT_REPORT = "get_ait_report";
  public static final String PROCUREMENT_GET_VETERINARY_REPORT = "get_veterinary_report";
  public static final String PROCUREMENT_GET_QUALITY_REPORT = "get_quality_report";
+ public static final String PROCUREMENT_GET_MAINTENANCE_REPORT = "get_maintenance_report";
+ public static final String PROCUREMENT_GET_EXISTING_AGENT_REPORT = "get_existing_agent_report";
+ public static final String PROCUREMENT_GET_COLLECTION_CENTER_REPORT = "get_colltion_center_report";
+ public static final String PROCUREMENT_GET_ASSET_REPORT = "get_asset_report";
+ public static final String PROCUREMENT_GET_FARMER_CREATION_REPORT = "get_far_creation_report";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}

@@ -39,5 +39,30 @@ public class ProcReportsHomeActivity extends AppCompatActivity {
             Intent intent = new Intent(context, QualityReportActivity.class);
             startActivity(intent);
         });
+
+        binding.maintenance.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MaintenanceReportActivity.class);
+            startActivity(intent);
+        });
+
+        binding.existing.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ExistingAgentVisitReportActivity.class);
+            startActivity(intent);
+        });
+
+        binding.collectionCenter.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CollectionCenterReportActivity.class);
+            startActivity(intent);
+        });
+
+        binding.asset.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AssetReportActivity.class);
+            startActivity(intent);
+        });
+
+        binding.farmerCreation.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FarmerCreationReportActivity.class);
+            startActivity(intent);
+        });
     }
 }

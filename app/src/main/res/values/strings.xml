@@ -349,6 +349,19 @@
     <string name="maintenance_regular">Maintenance-Regular</string>
     <string name="collection_center_location">Collection Center Location</string>
     <string name="agronomist_reports">Agronomist Reports</string>
+    <string name="company_name">Company name</string>
+    <string name="plant">Plant</string>
+    <string name="no_of_equipment">No of equipment</string>
+    <string name="repair_type">Repair type</string>
+    <string name="repair_image">Repair image</string>
+    <string name="existing_agent_visit_reportt">Existing Agent Visit Reportt</string>
+    <string name="agent_visit_type">Agent visit type</string>
+    <string name="competitor_rate">Competitor rate</string>
+    <string name="our_company_rate">Our company rate</string>
+    <string name="view_details">View details</string>
+    <string name="view_less">View less</string>
+    <string name="collection_center_report">Collection center report</string>
+    <string name="procurement_asset_report">Procurement asset report</string>
 
     <array name="company_array">
         <item>Select</item>

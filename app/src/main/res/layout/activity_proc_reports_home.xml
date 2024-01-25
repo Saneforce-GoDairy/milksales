@@ -142,6 +142,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/maintenance"
             android:layout_width="match_parent"
             android:layout_height="@dimen/C50dp"
             android:orientation="horizontal">
@@ -168,6 +169,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/existing"
             android:layout_width="match_parent"
             android:layout_height="@dimen/C50dp"
             android:orientation="horizontal">
@@ -194,6 +196,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/collection_center"
             android:layout_width="match_parent"
             android:layout_height="@dimen/C50dp"
             android:orientation="horizontal">
@@ -220,6 +223,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/asset"
             android:layout_width="match_parent"
             android:layout_height="@dimen/C50dp"
             android:orientation="horizontal">
@@ -246,6 +250,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/farmer_creation"
             android:layout_width="match_parent"
             android:layout_height="@dimen/C50dp"
             android:orientation="horizontal">

@@ -4,7 +4,7 @@ public class ProcQualityReport {
     private String company, plant, mass_balance, milk_collection, fat_image, snf_image, mbrt, rejection, special_cleaning;
     private String cleaning_eff, vehicles_rece_withhood, withhood_imag, without_hood_image, vehicles_rece_withouthood, records_chemicals;
     private String records_stock, record_milk, awareness_prog, samp_calibra_no_fat, samp_calibra_no_snf;
-    private String samp_calibra_no_weight;
+    private String samp_calibra_no_weight, created_dt;
 
     public String getCompany() {
         return company;
@@ -172,5 +172,13 @@ public class ProcQualityReport {
 
     public void setWithout_hood_image(String without_hood_image) {
         this.without_hood_image = without_hood_image;
+    }
+
+    public String getCreated_dt() {
+        return created_dt;
+    }
+
+    public void setCreated_dt(String created_dt) {
+        this.created_dt = created_dt;
     }
 }

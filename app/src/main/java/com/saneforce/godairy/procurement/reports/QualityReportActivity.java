@@ -91,6 +91,7 @@ public class QualityReportActivity extends AppCompatActivity {
                             qualityReport.setSamp_calibra_no_fat(object.getString("no_of_fat"));
                             qualityReport.setSamp_calibra_no_snf(object.getString("no_of_snf"));
                             qualityReport.setSamp_calibra_no_weight(object.getString("no_of_weight"));
+                            qualityReport.setCreated_dt(object.getString("created_dt"));
                             qualityReportsList.add(qualityReport);
                         }
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
@@ -135,7 +136,6 @@ public class QualityReportActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull QualityReportAdapter.ViewHolder holder, int position) {
             holder.binding.txtCompanyName.setText(qualityReportList.get(position).getCompany());
             holder.binding.txtPlant.setText(qualityReportList.get(position).getPlant());
-
             holder.binding.txtMassBalance.setText(qualityReportList.get(position).getMass_balance());
             holder.binding.txtMilkCollection.setText(qualityReportList.get(position).getMilk_collection());
             holder.binding.txtMbrt.setText(qualityReportList.get(position).getMbrt());
@@ -151,6 +151,8 @@ public class QualityReportActivity extends AppCompatActivity {
             holder.binding.txtNoOfFat.setText(qualityReportList.get(position).getSamp_calibra_no_fat());
             holder.binding.txtNoOfSnf.setText(qualityReportList.get(position).getSamp_calibra_no_snf());
             holder.binding.txtNoOfWeight.setText(qualityReportList.get(position).getSamp_calibra_no_weight());
+            String upToNCharacters = qualityReportList.get(position).getCreated_dt().substring(0, Math.min(qualityReportList.get(position).getCreated_dt().length(), 10));
+            holder.binding.txtDate.setText(upToNCharacters);
 
                 /*
                below logic used for access procurement images folder ( its wrks dev and live )
@@ -228,7 +230,6 @@ public class QualityReportActivity extends AppCompatActivity {
                 intent.putExtra("url", imageUrl); // url not URI
                 context.startActivity(intent);
             });
-
         }
 
         @Override

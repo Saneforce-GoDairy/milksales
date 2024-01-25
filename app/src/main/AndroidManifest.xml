@@ -59,6 +59,21 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".procurement.reports.FarmerCreationReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.AssetReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.CollectionCenterReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.ExistingAgentVisitReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.MaintenanceReportActivity"
+            android:exported="false" />
+        <activity
             android:name=".procurement.reports.QualityReportActivity"
             android:exported="false" />
         <activity
