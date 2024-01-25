@@ -49,6 +49,7 @@ public class Constant {
     public static String DIVISION_CODE= "";
     public static String SF_CODE= "";
     public static String RSF_CODE= "";
+    public static String Sf_Code = "Sf_Code";
     public static int STATE_CODE= 0;
     public static String DESIG= "";
     public static String WORK_TYPE = "";

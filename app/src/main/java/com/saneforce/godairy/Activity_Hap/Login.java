@@ -753,6 +753,7 @@ public class Login extends AppCompatActivity {
                 userEditor.putString("Sfcode", response.getData().get(0).getDistCode());
                 userEditor.putString("Divcode", response.getData().get(0).getDivisionCode());
                 userEditor.putString("State_Code", response.getData().get(0).getState_Code());
+                userEditor.putString("SFMobile", response.getData().get(0).getSFMobile());
                 userEditor.putInt("FlightAllowed", 0);
 
                 Shared_Common_Pref.Sf_Code = response.getData().get(0).getDistCode();
@@ -817,7 +818,7 @@ public class Login extends AppCompatActivity {
                     cInEditor.apply();
                 }
 
-
+                String FFType = String.valueOf(response.getData().get(0).getFFType());
                 String Sf_type = String.valueOf(response.getData().get(0).getSFFType());
                 if (requestCode == RC_SIGN_IN) {
                     if (CheckIn == true) {
@@ -831,7 +832,8 @@ public class Login extends AppCompatActivity {
                         finish();
                     } else {
                         intent = new Intent(context, Dashboard.class);
-                        if (Sf_type.equalsIgnoreCase("P")){
+                        if (FFType.equalsIgnoreCase("P")){
+                            Sf_type="2";
                             intent.putExtra("Mode", INTENT_PROCUREMENT_MODE);
                             intent.putExtra("proc_user", INTENT_PROCUREMENT_USER_DOC_MODE);
                         }else {
@@ -847,6 +849,7 @@ public class Login extends AppCompatActivity {
                 }
 
                 String code = response.getData().get(0).getSfCode();
+                String mMobile = response.getData().get(0).getSFMobile();
                 String empID = response.getData().get(0).getSfEmpId();
                 String sName = response.getData().get(0).getSfName();
                 String div = response.getData().get(0).getDivisionCode();
@@ -897,6 +900,7 @@ public class Login extends AppCompatActivity {
 
                 userEditor.putString("Sf_Type", Sf_type);
                 userEditor.putString("Sfcode", code);
+                userEditor.putString("SFMobile", mMobile);
                 userEditor.putString("EmpId", empID);
                 userEditor.putString("SfName", sName);
                 userEditor.putString("SFDesig", DesigNm);

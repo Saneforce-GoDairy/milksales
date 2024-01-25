@@ -23,12 +23,17 @@ public class Shared_Common_Pref {
     Context _context;
     public static final String spName = "SP_LOGIN_DETAILS";
     public static String Sf_Code = "Sf_Code";
+    public static String mOldPassword = "mOldPassword";
+    public static String mNewPasswpord = "mNewPasswpord";
+
     public static String Reporting_Sf_Code = "Reporting_To_SF";
 
     public static String Profile = "Profile";
     public static String Div_Code = "Div_Code";
     public static String StateCode = "StateCode";
     public static String Sf_Name = "Sf_Name";
+    public static String SF_Mobile = "SF_Mobile";
+
     public static String Dv_ID = "DvID";
     public static String SF_Type = "SF_Type";
     public static String CHECK_COUNT = "0";

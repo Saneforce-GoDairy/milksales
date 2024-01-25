@@ -57,6 +57,9 @@ public class Datum {
     @SerializedName("Sf_Name")
     @Expose
     private String sfName;
+    @SerializedName("SFMobile")
+    @Expose
+    private String sfMobile;
     @SerializedName("Sf_Password")
     @Expose
     private String sfPassword;
@@ -133,6 +136,9 @@ public class Datum {
     @SerializedName("SFFType")
     @Expose
     private Integer sFFType;
+    @SerializedName("FFType")
+    @Expose
+    private String ffType;
     @SerializedName("SFDept")
     @Expose
     private String sFDept;
@@ -282,6 +288,13 @@ public class Datum {
         return sfName;
     }
 
+    public void setSfMobile(String sfMobile) {
+        this.sfMobile = sfMobile;
+    }
+
+    public String getSFMobile(){
+        return sfMobile;
+    }
     public void setSfName(String sfName) {
         this.sfName = sfName;
     }
@@ -332,6 +345,12 @@ public class Datum {
 
     public void setGeoFencing(Integer geoFencing) {
         this.geoFencing = geoFencing;
+    }
+    public String getFFType() {
+        return ffType;
+    }
+    public void setFFType(String sffType){
+        this.ffType=sffType;
     }
 
     public Integer getSFFType() {

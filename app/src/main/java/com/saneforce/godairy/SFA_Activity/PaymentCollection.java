@@ -74,6 +74,7 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
     String NTTDATAMerchantId = "", NTTDATAPassword = "", NTTDATAReqHashKey = "", encSaltRequest = "", encSaltResponse = "", NTTDATAResHashKey = "", NTTDATAProdID = "";
     boolean isLive = false;
     private SharedPreferences CheckInDetails, UserDetails;
+    String invoiceList = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +84,8 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
 
-        common_class = new Common_Class(context);
+        //common_class = new Common_Class(context);
+        common_class = new Common_Class(this);
         isMultipleSelected = false;
         list = new ArrayList<>();
         assistantClass = new AssistantClass(context);
@@ -95,13 +97,22 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
         outlet_name.setText(shared_common_pref.getvalue(Constants.Distributor_name, ""));
         tvDistId.setText("" + shared_common_pref.getvalue(Constants.DistributorERP));
         getPndBills();
+        common_class.gotoHomeScreen(context, binding.toolbarHome);
+        binding.historyLL.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PaymentHistory.class);
+            startActivity(intent);
+        });
         binding.pay.setOnClickListener(v -> {
             double amt = 0;
+            StringBuilder builder = new StringBuilder();
             for (ModelPaymentCollection item : list) {
                 if (item.isChecked()) {
                     amt += item.getInvoicePAmt();
+                    builder.append(item.getInvoice());
+                    builder.append(",");
                 }
             }
+            invoiceList = builder.toString();
             if (amt > 0) {
                 MakeOnlinePaymment(amt);
             } else {
@@ -113,6 +124,8 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
     }
 
     private void getPndBills() {
+        common_class.ProgressdialogShow(1, "Loading Pending Bills");
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<JsonObject> rptCall = apiInterface.getData310List("get/pripndbills",
                 UserDetails.getString("Divcode", ""),
@@ -143,6 +156,7 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
                             assistantClass.showAlertDialog(invoice, "Select a payment mode", true, "Online", "Offline", new AlertDialogClickListener() {
                                 @Override
                                 public void onPositiveButtonClick(DialogInterface dialog) {
+                                    invoiceList = list.get(position).getInvoice();
                                     double amt = list.get(position).getInvoicePAmt();
                                     if (amt > 0) {
                                         MakeOnlinePaymment(amt);
@@ -186,7 +200,9 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
                         }
                     });
                     rvBillDets.setAdapter(adapter);
+                    common_class.ProgressdialogShow(0, "");
                 } catch (Exception ignored) {
+                    common_class.ProgressdialogShow(0, "");
                 }
             }
 
@@ -260,30 +276,64 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
     }
 
     private void StartNTTDataPayment(String amount) {
-        Intent newPayIntent = new Intent(PaymentCollection.this, PayActivity.class);
-        newPayIntent.putExtra("merchantId", NTTDATAMerchantId);
-        newPayIntent.putExtra("password", NTTDATAPassword);
-        newPayIntent.putExtra("signature_request", NTTDATAReqHashKey);
-        newPayIntent.putExtra("signature_response", NTTDATAResHashKey);
-        newPayIntent.putExtra("prodid", NTTDATAProdID);
-        newPayIntent.putExtra("enc_request", encSaltRequest);
-        newPayIntent.putExtra("enc_response", encSaltResponse);
-        newPayIntent.putExtra("salt_request", encSaltRequest);
-        newPayIntent.putExtra("salt_response", encSaltResponse);
-        newPayIntent.putExtra("amt", amount);
-        newPayIntent.putExtra("isLive", isLive);
-        newPayIntent.putExtra("txnid", Common_Class.GetEkey());
-        newPayIntent.putExtra("custFirstName", shared_common_pref.getvalue(Constants.Distributor_name));
-        newPayIntent.putExtra("customerMobileNo", shared_common_pref.getvalue(Constants.Distributor_phone));
-        newPayIntent.putExtra("customerEmailID", "ragusaneforce@gmail.com");
-        newPayIntent.putExtra("txncurr", "INR");
-        newPayIntent.putExtra("custacc", "100000036600");
-        newPayIntent.putExtra("udf1", "");
-        newPayIntent.putExtra("udf2", "");
-        newPayIntent.putExtra("udf3", "");
-        newPayIntent.putExtra("udf4", "");
-        newPayIntent.putExtra("udf5", "");
-        startActivityForResult(newPayIntent, 1);
+        if (invoiceList.isEmpty()) {
+            Toast.makeText(context, "Invalid invoice number", Toast.LENGTH_SHORT).show();
+        } else if (amount.equals("")) {
+            Toast.makeText(context, "Invalid invoice amount", Toast.LENGTH_SHORT).show();
+        } else {
+            savePaymentInfo(amount);
+        }
+    }
+
+    private void savePaymentInfo(String amount) {
+        assistantClass.showProgressDialog("Initating...", false);
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "saveNTTDATATransaction");
+        params.put("invoice", invoiceList);
+        params.put("invoiceAmt", amount);
+        params.put("stockistCode", shared_common_pref.getvalue(Constants.Distributor_Id));
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                assistantClass.dismissProgressDialog();
+                String intentId = jsonObject.optString("intentId");
+                if (intentId.isEmpty()) {
+                    assistantClass.showAlertDialogWithDismiss("Can't initiate transaction. Please try again later...");
+                    return;
+                }
+                Intent newPayIntent = new Intent(PaymentCollection.this, PayActivity.class);
+                newPayIntent.putExtra("merchantId", NTTDATAMerchantId);
+                newPayIntent.putExtra("password", NTTDATAPassword);
+                newPayIntent.putExtra("signature_request", NTTDATAReqHashKey);
+                newPayIntent.putExtra("signature_response", NTTDATAResHashKey);
+                newPayIntent.putExtra("prodid", NTTDATAProdID);
+                newPayIntent.putExtra("enc_request", encSaltRequest);
+                newPayIntent.putExtra("enc_response", encSaltResponse);
+                newPayIntent.putExtra("salt_request", encSaltRequest);
+                newPayIntent.putExtra("salt_response", encSaltResponse);
+                newPayIntent.putExtra("isLive", isLive);
+                newPayIntent.putExtra("amt", amount);
+
+                newPayIntent.putExtra("txnid", intentId);
+                newPayIntent.putExtra("custFirstName", shared_common_pref.getvalue(Constants.Distributor_name));
+                newPayIntent.putExtra("customerMobileNo", shared_common_pref.getvalue(Constants.Distributor_phone));
+                newPayIntent.putExtra("customerEmailID", "myemail@gmail.com");
+                newPayIntent.putExtra("txncurr", "INR");
+                newPayIntent.putExtra("custacc", "100000036600");
+                newPayIntent.putExtra("udf1", "");
+                newPayIntent.putExtra("udf2", "");
+                newPayIntent.putExtra("udf3", "");
+                newPayIntent.putExtra("udf4", "");
+                newPayIntent.putExtra("udf5", "");
+                startActivityForResult(newPayIntent, 1);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithDismiss(error);
+            }
+        });
     }
 
     private void getNTTDataCredentials() {

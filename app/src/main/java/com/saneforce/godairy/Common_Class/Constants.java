@@ -51,6 +51,8 @@ public class Constants {
     public static final String Retailer_fssai = "retailerFSSAI";
     public static final String DistributorGst = "GSTN";
     public static final String DistributorFSSAI = "FSSAI";
+    public static String mOldPassword = "mOldPassword";
+    public static String mNewPasswpord = "mNewPasswpord";
 
 
 
@@ -73,6 +75,8 @@ public class Constants {
     public static final String ProdGroups_List = "ProdGroupList";
     public static final String Rout_List = "routList";
     public static final String SF_Code = "Sf_Code";
+    public static String Sf_Code = "Sf_Code";
+    public static String div_Code = "div_Code";
 
     public static final String GetTodayOrder_List = "getTodayOrderList";
     public static final String Outlet_Total_Orders = "outletTotalOrders";
@@ -80,6 +84,8 @@ public class Constants {
     public static final String Competitor_List = "Competitor_List";
     public static final String Todaydayplanresult = "Todaydayplanresult";
     public static final String Outlet_Total_AlldaysOrders = "Outlet_Total_AlldaysOrders";
+
+    public static final String Change_Password = "changePassword";
 
 
     public static final String MAP_ROUTE = "mapRoute";
@@ -124,6 +130,7 @@ public class Constants {
     public static final String Retailor_PHNo = "retailorPhNo";
     public static final String SERVICEOUTLET = "serviceOutlet";
     public static final String OUTLET_SUMMARY = "outletSummary";
+
     public static final String SFA_DASHBOARD = "sfaDashboard";
     public static final String STATE_LIST = "stateList";
     public static final String RETAILER_STATUS = "retailerStatus";
@@ -254,4 +261,5 @@ public class Constants {
     public static final String GroupFilter="groupFilter";
     public static final String Freezer_Mandatory="freezerMandatory";
     public static final String VanSalOrderList="vansalOrderList";
+
 }

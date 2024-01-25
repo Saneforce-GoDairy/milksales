@@ -142,10 +142,6 @@ public class ChallanActivity extends AppCompatActivity {
             builder.create().show();
         });
 
-        binding.payUsingOnline.setOnClickListener(v -> {
-            Toast.makeText(context, "...", Toast.LENGTH_SHORT).show();
-        });
-
         ImageView toolbarHome = findViewById(R.id.toolbar_home);
         toolbarHome.setOnClickListener(v -> common_class.gotoHomeScreen(context, toolbarHome));
 
@@ -212,14 +208,10 @@ public class ChallanActivity extends AppCompatActivity {
             amountTV.setText(common_class.formatCurrency(amount));
             if (amount == jsonObject.getDouble("DepositedAmt")) {
                 statusTV.setText("PAID");
-                binding.payUsingOnline.setVisibility(View.GONE);
-                binding.or.setVisibility(View.GONE);
                 binding.print.setVisibility(View.GONE);
                 binding.share.setVisibility(View.GONE);
             } else {
                 statusTV.setText("PENDING");
-                binding.payUsingOnline.setVisibility(View.VISIBLE);
-                binding.or.setVisibility(View.VISIBLE);
                 binding.print.setVisibility(View.VISIBLE);
                 binding.share.setVisibility(View.VISIBLE);
             }

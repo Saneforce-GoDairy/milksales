@@ -174,6 +174,18 @@ public interface ApiInterface {
     @POST("Db_v300.php")
     Call<Result> uploadImage(@Part MultipartBody.Part file);
 
+    @Multipart
+    @POST("Db_v300.php")
+    Call<Result> addImage(@Part MultipartBody.Part file);
+
+
+    @POST("Db_v300_usha.php")
+    Call<ResponseBody> changePassword(@Query("axn") String axn,
+                                      @Query("sf_code") String sf_code,
+                                      @Query("div_Code") String divisionCode,
+                                      @Query("old_password") String old_password,
+                                      @Query("new_password") String new_password);
+
     @FormUrlEncoded
     @POST("Db_v300.php?axn=dcr/save")
     Call<JsonObject> GetResponseBody(@Query("divisionCode") String disvisonCode, @Query("sfCode") String sFCode,
