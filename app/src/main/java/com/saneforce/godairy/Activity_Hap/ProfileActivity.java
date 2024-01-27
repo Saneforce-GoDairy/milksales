@@ -15,6 +15,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String UserDetail = "MyPrefs";
     ImageView mLogout, mCamera;
     private final Context context = this;
+    private SharedPreferences SHARED_PREF;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,14 +32,19 @@ public class ProfileActivity extends AppCompatActivity {
         LinearLayout changePasswordLayout = findViewById(R.id.change_password_layout);
         mCamera = findViewById(R.id.btn_camera);
 
+
         changePasswordLayout.setOnClickListener(view1 -> {
             Intent intent = new Intent(context, ChangePasswordActivity.class);
             startActivity(intent);
         });
 
 
-        mCamera.setOnClickListener(view -> {
-            Intent intent = new Intent(context, ImageCapture.class);
+       /* mCamera.setOnClickListener(view -> {
+            Intent intent = new Intent(context, Day_Report_Activity.class);
+            startActivity(intent);
+        });*/
+        mLogout.setOnClickListener(view -> {
+            Intent intent = new Intent(context,Login.class);
             startActivity(intent);
         });
 
@@ -57,4 +63,6 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-}
+
+    }
+

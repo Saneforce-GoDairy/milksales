@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.saneforce.godairy.Activity_Hap.Day_Report_Activity;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AdapterOnClick;
@@ -60,6 +61,9 @@ public class ReportsListActivity extends AppCompatActivity {
             JSONObject obj5 = new JSONObject();
             obj5.put("name", "QPS Follow up");
             obj5.put("des", "web");
+            JSONObject obj6 = new JSONObject();
+            obj6.put("name", "DAY REPORTS");
+            obj6.put("des", "web");
 
 
             JSONArray jsonArray = new JSONArray();
@@ -68,6 +72,7 @@ public class ReportsListActivity extends AppCompatActivity {
             jsonArray.put(obj3);
             jsonArray.put(obj4);
             jsonArray.put(obj5);
+            jsonArray.put(obj6);
 
 
             recyclerView.setAdapter(new ReportsLIstAdapter(this, jsonArray, R.layout.adapter_report_list, new AdapterOnClick() {
@@ -77,8 +82,11 @@ public class ReportsListActivity extends AppCompatActivity {
                         if (obj.getString("name").equalsIgnoreCase("Outlet Reports")) {
                             Intent intent = new Intent(getApplicationContext(), Reports_Outler_Name.class);
                             startActivity(intent);
-                        } else if (obj.getString("name").equalsIgnoreCase("Primary Order")) {
+                        }else if (obj.getString("name").equalsIgnoreCase("Primary Order")){
                             Intent intent = new Intent(ReportsListActivity.this, PrimaryOrderReportActivity.class);
+                            startActivity(intent);
+                        } else if (obj.getString("name").equalsIgnoreCase("Day Reports")) {
+                            Intent intent = new Intent(ReportsListActivity.this, Day_Report_Activity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(ReportsListActivity.this, obj.getString("name") + ": Not assigned", Toast.LENGTH_SHORT).show();

@@ -824,7 +824,9 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                 String sMode=sharedCommonPref.getvalue(Constants.FLAG);
                 String sHead = "";
                 printama.setWideTallBold();
-                if(sMode.equals("Primary Order") || sMode.equals("Secondary Order") || sMode.equals("VANSALES")  || sMode.equals("POS INVOICE") || sMode.equals("INVOICE"))
+                 if( sMode.equals("PROJECTION") ){
+                    sHead ="ORDER";
+                 } else if(sMode.equals("Secondary Order") || sMode.equals("VANSALES")  || sMode.equals("POS INVOICE") || sMode.equals("INVOICE"))
                 {
                     sHead =(Addinf)?"TEMPORARY INVOICE":"TAX INVOICE";
                 }else if( sMode.equals("PROJECTION") ){
@@ -1112,11 +1114,14 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             paint.setColor(Color.BLACK);
             String sHead = sMode.toUpperCase();
 
-            if(sMode.equalsIgnoreCase("Primary Order") || sMode.equalsIgnoreCase("Secondary Order") || sMode.equalsIgnoreCase("VANSALES")  || sMode.equalsIgnoreCase("INVOICE"))
+            if(sMode.equalsIgnoreCase("Primary Order"))
+            {
+                sHead = "ORDER";
+            }else if(sMode.equalsIgnoreCase("Secondary Order") || sMode.equalsIgnoreCase("VANSALES")  || sMode.equalsIgnoreCase("INVOICE"))
             {
                 sHead = ((Addinf)?"TEMPORARY":"TAX")+" INVOICE";
             }
-            if(sMode.equalsIgnoreCase("POS INVOICE")){
+            else if(sMode.equalsIgnoreCase("POS INVOICE")){
 
                 sHead = "COUNTER SALES INVOICE";
             }
@@ -1392,16 +1397,16 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             paint.setTextAlign(Paint.Align.RIGHT);
             canvas.drawText(totalqty.getText().toString(), xTot, y, paint);
 
-            if (uomList != null) {
-                for (int i = 0; i < uomList.size(); i++) {
-                    y = y + 20;
-                    paint.setTextAlign(Paint.Align.LEFT);
-                    canvas.drawText(uomList.get(i).getUOM_Nm(), x, y, paint);
-                    paint.setTextAlign(Paint.Align.RIGHT);
-                    canvas.drawText("" + (int) uomList.get(i).getCnvQty(), xTot, y, paint);
-                }
-
-            }
+//            if (uomList != null) {
+//                for (int i = 0; i < uomList.size(); i++) {
+//                    y = y + 20;
+//                    paint.setTextAlign(Paint.Align.LEFT);
+//                    canvas.drawText(uomList.get(i).getUOM_Nm(), x, y, paint);
+//                    paint.setTextAlign(Paint.Align.RIGHT);
+//                    canvas.drawText("" + (int) uomList.get(i).getCnvQty(), xTot, y, paint);
+//                }
+//
+//            }
 
             y = y + 30;
             paint.setTextAlign(Paint.Align.LEFT);
@@ -1457,31 +1462,31 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             paint.setColor(Color.LTGRAY);
             paint.setStrokeWidth(1);
             canvas.drawLine(0, y, widthSize, y, paint);
+            if(jFreeSmry.length()>0) {
+                y = y + 50;
+                paint.setFakeBoldText(true);
+                paint.setTextAlign(Paint.Align.LEFT);
+                paint.setColor(Color.BLACK);
+                canvas.drawText("Free Invoice Details", x, y, paint);
 
-            y = y + 50;
-            paint.setFakeBoldText(true);
-            paint.setTextAlign(Paint.Align.LEFT);
-            paint.setColor(Color.BLACK);
-            canvas.drawText("Free Invoice Details", x, y, paint);
+                paint.setFakeBoldText(false);
+                y = y + 10;
+                paint.setColor(Color.LTGRAY);
+                paint.setStrokeWidth(1);
+                canvas.drawLine(0, y, widthSize, y, paint);
 
-            paint.setFakeBoldText(false);
-            y = y + 10;
-            paint.setColor(Color.LTGRAY);
-            paint.setStrokeWidth(1);
-            canvas.drawLine(0, y, widthSize, y, paint);
-
-            paint.setTextAlign(Paint.Align.LEFT);
-            y = y + 20;
-            paint.setColor(Color.DKGRAY);
-            paint.setTextSize(12);
-            float cy=y;
-            for (int j = 0; j < jFreeSmry.length(); j++) {
-                canvas.drawText(jFreeSmry.getJSONObject(j).getString("OffName"), x, y, paint);
-                canvas.drawText(jFreeSmry.getJSONObject(j).getString("free"), widthSize-50, y, paint);
+                paint.setTextAlign(Paint.Align.LEFT);
                 y = y + 20;
+                paint.setColor(Color.DKGRAY);
+                paint.setTextSize(12);
+                float cy = y;
+                for (int j = 0; j < jFreeSmry.length(); j++) {
+                    canvas.drawText(jFreeSmry.getJSONObject(j).getString("OffName"), x, y, paint);
+                    canvas.drawText(jFreeSmry.getJSONObject(j).getString("free"), widthSize - 50, y, paint);
+                    y = y + 20;
 
+                }
             }
-
             if(Addinf) {
                 paint.setColor(Color.BLACK);
                 y = y + 30;
@@ -2071,7 +2076,10 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
 
             if (sharedCommonPref.getvalue(Constants.FLAG).equalsIgnoreCase("Projection")) {
                 billnumber.setText(Shared_Common_Pref.TransSlNo);
-            } else {
+            }
+            else if (sPMode.equalsIgnoreCase("Primary Order")) {
+                billnumber.setText("Order No: " + Shared_Common_Pref.TransSlNo);
+            }else {
                 billnumber.setText("Bill No: " + Shared_Common_Pref.TransSlNo);
             }
 
@@ -2235,7 +2243,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                     }
 
                     if (uomList != null && uomList.size() > 0) {
-                        findViewById(R.id.rlUomParent).setVisibility(View.VISIBLE);
+                        findViewById(R.id.rlUomParent).setVisibility(View.GONE);
                         TextView tvUOMName = findViewById(R.id.tvUomLabel);
                         TextView tvUomQty = findViewById(R.id.tvUomQty);
                         String uomName = "";

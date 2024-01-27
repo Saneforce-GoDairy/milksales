@@ -736,7 +736,18 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             if(edOrderId != null) currentOrderVal = totalvalues - editTotValues;
             if (ACBalance < currentOrderVal && ACBalanceChk) {
                 ResetSubmitBtn(0);
-                common_class.showMsg(this, "Low A/C Balance...");
+                double ddif=  currentOrderVal - ACBalance;
+                String sMsg="Low A/C Balance."+ " You need Amount of <b><span style='color:#FF0000'>"+CurrencySymbol+" " + formatter.format(ddif) +"</span></b>";
+                AlertDialogBox.showDialog(PrimaryOrderActivity.this, HAPApp.Title, sMsg, "OK", null, false, new AlertBox() {
+                    @Override
+                    public void PositiveMethod(DialogInterface dialog, int id) {
+                    }
+
+                    @Override
+                    public void NegativeMethod(DialogInterface dialog, int id) {
+
+                    }
+                });
             } else if (elapsed < 0 || Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.CUTOFF_TIME)) ||
                     sharedCommonPref.getvalue(Constants.CUTOFF_TIME).equals("--:--:--")) {
                 ResetSubmitBtn(0);

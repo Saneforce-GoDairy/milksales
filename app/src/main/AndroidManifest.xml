@@ -89,6 +89,9 @@
             android:name=".procurement.reports.ProcReportsHomeActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity_Hap.Day_Report_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Activity_Hap.ChangePasswordActivity"
             android:exported="false" />
         <activity
