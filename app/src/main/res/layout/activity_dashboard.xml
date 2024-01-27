@@ -300,14 +300,6 @@
                 android:layout_below="@id/view_pager"
                 android:layout_marginHorizontal="15dp" />
 
-            <Button
-                android:id="@+id/proc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/explore_more"
-                android:background="@color/white"
-                android:textColor="@color/grey"
-                android:text="Procurement"/>
             <!-- Old code -->
             <LinearLayout
                 android:visibility="gone"

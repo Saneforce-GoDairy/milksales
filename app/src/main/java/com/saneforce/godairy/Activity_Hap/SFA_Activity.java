@@ -183,8 +183,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         txview_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent vwall=new Intent(SFA_Activity.this, vwAllPrimaryOrders.class);
-//                startActivity(vwall);
+                Intent vwall=new Intent(SFA_Activity.this, vwAllPrimaryOrders.class);
+                startActivity(vwall);
             }
         });
 

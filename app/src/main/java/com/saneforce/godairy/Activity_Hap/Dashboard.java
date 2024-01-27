@@ -550,15 +550,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 startActivity(intent);
             }
         });
-
-        binding.proc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ProcurementHome.class);
-                intent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
-                startActivity(intent);
-            }
-        });
     }
 
     private void loadFragment() {
