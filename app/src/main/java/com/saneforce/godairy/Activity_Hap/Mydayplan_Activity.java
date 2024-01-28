@@ -1,5 +1,6 @@
 package com.saneforce.godairy.Activity_Hap;
 
+import static com.saneforce.godairy.Common_Class.Common_Class.GetDate;
 import static com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly;
 import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
 import static com.saneforce.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
@@ -203,7 +204,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         shiftypelayout.setVisibility(View.GONE);
         route_layout.setVisibility(View.GONE);
 
-        TpDate = GetDateOnly();
+        TpDate = GetDate();
         binding.tourdate.setText(TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0]);
         binding.myDayPlanDate.setText("(" + TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0] + ")");
         binding.textTourPlancount.setText("0");
