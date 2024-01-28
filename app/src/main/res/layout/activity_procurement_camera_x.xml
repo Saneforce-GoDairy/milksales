@@ -51,7 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/captured_image_view" />
 
         <RelativeLayout
             android:id="@+id/camerax_left_controls"
@@ -76,7 +77,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/camera_flash"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    android:contentDescription="@string/flash_button" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -85,7 +87,7 @@
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:layout_toRightOf="@+id/camx_splash">
+                android:layout_toEndOf="@+id/camx_splash">
 
                 <ImageView
                     android:id="@+id/button_switchCam"
@@ -94,7 +96,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/camera_rotate"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    android:contentDescription="@string/switch_camera_button" />
 
             </RelativeLayout>
 
@@ -117,7 +120,7 @@
                 android:layout_gravity="center_vertical"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:text="RETRY"
+                android:text="@string/retry"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -133,7 +136,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                tools:ignore="UselessParent">
 
                 <ImageView
                     android:id="@+id/capture_button"

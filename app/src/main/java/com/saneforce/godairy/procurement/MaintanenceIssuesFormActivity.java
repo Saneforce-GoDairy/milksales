@@ -37,7 +37,6 @@ public class MaintanenceIssuesFormActivity extends AppCompatActivity {
     private String mCompany, mPlant, mNoOfEquipment, mTypeOfRepair;
     private final Context context = this;
     private Bitmap bitmapRepair;
-    private File fileRepair;
     private final List<String> list = new ArrayList<>();
 
     @Override
@@ -82,7 +81,6 @@ public class MaintanenceIssuesFormActivity extends AppCompatActivity {
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
-                        //  list.add("Select");
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -248,7 +246,7 @@ public class MaintanenceIssuesFormActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fileRepair = new File(getExternalFilesDir(null), "/procurement/" + "MAIN_RE_123.jpg");
+        File fileRepair = new File(getExternalFilesDir(null), "/procurement/" + "MAIN_RE_123.jpg");
         bitmapRepair = BitmapFactory.decodeFile(fileRepair.getAbsolutePath());
         binding.txtImgRepairNotValid.setVisibility(View.GONE);
 

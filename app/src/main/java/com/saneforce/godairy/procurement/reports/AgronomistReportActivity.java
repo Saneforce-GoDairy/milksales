@@ -208,13 +208,7 @@ public class AgronomistReportActivity extends AppCompatActivity {
                     String  agronomistList;
                     try {
                         agronomistList = response.body().string();
-                        if (agronomistList.equals("\r\n")){
-                            Toast.makeText(context, "list load error!", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
                         JSONArray jsonArray = new JSONArray(agronomistList);
-
                         for (int i = 0; i<jsonArray.length(); i++) {
                             ProcAgronoListModel agronomistListModel = new ProcAgronoListModel();
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -233,7 +227,6 @@ public class AgronomistReportActivity extends AppCompatActivity {
                             agronomistListModel.setFarmers_enrolled(object.getString("farmers_enrolled"));
                             agronomistListsMain.add(agronomistListModel);
                         }
-
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                         binding.agronomistRecyclerView.setLayoutManager(linearLayoutManager);
@@ -243,7 +236,8 @@ public class AgronomistReportActivity extends AppCompatActivity {
                         binding.agronomistRecyclerView.setAdapter(primaryNoOrderListAdapter);
                         primaryNoOrderListAdapter.notifyDataSetChanged();
                     } catch (IOException | JSONException e) {
-                        throw new RuntimeException(e);
+                       // throw new RuntimeException(e);
+                        Toast.makeText(context, "List load error", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

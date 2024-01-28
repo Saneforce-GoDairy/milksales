@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,16 +18,17 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:src="@drawable/baseline_arrow_back_35" />
+            android:src="@drawable/baseline_arrow_back_35"
+            android:contentDescription="@string/back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:layout_toRightOf="@+id/back"
+            android:layout_toEndOf="@+id/back"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="Existing Agent Visit"
+            android:text="@string/existing_agent_visit"
             android:textColor="@color/black"
             android:textSize="20sp" />
     </RelativeLayout>
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ubuntu"
-                    android:text="Exclusive Agent" />
+                    android:text="@string/exclusive_agent" />
 
                 <RadioButton
                     android:id="@+id/ag_dual_agent"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/ubuntu"
-                    android:text="Dual Agent" />
+                    android:text="@string/dual_agent" />
 
             </LinearLayout>
 
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:fontFamily="More Fonts..."
-                    android:text="Not valid"
+                    android:text="@string/not_valid"
                     android:textColor="#ff0130"
                     android:textSize="10sp"
                     android:textStyle="bold"
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="Total Milk Availability"
+                android:text="@string/total_milk_availability"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -129,15 +129,18 @@
                 android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="Type"
-                android:paddingStart="10dp" />
+                android:paddingStart="10dp"
+                android:paddingEnd="@dimen/C10dp"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="Our company Ltrs"
+                android:text="@string/our_company_ltrs"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -148,15 +151,18 @@
                 android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="Type"
-                android:paddingStart="10dp" />
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="What is competitor rate ?"
+                android:text="@string/what_is_competitor_rate"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -167,15 +173,18 @@
                 android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="Type"
-                android:paddingStart="10dp" />
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="What is our company rate ?"
+                android:text="@string/what_is_our_company_rate"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -186,15 +195,18 @@
                 android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="Type"
-                android:paddingStart="10dp" />
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor"
+                android:inputType="numberDecimal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="Demand"
+                android:text="@string/demand"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -206,15 +218,18 @@
                 android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="Type"
-                android:paddingStart="10dp" />
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor"
+                android:inputType="text" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/ubuntu_medium"
-                android:text="Supply start date"
+                android:text="@string/supply_start_date"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -226,8 +241,11 @@
                 android:layout_marginTop="2dp"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
-                android:hint="Type"
-                android:paddingStart="10dp" />
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:importantForAutofill="no"
+                android:inputType="date|text"
+                tools:ignore="LabelFor" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -243,7 +261,7 @@
                     android:layout_alignParentBottom="true"
                     android:textSize="10sp"
                     android:fontFamily="@font/ubuntu"
-                    android:text="Error Empty field found"
+                    android:text="@string/error_empty_field_found"
                     android:textStyle="bold"
                     android:textColor="#ff0130"
                     tools:ignore="SmallSp"
@@ -262,7 +280,8 @@
                 android:fontFamily="@font/ubuntu"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                tools:ignore="UnusedAttribute" />
         </LinearLayout>
 
     </ScrollView>

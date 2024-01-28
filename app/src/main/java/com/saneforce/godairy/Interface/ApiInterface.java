@@ -969,11 +969,30 @@ public interface ApiInterface {
 
     @POST("Db_v310.php")
     Call<ResponseBody> getAgronomistReport(@Query("axn") String axn);
-    @POST("Db_v310.php")
 
+    @POST("Db_v310.php")
     Call<ResponseBody> getAITReport(@Query("axn") String axn);
 
+    @POST("Db_v310.php")
     Call<ResponseBody> getVeterinaryReport(@Query("axn") String axn);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getQualityReport(@Query("axn") String axn);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getMaintenanceReport(@Query("axn") String axn);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getExistingAgentReport(@Query("axn") String axn);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getCollectionCenterReport(@Query("axn") String axn);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getAssetReport(@Query("axn") String axn);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getFarmerCreationReport(@Query("axn") String axn);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

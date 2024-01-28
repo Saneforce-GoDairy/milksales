@@ -62,6 +62,24 @@
             android:name=".Activity_Hap.Day_Report_Activity"
             android:exported="false" />
         <activity
+            android:name=".procurement.reports.FarmerCreationReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.AssetReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.CollectionCenterReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.ExistingAgentVisitReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.MaintenanceReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.QualityReportActivity"
+            android:exported="false" />
+        <activity
             android:name=".procurement.reports.VeterinaryReportActivity"
             android:exported="false" />
         <activity

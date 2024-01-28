@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".procurement.reports.VeterinaryReportActivity">
+    tools:context=".procurement.reports.CollectionCenterReportActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="@string/veterinary_report"
+            android:text="@string/collection_center_report"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
