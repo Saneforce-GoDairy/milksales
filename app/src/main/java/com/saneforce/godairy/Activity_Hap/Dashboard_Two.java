@@ -246,6 +246,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             txRptName = findViewById(R.id.txRptName);
             profileImageView = findViewById(R.id.profile_image_view);
             txHQName.setText(UserDetails.getString("DesigNm", ""));
+            String mProfileImage = UserDetails.getString("Profile", "");
 
             gson = new Gson();
 
@@ -272,6 +273,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             //later
             profileImageView.setOnClickListener(view1 -> {
                 Intent intent = new Intent(context,ProfileActivity.class);
+                intent.putExtra("ImageUrl", mProfileImage);
                 startActivity(intent);
             });
 

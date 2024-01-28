@@ -217,6 +217,15 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         getPrimaryData("All");
         common_class.getDb_310Data(Constants.GroupFilter, this);
 
+        String mProfileImage = UserDetails.getString("Profile", "");
+        binding.profileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,ProfileActivity.class);
+                intent.putExtra("ImageUrl", mProfileImage);
+                startActivity(intent);
+            }
+        });
         if (UserDetails.getString("DeptType", "").equalsIgnoreCase("1")) {
             ivProcureSync.setVisibility(View.VISIBLE);
             findViewById(R.id.cvOutletSummary).setVisibility(View.GONE);
