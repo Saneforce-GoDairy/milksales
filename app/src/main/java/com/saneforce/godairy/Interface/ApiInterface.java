@@ -206,6 +206,9 @@ public interface ApiInterface {
     Call<Object> GetTPObject(@Query("divisionCode") String disvisonCode, @Query("sfCode") String sFCode,
                              @Query("rSF") String rSF, @Query("State_Code") String StateCode, @Query("axn") String axn,
                              @Field("data") String data);
+    @FormUrlEncoded
+    @POST("Db_v300_usha.php")
+    Call<JsonObject> dayreport(@Query("sf_name") String SfName, @Query("divisionCode") String disvisonCode, @Query("sfCode") String sFCode);
 
     @FormUrlEncoded
     @POST("Db_v300_i.php?")
