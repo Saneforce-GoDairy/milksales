@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
+import com.saneforce.godairy.procurement.reports.AgronomistReportActivity;
 import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,55 +66,41 @@ public class ProcurementHome extends AppCompatActivity {
 
     private void onClick() {
 
-        binding.logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        binding.logout.setOnClickListener(v -> finish());
         binding.oneAgronomistForm.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AgronomistFormActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, AgronomistFormActivity.class));
         });
 
         binding.aitForm.setOnClickListener(view -> {
-            Intent intent = new Intent(context, AITFormActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, AITFormActivity.class));
         });
 
         binding.veterinaryDoctorForm.setOnClickListener(view -> {
-            Intent intent = new Intent(context, VeterinaryDoctorsFormActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, VeterinaryDoctorsFormActivity.class));
         });
 
         binding.qualityForm.setOnClickListener(view -> {
-            Intent intent = new Intent(context, QualityFormActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, QualityFormActivity.class));
         });
 
         binding.maintenceRequlation.setOnClickListener(view -> {
-            Intent intent = new Intent(context, MaintanenceIssuesFormActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, MaintanenceIssuesFormActivity.class));
         });
 
         binding.existingAgentVisit.setOnClickListener(view -> {
-            Intent intent = new Intent(context, ExistingAgentVisitActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, ExistingAgentVisitActivity.class));
         });
 
         binding.collectionCenter.setOnClickListener(view -> {
-            Intent intent = new Intent(context, CollectionCenterLocationActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, CollectionCenterLocationActivity.class));
         });
 
         binding.procurementAsset.setOnClickListener(view -> {
-            Intent intent = new Intent(context, ProcurementAssetActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, ProcurementAssetActivity.class));
         });
 
         binding.reports.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ProcReportsHomeActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, ProcReportsHomeActivity.class));
         });
     }
 

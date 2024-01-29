@@ -4,6 +4,7 @@ import static com.saneforce.godairy.SFA_Activity.HAPApp.sendOFFlineLocations;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -53,6 +54,7 @@ import androidx.core.content.ContextCompat;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -114,8 +116,6 @@ public class CameraxActivity extends AppCompatActivity {
     private SharedPreferences CheckInDetails;
     private SharedPreferences UserDetails;
     private String VistPurpose = "", UKey = "", DIR, onDutyPlcID, onDutyPlcNm, vstPurpose, PlaceId = "", PlaceName = "", imagePath, imageFileName;
-    private String sStatus;
-    ;
     private String mMode = "";
     private String mModeRetailorCapture;
     private String imagvalue = "";
@@ -319,7 +319,11 @@ public class CameraxActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-        binding.submit.setOnClickListener(v -> saveImgPreview());
+        binding.submit.setOnClickListener(v -> {
+            if (validateInputs()) {
+                saveImgPreview();
+            }
+        });
         binding.cameraxRightControls.setOnClickListener(v -> {
             startCamera(cameraFacing);
             binding.imageView.setVisibility(View.GONE);
@@ -366,6 +370,32 @@ public class CameraxActivity extends AppCompatActivity {
         });
     }
 
+    private boolean validateInputs() {
+        if ("".equals(mMode)){
+            showError("Unable check in. try again");
+            return false;
+        }
+        if (file == null){
+            showError("Unable access check in image. try again");
+            return false;
+        }
+        return true;
+    }
+
+    private void showError(String s) {
+        Snackbar snack = Snackbar.make((((Activity) context).findViewById(android.R.id.content)), s, Snackbar.LENGTH_SHORT);
+        snack.setDuration(Snackbar.LENGTH_SHORT);
+        View view = snack.getView();
+        TextView tv = view.findViewById(com.google.android.material.R.id.snackbar_text);
+        tv.setTextColor(Color.WHITE);
+        TextView tvAction = view.findViewById(com.google.android.material.R.id.snackbar_action);
+        tvAction.setTextSize(16);
+        tvAction.setTextColor(Color.WHITE);
+        tv.setBackgroundColor(ContextCompat.getColor(context, R.color.warning));
+        view.setBackgroundColor(ContextCompat.getColor(context, R.color.warning));
+        snack.show();
+    }
+
     private void saveImgPreview() {
         if (file == null) return;
         imageFileName = file.getName();
@@ -377,7 +407,6 @@ public class CameraxActivity extends AppCompatActivity {
         mIntent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
         FileUploadService.enqueueWork(this, mIntent);
 
-        if (lat == 0 || lng == 0) {
             assistantClass.showProgressDialog("Getting location...", false);
             assistantClass.getLocation(new LocationResponse() {
                 @Override
@@ -392,11 +421,9 @@ public class CameraxActivity extends AppCompatActivity {
                 public void onFailure() {
                     assistantClass.dismissProgressDialog();
                     assistantClass.showAlertDialogWithDismiss("Can't fetch your location. Please try again...");
+                    showError("Location error. try again");
                 }
             });
-        } else {
-            saveCheckIn();
-        }
     }
 
     private void initSubmitProgressDialog(String messge) {
@@ -617,27 +644,28 @@ public class CameraxActivity extends AppCompatActivity {
                     JSONArray jsonarray = new JSONArray();
                     JSONObject paramObject = new JSONObject();
                     paramObject.put("TP_Attendance", CheckInInf);
-                    Log.e("CHECK_IN_DETAILS", String.valueOf(paramObject));
-
                     jsonarray.put(paramObject);
-
 
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<JsonObject> modelCall = apiInterface.JsonSave("dcr/save", Ekey,
                             UserDetails.getString("Divcode", ""),
                             UserDetails.getString("Sfcode", ""), "", "", jsonarray.toString());
 
-                    Log.v("PRINT_REQUEST", modelCall.request().toString());
-
                     modelCall.enqueue(new Callback<>() {
                         @Override
                         public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                             if (response.isSuccessful()) {
-                                JsonObject itm = response.body().getAsJsonObject();
-                                Log.e("RESPONSE_FROM_SERVER", String.valueOf(response.body().getAsJsonObject()));
                                 submitProgressDialog.dismiss();
-                                sStatus = itm.get("success").getAsString();
-                                if (sStatus.equalsIgnoreCase("true")) {
+
+                                JsonObject jsonObject = response.body().getAsJsonObject();
+                                String mStatus = jsonObject.get("success").getAsString();
+
+                                if (mStatus.isEmpty()){
+                                    showError("Unable to check in. try again");
+                                    return;
+                                }
+
+                                if (mStatus.equalsIgnoreCase("true")) {
                                     SharedPreferences.Editor editor = CheckInDetails.edit();
                                     if (mMode.equalsIgnoreCase("CIN")) {
                                         try {
@@ -646,58 +674,62 @@ public class CameraxActivity extends AppCompatActivity {
                                             editor.putString("ShiftStart", CheckInInf.getString("ShiftStart"));
                                             editor.putString("ShiftEnd", CheckInInf.getString("ShiftEnd"));
                                             editor.putString("ShiftCutOff", CheckInInf.getString("ShiftCutOff"));
-                                        } catch (Exception ignored) {
+
+                                            if (mMode.equalsIgnoreCase("ONDuty")) {
+                                                mShared_common_pref.save(Shared_Common_Pref.DAMode, true);
+
+                                                mLUService = new SANGPSTracker(context);
+                                                myReceiver = new LocationReceiver();
+                                                bindService(new Intent(context, SANGPSTracker.class), mServiceConection,
+                                                        Context.BIND_AUTO_CREATE);
+                                                LocalBroadcastManager.getInstance(context).registerReceiver(myReceiver,
+                                                        new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
+                                                mLUService.requestLocationUpdates();
+                                            }
+
+                                            if (CheckInDetails.getString("FTime", "").equalsIgnoreCase(""))
+                                                editor.putString("FTime", CTime);
+                                            editor.putString("Logintime", CTime);
+
+                                            if (mMode.equalsIgnoreCase("onduty"))
+                                                editor.putString("On_Duty_Flag", "1");
+                                            else
+                                                editor.putString("On_Duty_Flag", "0");
+                                            editor.putInt("Type", 0);
+                                            editor.putBoolean("CheckIn", true);
+                                            editor.apply();
+
+                                            String mMessage = "Your Check-In Submitted Successfully";
+                                            try {
+                                                mMessage = jsonObject.get("Msg").getAsString();
+                                            } catch (Exception ignored) {
+
+                                            }
+
+                                            AlertDialogBox.showDialog(CameraxActivity.this, HAPApp.Title, String.valueOf(Html.fromHtml(mMessage)), "Yes", "", false, new AlertBox() {
+                                                @Override
+                                                public void PositiveMethod(DialogInterface dialog, int id) {
+                                                    if (mStatus.equalsIgnoreCase("true")) {
+                                                        TrackLocation();
+                                                        Intent Dashboard = new Intent(context, Dashboard_Two.class);
+                                                        Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        Dashboard.putExtra("Mode", "CIN");
+                                                        startActivity(Dashboard);
+                                                    }
+                                                    CameraxActivity.this.finish();
+                                                }
+
+                                                @Override
+                                                public void NegativeMethod(DialogInterface dialog, int id) {
+
+                                                }
+                                            });
+                                        } catch (JSONException e) {
+                                           // throw new RuntimeException(e);
+                                            showError("Unable to check in. try again");
                                         }
-//                                                sendAlarmNotify(1001, AlrmTime, HAPApp.Title, "Check-Out Alert !.");
                                     }
-
-                                    if (mMode.equalsIgnoreCase("ONDuty")) {
-                                        mShared_common_pref.save(Shared_Common_Pref.DAMode, true);
-
-                                        mLUService = new SANGPSTracker(CameraxActivity.this);
-                                        myReceiver = new LocationReceiver();
-                                        bindService(new Intent(CameraxActivity.this, SANGPSTracker.class), mServiceConection,
-                                                Context.BIND_AUTO_CREATE);
-                                        LocalBroadcastManager.getInstance(CameraxActivity.this).registerReceiver(myReceiver,
-                                                new IntentFilter(SANGPSTracker.ACTION_BROADCAST));
-                                        mLUService.requestLocationUpdates();
-                                    }
-                                    if (CheckInDetails.getString("FTime", "").equalsIgnoreCase(""))
-                                        editor.putString("FTime", CTime);
-                                    editor.putString("Logintime", CTime);
-
-                                    if (mMode.equalsIgnoreCase("onduty"))
-                                        editor.putString("On_Duty_Flag", "1");
-                                    else
-                                        editor.putString("On_Duty_Flag", "0");
-                                    editor.putInt("Type", 0);
-                                    editor.putBoolean("CheckIn", true);
-                                    editor.apply();
                                 }
-                                String mMessage = "Your Check-In Submitted Successfully";
-                                try {
-                                    mMessage = itm.get("Msg").getAsString();
-                                } catch (Exception ignored) {
-                                }
-
-                                AlertDialogBox.showDialog(CameraxActivity.this, HAPApp.Title, String.valueOf(Html.fromHtml(mMessage)), "Yes", "", false, new AlertBox() {
-                                    @Override
-                                    public void PositiveMethod(DialogInterface dialog, int id) {
-                                        if (sStatus.equalsIgnoreCase("true")) {
-                                            TrackLocation();
-                                            Intent Dashboard = new Intent(CameraxActivity.this, Dashboard_Two.class);
-                                            Dashboard.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            Dashboard.putExtra("Mode", "CIN");
-                                            startActivity(Dashboard);
-                                        }
-                                        CameraxActivity.this.finish();
-                                    }
-
-                                    @Override
-                                    public void NegativeMethod(DialogInterface dialog, int id) {
-
-                                    }
-                                });
                             }
                         }
 
@@ -705,7 +737,6 @@ public class CameraxActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                             submitProgressDialog.dismiss();
                             Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("HAP_receive", "");
                         }
                     });
                 } else if (mMode.equalsIgnoreCase("extended")) {

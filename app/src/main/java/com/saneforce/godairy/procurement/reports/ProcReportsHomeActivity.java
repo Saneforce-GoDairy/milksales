@@ -21,48 +21,39 @@ public class ProcReportsHomeActivity extends AppCompatActivity {
 
     private void onClick() {
        binding.agronomist.setOnClickListener(v -> {
-           Intent intent = new Intent(context, AgronomistReportActivity.class);
-           startActivity(intent);
+           startActivity(new Intent(context, AgronomistReportActivity.class));
        });
 
        binding.ait.setOnClickListener(v -> {
-           Intent intent = new Intent(context, AITReportActivity.class);
-           startActivity(intent);
+           startActivity(new Intent(context, AITReportActivity.class));
        });
 
         binding.veterinary.setOnClickListener(v -> {
-            Intent intent = new Intent(context, VeterinaryReportActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, VeterinaryReportActivity.class));
         });
 
         binding.quality.setOnClickListener(v -> {
-            Intent intent = new Intent(context, QualityReportActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, QualityReportActivity.class));
         });
 
         binding.maintenance.setOnClickListener(v -> {
-            Intent intent = new Intent(context, MaintenanceReportActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, MaintenanceReportActivity.class));
         });
 
         binding.existing.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ExistingAgentVisitReportActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, ExistingAgentVisitReportActivity.class));
         });
 
         binding.collectionCenter.setOnClickListener(v -> {
-            Intent intent = new Intent(context, CollectionCenterReportActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, CollectionCenterReportActivity.class));
         });
 
         binding.asset.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AssetReportActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, AssetReportActivity.class));
         });
 
         binding.farmerCreation.setOnClickListener(v -> {
-            Intent intent = new Intent(context, FarmerCreationReportActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(context, FarmerCreationReportActivity.class));
         });
     }
 }

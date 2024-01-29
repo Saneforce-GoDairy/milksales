@@ -27,6 +27,8 @@ import com.saneforce.godairy.Model_Class.ProcAgronoListModel;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityAgronomistReportBinding;
 import com.saneforce.godairy.procurement.ImageViewActivity;
+import com.saneforce.godairy.procurement.adapter.AgronomistListAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,146 +56,6 @@ public class AgronomistReportActivity extends AppCompatActivity {
 
         agronomistListsMain = new ArrayList<>();
         loadList();
-    }
-
-    public static class AgronomistListAdapter extends  RecyclerView.Adapter<AgronomistListAdapter.ViewHolder>{
-        private final List<ProcAgronoListModel> agronomistListModel;
-        private final Context context;
-
-        public AgronomistListAdapter(Context context, List<ProcAgronoListModel> agronomistListModel) {
-            this.context = context;
-            this.agronomistListModel = agronomistListModel;
-        }
-
-        @NonNull
-        @Override
-        public AgronomistListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_agronomist_report, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull AgronomistListAdapter.ViewHolder holder, int position) {
-            holder.txtCompanyName.setText(agronomistListModel.get(position).getCompany());
-            holder.txtFarmerName.setText(agronomistListModel.get(position).getFarmer_name());
-            String upToNCharacters = agronomistListModel.get(position).getCreated_dt().substring(0, Math.min(agronomistListModel.get(position).getCreated_dt().length(), 10));
-            holder.txtDate.setText(upToNCharacters);
-            holder.txtCenterName.setText(agronomistListModel.get(position).getCenter_name());
-            holder.txtServeiceType.setText(agronomistListModel.get(position).getService_type());
-            holder.txtProductType.setText(agronomistListModel.get(position).getProduct_type());
-            holder.txtPlant.setText(agronomistListModel.get(position).getPlant_name());
-            holder.txtTeatDip.setText(agronomistListModel.get(position).getTeat_dip());
-            holder.txtFodderDevAcres.setText(agronomistListModel.get(position).getFodder_dev());
-            holder.txtFarmersEnrolled.setText(agronomistListModel.get(position).getFarmers_enrolled());
-
-            /*
-               below logic used for access procurement images folder ( its wrks dev and live )
-             */
-            URL url = null;
-            try {
-                url = new URL(BASE_URL);
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            }
-
-            String BASE_URL_PROCUREMENT_IMG = url.getProtocol() + "://" + url.getHost() + "/" + "Procurement_images/";
-            Log.e("proc_img_url", BASE_URL_PROCUREMENT_IMG);
-
-            Glide.with(context)
-                    .load(BASE_URL_PROCUREMENT_IMG + agronomistListModel.get(position).getFarmers_meeting_img())
-                    .into(holder.imgFarmersMeeting);
-
-            Glide.with(context)
-                    .load(BASE_URL_PROCUREMENT_IMG + agronomistListModel.get(position).getCsr_img())
-                    .into(holder.imgCSRImage);
-
-            Glide.with(context)
-                    .load(BASE_URL_PROCUREMENT_IMG + agronomistListModel.get(position).getFodder_acres_img())
-                    .into(holder.imgFodderAcres);
-
-            holder.imgFarmersMeeting.setOnClickListener(v -> {
-                String imageUrl = BASE_URL_PROCUREMENT_IMG + agronomistListModel.get(position).getFarmers_meeting_img();
-                Intent intent = new Intent(context, ImageViewActivity.class);
-                intent.putExtra("access_id", "1"); // 1 for url ( without access for URI storage image )
-                intent.putExtra("event_name", "Farmers meeting"); // This is url ( not URI )
-                intent.putExtra("url", imageUrl); // url not URI
-                context.startActivity(intent);
-            });
-
-            holder.imgCSRImage.setOnClickListener(v -> {
-                String imageUrl = BASE_URL_PROCUREMENT_IMG + agronomistListModel.get(position).getCsr_img();
-                Intent intent = new Intent(context, ImageViewActivity.class);
-                intent.putExtra("access_id", "1"); // 1 for url ( without access for URI storage image )
-                intent.putExtra("event_name", "CSR Activity"); // This is url ( not URI )
-                intent.putExtra("url", imageUrl); // url not URI
-                context.startActivity(intent);
-            });
-
-            holder.imgFodderAcres.setOnClickListener(v -> {
-                String imageUrl = BASE_URL_PROCUREMENT_IMG + agronomistListModel.get(position).getFodder_acres_img();
-                Intent intent = new Intent(context, ImageViewActivity.class);
-                intent.putExtra("access_id", "1"); // 1 for url ( without access for URI storage image )
-                intent.putExtra("event_name", "Fodder dev acres"); // This is url ( not URI )
-                intent.putExtra("url", imageUrl); // url not URI
-                context.startActivity(intent);
-            });
-
-            holder.txtViewDetails.setOnClickListener(v -> {
-                holder.viewSecondLayout.setVisibility(View.VISIBLE);
-                holder.txtViewDetails.setVisibility(GONE);
-                holder.txtViewLess.setVisibility(View.VISIBLE);
-            });
-
-            holder.txtViewLess.setOnClickListener(v -> {
-                holder.viewSecondLayout.setVisibility(View.GONE);
-                holder.txtViewDetails.setVisibility(View.VISIBLE);
-                holder.txtViewLess.setVisibility(View.GONE);
-            });
-
-        }
-
-        @Override
-        public long getItemId(int position){
-            return position;
-        }
-        @Override
-        public int getItemViewType(int position){
-            return position;
-        }
-
-        @Override
-        public int getItemCount() {
-            return agronomistListModel.size();
-        }
-
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView txtCompanyName, txtFarmerName, txtDate, txtCenterName, txtServeiceType, txtProductType;
-            TextView txtPlant, txtTeatDip, txtFodderDevAcres, txtFarmersEnrolled, txtViewDetails, txtViewLess;
-            CardView layout;
-            ImageView imgFarmersMeeting, imgCSRImage, imgFodderAcres;
-            LinearLayout viewSecondLayout;
-
-            public ViewHolder(View view) {
-                super(view);
-                txtCompanyName = view.findViewById(R.id.txt_company_name);
-                layout = view.findViewById(R.id.layout);
-                txtFarmerName = view.findViewById(R.id.txt_farmer_name);
-                txtDate = view.findViewById(R.id.txt_date);
-                txtCenterName = view.findViewById(R.id.txt_center_name);
-                txtServeiceType = view.findViewById(R.id.txt_service_type);
-                txtProductType = view.findViewById(R.id.txt_product_type);
-                imgFarmersMeeting = view.findViewById(R.id.farmers_meeting_img);
-                imgCSRImage = view.findViewById(R.id.csr_activity_img);
-                imgFodderAcres = view.findViewById(R.id.fodder_acres_img);
-                txtPlant = view.findViewById(R.id.txt_plant_name);
-                txtTeatDip = view.findViewById(R.id.txt_teat_dip);
-                txtFodderDevAcres = view.findViewById(R.id.txt_fodder_dev_acres);
-                txtFarmersEnrolled = view.findViewById(R.id.txt_farmers_enrolled);
-                txtViewDetails = view.findViewById(R.id.txt_view_details);
-                viewSecondLayout = view.findViewById(R.id.second_cn);
-                txtViewLess = view.findViewById(R.id.txt_view_less);
-            }
-        }
     }
 
     private void loadList() {
