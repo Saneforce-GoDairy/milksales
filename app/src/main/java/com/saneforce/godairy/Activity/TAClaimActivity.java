@@ -3897,9 +3897,9 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             Dynamicallowance = (LinearLayout) view.findViewById(R.id.lin_allowance_dynamic);
             Dynamicallowance.addView(childRel);
 
+            dynamicLabelList.add(jsonObjectAdd.get("Ref_Code").getAsString());
         }
 
-        dynamicLabelList.add(jsonObjectAdd.get("Ref_Code").getAsString());
 
         CtrlsListModel ULCItem = new CtrlsListModel(users, flag);
         uLCItems.put(modeName, ULCItem);

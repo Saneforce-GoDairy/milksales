@@ -186,6 +186,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.userImage.setOnClickListener(v->{
             Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
             intent.putExtra("ImageUrl", mProfileImage);
+            intent.putExtra("Mode", "1");
             startActivity(intent);
         });
 
@@ -248,6 +249,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         });
         userImage.setOnClickListener(view1 -> {
             Intent intent = new Intent(context,ProfileActivity.class);
+            intent.putExtra("Mode", "1");
             startActivity(intent);
         });
 

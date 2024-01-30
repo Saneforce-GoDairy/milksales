@@ -274,6 +274,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             profileImageView.setOnClickListener(view1 -> {
                 Intent intent = new Intent(context,ProfileActivity.class);
                 intent.putExtra("ImageUrl", mProfileImage);
+                intent.putExtra("Mode", "2");
                 startActivity(intent);
             });
 

@@ -10,22 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
         android:padding="15dp">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="15dp">
-
+            >
+            <ImageView
+                android:id="@+id/btn_backBtn"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="-10dp"
+                android:src="@drawable/arrow_left" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
             <ImageView
                 android:id="@+id/btn_logout"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="1dp"
                 android:src="@drawable/ic_logout"
+                android:layout_gravity="center_vertical"
                 android:contentDescription="@null" />
 
         </LinearLayout>
@@ -38,14 +47,12 @@
             android:layout_gravity="center"
             android:textColor="@color/black"/>
         <androidx.cardview.widget.CardView
-            android:layout_width="155dp"
-            android:layout_height="155dp"
-            app:cardCornerRadius="250dp"
+            android:layout_width="132dp"
+            android:layout_height="132dp"
+            app:cardCornerRadius="66dp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/C15dp"
            >
-
-                />
             <!--<androidx.cardview.widget.CardView
                 android:id="@+id/cv_profile"
                 android:layout_width="150dp"
@@ -67,16 +74,16 @@
             </androidx.cardview.widget.CardView>-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_profile"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                app:cardCornerRadius="250dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                app:cardCornerRadius="65dp"
                 android:layout_gravity="center">
 
                 <!-- User Image -->
                 <ImageView
                     android:id="@+id/user_image"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="130dp"
+                    android:layout_height="131dp"
                     android:src="@drawable/person_placeholder_1"
                     android:scaleType="centerCrop"/>
 
@@ -84,7 +91,6 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
                     <!-- Place the camera icon at the bottom right corner -->
                     <ImageView
                         android:id="@+id/btn_camera"
@@ -98,31 +104,6 @@
                 </FrameLayout>
 
             </androidx.cardview.widget.CardView>
-
-
-           <!-- <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_gravity="end"
-                android:layout_height="wrap_content">
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_alignParentBottom="true"
-                    >
-                    <ImageView
-                        android:id="@+id/edit"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="1dp"
-                        android:src="@drawable/edit"
-                        android:contentDescription="@null"
-                        app:tint="@color/black" />
-
-                </RelativeLayout>
-            </RelativeLayout>-->
-
-
         </androidx.cardview.widget.CardView>
 
 
@@ -157,23 +138,31 @@
                 android:src="@drawable/person_placeholder_0" />
 -->
 
-            <LinearLayout
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="20dp"
-                android:background="@color/cardview_light_background"
-                android:padding="15dp">
+                android:layout_marginTop="15dp">
 
                 <TextView
                     android:id="@+id/user_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textAlignment="textStart"
+                    android:text="sdfsdf"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="17sp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/ERP_Code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="sdfssdf"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey_500"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     />
             </LinearLayout>
@@ -182,94 +171,70 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:padding="@dimen/C5dp"
             android:background="@color/cardview_light_background">
-
+            <TextView
+                android:id="@+id/tv_desig"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Designation"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="10sp"/>
             <TextView
                 android:id="@+id/designation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="  "
-                android:paddingLeft="@dimen/C3dp"
+                android:text=" tedd "
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="13sp"
+                android:textStyle="bold"
                 />
         </LinearLayout>
-        <TextView
-            android:id="@+id/tv_mobile"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Mobile"
-            android:layout_marginTop="10dp"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="10dp"
-            android:background="@color/cardview_light_background"
-            android:padding="15dp">
+            android:padding="@dimen/C5dp"
+            android:background="@color/cardview_light_background">
+            <TextView
+                android:id="@+id/tv_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Mobile"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="10sp"/>
             <TextView
                 android:id="@+id/mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="90866"
-                android:textColor="@color/grey_600"
-                android:textSize="@dimen/C14dp"
+                android:textColor="@color/black"
+                android:textSize="13sp"
                 android:textStyle="bold"/>
-
         </LinearLayout>
-
-
-        <!-- <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:orientation="vertical"
-             android:layout_gravity="center_vertical"
-             android:background="@color/cardview_light_background"
-             android:paddingLeft="5dp">
-             <ImageView
-
-                 android:id="@+id/icMob"
-                 android:layout_width="15dp"
-                 android:layout_height="15dp"
-                 android:src="@drawable/call_icon"
-                 app:tint="@color/colorPrimaryDark" />
-
-
-             <TextView
-                 android:id="@+id/tv_mob_no"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="1234567890"
-                 android:textAlignment="textStart"
-                 android:textColor="@color/black"
-                 android:textSize="16sp"
-                 />
-         </LinearLayout>-->
-        <TextView
-            android:id="@+id/tv_reporting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reporting To"
-            android:layout_marginTop="10dp"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="10dp"
-            android:background="@color/cardview_light_background"
-            android:padding="15dp">
+            android:padding="@dimen/C5dp"
+            android:background="@color/cardview_light_background">
+            <TextView
+                android:id="@+id/tv_reporting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reporting To"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                />
             <TextView
                 android:id="@+id/reporting"
                 android:layout_width="wrap_content"
@@ -277,7 +242,8 @@
                 android:text="Manager"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="13sp"
+                android:textStyle="bold"
                 />
 
         </LinearLayout>

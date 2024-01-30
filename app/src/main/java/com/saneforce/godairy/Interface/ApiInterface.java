@@ -179,9 +179,10 @@ public interface ApiInterface {
     Call<Result> addImage(@Part MultipartBody.Part file);
 
 
-    @POST("Db_v300_usha.php")
+    @POST("Db_v300.php")
     Call<ResponseBody> changePassword(@Query("axn") String axn,
                                       @Query("sf_code") String sf_code,
+                                      @Query("Mode") String Mode,
                                       @Query("div_Code") String divisionCode,
                                       @Query("old_password") String old_password,
                                       @Query("new_password") String new_password);

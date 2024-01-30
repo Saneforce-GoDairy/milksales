@@ -206,8 +206,12 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         loadImage(mProfileUrl);
 
         tvUserName.setText(sUName);
-        binding.userName.setText(sUName);
+        binding.userName.setText(sUName.substring(0,(Math.min(sUName.length(), 25))));
         binding.designation.setText(SFDesig );
+        if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+            String SFERP = sharedCommonPref.getvalue(Constants.DistributorERP, "");
+            binding.designation.setText(SFERP);
+        }
         tvUpdTime.setText("Last Updated On : " + updateTime);
 
         common_class.getProductDetails(this);
@@ -223,6 +227,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 Intent intent = new Intent(context,ProfileActivity.class);
                 intent.putExtra("ImageUrl", mProfileImage);
+                intent.putExtra("Mode", "3");
                 startActivity(intent);
             }
         });

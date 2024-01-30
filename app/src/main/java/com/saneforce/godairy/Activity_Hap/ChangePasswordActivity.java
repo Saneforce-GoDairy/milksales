@@ -15,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.saneforce.godairy.Common_Class.Constants;
+import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
@@ -37,6 +40,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private Button btnUpdate;
     ImageView user_image;
     private final Context context = this;
+    private Shared_Common_Pref SHARED_PREF;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -51,6 +55,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         user_image = findViewById(R.id.user_image);
 
         SharedPreferences userDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
+        SHARED_PREF=new Shared_Common_Pref(ChangePasswordActivity.this);
         TextView txtUserName = findViewById(R.id.user_name);
         TextView  tvdesignation = findViewById(designation);
         String sUName = userDetails.getString("SfName","");
@@ -61,6 +66,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         user_image.setOnClickListener(view1 -> {
             Intent intent = new Intent(context, ProfileActivity.class);
+            intent.putExtra("Mode", SHARED_PREF.getvalue("profback"));
             startActivity(intent);
         });
 
@@ -99,10 +105,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
         UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
         String sfCode = UserDetails.getString("Sfcode", "");
         String divCode = UserDetails.getString("Divcode", "");
-
+        String Mode="0";
+        if (SHARED_PREF.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+            Mode="1";
+        }
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.changePassword("change_password",
                 sfCode,
+                Mode,
                 divCode,
                 oldPassword,
                 newPassword);

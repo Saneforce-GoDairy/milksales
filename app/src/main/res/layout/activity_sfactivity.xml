@@ -39,7 +39,7 @@
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="V. Mohana Krishnan"
+                    android:hint=""
                     android:textColor="@color/primaryDark"
                     android:textSize="16sp"
                     android:lines="1"
