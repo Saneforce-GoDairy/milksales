@@ -79,4 +79,6 @@
     <color name="secondary_orange">#DA600C</color>
     <color name="grey">#6C6C6C</color>
     <color name="primaryColor">#009BE1</color>
+    <color name="Primary_blue">#1997CE</color>
+    <color name="bg_light_blue">#E8F5FB</color>
 </resources>

@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.saneforce.godairy.Activity_Hap.Day_Report_Activity;
+import com.saneforce.godairy.Activity_Hap.DayReportActivity;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AdapterOnClick;
@@ -86,7 +86,7 @@ public class ReportsListActivity extends AppCompatActivity {
                             Intent intent = new Intent(ReportsListActivity.this, PrimaryOrderReportActivity.class);
                             startActivity(intent);
                         } else if (obj.getString("name").equalsIgnoreCase("Day Reports")) {
-                            Intent intent = new Intent(ReportsListActivity.this, Day_Report_Activity.class);
+                            Intent intent = new Intent(ReportsListActivity.this, DayReportActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(ReportsListActivity.this, obj.getString("name") + ": Not assigned", Toast.LENGTH_SHORT).show();

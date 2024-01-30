@@ -525,6 +525,9 @@ public class Common_Class {
                 case Constants.Competitor_List:
                     QuerySTring1 = "{\"tableName\":\"get_compititordetails\"}";
                     break;
+                case Constants.DayReport:
+                    QuerySTring1 = "{\"tableName\":\"getdayreport\"}";
+                    break;
                 case Constants.Todaydayplanresult:
                     axnname = "Get/dayplanresult";
                     QueryString.put("Date", Common_Class.GetDatewothouttime());
@@ -614,6 +617,7 @@ public class Common_Class {
     public void getDb_310Data(String key, Activity activity) {
         getDb_310Data(key, activity, null);
     }
+
 
 
     public void getDb_310Data(String key, Activity activity, JsonObject jparam) {

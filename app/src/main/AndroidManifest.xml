@@ -59,7 +59,7 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name=".Activity_Hap.Day_Report_Activity"
+            android:name=".Activity_Hap.DayReportActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.FarmerCreationReportActivity"
