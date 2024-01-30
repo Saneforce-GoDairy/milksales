@@ -1262,7 +1262,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             String sText="Item";
             canvas.drawText("Item", x, y, paint);
 
-            float xTot,xCGST,xSGST,xGST,xPr,xQt,xFQt,xHSN,xMRP,xPCS;
+            float xTot,xCGST,xSGST,xGST,xPr,xQt,xFQt,xHSN,xMRP,xPCS,xQtU;
             paint.setTextAlign(Paint.Align.RIGHT);
             sText="___Total";
             paint.getTextBounds(sText, 0, sText.length(), bounds);
@@ -1294,6 +1294,12 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             wdth = wdth-bounds.width();
             wdth = wdth-3;
 
+            sText="_UOM";
+            paint.getTextBounds(sText, 0, sText.length(), bounds);
+            canvas.drawText(sText.replaceAll("_",""), wdth, y, paint);xQtU=wdth;
+            wdth = wdth-bounds.width();
+            wdth = wdth-3;
+
             sText="_"+MRPCap; // RRP -> MRP
             paint.getTextBounds(sText, 0, sText.length(), bounds);
             canvas.drawText(sText.replaceAll("_",""), wdth, y, paint);xMRP=wdth;
@@ -1301,7 +1307,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             wdth = wdth-2;
             paint.setTextAlign(Paint.Align.LEFT);
 
-            sText="Code______________________";
+            sText="Code__________________";
             paint.getTextBounds(sText, 0, sText.length(), bounds);
             wdth = wdth-bounds.width();
             canvas.drawText(sText.replaceAll("_",""), wdth, y, paint);xHSN=wdth;
@@ -1332,6 +1338,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                 canvas.drawText("" + Order_Outlet_Filter.get(i).getHSNCode(), xHSN, cy, paint);
                 paint.setTextAlign(Paint.Align.RIGHT);
                 canvas.drawText("" + formatter.format(Double.parseDouble(Order_Outlet_Filter.get(i).getMRP())), xMRP, cy, paint);
+                canvas.drawText("" + Order_Outlet_Filter.get(i).getUnitCode(), xQtU, cy, paint);
                 canvas.drawText("" + Order_Outlet_Filter.get(i).getQty(), xQt, cy, paint);
                 canvas.drawText("" + Order_Outlet_Filter.get(i).getFree(), xFQt, cy, paint);
                 Integer sDp=Integer.parseInt(new DecimalFormat("##0").format(Double.parseDouble(Order_Outlet_Filter.get(i).getConversionFactor())));

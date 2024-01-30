@@ -237,28 +237,29 @@ public class DayReportActivity extends AppCompatActivity {
             handler.postDelayed(() -> {
 
                 onTouch(event);
-                binding.summaryView.setVisibility(View.VISIBLE);
-//                binding.summaryView.setGravity(Gravity.BOTTOM);
-
-                initBottomSheet();
 //                   handler.removeCallbacks(R.layout.day_bottom_sheet, this);
             }, 50);
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     initialY = event.getY();
+
+                    binding.summaryView.setVisibility(View.VISIBLE);
+                    initBottomSheet();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     float deltaY = event.getY() - initialY;
                     float newY = binding.summaryView.getY() + deltaY;
                     if (newY > initialY) {
                         binding.summaryView.setY(newY);
+
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                     float finalY = event.getY();
                     if (finalY < initialY) {
                         // User has swiped upwards, open bottom sheet
+//                binding.summaryView.setGravity(Gravity.BOTTOM);
 
                     } else {
                         // User has swiped downwards, reset view
