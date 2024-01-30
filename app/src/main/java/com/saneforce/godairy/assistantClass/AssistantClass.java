@@ -21,7 +21,14 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -29,6 +36,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -40,9 +49,12 @@ import com.saneforce.godairy.Interface.AlertDialogClickListener;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.DatePickerResult;
+import com.saneforce.godairy.Interface.DropdownSelectListener;
 import com.saneforce.godairy.Interface.LocationResponse;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.universal.UniversalDropDownAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,6 +68,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Executors;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -74,6 +87,14 @@ public class AssistantClass extends AppCompatActivity {
         this.context = context;
         this.adminInfo = context.getSharedPreferences("user_info", MODE_PRIVATE);
         this.progressDialog = new ProgressDialog(context);
+    }
+
+    public static void clearAppData(Context context) {
+        try {
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec("pm clear " + context.getPackageName());
+        } catch (Exception ignored) {
+        }
     }
 
     public void saveToLocal(String key, String value) {
@@ -123,14 +144,15 @@ public class AssistantClass extends AppCompatActivity {
         params.put("sfc", UserDetails.getString("Sfcode", ""));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
-        log(call.request().toString());
-        call.enqueue(new Callback<ResponseBody>() {
+        log("Request: " + call.request());
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     try (ResponseBody responseBody = response.body()) {
                         if (responseBody != null) {
                             JSONObject object = new JSONObject(responseBody.string());
+                            log("Response: " + object);
                             if (object.optBoolean("success")) {
                                 result.onSuccess(object);
                             } else {
@@ -203,7 +225,8 @@ public class AssistantClass extends AppCompatActivity {
         }
         try {
             builder.create().show();
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     public void showAlertDialogWithFinish(String message) {
@@ -215,7 +238,8 @@ public class AssistantClass extends AppCompatActivity {
         builder.setPositiveButton("Close", (dialog, which) -> ((Activity) context).finish());
         try {
             builder.create().show();
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     public void showAlertDialogWithDismiss(String message) {
@@ -227,7 +251,8 @@ public class AssistantClass extends AppCompatActivity {
         builder.setPositiveButton("Dismiss", (dialog, which) -> dialog.dismiss());
         try {
             builder.create().show();
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     public void showProgressDialog(String msg, boolean isCancelable) {
@@ -237,7 +262,8 @@ public class AssistantClass extends AppCompatActivity {
         progressDialog.setCancelable(isCancelable);
         try {
             progressDialog.show();
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     public void dismissProgressDialog() {
@@ -368,13 +394,6 @@ public class AssistantClass extends AppCompatActivity {
         }
     }
 
-    public static void clearAppData(Context context) {
-        try {
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec("pm clear " + context.getPackageName());
-        } catch (Exception ignored) { }
-    }
-
     public String formatDateToDB(String ddMMyyyy) {
         String formattedDate = "";
         try {
@@ -382,7 +401,8 @@ public class AssistantClass extends AppCompatActivity {
             if (fromDATE != null) {
                 formattedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(fromDATE);
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
         return formattedDate;
     }
 
@@ -393,11 +413,49 @@ public class AssistantClass extends AppCompatActivity {
             if (fromDATE != null) {
                 formattedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(fromDATE);
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
         return formattedDate;
     }
 
     public void log(String toString) {
         Log.e("checkMyLog", toString);
+    }
+
+    public void showDropdown(String dropdownTitle, JSONArray array, DropdownSelectListener listener) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.common_dialog_with_rv_and_filter, null, false);
+        builder.setView(view);
+        builder.setCancelable(false);
+        android.app.AlertDialog dialog = builder.create();
+        TextView title = view.findViewById(R.id.title);
+        title.setText(dropdownTitle);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+        UniversalDropDownAdapter adapter = new UniversalDropDownAdapter(context, array);
+        TextView close = view.findViewById(R.id.close);
+        close.setOnClickListener(v1 -> dialog.dismiss());
+        EditText eT_Filter = view.findViewById(R.id.eT_Filter);
+        eT_Filter.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        eT_Filter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                adapter.getFilter().filter(s.toString());
+            }
+        });
+        adapter.setOnItemClick((position, arrayList) -> {
+            listener.onSelect(arrayList.optJSONObject(position));
+            dialog.dismiss();
+        });
+        recyclerView.setAdapter(adapter);
+        dialog.show();
     }
 }
