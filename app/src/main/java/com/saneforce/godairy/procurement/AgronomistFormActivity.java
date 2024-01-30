@@ -438,15 +438,11 @@ public class AgronomistFormActivity extends AppCompatActivity {
         serviceIntent.putExtra("company", mCompanyName);
         serviceIntent.putExtra("plant", mPlant);
         serviceIntent.putExtra("center_name", mCenterName);
-
         serviceIntent.putExtra("farmer_name", mFarmerCodeName);
         serviceIntent.putExtra("product_type", mTypeOfProduct);
         serviceIntent.putExtra("teat_dip", mTeatTipCup);
         serviceIntent.putExtra("service_type", mTypeOfService);
-
         serviceIntent.putExtra("fodder_dev_acres", mFodderDev);
-
-
         serviceIntent.putExtra("active_flag", mActiveFlag);
         serviceIntent.putExtra("upload_service_id", "3");
         ContextCompat.startForegroundService(this, serviceIntent);

@@ -4,6 +4,7 @@
     <color name="colorAccent">#43A047</color>
     <color name="colorPrimary">#7CB342</color>
     <color name="colorPrimaryDark">#0089BD</color>
+    <color name="warning">#FFFF0000</color>
     <color name="ButtonDefault">#FFC744</color>
     <color name="disabled">#B6B6B6</color>
     <color name="subExpHeader">#BB52D8</color>
