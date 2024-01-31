@@ -2,12 +2,16 @@ package com.saneforce.godairy.Activity_Hap;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Interface.APIResult;
+import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.AdapterDayReport;
 import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.databinding.ActivityDayReportBinding;
@@ -15,20 +19,23 @@ import com.saneforce.godairy.databinding.ActivityDayReportBinding;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 public class Day_Report_Activity extends AppCompatActivity {
-    private ActivityDayReportBinding binding;
-
     Context context = this;
     Common_Class common_class;
     AssistantClass assistantClass;
-
     JSONArray hierarchyArray, reportArray;
     String id = "", date = "";
     AdapterDayReport adapter;
+    double distVisitedCount = 0, retVisitedCount = 0, distOrderTaken = 0, retOrderTaken = 0, distInvoicedCount = 0, retInvoicedCount = 0, distOrderedAmt = 0, retOrderedAmt = 0, distInvoicedAmt = 0, retInvoicedAmt = 0;
+    private ActivityDayReportBinding binding;
+    BottomSheetDialog bottomSheetDialog;
+    View bottomSheetView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +62,23 @@ public class Day_Report_Activity extends AppCompatActivity {
             id = object.optString("id");
             getReport();
         }));
-        binding.viewSummary.setOnClickListener(v -> {});
+        binding.viewSummary.setOnClickListener(v -> showBottomSheet());
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        binding.selectDate.setText(assistantClass.getTime("dd/MM/yyyy"));
+        date = assistantClass.getTime("dd/MM/yyyy");
+        binding.selectDate.setText(date);
 
         getFieldForceList();
+
+        bottomSheetDialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
+        bottomSheetView = View.inflate(context, R.layout.day_bottom_sheet, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+        TextView tv_view_summery = bottomSheetView.findViewById(R.id.tv_view_summery);
+        tv_view_summery.setOnClickListener(v -> bottomSheetDialog.dismiss());
+    }
+
+    private void showBottomSheet() {
+        bottomSheetDialog.show();
     }
 
     private void getReport() {
@@ -94,6 +112,56 @@ public class Day_Report_Activity extends AppCompatActivity {
         }
         adapter = new AdapterDayReport(context, reportArray);
         binding.recyclerView.setAdapter(adapter);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            distVisitedCount = 0;
+            retVisitedCount = 0;
+            distOrderTaken = 0;
+            retOrderTaken = 0;
+            distInvoicedCount = 0;
+            retInvoicedCount = 0;
+            distOrderedAmt = 0;
+            retOrderedAmt = 0;
+            distInvoicedAmt = 0;
+            retInvoicedAmt = 0;
+            for (int i = 0; i < reportArray.length(); i++) {
+                distVisitedCount += reportArray.optJSONObject(i).optDouble("DistVisitedCount");
+                retVisitedCount += reportArray.optJSONObject(i).optDouble("RetVisitedCount");
+
+                distOrderTaken += reportArray.optJSONObject(i).optDouble("DistOrderCount");
+                retOrderTaken += reportArray.optJSONObject(i).optDouble("RetOrderCount");
+                distInvoicedCount += reportArray.optJSONObject(i).optDouble("DistInvoiceCount");
+                retInvoicedCount += reportArray.optJSONObject(i).optDouble("RetInvoiceCount");
+
+                distOrderedAmt += reportArray.optJSONObject(i).optDouble("DistOrderAmt");
+                retOrderedAmt += reportArray.optJSONObject(i).optDouble("RetOrderAmt");
+                distInvoicedAmt += reportArray.optJSONObject(i).optDouble("DistInvoiceAmt");
+                retInvoicedAmt += reportArray.optJSONObject(i).optDouble("RetInvoiceAmt");
+
+                runOnUiThread(() -> {
+                    TextView visited_distributor = bottomSheetView.findViewById(R.id.visited_distributor);
+                    TextView visited_outlet = bottomSheetView.findViewById(R.id.visited_outlet);
+                    TextView distOrderCount = bottomSheetView.findViewById(R.id.distOrderCount);
+                    TextView retOrderCount = bottomSheetView.findViewById(R.id.retOrderCount);
+                    TextView count_distributor = bottomSheetView.findViewById(R.id.count_distributor);
+                    TextView count_outlet = bottomSheetView.findViewById(R.id.count_outlet);
+                    TextView ordered_distributor = bottomSheetView.findViewById(R.id.ordered_distributor);
+                    TextView ordered_outlet = bottomSheetView.findViewById(R.id.ordered_outlet);
+                    TextView invoiced_distributor = bottomSheetView.findViewById(R.id.invoiced_distributor);
+                    TextView invoiced_outlet = bottomSheetView.findViewById(R.id.invoiced_outlet);
+
+                    visited_distributor.setText(new DecimalFormat("00").format(distVisitedCount));
+                    visited_outlet.setText(new DecimalFormat("00").format(retVisitedCount));
+                    distOrderCount.setText(new DecimalFormat("00").format(distOrderTaken));
+                    retOrderCount.setText(new DecimalFormat("00").format(retOrderTaken));
+                    count_distributor.setText(new DecimalFormat("00").format(distInvoicedCount));
+                    count_outlet.setText(new DecimalFormat("00").format(retInvoicedCount));
+                    ordered_distributor.setText(new DecimalFormat("00").format(distOrderedAmt));
+                    ordered_outlet.setText(new DecimalFormat("00").format(retOrderedAmt));
+                    invoiced_distributor.setText(new DecimalFormat("00").format(distInvoicedAmt));
+                    invoiced_outlet.setText(new DecimalFormat("00").format(retInvoicedAmt));
+                });
+            }
+        });
     }
 
     private void getFieldForceList() {
@@ -115,13 +183,6 @@ public class Day_Report_Activity extends AppCompatActivity {
             }
         });
     }
-
-    /*private void initBottomSheet() {
-        sheetDialog = new BottomSheetDialog(Day_Report_Activity.this, R.style.AppBottomSheetDialogTheme);
-        sheetDialog.getBehavior().toString();
-        sheetDialog.setContentView(R.layout.day_bottom_sheet);
-        sheetDialog.show();
-    }*/
 }
 
 

@@ -53,17 +53,21 @@
 
     </LinearLayout>
 
-    <TextView
-        android:visibility="gone"
+    <ImageView
         android:id="@+id/viewSummary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/C50dp"
+        android:layout_height="@dimen/C50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/date_curve_light_blue"
-        android:gravity="center_vertical"
-        android:text="View Summary"
-        android:textColor="#494949"
-        android:textSize="13sp" />
+        android:layout_marginBottom="-25dp"
+        android:src="@drawable/semi_circle_top" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-3dp"
+        android:src="@drawable/ic_arrow_up" />
 
 </RelativeLayout>
