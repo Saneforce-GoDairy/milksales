@@ -9,9 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -32,6 +35,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,7 +44,7 @@ import retrofit2.Response;
 
 public class AssetReportActivity extends AppCompatActivity {
     private ActivityAssetReportBinding binding;
-    private Context context = this;
+    private final Context context = this;
     private List<ProcAssetReport> assetReportList;
     private AssetReportAdapter assetReportAdapter;
 
@@ -59,32 +63,55 @@ public class AssetReportActivity extends AppCompatActivity {
         Call<ResponseBody> call = apiInterface.getAssetReport(PROCUREMENT_GET_ASSET_REPORT);
 
         call.enqueue(new Callback<>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     binding.shimmerLayout2.setVisibility(GONE);
-                    String assetList;
+                    String assetList = "";
                     try {
                         assetList = response.body().string();
-                        JSONArray jsonArray = new JSONArray(assetList);
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            ProcAssetReport assetReport = new ProcAssetReport();
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            assetReport.setCompany(object.getString("company"));
-                            assetReport.setPlant(object.getString("plant"));
-                            assetReport.setAsset_type(object.getString("asset_type"));
-                            assetReport.setComments(object.getString("comments"));
-                            assetReport.setCreated_dt(object.getString("created_dt"));
-                            assetReportList.add(assetReport);
+
+                        if (assetList.isEmpty()){
+                            binding.recyclerView.setVisibility(GONE);
+                            binding.nullError.setVisibility(View.VISIBLE);
+                            return;
                         }
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        binding.recyclerView.setLayoutManager(linearLayoutManager);
-                        binding.recyclerView.setHasFixedSize(true);
-                        binding.recyclerView.setItemViewCacheSize(20);
-                        assetReportAdapter = new AssetReportAdapter(context, assetReportList);
-                        binding.recyclerView.setAdapter(assetReportAdapter);
-                        assetReportAdapter.notifyDataSetChanged();
+
+                       JSONObject jsonObject = new JSONObject(assetList);
+
+                        boolean mRecords = jsonObject.getBoolean("status");
+
+                        if (mRecords){
+                            Log.e("sts", "1");
+
+                            JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+
+                            for (int i = 0; i < jsonArrayData.length(); i++) {
+                                ProcAssetReport assetReport = new ProcAssetReport();
+                                JSONObject object = jsonArrayData.getJSONObject(i);
+                                assetReport.setCompany(object.getString("company"));
+                                assetReport.setPlant(object.getString("plant"));
+                                assetReport.setAsset_type(object.getString("asset_type"));
+                                assetReport.setComments(object.getString("comments"));
+                                assetReport.setCreated_dt(object.getString("created_dt"));
+                                assetReportList.add(assetReport);
+                            }
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            binding.recyclerView.setLayoutManager(linearLayoutManager);
+                            binding.recyclerView.setHasFixedSize(true);
+                            binding.recyclerView.setItemViewCacheSize(20);
+                            assetReportAdapter = new AssetReportAdapter(context, assetReportList);
+                            binding.recyclerView.setAdapter(assetReportAdapter);
+                            assetReportAdapter.notifyDataSetChanged();
+
+                            return;
+                        }
+                        binding.shimmerLayout2.setVisibility(GONE);
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.noRecords.setVisibility(View.VISIBLE);
+
                     } catch (IOException | JSONException e) {
                         //  throw new RuntimeException(e);
                         Toast.makeText(context, "List load error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -94,6 +121,7 @@ public class AssetReportActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                binding.shimmerLayout2.setVisibility(View.VISIBLE);
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

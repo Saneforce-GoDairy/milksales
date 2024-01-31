@@ -988,7 +988,7 @@ public interface ApiInterface {
     @POST("Db_v310.php")
     Call<ResponseBody> getCollectionCenterReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("test_prasanth.php")
     Call<ResponseBody> getAssetReport(@Query("axn") String axn);
 
     @POST("Db_v310.php")
