@@ -71,22 +71,18 @@ public class AssetReportActivity extends AppCompatActivity {
                     String assetList = "";
                     try {
                         assetList = response.body().string();
-
                         if (assetList.isEmpty()){
                             binding.recyclerView.setVisibility(GONE);
                             binding.nullError.setVisibility(View.VISIBLE);
+                            binding.message.setText("Empty response! contact software developer");
                             return;
                         }
 
                        JSONObject jsonObject = new JSONObject(assetList);
-
                         boolean mRecords = jsonObject.getBoolean("status");
 
                         if (mRecords){
-                            Log.e("sts", "1");
-
                             JSONArray jsonArrayData = jsonObject.getJSONArray("data");
-
                             for (int i = 0; i < jsonArrayData.length(); i++) {
                                 ProcAssetReport assetReport = new ProcAssetReport();
                                 JSONObject object = jsonArrayData.getJSONObject(i);
@@ -105,7 +101,6 @@ public class AssetReportActivity extends AppCompatActivity {
                             assetReportAdapter = new AssetReportAdapter(context, assetReportList);
                             binding.recyclerView.setAdapter(assetReportAdapter);
                             assetReportAdapter.notifyDataSetChanged();
-
                             return;
                         }
                         binding.shimmerLayout2.setVisibility(GONE);
@@ -114,7 +109,9 @@ public class AssetReportActivity extends AppCompatActivity {
 
                     } catch (IOException | JSONException e) {
                         //  throw new RuntimeException(e);
-                        Toast.makeText(context, "List load error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.nullError.setVisibility(View.VISIBLE);
+                        binding.message.setText("List load error! contact software developer");
                     }
                 }
             }

@@ -23,6 +23,76 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/no_records"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:layout_width="170dp"
+                android:layout_height="150dp"
+                android:src="@drawable/no_records"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No records!"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textSize="25sp"
+                android:layout_marginTop="@dimen/C20dp"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/null_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/null_error"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textSize="12sp"
+                android:layout_marginTop="@dimen/C20dp"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerLayout2"
         android:layout_width="match_parent"

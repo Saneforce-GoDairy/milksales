@@ -70,42 +70,61 @@ public class AgronomistReportActivity extends AppCompatActivity {
                     String  agronomistList;
                     try {
                         agronomistList = response.body().string();
-                        JSONArray jsonArray = new JSONArray(agronomistList);
-                        for (int i = 0; i<jsonArray.length(); i++) {
-                            ProcAgronoListModel agronomistListModel = new ProcAgronoListModel();
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            agronomistListModel.setCreated_dt(object.getString("created_dt"));
-                            agronomistListModel.setCompany(object.getString("company"));
-                            agronomistListModel.setFarmer_name(object.getString("farmer_name"));
-                            agronomistListModel.setCenter_name(object.getString("center_name"));
-                            agronomistListModel.setService_type(object.getString("service_type"));
-                            agronomistListModel.setProduct_type(object.getString("product_type"));
-                            agronomistListModel.setFarmers_meeting_img(object.getString("farmers_meeting_image"));
-                            agronomistListModel.setCsr_img(object.getString("csr_image"));
-                            agronomistListModel.setFodder_acres_img(object.getString("fodder_dev_acres_image"));
-                            agronomistListModel.setPlant_name(object.getString("plant"));
-                            agronomistListModel.setTeat_dip(object.getString("teat_dip"));
-                            agronomistListModel.setFodder_dev(object.getString("fodder_dev_acres"));
-                            agronomistListModel.setFarmers_enrolled(object.getString("farmers_enrolled"));
-                            agronomistListsMain.add(agronomistListModel);
+                        if (agronomistList.isEmpty()){
+                            binding.recyclerView.setVisibility(GONE);
+                            binding.nullError.setVisibility(View.VISIBLE);
+                            binding.message.setText("Empty response! contact software developer");
+                            return;
                         }
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        binding.agronomistRecyclerView.setLayoutManager(linearLayoutManager);
-                        binding.agronomistRecyclerView.setHasFixedSize(true);
-                        binding.agronomistRecyclerView.setItemViewCacheSize(20);
-                        primaryNoOrderListAdapter = new AgronomistListAdapter(context, agronomistListsMain);
-                        binding.agronomistRecyclerView.setAdapter(primaryNoOrderListAdapter);
-                        primaryNoOrderListAdapter.notifyDataSetChanged();
+
+                        JSONObject jsonObject = new JSONObject(agronomistList);
+                        boolean mRecords = jsonObject.getBoolean("status");
+
+                        if (mRecords) {
+                            JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArrayData.length(); i++) {
+                                ProcAgronoListModel agronomistListModel = new ProcAgronoListModel();
+                                JSONObject object = jsonArrayData.getJSONObject(i);
+                                agronomistListModel.setCreated_dt(object.getString("created_dt"));
+                                agronomistListModel.setCompany(object.getString("company"));
+                                agronomistListModel.setFarmer_name(object.getString("farmer_name"));
+                                agronomistListModel.setCenter_name(object.getString("center_name"));
+                                agronomistListModel.setService_type(object.getString("service_type"));
+                                agronomistListModel.setProduct_type(object.getString("product_type"));
+                                agronomistListModel.setFarmers_meeting_img(object.getString("farmers_meeting_image"));
+                                agronomistListModel.setCsr_img(object.getString("csr_image"));
+                                agronomistListModel.setFodder_acres_img(object.getString("fodder_dev_acres_image"));
+                                agronomistListModel.setPlant_name(object.getString("plant"));
+                                agronomistListModel.setTeat_dip(object.getString("teat_dip"));
+                                agronomistListModel.setFodder_dev(object.getString("fodder_dev_acres"));
+                                agronomistListModel.setFarmers_enrolled(object.getString("farmers_enrolled"));
+                                agronomistListsMain.add(agronomistListModel);
+                            }
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            binding.recyclerView.setLayoutManager(linearLayoutManager);
+                            binding.recyclerView.setHasFixedSize(true);
+                            binding.recyclerView.setItemViewCacheSize(20);
+                            primaryNoOrderListAdapter = new AgronomistListAdapter(context, agronomistListsMain);
+                            binding.recyclerView.setAdapter(primaryNoOrderListAdapter);
+                            primaryNoOrderListAdapter.notifyDataSetChanged();
+                            return;
+                        }
+                        binding.shimmerLayout.setVisibility(GONE);
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.noRecords.setVisibility(View.VISIBLE);
                     } catch (IOException | JSONException e) {
                        // throw new RuntimeException(e);
-                        Toast.makeText(context, "List load error", Toast.LENGTH_SHORT).show();
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.nullError.setVisibility(View.VISIBLE);
+                        binding.message.setText("List load error! contact software developer");
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                binding.shimmerLayout.setVisibility(View.VISIBLE);
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

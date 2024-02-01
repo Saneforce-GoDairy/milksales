@@ -967,10 +967,10 @@ public interface ApiInterface {
                                              @Query("created_dt") String created_dt
     );
 
-    @POST("Db_v310.php")
+    @POST("test_prasanth.php")
     Call<ResponseBody> getAgronomistReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("test_prasanth.php")
     Call<ResponseBody> getAITReport(@Query("axn") String axn);
 
     @POST("Db_v310.php")

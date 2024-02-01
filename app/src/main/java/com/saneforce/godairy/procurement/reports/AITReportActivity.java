@@ -75,43 +75,63 @@ public class AITReportActivity extends AppCompatActivity {
                     String  aitList;
                     try {
                         aitList = response.body().string();
-                        JSONArray jsonArray = new JSONArray(aitList);
-                        for (int i = 0; i<jsonArray.length(); i++) {
-                            ProcAITReport procAITReport = new ProcAITReport();
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            procAITReport.setCompany(object.getString("company"));
-                            procAITReport.setPlant(object.getString("plant"));
-                            procAITReport.setFarmer_name(object.getString("farmer_name_code"));
-                            procAITReport.setCenter_name(object.getString("center_name"));
-                            procAITReport.setBreed_name(object.getString("breed_name"));
-                            procAITReport.setDate(object.getString("created_dt"));
-                            procAITReport.setBreed_image(object.getString("breed_image"));
-                            procAITReport.setNo_of_ai(object.getString("service_type_ai"));
-                            procAITReport.setBull_nos(object.getString("service_type2"));
-                            procAITReport.setPd_verification(object.getString("pd_verification"));
-                            procAITReport.setCalfbirth_verification(object.getString("calfbirth_verification"));
-                            procAITReport.setMineral_mixture_sale(object.getString("mineral_mixture_kg"));
-                            procAITReport.setSeed_sales(object.getString("seed_sales"));
-                            procAITReportList.add(procAITReport);
+
+                        if (aitList.isEmpty()){
+                            binding.recyclerView.setVisibility(GONE);
+                            binding.nullError.setVisibility(View.VISIBLE);
+                            binding.message.setText("Empty response! contact software developer");
+                            return;
                         }
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        binding.recyclerView.setLayoutManager(linearLayoutManager);
-                        binding.recyclerView.setHasFixedSize(true);
-                        binding.recyclerView.setItemViewCacheSize(20);
-                        aitReportListAdapter = new AITReportListAdapter(context, procAITReportList);
-                        binding.recyclerView.setAdapter(aitReportListAdapter);
-                        aitReportListAdapter.notifyDataSetChanged();
+
+                        JSONObject jsonObject = new JSONObject(aitList);
+                        boolean mRecords = jsonObject.getBoolean("status");
+
+                        if (mRecords) {
+                            JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArrayData.length(); i++) {
+                                ProcAITReport procAITReport = new ProcAITReport();
+                                JSONObject object = jsonArrayData.getJSONObject(i);
+                                procAITReport.setCompany(object.getString("company"));
+                                procAITReport.setPlant(object.getString("plant"));
+                                procAITReport.setFarmer_name(object.getString("farmer_name_code"));
+                                procAITReport.setCenter_name(object.getString("center_name"));
+                                procAITReport.setBreed_name(object.getString("breed_name"));
+                                procAITReport.setDate(object.getString("created_dt"));
+                                procAITReport.setBreed_image(object.getString("breed_image"));
+                                procAITReport.setNo_of_ai(object.getString("service_type_ai"));
+                                procAITReport.setBull_nos(object.getString("service_type2"));
+                                procAITReport.setPd_verification(object.getString("pd_verification"));
+                                procAITReport.setCalfbirth_verification(object.getString("calfbirth_verification"));
+                                procAITReport.setMineral_mixture_sale(object.getString("mineral_mixture_kg"));
+                                procAITReport.setSeed_sales(object.getString("seed_sales"));
+                                procAITReportList.add(procAITReport);
+                            }
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            binding.recyclerView.setLayoutManager(linearLayoutManager);
+                            binding.recyclerView.setHasFixedSize(true);
+                            binding.recyclerView.setItemViewCacheSize(20);
+                            aitReportListAdapter = new AITReportListAdapter(context, procAITReportList);
+                            binding.recyclerView.setAdapter(aitReportListAdapter);
+                            aitReportListAdapter.notifyDataSetChanged();
+                            return;
+                        }
+                        binding.shimmerLayout2.setVisibility(GONE);
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.noRecords.setVisibility(View.VISIBLE);
                     } catch (IOException | JSONException e) {
                       //  throw new RuntimeException(e);
-                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.nullError.setVisibility(View.VISIBLE);
+                        binding.message.setText("List load error! contact software developer");
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, "Load list error!", Toast.LENGTH_SHORT).show();
+                binding.shimmerLayout2.setVisibility(View.VISIBLE);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
