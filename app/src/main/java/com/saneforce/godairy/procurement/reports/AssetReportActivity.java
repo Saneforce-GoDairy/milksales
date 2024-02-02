@@ -67,14 +67,12 @@ public class AssetReportActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    binding.shimmerLayout2.setVisibility(GONE);
+                    binding.shimmerLayout.setVisibility(GONE);
                     String assetList = "";
                     try {
                         assetList = response.body().string();
                         if (assetList.isEmpty()){
-                            binding.recyclerView.setVisibility(GONE);
-                            binding.nullError.setVisibility(View.VISIBLE);
-                            binding.message.setText("Empty response! contact software developer");
+                            showError();
                             return;
                         }
 
@@ -103,24 +101,27 @@ public class AssetReportActivity extends AppCompatActivity {
                             assetReportAdapter.notifyDataSetChanged();
                             return;
                         }
-                        binding.shimmerLayout2.setVisibility(GONE);
+                        binding.shimmerLayout.setVisibility(GONE);
                         binding.recyclerView.setVisibility(GONE);
                         binding.noRecords.setVisibility(View.VISIBLE);
 
                     } catch (IOException | JSONException e) {
                         //  throw new RuntimeException(e);
-                        binding.recyclerView.setVisibility(GONE);
-                        binding.nullError.setVisibility(View.VISIBLE);
-                        binding.message.setText("List load error! contact software developer");
+                        showError();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                binding.shimmerLayout2.setVisibility(View.VISIBLE);
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
+    }
+    private void showError() {
+        binding.shimmerLayout.setVisibility(GONE);
+        binding.recyclerView.setVisibility(GONE);
+        binding.nullError.setVisibility(View.VISIBLE);
+        binding.message.setText("Something went wrong!");
     }
 }

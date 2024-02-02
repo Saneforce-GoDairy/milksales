@@ -71,9 +71,7 @@ public class AgronomistReportActivity extends AppCompatActivity {
                     try {
                         agronomistList = response.body().string();
                         if (agronomistList.isEmpty()){
-                            binding.recyclerView.setVisibility(GONE);
-                            binding.nullError.setVisibility(View.VISIBLE);
-                            binding.message.setText("Empty response! contact software developer");
+                            showError();
                             return;
                         }
 
@@ -115,18 +113,21 @@ public class AgronomistReportActivity extends AppCompatActivity {
                         binding.noRecords.setVisibility(View.VISIBLE);
                     } catch (IOException | JSONException e) {
                        // throw new RuntimeException(e);
-                        binding.recyclerView.setVisibility(GONE);
-                        binding.nullError.setVisibility(View.VISIBLE);
-                        binding.message.setText("List load error! contact software developer");
+                        showError();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                binding.shimmerLayout.setVisibility(View.VISIBLE);
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
+    }
+    private void showError() {
+        binding.shimmerLayout.setVisibility(GONE);
+        binding.recyclerView.setVisibility(GONE);
+        binding.nullError.setVisibility(View.VISIBLE);
+        binding.message.setText("Something went wrong!");
     }
 }

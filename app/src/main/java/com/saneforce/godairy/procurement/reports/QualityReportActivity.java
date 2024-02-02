@@ -64,57 +64,78 @@ public class QualityReportActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    binding.shimmerLayout2.setVisibility(GONE);
+                    binding.shimmerLayout.setVisibility(GONE);
                     String qualityList;
                     try {
                         qualityList = response.body().string();
-                        JSONArray jsonArray = new JSONArray(qualityList);
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            ProcQualityReport qualityReport = new ProcQualityReport();
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            qualityReport.setCompany(object.getString("company"));
-                            qualityReport.setPlant(object.getString("plant"));
-                            qualityReport.setMass_balance(object.getString("mass_balance"));
-                            qualityReport.setMilk_collection(object.getString("milk_collection"));
-                            qualityReport.setFat_image(object.getString("fat_image"));
-                            qualityReport.setSnf_image(object.getString("snf_image"));
-                            qualityReport.setMbrt(object.getString("mbrt"));
-                            qualityReport.setRejection(object.getString("rejection"));
-                            qualityReport.setWithhood_imag(object.getString("vehicle_with_hood_img"));
-                            qualityReport.setWithout_hood_image(object.getString("vehicle_without_hood_img"));
-                            qualityReport.setSpecial_cleaning(object.getString("spl_cleaning"));
-                            qualityReport.setVehicles_rece_withhood(object.getString("vehicle_with_hood"));
-                            qualityReport.setVehicles_rece_withouthood(object.getString("vehicle_without_hood"));
-                            qualityReport.setRecords_chemicals(object.getString("chemicals"));
-                            qualityReport.setRecords_stock(object.getString("stock"));
-                            qualityReport.setRecord_milk(object.getString("milk"));
-                            qualityReport.setAwareness_prog(object.getString("awareness_program"));
-                            qualityReport.setCleaning_eff(object.getString("cleaning_efficiency"));
-                            qualityReport.setSamp_calibra_no_fat(object.getString("no_of_fat"));
-                            qualityReport.setSamp_calibra_no_snf(object.getString("no_of_snf"));
-                            qualityReport.setSamp_calibra_no_weight(object.getString("no_of_weight"));
-                            qualityReport.setCreated_dt(object.getString("created_dt"));
-                            qualityReportsList.add(qualityReport);
+
+                        if (qualityList.isEmpty()){
+                            showError();
+                            return;
                         }
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        binding.recyclerView.setLayoutManager(linearLayoutManager);
-                        binding.recyclerView.setHasFixedSize(true);
-                        binding.recyclerView.setItemViewCacheSize(20);
-                        qualityReportAdapter = new QualityReportAdapter(context, qualityReportsList);
-                        binding.recyclerView.setAdapter(qualityReportAdapter);
-                        qualityReportAdapter.notifyDataSetChanged();
+
+                        JSONObject jsonObject = new JSONObject(qualityList);
+                        boolean mRecords = jsonObject.getBoolean("status");
+
+                        if (mRecords) {
+                            JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArrayData.length(); i++) {
+                                ProcQualityReport qualityReport = new ProcQualityReport();
+                                JSONObject object = jsonArrayData.getJSONObject(i);
+                                qualityReport.setCompany(object.getString("company"));
+                                qualityReport.setPlant(object.getString("plant"));
+                                qualityReport.setMass_balance(object.getString("mass_balance"));
+                                qualityReport.setMilk_collection(object.getString("milk_collection"));
+                                qualityReport.setFat_image(object.getString("fat_image"));
+                                qualityReport.setSnf_image(object.getString("snf_image"));
+                                qualityReport.setMbrt(object.getString("mbrt"));
+                                qualityReport.setRejection(object.getString("rejection"));
+                                qualityReport.setWithhood_imag(object.getString("vehicle_with_hood_img"));
+                                qualityReport.setWithout_hood_image(object.getString("vehicle_without_hood_img"));
+                                qualityReport.setSpecial_cleaning(object.getString("spl_cleaning"));
+                                qualityReport.setVehicles_rece_withhood(object.getString("vehicle_with_hood"));
+                                qualityReport.setVehicles_rece_withouthood(object.getString("vehicle_without_hood"));
+                                qualityReport.setRecords_chemicals(object.getString("chemicals"));
+                                qualityReport.setRecords_stock(object.getString("stock"));
+                                qualityReport.setRecord_milk(object.getString("milk"));
+                                qualityReport.setAwareness_prog(object.getString("awareness_program"));
+                                qualityReport.setCleaning_eff(object.getString("cleaning_efficiency"));
+                                qualityReport.setSamp_calibra_no_fat(object.getString("no_of_fat"));
+                                qualityReport.setSamp_calibra_no_snf(object.getString("no_of_snf"));
+                                qualityReport.setSamp_calibra_no_weight(object.getString("no_of_weight"));
+                                qualityReport.setCreated_dt(object.getString("created_dt"));
+                                qualityReportsList.add(qualityReport);
+                            }
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            binding.recyclerView.setLayoutManager(linearLayoutManager);
+                            binding.recyclerView.setHasFixedSize(true);
+                            binding.recyclerView.setItemViewCacheSize(20);
+                            qualityReportAdapter = new QualityReportAdapter(context, qualityReportsList);
+                            binding.recyclerView.setAdapter(qualityReportAdapter);
+                            qualityReportAdapter.notifyDataSetChanged();
+                            return;
+                        }
+                        binding.shimmerLayout.setVisibility(GONE);
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.noRecords.setVisibility(View.VISIBLE);
                     } catch (IOException | JSONException e) {
                         //  throw new RuntimeException(e);
-                        Toast.makeText(context, "List load error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        showError();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
+    }
+    private void showError() {
+        binding.shimmerLayout.setVisibility(GONE);
+        binding.recyclerView.setVisibility(GONE);
+        binding.nullError.setVisibility(View.VISIBLE);
+        binding.message.setText("Something went wrong!");
     }
 }
