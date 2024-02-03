@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -71,42 +72,63 @@ public class MaintenanceReportActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    binding.shimmerLayout2.setVisibility(GONE);
+                    binding.shimmerLayout.setVisibility(GONE);
                     String maintenanceList;
                     try {
                         maintenanceList = response.body().string();
-                        JSONArray jsonArray = new JSONArray(maintenanceList);
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            ProcMaintenanceReport maintenanceReport = new ProcMaintenanceReport();
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            maintenanceReport.setCompany(object.getString("company"));
-                            maintenanceReport.setPlant(object.getString("plant"));
-                            maintenanceReport.setNo_of_equipment(object.getString("equipment"));
-                            maintenanceReport.setRepair_type(object.getString("repair_type"));
-                            maintenanceReport.setRepair_img(object.getString("repair_type_img"));
-                            maintenanceReport.setCreated_dt(object.getString("created_dt"));
 
-                            maintenanceReportList.add(maintenanceReport);
+                        if (maintenanceList.isEmpty()){
+                            showError();
+                            return;
                         }
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        binding.recyclerView.setLayoutManager(linearLayoutManager);
-                        binding.recyclerView.setHasFixedSize(true);
-                        binding.recyclerView.setItemViewCacheSize(20);
-                        maintenanceReportAdapter = new MaintenanceReportAdapter(context, maintenanceReportList);
-                        binding.recyclerView.setAdapter(maintenanceReportAdapter);
-                        maintenanceReportAdapter.notifyDataSetChanged();
+
+                        JSONObject jsonObject = new JSONObject(maintenanceList);
+                        boolean mRecords = jsonObject.getBoolean("status");
+
+                        if (mRecords) {
+                            JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArrayData.length(); i++) {
+                                ProcMaintenanceReport maintenanceReport = new ProcMaintenanceReport();
+                                JSONObject object = jsonArrayData.getJSONObject(i);
+                                maintenanceReport.setCompany(object.getString("company"));
+                                maintenanceReport.setPlant(object.getString("plant"));
+                                maintenanceReport.setNo_of_equipment(object.getString("equipment"));
+                                maintenanceReport.setRepair_type(object.getString("repair_type"));
+                                maintenanceReport.setRepair_img(object.getString("repair_type_img"));
+                                maintenanceReport.setCreated_dt(object.getString("created_dt"));
+
+                                maintenanceReportList.add(maintenanceReport);
+                            }
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            binding.recyclerView.setLayoutManager(linearLayoutManager);
+                            binding.recyclerView.setHasFixedSize(true);
+                            binding.recyclerView.setItemViewCacheSize(20);
+                            maintenanceReportAdapter = new MaintenanceReportAdapter(context, maintenanceReportList);
+                            binding.recyclerView.setAdapter(maintenanceReportAdapter);
+                            maintenanceReportAdapter.notifyDataSetChanged();
+                            return;
+                        }
+                        binding.shimmerLayout.setVisibility(GONE);
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.noRecords.setVisibility(View.VISIBLE);
                     } catch (IOException | JSONException e) {
                         //  throw new RuntimeException(e);
-                        Toast.makeText(context, "List load error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        showError();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, "List load error:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
+    }
+    private void showError() {
+        binding.shimmerLayout.setVisibility(GONE);
+        binding.recyclerView.setVisibility(GONE);
+        binding.nullError.setVisibility(View.VISIBLE);
+        binding.message.setText("Something went wrong!");
     }
 }

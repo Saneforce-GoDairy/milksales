@@ -14,22 +14,26 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityAgronomistFormBinding;
-import com.saneforce.godairy.procurement.database.DatabaseManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,9 +51,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAgronomistFormBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        DatabaseManager databaseManager = new DatabaseManager(this);
-        databaseManager.open();
 
         initSpinnerArray();
         onClick();

@@ -63,54 +63,75 @@ public class VeterinaryReportActivity extends AppCompatActivity {
             @SuppressLint("NotifyDataSetChanged")
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()){
-                    binding.shimmerLayout2.setVisibility(GONE);
+                    binding.shimmerLayout.setVisibility(GONE);
                     String  veterinaryList;
                     try {
                         veterinaryList = response.body().string();
-                        JSONArray jsonArray = new JSONArray(veterinaryList);
-                        for (int i = 0; i<jsonArray.length(); i++) {
-                            ProcVeterinaryReport veterinaryReport = new ProcVeterinaryReport();
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            veterinaryReport.setCompany(object.getString("company"));
-                            veterinaryReport.setPlant(object.getString("plant"));
-                            veterinaryReport.setCenter_name(object.getString("center_name"));
-                            veterinaryReport.setFarmer_code(object.getString("farmer_name"));
-                            veterinaryReport.setService_type(object.getString("service_type"));
-                            veterinaryReport.setService_type_img(object.getString("service_type_image"));
-                            veterinaryReport.setProduct_type(object.getString("product_type"));
-                            veterinaryReport.setSeed_sale(object.getString("seed_sale"));
-                            veterinaryReport.setMineral_mixture(object.getString("mineral_mixture"));
-                            veterinaryReport.setFodder_setts_sales(object.getString("fodder_setts_sale_kg"));
-                            veterinaryReport.setCattle_feed_order(object.getString("cattle_feed_order_kg"));
-                            veterinaryReport.setTeat_dip(object.getString("teat_dip_cup"));
-                            veterinaryReport.setEvm(object.getString("evm_treatment"));
-                            veterinaryReport.setEvm_img(object.getString("evm_image"));
-                            veterinaryReport.setCase_type(object.getString("case_type"));
-                            veterinaryReport.setIdent_farmers_count(object.getString("identified_farmer_count"));
-                            veterinaryReport.setEnrolled_farmers(object.getString("farmer_enrolled"));
-                            veterinaryReport.setInducted_farmers(object.getString("farmer_inducted"));
-                            veterinaryReport.setCreated_date(object.getString("created_dt"));
-                            veterinaryReportList.add(veterinaryReport);
+
+                        if (veterinaryList.isEmpty()){
+                            showError();
+                            return;
                         }
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        binding.recyclerView.setLayoutManager(linearLayoutManager);
-                        binding.recyclerView.setHasFixedSize(true);
-                        binding.recyclerView.setItemViewCacheSize(20);
-                        veterinaryReportAdapter = new VeterinaryReportAdapter(context, veterinaryReportList);
-                        binding.recyclerView.setAdapter(veterinaryReportAdapter);
-                        veterinaryReportAdapter.notifyDataSetChanged();
+
+                        JSONObject jsonObject = new JSONObject(veterinaryList);
+                        boolean mRecords = jsonObject.getBoolean("status");
+
+                        if (mRecords) {
+                            JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArrayData.length(); i++) {
+                                ProcVeterinaryReport veterinaryReport = new ProcVeterinaryReport();
+                                JSONObject object = jsonArrayData.getJSONObject(i);
+                                veterinaryReport.setCompany(object.getString("company"));
+                                veterinaryReport.setPlant(object.getString("plant"));
+                                veterinaryReport.setCenter_name(object.getString("center_name"));
+                                veterinaryReport.setFarmer_code(object.getString("farmer_name"));
+                                veterinaryReport.setService_type(object.getString("service_type"));
+                                veterinaryReport.setService_type_img(object.getString("service_type_image"));
+                                veterinaryReport.setProduct_type(object.getString("product_type"));
+                                veterinaryReport.setSeed_sale(object.getString("seed_sale"));
+                                veterinaryReport.setMineral_mixture(object.getString("mineral_mixture"));
+                                veterinaryReport.setFodder_setts_sales(object.getString("fodder_setts_sale_kg"));
+                                veterinaryReport.setCattle_feed_order(object.getString("cattle_feed_order_kg"));
+                                veterinaryReport.setTeat_dip(object.getString("teat_dip_cup"));
+                                veterinaryReport.setEvm(object.getString("evm_treatment"));
+                                veterinaryReport.setEvm_img(object.getString("evm_image"));
+                                veterinaryReport.setCase_type(object.getString("case_type"));
+                                veterinaryReport.setIdent_farmers_count(object.getString("identified_farmer_count"));
+                                veterinaryReport.setEnrolled_farmers(object.getString("farmer_enrolled"));
+                                veterinaryReport.setInducted_farmers(object.getString("farmer_inducted"));
+                                veterinaryReport.setCreated_date(object.getString("created_dt"));
+                                veterinaryReportList.add(veterinaryReport);
+                            }
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            binding.recyclerView.setLayoutManager(linearLayoutManager);
+                            binding.recyclerView.setHasFixedSize(true);
+                            binding.recyclerView.setItemViewCacheSize(20);
+                            veterinaryReportAdapter = new VeterinaryReportAdapter(context, veterinaryReportList);
+                            binding.recyclerView.setAdapter(veterinaryReportAdapter);
+                            veterinaryReportAdapter.notifyDataSetChanged();
+                            return;
+                        }
+                        binding.shimmerLayout.setVisibility(GONE);
+                        binding.recyclerView.setVisibility(GONE);
+                        binding.noRecords.setVisibility(View.VISIBLE);
                     } catch (IOException | JSONException e) {
                         //  throw new RuntimeException(e);
-                        Toast.makeText(context, "List load error :" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        showError();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
+    }
+    private void showError() {
+        binding.shimmerLayout.setVisibility(GONE);
+        binding.recyclerView.setVisibility(GONE);
+        binding.nullError.setVisibility(View.VISIBLE);
+        binding.message.setText("Something went wrong!");
     }
 }
