@@ -31,7 +31,7 @@ public class DayReportAdapter extends RecyclerView.Adapter<DayReportAdapter.MyVi
     @Override
     public DayReportAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem = layoutInflater.inflate(R.layout.day_report, null, false);
+        View listItem = layoutInflater.inflate(R.layout.item_day_report, null, false);
         return new DayReportAdapter.MyViewHolder(listItem);
 
     }
@@ -74,8 +74,8 @@ public class DayReportAdapter extends RecyclerView.Adapter<DayReportAdapter.MyVi
             tv_submit_time = (TextView) itemView.findViewById(R.id.submit_time);
             tv_visited_distributor = (TextView) itemView.findViewById(R.id.visited_distributor);
             tv_visited_outlet = (TextView) itemView.findViewById(R.id.visited_outlet);
-            tv_order_distributor = (TextView) itemView.findViewById(R.id.order_distributor);
-            tv_order_outlet = (TextView) itemView.findViewById(R.id.order_outlet);
+           // tv_order_distributor = (TextView) itemView.findViewById(R.id.order_distributor);
+           // tv_order_outlet = (TextView) itemView.findViewById(R.id.order_outlet);
 
             tv_count_distributor = (TextView) itemView.findViewById(R.id.count_distributor);
             tv_count_outlet = (TextView) itemView.findViewById(R.id.count_outlet);
