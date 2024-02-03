@@ -1299,14 +1299,16 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             canvas.drawText(sText.replaceAll("_",""), wdth, y, paint);xQtU=wdth;
             wdth = wdth-bounds.width();
             wdth = wdth-3;
-
-            sText="_"+MRPCap; // RRP -> MRP
-            paint.getTextBounds(sText, 0, sText.length(), bounds);
-            canvas.drawText(sText.replaceAll("_",""), wdth, y, paint);xMRP=wdth;
-            wdth = wdth-bounds.width();
-            wdth = wdth-2;
-            paint.setTextAlign(Paint.Align.LEFT);
-
+            xMRP = wdth;
+            if(!sMode.equals("Primary Order")) {
+                sText = "_" + MRPCap; // RRP -> MRP
+                paint.getTextBounds(sText, 0, sText.length(), bounds);
+                canvas.drawText(sText.replaceAll("_", ""), wdth, y, paint);
+                xMRP = wdth;
+                wdth = wdth - bounds.width();
+                wdth = wdth - 2;
+                paint.setTextAlign(Paint.Align.LEFT);
+            }
             sText="Code__________________";
             paint.getTextBounds(sText, 0, sText.length(), bounds);
             wdth = wdth-bounds.width();
@@ -1337,7 +1339,9 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                 }
                 canvas.drawText("" + Order_Outlet_Filter.get(i).getHSNCode(), xHSN, cy, paint);
                 paint.setTextAlign(Paint.Align.RIGHT);
-                canvas.drawText("" + formatter.format(Double.parseDouble(Order_Outlet_Filter.get(i).getMRP())), xMRP, cy, paint);
+                if(!sMode.equals("Primary Order")) {
+                    canvas.drawText("" + formatter.format(Double.parseDouble(Order_Outlet_Filter.get(i).getMRP())), xMRP, cy, paint);
+                }
                 canvas.drawText("" + Order_Outlet_Filter.get(i).getUnitCode(), xQtU, cy, paint);
                 canvas.drawText("" + Order_Outlet_Filter.get(i).getQty(), xQt, cy, paint);
                 canvas.drawText("" + Order_Outlet_Filter.get(i).getFree(), xFQt, cy, paint);
@@ -1398,12 +1402,13 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             canvas.drawText("Total Item", x, y, paint);
             paint.setTextAlign(Paint.Align.RIGHT);
             canvas.drawText(totalitem.getText().toString(), xTot, y, paint);
-            y = y + 20;
-            paint.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText("Total Qty", x, y, paint);
-            paint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(totalqty.getText().toString(), xTot, y, paint);
-
+            if(!sMode.equals("Primary Order")) {
+                y = y + 20;
+                paint.setTextAlign(Paint.Align.LEFT);
+                canvas.drawText("Total Qty", x, y, paint);
+                paint.setTextAlign(Paint.Align.RIGHT);
+                canvas.drawText(totalqty.getText().toString(), xTot, y, paint);
+            }
 //            if (uomList != null) {
 //                for (int i = 0; i < uomList.size(); i++) {
 //                    y = y + 20;
