@@ -1,6 +1,8 @@
 package com.saneforce.godairy.Activity_Hap;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -75,6 +77,9 @@ public class Day_Report_Activity extends AppCompatActivity {
         bottomSheetDialog.setContentView(bottomSheetView);
         TextView tv_view_summery = bottomSheetView.findViewById(R.id.tv_view_summery);
         tv_view_summery.setOnClickListener(v -> bottomSheetDialog.dismiss());
+
+        id = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getString("Sfcode", "");
+        getReport();
     }
 
     private void showBottomSheet() {
