@@ -63,7 +63,7 @@
                 android:gravity="start"
                 android:paddingTop="@dimen/C5dp"
                 android:text="Count"
-                android:textColor="@color/grey"
+                android:textColor="@color/awhite"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
@@ -262,7 +262,7 @@
                 android:layout_weight="1"
                 android:gravity="start"
                 android:text="Value"
-                android:textColor="@color/grey"
+                android:textColor="@color/awhite"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
