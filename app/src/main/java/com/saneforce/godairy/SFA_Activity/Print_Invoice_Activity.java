@@ -974,8 +974,10 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
                 String discount = "           " + cashDisc;
                 String outstand = "           " + outstandAmt;
 
-                printama.printText("SubTotal" + "                            " + subTotal.substring(String.valueOf(formatter.format(subTotalVal)).length(), subTotal.length()));
-                printama.addNewLine();
+                printama.printText("Total" + "                            " + subTotal.substring(String.valueOf(formatter.format(subTotalVal)).length(), subTotal.length()));
+
+                printama.printDashedLine();
+                    printama.addNewLine();
                 printama.printText("Taxable Amount" + "                      " + tsubTotal.substring(String.valueOf(formatter.format(tsubTotalVal)).length(), subTotal.length()));
                 printama.addNewLine();
                 printama.printText("Total Qty" + "                           " + totqty.substring(totalqty.getText().toString().length(), totqty.length()));
@@ -1393,9 +1395,16 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
 
             y = y + 30;
             paint.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText("SubTotal", x, y, paint);
+            canvas.drawText("Total", x, y, paint);
             paint.setTextAlign(Paint.Align.RIGHT);
             canvas.drawText(subtotal.getText().toString(), xTot, y, paint);
+
+            y = y +10;
+            paint.setColor(Color.LTGRAY);
+            paint.setStrokeWidth(1);
+            canvas.drawLine(0, y, widthSize, y, paint);
+
+            paint.setColor(Color.DKGRAY);
 
             y = y + 20;
             paint.setTextAlign(Paint.Align.LEFT);
