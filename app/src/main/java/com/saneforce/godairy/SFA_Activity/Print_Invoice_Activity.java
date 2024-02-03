@@ -2361,7 +2361,7 @@ if (tvRetailorPhone.getText().toString().equalsIgnoreCase("0")) tvRetailorPhone.
             totalitem.setText("" + Order_Outlet_Filter.size());
             baseAmt.setText(CurrencySymbol + " " + formatter.format(tsubTotalVal));
             subtotal.setText(CurrencySymbol + " " + formatter.format(subTotalVal));
-            NetTotAmt = subTotalVal - cashDisc;
+            NetTotAmt = subTotalVal ;//- cashDisc;
             netamount.setText(CurrencySymbol + " " + formatter.format(NetTotAmt));
 
 

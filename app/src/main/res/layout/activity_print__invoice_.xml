@@ -565,7 +565,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Subtotal"
+                                    android:text="Total"
                                     android:textAlignment="textStart"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/C13dp"></TextView>
@@ -580,6 +580,10 @@
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/C12dp"></TextView>
                             </RelativeLayout>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:background="@drawable/line_dash_background"></View>
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"

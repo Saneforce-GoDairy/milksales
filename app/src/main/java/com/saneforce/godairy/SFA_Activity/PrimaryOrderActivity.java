@@ -737,7 +737,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             if (ACBalance < currentOrderVal && ACBalanceChk) {
                 ResetSubmitBtn(0);
                 double ddif=  currentOrderVal - ACBalance;
-                String sMsg="Low A/C Balance."+ " You need Amount of <b><span style='color:#FF0000'>"+CurrencySymbol+" " + formatter.format(ddif) +"</span></b>";
+                String sMsg="Low A/C Balance."+ " You need to pay the amount of <b><span style='color:#FF0000'>"+CurrencySymbol+" " + formatter.format(ddif) +"</span></b>";
                 AlertDialogBox.showDialog(PrimaryOrderActivity.this, HAPApp.Title, sMsg, "OK", null, false, new AlertBox() {
                     @Override
                     public void PositiveMethod(DialogInterface dialog, int id) {
