@@ -165,7 +165,7 @@ public class Day_Report_Activity extends AppCompatActivity {
     }
 
     private void getFieldForceList() {
-        assistantClass.showProgressDialog("Fetching My Team", false);
+        assistantClass.showProgressDialog("Fetching My Team...", false);
         Map<String, String> params = new HashMap<>();
         params.put("axn", "getDownlineHierarchy");
         params.put("date", assistantClass.formatDateToDB(binding.selectDate.getText().toString()));

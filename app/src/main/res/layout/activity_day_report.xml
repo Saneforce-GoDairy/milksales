@@ -63,6 +63,7 @@
         android:src="@drawable/semi_circle_top" />
 
     <ImageView
+        android:id="@+id/topArrow"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentBottom="true"
