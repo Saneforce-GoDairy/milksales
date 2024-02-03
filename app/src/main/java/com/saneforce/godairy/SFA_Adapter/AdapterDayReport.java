@@ -32,7 +32,8 @@ public class AdapterDayReport extends RecyclerView.Adapter<AdapterDayReport.View
     public void onBindViewHolder(@NonNull AdapterDayReport.ViewHolder holder, int position) {
         holder.emp_name.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("title"));
         holder.work_type.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("workType"));
-        holder.emp_id_deg.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("empId") + " & " + array.optJSONObject(holder.getBindingAdapterPosition()).optString("designationName"));
+        String empIdDeg = array.optJSONObject(holder.getBindingAdapterPosition()).optString("empId") + " & " + array.optJSONObject(holder.getBindingAdapterPosition()).optString("designationName");
+        holder.emp_id_deg.setText(empIdDeg);
         holder.submit_time.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("submittedOn"));
         holder.visited_distributor.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("DistVisitedCount"));
         holder.visited_outlet.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("RetVisitedCount"));
