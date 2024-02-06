@@ -182,4 +182,6 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     implementation files('libs/atomPaynetzSDK-release.aar')
+
+    implementation 'ai.nextbillion:nb-maps-android:1.0.0'
 }

@@ -1,5 +1,6 @@
 package com.saneforce.godairy.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -92,6 +93,7 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0, 0), 16));
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     public void centreMapOnLocation() {
         mGoogleMap.clear();
         if (array != null && array.length() > 0) {
@@ -102,7 +104,6 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
                     polygonOptions.add(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")));
                     mGoogleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")))
-                            .title(array.optJSONObject(i).optString("title"))
                             .icon(getCustomMarkerIcon(label)));
                     label++;
                 } catch (Exception e) {
@@ -116,6 +117,18 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
             LatLngBounds bounds = builder.build();
             mGoogleMap.addPolygon(polygonOptions);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+            mGoogleMap.setOnMarkerClickListener(marker -> {
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject arrObj = array.optJSONObject(i);
+                            LatLng latLng = new LatLng(arrObj.optDouble("lat"), arrObj.optDouble("lng"));
+                            if (latLng.equals(marker.getPosition())) {
+                                String data = "Punched on: " + arrObj.optString("title") + "\n\nAddress: " + arrObj.optString("address") + "\n\nRemarks: " + arrObj.optString("remarks");
+                                assistantClass.showAlertDialogWithDismiss(data);
+                            }
+                        }
+                        return true;
+                    }
+            );
         }
     }
 
