@@ -64,7 +64,7 @@ public class Day_Report_Activity extends AppCompatActivity {
             id = object.optString("id");
             getReport();
         }));
-        binding.viewSummary.setOnClickListener(v -> showBottomSheet());
+        binding.summaryView.setOnClickListener(v -> showBottomSheet());
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         date = assistantClass.getTime("dd/MM/yyyy");
