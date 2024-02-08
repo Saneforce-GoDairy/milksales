@@ -10,6 +10,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AlertDialogClickListener;
@@ -23,20 +29,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import ai.nextbillion.maps.annotations.MarkerOptions;
-import ai.nextbillion.maps.camera.CameraPosition;
-import ai.nextbillion.maps.camera.CameraUpdateFactory;
-import ai.nextbillion.maps.core.NextbillionMap;
-import ai.nextbillion.maps.core.OnMapReadyCallback;
-import ai.nextbillion.maps.geometry.LatLng;
-
 public class TravelPunchLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
     ActivityTravelPunchLocationBinding binding;
 
     Common_Class common_class;
     AssistantClass assistantClass;
     Context context = this;
-    NextbillionMap map;
+    GoogleMap mGoogleMap;
 
     double lat = 0, lng = 0;
 
@@ -45,9 +44,6 @@ public class TravelPunchLocationActivity extends AppCompatActivity implements On
         super.onCreate(savedInstanceState);
         binding = ActivityTravelPunchLocationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        binding.map.onCreate(savedInstanceState);
-        binding.map.getMapAsync(this);
 
         common_class = new Common_Class(this);
         assistantClass = new AssistantClass(context);
@@ -59,6 +55,11 @@ public class TravelPunchLocationActivity extends AppCompatActivity implements On
 
         binding.refreshLocation.setOnClickListener(v -> GetLocation());
         binding.punchLocation.setOnClickListener(v -> PunchLocation());
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
         GetLocation();
     }
@@ -152,64 +153,15 @@ public class TravelPunchLocationActivity extends AppCompatActivity implements On
     }
 
     @Override
-    public void onMapReady(@NonNull NextbillionMap nextbillionMap) {
-        map = nextbillionMap;
-        map.getStyle(style -> {
-        });
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mGoogleMap = googleMap;
         centreMapOnLocation();
     }
 
     public void centreMapOnLocation() {
-        LatLng latlng = new LatLng(lat, lng);
-
-        map.clear();
-        MarkerOptions marker = new MarkerOptions().position(latlng);
-        map.addMarker(marker);
-
-        int millisecondSpeed = 300;
-        CameraPosition position = new CameraPosition.Builder().target(latlng).zoom(16).tilt(20).build();
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(position), millisecondSpeed);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        binding.map.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        binding.map.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        binding.map.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        binding.map.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding.map.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        binding.map.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        binding.map.onLowMemory();
+        LatLng userLocation = new LatLng(lat, lng);
+        mGoogleMap.clear();
+        mGoogleMap.addMarker(new MarkerOptions().position(userLocation).title("Your are here"));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 16));
     }
 }

@@ -29,7 +29,6 @@ import com.saneforce.godairy.universal.Constant;
 
 import org.json.JSONArray;
 
-import ai.nextbillion.maps.Nextbillion;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,7 +63,6 @@ public class HAPApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Nextbillion.getInstance(getApplicationContext(), "ca82b61e0b5243a6adfd31ab4256013d");
       /*  mApiComponent = DaggerApiComponent.builder()
                 .appModule(new AppModule(this))
                 .apiModule(new ApiModule("https://hap.sanfmcg.com/server/"))

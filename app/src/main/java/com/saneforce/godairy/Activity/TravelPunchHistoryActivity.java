@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -23,7 +24,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.R;
@@ -34,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TravelPunchHistoryActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -44,6 +47,7 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
     Context context = this;
     GoogleMap mGoogleMap;
     JSONArray array;
+    JSONObject object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
         common_class = new Common_Class(this);
         assistantClass = new AssistantClass(context);
         array = new JSONArray();
+        object = new JSONObject();
 
         binding.toolbar.back.setOnClickListener(v -> onBackPressed());
         binding.toolbar.title.setText("Travel Punch History");
@@ -75,6 +80,7 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 assistantClass.dismissProgressDialog();
+                object = jsonObject;
                 array = jsonObject.optJSONArray("response");
                 centreMapOnLocation();
             }
@@ -97,25 +103,18 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
     public void centreMapOnLocation() {
         mGoogleMap.clear();
         if (array != null && array.length() > 0) {
-            PolygonOptions polygonOptions = new PolygonOptions();
             int label = 1;
-            for (int i = 0; i < array.length(); i++) {
-                try {
-                    polygonOptions.add(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")));
-                    mGoogleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")))
-                            .icon(getCustomMarkerIcon(label)));
-                    label++;
-                } catch (Exception e) {
-                    assistantClass.log(e.getLocalizedMessage());
-                }
-            }
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (LatLng point : polygonOptions.getPoints()) {
-                builder.include(point);
+            for (int i = 0; i < array.length(); i++) {
+                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng"))).icon(getCustomMarkerIcon(label)));
+                builder.include(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")));
+                label++;
             }
             LatLngBounds bounds = builder.build();
-            mGoogleMap.addPolygon(polygonOptions);
+            List<LatLng> decodedPolyline = PolyUtil.decode(object.optString("geometry"));
+            assistantClass.log("decodedPolyline: "+ decodedPolyline);
+            PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPolyline).width(10).color(Color.BLUE);
+            mGoogleMap.addPolyline(polylineOptions);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
             mGoogleMap.setOnMarkerClickListener(marker -> {
                         for (int i = 0; i < array.length(); i++) {
