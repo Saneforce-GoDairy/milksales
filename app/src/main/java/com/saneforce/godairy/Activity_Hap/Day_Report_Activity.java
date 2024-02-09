@@ -113,7 +113,7 @@ public class Day_Report_Activity extends AppCompatActivity {
 
     private void assignData() {
         if (reportArray == null) {
-            return;
+            reportArray = new JSONArray();
         }
         adapter = new AdapterDayReport(context, reportArray);
         binding.recyclerView.setAdapter(adapter);

@@ -113,7 +113,7 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
             LatLngBounds bounds = builder.build();
             List<LatLng> decodedPolyline = PolyUtil.decode(object.optString("geometry"));
             assistantClass.log("decodedPolyline: "+ decodedPolyline);
-            PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPolyline).width(10).color(Color.BLUE);
+            PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPolyline).width(6).color(Color.BLUE);
             mGoogleMap.addPolyline(polylineOptions);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
             mGoogleMap.setOnMarkerClickListener(marker -> {
