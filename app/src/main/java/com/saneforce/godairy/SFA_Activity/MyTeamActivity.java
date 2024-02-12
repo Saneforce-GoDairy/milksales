@@ -286,10 +286,11 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }
 
-                mapAdapter = new MyTeamMapAdapter(this, arr1, String.valueOf(laty), String.valueOf(lngy),mType, new AdapterOnClick() {
+                mapAdapter = new MyTeamMapAdapter(this, arr1, String.valueOf(laty), String.valueOf(lngy), mType, new AdapterOnClick() {
                     @Override
-                    public void onIntentClick(JsonObject item, int Name) {
-
+                    public void onIntentClick(int Name) {
+                        JSONObject object = arr.optJSONObject(Name);
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(object.optDouble("Lat"), object.optDouble("Lon")), 18));
                     }
 
                     @Override
@@ -408,10 +409,11 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
             if (apiDataResponse != null) {
                 switch (key) {
                     case Constants.MYTEAM_LOCATION:
+                        Log.e(TAG, "loc list:" + apiDataResponse);
                         JSONObject jsonObject = new JSONObject(apiDataResponse);
                         if (jsonObject.getBoolean("success")) {
                             String Desgs = "[\"ALL\"," + jsonObject.getJSONArray("Designation").join(",") + "]";
-                            // Log.v(TAG,"loc list:")
+//                            Log.v(TAG, "loc list:" + jsonObject);
                             JSONArray arr = new JSONArray(Desgs);//jsonObject.getJSONArray("Designation");
                             adapter = new MyTeamCategoryAdapter(arr, R.layout.myteam_category_adapter_layout, this);
                             rvCategory.setAdapter(adapter);
@@ -437,14 +439,14 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
             //alertDialog.setCancelable(false);
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             LinearLayout llDir = (LinearLayout) view.findViewById(R.id.llDirection);
-            LinearLayout llCall=view.findViewById(R.id.btnCallMob);
+            LinearLayout llCall = view.findViewById(R.id.btnCallMob);
             TextView tvSfName = (TextView) view.findViewById(R.id.tvSfName);
             TextView tvDesig = (TextView) view.findViewById(R.id.tvDesig);
             TextView tvMobile = (TextView) view.findViewById(R.id.txMobile);
             TextView txDtTm = (TextView) view.findViewById(R.id.txDtTm);
             TextView txHQ = view.findViewById(R.id.tvHQ);
 
-
+            String loc = "";
             for (int i = 0; i < array.length(); i++) {
                 JSONObject arrObj = array.getJSONObject(i);
                 LatLng latLng = new LatLng(Double.parseDouble(arrObj.getString("Lat")),
@@ -452,6 +454,10 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
 
                 if (latLng.equals(markPos)) {
                     locPos = i;
+                    try {
+                        loc = getCompleteAddressString(latLng.latitude, latLng.longitude);
+                    } catch (Exception ignored) {
+                    }
                 }
 
             }
@@ -461,9 +467,13 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
             tvDesig.setText("" + obj.getString("Designation_Name"));
             tvMobile.setText("" + obj.getString("SF_Mobile"));
             txDtTm.setText("" + obj.getString("dttm"));
-            txHQ.setText("" + obj.getString("HQ_Name"));
+            if (loc.isEmpty()) {
+                txHQ.setText(obj.getString("HQ_Name"));
+            } else {
+                txHQ.setText(loc.trim());
+            }
 
-            if(Common_Class.isNullOrEmpty(obj.getString("SF_Mobile")))
+            if (Common_Class.isNullOrEmpty(obj.getString("SF_Mobile")))
                 view.findViewById(R.id.btnCallMob).setVisibility(View.GONE);
 
             llCall.setOnClickListener(new View.OnClickListener() {
@@ -479,12 +489,19 @@ public class MyTeamActivity extends AppCompatActivity implements View.OnClickLis
                 public void onClick(View v) {
                     try {
                         alertDialog.dismiss();
-                        Intent intent = new Intent(MyTeamActivity.this, MapDirectionActivity.class);
-                        intent.putExtra(Constants.DEST_LAT, obj.getString("Lat"));
-                        intent.putExtra(Constants.DEST_LNG, obj.getString("Lon"));
+
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + obj.getString("Lat") + "," + obj.getString("Lon") + "&mode=l");
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivityForResult(mapIntent, 1000);
+
+
+                        /*Intent intent = new Intent(MyTeamActivity.this, MapDirectionActivity.class);
+                        intent.putExtra(Constants.DEST_LAT, );
+                        intent.putExtra(Constants.DEST_LNG, );
                         intent.putExtra(Constants.DEST_NAME, obj.getString("HQ_Name"));
                         intent.putExtra(Constants.NEW_OUTLET, "new");
-                        startActivity(intent);
+                        startActivity(intent);*/
                     } catch (Exception e) {
 
                     }

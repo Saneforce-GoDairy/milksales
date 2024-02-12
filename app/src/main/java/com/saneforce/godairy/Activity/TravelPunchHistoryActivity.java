@@ -82,7 +82,11 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
                 assistantClass.dismissProgressDialog();
                 object = jsonObject;
                 array = jsonObject.optJSONArray("response");
-                centreMapOnLocation();
+                if (array == null || array.length() == 0) {
+                    assistantClass.showAlertDialogWithFinish("No punched registered...");
+                } else {
+                    centreMapOnLocation();
+                }
             }
 
             @Override

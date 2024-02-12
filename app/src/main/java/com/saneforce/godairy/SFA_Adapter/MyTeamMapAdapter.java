@@ -3,6 +3,7 @@ package com.saneforce.godairy.SFA_Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class MyTeamMapAdapter extends RecyclerView.Adapter<MyTeamMapAdapter.View
     AdapterOnClick mAdapterOnClick;
     public static String TAG = "MyTeamMapAdapter";
     Common_Class common_class;
+
 
 
     public MyTeamMapAdapter(Activity context, JSONArray array, String laty, String lngy,String mType, AdapterOnClick mAdapterOnClick) {
@@ -90,11 +92,16 @@ public class MyTeamMapAdapter extends RecyclerView.Adapter<MyTeamMapAdapter.View
             public void onClick(View v) {
                 try {
                     json = array.getJSONObject(position);
-                    Intent intent = new Intent(context, MapDirectionActivity.class);
+                    /*Intent intent = new Intent(context, MapDirectionActivity.class);
                     intent.putExtra(Constants.DEST_LAT, json.getString("Lat"));
                     intent.putExtra(Constants.DEST_LNG, json.getString("Lon"));
                     intent.putExtra(Constants.DEST_NAME, json.getString("HQ_Name"));
-                    context.startActivity(intent);
+                    context.startActivity(intent);*/
+
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + json.getString("Lat") + "," + json.getString("Lon") + "&mode=l");
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    ((Activity) context).startActivityForResult(mapIntent, 1000);
 
 
                 } catch (Exception e) {
@@ -111,6 +118,7 @@ public class MyTeamMapAdapter extends RecyclerView.Adapter<MyTeamMapAdapter.View
             }
         });
 
+        holder.itemView.setOnClickListener(view -> mAdapterOnClick.onIntentClick(holder.getBindingAdapterPosition()));
 
     }
 

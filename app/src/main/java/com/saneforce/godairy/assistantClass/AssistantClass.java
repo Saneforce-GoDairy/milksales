@@ -267,8 +267,9 @@ public class AssistantClass extends AppCompatActivity {
     }
 
     public void dismissProgressDialog() {
-        if (progressDialog != null) {
+        try {
             progressDialog.dismiss();
+        } catch (Exception ignored) {
         }
     }
 

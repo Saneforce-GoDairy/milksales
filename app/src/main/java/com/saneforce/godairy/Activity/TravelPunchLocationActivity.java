@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,6 +63,26 @@ public class TravelPunchLocationActivity extends AppCompatActivity implements On
         }
 
         GetLocation();
+        GetRemarksMandatoryStatus();
+    }
+
+    private void GetRemarksMandatoryStatus() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "isMPRemarkMandatory");
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                int mandatory = jsonObject.optInt("mandatory");
+                if (mandatory == 0) {
+                    binding.remarksTitle.setText(getString(R.string.remarks_purpose_of_visit_without_star));
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.showAlertDialogWithDismiss(error);
+            }
+        });
     }
 
     private void PunchLocation() {
@@ -70,6 +91,8 @@ public class TravelPunchLocationActivity extends AppCompatActivity implements On
 
         if (lat == 0 || lng == 0 || address.isEmpty()) {
             Toast.makeText(context, "Please capture location...", Toast.LENGTH_SHORT).show();
+        } else if (binding.remarksTitle.getText().toString().contains("*") && remarks.isEmpty()) {
+            Toast.makeText(context, "Please enter remarks...", Toast.LENGTH_SHORT).show();
         } else {
             assistantClass.showAlertDialog("", "Are you sure you want to submit?", true, "Yes", "No", new AlertDialogClickListener() {
                 @Override

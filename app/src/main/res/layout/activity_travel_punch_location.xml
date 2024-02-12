@@ -59,7 +59,7 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="15dp"
         android:textColor="#757575"
-        android:text="Remarks (Purpose of Visit)" />
+        android:text="@string/remarks_purpose_of_visit" />
 
     <EditText
         android:id="@+id/enterRemarks"
