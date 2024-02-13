@@ -82,6 +82,7 @@ import com.saneforce.godairy.SFA_Activity.PrimaryOrderActivity;
 import com.saneforce.godairy.SFA_Activity.ProjectionCategorySelectActivity;
 import com.saneforce.godairy.SFA_Activity.ReportsListActivity;
 import com.saneforce.godairy.SFA_Activity.Reports_Distributor_Name;
+import com.saneforce.godairy.SFA_Activity.RetailerGeoTaggingActivity;
 import com.saneforce.godairy.SFA_Activity.SFA_Dashboard;
 import com.saneforce.godairy.SFA_Activity.StockAuditCategorySelectActivity;
 import com.saneforce.godairy.SFA_Activity.VanSalesDashboardRoute;
@@ -257,6 +258,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
                     // menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
                     menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
+                    menuList.add(new ListModel("", "Geo Tagging", "", "", "", R.drawable.ic_outlets_sf));
                     if (UserDetails.getString("Sfcode", "").equals("MGR8171")) {
                         menuList.add(new ListModel("", "Approve Outlets", "", "", "", R.drawable.ic_approve_outlets));
                     }
@@ -278,6 +280,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     // menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
                     menuList.add(new ListModel("", "Pay Bills", "", "", "", R.drawable.ic_secondary_order_sf));
                     menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
+                    menuList.add(new ListModel("", "Geo Tagging", "", "", "", R.drawable.ic_outlets_sf));
                     menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
                     //menuList.add(new ListModel("", "Counter Sales", "", "", "", R.drawable.ic_outline_assignment_48));
@@ -292,6 +295,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
                     menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
                     menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
+                    menuList.add(new ListModel("", "Geo Tagging", "", "", "", R.drawable.ic_outlets_sf));
                     menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
                     menuList.add(new ListModel("", "POS", "", "", "", R.drawable.ic_outline_assignment_48));
@@ -477,6 +481,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     case "Outlets":
                         common_class.CommonIntentwithNEwTask(Outlet_Info_Activity.class);
+                        break;
+
+                    case "Geo Tagging":
+                        common_class.CommonIntentwithNEwTask(RetailerGeoTaggingActivity.class);
                         break;
 
                     case "Distributor":

@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -44,6 +45,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.saneforce.godairy.Common_Class.Constants;
+import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AlertDialogClickListener;
 import com.saneforce.godairy.Interface.ApiClient;
@@ -141,7 +144,10 @@ public class AssistantClass extends AppCompatActivity {
             return;
         }
         SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref(context);
+        params.put("stk", sharedCommonPref.getvalue(Constants.Distributor_Id));
         params.put("sfc", UserDetails.getString("Sfcode", ""));
+        params.put("div", UserDetails.getString("Divcode", ""));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
         log("Request: " + call.request());
@@ -458,5 +464,16 @@ public class AssistantClass extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
         dialog.show();
+    }
+
+    public void makeCall(String mobilenumber) {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + mobilenumber));
+        callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 123);
+        } else {
+            context.startActivity(callIntent);
+        }
     }
 }
