@@ -511,6 +511,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         JSONObject jParam = new JSONObject();
         try {
             jParam.put("StkERP", sharedCommonPref.getvalue(Constants.DistributorERP));
+            jParam.put("stk", sharedCommonPref.getvalue(Constants.Distributor_Id));
             tvACBal.setText(CurrencySymbol+" 0.00");
             txBalAmt.setText(CurrencySymbol+" 0.00");
             txAmtWalt.setText(CurrencySymbol+" 0.00");
@@ -523,11 +524,18 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                         public void onResponse(@NonNull Call<JsonArray> call, @NonNull Response<JsonArray> response) {
                             try {
                                 JsonArray res = response.body();
+                                Log.e("MyLog", "MyResult: " + res);
                                 try {
                                     JsonObject jItem = res.get(0).getAsJsonObject();
                                     double ActBAL = jItem.get("LC_BAL").getAsDouble();
                                     ACBalance = jItem.get("Balance").getAsDouble();
                                     ACBalanceChk = jItem.get("BalanceChk").getAsBoolean();
+
+                                    if (ACBalanceChk) {
+                                        binding.creditLimitLayout.setVisibility(View.VISIBLE);
+                                    } else {
+                                        binding.creditLimitLayout.setVisibility(View.GONE);
+                                    }
 //                                    if (ActBAL <= 0) ActBAL = Math.abs(ActBAL);
 //                                    else ActBAL = 0 - ActBAL;
                                     NumberFormat format1 = NumberFormat.getCurrencyInstance(new Locale("en", "in"));
