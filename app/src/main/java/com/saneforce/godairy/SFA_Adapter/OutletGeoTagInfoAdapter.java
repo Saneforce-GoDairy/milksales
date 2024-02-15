@@ -1,33 +1,40 @@
 package com.saneforce.godairy.SFA_Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.saneforce.godairy.Activity.GeoTagActivity;
 import com.saneforce.godairy.Interface.AlertDialogClickListener;
 import com.saneforce.godairy.R;
-import com.saneforce.godairy.SFA_Model_Class.OutletGeoTagInfoModel;
 import com.saneforce.godairy.assistantClass.AssistantClass;
-import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
 
-public class OutletGeoTagInfoAdapter extends RecyclerView.Adapter<OutletGeoTagInfoAdapter.ViewHolder> {
+public class OutletGeoTagInfoAdapter extends RecyclerView.Adapter<OutletGeoTagInfoAdapter.ViewHolder> implements Filterable {
     Context context;
-    ArrayList<OutletGeoTagInfoModel> list;
+    JSONArray array, filteredArray;
     AssistantClass assistantClass;
 
-    public OutletGeoTagInfoAdapter(Context context, ArrayList<OutletGeoTagInfoModel> list) {
+    public OutletGeoTagInfoAdapter(Context context, JSONArray array) {
         this.context = context;
-        this.list = list;
+        this.array = array;
         assistantClass = new AssistantClass(context);
+        try {
+            this.filteredArray = new JSONArray(array.toString());
+        } catch (JSONException ignored) { }
     }
 
     @NonNull
@@ -38,11 +45,11 @@ public class OutletGeoTagInfoAdapter extends RecyclerView.Adapter<OutletGeoTagIn
 
     @Override
     public void onBindViewHolder(@NonNull OutletGeoTagInfoAdapter.ViewHolder holder, int position) {
-        holder.code.setText(list.get(holder.getBindingAdapterPosition()).getCode());
-        holder.name.setText(list.get(holder.getBindingAdapterPosition()).getName());
-        holder.address.setText(list.get(holder.getBindingAdapterPosition()).getAddress());
-        holder.mobile.setText(list.get(holder.getBindingAdapterPosition()).getMobile());
-        if (list.get(holder.getBindingAdapterPosition()).getLat().trim().equals("0") || list.get(holder.getBindingAdapterPosition()).getLng().trim().equals("0") || list.get(holder.getBindingAdapterPosition()).getLat().isEmpty() || list.get(holder.getBindingAdapterPosition()).getLng().isEmpty()) {
+        holder.code.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("code"));
+        holder.name.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("name"));
+        holder.address.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("address"));
+        holder.mobile.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("mobile"));
+        if (filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lat").trim().equals("0") || filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lng").trim().equals("0") || filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lat").isEmpty() || filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lng").isEmpty()) {
             holder.location.setImageResource(R.drawable.ic_location_off);
         } else {
             holder.location.setImageResource(R.drawable.ic_location);
@@ -52,7 +59,7 @@ public class OutletGeoTagInfoAdapter extends RecyclerView.Adapter<OutletGeoTagIn
                 @Override
                 public void onPositiveButtonClick(DialogInterface dialog) {
                     dialog.dismiss();
-                    assistantClass.makeCall(list.get(holder.getBindingAdapterPosition()).getMobile());
+                    assistantClass.makeCall(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("mobile"));
                 }
 
                 @Override
@@ -61,12 +68,50 @@ public class OutletGeoTagInfoAdapter extends RecyclerView.Adapter<OutletGeoTagIn
                 }
             });
         });
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, GeoTagActivity.class);
+            intent.putExtra("outletId", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("code"));
+            intent.putExtra("outletName", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("name"));
+            intent.putExtra("outletLat", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lat"));
+            intent.putExtra("outletLng", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lng"));
+            intent.putExtra("outletAddress", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("address"));
+            ((Activity) context).startActivity(intent);
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return filteredArray.length();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String query = constraint.toString().toLowerCase().trim();
+                JSONArray tempArray = new JSONArray();
+                for (int i = 0; i < array.length(); i++) {
+                    try {
+                        String myTitle = array.getJSONObject(i).getString("name");
+                        String Code = array.getJSONObject(i).getString("code");
+                        if (myTitle.toLowerCase().contains(query) || Code.toLowerCase().contains(query)) {
+                            tempArray.put(array.getJSONObject(i));
+                        }
+                    } catch (JSONException ignored) { }
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = tempArray;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredArray = (JSONArray) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

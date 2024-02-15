@@ -5,6 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:id="@+id/filterET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/pjp_borderbg"
+        android:drawableStart="@drawable/ic_search_icon"
+        android:drawablePadding="@dimen/C8dp"
+        android:hint="Search Outlets..."
+        android:inputType="text|textCapWords"
+        android:paddingHorizontal="@dimen/C8dp"
+        android:paddingVertical="6dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/C13dp"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerView"
+        app:layout_constraintStart_toEndOf="@+id/recyclerView"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -14,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filterET"
         tools:itemCount="2"
         tools:listitem="@layout/item_outlet_geo_tag_info" />
 </androidx.constraintlayout.widget.ConstraintLayout>

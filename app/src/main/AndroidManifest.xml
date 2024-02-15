@@ -59,6 +59,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".Activity.GeoTagActivity"
+            android:exported="false" />
+        <activity
             android:name=".SFA_Activity.RetailerGeoTaggingActivity"
             android:exported="false" />
         <activity
