@@ -1,6 +1,7 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_SUBDIVISION;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,9 +23,12 @@ import androidx.core.content.ContextCompat;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.adapters.TAApprListItem;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityAgronomistFormBinding;
+import com.saneforce.godairy.procurement.database.DatabaseManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,10 +46,14 @@ import retrofit2.Response;
 
 public class AgronomistFormActivity extends AppCompatActivity {
     private ActivityAgronomistFormBinding binding;
+    private static final String TAG = "Procurement_";
     private String mCompanyName, mPlant, mCenterName, mFarmerCodeName, mTypeOfProduct, mTeatTipCup, mTypeOfService, mFodderDev;
     private final Context context = this;
     private Bitmap bitmapFormersMeeting, bitmapCSRActivity , bitmapFodderDevAcres;
     private final List<String> list = new ArrayList<>();
+    private DatabaseManager databaseManager;
+    private ArrayList<ProcSubDivison> subDivisonArrayList;
+    private final List<String> listSub = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +61,25 @@ public class AgronomistFormActivity extends AppCompatActivity {
         binding = ActivityAgronomistFormBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        databaseManager = new DatabaseManager(this);
+        databaseManager.open();
+
+        loadSubDivision();
         initSpinnerArray();
         onClick();
+    }
+
+    private void loadSubDivision() {
+        subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
+        listSub.add("Select");
+        for (int i = 0; i<subDivisonArrayList.size(); i++){
+            Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
+            listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, listSub);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerCompany.setAdapter(adapter);
     }
 
     private void onClick() {
@@ -276,11 +302,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void initSpinnerArray() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.company_array, R.layout.custom_spinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCompany.setAdapter(adapter);
-
         loadPlant();
 
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,

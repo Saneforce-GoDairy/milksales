@@ -1,5 +1,7 @@
 package com.saneforce.godairy.procurement;
 
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_SUBDIVISION;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -8,21 +10,43 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.saneforce.godairy.Interface.ApiClient;
+import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Model_Class.ProcAssetReport;
+import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
-import com.saneforce.godairy.procurement.reports.AgronomistReportActivity;
+import com.saneforce.godairy.procurement.database.DatabaseManager;
 import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProcurementHome extends AppCompatActivity {
     private ActivityProcurementHomeBinding binding;
     private final Context context = this;
+    private static final String TAG = "Procurement_";
+    private List<ProcSubDivison> subDivisionList;
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +54,62 @@ public class ProcurementHome extends AppCompatActivity {
         binding = ActivityProcurementHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        subDivisionList = new ArrayList<>();
+
+        databaseManager = new DatabaseManager(getApplicationContext());
+        databaseManager.open();
+
         onClick();
         loadHome();
+        loadSubdivision();
+    }
+
+    private void loadSubdivision() {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call =
+                apiInterface.getSubDivision(PROCUREMENT_GET_SUBDIVISION);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()){
+                    String subDivisionList1 = "";
+
+                    try {
+                        subDivisionList1 = response.body().string();
+
+                        JSONObject jsonObject = new JSONObject(subDivisionList1);
+                        boolean mRecords = jsonObject.getBoolean("status");
+
+                        ArrayList<String> SubDivisionArray = new ArrayList<>();
+
+                        if (mRecords){
+                            JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArrayData.length(); i++) {
+                                ProcSubDivison subDivison = new ProcSubDivison();
+                                JSONObject object = jsonArrayData.getJSONObject(i);
+                                subDivison.setSubdivision_sname(object.getString("subdivision_sname"));
+                                subDivisionList.add(subDivison);
+                                SubDivisionArray.add(object.getString("subdivision_sname"));
+
+                                // for database
+                                databaseManager.open();
+                                databaseManager.deleteAllSubDivision();
+                                databaseManager.saveSubDivision(SubDivisionArray);
+                            }
+                        }
+                    } catch (IOException | JSONException e) {
+                       // throw new RuntimeException(e);
+                        Log.e(TAG, "Unable to parse json " + e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.e(TAG,  t.getMessage());
+            }
+        });
     }
 
     private void loadHome() {

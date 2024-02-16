@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,9 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityVeterinaryDoctorsFormBinding;
+import com.saneforce.godairy.procurement.database.DatabaseManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +46,10 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
     private String mFamilyFarmDev, mNoOfFarmersEnrolled, mNoOfFarmersInducted;
     private Bitmap bitmapTypeOfSer, bitmapEVM;
     private final List<String> list = new ArrayList<>();
+    private static final String TAG = "Procurement";
+    private DatabaseManager databaseManager;
+    private ArrayList<ProcSubDivison> subDivisonArrayList;
+    private final List<String> listSub = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +57,29 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         binding = ActivityVeterinaryDoctorsFormBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        databaseManager = new DatabaseManager(this);
+        databaseManager.open();
+
+        loadSubDivision();
         initSpinnerArray();
         onClick();
     }
 
-    private void initSpinnerArray() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.company_array, R.layout.custom_spinner);
+    private void loadSubDivision() {
+        subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
+        listSub.add("Select");
+        for (int i = 0; i<subDivisonArrayList.size(); i++){
+            Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
+            listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, listSub);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
+    }
 
+
+    private void initSpinnerArray() {
         loadPlant();
 
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
@@ -80,8 +101,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
                 R.array.veterinary_type_of_case_array, R.layout.custom_spinner);
         adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTypeOfCases.setAdapter(adapter5);
-
-
     }
 
     private void loadPlant() {

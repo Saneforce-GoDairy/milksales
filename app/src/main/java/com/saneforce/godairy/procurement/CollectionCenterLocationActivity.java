@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,9 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityColletionCenterLocationBinding;
+import com.saneforce.godairy.procurement.database.DatabaseManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +44,10 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
     private final Context context = this;
     private Bitmap bitmapCollectCenter;
     private final List<String> list = new ArrayList<>();
+    private static final String TAG = "Procurement_";
+    private DatabaseManager databaseManager;
+    private ArrayList<ProcSubDivison> subDivisonArrayList;
+    private final List<String> listSub = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +55,29 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         binding = ActivityColletionCenterLocationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        databaseManager = new DatabaseManager(this);
+        databaseManager.open();
+
+        loadSubDivision();
         initSpinnerArray();
         onClick();
     }
 
-    private void initSpinnerArray() {
-        loadPlant();
+    private void loadSubDivision() {
+        subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
+        listSub.add("Select");
+        for (int i = 0; i<subDivisonArrayList.size(); i++){
+            Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
+            listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
+        }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.company_array, R.layout.custom_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, listSub);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
+    }
+
+    private void initSpinnerArray() {
+        loadPlant();
 
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
                 R.array.competitor_array, R.layout.custom_spinner);

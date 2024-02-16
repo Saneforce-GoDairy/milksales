@@ -8,21 +8,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityExistingAgentVisitBinding;
+import com.saneforce.godairy.procurement.database.DatabaseManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExistingAgentVisitActivity extends AppCompatActivity {
     private ActivityExistingAgentVisitBinding binding;
     private final Context context = this;
     private String mAgent = "", mTotalMilkAvailability, mOurCompanyLtrs, mCompetitorRate, mOurCompanyRate;
     private String mDemand, mSupplyStartDate, mCompanyName;
+    private static final String TAG = "Procurement_";
+    private DatabaseManager databaseManager;
+    private ArrayList<ProcSubDivison> subDivisonArrayList;
+    private final List<String> listSub = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +40,22 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
         binding = ActivityExistingAgentVisitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        initSpinnerArray();
+        databaseManager = new DatabaseManager(this);
+        databaseManager.open();
+
+        loadSubDivision();
         onClick();
     }
 
-    private void initSpinnerArray() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.company_array, R.layout.custom_spinner);
+    private void loadSubDivision() {
+        subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
+        listSub.add("Select");
+        for (int i = 0; i<subDivisonArrayList.size(); i++){
+            Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
+            listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, listSub);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
     }
