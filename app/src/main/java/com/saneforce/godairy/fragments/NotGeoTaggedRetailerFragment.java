@@ -85,7 +85,6 @@ public class NotGeoTaggedRetailerFragment extends Fragment implements RetailerGe
             array = new JSONArray(assistantClass.getStringFromLocal("listWithoutGeo"));
         } catch (JSONException ignored) {
         }
-        assistantClass.log("UpdateData (Not Tagged): " + array);
         adapter = new OutletGeoTagInfoAdapter(getContext(), array);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);

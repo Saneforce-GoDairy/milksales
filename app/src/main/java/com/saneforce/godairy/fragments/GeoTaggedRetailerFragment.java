@@ -86,7 +86,6 @@ public class GeoTaggedRetailerFragment extends Fragment implements RetailerGeoTa
             array = new JSONArray(assistantClass.getStringFromLocal("listWithGeo"));
         } catch (JSONException ignored) {
         }
-        assistantClass.log("UpdateData (Tagged): " + array);
         adapter = new OutletGeoTagInfoAdapter(getContext(), array);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);

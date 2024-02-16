@@ -35,6 +35,8 @@ public class RetailerGeoTaggingActivity extends AppCompatActivity implements Mas
 
     String title = "OUTLET GEO TAG INFO", distributorID = "", distributorTITLE = "";
     public static int version = 0;
+    public static double radius = 0;
+    public static boolean isUpdated = false;
     JSONArray array, listWithGeo, listWithoutGeo;
     TaggedOutletsListener listener1;
     NotTaggedOutletsListener listener2;
@@ -58,6 +60,7 @@ public class RetailerGeoTaggingActivity extends AppCompatActivity implements Mas
         listWithGeo = new JSONArray();
         listWithoutGeo = new JSONArray();
         version = 0;
+        isUpdated = false;
 
         binding.toolbar.title.setText(title);
         binding.toolbar.back.setOnClickListener(view -> onBackPressed());
@@ -92,6 +95,7 @@ public class RetailerGeoTaggingActivity extends AppCompatActivity implements Mas
             public void onSuccess(JSONObject jsonObject) {
                 assistantClass.dismissProgressDialog();
                 array = jsonObject.optJSONArray("response");
+                radius = jsonObject.optDouble("radius");
                 assignResult();
             }
 
@@ -120,9 +124,7 @@ public class RetailerGeoTaggingActivity extends AppCompatActivity implements Mas
             }
         }
         assistantClass.saveToLocal("listWithGeo", listWithGeo.toString());
-        assistantClass.log("listWithGeo: " + listWithGeo.toString());
         assistantClass.saveToLocal("listWithoutGeo", listWithoutGeo.toString());
-        assistantClass.log("listWithoutGeo: " + listWithoutGeo.toString());
         version ++;
         if (listener1 != null) {
             listener1.onLoadTaggedOutlets();
@@ -170,5 +172,14 @@ public class RetailerGeoTaggingActivity extends AppCompatActivity implements Mas
 
     public interface NotTaggedOutletsListener {
         default void onLoadNotTaggedOutlets() {};
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isUpdated) {
+            getOutletGeoTagInfo();
+            isUpdated = false;
+        }
     }
 }
