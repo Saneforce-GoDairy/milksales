@@ -8,11 +8,32 @@
         android:id="@+id/toolbar"
         layout="@layout/my_toolbar" />
 
+    <LinearLayout
+        android:id="@+id/masterLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="@dimen/C15dp"
+        android:layout_marginHorizontal="@dimen/C15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/customerTitle"
+            android:text="Customer"
+            style="@style/myFormTitle"/>
+
+        <TextView
+            android:id="@+id/selectCustomer"
+            android:hint="Select Customer"
+            style="@style/myFormDropdown"/>
+
+    </LinearLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/masterLL"
         android:background="#BF0089BD"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/white"

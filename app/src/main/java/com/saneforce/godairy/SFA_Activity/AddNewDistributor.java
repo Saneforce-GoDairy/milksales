@@ -371,11 +371,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    customer_photo_name = FileName;
-                    customer_photo_url = fullPath;
-                    display_customer_photo.setImageBitmap(image);
-                    display_customer_photo.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            customer_photo_name = FileName;
+                            customer_photo_url = fullPath;
+                            display_customer_photo.setImageBitmap(image);
+                            display_customer_photo.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -385,11 +394,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    shop_photo_name = FileName;
-                    shop_photo_url = fullPath;
-                    display_shop_photo.setImageBitmap(image);
-                    display_shop_photo.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            shop_photo_name = FileName;
+                            shop_photo_url = fullPath;
+                            display_shop_photo.setImageBitmap(image);
+                            display_shop_photo.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -399,11 +417,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    aadhaarImageName = FileName;
-                    aadhaarImageFullPath = fullPath;
-                    display_aadhaar_number.setImageBitmap(image);
-                    display_aadhaar_number.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            aadhaarImageName = FileName;
+                            aadhaarImageFullPath = fullPath;
+                            display_aadhaar_number.setImageBitmap(image);
+                            display_aadhaar_number.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -413,11 +440,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    panImageName = FileName;
-                    panImageFullPath = fullPath;
-                    display_pan_number.setImageBitmap(image);
-                    display_pan_number.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            panImageName = FileName;
+                            panImageFullPath = fullPath;
+                            display_pan_number.setImageBitmap(image);
+                            display_pan_number.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -427,11 +463,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    bankImageName = FileName;
-                    bankImageFullPath = fullPath;
-                    display_bank_details.setImageBitmap(image);
-                    display_bank_details.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            bankImageName = FileName;
+                            bankImageFullPath = fullPath;
+                            display_bank_details.setImageBitmap(image);
+                            display_bank_details.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -442,7 +487,16 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
                     FSSAIList.add(FileName);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -452,7 +506,16 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     GSTList.add(FileName);
                 }
             });
@@ -463,11 +526,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    agreementImageName = FileName;
-                    agreementImageFullPath = fullPath;
-                    display_agreement_copy.setImageBitmap(image);
-                    display_agreement_copy.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            agreementImageName = FileName;
+                            agreementImageFullPath = fullPath;
+                            display_agreement_copy.setImageBitmap(image);
+                            display_agreement_copy.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -477,11 +549,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    gstDeclarationImageName = FileName;
-                    gstDeclarationImageFullPath = fullPath;
-                    previewGSTDeclaration.setImageBitmap(image);
-                    previewGSTDeclaration.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            gstDeclarationImageName = FileName;
+                            gstDeclarationImageFullPath = fullPath;
+                            previewGSTDeclaration.setImageBitmap(image);
+                            previewGSTDeclaration.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -491,11 +572,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    tcsDeclarationImageName = FileName;
-                    tcsDeclarationImageFullPath = fullPath;
-                    previewTCSDeclaration.setImageBitmap(image);
-                    previewTCSDeclaration.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            tcsDeclarationImageName = FileName;
+                            tcsDeclarationImageFullPath = fullPath;
+                            previewTCSDeclaration.setImageBitmap(image);
+                            previewTCSDeclaration.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -505,11 +595,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    FSSAIDeclarationImageName = FileName;
-                    FSSAIDeclarationImageFullPath = fullPath;
-                    previewfssaiDeclaration.setImageBitmap(image);
-                    previewfssaiDeclaration.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            FSSAIDeclarationImageName = FileName;
+                            FSSAIDeclarationImageFullPath = fullPath;
+                            previewfssaiDeclaration.setImageBitmap(image);
+                            previewfssaiDeclaration.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -519,11 +618,20 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    customerApplicationImageName = FileName;
-                    customerApplicationImageFullPath = fullPath;
-                    display_customer_application.setImageBitmap(image);
-                    display_customer_application.setVisibility(View.VISIBLE);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            customerApplicationImageName = FileName;
+                            customerApplicationImageFullPath = fullPath;
+                            display_customer_application.setImageBitmap(image);
+                            display_customer_application.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);

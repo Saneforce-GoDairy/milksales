@@ -41,7 +41,7 @@ public class GeoTagActivity extends AppCompatActivity implements OnMapReadyCallb
     Context context = this;
     GoogleMap mGoogleMap;
     double lat = 0, lng = 0;
-    String id = "", title = "", address = "";
+    String id = "", title = "", address = "", type = "";
     boolean isViewMode = false;
     LatLng selectedLocation;
 
@@ -60,6 +60,7 @@ public class GeoTagActivity extends AppCompatActivity implements OnMapReadyCallb
         id = getIntent().getStringExtra("outletId");
         title = getIntent().getStringExtra("outletName");
         address = getIntent().getStringExtra("outletAddress");
+        type = getIntent().getStringExtra("type");
 
         try {
             lat = Double.parseDouble(getIntent().getStringExtra("outletLat"));
@@ -109,8 +110,13 @@ public class GeoTagActivity extends AppCompatActivity implements OnMapReadyCallb
     private void SaveLocation() {
         assistantClass.showProgressDialog("Please wait...", false);
         Map<String, String> params = new HashMap<>();
-        params.put("axn", "GeoTagOutlet");
-        params.put("outletCode", id);
+        if (type.equalsIgnoreCase("outlet")) {
+            params.put("axn", "GeoTagOutlet");
+            params.put("outletCode", id);
+        } else {
+            params.put("axn", "GeoTagStockist");
+            params.put("stockistCode", id);
+        }
         params.put("lat", String.valueOf(lat));
         params.put("lng", String.valueOf(lng));
         assistantClass.makeApiCall(params, "", new APIResult() {

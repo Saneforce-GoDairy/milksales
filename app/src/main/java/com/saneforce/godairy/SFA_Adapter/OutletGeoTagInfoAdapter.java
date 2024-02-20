@@ -45,8 +45,8 @@ public class OutletGeoTagInfoAdapter extends RecyclerView.Adapter<OutletGeoTagIn
 
     @Override
     public void onBindViewHolder(@NonNull OutletGeoTagInfoAdapter.ViewHolder holder, int position) {
-        holder.code.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("code"));
-        holder.name.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("name"));
+        holder.code.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("id"));
+        holder.name.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("title"));
         holder.address.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("address"));
         holder.mobile.setText(filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("mobile"));
         if (filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lat").trim().equals("0") || filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lng").trim().equals("0") || filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lat").isEmpty() || filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lng").isEmpty()) {
@@ -70,11 +70,12 @@ public class OutletGeoTagInfoAdapter extends RecyclerView.Adapter<OutletGeoTagIn
         });
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, GeoTagActivity.class);
-            intent.putExtra("outletId", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("code"));
-            intent.putExtra("outletName", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("name"));
+            intent.putExtra("outletId", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("id"));
+            intent.putExtra("outletName", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("title"));
             intent.putExtra("outletLat", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lat"));
             intent.putExtra("outletLng", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("lng"));
             intent.putExtra("outletAddress", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("address"));
+            intent.putExtra("type", filteredArray.optJSONObject(holder.getBindingAdapterPosition()).optString("type"));
             ((Activity) context).startActivity(intent);
         });
 
@@ -94,8 +95,8 @@ public class OutletGeoTagInfoAdapter extends RecyclerView.Adapter<OutletGeoTagIn
                 JSONArray tempArray = new JSONArray();
                 for (int i = 0; i < array.length(); i++) {
                     try {
-                        String myTitle = array.getJSONObject(i).getString("name");
-                        String Code = array.getJSONObject(i).getString("code");
+                        String myTitle = array.getJSONObject(i).getString("title");
+                        String Code = array.getJSONObject(i).getString("id");
                         if (myTitle.toLowerCase().contains(query) || Code.toLowerCase().contains(query)) {
                             tempArray.put(array.getJSONObject(i));
                         }

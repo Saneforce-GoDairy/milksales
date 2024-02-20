@@ -1,6 +1,6 @@
 package com.saneforce.godairy.fragments;
 
-import static com.saneforce.godairy.SFA_Activity.RetailerGeoTaggingActivity.version;
+import static com.saneforce.godairy.SFA_Activity.RetailerGeoTaggingActivity.modifiedVersion;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -66,16 +66,16 @@ public class GeoTaggedRetailerFragment extends Fragment implements RetailerGeoTa
     }
 
     @Override
-    public void onLoadTaggedOutlets() {
+    public void onLoadTaggedList() {
         UpdateData();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (version != myVersion) {
+        if (modifiedVersion != myVersion) {
             UpdateData();
-            myVersion = version;
+            myVersion = modifiedVersion;
         }
     }
 

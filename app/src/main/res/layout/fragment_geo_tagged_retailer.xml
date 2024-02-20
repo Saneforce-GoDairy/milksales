@@ -13,7 +13,7 @@
         android:background="@drawable/pjp_borderbg"
         android:drawableStart="@drawable/ic_search_icon"
         android:drawablePadding="@dimen/C8dp"
-        android:hint="Search Outlets..."
+        android:hint="Search here..."
         android:inputType="text|textCapWords"
         android:paddingHorizontal="@dimen/C8dp"
         android:paddingVertical="6dp"

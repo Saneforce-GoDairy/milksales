@@ -1827,7 +1827,7 @@ public class Common_Class {
         return null;
     }
 
-    public static void uploadToS3Bucket(Context context, String FilePath, String FileName, String Folder) {
+    public static void uploadToS3Bucket(Context context, String FilePath, String FileName, String Folder, ImageUploadListener listener) {
         try{
             Util util = new Util();
             TransferUtility transferUtility = util.getTransferUtility(context);
@@ -1853,23 +1853,24 @@ public class Common_Class {
                 public void onStateChanged(int id, TransferState state) {
                     if (TransferState.COMPLETED == state) {
                         progressDialog.dismiss();
-                        Toast.makeText(context, "File uploaded successfully", Toast.LENGTH_SHORT).show();
+                        listener.onSuccess();
                     } else if (TransferState.FAILED == state) {
                         progressDialog.dismiss();
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        listener.onFail();
                     }
                 }
 
                 @Override
                 public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                    float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
-                    int percentDone = (int) percentDonef;
+                    float percentDoneFloat = ((float) bytesCurrent / (float) bytesTotal) * 100;
+                    int percentDone = (int) percentDoneFloat;
                     progressDialog.setMessage("Uploading... (" + percentDone + "%)");
                 }
 
                 @Override
                 public void onError(int id, Exception ex) {
-                    ex.printStackTrace();
+                    progressDialog.dismiss();
+                    listener.onFail();
                 }
 
             });
@@ -2000,6 +2001,11 @@ public class Common_Class {
 
     public static String validateField(String value) {
         return value.replaceAll("'", "''");
+    }
+
+    public interface ImageUploadListener {
+        void onSuccess();
+        void onFail();
     }
 }
 

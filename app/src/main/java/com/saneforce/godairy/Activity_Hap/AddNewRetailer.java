@@ -118,10 +118,19 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    shopImageName = FileName;
-                    shopImageFullPath = fullPath;
-                    binding.ivShopPhoto.setImageBitmap(image);
-                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "outlet_info");
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "outlet_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            shopImageName = FileName;
+                            shopImageFullPath = fullPath;
+                            binding.ivShopPhoto.setImageBitmap(image);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
