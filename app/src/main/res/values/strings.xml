@@ -363,6 +363,9 @@
     <string name="collection_center_report">Collection center report</string>
     <string name="procurement_asset_report">Procurement asset report</string>
 
+    <string name="remarks_purpose_of_visit">Remarks (Purpose of Visit)<font fgcolor='#E53935'> *</font></string>
+    <string name="remarks_purpose_of_visit_without_star">Remarks (Purpose of Visit)</string>
+
     <array name="company_array">
         <item>Select</item>
         <item>Tirumala Milk</item>
@@ -470,5 +473,7 @@
         <item>Weighing scales</item>
         <item>Others</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

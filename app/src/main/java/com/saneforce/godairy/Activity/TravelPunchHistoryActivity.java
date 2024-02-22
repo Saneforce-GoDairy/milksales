@@ -1,9 +1,11 @@
 package com.saneforce.godairy.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -22,7 +24,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.R;
@@ -32,7 +35,9 @@ import com.saneforce.godairy.databinding.ActivityTravelPunchHistoryBinding;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TravelPunchHistoryActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -43,6 +48,7 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
     Context context = this;
     GoogleMap mGoogleMap;
     JSONArray array;
+    JSONObject object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,7 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
         common_class = new Common_Class(this);
         assistantClass = new AssistantClass(context);
         array = new JSONArray();
+        object = new JSONObject();
 
         binding.toolbar.back.setOnClickListener(v -> onBackPressed());
         binding.toolbar.title.setText("Travel Punch History");
@@ -63,6 +70,13 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
             mapFragment.getMapAsync(this);
         }
 
+
+        binding.dateTV.setText(assistantClass.getTime("dd/MM/yyyy"));
+        binding.selectDateCV.setOnClickListener(view -> assistantClass.showDatePickerDialog(0, Calendar.getInstance().getTimeInMillis(), (date, dateForDB) -> {
+            binding.dateTV.setText(date);
+            GetLocation();
+        }));
+
         GetLocation();
     }
 
@@ -70,11 +84,16 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
         assistantClass.showProgressDialog("Please wait...", false);
         Map<String, String> params = new HashMap<>();
         params.put("axn", "get_punched_locations");
+        params.put("date", assistantClass.formatDateToDB(binding.dateTV.getText().toString()));
         assistantClass.makeApiCall(params, "", new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 assistantClass.dismissProgressDialog();
+                object = jsonObject;
                 array = jsonObject.optJSONArray("response");
+                if (array == null || array.length() == 0) {
+                    assistantClass.showAlertDialogWithDismiss("No punches registered...");
+                }
                 centreMapOnLocation();
             }
 
@@ -92,30 +111,34 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0, 0), 16));
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     public void centreMapOnLocation() {
         mGoogleMap.clear();
         if (array != null && array.length() > 0) {
-            PolygonOptions polygonOptions = new PolygonOptions();
             int label = 1;
-            for (int i = 0; i < array.length(); i++) {
-                try {
-                    polygonOptions.add(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")));
-                    mGoogleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")))
-                            .title(array.optJSONObject(i).optString("title"))
-                            .icon(getCustomMarkerIcon(label)));
-                    label++;
-                } catch (Exception e) {
-                    assistantClass.log(e.getLocalizedMessage());
-                }
-            }
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (LatLng point : polygonOptions.getPoints()) {
-                builder.include(point);
+            for (int i = 0; i < array.length(); i++) {
+                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng"))).icon(getCustomMarkerIcon(label)));
+                builder.include(new LatLng(array.optJSONObject(i).optDouble("lat"), array.optJSONObject(i).optDouble("lng")));
+                label++;
             }
             LatLngBounds bounds = builder.build();
-            mGoogleMap.addPolygon(polygonOptions);
+            List<LatLng> decodedPolyline = PolyUtil.decode(object.optString("geometry"));
+            PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPolyline).width(6).color(Color.BLUE);
+            mGoogleMap.addPolyline(polylineOptions);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+            mGoogleMap.setOnMarkerClickListener(marker -> {
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject arrObj = array.optJSONObject(i);
+                            LatLng latLng = new LatLng(arrObj.optDouble("lat"), arrObj.optDouble("lng"));
+                            if (latLng.equals(marker.getPosition())) {
+                                String data = "Punched on: " + arrObj.optString("title") + "\n\nAddress: " + arrObj.optString("address") + "\n\nRemarks: " + arrObj.optString("remarks");
+                                assistantClass.showAlertDialogWithDismiss(data);
+                            }
+                        }
+                        return true;
+                    }
+            );
         }
     }
 

@@ -178,7 +178,10 @@ public class ChallanActivity extends AppCompatActivity {
                             customerName = object.getString("userName");
                             amount = object.getDouble("CashAmt");
                             ERP_CODE = object.getString("ERP_Code");
-                            PAN = object.getString("Pan");
+                            PAN = object.optString("Pan");
+                            if (PAN.equalsIgnoreCase("null")) {
+                                PAN = "";
+                            }
                             ShowStatus(object);
                         } else {
                             Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
@@ -239,13 +242,15 @@ public class ChallanActivity extends AppCompatActivity {
 
         y += 25;
         String clientNM= ApiClient.BASE_URL.toLowerCase();
-        if(clientNM.contains("thirumala")) {
-            drawBIGTitleWithCenterAlign("Thirumala Milk Products Pvt Ltd.", (float) pageWidth / 2, y);
-        }else if(clientNM.contains("anik")){
+        if(clientNM.contains("anik")){
             drawBIGTitleWithCenterAlign("Anik Milk Products Pvt Ltd.", (float) pageWidth / 2, y);
         }else if(clientNM.contains("prabhat")){
             drawBIGTitleWithCenterAlign("Sunfresh Agro Industries Ltd", (float) pageWidth / 2, y);
+        } else {
+            drawBIGTitleWithCenterAlign("Tirumala Milk Products Pvt Ltd.", (float) pageWidth / 2, y);
         }
+        y += 20;
+        drawTextWithCenterAlign("(To be Routed through EasyPay)", (float) pageWidth / 2, y);
         y += 20;
         drawTextWithCenterAlign(VERSION, (float) pageWidth / 2, y);
 
