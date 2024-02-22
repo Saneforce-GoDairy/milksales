@@ -59,6 +59,7 @@ public class RetailerGeoTaggingActivity extends AppCompatActivity {
         assistantClass = new AssistantClass(context);
         common_class = new Common_Class(this);
         retailerArray = new JSONArray();
+        stockistArray = new JSONArray();
         listWithGeo = new JSONArray();
         listWithoutGeo = new JSONArray();
         masterArray = new JSONArray();

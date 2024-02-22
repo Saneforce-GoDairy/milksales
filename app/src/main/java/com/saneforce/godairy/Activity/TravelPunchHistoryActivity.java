@@ -35,6 +35,7 @@ import com.saneforce.godairy.databinding.ActivityTravelPunchHistoryBinding;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,13 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
             mapFragment.getMapAsync(this);
         }
 
+
+        binding.dateTV.setText(assistantClass.getTime("dd/MM/yyyy"));
+        binding.selectDateCV.setOnClickListener(view -> assistantClass.showDatePickerDialog(0, Calendar.getInstance().getTimeInMillis(), (date, dateForDB) -> {
+            binding.dateTV.setText(date);
+            GetLocation();
+        }));
+
         GetLocation();
     }
 
@@ -76,6 +84,7 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
         assistantClass.showProgressDialog("Please wait...", false);
         Map<String, String> params = new HashMap<>();
         params.put("axn", "get_punched_locations");
+        params.put("date", assistantClass.formatDateToDB(binding.dateTV.getText().toString()));
         assistantClass.makeApiCall(params, "", new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
@@ -83,10 +92,9 @@ public class TravelPunchHistoryActivity extends AppCompatActivity implements OnM
                 object = jsonObject;
                 array = jsonObject.optJSONArray("response");
                 if (array == null || array.length() == 0) {
-                    assistantClass.showAlertDialogWithFinish("No punched registered...");
-                } else {
-                    centreMapOnLocation();
+                    assistantClass.showAlertDialogWithDismiss("No punches registered...");
                 }
+                centreMapOnLocation();
             }
 
             @Override
