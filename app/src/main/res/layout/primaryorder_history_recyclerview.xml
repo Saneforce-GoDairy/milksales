@@ -149,20 +149,35 @@
                     android:textSize="9sp"></TextView>
 
             </LinearLayout>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="end"
+    android:paddingVertical="@dimen/C5dp">
+            <TextView
+                android:id="@+id/viewInv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/button_dblue"
+                android:paddingHorizontal="@dimen/C15dp"
+                android:paddingVertical="4dp"
+                android:text="View Invoices"
+                android:textColor="@color/white" />
             <TextView
                 android:id="@+id/payNow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="5dp"
-                android:layout_marginVertical="5dp"
                 android:background="@drawable/button_green"
                 android:paddingHorizontal="@dimen/C15dp"
                 android:paddingVertical="4dp"
                 android:text="Pay Now"
                 android:textColor="@color/white" />
-
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

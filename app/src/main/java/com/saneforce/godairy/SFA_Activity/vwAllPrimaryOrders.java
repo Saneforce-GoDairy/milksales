@@ -126,6 +126,9 @@ public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Inte
                         Shared_Common_Pref.TransSlNo = obj.getString("Trans_Sl_No");
                         Intent intent = new Intent(getBaseContext(), Print_Invoice_Activity.class);
                         sharedCommonPref.save(Constants.FLAG, "Primary Order");
+                        sharedCommonPref.save(Constants.Distributor_Id, obj.getString("Stockist_Code"));
+                        sharedCommonPref.save(Constants.DistributorERP, obj.getString("ERPCode"));
+                        sharedCommonPref.save(Constants.Distributor_name,obj.getString("CustomerName"));
                         intent.putExtra("Mode", "order_view");
                         intent.putExtra("Order_Values", obj.getString("Order_Value"));
                         intent.putExtra("Invoice_Values", obj.getString("invoicevalues"));

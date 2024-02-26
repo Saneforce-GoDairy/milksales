@@ -22,6 +22,7 @@ import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.ChallanActivity;
 import com.saneforce.godairy.SFA_Activity.TodayPrimOrdActivity;
+import com.saneforce.godairy.SFA_Activity.vwInvoices;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +92,23 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
             ((MyViewHolder) holder).txtValue.setText("" + new DecimalFormat("##0.00").format(Double.parseDouble(obj.getString("Order_Value"))));
             ((MyViewHolder) holder).Itemcountinvoice.setText(obj.getString("Status"));
 
+            ((MyViewHolder) holder).vwInvoice.setVisibility(View.GONE);
+            if(!obj.getString("Status").equalsIgnoreCase("")){
+                ((MyViewHolder) holder).vwInvoice.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).vwInvoice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent intent = new Intent(context, vwInvoices.class);
+                            intent.putExtra("PONO", obj.getString("Trans_Sl_No"));
+                            intent.putExtra("salno", obj.getString("sap_code"));
+                            context.startActivity(intent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
             String isPaid = mDate.getJSONObject(((MyViewHolder) holder).getBindingAdapterPosition()).optString("isPaid");
             if (isPaid.equalsIgnoreCase("")) {
                 ((MyViewHolder) holder).payNow.setText("Pay Now");
@@ -213,7 +231,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView txtOrderDate, txtOrderID, txtValue, Itemcountinvoice, tvCutoff, payNow;
+        TextView txtOrderDate, txtOrderID, txtValue, Itemcountinvoice, tvCutoff, payNow, vwInvoice;
         LinearLayout linearLayout, llEdit;
         View lowOrder;
 
@@ -228,6 +246,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
             tvCutoff = itemView.findViewById(R.id.tvCutOffTime);
             lowOrder = itemView.findViewById(R.id.lowOrder);
             payNow = itemView.findViewById(R.id.payNow);
+            vwInvoice = itemView.findViewById(R.id.viewInv);
         }
     }
 }
