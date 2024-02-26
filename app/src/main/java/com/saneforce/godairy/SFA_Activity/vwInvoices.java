@@ -18,7 +18,7 @@ public class vwInvoices extends AppCompatActivity {
         Intent i=getIntent();
         txtIndentNo=findViewById(R.id.txtIndentNo);
         txtIndentNo.setText(i.getExtras().getString("PONO"));
-        txtPONo=findViewById(R.id.txtIndentNo);
+        txtPONo=findViewById(R.id.txtPONo);
         txtPONo.setText(i.getExtras().getString("salno"));
     }
 }

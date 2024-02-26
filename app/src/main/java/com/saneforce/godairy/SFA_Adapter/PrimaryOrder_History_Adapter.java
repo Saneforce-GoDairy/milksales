@@ -93,7 +93,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
             ((MyViewHolder) holder).Itemcountinvoice.setText(obj.getString("Status"));
 
             ((MyViewHolder) holder).vwInvoice.setVisibility(View.GONE);
-            if(!obj.getString("Status").equalsIgnoreCase("")){
+            if(!obj.getString("sap_code").equalsIgnoreCase("")){
                 ((MyViewHolder) holder).vwInvoice.setVisibility(View.VISIBLE);
                 ((MyViewHolder) holder).vwInvoice.setOnClickListener(new View.OnClickListener() {
                     @Override
