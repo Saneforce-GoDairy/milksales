@@ -1,5 +1,6 @@
 package com.saneforce.godairy.common;
 
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_MAINTENNACE_REGULAR;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGENT_VISIT;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGRONOMIST;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_ASSET;
@@ -34,6 +35,7 @@ import com.saneforce.godairy.procurement.CollectionCenterLocationActivity;
 import com.saneforce.godairy.procurement.ExistingAgentVisitActivity;
 import com.saneforce.godairy.procurement.FarmerCreationActivity;
 import com.saneforce.godairy.procurement.MaintanenceIssuesFormActivity;
+import com.saneforce.godairy.procurement.MaintanenceRegularActivity;
 import com.saneforce.godairy.procurement.ProcurementAssetActivity;
 import com.saneforce.godairy.procurement.QualityFormActivity;
 import com.saneforce.godairy.procurement.VeterinaryDoctorsFormActivity;
@@ -119,6 +121,10 @@ public class FileUploadService2 extends Service {
                     procAsset(intent);
                     break;
 
+                case 10:
+                    procMaintenanceRegular(intent);
+                    break;
+
                 default:
                     Toast.makeText(context, "service id is empty", Toast.LENGTH_SHORT).show();
                     break;
@@ -146,6 +152,81 @@ public class FileUploadService2 extends Service {
 
         // stopself
         return START_NOT_STICKY;
+    }
+
+    private void procMaintenanceRegular(Intent intent) {
+        String mCompany = intent.getStringExtra("company");
+        String mPlant = intent.getStringExtra("plant");
+
+        // bmc
+        String mBmcNoHrsRunning = intent.getStringExtra("bmc_hrs_run");
+        String mBmcVolumeCollect = intent.getStringExtra("bmc_volume_coll");
+
+        // cc
+        String mCcNoHrsRunning = intent.getStringExtra("cc_hrs_running");
+        String mCcVolumeCollect = intent.getStringExtra("cc_volume_coll");
+        String mIBTRunningHrs = intent.getStringExtra("ibt_running_hrs");
+        String mDgSetRunnings = intent.getStringExtra("dg_set_running");
+        String mPowerFactor = intent.getStringExtra("power_factor");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        // Maintenance regular image
+        File file_image_repair = new File(dir, "MAIN_REGU_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image_repair);
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_repair.getName(),progressRequestBodyRepair);
+
+
+        Intent notificationIntent = new Intent(this, MaintanenceRegularActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcMaintenRegular(PROCUREMENT_MAINTENNACE_REGULAR,
+                mCompany,
+                mPlant,
+                mBmcNoHrsRunning,
+                mBmcVolumeCollect,
+                mCcNoHrsRunning,
+                mCcVolumeCollect,
+                mIBTRunningHrs,
+                mDgSetRunnings,
+                imagePart1,
+                mPowerFactor);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "Maintenance regular form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void procAsset(Intent intent) {

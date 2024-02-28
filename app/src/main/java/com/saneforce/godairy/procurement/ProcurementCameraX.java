@@ -219,6 +219,10 @@ public class ProcurementCameraX extends AppCompatActivity {
             case 14:
                 maintenanceRepair();
                 break;
+
+            case 15:
+                maintenanceRegular();
+                break;
         }
 
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
@@ -258,6 +262,11 @@ public class ProcurementCameraX extends AppCompatActivity {
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    private void maintenanceRegular() {
+        imageName = "MAIN_REGU_123" + ".jpg";
+        file = new File(DIR, imageName);
     }
 
     private void maintenanceRepair() {

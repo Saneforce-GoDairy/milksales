@@ -30,6 +30,10 @@ public class ImageViewActivity extends AppCompatActivity {
         String accessId = getIntent().getStringExtra("access_id");
         String image = "";
 
+      if (accessId == null){
+          accessId = "0";
+      }
+
         if (Integer.parseInt(accessId) == 1){
             // received intent has url
             image = getIntent().getStringExtra("url");

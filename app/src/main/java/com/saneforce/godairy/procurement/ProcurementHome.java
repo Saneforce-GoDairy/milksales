@@ -122,7 +122,9 @@ public class ProcurementHome extends AppCompatActivity {
             R.drawable.ic_agent,
             R.drawable.ic_collection,
             R.drawable.ic_procurement,
-                    R.drawable.ic_procurement));
+                    R.drawable.ic_procurement,
+                    R.drawable.ic_launcher_background,
+                    R.drawable.ic_launcher_background));
 
     ArrayList<String> dashboardName = new ArrayList<>(Arrays.asList(
             "Agronomist",
@@ -133,7 +135,9 @@ public class ProcurementHome extends AppCompatActivity {
             "Existing Agent Visit" ,
             "Collection Center Location" ,
             "Procurement Asset",
-            "Farmer creation"
+            "Farmer Creation",
+            "Maintenance Regular",
+            "Existing Center Visit"
     ));
         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         binding.recyclerView.setHasFixedSize(true);
@@ -243,7 +247,9 @@ public class ProcurementHome extends AppCompatActivity {
                     case 8:
                         startActivity(new Intent(context, FarmerCreationActivity.class));
                         break;
-
+                    case 9:
+                        startActivity(new Intent(context, MaintanenceRegularActivity.class));
+                        break;
                 }
             });
         }

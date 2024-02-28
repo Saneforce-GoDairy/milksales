@@ -1001,6 +1001,21 @@ public interface ApiInterface {
     @POST("test_prasanth.php")
     Call<ResponseBody> getSubDivision(@Query("axn") String axn);
 
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcMaintenRegular(@Query("axn") String axn,
+                                                @Query("company") String company,
+                                                @Query("plant") String plant,
+                                                @Query("bmc_hrs_run") String bmc_hrs_run,
+                                                @Query("bmc_volume_coll") String bmc_volume_coll,
+
+                                                @Query("cc_hrs_running") String cc_hrs_running,
+                                                @Query("cc_volume_coll") String cc_volume_coll,
+                                                @Query("ibt_running_hrs") String ibt_running_hrs,
+                                                @Query("dg_set_running") String dg_set_running,
+                                                @Part MultipartBody.Part image1,
+                                                @Query("power_factor") String power_factor);
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

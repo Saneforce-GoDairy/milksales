@@ -29,6 +29,7 @@ public class AppConstants {
  public static final String PROCUREMENT_GET_ASSET_REPORT = "get_asset_report";
  public static final String PROCUREMENT_GET_FARMER_CREATION_REPORT = "get_far_creation_report";
  public static final String PROCUREMENT_GET_SUBDIVISION = "get_subdivision";
+ public static final String PROCUREMENT_MAINTENNACE_REGULAR = "save/proc_maintenance_reg";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}
