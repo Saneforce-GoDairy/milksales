@@ -161,21 +161,27 @@ public class FileUploadService2 extends Service {
         // bmc
         String mBmcNoHrsRunning = intent.getStringExtra("bmc_hrs_run");
         String mBmcVolumeCollect = intent.getStringExtra("bmc_volume_coll");
-
-        // cc
         String mCcNoHrsRunning = intent.getStringExtra("cc_hrs_running");
         String mCcVolumeCollect = intent.getStringExtra("cc_volume_coll");
         String mIBTRunningHrs = intent.getStringExtra("ibt_running_hrs");
         String mDgSetRunnings = intent.getStringExtra("dg_set_running");
         String mPowerFactor = intent.getStringExtra("power_factor");
+        String mPipeline = intent.getStringExtra("pipeline_condition");
+        String mLeakages = intent.getStringExtra("leakage");
+        String mScale = intent.getStringExtra("scale");
+        String mFuelConsStockPerBook = intent.getStringExtra("per_book");
+        String mFuelConsStockPerPhysical = intent.getStringExtra("physical");
+        String mETP = intent.getStringExtra("etp");
+        String mHotWater = intent.getStringExtra("hot_water");
+        String mFactoryLicenceIns = intent.getStringExtra("factory_license_ins");
+        String mActiveFlag = intent.getStringExtra("active_flag");
 
         String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
 
         // Maintenance regular image
         File file_image_repair = new File(dir, "MAIN_REGU_123" + ".jpg");
         ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image_repair);
-        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_repair.getName(),progressRequestBodyRepair);
-
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image",file_image_repair.getName(),progressRequestBodyRepair);
 
         Intent notificationIntent = new Intent(this, MaintanenceRegularActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -202,7 +208,17 @@ public class FileUploadService2 extends Service {
                 mIBTRunningHrs,
                 mDgSetRunnings,
                 imagePart1,
-                mPowerFactor);
+                mPowerFactor,
+                mPipeline,
+                mLeakages,
+                mScale,
+                mFuelConsStockPerBook,
+                mFuelConsStockPerPhysical,
+                mETP,
+                mHotWater,
+                mFactoryLicenceIns,
+                mActiveFlag,
+                mTimeDate);
 
         call.enqueue(new Callback<>() {
             @Override

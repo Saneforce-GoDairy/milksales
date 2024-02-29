@@ -375,18 +375,21 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
         serviceIntent.putExtra("company", mCompanyName);
         serviceIntent.putExtra("plant", mPlant);
-
-        // bmc
         serviceIntent.putExtra("bmc_hrs_run", mBmcNoHrsRunning);
         serviceIntent.putExtra("bmc_volume_coll", mBmcVolumeCollect);
-
-        // cc
         serviceIntent.putExtra("cc_hrs_running", mCcNoHrsRunning);
         serviceIntent.putExtra("cc_volume_coll", mCcVolumeCollect);
         serviceIntent.putExtra("ibt_running_hrs", mIBTRunningHrs);
         serviceIntent.putExtra("dg_set_running", mDgSetRunnings);
         serviceIntent.putExtra("power_factor", mPowerFactor);
-
+        serviceIntent.putExtra("pipeline_condition", mPipeline);
+        serviceIntent.putExtra("leakage", mLeakages);
+        serviceIntent.putExtra("scale", mScale);
+        serviceIntent.putExtra("per_book", mFuelConsStockPerBook);
+        serviceIntent.putExtra("physical", mFuelConsStockPerPhysical);
+        serviceIntent.putExtra("etp", mETP);
+        serviceIntent.putExtra("hot_water", mHotWater);
+        serviceIntent.putExtra("factory_license_ins", mFactoryLicenceIns);
         serviceIntent.putExtra("active_flag", mActiveFlag);
         serviceIntent.putExtra("upload_service_id", "10");
         ContextCompat.startForegroundService(this, serviceIntent);
@@ -397,24 +400,16 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
     private boolean validateInputs() {
         mCompanyName = binding.spinnerCompany.getSelectedItem().toString();
         mPlant = binding.spinnerPlant.getSelectedItem().toString();
-
-        // BMC Units
         mBmcNoHrsRunning = binding.edBmcHrsRunning.getText().toString();
         mBmcVolumeCollect = binding.edBmcVolumeCollected.getText().toString();
-
-        // CC Unites
         mCcNoHrsRunning = binding.edCcHrsRunning.getText().toString();
         mCcVolumeCollect = binding.edCcVolumeCollected.getText().toString();
         mIBTRunningHrs = binding.edIbtRunningHrs.getText().toString();
         mDgSetRunnings = binding.edDgSetRungAfLs.getText().toString();
         mPowerFactor = binding.edPowerFactor.getText().toString();
-
-        // Ammonia compressor-condition
         mPipeline = binding.edPipeCond.getText().toString();
         mLeakages = binding.edLeakage.getText().toString();
         mScale = binding.edScale.getText().toString();
-
-        // Fuel consumption stock
         mFuelConsStockPerBook = binding.edPerBook.getText().toString();
         mFuelConsStockPerPhysical = binding.edPhysical.getText().toString();
 

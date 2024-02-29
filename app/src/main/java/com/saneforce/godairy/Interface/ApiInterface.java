@@ -1008,13 +1008,23 @@ public interface ApiInterface {
                                                 @Query("plant") String plant,
                                                 @Query("bmc_hrs_run") String bmc_hrs_run,
                                                 @Query("bmc_volume_coll") String bmc_volume_coll,
-
                                                 @Query("cc_hrs_running") String cc_hrs_running,
                                                 @Query("cc_volume_coll") String cc_volume_coll,
                                                 @Query("ibt_running_hrs") String ibt_running_hrs,
                                                 @Query("dg_set_running") String dg_set_running,
-                                                @Part MultipartBody.Part image1,
-                                                @Query("power_factor") String power_factor);
+                                                @Part MultipartBody.Part image,
+                                                @Query("power_factor") String power_factor,
+                                                @Query("pipeline_condition") String pipeline_condition,
+                                                @Query("leakage") String leakage,
+                                                @Query("scale") String scale,
+                                                @Query("per_book") String per_book,
+                                                @Query("physical") String physical,
+                                                @Query("etp") String etp,
+                                                @Query("hot_water") String hot_water,
+                                                @Query("factory_license_ins") String factory_license_ins,
+                                                @Query("active_flag") String active_flag,
+                                                @Query("created_dt") String created_dt
+    );
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
