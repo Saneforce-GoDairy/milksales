@@ -82,5 +82,8 @@ public class vwInvoices extends AppCompatActivity {
         InvoiceListAdapter adapter = new InvoiceListAdapter(context, array);
         binding.rvPrimary.setLayoutManager(new LinearLayoutManager(context));
         binding.rvPrimary.setAdapter(adapter);
+        if (array.length() == 0) {
+            assistantClass.showAlertDialogWithFinish("Invoice list is empty");
+        }
     }
 }
