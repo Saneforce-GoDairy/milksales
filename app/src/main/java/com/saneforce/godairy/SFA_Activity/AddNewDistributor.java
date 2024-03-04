@@ -294,16 +294,16 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         });
 
         downloadGSTDeclarationForm.setOnClickListener(v -> {
-            Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/GST%20Non-Regsitration%20Declaration.docx", "GST Non-Registration Declaration.docx");
+            Long downloadID = FileDownloader.downloadFile(context, "https://admin.godairy.in/Downloads/THIRUMALA/GST%20Non-Regsitration%20Declaration.docx", "GST Non-Registration Declaration.docx");
 
         });
 
         downloadTCSDeclarationForm.setOnClickListener(v -> {
-            Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/TCS%20Declaration.docx", "TCS Declaration.docx");
+            Long downloadID = FileDownloader.downloadFile(context, "https://admin.godairy.in/Downloads/THIRUMALA/TCS%20Declaration.docx", "TCS Declaration.docx");
         });
 
         downloadfssaiDeclarationForm.setOnClickListener(v -> {
-            Long downloadID = FileDownloader.downloadFile(context, "https://thirumala.salesjump.in/Downloads/THIRUMALA/Undertaking%20FSSAI%20license.docx", "Undertaking FSSAI license.docx");
+            Long downloadID = FileDownloader.downloadFile(context, "https://admin.godairy.in/Downloads/THIRUMALA/Undertaking%20FSSAI%20license.docx", "Undertaking FSSAI license.docx");
         });
 
         if (getIntent().hasExtra("id")) {
