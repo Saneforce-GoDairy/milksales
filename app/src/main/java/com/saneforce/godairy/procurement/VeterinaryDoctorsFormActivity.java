@@ -152,7 +152,7 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
 
     private void onClick() {
 
-                 /*
+                         /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -182,6 +182,12 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
 
             7, MaintenanceIssueActivity
                Type of repair image = 14
+
+            8, MaintenanceRegularActivity
+               DG Set Running Hrs, After Last Services = 15
+
+            9, New farmer creation ska
+               Competitors = 16
          */
 
         binding.cameraTypeOfService.setOnClickListener(view -> {

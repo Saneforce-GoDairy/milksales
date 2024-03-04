@@ -83,4 +83,12 @@
     <color name="primaryColor">#009BE1</color>
     <color name="Primary_blue">#1997CE</color>
     <color name="bg_light_blue">#E8F5FB</color>
+    <color name="purple_500">#2196F3</color>
+
+    <color name="purple_200">#0F9D58</color>
+    <color name="stop_reco">#DA0F00</color>
+    <color name="purple_700">#0F9D58</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="gray">#A39696</color>
 </resources>

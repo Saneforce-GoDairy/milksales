@@ -1026,6 +1026,29 @@ public interface ApiInterface {
                                                 @Query("created_dt") String created_dt
     );
 
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcExistingCenterVist(@Query("axn") String axn,
+                                                @Query("pouring_act") String pouring_act,
+                                                @Query("opening_time") String opening_time,
+                                                @Query("closing_time") String closing_time,
+                                                @Query("no_of_farmer") String no_of_farmer,
+                                                @Query("volume") String volume,
+                                                    @Query("avg_fat") String avg_fat,
+                                                    @Query("avg_snf") String avg_snf,
+                                                    @Query("avg_rate") String avg_rate,
+                                                    @Query("cans_load") String cans_load,
+                                                    @Query("cans_returned") String cans_returned,
+                                                    @Query("cattle_feed") String cattle_feed,
+                                                    @Query("other_stock") String other_stock,
+                                                    @Query("echo_milk_clean_activity") String echo_milk_clean_activity,
+                                                    @Query("machine_condition") String machine_condition,
+                                                    @Query("loan_farmer_issue") String loan_farmer_issue,
+                                                    @Query("issue_frm_farmer_side") String issue_frm_farmer_side,
+                                                    @Query("asset_verification") String asset_verification,
+                                                    @Query("rename_village") String rename_village,
+                                                    @Query("active_flag") String active_flag,
+                                                    @Query("created_dt") String created_dt);
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

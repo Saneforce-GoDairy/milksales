@@ -74,7 +74,7 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
                 saveNow();
             }
         });
-           /*
+               /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -107,6 +107,9 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
 
             8, MaintenanceRegularActivity
                DG Set Running Hrs, After Last Services = 15
+
+            9, New farmer creation ska
+               Competitors = 16
          */
 
         binding.cameraDgRunningHrs.setOnClickListener(v -> {

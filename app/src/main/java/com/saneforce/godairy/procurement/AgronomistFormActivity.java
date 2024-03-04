@@ -133,7 +133,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-           /*
+                     /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -163,6 +163,12 @@ public class AgronomistFormActivity extends AppCompatActivity {
 
             7, MaintenanceIssueActivity
                Type of repair image = 14
+
+            8, MaintenanceRegularActivity
+               DG Set Running Hrs, After Last Services = 15
+
+            9, New farmer creation ska
+               Competitors = 16
          */
 
 

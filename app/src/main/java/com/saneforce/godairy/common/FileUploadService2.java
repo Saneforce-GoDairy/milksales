@@ -5,6 +5,7 @@ import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGENT
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGRONOMIST;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_ASSET;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION;
+import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_EXISTING_CENTER_VISIT;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_FARMER_CREATION;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_MAINTENANCE;
 import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_QUALITY;
@@ -33,6 +34,7 @@ import com.saneforce.godairy.procurement.AITFormActivity;
 import com.saneforce.godairy.procurement.AgronomistFormActivity;
 import com.saneforce.godairy.procurement.CollectionCenterLocationActivity;
 import com.saneforce.godairy.procurement.ExistingAgentVisitActivity;
+import com.saneforce.godairy.procurement.ExistingCenterVisitActivity;
 import com.saneforce.godairy.procurement.FarmerCreationActivity;
 import com.saneforce.godairy.procurement.MaintanenceIssuesFormActivity;
 import com.saneforce.godairy.procurement.MaintanenceRegularActivity;
@@ -125,6 +127,11 @@ public class FileUploadService2 extends Service {
                     procMaintenanceRegular(intent);
                     break;
 
+                case 11:
+                    procExistingCenterVisit(intent);
+                    break;
+
+
                 default:
                     Toast.makeText(context, "service id is empty", Toast.LENGTH_SHORT).show();
                     break;
@@ -152,6 +159,92 @@ public class FileUploadService2 extends Service {
 
         // stopself
         return START_NOT_STICKY;
+    }
+
+    private void procExistingCenterVisit(Intent intent) {
+        String mPouringActivity = intent.getStringExtra("pouring_act");
+        String mOpeningTime = intent.getStringExtra("opening_time");
+        String mClosingTime = intent.getStringExtra("closing_time");
+        String mNoOfFarmers = intent.getStringExtra("no_of_farmer");
+        String mVolume = intent.getStringExtra("volume");
+
+        String mAvgFAT = intent.getStringExtra("avg_fat");
+        String mAvgSNF = intent.getStringExtra("avg_snf");
+        String mAvgRate = intent.getStringExtra("avg_rate");
+        String mNoOfCansLoad = intent.getStringExtra("cans_load");
+        String mNoOfCansReturned = intent.getStringExtra("cans_returned");
+
+        String mCattleFeed = intent.getStringExtra("cattle_feed");
+        String mOtherStock = intent.getStringExtra("other_stock");
+        String mEchoMilkClActivity = intent.getStringExtra("echo_milk_clean_activity");
+        String mMachineCondition = intent.getStringExtra("machine_condition");
+        String mLoanFarmerIssue = intent.getStringExtra("loan_farmer_issue");
+
+        String mIssueFromFarmerSide = intent.getStringExtra("issue_frm_farmer_side");
+        String mAssetVerification = intent.getStringExtra("asset_verification");
+        String mRenameVillage = intent.getStringExtra("rename_village");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        Intent notificationIntent = new Intent(this, ExistingCenterVisitActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcExistingCenterVist(PROCUREMENT_SUBMIT_EXISTING_CENTER_VISIT,
+                mPouringActivity,
+                mOpeningTime,
+                mClosingTime,
+                mNoOfFarmers,
+                mVolume,
+                mAvgFAT,
+                mAvgSNF,
+                mAvgRate,
+                mNoOfCansLoad,
+                mNoOfCansReturned,
+                mCattleFeed,
+                mOtherStock,
+                mEchoMilkClActivity,
+                mMachineCondition,
+                mLoanFarmerIssue,
+                mIssueFromFarmerSide,
+                mAssetVerification,
+                mRenameVillage,
+                mActiveFlag,
+                mTimeDate);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    String res;
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        res = response.body().string();
+                        Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void procMaintenanceRegular(Intent intent) {

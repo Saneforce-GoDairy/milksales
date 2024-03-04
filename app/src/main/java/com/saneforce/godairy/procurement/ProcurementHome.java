@@ -26,6 +26,8 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
 import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
+import com.saneforce.godairy.procurement.ska.ExistingFarmerVisitActivity;
+import com.saneforce.godairy.procurement.ska.NewFarmerCreationActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -123,8 +125,10 @@ public class ProcurementHome extends AppCompatActivity {
             R.drawable.ic_collection,
             R.drawable.ic_procurement,
                     R.drawable.ic_procurement,
-                    R.drawable.ic_launcher_background,
-                    R.drawable.ic_launcher_background));
+                    R.drawable.ic_maintanence,
+                    R.drawable.ic_maintanence,
+                    R.drawable.new_farmer_crea,
+                    R.drawable.ic_agent));
 
     ArrayList<String> dashboardName = new ArrayList<>(Arrays.asList(
             "Agronomist",
@@ -137,6 +141,8 @@ public class ProcurementHome extends AppCompatActivity {
             "Procurement Asset",
             "Farmer Creation",
             "Maintenance Regular",
+            "Existing center visit",
+            "New farmer creation",
             "Existing Center Visit"
     ));
         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
@@ -149,37 +155,6 @@ public class ProcurementHome extends AppCompatActivity {
     private void onClick() {
 
         binding.logout.setOnClickListener(v -> finish());
-        binding.oneAgronomistForm.setOnClickListener(v -> {
-            startActivity(new Intent(context, AgronomistFormActivity.class));
-        });
-
-        binding.aitForm.setOnClickListener(view -> {
-            startActivity(new Intent(context, AITFormActivity.class));
-        });
-
-        binding.veterinaryDoctorForm.setOnClickListener(view -> {
-            startActivity(new Intent(context, VeterinaryDoctorsFormActivity.class));
-        });
-
-        binding.qualityForm.setOnClickListener(view -> {
-            startActivity(new Intent(context, QualityFormActivity.class));
-        });
-
-        binding.maintenceRequlation.setOnClickListener(view -> {
-            startActivity(new Intent(context, MaintanenceIssuesFormActivity.class));
-        });
-
-        binding.existingAgentVisit.setOnClickListener(view -> {
-            startActivity(new Intent(context, ExistingAgentVisitActivity.class));
-        });
-
-        binding.collectionCenter.setOnClickListener(view -> {
-            startActivity(new Intent(context, CollectionCenterLocationActivity.class));
-        });
-
-        binding.procurementAsset.setOnClickListener(view -> {
-            startActivity(new Intent(context, ProcurementAssetActivity.class));
-        });
 
         binding.reports.setOnClickListener(v -> {
             startActivity(new Intent(context, ProcReportsHomeActivity.class));
@@ -249,6 +224,18 @@ public class ProcurementHome extends AppCompatActivity {
                         break;
                     case 9:
                         startActivity(new Intent(context, MaintanenceRegularActivity.class));
+                        break;
+
+                    case 10:
+                        startActivity(new Intent(context, ExistingCenterVisitActivity.class));
+                        break;
+
+                    // for ska clients
+                    case 11:
+                        startActivity(new Intent(context, NewFarmerCreationActivity.class));
+                        break;
+                    case 12:
+                        startActivity(new Intent(context, ExistingFarmerVisitActivity.class));
                         break;
                 }
             });
