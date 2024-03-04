@@ -844,7 +844,7 @@ public class Login extends AppCompatActivity {
                 String SFHQLoc = response.getData().get(0).getHOLocation();
                 int THrsPerm = response.getData().get(0).getTHrsPerm();
 
-                String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/";
+                String mBasePath = "https://admin.godairy.in/SalesForce_Profile_Img/";
 
                 String mProfile = mBasePath + response.getData().get(0).getProfile();
                 String mProfPath = response.getData().get(0).getProfPath();
