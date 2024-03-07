@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -32,6 +33,29 @@
                     android:layout_weight="3"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/tvCustName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/C2dp"
+                        android:layout_marginEnd="@dimen/C3dp"
+                        android:gravity="start"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:text="Terrrksdlfsdf"/>
+                    <TextView
+                        android:id="@+id/tvCustCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/C2dp"
+                        android:layout_marginEnd="@dimen/C3dp"
+                        android:gravity="start"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:text="232324"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -122,7 +146,8 @@
                         android:layout_width="@dimen/C10dp"
                         android:layout_height="@dimen/C10dp"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_baseline_date_range_24"></ImageView>
+                        android:src="@drawable/ic_baseline_date_range_24"
+                        />
 
                     <TextView
                         android:id="@+id/txt_date"
@@ -132,7 +157,8 @@
                         android:layout_toRightOf="@+id/ivDate"
                         android:text="OrderDate"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/C13dp"></TextView>
+                        android:textSize="@dimen/C13dp"
+                        />
 
 
                 </RelativeLayout>
@@ -143,10 +169,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="@dimen/C2dp"
-                    android:layout_marginRight="@dimen/C3dp"
+                    android:layout_marginEnd="@dimen/C3dp"
                     android:gravity="end"
                     android:textColor="@color/black"
-                    android:textSize="9sp"></TextView>
+                    android:textSize="9sp"
+                    tools:ignore="SmallSp" />
 
             </LinearLayout>
 <LinearLayout
@@ -176,6 +203,7 @@
                 android:paddingHorizontal="@dimen/C15dp"
                 android:paddingVertical="4dp"
                 android:text="Pay Now"
+                android:visibility="gone"
                 android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>

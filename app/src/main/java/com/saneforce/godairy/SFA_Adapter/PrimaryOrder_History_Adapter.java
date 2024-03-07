@@ -87,11 +87,12 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
 
         try {
             JSONObject obj = mDate.getJSONObject(holder.getBindingAdapterPosition());
-            ((MyViewHolder) holder).txtOrderDate.setText("" + obj.getString("Order_Date"));
+            ((MyViewHolder) holder).txtOrderDate.setText(obj.getString("Order_Date"));
             ((MyViewHolder) holder).txtOrderID.setText(obj.getString("OrderNo"));
-            ((MyViewHolder) holder).txtValue.setText("" + new DecimalFormat("##0.00").format(Double.parseDouble(obj.getString("Order_Value"))));
+            ((MyViewHolder) holder).txtValue.setText(new DecimalFormat("##0.00").format(Double.parseDouble(obj.getString("Order_Value"))));
             ((MyViewHolder) holder).Itemcountinvoice.setText(obj.getString("Status"));
-
+            ((MyViewHolder) holder).tvCustCode.setText(obj.getString("ERPCode"));
+            ((MyViewHolder) holder).tvCustName.setText(obj.getString("CustomerName"));
             ((MyViewHolder) holder).vwInvoice.setVisibility(View.GONE);
             if(!obj.getString("sap_code").equalsIgnoreCase("")){
                 ((MyViewHolder) holder).vwInvoice.setVisibility(View.VISIBLE);
@@ -231,7 +232,7 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView txtOrderDate, txtOrderID, txtValue, Itemcountinvoice, tvCutoff, payNow, vwInvoice;
+        TextView txtOrderDate, txtOrderID, txtValue, Itemcountinvoice, tvCutoff, payNow, vwInvoice,tvCustName,tvCustCode;
         LinearLayout linearLayout, llEdit;
         View lowOrder;
 
@@ -247,6 +248,9 @@ public class PrimaryOrder_History_Adapter extends RecyclerView.Adapter<RecyclerV
             lowOrder = itemView.findViewById(R.id.lowOrder);
             payNow = itemView.findViewById(R.id.payNow);
             vwInvoice = itemView.findViewById(R.id.viewInv);
+            tvCustName = itemView.findViewById(R.id.tvCustName);
+            tvCustCode = itemView.findViewById(R.id.tvCustCode);
+
         }
     }
 }
