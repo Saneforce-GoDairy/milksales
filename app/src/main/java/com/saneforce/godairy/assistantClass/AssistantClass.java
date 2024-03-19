@@ -45,6 +45,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.saneforce.godairy.Activity_Hap.Login;
+import com.saneforce.godairy.Activity_Hap.SFA_Activity;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.APIResult;
@@ -55,6 +57,7 @@ import com.saneforce.godairy.Interface.DatePickerResult;
 import com.saneforce.godairy.Interface.DropdownSelectListener;
 import com.saneforce.godairy.Interface.LocationResponse;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.universal.UniversalDropDownAdapter;
 
 import org.json.JSONArray;
@@ -182,6 +185,51 @@ public class AssistantClass extends AppCompatActivity {
 
     public void clearLocalData() {
         adminInfo.edit().clear().apply();
+    }
+
+    public void forceLogout() {
+        DatabaseHandler db = new DatabaseHandler(context);
+        SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences CheckInDetails = getSharedPreferences("CheckInDetail", Context.MODE_PRIVATE);
+        Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref((Activity) context);
+        String eMail = UserDetails.getString("email", "");
+        db.deleteAllMasterData();
+        sharedCommonPref.clearAll();
+        UserDetails.edit().clear().apply();
+        CheckInDetails.edit().clear().apply();
+        adminInfo.edit().clear().apply();
+        UserDetails.edit().putString("email", eMail).apply();
+        Intent Dashboard = new Intent(context, Login.class);
+        ((Activity) context).startActivity(Dashboard);
+        ((Activity) context).finishAffinity();
+    }
+
+    public void logout() {
+        showAlertDialog("", "Are you sure you want to logout?", true, "Yes", "No", new AlertDialogClickListener() {
+            @Override
+            public void onPositiveButtonClick(DialogInterface dialog) {
+                dialog.dismiss();
+                DatabaseHandler db = new DatabaseHandler(context);
+                SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences CheckInDetails = ((Activity) context).getSharedPreferences("CheckInDetail", Context.MODE_PRIVATE);
+                Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref((Activity) context);
+                String eMail = UserDetails.getString("email", "");
+                db.deleteAllMasterData();
+                sharedCommonPref.clearAll();
+                UserDetails.edit().clear().apply();
+                CheckInDetails.edit().clear().apply();
+                adminInfo.edit().clear().apply();
+                UserDetails.edit().putString("email", eMail).apply();
+                Intent Dashboard = new Intent(context, Login.class);
+                ((Activity) context).startActivity(Dashboard);
+                ((Activity) context).finishAffinity();
+            }
+
+            @Override
+            public void onNegativeButtonClick(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+        });
     }
 
     @SuppressLint("SimpleDateFormat")

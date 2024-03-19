@@ -82,7 +82,12 @@ public class PosHistoryActivity extends AppCompatActivity implements Master_Inte
             common_class.getDataFromApi(Constants.GetPosOrderHistory, this, false);
 
 
-            if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+            if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DSM_TYPE)) {
+                llDistributor.setEnabled(false);
+                btnCmbRoute.setVisibility(View.GONE);
+                findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
+                distributor_text.setText("HI! " + sharedCommonPref.getvalue(Constants.DSM_name, ""));
+            } else if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
                 llDistributor.setEnabled(false);
                 btnCmbRoute.setVisibility(View.GONE);
                 findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);

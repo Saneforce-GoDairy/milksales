@@ -69,7 +69,7 @@ public class ReportsListActivity extends AppCompatActivity {
             jsonArray.put(obj3);
             jsonArray.put(obj4);
             jsonArray.put(obj5);
-            if(! shared_common_pref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)){
+            if(shared_common_pref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.CHECKIN_TYPE)){
                 JSONObject obj6 = new JSONObject();
                 obj6.put("name", "DAY REPORTS");
                 obj6.put("des", "web");

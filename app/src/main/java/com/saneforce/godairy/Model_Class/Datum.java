@@ -8,6 +8,38 @@ import java.util.List;
 public class Datum {
 
 
+    @SerializedName("DSM_code")
+    @Expose
+    private String DSM_Code;
+    @SerializedName("DSM_name")
+    @Expose
+    private String DSM_Name;
+    @SerializedName("Town_Code")
+    @Expose
+    private String Town_Code;
+    @SerializedName("Desig_type")
+    @Expose
+    private String Desig_Type;
+    @SerializedName("Salestype")
+    @Expose
+    private String SalesType;
+    @SerializedName("DSM_Email")
+    @Expose
+    private String DSM_Email;
+    @SerializedName("DSM_Phone_no")
+    @Expose
+    private String DSM_Phone_No;
+    @SerializedName("Aadhar_Number")
+    @Expose
+    private String DSM_Aadhar_Number;
+    @SerializedName("BankAccount_Number")
+    @Expose
+    private String DSM_BankAccount_Number;
+    @SerializedName("Stockist_Code")
+    @Expose
+    private String Stockist_Code;
+
+
     @SerializedName("Sf_UserName")
     @Expose
     private String sfUserName;
@@ -571,5 +603,85 @@ public class Datum {
 
     public void setCheckRadius(Integer checkRadius) {
         this.checkRadius = checkRadius;
+    }
+
+    public String getDSM_Code() {
+        return DSM_Code;
+    }
+
+    public void setDSM_Code(String DSM_Code) {
+        this.DSM_Code = DSM_Code;
+    }
+
+    public String getDSM_Name() {
+        return DSM_Name;
+    }
+
+    public void setDSM_Name(String DSM_Name) {
+        this.DSM_Name = DSM_Name;
+    }
+
+    public String getTown_Code() {
+        return Town_Code;
+    }
+
+    public void setTown_Code(String town_Code) {
+        Town_Code = town_Code;
+    }
+
+    public String getDesig_Type() {
+        return Desig_Type;
+    }
+
+    public void setDesig_Type(String desig_Type) {
+        Desig_Type = desig_Type;
+    }
+
+    public String getSalesType() {
+        return SalesType;
+    }
+
+    public void setSalesType(String salesType) {
+        SalesType = salesType;
+    }
+
+    public String getDSM_Email() {
+        return DSM_Email;
+    }
+
+    public void setDSM_Email(String DSM_Email) {
+        this.DSM_Email = DSM_Email;
+    }
+
+    public String getDSM_Phone_No() {
+        return DSM_Phone_No;
+    }
+
+    public void setDSM_Phone_No(String DSM_Phone_No) {
+        this.DSM_Phone_No = DSM_Phone_No;
+    }
+
+    public String getDSM_Aadhar_Number() {
+        return DSM_Aadhar_Number;
+    }
+
+    public void setDSM_Aadhar_Number(String DSM_Aadhar_Number) {
+        this.DSM_Aadhar_Number = DSM_Aadhar_Number;
+    }
+
+    public String getDSM_BankAccount_Number() {
+        return DSM_BankAccount_Number;
+    }
+
+    public void setDSM_BankAccount_Number(String DSM_BankAccount_Number) {
+        this.DSM_BankAccount_Number = DSM_BankAccount_Number;
+    }
+
+    public String getStockist_Code() {
+        return Stockist_Code;
+    }
+
+    public void setStockist_Code(String stockist_Code) {
+        Stockist_Code = stockist_Code;
     }
 }
