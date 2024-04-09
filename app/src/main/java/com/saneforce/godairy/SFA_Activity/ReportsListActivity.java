@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 //import com.saneforce.godairy.Activity_Hap.DayReportActivity;
 import com.saneforce.godairy.Activity_Hap.Day_Report_Activity;
+import com.saneforce.godairy.Activity_Hap.Monthly_Report_Activity;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
@@ -74,6 +75,10 @@ public class ReportsListActivity extends AppCompatActivity {
                 obj6.put("name", "DAY REPORTS");
                 obj6.put("des", "web");
                 jsonArray.put(obj6);
+                JSONObject obj7 = new JSONObject();
+                obj7.put("name", "MONTHLY REPORTS");
+                obj7.put("des", "web");
+                jsonArray.put(obj7);
             }
 
 
@@ -89,6 +94,9 @@ public class ReportsListActivity extends AppCompatActivity {
                             startActivity(intent);
                         } else if (obj.getString("name").equalsIgnoreCase("Day Reports")) {
                             Intent intent = new Intent(ReportsListActivity.this, Day_Report_Activity.class);
+                            startActivity(intent);
+                        } else if (obj.getString("name").equalsIgnoreCase("MONTHLY REPORTS")) {
+                            Intent intent = new Intent(ReportsListActivity.this, Monthly_Report_Activity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(ReportsListActivity.this, obj.getString("name") + ": Not assigned", Toast.LENGTH_SHORT).show();
