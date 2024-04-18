@@ -7,31 +7,58 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityExistingFarmerVisitBinding;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class ExistingFarmerVisitActivity extends AppCompatActivity {
     private ActivityExistingFarmerVisitBinding binding;
-    private LinearLayout startTV, stopTV, playTV, stopplayTV;
-    private TextView statusTV;
-    private MediaRecorder mRecorder;
-    private MediaPlayer mPlayer;
+    private final Context context = this;
+    private String mCustomer , mCustomerDetails, mPurposeOfVisit, mPrice , mAsset, mCanes, mRemarksType = "" , mRemarksText = "";
     private static String mFileName = null;
-    public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
-    public static final String APP_DATA = "/procurement";
-    String mRemarks;
+    private static int eTime = 0;
+    private static int oTime = 0;
+    public static int sTime = 0;
+    private final int SELECT_PICTURE = 200;
+    private Bitmap bitmap;
+    public final Handler handler = new Handler();
+    private MediaRecorder mRecorder;
+    private Uri selectedImageUri;
+    public MediaPlayer mPlayer;
+
+    private Runnable UpdateSongTime = new Runnable() {
+        public void run() {
+            if (mPlayer != null){
+                sTime = mPlayer.getCurrentPosition();
+
+                handler.postDelayed(this, 100);
+            }
+
+            binding.txtStartTime.setText(String.format("%d min, %d sec", new Object[]{Long.valueOf(TimeUnit.MILLISECONDS.toMinutes((long) sTime)), Long.valueOf(TimeUnit.MILLISECONDS.toSeconds((long) sTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)sTime)))}));
+            binding.seekbar.setProgress(sTime);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,192 +66,277 @@ public class ExistingFarmerVisitActivity extends AppCompatActivity {
         binding = ActivityExistingFarmerVisitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        statusTV = findViewById(R.id.idTVstatus);
-        startTV = findViewById(R.id.btnRecord);
-        stopTV = findViewById(R.id.btnStop);
-        playTV = findViewById(R.id.btnPlay);
-        stopplayTV = findViewById(R.id.btnStopPlay);
-
         onClick();
+        initLoad();
+    }
+
+    private void initLoad() {
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(context,
+                R.array.farmer_creation_types_array, R.layout.custom_spinner);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerCustomer.setAdapter(adapter2);
     }
 
     private void onClick() {
-        startTV.setOnClickListener(new View.OnClickListener() {
+        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // start recording method will start the recording of audio.
-                startRecording();
+                if (validateInputs()) {
+                    saveNow();
+                }
             }
         });
-        stopTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //pause Recording method will pause the recording of audio.
-                pauseRecording();
 
+        binding.startRecord.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                binding.chronometer.start();
+                startRecording();
+                binding.startRecord.setVisibility(View.GONE);
+               binding.stop.setVisibility(View.VISIBLE);
             }
         });
-        playTV.setOnClickListener(new View.OnClickListener() {
+
+        binding.stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // play audio method will play the audio which we have recorded
+                binding.stop.setVisibility(View.GONE);
+                binding.play.setVisibility(View.VISIBLE);
+                pauseRecording();
+                binding.chronometer.stop();
+                binding.chronometer.setVisibility(View.GONE);
+                binding.seekbarContainer.setVisibility(View.VISIBLE);
+                binding.seekbar.setVisibility(View.VISIBLE);
+                binding.deleteVoiceNote.setVisibility(View.VISIBLE);
+            }
+        });
+
+        binding.play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.play.setVisibility(View.GONE);
+                binding.stopPlay.setVisibility(View.VISIBLE);
                 playAudio();
             }
         });
-        stopplayTV.setOnClickListener(new View.OnClickListener() {
+
+        binding.stopPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // pause play method will pause the play of audio
+                binding.stopPlay.setVisibility(View.GONE);
+                binding.play.setVisibility(View.VISIBLE);
                 pausePlaying();
             }
         });
 
-        binding.remarkType.setOnClickListener(v -> {
-            //    Toast.makeText(context, "type", Toast.LENGTH_SHORT).show();
-            binding.remarkAudio.setChecked(false);
-            binding.remarkType.setChecked(true);
-            mRemarks = "type";
-            binding.edRemark.setVisibility(View.VISIBLE);
-
-            binding.remarkAudioLayout.setVisibility(View.GONE);
-        });
-
-        binding.remarkAudio.setOnClickListener(v -> {
-            //     Toast.makeText(context, "Record audio", Toast.LENGTH_SHORT).show();
-            binding.remarkType.setChecked(false);
-            binding.remarkAudio.setChecked(true);
-            mRemarks = "audio";
-            binding.edRemark.setVisibility(View.GONE);
-
-            binding.remarkAudioLayout.setVisibility(View.VISIBLE);
+        binding.deleteVoiceNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (new File(getExternalFilesDir("/").getPath() + "/procurement/", "new_far_creation.mp3").delete()) {
+                    Toast.makeText(context, "audio deleted", Toast.LENGTH_SHORT).show();
+                    binding.play.setVisibility(View.GONE);
+                    binding.deleteVoiceNote.setVisibility(View.GONE);
+                    binding.startRecord.setVisibility(View.VISIBLE);
+                    binding.stopPlay.setVisibility(View.GONE);
+                    binding.seekbar.setVisibility(View.GONE);
+                    binding.chronometer.setVisibility(View.VISIBLE);
+                    binding.chronometer.setBase(SystemClock.elapsedRealtime());
+                    binding.chronometer.stop();
+                    binding.txtStartTime.setVisibility(View.GONE);
+                    binding.txtSongTime.setVisibility(View.GONE);
+                    return;
+                }
+                Toast.makeText(context, "unable to deleted", Toast.LENGTH_SHORT).show();
+            }
         });
 
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 finish();
+            }
+        });
+
+        binding.selectImage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                imageChooser();
+            }
+        });
+
+        binding.remarkType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.remarkAudio.setChecked(false);
+                binding.remarkType.setChecked(true);
+                mRemarksType = "type";
+                binding.edRemark.setVisibility(View.VISIBLE);
+                binding.remarkAudioLayout.setVisibility(View.GONE);
+            }
+        });
+
+        binding.remarkAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.remarkType.setChecked(false);
+                binding.remarkAudio.setChecked(true);
+                mRemarksType = "audio";
+                binding.edRemark.setVisibility(View.GONE);
+                binding.remarkAudioLayout.setVisibility(View.VISIBLE);
             }
         });
     }
 
+    private void imageChooser() {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction("android.intent.action.GET_CONTENT");
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), 200);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -1 && requestCode == 200) {
+            Uri data2 = data.getData();
+            selectedImageUri = data2;
+            if (data2 != null) {
+                binding.imagePurposeVisitLayout.setVisibility(View.VISIBLE);
+                binding.imagePurposeVisit.setImageURI(selectedImageUri);
+            }
+        }
+    }
+
+    private void saveNow() {
+        Intent serviceIntent = new Intent(this, FileUploadService2.class);
+        serviceIntent.putExtra("customer", mCustomer);
+        serviceIntent.putExtra("customer_d", mCustomerDetails);
+        serviceIntent.putExtra("purpose_of_visit", mPurposeOfVisit);
+        serviceIntent.putExtra("price", mPrice);
+        serviceIntent.putExtra("asset", mAsset);
+        serviceIntent.putExtra("cans", mCanes);
+        serviceIntent.putExtra("remarks_type", mRemarksType);
+        serviceIntent.putExtra("remarks_text", mRemarksText);
+
+        serviceIntent.putExtra("active_flag", "1");
+        serviceIntent.putExtra("upload_service_id", "13");
+        ContextCompat.startForegroundService(context, serviceIntent);
+        finish();
+        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean validateInputs() {
+        mCustomer = binding.spinnerCustomer.getSelectedItem().toString();
+        mCustomerDetails = binding.edCusDetails.getText().toString();
+        mPurposeOfVisit = binding.edPurposeOfVisit.getText().toString();
+        mPrice = binding.price.getText().toString();
+        mAsset = binding.asset.getText().toString();
+        mCanes = binding.cans.getText().toString();
+        mRemarksText = binding.edRemark.getText().toString();
+        
+        if ("Select".equals(mCustomer)) {
+            ((TextView) binding.spinnerCustomer.getSelectedView()).setError("Select type");
+            binding.spinnerCustomer.getSelectedView().requestFocus();
+            Toast.makeText(context, "Select customer", Toast.LENGTH_SHORT).show();
+            return false;
+        }  
+        if ("".equals(mCustomerDetails)) {
+            binding.edCusDetails.setError("Empty field");
+            binding.edCusDetails.requestFocus();
+            return false;
+        }
+        if ("".equals(mPurposeOfVisit)) {
+            binding.edPurposeOfVisit.setError("Empty field");
+            binding.edPurposeOfVisit.requestFocus();
+            return false;
+        }
+        if (selectedImageUri == null) {
+            Toast.makeText(context, "pick purpose of visit picture", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if ("".equals(mPrice)) {
+            binding.price.setError("Empty field");
+            binding.price.requestFocus();
+            return false;
+        }
+        if ("".equals(mAsset)) {
+            binding.asset.setError("Empty field");
+            binding.asset.requestFocus();
+            return false;
+        }
+        if ("".equals(mCanes)) {
+            binding.cans.setError("Empty field");
+            binding.cans.requestFocus();
+            return false;
+        }
+        if ("".equals(mRemarksType)) {
+            Toast.makeText(context, "Please select remarks ", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return true;
+    }
+
     private void startRecording() {
-        // check permission method is used to check that the user has granted permission to record nd store the audio.
         if (CheckPermissions()) {
-            //setbackgroundcolor method will change the background color of text view.
-            stopTV.setBackgroundColor(getResources().getColor(R.color.stop_reco));
-//            startTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//            playTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//            stopplayTV.setBackgroundColor(getResources().getColor(R.color.gray));
-            //we are here initializing our filename variable with the path of the recorded audio file.
-//            mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//            mFileName += "/AudioRecording.3gp";
-            mFileName = getExternalFilesDir("/").getPath() + "/" + "procurement/";
-            mFileName += "AudioRecording.3gp";
-            //below method is used to initialize the media recorder clss
-            mRecorder = new MediaRecorder();
-            //below method is used to set the audio source which we are using a mic.
-            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            //below method is used to set the output format of the audio.
+            mFileName = getExternalFilesDir("/").getPath() + "/procurement/";
+            mFileName += "new_far_creation.mp3";
+            MediaRecorder mediaRecorder = new MediaRecorder();
+            mRecorder = mediaRecorder;
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            //below method is used to set the audio encoder for our recorded audio.
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            //below method is used to set the output file location for our recorded audio
             mRecorder.setOutputFile(mFileName);
             try {
-                //below mwthod will prepare our audio recorder class
                 mRecorder.prepare();
                 mRecorder.start();
             } catch (IOException e) {
                 Log.e("TAG", "prepare() failed");
             }
-            // start method will start the audio recording.
-
-            statusTV.setText("Recording Started");
-        } else {
-            //if audio recording permissions are not granted by user below method will ask for runtime permission for mic and storage.
-            RequestPermissions();
+            binding.status.setText("Recording Started");
+            return;
         }
+        RequestPermissions();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // this method is called when user will grant the permission for audio recording.
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_AUDIO_PERMISSION_CODE:
-                if (grantResults.length > 0) {
-                    boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (permissionToRecord && permissionToStore) {
-                        Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
-                    }
-                }
-                break;
-        }
-    }
-
-    public boolean CheckPermissions() {
-        //this method is used to check permission
-        int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    private boolean CheckPermissions() {
+        return ContextCompat.checkSelfPermission(getApplicationContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && ContextCompat.checkSelfPermission(getApplicationContext(), "android.permission.RECORD_AUDIO") == 0;
     }
 
     private void RequestPermissions() {
-        // this method is used to request the permission for audio recording and storage.
-        ActivityCompat.requestPermissions(ExistingFarmerVisitActivity.this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{"android.permission.RECORD_AUDIO", "android.permission.WRITE_EXTERNAL_STORAGE"}, 1);
     }
 
-
-    public void playAudio() {
-//        stopTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//        startTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        playTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//        stopplayTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-        //for playing our recorded audio we are using media player class.
-        mPlayer = new MediaPlayer();
+    private void pauseRecording() {
         try {
-            //below method is used to set the data source which will be our file name
-            mPlayer.setDataSource(mFileName);
-            //below method will prepare our media player
+            mRecorder.stop();
+        } catch (RuntimeException ignored) {
+        }
+        binding.status.setText("Recording Stopped");
+    }
+
+    private void playAudio() {
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mPlayer = mediaPlayer;
+        try {
+            mediaPlayer.setDataSource(mFileName);
             mPlayer.prepare();
-            //below method will start our media player.
             mPlayer.start();
-            statusTV.setText("Recording Started Playing");
+            binding.status.setText("Recording Started Playing");
+            eTime = mPlayer.getDuration();
+            sTime = mPlayer.getCurrentPosition();
+            if (oTime == 0) {
+                binding.seekbar.setMax(eTime);
+                oTime = 1;
+            }
+            binding.txtSongTime.setText(String.format("%d min, %d sec", new Object[]{Long.valueOf(TimeUnit.MILLISECONDS.toMinutes((long) eTime)), Long.valueOf(TimeUnit.MILLISECONDS.toSeconds((long) eTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) eTime)))}));
+            binding.txtStartTime.setText(String.format("%d min, %d sec", new Object[]{Long.valueOf(TimeUnit.MILLISECONDS.toMinutes((long) sTime)), Long.valueOf(TimeUnit.MILLISECONDS.toSeconds((long) sTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) sTime)))}));
+            binding.seekbar.setProgress(sTime);
+            handler.postDelayed(UpdateSongTime, 100);
         } catch (IOException e) {
             Log.e("TAG", "prepare() failed");
         }
-
-
     }
 
-    public void pauseRecording()  {
-        stopTV.setBackgroundColor(getResources().getColor(R.color.white));
-//        startTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        playTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        stopplayTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-        //below method will stop the audio recording.
-        try{
-            mRecorder.stop();
-        }catch(RuntimeException ex){
-            //Ignore
-        }
-
-        statusTV.setText("Recording Stopped");
-
-    }
-
-    public void pausePlaying() {
-        //this method will release the media player class and pause the playing of our recorded audio.
+    private void pausePlaying() {
         mPlayer.release();
         mPlayer = null;
-//        stopTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//        startTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        playTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        stopplayTV.setBackgroundColor(getResources().getColor(R.color.gray));
-        statusTV.setText("Recording Play Stopped");
-
+        binding.status.setText("Recording Play Stopped");
     }
 }

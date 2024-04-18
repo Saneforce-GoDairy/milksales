@@ -1,10 +1,8 @@
-package com.saneforce.godairy.common;
+package com.saneforce.godairy.procurement;
 
 public class AppConstants {
 
- public static final String GET_JOINT_WORK_LIST = "get_jointwork_list";
  public static final String USER_DETAILS_PREF = "MyPrefs";
- public static final String SUBMIT_MY_DAY_PLAN = "save/dayplandynamic";
  public static final String INTENT_PROCUREMENT_MODE = "proc";
  public static final String INTENT_MODE_SFA = "sfa";
  public static final String INTENT_PROCUREMENT_USER_DOC_MODE = "proc_doc";
@@ -31,6 +29,10 @@ public class AppConstants {
  public static final String PROCUREMENT_GET_SUBDIVISION = "get_subdivision";
  public static final String PROCUREMENT_MAINTENNACE_REGULAR = "save/proc_maintenance_reg";
  public static final String PROCUREMENT_SUBMIT_EXISTING_CENTER_VISIT = "save_exist_cent_visit";
+ public static final String PROCUREMENT_SUBMIT_FARMER_CREATION_SKA = "farmer_creation_ska";
+ public static final String PROCUREMENT_SUBMIT_EXISTING_FARMER_VISIT_SKA = "ska_existing_farmer_visit";
+ public static final String PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST = "get_custom_module_list";
+ public static final String PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST = "get_custom_field_list";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}

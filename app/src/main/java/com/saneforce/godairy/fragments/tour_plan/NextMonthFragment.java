@@ -1,9 +1,7 @@
 package com.saneforce.godairy.fragments.tour_plan;
 
 import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
-import static com.saneforce.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -504,7 +502,7 @@ public class NextMonthFragment extends Fragment implements Main_Model.MasterSync
     private void loadExtraField() {
        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Map<String, String> params = new HashMap<>();
-        params.put("axn", GET_JOINT_WORK_LIST);
+        params.put("axn", "get_jointwork_list");
         params.put("sfCode", "MGR0201");
         Call<ResponseBody> call = apiInterface.getUniversalData(params);
 

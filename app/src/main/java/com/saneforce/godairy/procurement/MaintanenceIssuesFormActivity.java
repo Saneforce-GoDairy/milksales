@@ -1,6 +1,6 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_PLANT;
 
 import android.content.Context;
 import android.content.Intent;

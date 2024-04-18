@@ -1,6 +1,6 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_SUBDIVISION;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_SUBDIVISION;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,14 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.Model_Class.ProcAssetReport;
 import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
+import com.saneforce.godairy.procurement.custom_form.CustomFormHomeActivity;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
 import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
 import com.saneforce.godairy.procurement.ska.ExistingFarmerVisitActivity;
@@ -143,7 +142,7 @@ public class ProcurementHome extends AppCompatActivity {
             "Maintenance Regular",
             "Existing center visit",
             "New farmer creation",
-            "Existing Center Visit"
+            "Existing Farmer Visit"
     ));
         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         binding.recyclerView.setHasFixedSize(true);
@@ -158,6 +157,13 @@ public class ProcurementHome extends AppCompatActivity {
 
         binding.reports.setOnClickListener(v -> {
             startActivity(new Intent(context, ProcReportsHomeActivity.class));
+        });
+
+        binding.csForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, CustomFormHomeActivity.class));
+            }
         });
     }
 

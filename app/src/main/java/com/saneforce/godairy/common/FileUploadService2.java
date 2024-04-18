@@ -1,16 +1,18 @@
 package com.saneforce.godairy.common;
 
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_MAINTENNACE_REGULAR;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGENT_VISIT;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AGRONOMIST;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_ASSET;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_EXISTING_CENTER_VISIT;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_FARMER_CREATION;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_MAINTENANCE;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_QUALITY;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_VETERINARY;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_AIT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_MAINTENNACE_REGULAR;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_AGENT_VISIT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_AGRONOMIST;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_ASSET;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_EXISTING_CENTER_VISIT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_EXISTING_FARMER_VISIT_SKA;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_FARMER_CREATION;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_FARMER_CREATION_SKA;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_MAINTENANCE;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_QUALITY;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_VETERINARY;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_AIT;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
@@ -41,9 +44,8 @@ import com.saneforce.godairy.procurement.MaintanenceRegularActivity;
 import com.saneforce.godairy.procurement.ProcurementAssetActivity;
 import com.saneforce.godairy.procurement.QualityFormActivity;
 import com.saneforce.godairy.procurement.VeterinaryDoctorsFormActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.saneforce.godairy.procurement.ska.ExistingFarmerVisitActivity;
+import com.saneforce.godairy.procurement.ska.NewFarmerCreationActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -131,6 +133,13 @@ public class FileUploadService2 extends Service {
                     procExistingCenterVisit(intent);
                     break;
 
+                case 12:
+                    procFarmerCreationSka(intent);
+                    break;
+
+                case 13:
+                    procExistingFarmerSka(intent);
+                    break;
 
                 default:
                     Toast.makeText(context, "service id is empty", Toast.LENGTH_SHORT).show();
@@ -159,6 +168,156 @@ public class FileUploadService2 extends Service {
 
         // stopself
         return START_NOT_STICKY;
+    }
+
+    private void procExistingFarmerSka(Intent intent) {
+        String mCustomer = intent.getStringExtra("customer");
+        String mCustomerDetails = intent.getStringExtra("customer_d");
+        String mPurposeOfVisit = intent.getStringExtra("purpose_of_visit");
+        String mPrice = intent.getStringExtra("price");
+        String mAsset = intent.getStringExtra("asset");
+        String mCans = intent.getStringExtra("cans");
+        String mRemarksType = intent.getStringExtra("remarks_type");
+        String mRemarksText = intent.getStringExtra("remarks_text");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        /************************************************************************
+         * For test purpose image uploading
+         */
+
+        String dir = getExternalFilesDir("/").getPath() + "/procurement/";
+
+        // image
+        File file_image = new File(dir, "SKA_NEW_CMTR_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file_image.getName(),progressRequestBodyRepair);
+
+        /* *********************************************************************** */
+
+        // audio
+        File file_audio = new File(dir, "new_far_creation" + ".mp3");
+        ProgressRequestBody progressRequestBody = new ProgressRequestBody(file_audio);
+        MultipartBody.Part audioPart = MultipartBody.Part.createFormData("audio",file_audio.getName(), progressRequestBody);
+
+
+        Intent notificationIntent = new Intent(this, ExistingFarmerVisitActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.submitProcExistingFarmerVisitSka(PROCUREMENT_SUBMIT_EXISTING_FARMER_VISIT_SKA,
+                audioPart,
+                imagePart,
+                mCustomer,
+                mCustomerDetails,
+                mPurposeOfVisit,
+                mPrice,
+                mAsset,
+                mCans,
+                mRemarksType,
+                mRemarksText,
+                mActiveFlag,
+                mTimeDate);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(FileUploadService2.this.context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void procFarmerCreationSka(Intent intent) {
+        String mName = intent.getStringExtra("name");
+        String mVillage = intent.getStringExtra("village");
+        String mType = intent.getStringExtra("type");
+        String mCompetitor = intent.getStringExtra("competitor");
+        String mRemarksType = intent.getStringExtra("remarks_type");
+        String mRemarksText = intent.getStringExtra("remarks_text");
+        String mActiveFlag = intent.getStringExtra("active_flag");
+
+        String dir = getExternalFilesDir("/").getPath() + "/procurement/";
+
+        // image
+        File file_image = new File(dir, "SKA_NEW_CMTR_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file_image.getName(),progressRequestBodyRepair);
+
+        // audio
+        File file_audio = new File(dir, "new_far_creation" + ".mp3");
+        ProgressRequestBody progressRequestBody = new ProgressRequestBody(file_audio);
+        MultipartBody.Part audioPart = MultipartBody.Part.createFormData("audio",file_audio.getName(), progressRequestBody);
+
+        Intent notificationIntent = new Intent(this, NewFarmerCreationActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call = apiInterface.submitProcFarmerCreationSka(PROCUREMENT_SUBMIT_FARMER_CREATION_SKA,
+                                                                           audioPart,
+                                                                           imagePart,
+                                                                           mName,
+                                                                           mVillage,
+                                                                           mType,
+                                                                           mCompetitor,
+                                                                           mRemarksType,
+                                                                           mRemarksText,
+                                                                           mActiveFlag,
+                                                                           mTimeDate);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(FileUploadService2.this.context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void procExistingCenterVisit(Intent intent) {

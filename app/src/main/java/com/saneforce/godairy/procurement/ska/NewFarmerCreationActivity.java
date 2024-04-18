@@ -1,56 +1,61 @@
 package com.saneforce.godairy.procurement.ska;
 
-import static android.Manifest.permission.RECORD_AUDIO;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.view.View.GONE;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.saneforce.godairy.Activity_Hap.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityNewFarmerCreationBinding;
 import com.saneforce.godairy.procurement.ImageViewActivity;
 import com.saneforce.godairy.procurement.ProcurementCameraX;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class NewFarmerCreationActivity extends AppCompatActivity {
-    private String DIR ;
     private ActivityNewFarmerCreationBinding binding;
     private final Context context = this;
-    private String mName, mVillage, mType, mCompetitor, mRemarks;
+    private String mName, mVillage, mCompetitor, mRemarksText = "";
+    public String mType, mRemarksType = "";
     private Bitmap bitmap;
-
-    private LinearLayout startTV, stopTV, playTV, stopplayTV;
-    private TextView statusTV;
-    private MediaRecorder mRecorder;
-    private MediaPlayer mPlayer;
     private static String mFileName = null;
-    public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
-    public static final String APP_DATA = "/procurement";
+    private MediaRecorder mRecorder;
+    public MediaPlayer mPlayer;
+    private static int eTime = 0;
+    public static int sTime = 0;
+    private static int oTime = 0;
+    public final Handler handler = new Handler();
+
+    private Runnable UpdateSongTime = new Runnable() {
+        public void run() {
+           if (mPlayer != null){
+               sTime = mPlayer.getCurrentPosition();
+
+               handler.postDelayed(this, 100);
+           }
+
+            binding.txtStartTime.setText(String.format("%d min, %d sec", new Object[]{Long.valueOf(TimeUnit.MILLISECONDS.toMinutes((long) sTime)), Long.valueOf(TimeUnit.MILLISECONDS.toSeconds((long) sTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)sTime)))}));
+            binding.seekbar.setProgress(sTime);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,48 +63,12 @@ public class NewFarmerCreationActivity extends AppCompatActivity {
         binding = ActivityNewFarmerCreationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        statusTV = findViewById(R.id.idTVstatus);
-        startTV = findViewById(R.id.btnRecord);
-        stopTV = findViewById(R.id.btnStop);
-        playTV = findViewById(R.id.btnPlay);
-        stopplayTV = findViewById(R.id.btnStopPlay);
-
         initLoad();
         onClick();
-
-        startTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // start recording method will start the recording of audio.
-                startRecording();
-            }
-        });
-        stopTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //pause Recording method will pause the recording of audio.
-                pauseRecording();
-
-            }
-        });
-        playTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // play audio method will play the audio which we have recorded
-                playAudio();
-            }
-        });
-        stopplayTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // pause play method will pause the play of audio
-                pausePlaying();
-            }
-        });
     }
 
     private void onClick() {
-           /*
+         /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -136,251 +105,275 @@ public class NewFarmerCreationActivity extends AppCompatActivity {
             9, New farmer creation ska
                Competitors = 16
          */
+         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 if (validateInputs()) {
+                     saveNow();
+                 }
+             }
+         });
 
-        binding.cameraCompetitors.setOnClickListener(v -> {
-            binding.txtCompetitorsImageNotValid.setVisibility(GONE);
-            Intent intent = new Intent(context, ProcurementCameraX.class);
-            intent.putExtra("event_name", "Competitor");
-            intent.putExtra("camera_id", "16");
-            startActivity(intent);
-        });
+         binding.cameraCompetitors.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 binding.txtCompetitorsImageNotValid.setVisibility(View.GONE);
+                 Intent intent = new Intent(context, ProcurementCameraX.class);
+                 intent.putExtra("event_name", "Competitor");
+                 intent.putExtra("camera_id", "16");
+                 startActivity(intent);
+             }
+         });
 
-        binding.imageViewCompetitorsLayout.setOnClickListener(view -> {
-            String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "SKA_NEW_CMTR_123.jpg";
-
-            Intent intent = new Intent(context, ImageViewActivity.class);
-            intent.putExtra("uri", imagePath);
-            intent.putExtra("event_name", "Competitor");
-            startActivity(intent);
-        });
-
-
-        binding.buttonSave.setOnClickListener(view -> {
-            if (validateInputs()) {
-                saveNow();
-            }
-        });
+         binding.imageViewCompetitorsLayout.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(context, ImageViewActivity.class);
+                 intent.putExtra("uri", getExternalFilesDir("/").getPath() + "/procurement/SKA_NEW_CMTR_123.jpg");
+                 intent.putExtra("event_name", "Competitor");
+                 startActivity(intent);
+             }
+         });
 
         binding.spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mType = binding.spinnerType.getSelectedItem().toString();
-                binding.txtTypeNotValid.setVisibility(GONE);
-             //   binding.txtErrorFound.setVisibility(GONE);
+                binding.txtTypeNotValid.setVisibility(View.GONE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        binding.remarkType.setOnClickListener(v -> {
-        //    Toast.makeText(context, "type", Toast.LENGTH_SHORT).show();
-            binding.remarkAudio.setChecked(false);
-            binding.remarkType.setChecked(true);
-            mRemarks = "type";
-            binding.edRemark.setVisibility(View.VISIBLE);
-
-            binding.remarkAudioLayout.setVisibility(View.GONE);
+        binding.remarkType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.remarkAudio.setChecked(false);
+                binding.remarkType.setChecked(true);
+                mRemarksType = "type";
+                binding.edRemark.setVisibility(View.VISIBLE);
+                binding.remarkAudioLayout.setVisibility(View.GONE);
+            }
         });
 
-        binding.remarkAudio.setOnClickListener(v -> {
-       //     Toast.makeText(context, "Record audio", Toast.LENGTH_SHORT).show();
-            binding.remarkType.setChecked(false);
-            binding.remarkAudio.setChecked(true);
-            mRemarks = "audio";
-            binding.edRemark.setVisibility(View.GONE);
+        binding.remarkAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.remarkType.setChecked(false);
+                binding.remarkAudio.setChecked(true);
+                mRemarksType = "audio";
+                binding.edRemark.setVisibility(View.GONE);
+                binding.remarkAudioLayout.setVisibility(View.VISIBLE);
+            }
+        });
 
-            binding.remarkAudioLayout.setVisibility(View.VISIBLE);
+        binding.startRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.chronometer.start();
+                startRecording();
+                binding.startRecord.setVisibility(View.GONE);
+                binding.stop.setVisibility(View.VISIBLE);
+            }
+        });
+
+        binding.stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.stop.setVisibility(View.GONE);
+                binding.play.setVisibility(View.VISIBLE);
+                pauseRecording();
+                binding.chronometer.stop();
+                binding.chronometer.setVisibility(View.GONE);
+                binding.seekbarContainer.setVisibility(View.VISIBLE);
+                binding.seekbar.setVisibility(View.VISIBLE);
+                binding.deleteVoiceNote.setVisibility(View.VISIBLE);
+            }
+        });
+
+        binding.play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.play.setVisibility(View.GONE);
+                binding.stopPlay.setVisibility(View.VISIBLE);
+                playAudio();
+            }
+        });
+
+        binding.stopPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.stopPlay.setVisibility(View.GONE);
+                binding.play.setVisibility(View.VISIBLE);
+                pausePlaying();
+            }
+        });
+
+        binding.deleteVoiceNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (new File(getExternalFilesDir("/").getPath() + "/procurement/", "new_far_creation.mp3").delete()) {
+                    Toast.makeText(context, "audio deleted", Toast.LENGTH_SHORT).show();
+                   binding.play.setVisibility(View.GONE);
+                   binding.deleteVoiceNote.setVisibility(View.GONE);
+                   binding.startRecord.setVisibility(View.VISIBLE);
+                   binding.stopPlay.setVisibility(View.GONE);
+                    binding.seekbar.setVisibility(View.GONE);
+                    binding.chronometer.setVisibility(View.VISIBLE);
+                    binding.chronometer.setBase(SystemClock.elapsedRealtime());
+                    binding.chronometer.stop();
+                    binding.txtStartTime.setVisibility(View.GONE);
+                    binding.txtSongTime.setVisibility(View.GONE);
+                    return;
+                }
+                Toast.makeText(context, "unable to deleted", Toast.LENGTH_SHORT).show();
+            }
         });
 
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 finish();
             }
         });
     }
 
-    private void saveNow() {
-
+    private void pausePlaying() {
+        mPlayer.release();
+        mPlayer = null;
+        binding.status.setText("Recording Play Stopped");
     }
 
-    private boolean validateInputs() {
-        mName = binding.edFarmerName.getText().toString();
-        mVillage = binding.edFarmerVillage.getText().toString();
-        mCompetitor = binding.edCompetitorsVillage.getText().toString();
-
-        if ("".equals(mName)){
-            binding.edFarmerName.setError("Empty field");
-            binding.edFarmerName.requestFocus();
-       ////     binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
+    private void playAudio() {
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mPlayer = mediaPlayer;
+        try {
+            mediaPlayer.setDataSource(mFileName);
+            mPlayer.prepare();
+            mPlayer.start();
+            binding.status.setText("Recording Started Playing");
+            eTime = mPlayer.getDuration();
+            sTime = mPlayer.getCurrentPosition();
+            if (oTime == 0) {
+                binding.seekbar.setMax(eTime);
+                oTime = 1;
+            }
+            binding.txtSongTime.setText(String.format("%d min, %d sec", new Object[]{Long.valueOf(TimeUnit.MILLISECONDS.toMinutes((long) eTime)), Long.valueOf(TimeUnit.MILLISECONDS.toSeconds((long) eTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) eTime)))}));
+            binding.txtStartTime.setText(String.format("%d min, %d sec", new Object[]{Long.valueOf(TimeUnit.MILLISECONDS.toMinutes((long) sTime)), Long.valueOf(TimeUnit.MILLISECONDS.toSeconds((long) sTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) sTime)))}));
+            binding.seekbar.setProgress(sTime);
+            handler.postDelayed(UpdateSongTime, 100);
+        } catch (IOException e) {
+            Log.e("TAG", "prepare() failed");
         }
-        if ("".equals(mVillage)){
-            binding.edFarmerVillage.setError("Empty field");
-            binding.edFarmerVillage.requestFocus();
-      //      binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mType)){
-            ((TextView)binding.spinnerType.getSelectedView()).setError("Select type");
-            binding.spinnerType.getSelectedView().requestFocus();
-            binding.txtTypeNotValid.setVisibility(View.VISIBLE);
-       //     binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mCompetitor)){
-            binding.edCompetitorsVillage.setError("Empty field");
-            binding.edCompetitorsVillage.requestFocus();
-       //     binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mRemarks)){
-            Toast.makeText(context, "Please select ", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
     }
 
-    private void initLoad() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.farmer_creation_types_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerType.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        File file = new File(getExternalFilesDir(null), "/procurement/" + "SKA_NEW_CMTR_123.jpg");
-        bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-
-        if (bitmap != null){
-            binding.imageViewCompetitorsLayout.setVisibility(View.VISIBLE);
-            binding.imageCompetitors.setImageBitmap(bitmap);
-         //   binding.txtErrorFound.setVisibility(GONE);
+    private void pauseRecording() {
+        try {
+            mRecorder.stop();
+        } catch (RuntimeException ignored) {
         }
+        binding.status.setText("Recording Stopped");
     }
 
     private void startRecording() {
-        // check permission method is used to check that the user has granted permission to record nd store the audio.
         if (CheckPermissions()) {
-            //setbackgroundcolor method will change the background color of text view.
-            stopTV.setBackgroundColor(getResources().getColor(R.color.stop_reco));
-//            startTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//            playTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//            stopplayTV.setBackgroundColor(getResources().getColor(R.color.gray));
-            //we are here initializing our filename variable with the path of the recorded audio file.
-//            mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//            mFileName += "/AudioRecording.3gp";
-            mFileName = getExternalFilesDir("/").getPath() + "/" + "procurement/";
-            mFileName += "AudioRecording.3gp";
-            //below method is used to initialize the media recorder clss
-            mRecorder = new MediaRecorder();
-            //below method is used to set the audio source which we are using a mic.
-            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            //below method is used to set the output format of the audio.
+            mFileName = getExternalFilesDir("/").getPath() + "/procurement/";
+            mFileName += "new_far_creation.mp3";
+            MediaRecorder mediaRecorder = new MediaRecorder();
+            mRecorder = mediaRecorder;
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            //below method is used to set the audio encoder for our recorded audio.
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            //below method is used to set the output file location for our recorded audio
             mRecorder.setOutputFile(mFileName);
             try {
-                //below mwthod will prepare our audio recorder class
                 mRecorder.prepare();
                 mRecorder.start();
             } catch (IOException e) {
                 Log.e("TAG", "prepare() failed");
             }
-            // start method will start the audio recording.
-
-            statusTV.setText("Recording Started");
-        } else {
-            //if audio recording permissions are not granted by user below method will ask for runtime permission for mic and storage.
-            RequestPermissions();
+            binding.status.setText("Recording Started");
+            return;
         }
+        RequestPermissions();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // this method is called when user will grant the permission for audio recording.
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_AUDIO_PERMISSION_CODE:
-                if (grantResults.length > 0) {
-                    boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (permissionToRecord && permissionToStore) {
-                        Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
-                    }
-                }
-                break;
-        }
-    }
-
-    public boolean CheckPermissions() {
-        //this method is used to check permission
-        int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    private boolean CheckPermissions() {
+        return ContextCompat.checkSelfPermission(getApplicationContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && ContextCompat.checkSelfPermission(getApplicationContext(), "android.permission.RECORD_AUDIO") == 0;
     }
 
     private void RequestPermissions() {
-        // this method is used to request the permission for audio recording and storage.
-        ActivityCompat.requestPermissions(NewFarmerCreationActivity.this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{"android.permission.RECORD_AUDIO", "android.permission.WRITE_EXTERNAL_STORAGE"}, 1);
     }
 
+    private void saveNow() {
+        Intent serviceIntent = new Intent(this, FileUploadService2.class);
+        serviceIntent.putExtra("name", mName);
+        serviceIntent.putExtra("village", mVillage);
+        serviceIntent.putExtra("type", mType);
+        serviceIntent.putExtra("competitor", mCompetitor);
+        serviceIntent.putExtra("remarks_type", mRemarksType);
+        serviceIntent.putExtra("remarks_text", mRemarksText);
+        serviceIntent.putExtra("active_flag", "1");
+        serviceIntent.putExtra("upload_service_id", "12");
+        ContextCompat.startForegroundService(context, serviceIntent);
+        finish();
+        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
+    }
 
-    public void playAudio() {
-//        stopTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//        startTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        playTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//        stopplayTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-        //for playing our recorded audio we are using media player class.
-        mPlayer = new MediaPlayer();
-        try {
-            //below method is used to set the data source which will be our file name
-            mPlayer.setDataSource(mFileName);
-            //below method will prepare our media player
-            mPlayer.prepare();
-            //below method will start our media player.
-            mPlayer.start();
-            statusTV.setText("Recording Started Playing");
-        } catch (IOException e) {
-            Log.e("TAG", "prepare() failed");
+    private boolean validateInputs() {
+        mName = binding.edFarmerName.getText().toString();
+        mType = binding.spinnerType.getSelectedItem().toString();
+        mVillage = binding.edFarmerVillage.getText().toString();
+        mCompetitor = binding.edCompetitorsVillage.getText().toString();
+        mRemarksText = binding.edRemark.getText().toString();
+
+        if ("".equals(mName)) {
+            binding.edFarmerName.setError("Empty field");
+            binding.edFarmerName.requestFocus();
+            return false;
         }
-
-
-    }
-
-    public void pauseRecording()  {
-        stopTV.setBackgroundColor(getResources().getColor(R.color.white));
-//        startTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        playTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        stopplayTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-        //below method will stop the audio recording.
-        try{
-            mRecorder.stop();
-        }catch(RuntimeException ex){
-            //Ignore
+        if ("".equals(mVillage)) {
+            binding.edFarmerVillage.setError("Empty field");
+            binding.edFarmerVillage.requestFocus();
+            return false;
         }
-
-        statusTV.setText("Recording Stopped");
-
+        if ("Select".equals(mType)) {
+            ((TextView) binding.spinnerType.getSelectedView()).setError("Select type");
+            binding.spinnerType.getSelectedView().requestFocus();
+            binding.txtTypeNotValid.setVisibility(View.VISIBLE);
+            return false;
+        }
+        if ("".equals(mCompetitor)) {
+            binding.edCompetitorsVillage.setError("Empty field");
+            binding.edCompetitorsVillage.requestFocus();
+            return false;
+        }
+        if (bitmap == null) {
+            binding.txtCompetitorsImageNotValid.setVisibility(View.VISIBLE);
+            return false;
+        }
+        if ("".equals(mRemarksType)) {
+            Toast.makeText(context, "Please select remarks ", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return true;
     }
 
-    public void pausePlaying() {
-        //this method will release the media player class and pause the playing of our recorded audio.
-        mPlayer.release();
-        mPlayer = null;
-//        stopTV.setBackgroundColor(getResources().getColor(R.color.gray));
-//        startTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        playTV.setBackgroundColor(getResources().getColor(R.color.purple_200));
-//        stopplayTV.setBackgroundColor(getResources().getColor(R.color.gray));
-        statusTV.setText("Recording Play Stopped");
+    private void initLoad() {
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(context,
+                R.array.farmer_creation_types_array, R.layout.custom_spinner);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerType.setAdapter(adapter2);
+    }
 
+    public void onResume() {
+        super.onResume();
+        Bitmap decodeFile = BitmapFactory.decodeFile(new File(getExternalFilesDir((String) null), "/procurement/SKA_NEW_CMTR_123.jpg").getAbsolutePath());
+        bitmap = decodeFile;
+        if (decodeFile != null) {
+            binding.imageViewCompetitorsLayout.setVisibility(View.VISIBLE);
+            binding.imageCompetitors.setImageBitmap(bitmap);
+        }
     }
 }

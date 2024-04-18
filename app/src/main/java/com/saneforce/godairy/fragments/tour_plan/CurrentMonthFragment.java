@@ -1,17 +1,14 @@
 package com.saneforce.godairy.fragments.tour_plan;
 
 import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
-import static com.saneforce.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
-import static com.saneforce.godairy.common.AppConstants.USER_DETAILS_PREF;
+import static com.saneforce.godairy.procurement.AppConstants.USER_DETAILS_PREF;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -396,7 +393,7 @@ public class CurrentMonthFragment extends Fragment implements Main_Model.MasterS
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
       //  UserDetails.getString("Sfcode", "");
         Map<String, String> params = new HashMap<>();
-        params.put("axn", GET_JOINT_WORK_LIST);
+        params.put("axn", "get_jointwork_list");
         params.put("sfCode", "MGR0201");
 
         Call<ResponseBody> call = apiInterface.getUniversalData(params);

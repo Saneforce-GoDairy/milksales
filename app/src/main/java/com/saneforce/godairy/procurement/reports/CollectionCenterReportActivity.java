@@ -1,7 +1,7 @@
 package com.saneforce.godairy.procurement.reports;
 
 import static android.view.View.GONE;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_COLLECTION_CENTER_REPORT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_COLLECTION_CENTER_REPORT;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;

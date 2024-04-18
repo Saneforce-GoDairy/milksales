@@ -60,6 +60,13 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".procurement.custom_form.CustomFormDetailsViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.custom_form.CustomFormHomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".procurement.ExistingCenterVisitActivity"
             android:exported="false" />
         <activity

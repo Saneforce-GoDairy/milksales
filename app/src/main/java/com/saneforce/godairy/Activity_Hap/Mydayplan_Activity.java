@@ -1,11 +1,7 @@
 package com.saneforce.godairy.Activity_Hap;
 
 import static com.saneforce.godairy.Common_Class.Common_Class.GetDate;
-import static com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly;
 import static com.saneforce.godairy.Common_Class.Common_Class.addquote;
-import static com.saneforce.godairy.common.AppConstants.GET_JOINT_WORK_LIST;
-import static com.saneforce.godairy.common.AppConstants.SUBMIT_MY_DAY_PLAN;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -16,7 +12,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -174,19 +169,13 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         jointWorkIdList = new ArrayList<>();
         jointWorkDesigList = new ArrayList<>();
 
-        new Handler().postDelayed(() -> {
-            loadWorkTypes();
-            getWorkTypes();
-            Log.e("my_day_plan", "Handler : started now");
-        },500);
+        // For work type list
+        getWorkTypes();
 
-        loadExtraField();
+        // For joint work list
+        loadJointExtraField();
         initJointWorkSelectedRecyclerView();
-        loadWorkTypes();
-        getWorkTypes();
-        Get_MydayPlan(com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly());
-        loadWorkTypes();
-        getWorkTypes();
+
         Get_MydayPlan(com.saneforce.godairy.Common_Class.Common_Class.GetDateOnly());
         initSetup();
     }
@@ -208,7 +197,6 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         binding.tourdate.setText(TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0]);
         binding.myDayPlanDate.setText("(" + TP_Dt[2] + "/" + TP_Dt[1] + "/" + TP_Dt[0] + ")");
         binding.textTourPlancount.setText("0");
-
 
         distributors_layout.setVisibility(View.GONE);
         binding.chillinglayout.setVisibility(View.GONE);
@@ -252,10 +240,10 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    private void loadExtraField() {
+    private void loadJointExtraField() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Map<String, String> params = new HashMap<>();
-        params.put("axn", GET_JOINT_WORK_LIST);
+        params.put("axn", "get_jointwork_list");
         params.put("sfCode", UserDetails.getString("Sfcode", ""));
         Call<ResponseBody> call = apiInterface.getUniversalData(params);
 
@@ -399,7 +387,8 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     public void getWorkTypes() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("SF", UserDetails.getString("Sfcode", ""));
+           // jsonObject.put("SF", UserDetails.getString("Sfcode", ""));
+            jsonObject.put("SF", "MGR0332");
             jsonObject.put("div", UserDetails.getString("Divcode", ""));
             ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
             service.getDataArrayList("get/worktypes", jsonObject.toString()).enqueue(new Callback<>() {
@@ -407,11 +396,14 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                 public void onResponse(@NonNull Call<JsonArray> call, @NonNull Response<JsonArray> response) {
                     db.deleteMasterData("HAPWorkTypes");
                     db.addMasterData("HAPWorkTypes", response.body());
+
+                    loadWorkTypes();
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<JsonArray> call, @NonNull Throwable t) {
                     Log.e("work_types", t.toString());
+                    Toast.makeText(context, "Unable to load work types.", Toast.LENGTH_SHORT).show();
                 }
             });
         }catch (JSONException e) {
@@ -545,7 +537,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                     QueryString.put("divisionCode", Shared_Common_Pref.Div_Code);
                     QueryString.put("State_Code", Shared_Common_Pref.StateCode);
                     QueryString.put("desig", "MGR");
-                    QueryString.put("axn", SUBMIT_MY_DAY_PLAN);
+                    QueryString.put("axn", "save/dayplandynamic");
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<Object> Callto = apiInterface.Tb_Mydayplannew(QueryString, jsonarr.toString());
                     Callto.enqueue(new Callback<>() {
@@ -695,8 +687,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
                 str.append(eachstring).append(",");
             }
             String removeLastExtraComma = str.toString();
-            commaseparatedlistName = removeLastExtraComma.replaceFirst(".$",""); // removed last extra comma
-
+            commaseparatedlistName = removeLastExtraComma.replaceFirst(".$",""); // removed last extra comma0.
 
             // for id
             StringBuilder str2 = new StringBuilder();

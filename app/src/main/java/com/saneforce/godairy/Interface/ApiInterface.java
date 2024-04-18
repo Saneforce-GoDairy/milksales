@@ -1049,6 +1049,44 @@ public interface ApiInterface {
                                                     @Query("active_flag") String active_flag,
                                                     @Query("created_dt") String created_dt);
 
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcExistingFarmerVisitSka(@Query("axn") String str,
+                                                        @Part MultipartBody.Part audio,
+                                                        @Part MultipartBody.Part image,
+                                                        @Query("customer") String customer,
+                                                        @Query("customer_details") String customer_details,
+                                                        @Query("purpose_visit") String purpose_visit,
+                                                        @Query("price") String price,
+                                                        @Query("asset") String asset,
+                                                        @Query("cans") String cans,
+                                                        @Query("remarks_type") String remarks_type,
+                                                        @Query("remarks_text") String remarks_text,
+                                                        @Query("active_flag") String active_flag,
+                                                        @Query("created_dt") String created_dt);
+
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcFarmerCreationSka(@Query("axn") String str,
+                                                   @Part MultipartBody.Part audio,
+                                                   @Part MultipartBody.Part image,
+                                                   @Query("name") String name,
+                                                   @Query("village") String village,
+                                                   @Query("type") String type,
+                                                   @Query("competitor") String competitor,
+                                                   @Query("remarks_type") String remarks_type,
+                                                   @Query("remarks_text") String remarks_text,
+                                                   @Query("active_flag") String active_flag,
+                                                   @Query("created_dt") String created_dt);
+
+    @POST("test_prasanth.php")
+    Call<ResponseBody> getProcCustomFormModule(@Query("axn") String axn);
+
+    @POST("test_prasanth.php")
+    Call<ResponseBody> getProcCustomFormFieldLists(@Query("axn") String axn,
+                                                   @Query("module_id") String module_id);
+
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

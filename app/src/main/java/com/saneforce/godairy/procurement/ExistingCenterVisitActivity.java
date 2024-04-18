@@ -1,8 +1,5 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_CENTER;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_SUBMIT_EXISTING_CENTER_VISIT;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -14,14 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.saneforce.godairy.Interface.ApiClient;
-import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityExistingCenterVisitBinding;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 
 public class ExistingCenterVisitActivity extends AppCompatActivity {
     private ActivityExistingCenterVisitBinding binding;

@@ -1,31 +1,21 @@
 package com.saneforce.godairy.procurement.reports;
 
 import static android.view.View.GONE;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_ASSET_REPORT;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_QUALITY_REPORT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_ASSET_REPORT;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.ProcAssetReport;
-import com.saneforce.godairy.Model_Class.ProcQualityReport;
-import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityAssetReportBinding;
-import com.saneforce.godairy.databinding.ModelAssetReportBinding;
-import com.saneforce.godairy.databinding.ModelQualityReportBinding;
 import com.saneforce.godairy.procurement.adapter.AssetReportAdapter;
 
 import org.json.JSONArray;
@@ -35,7 +25,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
