@@ -40,6 +40,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
         holder.binding.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String mModuleId = moduleList.getModuleId();
+                String debug = "";
+
                 Intent intent = new Intent(context, CustomFormDetailsViewActivity.class);
                 intent.putExtra("title", moduleList.getModuleName());
                 intent.putExtra("moduleId",moduleList.getModuleId());

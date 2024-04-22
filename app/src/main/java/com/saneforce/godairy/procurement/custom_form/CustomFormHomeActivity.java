@@ -1,5 +1,6 @@
 package com.saneforce.godairy.procurement.custom_form;
 
+import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST;
 
 import android.content.Context;
@@ -68,6 +69,7 @@ public class CustomFormHomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    binding.shimmerLayout.setVisibility(GONE);
                     String moduleList;
                     try {
                         moduleList = response.body().string();
@@ -81,6 +83,7 @@ public class CustomFormHomeActivity extends AppCompatActivity {
                             // String mModuleName = jsonObject.getString("ModuleName");
                             // Toast.makeText(context, mModuleName, Toast.LENGTH_SHORT).show();
                             moduleListModel.setModuleName(jsonObject.getString("ModuleName"));
+                            moduleListModel.setModuleId(jsonObject.getString("ModuleId"));
                             moduleArrayList.add(moduleListModel);
                         }
 
@@ -92,16 +95,23 @@ public class CustomFormHomeActivity extends AppCompatActivity {
 
                     } catch (IOException | JSONException e) {
                         // throw new RuntimeException(e);
-                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                        showError();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
+    }
+
+    private void showError() {
+        binding.shimmerLayout.setVisibility(GONE);
+        binding.recyclerView.setVisibility(GONE);
+        binding.nullError.setVisibility(View.VISIBLE);
+        binding.message.setText("Something went wrong!");
     }
 
     private void createDirectory() {

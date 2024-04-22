@@ -85,7 +85,7 @@ public class FileUploadService extends JobIntentService {
     }
 
     private void updateProfileSession() {
-        String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/" + FileName;
+        String mBasePath = "https://admin.godairy.in/SalesForce_Profile_Img/" + FileName;
         SharedPreferences userDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor userEditor = userDetails.edit();
         userEditor.putString("Profile", mBasePath);

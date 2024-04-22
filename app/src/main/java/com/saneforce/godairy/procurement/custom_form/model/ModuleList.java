@@ -2,14 +2,14 @@ package com.saneforce.godairy.procurement.custom_form.model;
 
 public class ModuleList {
     private String ModuleName;
-    private int moduleId;
+    private String ModuleId;
 
-    public int getModuleId() {
-        return moduleId;
+    public void setModuleId(String moduleId) {
+        ModuleId = moduleId;
     }
 
-    public void setModuleId(int moduleId) {
-        this.moduleId = moduleId;
+    public String getModuleId() {
+        return ModuleId;
     }
 
     public String getModuleName() {

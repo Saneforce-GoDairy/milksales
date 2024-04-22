@@ -1,10 +1,13 @@
 package com.saneforce.godairy.procurement.custom_form;
 
+import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -86,7 +89,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
     private final Context context = this;
     private ApiInterface apiInterface;
     private static final String TAG = "CustomFormDetails_";
-    private int mModuleId = 0;
+    private String mModuleId = "";
     private ArrayList<DynamicField> master_list;
     private ArrayList<DynamicField> group_list;
     private ArrayList<DynamicField> store_list;
@@ -119,27 +122,32 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         String moduleName = getIntent().getStringExtra("title");
         binding.moduleName.setText(moduleName);
 
-        Intent intent = getIntent();
-        if (intent.hasExtra("moduleId")) {
-            mModuleId = intent.getIntExtra("moduleId",0);
+        mModuleId = getIntent().getStringExtra("moduleId");
+
+        if (mModuleId != null){
+            if (mModuleId.isEmpty() | mModuleId.equals("")){
+                return;
+            }
+            loadFieldData(mModuleId);
         }
 
-        loadFieldData(mModuleId);
+        binding.back.setOnClickListener(v -> finish());
     }
 
-    private void loadFieldData(int mModuleId) {
-        Call<ResponseBody> call = apiInterface.getProcCustomFormFieldLists(PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST, "2");
+    private void loadFieldData(String mModuleId) {
+        Call<ResponseBody> call = apiInterface.getProcCustomFormFieldLists(PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST, String.valueOf(mModuleId));
 
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    binding.shimmerLayout.setVisibility(GONE);
                     String mResponse;
                     try {
                         mResponse = response.body().string();
                         JSONObject jsonObject = new JSONObject(mResponse);
 
-                        JSONArray groupJsonArray = new JSONArray(jsonObject.getString("customGrp"));
+                        JSONArray groupJsonArray = new JSONArray(jsonObject.getString( "customGrp"));
                         JSONArray fieldJsonArray = new JSONArray(jsonObject.getString("customData"));
 
                         for (int i = 0; i<fieldJsonArray.length(); i++){
@@ -157,16 +165,23 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                         loadData(groupJsonArray,fieldJsonArray);
                     } catch (IOException | JSONException e) {
                         // throw new RuntimeException(e);
-                        Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                        showError();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
+    }
+
+    private void showError() {
+        binding.shimmerLayout.setVisibility(GONE);
+        binding.linearLayout.setVisibility(GONE);
+        binding.nullError.setVisibility(View.VISIBLE);
+        binding.message.setText("Something went wrong!");
     }
 
     private void loadData(JSONArray groupJsonArray, JSONArray fieldJsonArray) {
@@ -198,11 +213,13 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                 TextView textView30 = new TextView(getApplicationContext());
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    textView30.setTextColor(getResources().getColor(R.color.primaryColor, null));
+                    textView30.setTextColor(getResources().getColor(R.color.primaryDark, null));
                 }
+                Typeface typeface = ResourcesCompat.getFont(this, R.font.ubuntu_bold);
+                textView30.setTypeface(typeface);
 
                 textView30.setTextSize(18);
-                textView30.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+           //     textView30.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 textView30.setPadding((int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                 .getDisplayMetrics()), 0, 0, 0);
@@ -250,15 +267,21 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
 
                                 card.setLayoutParams(params);
                                 // Setting different attributes
-                                card.setRadius(5);
+                                card.setRadius(10);
                                 //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
 
-                                textView.setTextColor(Color.BLACK);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    textView.setTextColor(getResources().getColor(R.color.grey_500, null));
+                                }
+
+                                Typeface typeface1 = ResourcesCompat.getFont(this, R.font.ubuntu);
+                                textView.setTypeface(typeface1);
+
                                 textView.setTextSize(15);
-                                textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                              //  textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
@@ -269,7 +292,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 } else {
                                     textView.setText(Heading_Label);
                                 }
-                                editText.setHint("Enter the Data");
+                                editText.setHint("Type");
                                 if (Type_to_Add.equals("N") || Type_to_Add.equals("NP")) {
                                     editText.setSingleLine(true);
                                     editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Text_Length)});
@@ -297,7 +320,9 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                                 .getDisplayMetrics()), (int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 15, getResources()
                                                 .getDisplayMetrics()));
-                                editText.setBackgroundColor(Color.TRANSPARENT);
+                              //  editText.setBackgroundColor(Color.TRANSPARENT);
+                                editText.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_text_common));
+                             //   editText.setPadding(20,20,20 ,20);
                                 DynamicField dataModel = new DynamicField();
                                 dataModel.setColumn(Column_Store);
                                 dataModel.setFldGrpId(fieldGroupId);
@@ -561,7 +586,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 DynamicField dataModel = new DynamicField();
                                 card.setLayoutParams(params);
                                 // Setting different attributes
-                                card.setRadius(5);
+                                card.setRadius(10);
                                 //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
@@ -592,7 +617,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     textView.setText(Heading_Label);
                                 }
 
-                                From_Date.setHint("Select The Date");
+                                From_Date.setHint("Select Date");
                                 From_Date.setGravity(Gravity.START);
                                 From_Date.setTextSize(14);
                                 From_Date.setTextColor(Color.BLACK);
@@ -605,7 +630,8 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                                 .getDisplayMetrics()), (int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 15, getResources()
                                                 .getDisplayMetrics()));
-                                From_Date.setBackgroundColor(Color.TRANSPARENT);
+                             //   From_Date.setBackgroundColor(Color.TRANSPARENT);
+                                From_Date.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_text_common));
                                 From_Date.setOnClickListener(view -> {
                                     int day, month, year;
                                     if (!From_Date.getText().toString().equals("")) {

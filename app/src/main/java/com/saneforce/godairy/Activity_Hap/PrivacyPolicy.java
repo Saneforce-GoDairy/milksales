@@ -41,6 +41,7 @@ public class PrivacyPolicy extends AppCompatActivity {
                 Log.e("Privacypolicy", "Checking" + PrivacyScreen);
                 if (PrivacyScreen.equals("One")) {
                     startActivity(new Intent(PrivacyPolicy.this, Login.class));
+                    finish();
                 }
             }
 
@@ -85,6 +86,7 @@ public class PrivacyPolicy extends AppCompatActivity {
         editor.putString(Name, n);
         editor.commit();
         startActivity(new Intent(PrivacyPolicy.this, Login.class));
+        finish();
     }
 
 }

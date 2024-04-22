@@ -107,7 +107,6 @@ public class Login extends AppCompatActivity {
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private ProgressDialog mProgress;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private LocationReceiver rcvMReceiver;
     private SANGPSTracker mLUService;
@@ -203,10 +202,6 @@ public class Login extends AppCompatActivity {
         //displayFirebaseRegId();
         UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
-        mProgress = new ProgressDialog(context);
-        String titleId = "Signing in...";
-        mProgress.setTitle(titleId);
-        mProgress.setMessage("Please Wait...");
 
         deviceToken = shared_common_pref.getvalue(Shared_Common_Pref.Dv_ID);
 
@@ -311,12 +306,6 @@ public class Login extends AppCompatActivity {
             }
 
             if (Login && !CheckIn) {
-
-                try {
-                    mProgress.show();
-                } catch (Exception e) {
-
-                }
                 login(RC_SIGN_IN);
             } else if (CheckIn) {
 
@@ -331,6 +320,7 @@ public class Login extends AppCompatActivity {
                 if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
                     Shared_Common_Pref.LOGINTYPE = Constants.DISTRIBUTER_TYPE;
                     startActivity(new Intent(this, SFA_Activity.class));
+                    finish();
                 } else {
                     if (ActStarted.equalsIgnoreCase("true")) {
                         Intent aIntent;
@@ -376,6 +366,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void getBaseURL(String code) {
+        MakeInvisible();
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getBaseConfig();
         call.enqueue(new Callback<>() {
@@ -392,17 +383,18 @@ public class Login extends AppCompatActivity {
                             shared_common_pref.save("base_url", baseURL);
                             shared_common_pref.save("company_code", code.toLowerCase());
                         }
-                        MakeInvisible();
                         login(1);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        MakeVisible();
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-
+                Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                MakeVisible();
             }
         });
 
@@ -489,7 +481,6 @@ public class Login extends AppCompatActivity {
             login(requestCode);
         } else {
             MakeVisible();
-            mProgress.dismiss();
             Toast.makeText(getApplicationContext(), "Sign in cancel", LENGTH_LONG).show();
         }
     }
@@ -585,7 +576,6 @@ public class Login extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
                     if (eMail.isEmpty()) {
                         Toast.makeText(getApplicationContext(), "Invalid Email ID", LENGTH_LONG).show();
-                        mProgress.dismiss();
                         MakeVisible();
                         return;
                     }
@@ -680,38 +670,30 @@ public class Login extends AppCompatActivity {
 //                                        }, 1000);
 
                                     } catch (Exception e) {
-                                        Log.v("Login:assign", e.getMessage());
+                                        Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                        MakeVisible();
                                     }
                                 } else {
-                                    try {
-                                        mProgress.dismiss();
-                                    } catch (Exception e) {
-                                        Log.v("Login:assign1", e.getMessage());
-                                    }
                                     MakeVisible();
                                     Toast.makeText(getApplicationContext(), "Check username and password", LENGTH_LONG).show();
                                 }
                             }
                         } catch (Exception e) {
+                            Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             MakeVisible();
-                            Log.v("Login:response", e.getMessage());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Model> call, Throwable t) {
+                        Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         MakeVisible();
-                        Toast.makeText(getApplicationContext(), t.getMessage(), LENGTH_LONG).show();
-                        try {
-                            mProgress.dismiss();
-                        } catch (Exception e) {
-
-                        }
                     }
                 });
             }
         } catch (Exception e) {
-            Log.v("LOGIN:", e.getMessage());
+            Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            MakeVisible();
         }
     }
 
@@ -781,7 +763,7 @@ public class Login extends AppCompatActivity {
                 cInEditor.apply();
                 shared_common_pref.save(Constants.Freezer_Mandatory, response.getData().get(0).getFreezer_Mandatory());
                 startActivity(new Intent(Login.this, SFA_Activity.class));
-
+                finish();
             } else {
                 shared_common_pref.save(Constants.LOGIN_TYPE, Constants.CHECKIN_TYPE);
                 Shared_Common_Pref.LOGINTYPE = Constants.CHECKIN_TYPE;
@@ -827,7 +809,6 @@ public class Login extends AppCompatActivity {
                         else {
                             intent.putExtra("Mode", "CIN");
                         }
-                        finish();
                     } else {
                         intent = new Intent(context, Dashboard.class);
                         if (FFType.equalsIgnoreCase("P")){
@@ -837,13 +818,10 @@ public class Login extends AppCompatActivity {
                         }else {
                             intent.putExtra("Mode", INTENT_MODE_SFA);
                         }
-                        finish();
                     }
-
                 } else {
                     intent = new Intent(context, Dashboard_Two.class);
                     intent.putExtra("Mode", "RPT");
-                    finish();
                 }
 
                 String code = response.getData().get(0).getSfCode();
@@ -864,7 +842,7 @@ public class Login extends AppCompatActivity {
                 String SFHQLoc = response.getData().get(0).getHOLocation();
                 int THrsPerm = response.getData().get(0).getTHrsPerm();
 
-                String mBasePath = "https://lactalisindia.salesjump.in/SalesForce_Profile_Img/";
+                String mBasePath = "https://admin.godairy.in/SalesForce_Profile_Img/";
 
                 String mProfile = mBasePath + response.getData().get(0).getProfile();
                 String mProfPath = response.getData().get(0).getProfPath();
@@ -953,17 +931,11 @@ public class Login extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
                     overridePendingTransition(R.anim.in, R.anim.out);
                 }
-
-                try {
-                    //MakeVisible();
-                    mProgress.dismiss();
-                } catch (Exception e) {
-
-                }
+                finish();
             }
         } catch (Exception e) {
+            Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             MakeVisible();
-            Log.v("Login:assign", e.getMessage());
         }
     }
 

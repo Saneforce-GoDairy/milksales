@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.saneforce.godairy">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
@@ -60,31 +59,31 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name=".procurement.custom_form.CustomFormDetailsViewActivity"
+            android:name=".SFA_Activity.vwInvoices"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".Activity_Hap.DayReportActivity" -->
+        <!-- android:exported="false" /> -->
+        <activity
+            android:name=".Activity.GeoTagActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.custom_form.CustomFormHomeActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".procurement.ExistingCenterVisitActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.ska.ExistingFarmerVisitActivity"
-            android:exported="false" />
-        <activity
-            android:name=".procurement.ska.NewFarmerCreationActivity"
+            android:name=".procurement.custom_form.CustomFormDetailsViewActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.MaintanenceRegularActivity"
             android:exported="false" />
         <activity
-            android:name=".SFA_Activity.vwInvoices"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".Activity_Hap.DayReportActivity" -->
-        <!-- android:exported="false" /> -->
+            android:name=".procurement.ExistingCenterVisitActivity"
+            android:exported="false" />
         <activity
-            android:name=".Activity.GeoTagActivity"
+            android:name=".procurement.ska.NewFarmerCreationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.ska.ExistingFarmerVisitActivity"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.RetailerGeoTaggingActivity"

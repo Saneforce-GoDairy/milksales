@@ -1428,6 +1428,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                             if(sSFType.equalsIgnoreCase("2")){
                                 Intent ProcIntent = new Intent(context, ProcurementHome.class);
                                 ProcIntent.putExtra("proc_user", getIntent().getStringExtra("proc_user"));
+                                Log.e("cl__", "Clicked" + "\n" + "SF Type:"+ sSFType);
                                 startActivity(ProcIntent);
                             }else{
                                 startActivity(new Intent(getApplicationContext(), SFA_Activity.class));
