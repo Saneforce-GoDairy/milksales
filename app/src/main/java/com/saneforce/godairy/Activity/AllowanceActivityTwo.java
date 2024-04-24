@@ -491,16 +491,7 @@ public class AllowanceActivityTwo extends AppCompatActivity implements Master_In
                                     startActivity(new Intent(getApplicationContext(), Mydayplan_Activity.class));
                                     finish();
                                 } else {
-                                    String eMail = UserDetails.getString("email", "");
-                                    DatabaseHandler db = new DatabaseHandler(AllowanceActivityTwo.this);
-                                    db.deleteAllMasterData();
-                                    shared_common_pref.clearAll();
-                                    UserDetails.edit().clear().apply();
-                                    CheckInDetails.edit().clear().apply();
-                                    finishAffinity();
-                                    UserDetails.edit().putString("email", eMail).apply();
-                                    Intent takePhoto = new Intent(AllowanceActivityTwo.this, Login.class);
-                                    startActivity(takePhoto);
+                                    assistantClass.forceLogout();
                                 }
 
 

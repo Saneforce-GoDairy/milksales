@@ -1,12 +1,14 @@
 package com.saneforce.godairy.Activity_Hap;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -17,6 +19,7 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.AdapterDayReport;
 import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.databinding.ActivityDayReportBinding;
+import com.saneforce.godairy.databinding.ActivityMonthlyReportBinding;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,22 +30,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
-public class Day_Report_Activity extends AppCompatActivity {
+public class Monthly_Report_Activity extends AppCompatActivity {
     Context context = this;
     Common_Class common_class;
     AssistantClass assistantClass;
     JSONArray hierarchyArray, reportArray;
-    String id = "", date = "";
+    String id = "";
+    int month = 0, year = 0, currentYear, currentMonth;
     AdapterDayReport adapter;
     double distVisitedCount = 0, retVisitedCount = 0, distOrderTaken = 0, retOrderTaken = 0, distInvoicedCount = 0, retInvoicedCount = 0, distOrderedAmt = 0, retOrderedAmt = 0, distInvoicedAmt = 0, retInvoicedAmt = 0;
-    private ActivityDayReportBinding binding;
+    private ActivityMonthlyReportBinding binding;
     BottomSheetDialog bottomSheetDialog;
     View bottomSheetView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityDayReportBinding.inflate(getLayoutInflater());
+        binding = ActivityMonthlyReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         common_class = new Common_Class(this);
@@ -51,24 +55,26 @@ public class Day_Report_Activity extends AppCompatActivity {
         reportArray = new JSONArray();
 
         binding.toolbar.back.setOnClickListener(v -> onBackPressed());
-        binding.toolbar.title.setText("Day Report");
+        binding.toolbar.title.setText("Monthly Report");
         common_class.gotoHomeScreen(context, binding.toolbar.home);
 
-        binding.selectDate.setOnClickListener(v -> assistantClass.showDatePickerDialog(0, Calendar.getInstance().getTimeInMillis(), (_date, dateForDB) -> {
-            date = _date;
-            binding.selectDate.setText(_date);
-            getReport();
-        }));
+        final Calendar calendar = Calendar.getInstance();
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonth = calendar.get(Calendar.MONTH);
+        month = currentMonth;
+        year = currentYear;
+
+        binding.selectDate.setOnClickListener(v -> showMonthPicker());
+
         binding.selectFieldForce.setOnClickListener(v -> assistantClass.showDropdown("Select Employee", hierarchyArray, object -> {
             binding.selectFieldForce.setText(object.optString("sfName"));
             id = object.optString("id");
             getReport();
         }));
+
         binding.summaryView.setOnClickListener(v -> showBottomSheet());
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        date = assistantClass.getTime("dd/MM/yyyy");
-        binding.selectDate.setText(date);
 
         getFieldForceList();
 
@@ -80,6 +86,47 @@ public class Day_Report_Activity extends AppCompatActivity {
 
         id = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getString("Sfcode", "");
         binding.selectFieldForce.setText(getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getString("SfName", ""));
+
+        setDate();
+    }
+
+    private void showMonthPicker() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(true);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_month_picker, null, false);
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+
+        NumberPicker monthPicker, yearPicker;
+        monthPicker = view.findViewById(R.id.monthPicker);
+        yearPicker = view.findViewById(R.id.yearPicker);
+
+        monthPicker.setMinValue(1);
+        monthPicker.setMaxValue(12);
+        monthPicker.setValue(currentMonth + 1);
+
+        yearPicker.setMinValue(currentYear - 1);
+        yearPicker.setMaxValue(currentYear);
+        yearPicker.setValue(currentYear);
+
+        TextView cancel, ok;
+        cancel = view.findViewById(R.id.cancel);
+        ok = view.findViewById(R.id.ok);
+        cancel.setOnClickListener(view1 -> dialog.dismiss());
+        ok.setOnClickListener(view1 -> {
+            dialog.dismiss();
+            month = (monthPicker.getValue() - 1);
+            year = yearPicker.getValue();
+            setDate();
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void setDate() {
+        String MMM = getResources().getStringArray(R.array.months_array)[month];
+        binding.selectDate.setText(MMM + " " + year);
         getReport();
     }
 
@@ -88,14 +135,15 @@ public class Day_Report_Activity extends AppCompatActivity {
     }
 
     private void getReport() {
-        if (id.isEmpty() || date.isEmpty()) {
+        if (id.isEmpty()) {
             return;
         }
         assistantClass.showProgressDialog("Fetching Report...", false);
         Map<String, String> params = new HashMap<>();
-        params.put("axn", "getDayReport");
+        params.put("axn", "getMonthReport");
         params.put("sfCode", id);
-        params.put("date", assistantClass.formatDateToDB(date));
+        params.put("month", String.valueOf(month + 1));
+        params.put("year", String.valueOf(year));
         assistantClass.makeApiCall(params, "", new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {

@@ -339,7 +339,7 @@ public class Outlet_Info_Activity extends AppCompatActivity implements View.OnCl
             txUniOtlt.setTextColor(getResources().getColor(R.color.grey_900));
             txClsOtlt.setTypeface(null, Typeface.NORMAL);
             txClsOtlt.setTextColor(getResources().getColor(R.color.grey_900));
-            if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+            if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE) || sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DSM_TYPE)) {
                 distributor_text.setEnabled(false);
                 findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
             }

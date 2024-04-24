@@ -319,7 +319,11 @@ public class Login extends AppCompatActivity {
 
                 String ActStarted = shared_common_pref.getvalue("ActivityStart");
 
-                if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+                if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DSM_TYPE)) {
+                    Shared_Common_Pref.LOGINTYPE = Constants.DSM_TYPE;
+                    startActivity(new Intent(this, SFA_Activity.class));
+                    finish();
+                } else if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
                     Shared_Common_Pref.LOGINTYPE = Constants.DISTRIBUTER_TYPE;
                     startActivity(new Intent(this, SFA_Activity.class));
                     finish();
@@ -714,7 +718,64 @@ public class Login extends AppCompatActivity {
             int uniqueKey = random.nextInt(999999999 - 111111111 + 1) + 111111111;
             shared_common_pref.save("uniqueKey", String.valueOf(uniqueKey));
 
-            if (response.getData().get(0).getLoginType() != null &&
+            if (response.getData().get(0).getLoginType() != null && response.getData().get(0).getLoginType().equals("DSM")) {
+                shared_common_pref.save(Constants.SALES_RETURN_FILECOUNT, response.getData().get(0).getSalesReturnImg());
+
+                shared_common_pref.save(Constants.DSM_code, response.getData().get(0).getDSM_Code());
+                shared_common_pref.save(Constants.DSM_name, response.getData().get(0).getDSM_Name());
+                shared_common_pref.save(Constants.Town_Code, response.getData().get(0).getTown_Code());
+                shared_common_pref.save(Constants.Desig_type, response.getData().get(0).getDesig_Type());
+                shared_common_pref.save(Constants.Salestype, response.getData().get(0).getSalesType());
+                shared_common_pref.save(Constants.DSM_Email, response.getData().get(0).getDSM_Email());
+                shared_common_pref.save(Constants.DSM_Phone_no, response.getData().get(0).getDSM_Phone_No());
+                shared_common_pref.save(Constants.Aadhar_Number, response.getData().get(0).getDSM_Aadhar_Number());
+                shared_common_pref.save(Constants.BankAccount_Number, response.getData().get(0).getDSM_BankAccount_Number());
+
+                shared_common_pref.save(Constants.Distributor_Id, response.getData().get(0).getStockist_Code());
+                shared_common_pref.save(Constants.TEMP_DISTRIBUTOR_ID, response.getData().get(0).getStockist_Code());
+                shared_common_pref.save(Constants.Distributor_name, response.getData().get(0).getStockist_Name());
+                shared_common_pref.save(Constants.Distributor_phone, response.getData().get(0).getStockist_Mobile());
+                shared_common_pref.save(Constants.LOGIN_TYPE, Constants.DSM_TYPE);
+                shared_common_pref.save(Constants.CUTOFF_TIME, response.getData().get(0).getCutoffTime());
+
+                shared_common_pref.save(Constants.SlotTime, gson.toJson(response.getData().get(0).getSlotTime()));
+                shared_common_pref.save(Constants.DistributorERP, response.getData().get(0).getERP_Code());
+                shared_common_pref.save(Constants.DivERP, response.getData().get(0).getDivERP());
+                shared_common_pref.save(Constants.DistributorAdd, response.getData().get(0).getStockist_Address());
+                shared_common_pref.save(Constants.CusSubGrpErp, response.getData().get(0).getCusSubGrpErp());
+
+                Shared_Common_Pref.LOGINTYPE = Constants.DSM_TYPE;
+                userEditor.putString("Sfcode", response.getData().get(0).getDistCode());
+                userEditor.putString("Divcode", response.getData().get(0).getDivisionCode());
+                userEditor.putString("State_Code", response.getData().get(0).getState_Code());
+                userEditor.putString("SFMobile", response.getData().get(0).getDSM_Phone_No());
+                userEditor.putInt("FlightAllowed", 0);
+
+                Shared_Common_Pref.Sf_Code = response.getData().get(0).getDistCode();
+                Shared_Common_Pref.Div_Code = response.getData().get(0).getDivisionCode();
+                Shared_Common_Pref.SFCutoff = response.getData().get(0).getRSMCutoffTime();
+
+                shared_common_pref.save(Shared_Common_Pref.Div_Code, response.getData().get(0).getDivisionCode());
+                shared_common_pref.save(Shared_Common_Pref.Sf_Code, response.getData().get(0).getDistCode());
+                shared_common_pref.save(Shared_Common_Pref.SFCutoff, response.getData().get(0).getDistCode());
+
+                userEditor.putString("email", eMail);
+                if (!UserLastName.equalsIgnoreCase("")) {
+                    userEditor.putString("DesigNm", UserLastName);
+                    userEditor.putString("DepteNm", UserLastName1);
+                }
+                userEditor.putString("SfName", response.getData().get(0).getDSM_Name());
+                userEditor.putString("url", String.valueOf(profile));
+                userEditor.apply();
+                userEditor.putBoolean("Login", requestCode == RC_SIGN_IN || requestCode == 0);
+                userEditor.apply();
+
+                cInEditor.putBoolean("CheckIn", true);
+                cInEditor.apply();
+                shared_common_pref.save(Constants.Freezer_Mandatory, response.getData().get(0).getFreezer_Mandatory());
+                startActivity(new Intent(Login.this, SFA_Activity.class));
+                finish();
+            } else if (response.getData().get(0).getLoginType() != null &&
                     response.getData().get(0).getLoginType().equals("Distributor")) {
                 shared_common_pref.save(Constants.SALES_RETURN_FILECOUNT, response.getData().get(0).getSalesReturnImg());
 

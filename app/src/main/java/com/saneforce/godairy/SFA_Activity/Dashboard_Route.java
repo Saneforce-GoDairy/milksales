@@ -517,6 +517,9 @@ public class Dashboard_Route extends AppCompatActivity implements View.OnClickLi
             if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
                 distributor_text.setEnabled(false);
                 findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
+            } else if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DSM_TYPE)) {
+                distributor_text.setEnabled(false);
+                findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
             }
 
             Type commonType = new TypeToken<ArrayList<Common_Model>>() {
@@ -891,6 +894,9 @@ public class Dashboard_Route extends AppCompatActivity implements View.OnClickLi
         createTabFragment();
 
         if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+            distributor_text.setEnabled(false);
+            findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
+        } else if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DSM_TYPE)) {
             distributor_text.setEnabled(false);
             findViewById(R.id.ivDistSpinner).setVisibility(View.GONE);
         }

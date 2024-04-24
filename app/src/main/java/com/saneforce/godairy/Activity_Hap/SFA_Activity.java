@@ -90,6 +90,7 @@ import com.saneforce.godairy.SFA_Activity.vwAllPrimaryOrders;
 import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
 import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
 import com.saneforce.godairy.adapters.OffersAdapter;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationReceiver;
 import com.saneforce.godairy.common.SANGPSTracker;
@@ -156,6 +157,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     public  static final int APP_UPDATE=100;
     int update_available = 0;
     int version;
+    AssistantClass assistantClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +167,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         setContentView(view1);
 
         db = new DatabaseHandler(this);
+        assistantClass = new AssistantClass(context);
         sharedCommonPref = new Shared_Common_Pref(SFA_Activity.this);
         CheckInDetails = getSharedPreferences(CheckInDetail, Context.MODE_PRIVATE);
         UserDetails = getSharedPreferences(UserDetail, Context.MODE_PRIVATE);
@@ -210,6 +213,9 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         binding.userName.setText(sUName.substring(0,(Math.min(sUName.length(), 25))));
         binding.designation.setText(SFDesig );
         if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+            String SFERP = sharedCommonPref.getvalue(Constants.DistributorERP, "");
+            binding.designation.setText(SFERP);
+        } else if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DSM_TYPE)) {
             String SFERP = sharedCommonPref.getvalue(Constants.DistributorERP, "");
             binding.designation.setText(SFERP);
         }
@@ -291,6 +297,17 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     common_class.getDataFromApi(Constants.Retailer_OutletList, this, false);
                     break;
 
+                case Constants.DSM_TYPE:
+                    menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
+                    menuList.add(new ListModel("", "Pay Bills", "", "", "", R.drawable.ic_secondary_order_sf));
+                    menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
+                    menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
+                    menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
+                    menuList.add(new ListModel("", "Feedback", "", "", "", R.drawable.ic_feedback_sf));
+                    common_class.getPOSProduct(this);
+                    common_class.getDataFromApi(Constants.Retailer_OutletList, this, false);
+                    break;
+
                 default:
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
                     menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
@@ -336,17 +353,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             binding.logout.setVisibility(View.GONE);
         }
 
-        binding.logout.setOnClickListener(v -> {
-            String eMail = UserDetails.getString("email", "");
-            db.deleteAllMasterData();
-            shared_common_pref.clearAll();
-            UserDetails.edit().clear().apply();
-            CheckInDetails.edit().clear().apply();
-            finishAffinity();
-            UserDetails.edit().putString("email", eMail).apply();
-            Intent Dashboard = new Intent(this, Login.class);
-            startActivity(Dashboard);
-        });
+        binding.logout.setOnClickListener(v -> assistantClass.logout());
     }
 
     private void checkUpdates() {

@@ -4,7 +4,6 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,7 +20,6 @@ import android.print.PrintManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -33,9 +31,9 @@ import androidx.core.content.FileProvider;
 
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.CurrencyConverter;
-import com.saneforce.godairy.Interface.ApiClient;
-import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.databinding.ActivityChallanBinding;
 
 import org.json.JSONException;
@@ -49,11 +47,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ChallanActivity extends AppCompatActivity {
     ActivityChallanBinding binding;
@@ -72,8 +65,9 @@ public class ChallanActivity extends AppCompatActivity {
     Common_Class common_class;
 
     double amount = 0;
-    String invoice = "", DocNo = "", todayDate = "", customerCode = "", customerName = "", ERP_CODE = "", PAN = "", VERSION = "";
+    String compName = "", invoice = "", DocNo = "", todayDate = "", customerCode = "", customerName = "", ERP_CODE = "", PAN = "", VERSION = "";
     String pdfMode = "";
+    AssistantClass assistantClass;
 
     public static String[] Split(String text, int chunkSize, int maxLength) {
         char[] data = text.toCharArray();
@@ -93,6 +87,7 @@ public class ChallanActivity extends AppCompatActivity {
         binding = ActivityChallanBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        assistantClass = new AssistantClass(context);
         toolbarHome = findViewById(R.id.toolbar_home);
         print = findViewById(R.id.print);
         share = findViewById(R.id.share);
@@ -149,56 +144,33 @@ public class ChallanActivity extends AppCompatActivity {
     }
 
     private void getChallanData() {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        assistantClass.showProgressDialog("Preparing...", false);
         Map<String, String> params = new HashMap<>();
         params.put("axn", "get_trans_info");
         params.put("invoice", invoice);
-        Call<ResponseBody> call = apiInterface.getUniversalData(params);
-        call.enqueue(new Callback<>() {
+        assistantClass.makeApiCall(params, "", new APIResult() {
             @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    try {
-                        if (response.body() == null) {
-                            progressDialog.dismiss();
-                            Toast.makeText(context, "Response is Null", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        String result = response.body().string();
-                        JSONObject jsonObject = new JSONObject(result);
-                        if (jsonObject.getBoolean("success")) {
-                            JSONObject object = jsonObject.getJSONObject("response");
-                            DocNo = object.getString("DocNo");
-                            todayDate = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
-                            customerCode = object.getString("OutletId");
-                            customerName = object.getString("userName");
-                            amount = object.getDouble("CashAmt");
-                            ERP_CODE = object.getString("ERP_Code");
-                            PAN = object.optString("Pan");
-                            if (PAN.equalsIgnoreCase("null")) {
-                                PAN = "";
-                            }
-                            ShowStatus(object);
-                        } else {
-                            Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(context, "Error while parsing response: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(context, "Response Not Success", Toast.LENGTH_SHORT).show();
+            public void onSuccess(JSONObject jsonObject) {
+                assistantClass.dismissProgressDialog();
+                compName = jsonObject.optString("compName");
+                JSONObject object = jsonObject.optJSONObject("response");
+                DocNo = object.optString("DocNo");
+                todayDate = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+                customerCode = object.optString("OutletId");
+                customerName = object.optString("userName");
+                amount = object.optDouble("CashAmt");
+                ERP_CODE = object.optString("ERP_Code");
+                PAN = object.optString("Pan");
+                if (PAN.equalsIgnoreCase("null")) {
+                    PAN = "";
                 }
-                progressDialog.dismiss();
+                ShowStatus(object);
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Toast.makeText(context, "Response Failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+            public void onFailure(String error) {
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithDismiss(error);
             }
         });
     }
@@ -241,14 +213,7 @@ public class ChallanActivity extends AppCompatActivity {
         // ------------------------------------------------------------------------- Heading
 
         y += 25;
-        String clientNM= ApiClient.BASE_URL.toLowerCase();
-        if(clientNM.contains("anik")){
-            drawBIGTitleWithCenterAlign("Anik Milk Products Pvt Ltd.", (float) pageWidth / 2, y);
-        }else if(clientNM.contains("prabhat")){
-            drawBIGTitleWithCenterAlign("Sunfresh Agro Industries Ltd", (float) pageWidth / 2, y);
-        } else {
-            drawBIGTitleWithCenterAlign("Tirumala Milk Products Pvt Ltd.", (float) pageWidth / 2, y);
-        }
+        drawBIGTitleWithCenterAlign(compName, (float) pageWidth / 2, y);
         y += 20;
         drawTextWithCenterAlign("(To be Routed through EasyPay)", (float) pageWidth / 2, y);
         y += 20;

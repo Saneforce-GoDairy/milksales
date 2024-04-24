@@ -126,7 +126,9 @@
                     <EditText
 
                         android:id="@+id/Qty"
-                        android:layout_width="20dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="45dp"
+                        android:maxLength="6"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:background="@color/white"
@@ -134,7 +136,6 @@
                         android:gravity="center_vertical"
                         android:hint="0"
                         android:inputType="number"
-                        android:maxLength="4"
                         android:paddingLeft="@dimen/C1dp"
                         android:paddingRight="@dimen/C1dp"
                         android:text=""

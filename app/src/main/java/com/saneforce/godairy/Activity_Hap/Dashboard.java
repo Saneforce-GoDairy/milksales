@@ -536,12 +536,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.notification.setOnClickListener(v -> Toast.makeText(context, "Not implemented", Toast.LENGTH_SHORT).show());
 
         binding.logout.setOnClickListener(v -> {
-                    db.deleteAllMasterData();
-                    shared_common_pref.clearAll();
-                    UserDetails.edit().clear().apply();
-                    finishAffinity();
-                    Intent Dashboard = new Intent(context, Login.class);
-                    startActivity(Dashboard);
+            new AssistantClass(context).logout();
         });
 
         binding.pjp.setOnClickListener(new View.OnClickListener() {

@@ -54,6 +54,17 @@ public class Constants {
     public static String mOldPassword = "mOldPassword";
     public static String mNewPasswpord = "mNewPasswpord";
 
+    // DSM
+    public static String DSM_code = "DSM_code";
+    public static String DSM_name = "DSM_name";
+    public static String Town_Code = "Town_Code";
+    public static String Desig_type = "Desig_type";
+    public static String Salestype = "Salestype";
+    public static String DSM_Email = "DSM_Email";
+    public static String DSM_Phone_no = "DSM_Phone_no";
+    public static String Aadhar_Number = "Aadhar_Number";
+    public static String BankAccount_Number = "BankAccount_Number";
+
 
 
     public static final String DB_TWO_GET_NOTIFY = "dashboardTwoNotify";
@@ -204,6 +215,7 @@ public class Constants {
     public static final String LOGIN_TYPE = "loginType";
     public static final String CHECKIN_TYPE = "CheckIn";
     public static final String DISTRIBUTER_TYPE = "Distributor";
+    public static final String DSM_TYPE = "DSM";
     public static final String PRIMARY_ORDER = "primaryOrder";
     public static final String CUTOFF_TIME = "cutOffTime";
     public static final String GetTodayPrimaryOrder_List = "getTodayPrimaryOrderList";
