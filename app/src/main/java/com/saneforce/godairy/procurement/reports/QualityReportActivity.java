@@ -1,37 +1,27 @@
 package com.saneforce.godairy.procurement.reports;
 
 import static android.view.View.GONE;
-import static com.saneforce.godairy.Interface.ApiClient.BASE_URL;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_QUALITY_REPORT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_QUALITY_REPORT;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.ProcQualityReport;
 import com.saneforce.godairy.databinding.ActivityQualityReportBinding;
-import com.saneforce.godairy.databinding.ModelQualityReportBinding;
-import com.saneforce.godairy.procurement.ImageViewActivity;
 import com.saneforce.godairy.procurement.adapter.QualityReportAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import okhttp3.ResponseBody;

@@ -1,7 +1,6 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_PLANT;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_SUBDIVISION;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_PLANT;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,6 @@ import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.R;
-import com.saneforce.godairy.adapters.TAApprListItem;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityAgronomistFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
@@ -133,7 +131,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-           /*
+                     /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -163,6 +161,12 @@ public class AgronomistFormActivity extends AppCompatActivity {
 
             7, MaintenanceIssueActivity
                Type of repair image = 14
+
+            8, MaintenanceRegularActivity
+               DG Set Running Hrs, After Last Services = 15
+
+            9, New farmer creation ska
+               Competitors = 16
          */
 
 

@@ -3,6 +3,9 @@ package com.saneforce.godairy.Activity.Util;
 import java.util.ArrayList;
 
 public class SelectionModel {
+    private String name;
+    private int type;
+    private String id;
     String txt;
     boolean isClick;
     String code, value, img_url, tmp_url, cardview_id, user_enter, attachment, max;
@@ -10,6 +13,8 @@ public class SelectionModel {
 
     String modeTravel, from, to, Fare, header;
 
+    public SelectionModel() {
+    }
 
     public SelectionModel(String txt, boolean isClick) {
         this.txt = txt;
@@ -70,6 +75,36 @@ public class SelectionModel {
         this.to = to;
         this.Fare = Fare;
 
+    }
+
+    public SelectionModel(String name, String id, int type) {
+        this.name = name;
+        this.id = id;
+        this.type = type;
+    }
+
+    public String  getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int getType() {
+        return type;
     }
 
     public String getHeader() {

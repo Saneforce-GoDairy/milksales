@@ -1,6 +1,6 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_CENTER;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CENTER;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -51,7 +51,7 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-                   /*
+                             /*
            Camera access id
 
            1, AgronomistFormActivity
@@ -81,6 +81,12 @@ public class FarmerCreationActivity extends AppCompatActivity {
 
             7, MaintenanceIssueActivity
                Type of repair image = 14
+
+            8, MaintenanceRegularActivity
+               DG Set Running Hrs, After Last Services = 15
+
+            9, New farmer creation ska
+               Competitors = 16
          */
 
         binding.cameraFarmerImage.setOnClickListener(view -> {

@@ -1001,6 +1001,92 @@ public interface ApiInterface {
     @POST("test_prasanth.php")
     Call<ResponseBody> getSubDivision(@Query("axn") String axn);
 
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcMaintenRegular(@Query("axn") String axn,
+                                                @Query("company") String company,
+                                                @Query("plant") String plant,
+                                                @Query("bmc_hrs_run") String bmc_hrs_run,
+                                                @Query("bmc_volume_coll") String bmc_volume_coll,
+                                                @Query("cc_hrs_running") String cc_hrs_running,
+                                                @Query("cc_volume_coll") String cc_volume_coll,
+                                                @Query("ibt_running_hrs") String ibt_running_hrs,
+                                                @Query("dg_set_running") String dg_set_running,
+                                                @Part MultipartBody.Part image,
+                                                @Query("power_factor") String power_factor,
+                                                @Query("pipeline_condition") String pipeline_condition,
+                                                @Query("leakage") String leakage,
+                                                @Query("scale") String scale,
+                                                @Query("per_book") String per_book,
+                                                @Query("physical") String physical,
+                                                @Query("etp") String etp,
+                                                @Query("hot_water") String hot_water,
+                                                @Query("factory_license_ins") String factory_license_ins,
+                                                @Query("active_flag") String active_flag,
+                                                @Query("created_dt") String created_dt
+    );
+
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcExistingCenterVist(@Query("axn") String axn,
+                                                @Query("pouring_act") String pouring_act,
+                                                @Query("opening_time") String opening_time,
+                                                @Query("closing_time") String closing_time,
+                                                @Query("no_of_farmer") String no_of_farmer,
+                                                @Query("volume") String volume,
+                                                    @Query("avg_fat") String avg_fat,
+                                                    @Query("avg_snf") String avg_snf,
+                                                    @Query("avg_rate") String avg_rate,
+                                                    @Query("cans_load") String cans_load,
+                                                    @Query("cans_returned") String cans_returned,
+                                                    @Query("cattle_feed") String cattle_feed,
+                                                    @Query("other_stock") String other_stock,
+                                                    @Query("echo_milk_clean_activity") String echo_milk_clean_activity,
+                                                    @Query("machine_condition") String machine_condition,
+                                                    @Query("loan_farmer_issue") String loan_farmer_issue,
+                                                    @Query("issue_frm_farmer_side") String issue_frm_farmer_side,
+                                                    @Query("asset_verification") String asset_verification,
+                                                    @Query("rename_village") String rename_village,
+                                                    @Query("active_flag") String active_flag,
+                                                    @Query("created_dt") String created_dt);
+
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcExistingFarmerVisitSka(@Query("axn") String str,
+                                                        @Part MultipartBody.Part audio,
+                                                        @Part MultipartBody.Part image,
+                                                        @Query("customer") String customer,
+                                                        @Query("customer_details") String customer_details,
+                                                        @Query("purpose_visit") String purpose_visit,
+                                                        @Query("price") String price,
+                                                        @Query("asset") String asset,
+                                                        @Query("cans") String cans,
+                                                        @Query("remarks_type") String remarks_type,
+                                                        @Query("remarks_text") String remarks_text,
+                                                        @Query("active_flag") String active_flag,
+                                                        @Query("created_dt") String created_dt);
+
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> submitProcFarmerCreationSka(@Query("axn") String str,
+                                                   @Part MultipartBody.Part audio,
+                                                   @Part MultipartBody.Part image,
+                                                   @Query("name") String name,
+                                                   @Query("village") String village,
+                                                   @Query("type") String type,
+                                                   @Query("competitor") String competitor,
+                                                   @Query("remarks_type") String remarks_type,
+                                                   @Query("remarks_text") String remarks_text,
+                                                   @Query("active_flag") String active_flag,
+                                                   @Query("created_dt") String created_dt);
+
+    @POST("test_prasanth.php")
+    Call<ResponseBody> getProcCustomFormModule(@Query("axn") String axn);
+
+    @POST("test_prasanth.php")
+    Call<ResponseBody> getProcCustomFormFieldLists(@Query("axn") String axn,
+                                                   @Query("module_id") String module_id);
+
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

@@ -1,30 +1,21 @@
 package com.saneforce.godairy.procurement.reports;
 
 import static android.view.View.GONE;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_EXISTING_AGENT_REPORT;
-import static com.saneforce.godairy.common.AppConstants.PROCUREMENT_GET_QUALITY_REPORT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_EXISTING_AGENT_REPORT;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.ProcExistingAgentReport;
-import com.saneforce.godairy.Model_Class.ProcQualityReport;
-import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityExistingAgentVisitReportBinding;
-import com.saneforce.godairy.databinding.ModelExistingReportBinding;
-import com.saneforce.godairy.databinding.ModelQualityReportBinding;
 import com.saneforce.godairy.procurement.adapter.ExistingAgentReportAdapter;
 
 import org.json.JSONArray;

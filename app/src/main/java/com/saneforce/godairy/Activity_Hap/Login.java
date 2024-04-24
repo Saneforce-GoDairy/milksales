@@ -2,9 +2,9 @@ package com.saneforce.godairy.Activity_Hap;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-import static com.saneforce.godairy.common.AppConstants.INTENT_MODE_SFA;
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_MODE;
-import static com.saneforce.godairy.common.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
+import static com.saneforce.godairy.procurement.AppConstants.INTENT_MODE_SFA;
+import static com.saneforce.godairy.procurement.AppConstants.INTENT_PROCUREMENT_MODE;
+import static com.saneforce.godairy.procurement.AppConstants.INTENT_PROCUREMENT_USER_DOC_MODE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -15,7 +15,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -69,7 +68,6 @@ import com.saneforce.godairy.common.LocationReceiver;
 import com.saneforce.godairy.common.SANGPSTracker;
 import com.saneforce.godairy.common.TimerService;
 import com.saneforce.godairy.databinding.ActivityLoginBinding;
-import com.saneforce.godairy.procurement.ProcurementHome;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:elevation="20dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/back"
+            android:src="@drawable/baseline_arrow_back_35" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/back"
+            android:fontFamily="@font/ubuntu_medium"
+            android:text="@string/farmer_creation"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/C8dp"
+                android:paddingBottom="@dimen/C8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="1, Farmer details"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@color/grey" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="Name"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/ed_farmer_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:text="Prasanth"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Village"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ed_farmer_village"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:text="Chennai"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="Type"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_type_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Competitors"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ed_competitors_village"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:text="YES"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                 />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_competitors_image_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/camera_competitors"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:contentDescription="@string/farmer_image"
+                    android:src="@drawable/apple_camera" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_competitors_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageView
+                        android:id="@+id/image_competitors"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/todo"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder" />
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Remarks"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/remark_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Type" />
+
+                <RadioButton
+                    android:id="@+id/remark_audio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Audio recording" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/ed_remark"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/remark_audio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/delete_voice_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/delete_cart"
+                    android:visibility="gone"
+                    app:tint="#ff0130" />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/C50dp"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:textColor="#008e06"
+                    android:textSize="35sp" />
+
+                <LinearLayout
+                    android:id="@+id/seekbar_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txtStartTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 min, 0 sec" />
+
+                        <SeekBar
+                            android:id="@+id/seekbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/txtSongTime"
+                            android:layout_toEndOf="@+id/txtStartTime" />
+
+                        <TextView
+                            android:id="@+id/txtSongTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="0 min, 0 sec " />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/seekbar_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/start_record"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@color/purple_500"
+                            android:elevation="0dp"
+                            android:padding="10dp"
+                            app:cardBackgroundColor="@color/greenColor"
+                            app:cardCornerRadius="50dp">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_start_recording" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/stop"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"
+                            android:elevation="0dp"
+                            android:padding="10dp"
+                            app:cardBackgroundColor="@color/Exit"
+                            app:cardCornerRadius="50dp">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_stop_recording" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/play"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"
+                            android:elevation="0dp"
+                            android:padding="10dp"
+                            app:cardBackgroundColor="@color/purple_500"
+                            app:cardCornerRadius="50dp">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_play_audio" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/stop_play"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"
+                            android:elevation="0dp"
+                            android:padding="10dp"
+                            app:cardBackgroundColor="@color/purple_500"
+                            app:cardCornerRadius="50dp">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_pause_audio" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_blue"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/ubuntu"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="@string/save"
+            android:textColor="@color/white"
+            android:visibility="visible" />
+    </RelativeLayout>
+</RelativeLayout>
