@@ -6,19 +6,27 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.atom.atompaynetzsdk.PayActivity;
@@ -41,6 +49,7 @@ import com.saneforce.godairy.SFA_Model_Class.ModelPaymentCollection;
 import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.PaymentCollectionBinding;
+import com.saneforce.godairy.universal.UniversalDropDownAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +59,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -121,6 +131,107 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
         });
         common_class.getDb_310Data(Constants.PaymentMethod, this);
 
+        getAdvanceRequiredStatus();
+
+        binding.payAdvance.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setCancelable(true);
+            View view = LayoutInflater.from(context).inflate(R.layout.advance_pay_layout, null, false);
+            builder.setView(view);
+            AlertDialog dialog = builder.create();
+
+            TextView title = view.findViewById(R.id.title);
+            title.setText("Pay Advance");
+            EditText enterAmount = view.findViewById(R.id.enterAmount);
+            CardView pay = view.findViewById(R.id.pay);
+            pay.setOnClickListener(view1 -> {
+                double amt = 0;
+                try {
+                    amt = Double.parseDouble(enterAmount.getText().toString());
+                } catch (NumberFormatException e) {
+                    amt = 0;
+                }
+                if (amt >= 1) {
+                    dialog.dismiss();
+                    payAdvance(amt);
+                } else {
+                    Toast.makeText(context, "Amount should be more than 1 rupee...", Toast.LENGTH_SHORT).show();
+                    enterAmount.setText("");
+                }
+            });
+            ImageView close = view.findViewById(R.id.close);
+            close.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            dialog.show();
+        });
+    }
+
+    private void payAdvance(double amt) {
+        assistantClass.showProgressDialog("Initating...", false);
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "saveAdvanceTransaction");
+        params.put("invoiceAmt", new DecimalFormat("0.00").format(amt));
+        params.put("stockistCode", shared_common_pref.getvalue(Constants.Distributor_Id));
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                String intentId = jsonObject.optString("intentId");
+                if (intentId.isEmpty()) {
+                    assistantClass.showAlertDialogWithDismiss("Can't initiate transaction. Please try again later...");
+                    return;
+                }
+                Intent newPayIntent = new Intent(PaymentCollection.this, PayActivity.class);
+                newPayIntent.putExtra("merchantId", NTTDATAMerchantId);
+                newPayIntent.putExtra("password", NTTDATAPassword);
+                newPayIntent.putExtra("signature_request", NTTDATAReqHashKey);
+                newPayIntent.putExtra("signature_response", NTTDATAResHashKey);
+                newPayIntent.putExtra("prodid", NTTDATAProdID);
+                newPayIntent.putExtra("enc_request", encSaltRequest);
+                newPayIntent.putExtra("enc_response", encSaltResponse);
+                newPayIntent.putExtra("salt_request", encSaltRequest);
+                newPayIntent.putExtra("salt_response", encSaltResponse);
+                newPayIntent.putExtra("isLive", isLive);
+                newPayIntent.putExtra("amt", new DecimalFormat("0.00").format(amt));
+
+                newPayIntent.putExtra("txnid", intentId);
+                newPayIntent.putExtra("custFirstName", shared_common_pref.getvalue(Constants.Distributor_name));
+                newPayIntent.putExtra("customerMobileNo", shared_common_pref.getvalue(Constants.Distributor_phone));
+                newPayIntent.putExtra("customerEmailID", "myemail@gmail.com");
+                newPayIntent.putExtra("txncurr", "INR");
+                newPayIntent.putExtra("custacc", "100000036600");
+                newPayIntent.putExtra("udf1", "");
+                newPayIntent.putExtra("udf2", "");
+                newPayIntent.putExtra("udf3", "");
+                newPayIntent.putExtra("udf4", "");
+                newPayIntent.putExtra("udf5", "");
+                startActivityForResult(newPayIntent, 1);
+                assistantClass.dismissProgressDialog();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithDismiss(error);
+            }
+        });
+    }
+
+    private void getAdvanceRequiredStatus() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getAdvanceRequiredStatus");
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                if (jsonObject.optInt("advanceRequired") == 1) {
+                    binding.advanceLayout.setVisibility(View.VISIBLE);
+                } else {
+                    binding.advanceLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(String error) { }
+        });
     }
 
     private void getPndBills() {
@@ -208,6 +319,7 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                common_class.ProgressdialogShow(0, "");
                 Log.d(Tag, String.valueOf(t));
             }
         });

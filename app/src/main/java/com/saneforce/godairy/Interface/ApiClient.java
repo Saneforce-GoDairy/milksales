@@ -2,6 +2,9 @@ package com.saneforce.godairy.Interface;
 
 import com.google.gson.GsonBuilder;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,6 +18,15 @@ public class ApiClient {
     public static String BASE_URL = "https://admin.godairy.in/server/";
     private static Retrofit retrofit = null;
     private static Retrofit retrofit1 = null;
+    private static final int TIMEOUT_SECONDS = 30;
+
+    private static OkHttpClient prepareClient() {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        httpClient.readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        httpClient.writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        return httpClient.build();
+    }
 
     // Initialize Retrofit
     public static Retrofit getClient() {
@@ -23,6 +35,7 @@ public class ApiClient {
                     .baseUrl(BASE_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                    .client(prepareClient())
                     .build();
         }
         return retrofit;
@@ -35,6 +48,7 @@ public class ApiClient {
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .client(prepareClient())
                 .build();
     }
 }
