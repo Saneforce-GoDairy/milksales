@@ -7,8 +7,12 @@ import android.net.ConnectivityManager;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationRequest;
+import com.google.gson.JsonArray;
 
 import java.text.DecimalFormat;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 
 public class Constant {
@@ -163,5 +167,8 @@ public class Constant {
         return 0;
     }
 
+    public static RequestBody toRequestBody (JsonArray value) {
+        return RequestBody.create(MediaType.parse("text/plain"), value.toString());
+    }
 }
 
