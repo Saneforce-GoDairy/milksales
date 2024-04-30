@@ -336,6 +336,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                             if (isSuccess) {
 //                                onBackPressed();
                                 Toast.makeText(context, "Form Submit Success", Toast.LENGTH_LONG).show();
+                                finish();
                             } else
                                 Toast.makeText(getApplicationContext(), "Response : null", Toast.LENGTH_LONG).show();
                         }

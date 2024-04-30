@@ -1087,7 +1087,7 @@ public interface ApiInterface {
                                                    @Query("module_id") String module_id);
 
     @Multipart
-    @POST("test_prasanth.php") 
+    @POST("test_prasanth.php")
     Call<ResponseBody> save1JSONArray(@Query("axn") String axn,
                                       @Part("data")RequestBody data,
                                       @Query("divisionCode") String divisionCode,
