@@ -164,65 +164,34 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
 
     private void onClick() {
         binding.submit.setOnClickListener(view -> {
-            boolean checked_All = true;
-            int count =0;
-
-            for (int i = 0; i < store_list.size(); i++) {
-
-                Log.e("er__", "" + store_list.get(i).getData());
-
-                if (store_list.get(i).getData() == null){
-                    showError2();
-                    break;
-                }else if((store_list.get(i).getData().trim().isEmpty())&&(!isFromDateEmpty||!isToDateEmpty||store_list.get(i).getMandatory() == 1)){
-                    showError2();
-                    break;
-                }else if (isDateclicked&&isDateShow&&(isFromDateEmpty)){
-                    showError2();
-                    break;
-                }else if (isTimeclicked&&isTimeShow&&(isFromTimeEmpty||isToTimeEmpty)){
-                    showError2();
-                    break;
-                }
-
+            if (validateInputs()) {
                 saveDynamicData();
-
-
-                Log.e("er__", "st 2");
-//                if ( (store_list.get(i).getData().trim().isEmpty())&&(!isFromDateEmpty||!isToDateEmpty||store_list.get(i).getMandatory() == 1)) {
-//                    count++;
-//                    try {
-//                        if (store_list.get(i).getMandatory() == 1&&(store_list.get(i).getData() == null ||store_list.get(i).getData().trim().isEmpty())) {
-//                            Toast.makeText(getApplicationContext(), "Please fill all the mandatory fields", Toast.LENGTH_SHORT).show();
-//                            checked_All = false;
-//                            break;
-//                        }
-//                        else if(isDateclicked&&isDateShow&&(isFromDateEmpty)){
-//                            Toast.makeText(getApplicationContext(), "Please fill all Date fields", Toast.LENGTH_SHORT).show();
-//                            checked_All = false;
-//                            break;
-//                        }
-//                        else if(isDateclicked&&isDateShow&&(isToDateEmpty)){
-//                            Toast.makeText(getApplicationContext(), "Please fill all Date fields", Toast.LENGTH_SHORT).show();
-//                            checked_All = false;
-//                            break;
-//                        }
-//                        else if(isTimeclicked&&isTimeShow&&(isFromTimeEmpty||isToTimeEmpty)){
-//                            Toast.makeText(getApplicationContext(), "Please fill all Time fields", Toast.LENGTH_SHORT).show();
-//                            checked_All = false;
-//                            break;
-//                        }
-//                    }catch (Exception e){
-//                        e.printStackTrace();
-//                    }
-//                }
             }
-//            if (checked_All) {
-//                saveDynamicData();
-//            }
         });
 
         binding.back.setOnClickListener(v -> finish());
+    }
+
+    private boolean validateInputs() {                      
+        for (int i = 0; i < store_list.size(); i++) {
+            if (store_list.get(i).getData() == null) {
+                showError2();
+                return false;
+            }
+            if ((store_list.get(i).getData().trim().isEmpty()) && (!isFromDateEmpty || !isToDateEmpty || store_list.get(i).getMandatory() == 1)) {
+                showError2();
+                return false;
+            }
+            if (isDateclicked && isDateShow && (isFromDateEmpty)) {
+                showError2();
+                return false;
+            }
+            if (isTimeclicked && isTimeShow && (isFromTimeEmpty || isToTimeEmpty)) {
+                showError2();
+                return false;
+            }
+        }
+        return true;
     }
 
     private void showError2() {
@@ -255,10 +224,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         commonDynamicJsonObject.add("common_dynamic_data", commonDynamicData);
         commonDynamicJsonArray.add(commonDynamicJsonObject);
         // Common dynamic json data start --> over
-
-
-
-
 
         // Dynamic data details start
         JsonArray dynamicDataDetailJsonArray = new JsonArray();

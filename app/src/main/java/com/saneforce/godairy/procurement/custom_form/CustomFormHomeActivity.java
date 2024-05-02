@@ -3,6 +3,7 @@ package com.saneforce.godairy.procurement.custom_form;
 import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -128,6 +129,7 @@ public class CustomFormHomeActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void showError() {
         binding.shimmerLayout.setVisibility(GONE);
         binding.recyclerView.setVisibility(GONE);
