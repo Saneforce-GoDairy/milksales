@@ -310,7 +310,6 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             binding.headtext.setText("View Distributor");
             stockistCode = getIntent().getStringExtra("id");
             Log.e("stockistCode", stockistCode);
-            getStockistInfo();
         } else {
             getLocation();
             type_sales_executive_name.setText(UserDetails.getString("SfName", ""));
@@ -1223,6 +1222,10 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void getStockistInfo() {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Getting stockist info...");
+        progressDialog.show();
         Map<String, String> params = new HashMap<>();
         params.put("axn", "get_stockist_info");
         params.put("stockistCode", stockistCode);
@@ -1233,10 +1236,13 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     AssignStockistInfo(jsonObject.getJSONObject("response"));
                 } catch (Exception e) {
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(String error) {
+                progressDialog.dismiss();
+                assistantClass.showAlertDialogWithDismiss(error);
                 Log.e("getStockistInfo", error);
             }
         });
@@ -1502,6 +1508,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void PrepareDropdownLists() {
+        assistantClass.showProgressDialog("Preparing...", false);
+
         BankList.add(new CommonModelForDropDown("1", "Passbook"));
         BankList.add(new CommonModelForDropDown("2", "Cheque"));
 
@@ -1565,10 +1573,15 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                 } catch (Exception e) {
                     Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+                assistantClass.dismissProgressDialog();
+                if (!stockistCode.isEmpty()) {
+                    getStockistInfo();
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                assistantClass.dismissProgressDialog();
                 Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
