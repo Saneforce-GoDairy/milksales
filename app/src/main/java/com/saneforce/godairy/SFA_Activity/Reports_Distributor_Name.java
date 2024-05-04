@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -116,16 +117,18 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
 
                     } catch (Exception e) {
                         progressBar.setVisibility(View.GONE);
-                        error_layout.setVisibility(View.VISIBLE);
-                        error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+                        Toast.makeText(Reports_Distributor_Name.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
         } catch (Exception e) {
             progressBar.setVisibility(View.GONE);
-            error_layout.setVisibility(View.VISIBLE);
-            error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+            Toast.makeText(Reports_Distributor_Name.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -161,15 +164,17 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
                         }
                     } catch (Exception e) {
                         progressBar.setVisibility(View.GONE);
-                        error_layout.setVisibility(View.VISIBLE);
-                        error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+                        Toast.makeText(Reports_Distributor_Name.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         } catch (Exception e) {
             progressBar.setVisibility(View.GONE);
-            error_layout.setVisibility(View.VISIBLE);
-            error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+            Toast.makeText(Reports_Distributor_Name.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -185,15 +190,17 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
                         locUpdate(dist_id, location, loc_Arr, refreshFlag);
                     } catch (Exception e) {
                         progressBar.setVisibility(View.GONE);
-                        error_layout.setVisibility(View.VISIBLE);
-                        error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+                        Toast.makeText(Reports_Distributor_Name.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         } catch (Exception e) {
             progressBar.setVisibility(View.GONE);
-            error_layout.setVisibility(View.VISIBLE);
-            error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+            Toast.makeText(Reports_Distributor_Name.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -210,8 +217,9 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
         } catch (JSONException e) {
             e.printStackTrace();
             progressBar.setVisibility(View.GONE);
-            error_layout.setVisibility(View.VISIBLE);
-            error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+            Toast.makeText(Reports_Distributor_Name.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         Log.v("TA_REQ", jsonobj.toString());
@@ -271,8 +279,9 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
                 } catch (Exception e) {
                     Log.v("locUpdate:", e.getMessage());
                     progressBar.setVisibility(View.GONE);
-                    error_layout.setVisibility(View.VISIBLE);
-                    error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+                    Toast.makeText(Reports_Distributor_Name.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -297,8 +306,9 @@ public class Reports_Distributor_Name extends AppCompatActivity implements Updat
         } catch (Exception e) {
             Log.v(key + "Ex:", e.getMessage());
             progressBar.setVisibility(View.GONE);
-            error_layout.setVisibility(View.VISIBLE);
-            error_info.setText(e.getMessage());
+//            error_layout.setVisibility(View.VISIBLE);
+//            error_info.setText(e.getMessage());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             MyProgressDialog.dismiss();
         }
 
