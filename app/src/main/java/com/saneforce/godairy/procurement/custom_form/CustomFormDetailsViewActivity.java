@@ -2,6 +2,7 @@ package com.saneforce.godairy.procurement.custom_form;
 
 import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SAVE_CUSTOM_FORM;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,16 +15,20 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -44,22 +49,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.saneforce.godairy.Activity.AllowanceActivity;
 import com.saneforce.godairy.Activity.Util.SelectionModel;
 import com.saneforce.godairy.Activity_Hap.AllowancCapture;
+import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Interface.LocationEvents;
 import com.saneforce.godairy.Interface.OnImagePickListener;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.SFA_Model_Class.TimeUtils;
+import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityCustomFormDetailsViewBinding;
 import com.saneforce.godairy.procurement.custom_form.model.DynamicField;
 import com.saneforce.godairy.universal.Constant;
 import com.saneforce.godairy.universal.PermissionUtils;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,6 +93,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import id.zelory.compressor.Compressor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,6 +122,10 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
     private Map<Integer, ImageView> imageViewMap;
     private Map<Integer, TextView> textViewMap;
     private String picturePathFinal1;
+    String mEkey = "";
+    SharedPreferences UserDetails;
+    public static final String MyPREFERENCES = "MyPrefs";
+    String sf_code , div_code , disign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +152,173 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
             loadFieldData(mModuleId);
         }
 
+        mEkey =Constant.SF_CODE + "-" + TimeUtils.getTimeStamp(TimeUtils.getCurrentTime(TimeUtils.FORMAT), TimeUtils.FORMAT);
+
+        UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        sf_code = Shared_Common_Pref.Sf_Code;
+        div_code = UserDetails.getString("Divcode", ""); // DesigNm
+        disign = UserDetails.getString("DesigNm", "");
+
+        onClick();
+    }
+
+    private void onClick() {
+        binding.submit.setOnClickListener(view -> {
+            if (validateInputs()) {
+                saveDynamicData();
+            }
+        });
+
         binding.back.setOnClickListener(v -> finish());
+    }
+
+    private boolean validateInputs() {                      
+        for (int i = 0; i < store_list.size(); i++) {
+            if (store_list.get(i).getData() == null) {
+                showError2();
+                return false;
+            }
+            if ((store_list.get(i).getData().trim().isEmpty()) && (!isFromDateEmpty || !isToDateEmpty || store_list.get(i).getMandatory() == 1)) {
+                showError2();
+                return false;
+            }
+            if (isDateclicked && isDateShow && (isFromDateEmpty)) {
+                showError2();
+                return false;
+            }
+            if (isTimeclicked && isTimeShow && (isFromTimeEmpty || isToTimeEmpty)) {
+                showError2();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showError2() {
+        binding.errorContainer.setVisibility(View.VISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                binding.errorContainer.setVisibility(View.GONE);
+            }
+        }, 2000);
+    }
+
+    private void saveDynamicData() {
+        Log.e("er__", "st 3");
+        /*
+          Common dynamic json object contains
+                 * Sf code
+                 * Ekey
+         */
+
+        // Common dynamic json data start                                                          1
+        JsonArray commonDynamicJsonArray = new JsonArray();
+        JsonObject commonDynamicData = new JsonObject();
+
+        commonDynamicData.addProperty("sf_code", sf_code );
+        commonDynamicData.addProperty("eKey", mEkey);
+
+        JsonObject commonDynamicJsonObject = new JsonObject();
+        commonDynamicJsonObject.add("common_dynamic_data", commonDynamicData);
+        commonDynamicJsonArray.add(commonDynamicJsonObject);
+        // Common dynamic json data start --> over
+
+        // Dynamic data details start
+        JsonArray dynamicDataDetailJsonArray = new JsonArray();
+        try {
+            for(int i=0; group_list.size()>i;i++) {
+                JsonObject dynamicDataDetailsMainJsonObject = new JsonObject();// main object
+
+                /*
+                   Dynamic Data Details Json Object Contains'
+
+                   column names
+                   data values  ( model.getData())
+                   table name
+                   group id
+                   group table name
+                 */
+
+
+                int grpId=group_list.get(i).getFldGrpId();
+                String fieldGroupTableNm=group_list.get(i).getGrpTableName();
+                JsonArray jArray = new JsonArray();
+                for (int j=0;store_list.size()>j;j++) {
+                    JsonObject jGroup = new JsonObject();
+
+                    DynamicField model = store_list.get(j);
+
+                        try {
+                            jGroup.addProperty("column_name", model.getColumn());
+                            jGroup.addProperty("data_value", model.getData());
+                             jGroup.addProperty("table_name", model.getGrpTableName());
+                            jArray.add(jGroup);
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+                }
+                dynamicDataDetailsMainJsonObject.addProperty("groupId",grpId);
+                dynamicDataDetailsMainJsonObject.addProperty("grpTableName",fieldGroupTableNm);
+                dynamicDataDetailsMainJsonObject.add("itemdetail",jArray);
+                dynamicDataDetailJsonArray .add(dynamicDataDetailsMainJsonObject);
+            }
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+
+        JsonObject jsonObject3 = new JsonObject();
+        jsonObject3.add("dynamic_data_detail", dynamicDataDetailJsonArray);
+        commonDynamicJsonArray.add(jsonObject3);
+
+        String debug = "";
+
+        if (Constant.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
+
+            RequestBody mJsonArrayPart = RequestBody.create(MediaType.parse("multipart/form-data"), commonDynamicJsonArray.toString());
+
+            Call<ResponseBody> call = request.save1JSONArray(
+                    PROCUREMENT_SAVE_CUSTOM_FORM,
+                    mJsonArrayPart,
+                    div_code,
+                    sf_code);
+
+            String debug1 = "";
+
+            call.enqueue(new Callback<>() {
+                @Override
+                public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                    try {
+                        String res = response.body().string();
+                        Log.e("res__", res);
+
+                        if (res != null) {
+                            JSONObject jsonObject = new JSONObject(res);
+
+                            boolean isSuccess = jsonObject.getBoolean("success");
+                            if (isSuccess) {
+//                                onBackPressed();
+                                Toast.makeText(context, "Form Submit Success", Toast.LENGTH_LONG).show();
+                                finish();
+                            } else
+                                Toast.makeText(getApplicationContext(), "Response : null", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException | IOException ex) {
+                        ex.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Exception 2 " + ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Failure : " + t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            Toast.makeText(getApplicationContext(),"Check Internet Connection",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadFieldData(String mModuleId) {
@@ -161,8 +348,15 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 }
                             }
                         }
+                        if(master_list.size()>0) {
+                          //  ProgressDialog.showWithText(CustomFormDetailActivity.this,getApplicationContext().getString(R.string.data_loading));
+                            for (int k = 0; k < master_list.size(); k++) {
+                             //   getDataFromMasterss(master_list.get(k).getFldSrcName(), master_list.get(k).getFldSrcFld(), k, groupJsonArray, fieldJsonArray);
+                            }
+                        }else{
+                            loadData(groupJsonArray,fieldJsonArray);
+                        }
 
-                        loadData(groupJsonArray,fieldJsonArray);
                     } catch (IOException | JSONException e) {
                         // throw new RuntimeException(e);
                         showError();
@@ -222,7 +416,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
            //     textView30.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 textView30.setPadding((int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
-                                .getDisplayMetrics()), 0, 0, 0);
+                                .getDisplayMetrics()), 10, 0, 0);
 
                 textView30.setText(grpName);
                 binding.linearLayout.addView(textView30);
@@ -284,7 +478,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                               //  textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
-                                                .getDisplayMetrics()), 0, 0, 0);
+                                                .getDisplayMetrics()), 10, 0, 0);
                                 //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
@@ -740,6 +934,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                                 .getDisplayMetrics()), (int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 15, getResources()
                                                 .getDisplayMetrics()));
+                                selection_Spinner.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_text_common));
                                 dataModel.setMandatory(mandate);
                                 dataModel.setColumn(Column_Store);
                                 dataModel.setFldGrpId(fieldGroupId);

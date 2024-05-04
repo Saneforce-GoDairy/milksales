@@ -1086,6 +1086,14 @@ public interface ApiInterface {
     Call<ResponseBody> getProcCustomFormFieldLists(@Query("axn") String axn,
                                                    @Query("module_id") String module_id);
 
+    @Multipart
+    @POST("test_prasanth.php")
+    Call<ResponseBody> save1JSONArray(@Query("axn") String axn,
+                                      @Part("data")RequestBody data,
+                                      @Query("divisionCode") String divisionCode,
+                                      @Query("sfCode") String sfCode);
+
+
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

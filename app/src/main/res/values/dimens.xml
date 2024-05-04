@@ -52,4 +52,5 @@
     <dimen name="dp1">1dp</dimen>
     <dimen name="dp7">7dp</dimen>
     <dimen name="dp30">30dp</dimen>
+    <dimen name="spacing">5dp</dimen>
 </resources>
