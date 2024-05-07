@@ -1094,7 +1094,6 @@ public interface ApiInterface {
                                       @Query("sfCode") String sfCode);
 
 
-
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

@@ -2,23 +2,17 @@ package com.saneforce.godairy.procurement.custom_form;
 
 import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityCustomFormHomeBinding;
 import com.saneforce.godairy.procurement.custom_form.adapter.ModuleAdapter;
 import com.saneforce.godairy.procurement.custom_form.model.ModuleList;
@@ -76,9 +70,6 @@ public class CustomFormHomeActivity extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             ModuleList moduleListModel = new ModuleList();
-
-                            // String mModuleName = jsonObject.getString("ModuleName");
-                            // Toast.makeText(context, mModuleName, Toast.LENGTH_SHORT).show();
                             moduleListModel.setModuleName(jsonObject.getString("ModuleName"));
                             moduleListModel.setModuleId(jsonObject.getString("ModuleId"));
                             moduleArrayList.add(moduleListModel);
@@ -87,11 +78,8 @@ public class CustomFormHomeActivity extends AppCompatActivity {
                         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
                         binding.recyclerView.setHasFixedSize(true);
                         binding.recyclerView.setItemViewCacheSize(20);
-                       // int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
-                      //  binding.recyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
                         ModuleAdapter moduleAdapter = new ModuleAdapter(context, moduleArrayList);
                         binding.recyclerView.setAdapter(moduleAdapter);
-
                     } catch (IOException | JSONException e) {
                         // throw new RuntimeException(e);
                         showError();
@@ -104,29 +92,6 @@ public class CustomFormHomeActivity extends AppCompatActivity {
                 showError();
             }
         });
-    }
-
-    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
-        private int space;
-
-        public SpacesItemDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view,
-                                   RecyclerView parent, RecyclerView.State state) {
-            outRect.left = space;
-            outRect.right = space;
-            outRect.bottom = space;
-
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) == 0) {
-                outRect.top = space;
-            } else {
-                outRect.top = 0;
-            }
-        }
     }
 
     @SuppressLint("SetTextI18n")
