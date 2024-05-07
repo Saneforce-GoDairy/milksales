@@ -8,7 +8,7 @@ Important configuration
 
  3, Activity flow for developer reference
       
-   - Dashboard --> Checkin Btn --> Map --> Selfie --> Submit checkin
+   - Dashboard --> Checkin Btn --> Map --> Selfie --> Submit checkink
 
      Select shift time. per day only once.
    - Dashboard -->My day plan Btn --> Select shift time --> Dashboard
