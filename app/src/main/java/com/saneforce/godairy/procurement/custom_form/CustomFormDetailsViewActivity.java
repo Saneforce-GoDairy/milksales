@@ -206,14 +206,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
     }
 
     private void saveDynamicData() {
-        Log.e("er__", "st 3");
-        /*
-          Common dynamic json object contains
-                 * Sf code
-                 * Ekey
-         */
-
-        // Common dynamic json data start                                                          1
         JsonArray commonDynamicJsonArray = new JsonArray();
         JsonObject commonDynamicData = new JsonObject();
 
@@ -224,23 +216,11 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         commonDynamicJsonObject.add("common_dynamic_data", commonDynamicData);
         commonDynamicJsonArray.add(commonDynamicJsonObject);
         // Common dynamic json data start --> over
-
         // Dynamic data details start
         JsonArray dynamicDataDetailJsonArray = new JsonArray();
         try {
             for(int i=0; group_list.size()>i;i++) {
-                JsonObject dynamicDataDetailsMainJsonObject = new JsonObject();// main object
-
-                /*
-                   Dynamic Data Details Json Object Contains'
-
-                   column names
-                   data values  ( model.getData())
-                   table name
-                   group id
-                   group table name
-                 */
-
+                JsonObject dynamicDataDetailsMainJsonObject = new JsonObject();
 
                 int grpId=group_list.get(i).getFldGrpId();
                 String fieldGroupTableNm=group_list.get(i).getGrpTableName();
@@ -272,8 +252,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         jsonObject3.add("dynamic_data_detail", dynamicDataDetailJsonArray);
         commonDynamicJsonArray.add(jsonObject3);
 
-        String debug = "";
-
         if (Constant.isNetworkAvailable(getApplicationContext())) {
             ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
 
@@ -284,8 +262,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                     mJsonArrayPart,
                     div_code,
                     sf_code);
-
-            String debug1 = "";
 
             call.enqueue(new Callback<>() {
                 @Override
@@ -299,7 +275,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
 
                             boolean isSuccess = jsonObject.getBoolean("success");
                             if (isSuccess) {
-//                                onBackPressed();
                                 Toast.makeText(context, "Form Submit Success", Toast.LENGTH_LONG).show();
                                 finish();
                             } else
@@ -307,7 +282,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                         }
                     } catch (JSONException | IOException ex) {
                         ex.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Exception 2 " + ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Exception error " + ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -349,14 +324,12 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                             }
                         }
                         if(master_list.size()>0) {
-                          //  ProgressDialog.showWithText(CustomFormDetailActivity.this,getApplicationContext().getString(R.string.data_loading));
                             for (int k = 0; k < master_list.size(); k++) {
                              //   getDataFromMasterss(master_list.get(k).getFldSrcName(), master_list.get(k).getFldSrcFld(), k, groupJsonArray, fieldJsonArray);
                             }
                         }else{
                             loadData(groupJsonArray,fieldJsonArray);
                         }
-
                     } catch (IOException | JSONException e) {
                         // throw new RuntimeException(e);
                         showError();
@@ -413,7 +386,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                 textView30.setTypeface(typeface);
 
                 textView30.setTextSize(18);
-           //     textView30.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 textView30.setPadding((int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                 .getDisplayMetrics()), 10, 0, 0);
@@ -440,7 +412,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                             textView30.setVisibility(View.VISIBLE);
                             String Heading_Label = jsonObject.getString("Field_Name");
                             String Type_to_Add = jsonObject.getString("Fld_Type");
-                            //String Type_to_Add = "L";
                             String Module_Id = jsonObject.getString("ModuleId");
                             String Symbol_Currency = jsonObject.getString("Fld_Symbol");
                             String Column_Store = jsonObject.getString("Field_Col");
@@ -458,28 +429,20 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 CardView card = new CardView(getApplicationContext());
                                 TextView textView = new TextView(getApplicationContext());
                                 EditText editText = new EditText(getApplicationContext());
-
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(10);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
-
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     textView.setTextColor(getResources().getColor(R.color.grey_500, null));
                                 }
-
                                 Typeface typeface1 = ResourcesCompat.getFont(this, R.font.ubuntu);
                                 textView.setTypeface(typeface1);
-
                                 textView.setTextSize(15);
-                              //  textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 10, 0, 0);
-                                //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
@@ -502,7 +465,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Text_Length)});
                                     editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                                 }
-
                                 editText.setTextSize(14);
                                 editText.setTextColor(Color.BLACK);
                                 editText.setPadding((int) TypedValue.applyDimension(
@@ -514,9 +476,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                                 .getDisplayMetrics()), (int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 15, getResources()
                                                 .getDisplayMetrics()));
-                              //  editText.setBackgroundColor(Color.TRANSPARENT);
                                 editText.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_text_common));
-                             //   editText.setPadding(20,20,20 ,20);
                                 DynamicField dataModel = new DynamicField();
                                 dataModel.setColumn(Column_Store);
                                 dataModel.setFldGrpId(fieldGroupId);
@@ -539,9 +499,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                         dataModel.setData(editable.toString());
                                     }
                                 });
-                                // Put the EditText inside CardView
                                 card.addView(editText);
-
                                 store_list.add(dataModel);
                                 binding.linearLayout.addView(textView);
                                 binding.linearLayout.addView(card);
@@ -549,36 +507,19 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                             }
                             //textview for label and data required
                             else if (Type_to_Add.equals("L")) {
-
-                                //CardView card = new CardView(requireContext());
                                 TextView textView = new TextView(getApplicationContext());
-                                // TextView label = new TextView(requireContext());
-
-//                                        card.setLayoutParams(params);
-//                                        // Setting different attributes
-//                                        card.setRadius(5);
-//                                        //card.setContentPadding(15, 15, 15, 15);
-//                                        card.setCardBackgroundColor(Color.WHITE);
-//                                        card.setMaxCardElevation(15);
-//                                        card.setCardElevation(10);
-
                                 textView.setTextColor(Color.BLACK);
                                 textView.setTextSize(15);
                                 textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
                                 } else {
                                     textView.setText(Heading_Label);
                                 }
-                                //replace the text with the input
-//                                        label.setText("Some Data From The Table ");
-//                                        label.setTextSize(14);
-//                                        label.setTextColor(Color.BLACK);
 
                                 DynamicField dataModel = new DynamicField();
                                 dataModel.setColumn(Column_Store);
@@ -586,24 +527,8 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 dataModel.setFldGrpId(fieldGroupId);
                                 dataModel.setFldType(Type_to_Add);
                                 dataModel.setGrpTableName(tableName);
-                                //  dataModel.setData(textView.getText().toString());
                                 store_list.add(dataModel);
-//                                        label.setPadding((int) TypedValue.applyDimension(
-//                                                TypedValue.COMPLEX_UNIT_DIP, 20, getResources()
-//                                                        .getDisplayMetrics()), (int) TypedValue.applyDimension(
-//                                                TypedValue.COMPLEX_UNIT_DIP, 15, getResources()
-//                                                        .getDisplayMetrics()), (int) TypedValue.applyDimension(
-//                                                TypedValue.COMPLEX_UNIT_DIP, 20, getResources()
-//                                                        .getDisplayMetrics()), (int) TypedValue.applyDimension(
-//                                                TypedValue.COMPLEX_UNIT_DIP, 15, getResources()
-//                                                        .getDisplayMetrics()));
-//                                        label.setBackgroundColor(Color.TRANSPARENT);
-//                                        // Put the TextView inside CardView
-//                                        card.addView(label);
-
-
                                 binding.linearLayout.addView(textView);
-                                // dynamic_data_layout.addView(card);
                             }
                             //Date Picker for date range/date
                             else if (Type_to_Add.equals("DR")) {
@@ -616,14 +541,10 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 TextView between = new TextView(getApplicationContext());
                                 DynamicField dataModel = new DynamicField();
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(5);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
-
-
                                 layout.setOrientation(LinearLayout.HORIZONTAL);
                                 layout.setGravity(Gravity.CENTER);
                                 layout.setWeightSum(3);
@@ -642,7 +563,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
@@ -686,20 +606,17 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                             String _month = (month + 1) < 10 ? "0" + (month + 1) : String.valueOf(month + 1);
                                             String _date = dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
                                             String _pickedDate = year + "-" + _month + "-" + _date;
-                                            // printUsrLog("PickedDate: ", "Date: " + _pickedDate); //2019-02-12
                                             From_Date.setText((_date + "/" + _month + "/" + _year));
                                             isDateclicked = true;
                                             isFromDateEmpty = false;
                                             dataModel.setData(From_Date.getText().toString() + "to" + To_Date.getText().toString());
                                         }
                                     }, year, month, day);
-                                    // dialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
                                     datePickerDialog.getDatePicker().getMaxDate();
                                     datePickerDialog.show();
 
 
                                 });
-
                                 To_Date.setHint("Select To Date");
                                 To_Date.setGravity(Gravity.CENTER);
                                 To_Date.setTextSize(14);
@@ -723,7 +640,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                         year = Integer.parseInt(dateArray[2]);
                                     } else {
                                         Calendar c = Calendar.getInstance();
-
                                         day = c.get(Calendar.DAY_OF_MONTH);
                                         month = c.get(Calendar.MONTH);
                                         year = c.get(Calendar.YEAR);
@@ -736,18 +652,14 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                             String _month = (month + 1) < 10 ? "0" + (month + 1) : String.valueOf(month + 1);
                                             String _date = dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
                                             String _pickedDate = year + "-" + _month + "-" + _date;
-                                            //  printUsrLog("PickedDate: ", "Date: " + _pickedDate); //2019-02-12
                                             To_Date.setText((_date + "/" + _month + "/" + _year));
                                             isToDateEmpty = false;
                                             isDateclicked=true;
                                             dataModel.setData(From_Date.getText().toString() + "to" + To_Date.getText().toString());
                                         }
                                     }, year, month, day);
-                                    // dialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
                                     datePickerDialog.getDatePicker().getMaxDate();
                                     datePickerDialog.show();
-
-
                                 });
 
                                 between.setText("to");
@@ -755,14 +667,12 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 between.setGravity(Gravity.CENTER);
                                 between.setTextSize(14);
                                 between.setTextColor(Color.BLACK);
-
                                 dataModel.setMandatory(mandate);
                                 dataModel.setColumn(Column_Store);
                                 dataModel.setFldGrpId(fieldGroupId);
                                 dataModel.setFldType(Type_to_Add);
                                 dataModel.setGrpTableName(tableName);
                                 store_list.add(dataModel);
-
                                 layout.addView(From_Date);
                                 layout.addView(between);
                                 layout.addView(To_Date);
@@ -773,44 +683,35 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                             }
                             else if (Type_to_Add.equals("D")) {
                                 TextView textView = new TextView(getApplicationContext());
-
                                 CardView card = new CardView(getApplicationContext());
                                 LinearLayout layout = new LinearLayout(getApplicationContext());
                                 TextView From_Date = new TextView(getApplicationContext());
                                 DynamicField dataModel = new DynamicField();
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(10);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
-
-
                                 layout.setOrientation(LinearLayout.HORIZONTAL);
                                 layout.setGravity(Gravity.CENTER);
-                                // layout.setWeightSum(3);
                                 LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
                                         LinearLayout.LayoutParams.WRAP_CONTENT,
                                         LinearLayout.LayoutParams.WRAP_CONTENT,
                                         1
                                 );
                                 From_Date.setLayoutParams(param1);
-
                                 textView.setTextColor(Color.BLACK);
                                 textView.setTextSize(15);
                                 textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
                                 } else {
                                     textView.setText(Heading_Label);
                                 }
-
                                 From_Date.setHint("Select Date");
                                 From_Date.setGravity(Gravity.START);
                                 From_Date.setTextSize(14);
@@ -824,7 +725,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                                 .getDisplayMetrics()), (int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 15, getResources()
                                                 .getDisplayMetrics()));
-                             //   From_Date.setBackgroundColor(Color.TRANSPARENT);
                                 From_Date.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_text_common));
                                 From_Date.setOnClickListener(view -> {
                                     int day, month, year;
@@ -848,16 +748,13 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                             String _month = (month + 1) < 10 ? "0" + (month + 1) : String.valueOf(month + 1);
                                             String _date = dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
                                             String _pickedDate = year + "-" + _month + "-" + _date;
-                                            // printUsrLog("PickedDate: ", "Date: " + _pickedDate); //2019-02-12
+
                                             From_Date.setText((_date + "/" + _month + "/" + _year));
                                             dataModel.setData(From_Date.getText().toString());
                                         }
                                     }, year, month, day);
-                                    // dialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
                                     datePickerDialog.getDatePicker().getMaxDate();
                                     datePickerDialog.show();
-
-
                                 });
                                 dataModel.setMandatory(mandate);
                                 dataModel.setColumn(Column_Store);
@@ -865,7 +762,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 dataModel.setFldType(Type_to_Add);
                                 dataModel.setGrpTableName(tableName);
                                 store_list.add(dataModel);
-
                                 layout.addView(From_Date);
                                 card.addView(layout);
                                 binding.linearLayout.addView(textView);
@@ -878,22 +774,17 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 //need to change this to the length of getting value from the server
                                 Spinner selection_Spinner = new Spinner(getApplicationContext());
                                 DynamicField dataModel = new DynamicField();
-
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(5);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
-
                                 textView.setTextColor(Color.BLACK);
                                 textView.setTextSize(15);
                                 textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
@@ -940,9 +831,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 dataModel.setFldGrpId(fieldGroupId);
                                 dataModel.setGrpTableName(tableName);
                                 dataModel.setFldType(Type_to_Add);
-                                // dataModel.setData(String.valueOf(selection_Spinner.getSelectedItem()));
-
-
                                 selection_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -954,7 +842,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                                 dataModel.setData(mod.getName());
                                             }
                                         }
-
                                     }
 
                                     @Override
@@ -965,7 +852,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 store_list.add(dataModel);
                                 // Put the TextView inside CardView
                                 card.addView(selection_Spinner);
-
                                 binding.linearLayout.addView(textView);
                                 binding.linearLayout.addView(card);
                             }
@@ -978,11 +864,8 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 TextView currency_Symbol = new TextView(getApplicationContext());
                                 LinearLayout symbol_Layout = new LinearLayout(getApplicationContext());
                                 EditText enter_Amount = new EditText(getApplicationContext());
-
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(5);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
@@ -1002,10 +885,10 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                         LinearLayout.LayoutParams.WRAP_CONTENT,
                                         1.7f
                                 );
+
                                 symbol_Layout.setLayoutParams(symbol_param);
                                 symbol_Layout.setGravity(Gravity.CENTER);
                                 symbol_Layout.setBackgroundColor(Color.GRAY);
-                                // symbol_Layout.setBackgroundColor(Color.parseColor("#10adc2"));
                                 DynamicField dataModel = new DynamicField();
                                 dataModel.setColumn(Column_Store);
                                 dataModel.setMandatory(mandate);
@@ -1054,7 +937,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
+
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
@@ -1073,7 +956,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                             }
                             //DateTime Picker for DateTimeRange
                             else if (Type_to_Add.equals("TR")) {
-
                                 isTimeShow = true;
                                 TextView textView = new TextView(getApplicationContext());
                                 CardView card = new CardView(getApplicationContext());
@@ -1083,13 +965,10 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 TextView between = new TextView(getApplicationContext());
                                 DynamicField dataModel = new DynamicField();
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(5);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
-
 
                                 layout.setOrientation(LinearLayout.HORIZONTAL);
                                 layout.setGravity(Gravity.CENTER);
@@ -1109,14 +988,13 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
+
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
                                 } else {
                                     textView.setText(Heading_Label);
                                 }
-
                                 From_Date.setHint("Select From Time");
                                 From_Date.setGravity(Gravity.CENTER);
                                 From_Date.setTextSize(14);
@@ -1136,19 +1014,12 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     if (!From_Date.getText().toString().equals("")) {
                                         try {
                                             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
-
-                                            // Parse the time string to a Date object
                                             Date date = sdf.parse(From_Date.getText().toString());
-
-                                            // Extract hours, minutes, and seconds
                                             hours = date.getHours();
                                             minutes = date.getMinutes();
-
-
                                         }catch (Exception e){
                                             e.printStackTrace();
                                         }
-
                                     } else {
                                         Calendar c = Calendar.getInstance();
                                         hours = c.get(Calendar.HOUR_OF_DAY);
@@ -1156,18 +1027,13 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     }
 
                                     TimePickerDialog dpd = new TimePickerDialog(context, (timePicker, hourOfDay1, minute1) -> {
-
                                         Time time = new Time(hourOfDay1, minute1, 0);
-
                                         SimpleDateFormat simpleDateFormat = new
                                                 SimpleDateFormat("hh:mm aa", Locale.getDefault());
                                         String s = simpleDateFormat.format(time);
-                                        // SimpleDateFormat sdf = new SimpleDateFormat(TimeUtils.FORMAT, Locale.getDefault());
-                                        //  String currentDateandTime = sdf.format(new Date());
                                         From_Date.setText(( s));
                                         isTimeclicked = true;
                                         isFromTimeEmpty = false;
-                                        // From_Date.setText(currentDateandTime);
                                         dataModel.setData(From_Date.getText().toString() + "to" + To_Date.getText().toString());
                                     },hours,minutes , false);
                                     dpd.show();
@@ -1191,38 +1057,25 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     if (!To_Date.getText().toString().equals("")) {
                                         try {
                                             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
-
-                                            // Parse the time string to a Date object
                                             Date date = sdf.parse(To_Date.getText().toString());
-
-                                            // Extract hours, minutes, and seconds
                                             hours = date.getHours();
                                             minutes = date.getMinutes();
-
-
                                         }catch (Exception e){
                                             e.printStackTrace();
                                         }
-
                                     } else {
                                         Calendar c = Calendar.getInstance();
                                         hours = c.get(Calendar.HOUR_OF_DAY);
                                         minutes =c.get(Calendar.MINUTE);
                                     }
-
-                                    TimePickerDialog dpd = new TimePickerDialog(context, (timePicker, hourOfDay1, minute1) -> {
-
+                                        TimePickerDialog dpd = new TimePickerDialog(context, (timePicker, hourOfDay1, minute1) -> {
                                         Time time = new Time(hourOfDay1, minute1, 0);
-
                                         SimpleDateFormat simpleDateFormat = new
                                                 SimpleDateFormat("hh:mm aa", Locale.getDefault());
                                         String s = simpleDateFormat.format(time);
-                                        // SimpleDateFormat sdf = new SimpleDateFormat(TimeUtils.FORMAT, Locale.getDefault());
-                                        //  String currentDateandTime = sdf.format(new Date());
                                         To_Date.setText(( s));
                                         isTimeclicked=true;
                                         isToTimeEmpty = false;
-                                        // From_Date.setText(currentDateandTime);
                                         dataModel.setData(From_Date.getText().toString() + "to" + To_Date.getText().toString());
                                     },hours,minutes , false);
                                     dpd.show();
@@ -1243,29 +1096,22 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 layout.addView(From_Date);
                                 layout.addView(between);
                                 layout.addView(To_Date);
-                                // Put the TextView inside CardView
                                 card.addView(layout);
                                 binding.linearLayout.addView(textView);
                                 binding.linearLayout.addView(card);
                             }
                             else if (Type_to_Add.equals("T")) {
-
                                 TextView textView = new TextView(getApplicationContext());
                                 CardView card = new CardView(getApplicationContext());
                                 LinearLayout layout = new LinearLayout(getApplicationContext());
                                 TextView From_Date = new TextView(getApplicationContext());
-                                // TextView To_Date = new TextView(requireContext());
-                                // TextView between = new TextView(requireContext());
                                 DynamicField dataModel = new DynamicField();
+
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(5);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
-
-
                                 layout.setOrientation(LinearLayout.HORIZONTAL);
                                 layout.setGravity(Gravity.CENTER);
                                 LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
@@ -1274,15 +1120,12 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                         1
                                 );
                                 From_Date.setLayoutParams(param1);
-
-
                                 textView.setTextColor(Color.BLACK);
                                 textView.setTextSize(15);
                                 textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
@@ -1309,42 +1152,26 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     if (!From_Date.getText().toString().equals("")) {
                                         try {
                                             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
-
-                                            // Parse the time string to a Date object
                                             Date date = sdf.parse(From_Date.getText().toString());
-
-                                            // Extract hours, minutes, and seconds
                                             hours = date.getHours();
                                             minutes = date.getMinutes();
-
-
                                         }catch (Exception e){
                                             e.printStackTrace();
                                         }
-
                                     } else {
                                         Calendar c = Calendar.getInstance();
                                         hours = c.get(Calendar.HOUR_OF_DAY);
                                         minutes =c.get(Calendar.MINUTE);
                                     }
-
-                                    TimePickerDialog dpd = new TimePickerDialog(context, (timePicker, hourOfDay1, minute1) -> {
-
+                                        TimePickerDialog dpd = new TimePickerDialog(context, (timePicker, hourOfDay1, minute1) -> {
                                         Time time = new Time(hourOfDay1, minute1, 0);
-
-                                        SimpleDateFormat simpleDateFormat = new
-                                                SimpleDateFormat("hh:mm aa", Locale.getDefault());
+                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
                                         String s = simpleDateFormat.format(time);
-                                        // SimpleDateFormat sdf = new SimpleDateFormat(TimeUtils.FORMAT, Locale.getDefault());
-                                        //  String currentDateandTime = sdf.format(new Date());
                                         From_Date.setText(( s));
-                                        // From_Date.setText(currentDateandTime);
                                         dataModel.setData(From_Date.getText().toString());
                                     },hours,minutes , false);
                                     dpd.show();
                                 });
-
-
 
                                 dataModel.setColumn(Column_Store);
                                 dataModel.setMandatory(mandate);
@@ -1353,8 +1180,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 dataModel.setGrpTableName(tableName);
                                 store_list.add(dataModel);
                                 layout.addView(From_Date);
-
-                                // Put the TextView inside CardView
                                 card.addView(layout);
                                 binding.linearLayout.addView(textView);
                                 binding.linearLayout.addView(card);
@@ -1368,20 +1193,16 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 DynamicField dataModel = new DynamicField();
                                 radioGroup.setLayoutParams(params);
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(5);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
-
                                 textView.setTextColor(Color.BLACK);
                                 textView.setTextSize(15);
                                 textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
@@ -1389,7 +1210,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     textView.setText(Heading_Label);
                                 }
                                 radioGroup.setOrientation(LinearLayout.VERTICAL);
-
                                 ArrayList<String> strList = new ArrayList<String>();
                                 String[] srcSplit;
                                 List<SelectionModel> model=new ArrayList<>();
@@ -1416,28 +1236,19 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     }
                                     radioGroup.addView(rb[a]);
                                 }
-                                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                                    @Override
-                                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
-                                        try {
-
-                                            // String select_value = all_Data.get(i - 1);
-                                            // dataModel.setData(select_value);
-                                            RadioButton radioButton = radioGroup.findViewById(i);
-                                            if ((Type_to_Add.equals("RM"))) {
-                                                String data=radioButton.getText().toString();
-                                                String[] splitData = data.split("-");
-                                                String code = splitData[1];
-                                                dataModel.setData(code);
-                                            } else {
-                                                dataModel.setData(radioButton.getText().toString());
-                                            }
-
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
+                                radioGroup.setOnCheckedChangeListener((radioGroup1, i12) -> {
+                                    try {
+                                        RadioButton radioButton = radioGroup1.findViewById(i12);
+                                        if ((Type_to_Add.equals("RM"))) {
+                                            String data=radioButton.getText().toString();
+                                            String[] splitData = data.split("-");
+                                            String code = splitData[1];
+                                            dataModel.setData(code);
+                                        } else {
+                                            dataModel.setData(radioButton.getText().toString());
                                         }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                 });
                                 dataModel.setColumn(Column_Store);
@@ -1455,18 +1266,13 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 CardView card = new CardView(getApplicationContext());
                                 TextView textView = new TextView(getApplicationContext());
                                 LinearLayout checkBocContainer = new LinearLayout(getApplicationContext());
-                                // RadioGroup rG = new RadioGroup(requireContext());
-
                                 checkBocContainer.setLayoutParams(params);
                                 checkBocContainer.setOrientation(LinearLayout.VERTICAL);
                                 card.setLayoutParams(params);
-                                // Setting different attributes
                                 card.setRadius(5);
-                                //card.setContentPadding(15, 15, 15, 15);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
                                 card.setCardElevation(10);
-
                                 textView.setTextColor(Color.BLACK);
                                 textView.setTextSize(15);
                                 textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -1503,77 +1309,67 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                     checkBox.setId(b);
                                     checkBox.setTag("" + i);
                                     List<SelectionModel> finalModel = model;
-                                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                        @Override
-                                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                                            int selectPos=compoundButton.getId();
+                                    checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+                                        int selectPos=compoundButton.getId();
+                                        if (isChecked) {
+                                            if(Type_to_Add.equals("CM") || Type_to_Add.equals("SMM")){
+                                                if ((dataModel.getData() == null) || (dataModel.getData().equals(""))) {
 
-                                            if (isChecked) {
-
-                                                if(Type_to_Add.equals("CM") || Type_to_Add.equals("SMM")){
-
-                                                    if ((dataModel.getData() == null) || (dataModel.getData().equals(""))) {
-
-                                                        dataModel.setData(finalModel.get(selectPos).getId());
-                                                    } else {
-                                                        dataModel.setData(dataModel.getData() + "," +finalModel.get(selectPos).getId());
-                                                    }
-
-                                                }else {
-                                                    if ((dataModel.getData() == null) || (dataModel.getData().equals(""))) {
-                                                        dataModel.setData(compoundButton.getText().toString());
-                                                    } else {
-                                                        dataModel.setData(dataModel.getData() + "," + compoundButton.getText().toString());
-                                                    }
+                                                    dataModel.setData(finalModel.get(selectPos).getId());
+                                                } else {
+                                                    dataModel.setData(dataModel.getData() + "," +finalModel.get(selectPos).getId());
                                                 }
-
-                                                for (int h = 0; h < store_list.size(); h++) {
-                                                    if (store_list.get(h).getTag() != null) {
-                                                        String tag = compoundButton.getTag().toString();
-                                                        if (tag.equals(store_list.get(h).getTag())) {
-                                                            store_list.set(h, dataModel);
-                                                        }
-                                                    }
+                                            }else {
+                                                if ((dataModel.getData() == null) || (dataModel.getData().equals(""))) {
+                                                    dataModel.setData(compoundButton.getText().toString());
+                                                } else {
+                                                    dataModel.setData(dataModel.getData() + "," + compoundButton.getText().toString());
                                                 }
-                                            } else {
-                                                //   dataModel.setData(compoundButton.getText().toString());
-                                                int index = store_list.indexOf(dataModel);
-                                                String data = store_list.get(index).getData().toString();
-
-                                                if(Type_to_Add.equals("CM") || Type_to_Add.equals("SMM")) {
-                                                    String name=finalModel.get(selectPos).getId();
-                                                    if (data.contains("," + name + ",")) {
-                                                        String new_data = data.replace("," +name, "");
-                                                        dataModel.setData(new_data);
-                                                    } else if (data.contains("," + name)) {
-                                                        String new_data = data.replace("," + name, "");
-                                                        dataModel.setData(new_data);
-                                                    } else if (data.contains(name + ",")) {
-                                                        String new_data = data.replace(name + ",", "");
-                                                        dataModel.setData(new_data);
-                                                    } else {
-                                                        String new_data = data.replace(name, "");
-                                                        dataModel.setData(new_data);
-                                                    }
-
-                                                }else {
-                                                    if (data.contains("," + compoundButton.getText() + ",")) {
-                                                        String new_data = data.replace("," + compoundButton.getText() , "");
-                                                        dataModel.setData(new_data);
-                                                    } else if (data.contains("," + compoundButton.getText())) {
-                                                        String new_data = data.replace("," + compoundButton.getText(), "");
-                                                        dataModel.setData(new_data);
-                                                    } else if (data.contains(compoundButton.getText() + ",")) {
-                                                        String new_data = data.replace(compoundButton.getText() + ",", "");
-                                                        dataModel.setData(new_data);
-                                                    } else {
-                                                        String new_data = data.replace(compoundButton.getText(), "");
-                                                        dataModel.setData(new_data);
-                                                    }
-
-                                                }
-                                                store_list.set(index, dataModel);
                                             }
+
+                                            for (int h = 0; h < store_list.size(); h++) {
+                                                if (store_list.get(h).getTag() != null) {
+                                                    String tag = compoundButton.getTag().toString();
+                                                    if (tag.equals(store_list.get(h).getTag())) {
+                                                        store_list.set(h, dataModel);
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            int index = store_list.indexOf(dataModel);
+                                            String data = store_list.get(index).getData().toString();
+
+                                            if(Type_to_Add.equals("CM") || Type_to_Add.equals("SMM")) {
+                                                String name=finalModel.get(selectPos).getId();
+                                                if (data.contains("," + name + ",")) {
+                                                    String new_data = data.replace("," +name, "");
+                                                    dataModel.setData(new_data);
+                                                } else if (data.contains("," + name)) {
+                                                    String new_data = data.replace("," + name, "");
+                                                    dataModel.setData(new_data);
+                                                } else if (data.contains(name + ",")) {
+                                                    String new_data = data.replace(name + ",", "");
+                                                    dataModel.setData(new_data);
+                                                } else {
+                                                    String new_data = data.replace(name, "");
+                                                    dataModel.setData(new_data);
+                                                }
+                                            }else {
+                                                if (data.contains("," + compoundButton.getText() + ",")) {
+                                                    String new_data = data.replace("," + compoundButton.getText() , "");
+                                                    dataModel.setData(new_data);
+                                                } else if (data.contains("," + compoundButton.getText())) {
+                                                    String new_data = data.replace("," + compoundButton.getText(), "");
+                                                    dataModel.setData(new_data);
+                                                } else if (data.contains(compoundButton.getText() + ",")) {
+                                                    String new_data = data.replace(compoundButton.getText() + ",", "");
+                                                    dataModel.setData(new_data);
+                                                } else {
+                                                    String new_data = data.replace(compoundButton.getText(), "");
+                                                    dataModel.setData(new_data);
+                                                }
+                                            }
+                                            store_list.set(index, dataModel);
                                         }
                                     });
                                     checkBocContainer.addView(checkBox);
@@ -1585,7 +1381,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 dataModel.setGrpTableName(tableName);
                                 dataModel.setFldType(Type_to_Add);
                                 store_list.add(dataModel);
-
                                 card.addView(checkBocContainer);
                                 binding.linearLayout.addView(textView);
                                 binding.linearLayout.addView(card);
@@ -1624,7 +1419,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                         0.2f
                                 );
 
-
                                 card.setRadius(5);
                                 card.setCardBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
@@ -1634,52 +1428,38 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 tvFileName.setTextColor(Color.BLACK);
                                 tvFileName.setTextSize(15);
                                 tvFileName.setGravity(Gravity.START);
-                                //tvFileName.setText("file_name");
-                                //tvFileName.setVisibility(View.GONE);
                                 tvFileName.setLayoutParams(param1);
                                 card.addView(tvFileName);
                                 layout.addView(card);
-
                                 imageview.setImageResource(R.drawable.ic_upload_file);
                                 imageview.setLayoutParams(image_param);
                                 layout.addView(imageview);
                                 layout.setLayoutParams(param1);
-
                                 textView.setTextColor(Color.BLACK);
                                 textView.setTextSize(15);
                                 textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 textView.setPadding((int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                 .getDisplayMetrics()), 0, 0, 0);
-                                //textView.setLayoutParams(params);
                                 String text = Heading_Label + "<font color='red'> *</font>";
                                 if (mandate == 1) {
                                     textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
                                 } else {
                                     textView.setText(Heading_Label);
                                 }
-
-                                // printUsrLog("mbbn","vghjgj"+i+"jhj"+jk);
                                 String key = String.valueOf(i) + String.valueOf(i);
-                                // Log.d("mbbn","vghjgjjj"+key);
-                                imageview.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        if (Constant.isNetworkAvailable(getApplicationContext()))
-                                            if (Type_to_Add.equals("FC")) {
-                                                captureFile(Integer.parseInt(key));
-                                            } else if (Type_to_Add.equals("FS")) {
-                                                imageChooser(Integer.parseInt(key));
-                                            } else {
-                                                checkPermission(999999, Integer.parseInt(key));
-                                            }
-                                        else
-                                            Toast.makeText(getApplicationContext(), "Please check the internet connectivity", Toast.LENGTH_SHORT).show();
-                                    }
+                                imageview.setOnClickListener(view -> {
+                                    if (Constant.isNetworkAvailable(getApplicationContext()))
+                                        if (Type_to_Add.equals("FC")) {
+                                            captureFile(Integer.parseInt(key));
+                                        } else if (Type_to_Add.equals("FS")) {
+                                            imageChooser(Integer.parseInt(key));
+                                        } else {
+                                            checkPermission(999999, Integer.parseInt(key));
+                                        }
+                                    else
+                                        Toast.makeText(getApplicationContext(), "Please check the internet connectivity", Toast.LENGTH_SHORT).show();
                                 });
-                                // imageViewList.add(imageview);
-
-
                                 imageViewMap.put(Integer.parseInt(key), imageview);
                                 textViewMap.put(Integer.parseInt(key), tvFileName);
                                 DynamicField dataModel = new DynamicField();
@@ -1690,7 +1470,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                                 dataModel.setGrpTableName(tableName);
                                 dataModel.setImgKey(key);
                                 store_list.add(dataModel);
-
                                 binding.linearLayout.addView(textView);
                                 binding.linearLayout.addView(layout);
                             }
@@ -1712,7 +1491,6 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         String field_code = split[0];
         String field_name  = split[1];
         if (listResponse != null && !listResponse.equals("")) {
-
             try {
                 JSONArray jsonArrayy = new JSONArray(listResponse);
                 ss=  new SelectionModel[jsonArrayy.length()+1];
@@ -1730,17 +1508,11 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                     if (jsonObjectt.has(field_code)) {
                         ss[ii].setId(jsonObjectt.getString(field_code));
                     }
-
-
                 }
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
-
             }
         }
-
         return ss;
     }
 
@@ -1778,8 +1550,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
             return label;
         }
         @Override
-        public View getDropDownView(int position, View convertView,
-                                    ViewGroup parent) {
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
             TextView label = (TextView) super.getDropDownView(position, convertView, parent);
             label.setTextColor(Color.BLACK);
             label.setText(values[position].getName());
@@ -1794,10 +1565,8 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         String field_code = split[0];
         String field_name  = split[1];
         if (listResponse != null && !listResponse.equals("")) {
-
             try {
                 JSONArray jsonArrayy = new JSONArray(listResponse);
-
                 for (int ii = 0; ii < jsonArrayy.length(); ii++) {
                     SelectionModel selectionModel=new SelectionModel();
                     JSONObject jsonObjectt = jsonArrayy.getJSONObject(ii);
@@ -1808,14 +1577,10 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                     if (jsonObjectt.has(field_code)) {
                         selectionModel.setId(jsonObjectt.getString(field_code));
                     }
-
                     ss.add(selectionModel);
                 }
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
-
             }
         }
         return ss;
@@ -1862,40 +1627,36 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
     }
 
     public void uploadImageFile(String filePath){
+ /*
+        File file = new File(filePath);
+        if (filePath.contains(".png") || filePath.contains(".jpg") || filePath.contains(".jpeg")) {
+            try {
+                file = new Compressor(getApplicationContext()).compressToFile(new File(filePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            file = new File(filePath);
+        try {
+            String folderNm=Constant.getInstance().getSetup(StringConstants.LOGO_NAME, "", dbController)+"_"+"CustomForm";
+            boolean folderExists = getS3Client(getApplicationContext()).doesObjectExist("happic", folderNm+"/");
 
-//        File file = new File(filePath);
-//
-//        if (filePath.contains(".png") || filePath.contains(".jpg") || filePath.contains(".jpeg")) {
-//            try {
-//                file = new Compressor(getApplicationContext()).compressToFile(new File(filePath));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        else
-//            file = new File(filePath);
-//
-//        try {
-//
-//            String folderNm=Constant.getInstance().getSetup(StringConstants.LOGO_NAME, "", dbController)+"_"+"CustomForm";
-//            boolean folderExists = getS3Client(getApplicationContext()).doesObjectExist("happic", folderNm+"/");
-//
-//
-//            if(folderExists) {
-//                fileUpload(folderNm,file);
-//            }else{
-//                byte[] emptyContent = new byte[0];
-//                ObjectMetadata metadata = new ObjectMetadata();
-//                metadata.setContentLength(0);
-//                getS3Client(getApplicationContext()).putObject("happic", folderNm+"/", new ByteArrayInputStream(emptyContent), metadata);
-//                fileUpload(folderNm,file);
-//            }
-//
-//
-//        }
-//        catch (Exception e){
-//
-//        }
+
+            if(folderExists) {
+                fileUpload(folderNm,file);
+            }else{
+                byte[] emptyContent = new byte[0];
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentLength(0);
+                getS3Client(getApplicationContext()).putObject("happic", folderNm+"/", new ByteArrayInputStream(emptyContent), metadata);
+                fileUpload(folderNm,file);
+            }
+        }
+        catch (Exception e){
+
+        }
+        */
     }
 
     public void checkPermission(int position,int dynamicId){
@@ -1906,14 +1667,11 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                     public void onPermissionsChecked(MultiplePermissionsReport report)
                     {
                         if(report.areAllPermissionsGranted()){
-//
                             if(position==999999)
                                 showDynamicImageChooserDialog(position,dynamicId);
                             else
                                 captureFile(99999999);
-
                         }
-
                     }
 
                     @Override
@@ -1932,30 +1690,19 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         ImageButton ibClose = dialog.findViewById(R.id.ib_close);
         ImageButton ibCamera = dialog.findViewById(R.id.ib_camera);
         ImageButton ibGallery = dialog.findViewById(R.id.ib_gallery);
-        ibClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        ibCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-//                callCamera();
-                captureFile(dynamicId);
 
-            }
-        });
-        ibGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                imageChooser(dynamicId);
-            }
+        ibClose.setOnClickListener(view -> dialog.dismiss());
+
+        ibCamera.setOnClickListener(view -> {
+            dialog.dismiss();
+            // callCamera();
+            captureFile(dynamicId);
         });
 
+        ibGallery.setOnClickListener(view -> {
+            dialog.dismiss();
+            imageChooser(dynamicId);
+        });
         dialog.show();
-
     }
 }
