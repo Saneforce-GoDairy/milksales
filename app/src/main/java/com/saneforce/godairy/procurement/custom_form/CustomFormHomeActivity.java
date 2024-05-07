@@ -34,12 +34,17 @@ public class CustomFormHomeActivity extends AppCompatActivity {
     private final Context context = this;
     private ApiInterface apiInterface;
     private List<ModuleList> moduleArrayList;
+    int isPrimary = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCustomFormHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (getIntent().hasExtra("isPrimary")) {
+            isPrimary = getIntent().getIntExtra("isPrimary", 0);
+        }
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         moduleArrayList = new ArrayList();
@@ -54,7 +59,7 @@ public class CustomFormHomeActivity extends AppCompatActivity {
     }
 
     private void loadCustomFormModule() {
-        Call<ResponseBody> call = apiInterface.getProcCustomFormModule(PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST);
+        Call<ResponseBody> call = apiInterface.getProcCustomFormModule(PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST, isPrimary);
 
         call.enqueue(new Callback<>() {
             @Override

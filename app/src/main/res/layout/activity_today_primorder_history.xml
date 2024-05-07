@@ -317,6 +317,28 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/marketingActivity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:background="@drawable/button_blue1"
+                    android:paddingStart="@dimen/C10dp"
+                    android:layout_marginStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="Marketing Activity"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
 
             </LinearLayout>
         </LinearLayout>

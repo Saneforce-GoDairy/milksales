@@ -48,6 +48,8 @@ import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
 import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityTodayPrimorderHistoryBinding;
+import com.saneforce.godairy.procurement.custom_form.CustomFormHomeActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -185,6 +187,11 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
         binding.orderButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, PrimaryOrderActivity.class);
             intent.putExtra("Mode", "order_view");
+            startActivity(intent);
+        });
+        binding.marketingActivity.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CustomFormHomeActivity.class);
+            intent.putExtra("isPrimary", 1);
             startActivity(intent);
         });
         binding.noOrder.setOnClickListener(v -> {

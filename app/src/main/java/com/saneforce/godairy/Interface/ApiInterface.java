@@ -1080,7 +1080,7 @@ public interface ApiInterface {
                                                    @Query("created_dt") String created_dt);
 
     @POST("test_prasanth.php")
-    Call<ResponseBody> getProcCustomFormModule(@Query("axn") String axn);
+    Call<ResponseBody> getProcCustomFormModule(@Query("axn") String axn, @Query("isPrimary") int isPrimary);
 
     @POST("test_prasanth.php")
     Call<ResponseBody> getProcCustomFormFieldLists(@Query("axn") String axn,
