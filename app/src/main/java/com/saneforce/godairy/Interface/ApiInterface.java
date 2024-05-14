@@ -1093,6 +1093,10 @@ public interface ApiInterface {
                                       @Query("divisionCode") String divisionCode,
                                       @Query("sfCode") String sfCode);
 
+    @POST("test_prasanth.php")
+    Call<ResponseBody> getCustomFormReports(@Query("axn") String axn,
+                                            @Query("ModuleId") String ModuleId);
+
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

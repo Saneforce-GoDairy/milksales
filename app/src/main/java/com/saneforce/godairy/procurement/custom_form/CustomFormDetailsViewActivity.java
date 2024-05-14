@@ -219,11 +219,11 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         // Dynamic data details start
         JsonArray dynamicDataDetailJsonArray = new JsonArray();
         try {
-            for(int i=0; group_list.size()>i;i++) {
+    //        for(int i=0; group_list.size()>i;i++) {
                 JsonObject dynamicDataDetailsMainJsonObject = new JsonObject();
 
-                int grpId=group_list.get(i).getFldGrpId();
-                String fieldGroupTableNm=group_list.get(i).getGrpTableName();
+                int grpId=group_list.get(0).getFldGrpId();
+                String fieldGroupTableNm=group_list.get(0).getGrpTableName();
                 JsonArray jArray = new JsonArray();
                 for (int j=0;store_list.size()>j;j++) {
                     JsonObject jGroup = new JsonObject();
@@ -243,7 +243,7 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                 dynamicDataDetailsMainJsonObject.addProperty("grpTableName",fieldGroupTableNm);
                 dynamicDataDetailsMainJsonObject.add("itemdetail",jArray);
                 dynamicDataDetailJsonArray .add(dynamicDataDetailsMainJsonObject);
-            }
+         //   }
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
@@ -262,6 +262,8 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
                     mJsonArrayPart,
                     div_code,
                     sf_code);
+
+            String   debug = "";
 
             call.enqueue(new Callback<>() {
                 @Override
