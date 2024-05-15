@@ -23,6 +23,7 @@ import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
 import com.saneforce.godairy.procurement.custom_form.CustomFormHomeActivity;
+import com.saneforce.godairy.procurement.custom_form.CustomFormReportHomeActivity;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
 import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
 import com.saneforce.godairy.procurement.ska.ExistingFarmerVisitActivity;
@@ -159,12 +160,8 @@ public class ProcurementHome extends AppCompatActivity {
             startActivity(new Intent(context, ProcReportsHomeActivity.class));
         });
 
-        binding.csForm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, CustomFormHomeActivity.class));
-            }
-        });
+        binding.csForm.setOnClickListener(v -> startActivity(new Intent(context, CustomFormHomeActivity.class)));
+        binding.csFormReport.setOnClickListener(v -> startActivity(new Intent(context, CustomFormReportHomeActivity.class)));
     }
 
     public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {

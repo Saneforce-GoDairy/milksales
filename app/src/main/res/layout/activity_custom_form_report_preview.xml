@@ -1,61 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
-    tools:context=".procurement.reports.FarmerCreationReportActivity">
+    tools:context=".procurement.custom_form.CustomFormReportPreviewActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:elevation="10dp"
         android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_35"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:contentDescription="Back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/back"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="Farmer creation report"
+            android:text="Custom form report previe"
             android:textColor="@color/black"
             android:textSize="20sp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/no_records"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true">
-
-            <ImageView
-                android:layout_width="170dp"
-                android:layout_height="150dp"
-                android:src="@drawable/no_records"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No records!"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/ubuntu_medium"
-                android:textSize="25sp"
-                android:layout_marginTop="@dimen/C20dp"/>
-        </LinearLayout>
-
 
     </RelativeLayout>
 
@@ -98,12 +74,12 @@
         android:id="@+id/shimmerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="51dp"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical">
             <!--add  several shimmer placeholder layout -->
             <include layout="@layout/m_agronomist_report_shimmer" />
@@ -117,10 +93,38 @@
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout
+        android:id="@+id/ll_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp" />
+        android:orientation="vertical"
+        android:layout_marginTop="50dp">
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:text="No Data Available"
+            android:gravity="center"
+            android:visibility="gone"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            android:padding="10dp">
+            <LinearLayout
+                android:id="@+id/ll_dynamic_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                />
 
-</LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</RelativeLayout>
