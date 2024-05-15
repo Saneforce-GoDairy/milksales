@@ -44,7 +44,7 @@ public class ModuleReportsAdapter extends RecyclerView.Adapter<ModuleReportsAdap
             String mModuleId = moduleList.getModuleId();
             Intent intent = new Intent(context, CustomFormReportDetailsActivity.class);
             intent.putExtra("title", moduleList.getModuleName());
-            intent.putExtra("moduleId", moduleList.getModuleId());
+            intent.putExtra("module_id", moduleList.getModuleId());
             intent.putExtra("moduleName", moduleList.getModuleName());
             context.startActivity(intent);
         });

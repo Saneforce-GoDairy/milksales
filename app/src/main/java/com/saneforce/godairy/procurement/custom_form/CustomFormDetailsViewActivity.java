@@ -152,12 +152,12 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
             loadFieldData(mModuleId);
         }
 
-        mEkey =Constant.SF_CODE + "-" + TimeUtils.getTimeStamp(TimeUtils.getCurrentTime(TimeUtils.FORMAT), TimeUtils.FORMAT);
-
         UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         sf_code = Shared_Common_Pref.Sf_Code;
         div_code = UserDetails.getString("Divcode", ""); // DesigNm
         disign = UserDetails.getString("DesigNm", "");
+
+        mEkey = sf_code + "-" + TimeUtils.getTimeStamp(TimeUtils.getCurrentTime(TimeUtils.FORMAT), TimeUtils.FORMAT);
 
         onClick();
     }
@@ -219,31 +219,33 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
         // Dynamic data details start
         JsonArray dynamicDataDetailJsonArray = new JsonArray();
         try {
-    //        for(int i=0; group_list.size()>i;i++) {
+            for(int i=0; group_list.size()>i;i++) {
                 JsonObject dynamicDataDetailsMainJsonObject = new JsonObject();
 
-                int grpId=group_list.get(0).getFldGrpId();
-                String fieldGroupTableNm=group_list.get(0).getGrpTableName();
+                int grpId=group_list.get(i).getFldGrpId();
+                String fieldGroupTableNm=group_list.get(i).getGrpTableName();
                 JsonArray jArray = new JsonArray();
                 for (int j=0;store_list.size()>j;j++) {
                     JsonObject jGroup = new JsonObject();
 
                     DynamicField model = store_list.get(j);
 
+                    if (model.getData() != null&&group_list.get(i).getFldGrpId()==model.getFldGrpId()) {
                         try {
                             jGroup.addProperty("column_name", model.getColumn());
                             jGroup.addProperty("data_value", model.getData());
-                             jGroup.addProperty("table_name", model.getGrpTableName());
+                            jGroup.addProperty("table_name", model.getGrpTableName());
                             jArray.add(jGroup);
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
                         }
+                    }
                 }
                 dynamicDataDetailsMainJsonObject.addProperty("groupId",grpId);
                 dynamicDataDetailsMainJsonObject.addProperty("grpTableName",fieldGroupTableNm);
                 dynamicDataDetailsMainJsonObject.add("itemdetail",jArray);
                 dynamicDataDetailJsonArray .add(dynamicDataDetailsMainJsonObject);
-         //   }
+            }
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
@@ -254,8 +256,8 @@ public class CustomFormDetailsViewActivity extends AppCompatActivity {
 
         if (Constant.isNetworkAvailable(getApplicationContext())) {
             ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
-
-            RequestBody mJsonArrayPart = RequestBody.create(MediaType.parse("multipart/form-data"), commonDynamicJsonArray.toString());
+Log.e("commonDynamicJsonArray:",commonDynamicJsonArray.toString());
+            RequestBody mJsonArrayPart = RequestBody.create(MediaType.parse("text/plain"), commonDynamicJsonArray.toString());
 
             Call<ResponseBody> call = request.save1JSONArray(
                     PROCUREMENT_SAVE_CUSTOM_FORM,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.saneforce.godairy" >
+    package="com.saneforce.godairy">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -57,7 +57,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
-        tools:targetApi="n" >
+        tools:targetApi="n">
+        <activity
+            android:name=".procurement.custom_form.CustomFormReportPreviewActivity"
+            android:exported="false" />
         <activity
             android:name=".procurement.custom_form.CustomFormReportDetailsActivity"
             android:exported="false" />
@@ -182,7 +185,7 @@
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.ChallanActivity"
-            android:exported="true" >
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -205,35 +208,35 @@
             android:exported="false" />
         <activity
             android:name=".CCAvenue.StatusActivity"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".CCAvenue.WebViewActivity"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".CCAvenue.InitiatePaymentActivity"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".JioMoney.PaymentWebView"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".SFA_Activity.FeedbackActivitySFA"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -241,7 +244,7 @@
         <activity
             android:name=".SFA_Activity.AddNewDistributor"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -249,7 +252,7 @@
         <activity
             android:name=".SFA_Activity.CancelledOrdersActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -257,7 +260,7 @@
         <activity
             android:name=".SFA_Activity.SalesReturnHistoryActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -265,7 +268,7 @@
         <activity
             android:name=".SFA_Activity.SalesReturnActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -273,7 +276,7 @@
         <activity
             android:name=".SFA_Activity.GRN_Invoice"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -281,7 +284,7 @@
         <activity
             android:name=".SFA_Activity.GRN_Print_Invoice_Activity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -289,7 +292,7 @@
         <activity
             android:name=".SFA_Activity.GrnPendingActivity"
             android:exported="false"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -297,7 +300,7 @@
         <activity
             android:name=".SFA_Activity.GrnHistory"
             android:exported="false"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -309,7 +312,7 @@
         <activity
             android:name=".Activity_Hap.TP_Approval_Status"
             android:exported="false"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -321,7 +324,7 @@
         <activity
             android:name=".SFA_Activity.LedgerHistoryActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -329,7 +332,7 @@
         <activity
             android:name=".SFA_Activity.PrimaryOrderReportActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -337,7 +340,7 @@
         <activity
             android:name=".SFA_Activity.ComplementaryInvoiceHistory"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -345,7 +348,7 @@
         <activity
             android:name=".SFA_Activity.CompementaryInvoiceActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -353,7 +356,7 @@
         <activity
             android:name=".SFA_Activity.PendingOrdersActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -363,7 +366,7 @@
             android:exported="false"
             android:label="@string/title_activity_posstock_loading"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -371,7 +374,7 @@
         <activity
             android:name=".SFA_Activity.ApprovalHistoryActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -379,7 +382,7 @@
         <activity
             android:name=".SFA_Activity.PendingOutletsCategory"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -387,7 +390,7 @@
         <activity
             android:name=".Activity_Hap.ApproveOutletsDetailedActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -395,7 +398,7 @@
         <activity
             android:name=".SFA_Activity.ApproveOutletsActivity"
             android:exported="false"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -535,7 +538,7 @@
             android:theme="@style/AppTheme.Dialogs" />
         <activity
             android:name=".Activity.PdfViewerActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
 
@@ -667,7 +670,7 @@
         <activity
             android:name=".SFA_Activity.Print_Invoice_Activity"
             android:exported="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
 
@@ -921,7 +924,7 @@
         <activity
             android:name=".Activity_Hap.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -996,7 +999,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
@@ -1010,7 +1013,7 @@
             android:resource="@color/black" /> <!-- Notification -->
         <service
             android:name=".PushNotification.MyFirebaseMessagingService"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -1018,7 +1021,7 @@
         <receiver
             android:name=".common.ConnectivityReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
 
                 <!-- Intent filters for broadcast receiver -->
@@ -1036,7 +1039,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.saneforce.godairy"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />

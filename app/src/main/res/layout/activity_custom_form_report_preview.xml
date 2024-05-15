@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".procurement.custom_form.CustomFormReportDetailsActivity">
+    tools:context=".procurement.custom_form.CustomFormReportPreviewActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/back"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="Custom form reports details"
+            android:text="Custom form report previe"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -70,83 +70,11 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:text="From"
-                android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_bold"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:fontFamily="@font/ubuntu_bold"
-                android:text="To"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginBottom="5dp">
-
-            <TextView
-                android:id="@+id/from_date"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_radius_proc_img"
-                android:drawableEnd="@drawable/arrow_down"
-                android:padding="5dp"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/to_date"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_radius_proc_img"
-                android:drawableEnd="@drawable/arrow_down"
-                android:padding="5dp"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="51dp"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -165,24 +93,38 @@
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout
+        android:id="@+id/ll_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:padding="@dimen/C5dp"
-        android:layout_marginStart="5dp"
-        />
+        android:orientation="vertical"
+        android:layout_marginTop="50dp">
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:text="No Data Available"
+            android:gravity="center"
+            android:visibility="gone"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            android:padding="10dp">
+            <LinearLayout
+                android:id="@+id/ll_dynamic_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                />
 
-    <TextView
-        android:id="@+id/no_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="No data available"
-        android:fontFamily="@font/ubuntu"
-        android:textSize="25sp"
-        android:visibility="gone"/>
-
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
 </RelativeLayout>

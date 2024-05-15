@@ -45,10 +45,12 @@ public class CustomFormReportHomeActivity extends AppCompatActivity {
 
         moduleArrayList = new ArrayList();
 
-        loadCustomFormModule();
+        loadCustomFormModuleList();
+
+        binding.back.setOnClickListener(v -> finish());
     }
 
-    private void loadCustomFormModule() {
+    private void loadCustomFormModuleList() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.getProcCustomFormModule(PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST);

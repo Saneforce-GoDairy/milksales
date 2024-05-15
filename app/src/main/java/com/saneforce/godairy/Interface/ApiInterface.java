@@ -1094,9 +1094,15 @@ public interface ApiInterface {
                                       @Query("sfCode") String sfCode);
 
     @POST("test_prasanth.php")
-    Call<ResponseBody> getCustomFormReports(@Query("axn") String axn,
-                                            @Query("ModuleId") String ModuleId);
+    Call<ResponseBody> getCustomFormReportsModuleList(@QueryMap Map<String,Object>queryParrams);
 
+    @POST("test_prasanth.php")
+    @FormUrlEncoded
+    Call<ResponseBody> getCustomFormDataPreview(@QueryMap Map<String, Object> queryParrams,
+                                    @FieldMap Map<String, Object> fieldParrams);
+
+    @POST("test_prasanth.php")
+    Call<ResponseBody>getCustomFormMater(@QueryMap Map<String,Object>queryParrams);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

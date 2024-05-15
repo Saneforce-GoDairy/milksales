@@ -34,7 +34,7 @@ public class AppConstants {
  public static final String PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST = "get_custom_module_list";
  public static final String PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST = "get_custom_field_list";
  public static final String PROCUREMENT_SAVE_CUSTOM_FORM = "save_custom_form";
- public static final String PROCUREMENT_GET_CUSTOM_FORM_REPORTS = "get_custom_form_reports_details";
+ public static final String PROCUREMENT_GET_CUSTOM_FORM_REPORTS = "get_custom_reports";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}
