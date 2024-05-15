@@ -49,6 +49,7 @@ import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityTodayPrimorderHistoryBinding;
 import com.saneforce.godairy.procurement.custom_form.CustomFormHomeActivity;
+import com.saneforce.godairy.procurement.custom_form.CustomFormReportHomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -191,6 +192,11 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
         });
         binding.marketingActivity.setOnClickListener(v -> {
             Intent intent = new Intent(context, CustomFormHomeActivity.class);
+            intent.putExtra("isPrimary", 1);
+            startActivity(intent);
+        });
+        binding.marketingActivityView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CustomFormReportHomeActivity.class);
             intent.putExtra("isPrimary", 1);
             startActivity(intent);
         });

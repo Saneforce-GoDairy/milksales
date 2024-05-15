@@ -1050,7 +1050,7 @@ public interface ApiInterface {
                                                     @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcExistingFarmerVisitSka(@Query("axn") String str,
                                                         @Part MultipartBody.Part audio,
                                                         @Part MultipartBody.Part image,
@@ -1066,7 +1066,7 @@ public interface ApiInterface {
                                                         @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcFarmerCreationSka(@Query("axn") String str,
                                                    @Part MultipartBody.Part audio,
                                                    @Part MultipartBody.Part image,
@@ -1079,29 +1079,29 @@ public interface ApiInterface {
                                                    @Query("active_flag") String active_flag,
                                                    @Query("created_dt") String created_dt);
 
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> getProcCustomFormModule(@Query("axn") String axn, @Query("isPrimary") int isPrimary);
 
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> getProcCustomFormFieldLists(@Query("axn") String axn,
                                                    @Query("module_id") String module_id);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> save1JSONArray(@Query("axn") String axn,
                                       @Part("data")RequestBody data,
                                       @Query("divisionCode") String divisionCode,
                                       @Query("sfCode") String sfCode);
 
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> getCustomFormReportsModuleList(@QueryMap Map<String,Object>queryParrams);
 
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     @FormUrlEncoded
     Call<ResponseBody> getCustomFormDataPreview(@QueryMap Map<String, Object> queryParrams,
                                     @FieldMap Map<String, Object> fieldParrams);
 
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody>getCustomFormMater(@QueryMap Map<String,Object>queryParrams);
 
     @GET(ApiClient.CONFIG_URL)

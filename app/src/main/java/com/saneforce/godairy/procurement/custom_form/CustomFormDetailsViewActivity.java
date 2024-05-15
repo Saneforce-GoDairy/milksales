@@ -1433,10 +1433,12 @@ Log.e("commonDynamicJsonArray:",commonDynamicJsonArray.toString());
                                 tvFileName.setTextSize(15);
                                 tvFileName.setGravity(Gravity.START);
                                 tvFileName.setLayoutParams(param1);
+                                tvFileName.setId(i);
                                 card.addView(tvFileName);
                                 layout.addView(card);
                                 imageview.setImageResource(R.drawable.ic_upload_file);
                                 imageview.setLayoutParams(image_param);
+                                imageview.setId(1000+i);
                                 layout.addView(imageview);
                                 layout.setLayoutParams(param1);
                                 textView.setTextColor(Color.BLACK);
@@ -1466,6 +1468,7 @@ Log.e("commonDynamicJsonArray:",commonDynamicJsonArray.toString());
                                 });
                                 imageViewMap.put(Integer.parseInt(key), imageview);
                                 textViewMap.put(Integer.parseInt(key), tvFileName);
+                                i++;
                                 DynamicField dataModel = new DynamicField();
                                 dataModel.setColumn(Column_Store);
                                 dataModel.setMandatory(mandate);
@@ -1594,6 +1597,8 @@ Log.e("commonDynamicJsonArray:",commonDynamicJsonArray.toString());
         AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
             @Override
             public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
+
+                //String reqId=reqCode==0?"0":String.valueOf(reqCode);
                 if(imageViewMap.containsKey(reqCode)){
                     File file = new File(fullPath);
 
