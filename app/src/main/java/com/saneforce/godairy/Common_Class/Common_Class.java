@@ -1776,7 +1776,7 @@ public class Common_Class {
             SharedPreferences CheckInDetails = context.getSharedPreferences(CheckInfo, Context.MODE_PRIVATE);
             boolean CheckIn = CheckInDetails.getBoolean("CheckIn", false);
             Intent intent;
-            if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE)) {
+            if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE) || shared_common_pref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DSM_TYPE)) {
                 intent = new Intent(context, SFA_Activity.class);
             } else if (CheckIn) {
                 intent = new Intent(context, Dashboard_Two.class);
