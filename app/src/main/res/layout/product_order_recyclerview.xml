@@ -265,7 +265,7 @@
                                 android:inputType="number"
                                 android:paddingLeft="@dimen/C5dp"
                                 android:paddingRight="@dimen/C5dp"
-                                android:text="123456"
+                                android:text=""
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/C13dp"
