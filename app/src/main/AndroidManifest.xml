@@ -66,6 +66,10 @@
             android:exported="false" />
         <activity
             android:name=".procurement.custom_form.CustomFormReportHomeActivity"
+            android:name=".Activity.ViewInvoiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SFA_Activity.vwInvoices"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.vwInvoices"

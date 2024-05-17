@@ -387,8 +387,7 @@ public class Mydayplan_Activity extends AppCompatActivity implements Main_Model.
     public void getWorkTypes() {
         JSONObject jsonObject = new JSONObject();
         try {
-           // jsonObject.put("SF", UserDetails.getString("Sfcode", ""));
-            jsonObject.put("SF", "MGR0332");
+            jsonObject.put("SF", UserDetails.getString("Sfcode", ""));
             jsonObject.put("div", UserDetails.getString("Divcode", ""));
             ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
             service.getDataArrayList("get/worktypes", jsonObject.toString()).enqueue(new Callback<>() {

@@ -62,6 +62,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,7 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
     Context context = this;
     GoogleMap mGoogleMap;
     boolean isPhotoMandatory = false;
+    List<Common_Model> distList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +149,15 @@ public class AddNewRetailer extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
+        distList = new ArrayList<>();
+        if (shared_common_pref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.CHECKIN_TYPE)) {
+            distList = common_class.getDistList();
+        } else {
+            distList.add(new Common_Model(shared_common_pref.getvalue(Constants.Distributor_name), shared_common_pref.getvalue(Constants.Distributor_Id), "", "", "", distributorERP, divERP, "", "", "", distGrpERP));
+        }
+
         binding.selectDistributor.setOnClickListener(v -> {
-            common_class.showCommonDialog(common_class.getDistList(), 2, this);
+            common_class.showCommonDialog(distList, 2, this);
         });
 
         binding.selectOutletStatus.setOnClickListener(v -> ShowDropdown(1, prepareTitle(binding.outletStatusTitle.getText().toString()), outletTypeArray));
