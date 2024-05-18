@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -190,7 +191,7 @@ public class AssistantClass extends AppCompatActivity {
     public void forceLogout() {
         DatabaseHandler db = new DatabaseHandler(context);
         SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        SharedPreferences CheckInDetails = getSharedPreferences("CheckInDetail", Context.MODE_PRIVATE);
+        SharedPreferences CheckInDetails = ((Activity) context).getSharedPreferences("CheckInDetail", Context.MODE_PRIVATE);
         Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref((Activity) context);
         String eMail = UserDetails.getString("email", "");
         db.deleteAllMasterData();
@@ -209,20 +210,8 @@ public class AssistantClass extends AppCompatActivity {
             @Override
             public void onPositiveButtonClick(DialogInterface dialog) {
                 dialog.dismiss();
-                DatabaseHandler db = new DatabaseHandler(context);
-                SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                SharedPreferences CheckInDetails = ((Activity) context).getSharedPreferences("CheckInDetail", Context.MODE_PRIVATE);
-                Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref((Activity) context);
-                String eMail = UserDetails.getString("email", "");
-                db.deleteAllMasterData();
-                sharedCommonPref.clearAll();
-                UserDetails.edit().clear().apply();
-                CheckInDetails.edit().clear().apply();
-                adminInfo.edit().clear().apply();
-                UserDetails.edit().putString("email", eMail).apply();
-                Intent Dashboard = new Intent(context, Login.class);
-                ((Activity) context).startActivity(Dashboard);
-                ((Activity) context).finishAffinity();
+                forceLogout();
+                Toast.makeText(context, "Logged out successfully...", Toast.LENGTH_SHORT).show();
             }
 
             @Override
