@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".procurement.custom_form.CustomFormReportDetailsActivity">
+    tools:context=".procurement.custom_form.ReportDetailsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -124,7 +124,20 @@
                 android:background="@drawable/bg_radius_proc_img"
                 android:drawableEnd="@drawable/arrow_down"
                 android:padding="5dp"
+                android:textSize="18sp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/from_date_pr"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_radius_proc_img"
+                android:drawableEnd="@drawable/arrow_down"
+                android:padding="5dp"
                 android:textSize="18sp" />
+
 
             <TextView
                 android:id="@+id/to_date"
@@ -136,8 +149,42 @@
                 android:background="@drawable/bg_radius_proc_img"
                 android:drawableEnd="@drawable/arrow_down"
                 android:padding="5dp"
+                android:textSize="18sp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/to_date_pr"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_radius_proc_img"
+                android:drawableEnd="@drawable/arrow_down"
+                android:padding="5dp"
                 android:textSize="18sp" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/error_container"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="#ff0130"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_bold"
+                android:text="From date never less than the to date!"
+                android:textColor="@color/white"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="10dp"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

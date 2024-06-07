@@ -59,13 +59,16 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name=".procurement.custom_form.CustomFormReportPreviewActivity"
+            android:name=".procurement.TestActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.custom_form.CustomFormReportDetailsActivity"
+            android:name=".procurement.custom_form.ReportPreviewActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.custom_form.CustomFormReportHomeActivity"
+            android:name=".procurement.custom_form.ReportDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.custom_form.ReportHomeActivity"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.vwInvoices"
@@ -76,10 +79,10 @@
             android:name=".Activity.GeoTagActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.custom_form.CustomFormHomeActivity"
+            android:name=".procurement.custom_form.CustomFormDashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.custom_form.CustomFormDetailsViewActivity"
+            android:name=".procurement.custom_form.CustomFormMainActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.MaintanenceRegularActivity"

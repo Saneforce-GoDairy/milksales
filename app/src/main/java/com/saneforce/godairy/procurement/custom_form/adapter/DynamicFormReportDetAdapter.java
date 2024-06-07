@@ -11,9 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.saneforce.godairy.Activity.Util.SelectionModel;
 import com.saneforce.godairy.R;
-import com.saneforce.godairy.procurement.custom_form.CustomFormReportPreviewActivity;
+import com.saneforce.godairy.procurement.custom_form.ReportPreviewActivity;
 import com.saneforce.godairy.procurement.custom_form.model.CustomReportModel;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class DynamicFormReportDetAdapter  extends RecyclerView.Adapter<DynamicFo
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(context, CustomFormReportPreviewActivity.class);
+                Intent intent = new Intent(context, ReportPreviewActivity.class);
                 intent.putExtra("moduleId",moduleId);
                 intent.putExtra("entryId",model.getEntryId());
                 intent.putExtra("sfCode",sfCode);

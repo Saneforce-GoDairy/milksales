@@ -12,15 +12,15 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -45,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomFormReportPreviewActivity extends AppCompatActivity {
+public class ReportPreviewActivity extends AppCompatActivity {
     private ActivityCustomFormReportPreviewBinding binding;
     private final Context context = this;
     String moduleId;
@@ -57,6 +57,8 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
     ArrayList<dynamicDataModel> master_list;
     ArrayList<dynamicDataModel> group_list;
     LinearLayout dynamic_data_layout;
+    private Shared_Common_Pref shared_common_pref;
+    String baseUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +76,16 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
         entryId = getIntent().getStringExtra("entryId");
         sfCode = getIntent().getStringExtra("sfCode");
 
+        UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+        baseUrl = UserDetails.getString("base_url", "");
+
         getCustomDataDetails(moduleId,entryId);
 
         binding.back.setOnClickListener(v -> finish());
+
     }
 
     private void getCustomDataDetails(String moduleId, String entryId) {
-
         UserDetails = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
         DIV_CODE = UserDetails.getString("Divcode", "");
 
@@ -99,14 +104,16 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 binding.shimmerLayout.setVisibility(GONE);
-                String customReportList;
-
                 try {
                     String res = response.body().string();
 
                     if(res!=null && !res.equals("")){
 
-                        JSONObject jsonObject1 = new JSONObject(res);
+                        String cleanLine1 = res.replace("₹", "");
+
+                        String cleanLine2 = cleanLine1.replace("?", "");
+
+                        JSONObject jsonObject1 = new JSONObject(cleanLine2);
                         JSONArray array = new JSONArray(jsonObject1.getString("customGrp"));
                         JSONArray jsonArray = new JSONArray(jsonObject1.getString("Dynamic_View"));
                         for (int m = 0; m < jsonArray.length(); m++) {
@@ -127,17 +134,14 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                 getDataFromMasterss(master_list.get(k).getFldSrcName(), master_list.get(k).getFldSrcFld(), k, array, jsonArray);
                             }
                         }else {
-//                            ProgressDialog.cancel();
                             loadData(array, jsonArray);
                         }
                         binding.tvNoData.setVisibility(View.GONE);
                     }else{
-//                        ProgressDialog.cancel();
                         binding.tvNoData.setVisibility(View.VISIBLE);
                     }
 
                 } catch (Exception e) {
- //                   ProgressDialog.cancel();
                     e.printStackTrace();
                 }
             }
@@ -158,41 +162,34 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
         queryParams.put("fieldName", fldSrcFld);
         queryParams.put("sfCode", sfCode);
 
-
-
         ApiInterface apiClient = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiClient.getCustomFormMater(queryParams);
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     ResponseBody res = response.body();
-
                     if (res != null && !res.equals("")) {
                         String responseBody = null;
                         try {
                             responseBody = res.string();
-                            Constant.getInstance().setValue(responseBody,fldSrcName);
+                            Constant.getInstance().setValue(responseBody, fldSrcName);
 
-                            if (master_list.size()==k+1){
-                               // ProgressDialog.cancel();
-                                loadData(array,jsonArray);
+                            if (master_list.size() == k + 1) {
+                                loadData(array, jsonArray);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t){
-
-
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -222,7 +219,7 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
 
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        textView30.setTextColor(getResources().getColor(R.color.black, null));
+                        textView30.setTextColor(getResources().getColor(R.color.purple_500, null));
                     }
                     textView30.setTextSize(18);
                     textView30.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -230,13 +227,9 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                             TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                     .getDisplayMetrics()), 0, 0, 0);
 
-
                     textView30.setText(grpName);
                     dynamic_data_layout.addView(textView30);
                     textView30.setVisibility(GONE);
-
-
-                    // JSONArray jsonArray = new JSONArray(jsonObject1.getString("customData"));
 
                     dynamicDataModel dataModels = new dynamicDataModel();
                     dataModels.setFldGrpId(grpId);
@@ -244,12 +237,10 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                     dataModels.setGrpTableName(fgTableName);
                     group_list.add(dataModels);
 
-                    // jsonArray2 = FirstObject.getJSONArray("Dynamic_View");
-                    // JSONArray jsonArray3 = FirstObject.getJSONArray("Dynamic_view_Data");
                     if ((jsonArray2.length() > 0)) {
                         for (int i = 0; i < jsonArray2.length(); i++) {
                             JSONObject jsonObject = jsonArray2.getJSONObject(i);
-                            //  JSONObject jsonObject2 = jsonArray3.getJSONObject(i);
+
                             int fieldGroupId = 0;
                             if (jsonObject.getString("FieldGroupId") != null && !jsonObject.getString("FieldGroupId").equalsIgnoreCase("null"))
                                 fieldGroupId = jsonObject.getInt("FieldGroupId");
@@ -281,29 +272,17 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
 
                                 params.setMargins(Horizontal_marginInDp1, vertical_marginInDp1, Horizontal_marginInDp1, vertical_marginInDp1);
 
-                                //edittext for text/phone number
                                 if ((Type_to_Add.contains("TA")) || (Type_to_Add.equals("N")) || (Type_to_Add.equals("TAS")) || (Type_to_Add.equals("NP")) || (Type_to_Add.equals("TAM"))) {
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
-                                    //  CardView card = new CardView(getApplicationContext());
                                     TextView textView = new TextView(getApplicationContext());
                                     TextView textView1 = new TextView(getApplicationContext());
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
                                     layout.setLayoutParams(params);
-                                    //  layout.setGravity(Gravity.CENTER);
-                                    //layout.setWeightSum(2);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
                                             LinearLayout.LayoutParams.WRAP_CONTENT
                                     );
 
-
-                                  /*  card.setLayoutParams(params);
-                                    // Setting different attributes
-                                    card.setRadius(5);
-                                    //card.setContentPadding(15, 15, 15, 15);
-                                    card.setCardBackgroundColor(Color.WHITE);
-                                    card.setMaxCardElevation(15);
-                                    card.setCardElevation(10);*/
                                     textView.setLayoutParams(param);
                                     textView1.setLayoutParams(param);
                                     textView.setTextColor(Color.BLACK);
@@ -315,8 +294,6 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                                     .getDisplayMetrics()), 0, 0, 0);
 
                                     textView.setText(Heading_Label + ": ");
-
-                                    // textView1.setTextColor(Color.BLACK);
                                     textView1.setTextSize(15);
                                     textView1.setGravity(Gravity.START);
                                     textView1.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
@@ -324,53 +301,16 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                             TypedValue.COMPLEX_UNIT_DIP, 5, getResources()
                                                     .getDisplayMetrics()), 0, 0, 0);
 
-
                                     if (!data_value.equals("")) {
                                         textView1.setText("" + data_value);
                                     } else {
                                         textView1.setText("-");
                                     }
 
-
                                     layout.addView(textView);
                                     layout.addView(textView1);
-                                    //  card.addView(layout);
-                                    // dynamic_data_layout.addView(card);
                                     dynamic_data_layout.addView(layout);
-
                                 }
-
-                             /*   else if (Type_to_Add.equals("L")) {
-
-
-                                    TextView textView = new TextView(this);
-
-
-                                    textView.setTextColor(Color.BLACK);
-                                    textView.setTextSize(15);
-                                    textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                                    textView.setPadding((int) TypedValue.applyDimension(
-                                            TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
-                                                    .getDisplayMetrics()), 0, 0, 0);
-
-                                    String text = Heading_Label + "<font color='red'> *</font>";
-                                    if (mandate == 1) {
-                                        textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
-                                    } else {
-                                        textView.setText(Heading_Label);
-                                    }
-                               ;
-                                    dynamicDataModel dataModel = new dynamicDataModel();
-                                    dataModel.setColumn(Column_Store);
-                                    dataModel.setMandatory(mandate);
-                                    dataModel.setFldGrpId(fieldGroupId);
-                                    dataModel.setFldType(Type_to_Add);
-                                    dataModel.setGrpTableName(tableName);
-                                    dataModel.setData(textView.getText().toString());
-                                    store_list.add(dataModel);
-                                    dynamic_data_layout.addView(textView);
-
-                                }*/
 
                                 else if (Type_to_Add.equals("DR")) {
                                     TextView textView = new TextView(getApplicationContext());
@@ -378,8 +318,6 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
 
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
-                                    //  layout.setGravity(Gravity.CENTER);
-                                    //  layout.setWeightSum(2);
                                     layout.setLayoutParams(params);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -418,8 +356,6 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
                                     layout.setLayoutParams(params);
-                                    // layout.setGravity(Gravity.CENTER);
-                                    //layout.setWeightSum(2);
                                     layout.setLayoutParams(params);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -442,7 +378,6 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                             TypedValue.COMPLEX_UNIT_DIP, 5, getResources()
                                                     .getDisplayMetrics()), 0, 0, 0);
 
-
                                     if (!data_value.equals("")) {
                                         textView1.setText(data_value);
                                     } else {
@@ -461,8 +396,6 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
 
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
-                                    // layout.setGravity(Gravity.CENTER);
-                                    //layout.setWeightSum(2);
                                     layout.setLayoutParams(params);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -511,8 +444,7 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
 
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
-                                    // layout.setGravity(Gravity.CENTER);
-                                    //layout.setWeightSum(2);
+
                                     layout.setLayoutParams(params);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -593,8 +525,7 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
 
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
-                                    //  layout.setGravity(Gravity.CENTER);
-                                    // layout.setWeightSum(2);
+
                                     layout.setLayoutParams(params);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -634,8 +565,7 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
 
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
-                                    //layout.setGravity(Gravity.CENTER);
-                                    // layout.setWeightSum(2);
+
                                     layout.setLayoutParams(params);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -684,8 +614,7 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
 
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
-                                    // layout.setGravity(Gravity.CENTER);
-                                    // layout.setWeightSum(2);
+
                                     layout.setLayoutParams(params);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -736,19 +665,21 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                 } else if (Type_to_Add.equals("FSC") || Type_to_Add.equals("FC") || Type_to_Add.equals("FS")) {
 
                                     TextView textView = new TextView(getApplicationContext());
-                                    TextView textView1 = new TextView(getApplicationContext());
+                                    ImageView textView1 = new ImageView(getApplicationContext());
                                     LinearLayout layout = new LinearLayout(getApplicationContext());
 
                                     layout.setOrientation(LinearLayout.HORIZONTAL);
-                                    //layout.setGravity(Gravity.CENTER);
-                                    // layout.setWeightSum(2);
+
                                     layout.setLayoutParams(params);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
                                             LinearLayout.LayoutParams.WRAP_CONTENT);
 
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+                                  //  iv.setLayoutParams(layoutParams);
+
                                     textView.setLayoutParams(param);
-                                    textView1.setLayoutParams(param);
+                                    textView1.setLayoutParams(layoutParams);
                                     textView.setTextColor(Color.BLACK);
                                     textView.setTextSize(15);
                                     textView.setGravity(Gravity.START);
@@ -757,26 +688,32 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
                                             TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                     .getDisplayMetrics()), 0, 0, 0);
 
-                                    textView.setText(Heading_Label + ": ");
-                                    textView1.setTextSize(15);
-                                    textView1.setGravity(Gravity.START);
-                                    textView1.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                                 //   textView.setText(Heading_Label + ": ");
+//                                    textView1.setTextSize(15);
+//                                    textView1.setGravity(Gravity.START);
+//                                    textView1.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                                     textView1.setPadding((int) TypedValue.applyDimension(
                                             TypedValue.COMPLEX_UNIT_DIP, 5, getResources()
                                                     .getDisplayMetrics()), 0, 0, 0);
 
                                     if (!data_value.equals("")) {
-                                        textView1.setText(data_value);
+                                       // textView1.setText(data_value);
+                                        Glide.with(context)
+                                                .load(baseUrl + "server/")
+                                                .into(textView1);
+
                                     } else {
-                                        textView1.setText("-");
+                                     //   textView1.setText("-");
                                     }
+
+
+
                                     layout.addView(textView);
                                     layout.addView(textView1);
                                     dynamic_data_layout.addView(layout);
                                 }
                             }
                         }
-
                     }
 
                     dynamic_data_layout.setVisibility(View.VISIBLE);
@@ -801,23 +738,16 @@ public class CustomFormReportPreviewActivity extends AppCompatActivity {
         String field_key=split[0];
         HashMap<String,String> mapData = new HashMap<>();
         if (listResponse != null && !listResponse.equals("")) {
-
             try {
                 JSONArray jsonArrayy = new JSONArray(listResponse);
-
                 for (int ii = 0; ii < jsonArrayy.length(); ii++) {
                     JSONObject jsonObjectt = jsonArrayy.getJSONObject(ii);
-
                     if (jsonObjectt.has(field_name)&&jsonObjectt.has(field_key)) {
                         mapData.put(jsonObjectt.getString(field_key),jsonObjectt.getString(field_name));
                     }
-
                 }
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
-
             }
         }
         Log.d("ssfdf","data:"+mapData);

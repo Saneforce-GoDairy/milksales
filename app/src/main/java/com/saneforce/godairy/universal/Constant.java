@@ -8,6 +8,11 @@ import android.util.Log;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.gson.JsonArray;
+import com.saneforce.godairy.procurement.custom_form.utils.DBController;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
@@ -16,14 +21,10 @@ import okhttp3.RequestBody;
 
 
 public class Constant {
-
-
     private static Constant ourInstance = new Constant();
     private static final String TAG = Constant.class.getSimpleName();
     public static final String MyPREFERENCES = "SanSalesPrefs";
     public boolean isFirstTimeSynAll = false;
-
-
     //    public static String deviceType = "2";
     public static int IsSlideDownloadPopup = 0;
     public static int IsSlideDownloadPopupClosed = 0;
@@ -48,8 +49,6 @@ public class Constant {
     public static int GroupReportSerialNo = 1;
     public static int SlideWiseReportSerialNo = 1;
     public static String SlideWiseReportSlideName = "";
-
-
     public static String DIVISION_CODE= "";
     public static String SF_CODE= "";
     public static String RSF_CODE= "";
@@ -59,6 +58,7 @@ public class Constant {
     public static String WORK_TYPE = "";
     public static String CURRENCY_SYMBOL = "";
     public static boolean DEBUG_MODE = true;
+    Context context;
 
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
@@ -74,14 +74,11 @@ public class Constant {
 
     LocationRequest mLocationRequest;
 
-
     public Constant(){
     }
 
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
-
-
 
     public void loadDefaults(Context context) {
         sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -132,26 +129,16 @@ public class Constant {
         return isConnected;
     }
 
-
     public void setValue(int value, String key) {
         editor.putInt(key, value);
         editor.commit();
     }
 
-
     public int getValue(String key, int defValue) {
         return sharedpreferences.getInt(key, defValue);
     }
 
-
-
-
     private static DecimalFormat df = new DecimalFormat("0.00");
-
-
-
-
-
 
     public static double getLatitude(Location location){
         if(location!=null){
@@ -169,6 +156,43 @@ public class Constant {
 
     public static RequestBody toRequestBody (JsonArray value) {
         return RequestBody.create(MediaType.parse("text/plain"), value.toString());
+    }
+
+    public String getSetup(String key, String defaultValue, DBController dbController){
+        if(dbController == null)
+            dbController = new DBController(context.getApplicationContext());
+
+        String value = defaultValue;
+        String valueStr = "";
+        try {
+            valueStr = Constant.getResponseFromArrayValue(dbController.getResponse("setup"), key);
+            if(!valueStr.equals("") && !valueStr.equals("null"))
+                value = valueStr;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    public static String getResponseFromArrayValue(String response, String key){
+        String value = "";
+        if (response == null || response.equals("") || key == null || key.equals("") || key.equals("null"))
+            return value;
+
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            if(jsonArray.length()>0){
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                if(jsonObject.has(key))
+                    value = jsonObject.getString(key);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return value;
     }
 }
 

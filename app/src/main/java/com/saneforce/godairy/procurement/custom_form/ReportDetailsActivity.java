@@ -1,22 +1,23 @@
 package com.saneforce.godairy.procurement.custom_form;
 
 import static android.view.View.GONE;
-import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_REPORTS;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.saneforce.godairy.Activity.Util.SelectionModel;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -31,8 +32,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomFormReportDetailsActivity extends AppCompatActivity {
+public class ReportDetailsActivity extends AppCompatActivity {
    private ActivityCustomFormReportDetailsBinding binding;
    private final Context context = this;
    String mModuleId;
@@ -51,6 +55,8 @@ public class CustomFormReportDetailsActivity extends AppCompatActivity {
     private String mCurrentDateFrom, mCurrentDateTo;
     ArrayList<CustomReportModel> modelArrayList;
     DynamicFormReportDetAdapter dynamicFormReportDetAdapter;
+    @SuppressLint("SimpleDateFormat")
+    static SimpleDateFormat dfDate   = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +81,15 @@ public class CustomFormReportDetailsActivity extends AppCompatActivity {
         binding.fromDate.setText(mCurrentDateFrom);
         binding.toDate.setText(mCurrentDateTo);
 
-        binding.fromDate.setOnClickListener(v -> {
+        //-------------------------------------
+        binding.fromDatePr.setText(parseDateToddMMyyyy(mCurrentDateFrom));
+        binding.toDatePr.setText(parseDateToddMMyyyy(mCurrentDateTo));
+
+        binding.fromDatePr.setOnClickListener(v -> {
+
+            modelArrayList.clear();
+            dynamicFormReportDetAdapter.notifyDataSetChanged();
+
             int day, month, year;
             if (!binding.fromDate.getText().toString().equals("")) {
                 String[] dateArray = binding.fromDate.getText().toString().split("-");
@@ -95,14 +109,27 @@ public class CustomFormReportDetailsActivity extends AppCompatActivity {
                 String _pickedDate = year1 + "-" + _month + "-" + _date;
                 Log.e("PickedDate: ", "Date: " + _pickedDate); //2019-02-12
                 mCurrentDateFrom = _pickedDate;// _date +"/"+_month+"/"+_year;
-                loadCustomFormData(mCurrentDateFrom,mCurrentDateTo);
+                if (checkDates(mCurrentDateFrom,mCurrentDateTo)){
+                    loadCustomFormData(mCurrentDateFrom,mCurrentDateTo);
+                }else {
+                    modelArrayList.clear();
+                    dynamicFormReportDetAdapter.notifyDataSetChanged();
+                    showError2();
+                    // Toast.makeText(context, "From date never less than the to date", Toast.LENGTH_SHORT).show();
+                }
                 binding.fromDate.setText(mCurrentDateFrom);
+                //-----------------------------
+                binding.fromDatePr.setText(parseDateToddMMyyyy(mCurrentDateFrom));
             }, year, month, day);
             dialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
             dialog.show();
         });
 
-        binding.toDate.setOnClickListener(v -> {
+        binding.toDatePr.setOnClickListener(v -> {
+
+            modelArrayList.clear();
+            dynamicFormReportDetAdapter.notifyDataSetChanged();
+
             int day, month, year;
             if (!binding.toDate.getText().toString().equals("")) {
                 String[] dateArray = binding.toDate.getText().toString().split("-");
@@ -125,8 +152,17 @@ public class CustomFormReportDetailsActivity extends AppCompatActivity {
                     String _pickedDate = year + "-" + _month + "-" + _date;
                     Log.e("PickedDate: ", "Date: " + _pickedDate); //2019-02-12
                     mCurrentDateTo = _pickedDate;//_date +"/"+_month+"/"+_year;
-                    loadCustomFormData(mCurrentDateFrom, mCurrentDateTo);
+                    if (checkDates(mCurrentDateFrom, mCurrentDateTo)){
+                        loadCustomFormData(mCurrentDateFrom, mCurrentDateTo);
+                    }else {
+                        modelArrayList.clear();
+                        dynamicFormReportDetAdapter.notifyDataSetChanged();
+                        showError2();
+                        // Toast.makeText(context, "From date never less than the to date", Toast.LENGTH_SHORT).show();
+                    }
                     binding.toDate.setText(mCurrentDateTo);
+                    //-----------------------------
+                    binding.toDatePr.setText(parseDateToddMMyyyy(mCurrentDateTo));
                 }
             }, year, month, day);
             dialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
@@ -143,6 +179,53 @@ public class CustomFormReportDetailsActivity extends AppCompatActivity {
         loadCustomFormData(mCurrentDateFrom, mCurrentDateTo);
 
         binding.back.setOnClickListener(v -> finish());
+    }
+
+    public String parseDateToddMMyyyy(String time) {
+        String inputPattern = "yyyy-MM-dd";
+        String outputPattern = "dd-MM-yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    private void showError2() {
+        binding.errorContainer.setVisibility(View.VISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(() -> binding.errorContainer.setVisibility(View.GONE), 2000);
+    }
+
+    public static boolean checkDates(String d1, String d2)    {
+        boolean b = false;
+        try {
+            if(dfDate.parse(d1).before(dfDate.parse(d2)))
+            {
+                b = true;//If start date is before end date
+            }
+            else if(dfDate.parse(d1).equals(dfDate.parse(d2)))
+            {
+                b = true;//If two dates are equal
+            }
+            else
+            {
+                b = false; //If start date is after the end date
+                Log.e("dd__", "from date never less than the to date");
+            }
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return b;
     }
 
     private void loadCustomFormData(String currentDateFrom,String currentDateTo) {
@@ -200,7 +283,11 @@ public class CustomFormReportDetailsActivity extends AppCompatActivity {
                         }
 
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                    //    throw new RuntimeException(e);
+                        binding.recyclerView.setVisibility(View.GONE);
+                        binding.shimmerLayout.setVisibility(GONE);
+                        binding.nullError.setVisibility(View.VISIBLE);
+                        binding.message.setText("Something went wrong!");
                     }
 
 //                    try {

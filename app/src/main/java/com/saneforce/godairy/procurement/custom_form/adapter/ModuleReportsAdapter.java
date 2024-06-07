@@ -2,18 +2,14 @@ package com.saneforce.godairy.procurement.custom_form.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.saneforce.godairy.databinding.ModelCustomFormModuleReportBinding;
-import com.saneforce.godairy.procurement.custom_form.CustomFormDetailsViewActivity;
-import com.saneforce.godairy.procurement.custom_form.CustomFormReportDetailsActivity;
+import com.saneforce.godairy.procurement.custom_form.ReportDetailsActivity;
 import com.saneforce.godairy.procurement.custom_form.model.ModuleList;
 
 import java.util.List;
@@ -42,7 +38,7 @@ public class ModuleReportsAdapter extends RecyclerView.Adapter<ModuleReportsAdap
 
         holder.binding.container.setOnClickListener(v -> {
             String mModuleId = moduleList.getModuleId();
-            Intent intent = new Intent(context, CustomFormReportDetailsActivity.class);
+            Intent intent = new Intent(context, ReportDetailsActivity.class);
             intent.putExtra("title", moduleList.getModuleName());
             intent.putExtra("module_id", moduleList.getModuleId());
             intent.putExtra("moduleName", moduleList.getModuleName());

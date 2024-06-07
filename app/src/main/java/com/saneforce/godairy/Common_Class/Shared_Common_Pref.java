@@ -8,9 +8,7 @@ import android.util.Log;
 
 public class Shared_Common_Pref {
     public static String ORDER_TYPE = "orderType";
-
     public static String SFCutoff = "SFCutoff";
-
     public static String SFA_MENU = "";
     public static String CUSTOMER_CODE = "";
     public static String SALES_MODE = "";
@@ -25,15 +23,12 @@ public class Shared_Common_Pref {
     public static String Sf_Code = "Sf_Code";
     public static String mOldPassword = "mOldPassword";
     public static String mNewPasswpord = "mNewPasswpord";
-
     public static String Reporting_Sf_Code = "Reporting_To_SF";
-
     public static String Profile = "Profile";
     public static String Div_Code = "Div_Code";
     public static String StateCode = "StateCode";
     public static String Sf_Name = "Sf_Name";
     public static String SF_Mobile = "SF_Mobile";
-
     public static String Dv_ID = "DvID";
     public static String SF_Type = "SF_Type";
     public static String CHECK_COUNT = "0";
@@ -50,43 +45,33 @@ public class Shared_Common_Pref {
     public static String OutletCode = "OutletCode";
     public static String SecOrdOutletType = "";
     public static String Freezer_Required = "";
-
     public static String DistributorGst = "GSTN";
-
-
     public static int TravelAllowance = 0;
-
-
     public static String Dept_Type = "Dept_Type";
     public static String Sync_Flag;
     public static String name = "name";
     public static String Status = "status";
     public static int TotalCountApproval = 0;
     public static String TransSlNo;
-
     public static String BillingID;
     public static String SalesID;
-
-
     public static String Outlet_Info_Flag;
     public static String Invoicetoorder;
     public static String OutletAvail = "OutletAvail";
     public static String OutletUniv = "OutletUniv";
-
     public static String Rout_List = "Rout_List";
     public static String Category_List = "Category_List";
     public static String Todaydayplanresult = "Todaydayplanresult";
     public static String Route_Code = "Route_Code";
     public static String Route_name = "Route_name";
-
     public static String Editoutletflag = "Editoutletflag";
     public static String Tp_Approvalflag = "Tp_Approvalflag";
     public static String Tp_Sf_name = "Tp_Sf_name";
     public static String Tp_Monthname = "Tp_Monthname";
     public static String Tp_SFCode = "Tp_SFCode";
     public static String DCRMode = "DCRMode";
-
     public static int MaxKm = 1000;
+    public static String BASE_URL = "base_url";
 
     public Shared_Common_Pref(Activity Ac) {
         activity = Ac;
@@ -153,6 +138,4 @@ public class Shared_Common_Pref {
         }
         //the good quality product by the end of the day worth od manual  developement in this quality regaurds minimum qu.
     }
-
-
 }

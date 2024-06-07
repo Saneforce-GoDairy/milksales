@@ -13,7 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.databinding.ActivityCustomFormHomeBinding;
+import com.saneforce.godairy.R;
+import com.saneforce.godairy.databinding.ActivityCustomFormDashboardBinding;
 import com.saneforce.godairy.procurement.custom_form.adapter.ModuleAdapter;
 import com.saneforce.godairy.procurement.custom_form.model.ModuleList;
 import org.json.JSONArray;
@@ -28,8 +29,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomFormHomeActivity extends AppCompatActivity {
-    private ActivityCustomFormHomeBinding binding;
+public class CustomFormDashboardActivity extends AppCompatActivity {
+    private ActivityCustomFormDashboardBinding binding;
     public static final String APP_DATA = "/procurement";
     private final Context context = this;
     private ApiInterface apiInterface;
@@ -39,7 +40,7 @@ public class CustomFormHomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCustomFormHomeBinding.inflate(getLayoutInflater());
+        binding = ActivityCustomFormDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         if (getIntent().hasExtra("isPrimary")) {
@@ -104,15 +105,6 @@ public class CustomFormHomeActivity extends AppCompatActivity {
         binding.shimmerLayout.setVisibility(GONE);
         binding.recyclerView.setVisibility(GONE);
         binding.nullError.setVisibility(View.VISIBLE);
-        binding.message.setText("Something went wrong!");
-    }
-
-    private void createDirectory() {
-        File dir = getExternalFilesDir(APP_DATA);
-        if (!dir.exists()) {
-            if (!dir.mkdir()) {
-                Toast.makeText(getApplicationContext(), "The folder " + dir.getPath() + "was not created", Toast.LENGTH_SHORT).show();
-            }
-        }
+        binding.message.setText(R.string.something_went_wrong);
     }
 }

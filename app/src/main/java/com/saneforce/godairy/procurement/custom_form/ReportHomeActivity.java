@@ -1,5 +1,6 @@
 package com.saneforce.godairy.procurement.custom_form;
 
+
 import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_MODULE_LIST;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityCustomFormReportBinding;
 import com.saneforce.godairy.procurement.custom_form.adapter.ModuleReportsAdapter;
 import com.saneforce.godairy.procurement.custom_form.model.ModuleList;
@@ -32,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomFormReportHomeActivity extends AppCompatActivity {
+public class ReportHomeActivity extends AppCompatActivity {
     private ActivityCustomFormReportBinding binding;
     private final Context context = this;
     private List<ModuleList> moduleArrayList;
@@ -102,6 +104,6 @@ public class CustomFormReportHomeActivity extends AppCompatActivity {
         binding.shimmerLayout.setVisibility(GONE);
         binding.recyclerView.setVisibility(GONE);
         binding.nullError.setVisibility(View.VISIBLE);
-        binding.message.setText("Something went wrong!");
+        binding.message.setText(R.string.something_went_wrong);
     }
 }
