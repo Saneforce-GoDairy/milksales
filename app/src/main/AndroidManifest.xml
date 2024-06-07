@@ -71,8 +71,12 @@
             android:name=".procurement.custom_form.ReportHomeActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.ViewInvoiceActivity"
+            android:exported="false" />
+        <activity
             android:name=".SFA_Activity.vwInvoices"
-            android:exported="false" /> <!-- <activity -->
+            android:exported="false" />
+        <!-- <activity -->
         <!-- android:name=".Activity_Hap.DayReportActivity" -->
         <!-- android:exported="false" /> -->
         <activity
