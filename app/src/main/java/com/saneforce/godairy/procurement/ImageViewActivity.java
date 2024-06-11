@@ -1,6 +1,8 @@
 package com.saneforce.godairy.procurement;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
@@ -39,6 +41,14 @@ public class ImageViewActivity extends AppCompatActivity {
             image = getIntent().getStringExtra("url");
         }else {
             image = getIntent().getStringExtra("uri");
+        }
+
+        if (Integer.parseInt(accessId) == 2)
+        {
+            image = getIntent().getStringExtra("s3"); // for aws s3
+
+            Bitmap bitmap = BitmapFactory.decodeFile(image);
+            binding.imageView.setImageBitmap(bitmap);
         }
 
         String eventName = getIntent().getStringExtra("event_name");

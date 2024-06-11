@@ -3,8 +3,11 @@ package com.saneforce.godairy.procurement.custom_form;
 import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SAVE_CUSTOM_FORM;
+
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +65,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.saneforce.godairy.Activity.Util.ImageFilePath;
 import com.saneforce.godairy.Activity.Util.SelectionModel;
 import com.saneforce.godairy.Activity_Hap.AllowancCapture;
+import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -145,6 +149,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
     private AWSCredentialsProvider sMobileClient;
     static TransferUtility transferUtility;
     static Util util;
+    Common_Class common_class;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,50 +189,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
         mEkey = sf_code + "-" + TimeUtils.getTimeStamp(TimeUtils.getCurrentTime(TimeUtils.FORMAT), TimeUtils.FORMAT);
 
         onClick();
-        DownloadPhoto("MGR168_1717744128", "jpg", "/Procurement/tmpl");
-    }
-
-    private void DownloadPhoto(String FileName, String FileExt, String Mode){
-        try{
-
-            final File file = File.createTempFile(FileName,"."+FileExt);
-
-            TransferObserver downloadObserver =
-                    transferUtility.download("godairy",
-                            "/Procurement/tmpl/" ,
-                            file);
-
-            downloadObserver.setTransferListener(new TransferListener() {
-
-                @Override
-                public void onStateChanged(int id, TransferState state) {
-                    if (TransferState.COMPLETED == state) {
-                        Bitmap bmp= BitmapFactory.decodeFile(file.getAbsolutePath());
-                       // ImgViewer.setImageBitmap(bmp);
-                        Toast.makeText(getApplicationContext(), "Downloaded Completed!", Toast.LENGTH_SHORT).show();
-                    } else if (TransferState.FAILED == state) {
-                        Toast.makeText(getApplicationContext(), "Downloaded failed+!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                    float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
-                    int percentDone = (int) percentDonef;
-
-                    //tvFileName.setText("ID:" + id + "|bytesCurrent: " + bytesCurrent + "|bytesTotal: " + bytesTotal + "|" + percentDone + "%");
-                }
-
-                @Override
-                public void onError(int id, Exception ex) {
-                    ex.printStackTrace();
-                }
-
-            });
-        }
-        catch (Exception e){
-            // printUsrLog(TAG,e.getMessage());
-        }
     }
 
     private void onClick() {
@@ -1658,7 +1619,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
         }
         return ss;
     }
-
+// s1
     public void captureFile(Integer reqCode) {
         AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
             @Override
@@ -1675,10 +1636,10 @@ public class CustomFormMainActivity extends AppCompatActivity {
                     for (int i=0;i<store_list.size();i++){
                         String reqId=reqCode==0?"00":String.valueOf(reqCode);
                         if(store_list.get(i).getImgKey()!=null&&store_list.get(i).getImgKey().equals(reqId)){
-                            store_list.get(i).setData(Constant.SF_CODE+"_"+file.getName());
+                            store_list.get(i).setData(Constant.SF_CODE+file.getName());
                         }
                     }
-                    uploadImageFile(picturePathFinal1);
+                    uploadImageFile(picturePathFinal1); // "/storage/emulated/0/Pictures/Attendance/Images/MGR168_1718000389.jpg"
                 }
             }
         });
@@ -1725,7 +1686,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                 for (int i = 0; i < store_list.size(); i++) {
                                     String reqId = requestCode == 0 ? "00" : String.valueOf(requestCode);
                                     if (store_list.get(i).getImgKey() != null && store_list.get(i).getImgKey().equals(reqId)) {
-                                        store_list.get(i).setData(Constant.SF_CODE+"_"+file.getName());
+                                        store_list.get(i).setData(Constant.SF_CODE+file.getName());
                                     }
                                 }
                                 uploadImageFile(picturePathFinal1);
@@ -1810,77 +1771,57 @@ public class CustomFormMainActivity extends AppCompatActivity {
         return File.createTempFile("file_", extension, directory);
     }
 
+    // s2
     public void uploadImageFile(String filePath){
 
-        /*
-
-          File file = new File(filePath);
-
-        if (filePath.contains(".png") || filePath.contains(".jpg") || filePath.contains(".jpeg")) {
-            try {
-                file = new Compressor(getApplicationContext()).compressToFile(new File(filePath));
-            } catch (IOException e) {
-                e.printStackTrace();
+        try{
+            com.saneforce.godairy.Common_Class.Util util = new com.saneforce.godairy.Common_Class.Util();
+            TransferUtility transferUtility = util.getTransferUtility(context);
+            File file;
+            if (filePath.contains(".png") || filePath.contains(".jpg") || filePath.contains(".jpeg")) {
+                file = new Compressor(context).compressToFile(new File(filePath));
+            } else {
+                file = new File(filePath);
             }
-        }
-        else
-            file = new File(filePath);
-
-        try {
-
-            String folderNm=Constant.getInstance().getSetup(StringConstants.LOGO_NAME, "", dbController)+"_"+"CustomForm";
-            boolean folderExists = getS3Client(getApplicationContext()).doesObjectExist("happic", folderNm+"/");
-
-
-            if(folderExists) {
-                fileUpload(folderNm,file);
-            }else{
-                byte[] emptyContent = new byte[0];
-                ObjectMetadata metadata = new ObjectMetadata();
-                metadata.setContentLength(0);
-                getS3Client(getApplicationContext()).putObject("happic", folderNm+"/", new ByteArrayInputStream(emptyContent), metadata);
-                fileUpload(folderNm,file);
+            Shared_Common_Pref shared_common_pref = new Shared_Common_Pref((Activity) context);
+            String companyCode = shared_common_pref.getvalue("company_code");
+            if (companyCode.isEmpty()) {
+                Toast.makeText(context, "Company code invalid", Toast.LENGTH_SHORT).show();
+                return;
             }
+            TransferObserver uploadObserver = transferUtility.upload("godairy",companyCode + "/" + "Procurement" + "/" + file.getName() , file);
+            ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Uploading...");
+            progressDialog.show();
+            uploadObserver.setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if (TransferState.COMPLETED == state) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, "Image upload success.", Toast.LENGTH_SHORT).show();
+                    } else if (TransferState.FAILED == state) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, "Image upload failure.", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    float percentDoneFloat = ((float) bytesCurrent / (float) bytesTotal) * 100;
+                    int percentDone = (int) percentDoneFloat;
+                    progressDialog.setMessage("Uploading... (" + percentDone + "%)");
+                }
 
+                @Override
+                public void onError(int id, Exception ex) {
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Upload error :" + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         catch (Exception e){
-
-        }
-
-         */
-        File file = new File(filePath);
-
-        file = new File(filePath);
-
-        if (filePath.contains(".png") || filePath.contains(".jpg") || filePath.contains(".jpeg")) {
-            try {
-                file = new Compressor(getApplicationContext()).compressToFile(new File(filePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        String mFolderName = "CustomForm/Procurement/tmpl";
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-        // String folderNm = Constant.getInstance().getSetup("Logo_Name", "", dbController)+"_"+"CustomForm";
-        boolean folderExists = getS3Client(getApplicationContext()).doesObjectExist("Godairy", mFolderName+"/");
-        if(folderExists) {
-            fileUpload(mFolderName,file);
-        }else{
-            byte[] emptyContent = new byte[0];
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(0);
-
-            getS3Client(context).putObject("godairy",
-                    mFolderName+"/",
-                    new ByteArrayInputStream(emptyContent),
-                    metadata);
-
-            fileUpload(mFolderName,file);
+            Log.e("upload__", "onError: " + e.getMessage());
         }
     }
 
@@ -1923,50 +1864,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
             }
         }
         return sMobileClient;
-    }
-
-    public void fileUpload(String folderNm,File file){
-
-        if (!file.exists()) {
-            Toast.makeText(context, "Image file error!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String mFolderName = "CustomForm/Procurement/tmpl";
-
-        TransferObserver uploadObserver =
-                transferUtility.upload("godairy",
-                                           mFolderName + "/"+file.getName(),
-                                               file
-                );
-
-        Log.e("s3_", "Uploading");
-
-        uploadObserver.setTransferListener(new TransferListener() {
-
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                if (TransferState.COMPLETED == state) {
-                    Toast.makeText(getApplicationContext(), "File Upload Completed!", Toast.LENGTH_SHORT).show();
-
-                } else if (TransferState.FAILED == state) {
-                    Toast.makeText(getApplicationContext(), "File Upload Failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
-                int percentDone = (int) percentDonef;
-
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                ex.printStackTrace();
-            }
-
-        });
     }
 
     public void checkPermission(int position,int dynamicId){

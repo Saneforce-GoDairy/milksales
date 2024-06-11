@@ -2,8 +2,12 @@ package com.saneforce.godairy.procurement.custom_form;
 
 import static android.view.View.GONE;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -19,13 +23,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ActivityCustomFormReportPreviewBinding;
+import com.saneforce.godairy.procurement.ImageViewActivity;
 import com.saneforce.godairy.procurement.custom_form.model.dynamicDataModel;
 import com.saneforce.godairy.universal.Constant;
 
@@ -33,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -663,23 +676,31 @@ public class ReportPreviewActivity extends AppCompatActivity {
                                     layout.addView(textView1);
                                     dynamic_data_layout.addView(layout);
                                 } else if (Type_to_Add.equals("FSC") || Type_to_Add.equals("FC") || Type_to_Add.equals("FS")) {
-
                                     TextView textView = new TextView(getApplicationContext());
-                                    ImageView textView1 = new ImageView(getApplicationContext());
-                                    LinearLayout layout = new LinearLayout(getApplicationContext());
+                                    ImageView imageView = new ImageView(getApplicationContext());
+                                    CardView layout = new CardView(getApplicationContext());
+                                    // layout.setOrientation(LinearLayout.HORIZONTAL);
 
-                                    layout.setOrientation(LinearLayout.HORIZONTAL);
+                                    // for cardview
+                                    CardView.LayoutParams paramsCardView = new CardView.LayoutParams(
+                                            100,
+                                            100);
 
-                                    layout.setLayoutParams(params);
+                                    layout.setRadius(10);
+                                    paramsCardView.setMargins(35, 0, 0, 0);
+
+                                    layout.setLayoutParams(paramsCardView);
                                     LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
                                             LinearLayout.LayoutParams.WRAP_CONTENT);
 
+                                    // for image view
                                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
-                                  //  iv.setLayoutParams(layoutParams);
+                                    imageView.setLayoutParams(layoutParams);
+                                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                                     textView.setLayoutParams(param);
-                                    textView1.setLayoutParams(layoutParams);
+                                    imageView.setLayoutParams(layoutParams);
                                     textView.setTextColor(Color.BLACK);
                                     textView.setTextSize(15);
                                     textView.setGravity(Gravity.START);
@@ -687,29 +708,65 @@ public class ReportPreviewActivity extends AppCompatActivity {
                                     textView.setPadding((int) TypedValue.applyDimension(
                                             TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                     .getDisplayMetrics()), 0, 0, 0);
+                                    imageView.setImageResource(R.drawable.image_placeholder);
 
-                                 //   textView.setText(Heading_Label + ": ");
-//                                    textView1.setTextSize(15);
-//                                    textView1.setGravity(Gravity.START);
-//                                    textView1.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                                    textView1.setPadding((int) TypedValue.applyDimension(
-                                            TypedValue.COMPLEX_UNIT_DIP, 5, getResources()
-                                                    .getDisplayMetrics()), 0, 0, 0);
+                                    try{
+                                        String[] names = data_value.split("\\.");
+                                        String extension = names[names.length - 1];
+                                        final File file = File.createTempFile(data_value, extension);
+                                        com.saneforce.godairy.Common_Class.Util util = new com.saneforce.godairy.Common_Class.Util();
+                                        Shared_Common_Pref shared_common_pref = new Shared_Common_Pref((Activity) context);
+                                        String companyCode = shared_common_pref.getvalue("company_code");
 
-                                    if (!data_value.equals("")) {
-                                       // textView1.setText(data_value);
-                                        Glide.with(context)
-                                                .load(baseUrl + "server/")
-                                                .into(textView1);
+                                        if (companyCode.isEmpty()) {
+                                            Toast.makeText(context, "Company code invalid", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
 
-                                    } else {
-                                     //   textView1.setText("-");
+                                        TransferUtility transferUtility = util.getTransferUtility(context);
+                                        TransferObserver downloadObserver = transferUtility.download("godairy",companyCode + "/" + "Procurement" + "/" + data_value, file);
+                                        downloadObserver.setTransferListener(new TransferListener() {
+                                            @Override
+                                            public void onStateChanged(int id, TransferState state) {
+                                                if (TransferState.COMPLETED == state) {
+                                                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+                                                    Glide.with(context)
+                                                            .load(bmp)
+                                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                            .placeholder(R.drawable.error_image1)
+                                                            .into(imageView);
+
+                                                    imageView.setOnClickListener(v -> {
+                                                        String imageUrl = file.getAbsolutePath();
+                                                        Intent intent = new Intent(context, ImageViewActivity.class);
+                                                        intent.putExtra("access_id", "2"); // 1 for url ( without access for URI storage image ) 2 for amazon s3
+                                                        intent.putExtra("event_name", "Custom Form"); // This is url ( not URI )
+                                                        intent.putExtra("s3", imageUrl); // url not URI
+                                                        context.startActivity(intent);
+                                                    });
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                                                float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
+                                                int percentDone = (int) percentDonef;
+                                            }
+
+                                            @Override
+                                            public void onError(int id, Exception ex) {
+                                                Log.e("download__", ex.getMessage());
+                                                imageView.setImageResource(R.drawable.error_image1);
+                                            }
+                                        });
+                                    }
+                                    catch (Exception e){
+                                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        imageView.setImageResource(R.drawable.error_image1);
                                     }
 
-
-
                                     layout.addView(textView);
-                                    layout.addView(textView1);
+                                    layout.addView(imageView);
                                     dynamic_data_layout.addView(layout);
                                 }
                             }
