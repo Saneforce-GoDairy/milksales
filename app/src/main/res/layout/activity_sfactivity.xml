@@ -933,13 +933,13 @@
                                     android:gravity="center"
                                     android:text="Graph Mode"
                                     android:textColor="@color/black"
-                                    android:textSize="@dimen/C14dp"></TextView>
+                                    android:textSize="@dimen/C14dp" />
 
                                 <Switch
                                     android:id="@+id/switchCumulativeMode"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"></Switch>
+                                    android:layout_alignParentRight="true" />
 
 
                             </RelativeLayout>

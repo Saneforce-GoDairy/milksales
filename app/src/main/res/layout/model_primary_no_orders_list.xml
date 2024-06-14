@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C5dp"
+        app:cardCornerRadius="@dimen/C10dp">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/C15dp">
+
+                <LinearLayout
+
+                    android:id="@+id/row_report"
+                    android:layout_width="0dp"
+
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/customer_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/C2dp"
+                        android:layout_marginEnd="@dimen/C3dp"
+                        android:gravity="start"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:hint="Customer Name"
+                        android:text="Prasanth"
+                        android:fontFamily="@font/ubuntu"/>
+                    <TextView
+                        android:id="@+id/mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/C2dp"
+                        android:layout_marginEnd="@dimen/C3dp"
+                        android:gravity="start"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:hint="+91 8940570614"
+                        android:fontFamily="@font/ubuntu_light"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+
+                        <View
+                            android:id="@+id/lowOrder"
+                            android:layout_width="@dimen/C10dp"
+                            android:layout_height="@dimen/C10dp"
+                            android:layout_marginStart="5dp"
+                            android:background="@color/Exit" />
+
+
+                        <TextView
+                            android:id="@+id/txt_order"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="No invoice"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/ubuntu_light"/>
+
+                        <TextView
+                            android:id="@+id/Itemcountinvoice"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/sno1"
+                            android:layout_weight="0.8"
+                            android:gravity="center"
+                            android:text="No order"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C13dp"
+                            android:fontFamily="@font/ubuntu_light"/>
+
+
+                        <TextView
+                            android:id="@+id/txt_total"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/sno1"
+                            android:layout_weight="0.8"
+                            android:gravity="center"
+                            android:text="Nill"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/C13dp"
+                            android:fontFamily="@font/ubuntu_light"/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/btnEditRet"
+                        android:layout_width="35dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/C3dp"
+                        android:src="@drawable/edit_small" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
