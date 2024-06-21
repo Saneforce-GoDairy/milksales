@@ -33,6 +33,7 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
     }
 
     private void onClick() {
+        binding.back.setOnClickListener(view -> finish());
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
                 saveNow();
@@ -65,9 +66,6 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
-
-
-
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
         serviceIntent.putExtra("pouring_act", mPouringActivity);
         serviceIntent.putExtra("opening_time", mOpeningTime);
@@ -125,6 +123,7 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
         mAssetVerification = binding.edAssetVerification.getText().toString();
         mRenameVillage = binding.edRenameVillage.getText().toString();
 
+/*
         if ("Select".equals(mPouringActivity)){
             ((TextView)binding.spinnerPouringActivity.getSelectedView()).setError("Select Pouring Activity");
             binding.spinnerPouringActivity.getSelectedView().requestFocus();
@@ -216,17 +215,18 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
             binding.edRenameVillage.requestFocus();
             return false;
         }
+ */
         return true;
     }
 
     private void initLoad() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.farmer_creation_types_array, android.R.layout.simple_spinner_item);
+                R.array.proc_pouring_activity, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerPouringActivity.setAdapter(adapter);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
-                R.array.farmer_creation_types_array, android.R.layout.simple_spinner_item);
+                R.array.proc_machine_condi, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerMachineCondition.setAdapter(adapter1);
     }

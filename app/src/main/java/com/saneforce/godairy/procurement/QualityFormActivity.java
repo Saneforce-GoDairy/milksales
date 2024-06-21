@@ -1,7 +1,6 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_PLANT;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -24,7 +23,6 @@ import com.saneforce.godairy.Model_Class.ProcSubDivison;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityQualityFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +45,6 @@ public class QualityFormActivity extends AppCompatActivity {
     private final List<String> list = new ArrayList<>();
     private static final String TAG = "Procurement_";
     private DatabaseManager databaseManager;
-    private ArrayList<ProcSubDivison> subDivisonArrayList;
     private final List<String> listSub = new ArrayList<>();
 
     @Override
@@ -65,9 +62,9 @@ public class QualityFormActivity extends AppCompatActivity {
     }
 
     private void loadSubDivision() {
-        subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
+        ArrayList<ProcSubDivison> subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
         listSub.add("Select");
-        for (int i = 0; i<subDivisonArrayList.size(); i++){
+        for (int i = 0; i< subDivisonArrayList.size(); i++){
             Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
             listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
         }
@@ -796,7 +793,7 @@ public class QualityFormActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-        if ("".equals(mSamplesCalibrationNoOfWeight)){
+        if (mSamplesCalibrationNoOfWeight.isEmpty()){
             binding.edNoOfWeight.setError("Enter No Of Weight");
             binding.edNoOfWeight.requestFocus();
             binding.txtErrorFound.setVisibility(View.VISIBLE);

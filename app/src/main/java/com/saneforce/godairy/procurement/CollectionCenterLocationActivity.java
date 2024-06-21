@@ -387,12 +387,14 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
+        /*
         if ("".equals(mCenterAddress)){
             binding.edSapAddress.setError("Enter Center Address");
             binding.edSapAddress.requestFocus();
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
+         */
         if ("".equals(mPotentialLpd)){
             binding.edPotentialLpd.setError("Enter Potential LPD");
             binding.edPotentialLpd.requestFocus();

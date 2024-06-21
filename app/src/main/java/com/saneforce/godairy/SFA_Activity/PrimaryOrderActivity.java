@@ -2155,16 +2155,14 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     public class Prodct_Adapter extends RecyclerView.Adapter<Prodct_Adapter.MyViewHolder> {
         Context context;
         int CategoryType;
-        private List<Product_Details_Modal> Product_Details_Modalitem;
-        private int rowLayout;
-
+        private final List<Product_Details_Modal> Product_Details_Modalitem;
+        private final int rowLayout;
 
         public Prodct_Adapter(List<Product_Details_Modal> Product_Details_Modalitem, int rowLayout, Context context, int categoryType) {
             this.Product_Details_Modalitem = Product_Details_Modalitem;
             this.rowLayout = rowLayout;
             this.context = context;
             this.CategoryType = categoryType;
-
         }
 
         @Override
@@ -2186,7 +2184,6 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         @Override
         public void onBindViewHolder(MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
             try {
-
 
                 Product_Details_Modal ProductItem = Product_Details_Modalitem.get(holder.getBindingAdapterPosition());
                 holder.productname.setText("" + ProductItem.getName().toUpperCase());
@@ -2258,32 +2255,21 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 holder.Disc.setText(CurrencySymbol+" " + formatter.format(ProductItem.getDiscount()));
 
 
-                holder.QtyPls.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-//                        String sVal = holder.Qty.getText().toString();
-//                        if (sVal.equalsIgnoreCase("")) sVal = "0";
-//                        int iQty = Integer.parseInt(sVal) + 1;
-//                        sVal = "";
-//                        if (iQty > 0) sVal = String.valueOf(iQty);
-//                        holder.Qty.setText(sVal);
+                holder.QtyPls.setOnClickListener(v -> {
+                    try {
+                        String mQuantity = holder.Qty.getText().toString();
+                        if (mQuantity.equalsIgnoreCase("")) mQuantity = "0";
+                        holder.Qty.setText("" + (Integer.parseInt(mQuantity) + ProductItem.getMultiple_Qty()));
 
-                            String sVal = holder.Qty.getText().toString();
-                            if (sVal.equalsIgnoreCase("")) sVal = "0";
-                            holder.Qty.setText("" + (Integer.parseInt(sVal) + ProductItem.getMultiple_Qty()));
+                        double val = Double.valueOf(mQuantity) / Double.valueOf(ProductItem.getMultiple_Qty());
+                        int cVal = (int) (val);
 
-                            double val = Double.valueOf(sVal) / Double.valueOf(ProductItem.getMultiple_Qty());
-                            int cVal = (int) (val);
+                        if (val - cVal > 0) {
+                            holder.Qty.setText("" + (Math.round(val + 1) * ProductItem.getMultiple_Qty()));
 
-                            if (val - cVal > 0) {
-                                holder.Qty.setText("" + (Math.round(val + 1) * ProductItem.getMultiple_Qty()));
-
-                            }
-                        } catch (Exception e) {
-                            Log.v(TAG + "plus:", e.getMessage());
                         }
-
+                    } catch (Exception e) {
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 holder.QtyMns.setOnClickListener(new View.OnClickListener() {

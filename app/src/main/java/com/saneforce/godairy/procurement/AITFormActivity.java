@@ -25,7 +25,6 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityAitformBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -170,8 +169,6 @@ public class AITFormActivity extends AppCompatActivity {
                Competitors = 16
          */
 
-
-
         binding.cameraBreed.setOnClickListener(view -> {
             binding.txtSpinnerBreedNameNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -287,9 +284,7 @@ public class AITFormActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
-        binding.back.setOnClickListener(view -> {
-            finish();
-        });
+        binding.back.setOnClickListener(view -> finish());
     }
 
     private void initSpinnerArray() {
@@ -387,6 +382,7 @@ public class AITFormActivity extends AppCompatActivity {
         mMineralMixtureSale = binding.edMineralMixtureSale.getText().toString().trim();
         mSeedSale = binding.edSeedSale.getText().toString().trim();
 
+        /*
         if ("Select".equals(mCompanyName)){
             ((TextView)binding.spinnerCompany.getSelectedView()).setError("Select company");
             binding.spinnerCompany.getSelectedView().requestFocus();
@@ -455,12 +451,13 @@ public class AITFormActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-        if ("".equals(mSeedSale)){
+        if (mSeedSale.isEmpty()){
             binding.edSeedSale.setError("Empty field");
             binding.edSeedSale.requestFocus();
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
+         */
         return true;
     }
 

@@ -495,6 +495,14 @@
         <item>Not good</item>
     </string-array>
 
+    <string-array name="proc_pouring_activity">
+        <item>Select</item>
+        <item>Regular farmer </item>
+        <item>Training farmer</item>
+        <item>Loans</item>
+        <item>Distributive products</item>
+        <item>Bank not working</item>
+    </string-array>
 
     <string name="toggle_flash">Toggle Flash</string>
     <string name="action_settings">Settings</string>

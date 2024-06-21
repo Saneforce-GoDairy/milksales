@@ -186,11 +186,13 @@ public class ProcurementAssetActivity extends AppCompatActivity {
             Toast.makeText(context, "Please select asset", Toast.LENGTH_SHORT).show();
             return false;
         }
+        /*
         if ("".equals(mComments)){
             binding.edComments.setError("Enter comments");
             binding.edComments.requestFocus();
             return false;
         }
+         */
         return true;
     }
 }

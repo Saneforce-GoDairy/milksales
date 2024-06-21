@@ -216,9 +216,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
             intent.putExtra("event_name", "Fodder Development Acres");
             startActivity(intent);
         });
-        binding.back.setOnClickListener(view -> {
-            finish();
-        });
+        binding.back.setOnClickListener(view -> finish());
         binding.edCenterName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -376,6 +374,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
         String mNoOfFarmersEnrolled = binding.edNoOfFarmersEnrolled.getText().toString().trim();
         String mNoOfFarmersInducted = binding.edNoOfFarmersInducted.getText().toString().trim();
 
+        /*
         if ("Select".equals(mCompanyName)){
             ((TextView)binding.spinnerCompany.getSelectedView()).setError("Select company");
             binding.spinnerCompany.getSelectedView().requestFocus();
@@ -455,6 +454,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
+         */
         return true;
     }
 

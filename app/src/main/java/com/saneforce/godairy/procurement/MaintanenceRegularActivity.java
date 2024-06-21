@@ -367,9 +367,7 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
             mFactoryLicenceIns = "Non Renewed";
         });
 
-        binding.back.setOnClickListener(view -> {
-            finish();
-        });
+        binding.back.setOnClickListener(view -> finish());
     }
 
     private void saveNow() {
@@ -415,6 +413,7 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
         mFuelConsStockPerBook = binding.edPerBook.getText().toString();
         mFuelConsStockPerPhysical = binding.edPhysical.getText().toString();
 
+/*
         if ("Select".equals(mCompanyName)){
             ((TextView)binding.spinnerCompany.getSelectedView()).setError("Select company");
             binding.spinnerCompany.getSelectedView().requestFocus();
@@ -519,6 +518,7 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
             Toast.makeText(context, "Please select Factory Licence Inspection", Toast.LENGTH_SHORT).show();
             return false;
         }
+ */
         return true;
     }
 

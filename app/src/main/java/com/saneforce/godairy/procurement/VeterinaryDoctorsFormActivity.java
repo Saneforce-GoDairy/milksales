@@ -1,7 +1,6 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_PLANT;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -25,7 +24,6 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityVeterinaryDoctorsFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +46,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
     private final List<String> list = new ArrayList<>();
     private static final String TAG = "Procurement";
     private DatabaseManager databaseManager;
-    private ArrayList<ProcSubDivison> subDivisonArrayList;
     private final List<String> listSub = new ArrayList<>();
 
     @Override
@@ -66,9 +63,9 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
     }
 
     private void loadSubDivision() {
-        subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
+        ArrayList<ProcSubDivison> subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
         listSub.add("Select");
-        for (int i = 0; i<subDivisonArrayList.size(); i++){
+        for (int i = 0; i< subDivisonArrayList.size(); i++){
             Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
             listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
         }
@@ -490,7 +487,7 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         mNoOfFarmersEnrolled = binding.edNoOfFarmerEnrolled.getText().toString().trim();
         mNoOfFarmersInducted = binding.edNoOfFarmerInducted.getText().toString().trim();
 
-
+        /*
         if ("Select".equals(mCompanyName)){
             ((TextView)binding.spinnerCompany.getSelectedView()).setError("Select company");
             binding.spinnerCompany.getSelectedView().requestFocus();
@@ -597,12 +594,13 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-        if ("".equals(mNoOfFarmersInducted)){
+        if (mNoOfFarmersInducted.isEmpty()){
             binding.edNoOfFarmerInducted.setError("Enter no of farmers inducted");
             binding.edNoOfFarmerInducted.requestFocus();
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
+         */
         return true;
     }
 
