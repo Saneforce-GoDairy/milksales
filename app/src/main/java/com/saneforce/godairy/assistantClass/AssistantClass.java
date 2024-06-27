@@ -11,8 +11,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -47,7 +45,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.saneforce.godairy.Activity_Hap.Login;
-import com.saneforce.godairy.Activity_Hap.SFA_Activity;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.APIResult;
@@ -68,14 +65,12 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.Executors;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -188,18 +183,31 @@ public class AssistantClass extends AppCompatActivity {
         adminInfo.edit().clear().apply();
     }
 
-    public void forceLogout() {
+    public void clearAllData() {
+        // SQLite
         DatabaseHandler db = new DatabaseHandler(context);
-        SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        SharedPreferences CheckInDetails = ((Activity) context).getSharedPreferences("CheckInDetail", Context.MODE_PRIVATE);
-        Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref((Activity) context);
-        String eMail = UserDetails.getString("email", "");
         db.deleteAllMasterData();
-        sharedCommonPref.clearAll();
+
+        // MyPrefs
+        SharedPreferences UserDetails = ((Activity) context).getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String eMail = UserDetails.getString("email", "");
         UserDetails.edit().clear().apply();
-        CheckInDetails.edit().clear().apply();
-        adminInfo.edit().clear().apply();
         UserDetails.edit().putString("email", eMail).apply();
+
+        // CheckInDetail
+        SharedPreferences CheckInDetails = ((Activity) context).getSharedPreferences("CheckInDetail", Context.MODE_PRIVATE);
+        CheckInDetails.edit().clear().apply();
+
+        // Shared_Common_Pref
+        Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref((Activity) context);
+        sharedCommonPref.clearAll();
+
+        // LoginInfo
+        clearLocalData();
+    }
+
+    public void forceLogout() {
+        clearAllData();
         Intent Dashboard = new Intent(context, Login.class);
         ((Activity) context).startActivity(Dashboard);
         ((Activity) context).finishAffinity();

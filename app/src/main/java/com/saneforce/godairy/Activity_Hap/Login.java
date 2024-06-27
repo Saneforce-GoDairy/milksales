@@ -62,6 +62,7 @@ import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.Datum;
 import com.saneforce.godairy.Model_Class.Model;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.FileUploadService;
 import com.saneforce.godairy.common.LocationReceiver;
@@ -139,8 +140,7 @@ public class Login extends AppCompatActivity {
         if (com.saneforce.godairy.Common_Class.Common_Class.GetDatewothouttime().equalsIgnoreCase(shared_common_pref.getvalue(Constants.LOGIN_DATE))) {
             Shared_Common_Pref.LOGINTYPE = shared_common_pref.getvalue(Constants.LOGIN_TYPE);
         } else {
-            shared_common_pref.clear_pref(Constants.LOGIN_DATA);
-            shared_common_pref.clear_pref(Constants.VAN_STOCK_LOADING);
+            new AssistantClass(context).clearAllData();
         }
 
         JSONArray pendingPhotos = db.getAllPendingPhotos();
