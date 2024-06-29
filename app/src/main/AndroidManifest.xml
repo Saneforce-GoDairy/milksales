@@ -240,6 +240,14 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".SFA_Activity.CustomerOnBoarding"
+            android:exported="false"
+            android:screenOrientation="nosensor">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SFA_Activity.AddNewDistributor"
             android:exported="false"
             android:screenOrientation="nosensor">

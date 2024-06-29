@@ -64,6 +64,7 @@ import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.Interface.onListItemClick;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.SFA_Activity.CustomerOnBoarding;
 import com.saneforce.godairy.SFA_Activity.Dashboard_Order_Reports;
 import com.saneforce.godairy.SFA_Activity.Dashboard_Route;
 import com.saneforce.godairy.SFA_Activity.FeedbackActivitySFA;
@@ -271,6 +272,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
                     menuList.add(new ListModel("", "Distributor", "", "", "", R.drawable.ic_distributor_sf));
+                    menuList.add(new ListModel("", "Customer On Boarding", "", "", "", R.drawable.ic_distributor_sf));
                     menuList.add(new ListModel("", "My Team", "", "", "", R.drawable.ic_my_team_sf));
                     //menuList.add(new ListModel("", "Projection", "", "", "", R.drawable.ic_projection_sf));
                     // menuList.add(new ListModel("", "Stock Audit", "", "", "", R.drawable.ic_stock_audit));
@@ -496,6 +498,10 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     case "Distributor":
                         common_class.CommonIntentwithNEwTask(Reports_Distributor_Name.class);
+                        break;
+
+                    case "Customer On Boarding":
+                        common_class.CommonIntentwithNEwTask(CustomerOnBoarding.class);
                         break;
 
                     case "Approve Outlets":
