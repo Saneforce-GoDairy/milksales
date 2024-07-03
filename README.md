@@ -1,5 +1,13 @@
 Important configuration
 
+
+| SNO | Table Name     | Description                                                                      | Axn               |
+|:---:|----------------|----------------------------------------------------------------------------------|-------------------|
+|  1  | Mas_Salesforce | SF_Code, login username and password, employee id, field type etc                | get/GoogleLogin   |
+|  2  |  DistanceTbl  | Track KMS                                                                        |                   |
+|  3  |    | To view nearby reporting field users, and show nearby franches, and near outlets | get/myteamlocation |
+
+
  1, New figma design
     https://www.figma.com/file/F9hX9dQBHLCk0ZJEwTLddm/Sales-Jump-Mobile-App?type=design&node-id=0-1&mode=design&t=hlTjlmkzTJoFqxX7-0
  

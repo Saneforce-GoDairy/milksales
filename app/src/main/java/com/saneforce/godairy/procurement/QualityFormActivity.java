@@ -122,43 +122,7 @@ public class QualityFormActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-                           /*
-           Camera access id
 
-           1, AgronomistFormActivity
-              Farmers meeting = 1
-              CSR Activity    = 2
-              Fodder Development Ac = 3
-
-           2, AITFormActivity
-              breed = 4
-
-           3, CollectionCenterLocationActivity
-              Collection center image = 5
-
-           4, VeterinaryDoctorsFormActivity
-              Type of image image = 6
-              Emergency treatment/EVM Treatment (Breed) = 7
-
-            5, QualityFormActivity
-               Quality fat = 8
-               Quality snf = 9
-               No of vehicle received with hoods = 10
-               No of vehicle received without hoods = 11
-               Awareness program = 12
-
-            6, FarmerCreationActivity
-               Farmer image = 13
-
-            7, MaintenanceIssueActivity
-               Type of repair image = 14
-
-            8, MaintenanceRegularActivity
-               DG Set Running Hrs, After Last Services = 15
-
-            9, New farmer creation ska
-               Competitors = 16
-         */
         // FAT
         binding.cameraFat.setOnClickListener(view -> {
             binding.txtImgFatNotValid.setVisibility(View.GONE);

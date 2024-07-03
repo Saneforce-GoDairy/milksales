@@ -426,6 +426,13 @@
                 android:fontFamily="@font/ubuntu"
                 android:text="@string/cooperative" />
 
+            <CheckBox
+                android:id="@+id/ms_vijaya"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu"
+                android:text="@string/vijaya" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -448,14 +455,148 @@
                 android:fontFamily="@font/ubuntu"
                 android:text="@string/ska" />
 
+            <CheckBox
+                android:id="@+id/ms_sangam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Sangam" />
+
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/ms_vijaya"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu"
-            android:text="@string/vijaya" />
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ms_sonai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu"
+                android:text="Sonai" />
+
+            <CheckBox
+                android:id="@+id/ms_natural_delight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu"
+                android:text="Natural Delight" />
+
+            <CheckBox
+                android:id="@+id/ms_paras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Paras" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ms_amul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Amul" />
+
+            <CheckBox
+                android:id="@+id/ms_sanchi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Sanchi" />
+
+            <CheckBox
+                android:id="@+id/ms_parag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Parag" />
+
+            <CheckBox
+                android:id="@+id/ms_patanjali"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Patanjali" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ms_sr_throat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="SR Throat" />
+
+            <CheckBox
+                android:id="@+id/ms_humble_cow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Humble Cow" />
+
+            <CheckBox
+                android:id="@+id/ms_boley_baba"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Boley Baba" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <CheckBox
+                android:id="@+id/ms_shirdi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Shirdi" />
+
+            <CheckBox
+                android:id="@+id/ms_mahindra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Mahindra" />
+
+            <CheckBox
+                android:id="@+id/ms_others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/ubuntu"
+                android:text="Others" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

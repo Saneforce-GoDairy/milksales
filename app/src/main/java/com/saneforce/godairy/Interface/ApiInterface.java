@@ -837,7 +837,7 @@ public interface ApiInterface {
                                                     @Query("center") String center,
                                                     @Query("farmer_gategory") String plant,
                                                     @Query("farmer_name") String farmer_name,
-                                                    @Query("farmer_address") String farmer_address,
+                                                    @Query("farmer_addr") String farmer_addr,
                                                     @Query("phone_number") String phone_number,
                                                     @Query("pin_code") String pin_code,
                                                     @Query("cow_total") String cow_total,
@@ -957,9 +957,10 @@ public interface ApiInterface {
                                              @Query("plant") String plant,
                                              @Query("equipment") String equipment,
                                              @Query("repair_type") String repair_type,
-                                             @Part MultipartBody.Part image1,
                                              @Query("active_flag") String active_flag,
-                                             @Query("created_dt") String created_dt);
+                                             @Query("created_dt") String created_dt,
+                                             @Part MultipartBody.Part image1,
+                                             @Query("others") String others);
 
     @POST("Db_v310.php")
     Call<ResponseBody> submitProcAsset(@Query("axn") String axn,
@@ -984,7 +985,10 @@ public interface ApiInterface {
     Call<ResponseBody> getQualityReport(@Query("axn") String axn);
 
     @POST("Db_v310.php")
-    Call<ResponseBody> getMaintenanceReport(@Query("axn") String axn);
+    Call<ResponseBody> getMaintenanceIssueReport(@Query("axn") String axn);
+
+    @POST("Db_v310.php")
+    Call<ResponseBody> getMaintenanceRegularReport(@Query("axn") String axn);
 
     @POST("Db_v310.php")
     Call<ResponseBody> getExistingAgentReport(@Query("axn") String axn);
@@ -1002,7 +1006,7 @@ public interface ApiInterface {
     Call<ResponseBody> getSubDivision(@Query("axn") String axn);
 
     @Multipart
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcMaintenRegular(@Query("axn") String axn,
                                                 @Query("company") String company,
                                                 @Query("plant") String plant,
@@ -1023,10 +1027,12 @@ public interface ApiInterface {
                                                 @Query("hot_water") String hot_water,
                                                 @Query("factory_license_ins") String factory_license_ins,
                                                 @Query("active_flag") String active_flag,
-                                                @Query("created_dt") String created_dt
+                                                @Query("created_dt") String created_dt,
+                                                @Part MultipartBody.Part image1,
+                                                @Part MultipartBody.Part image2
     );
 
-    @POST("test_prasanth.php")
+    @POST("Db_v310.php")
     Call<ResponseBody> submitProcExistingCenterVist(@Query("axn") String axn,
                                                 @Query("pouring_act") String pouring_act,
                                                 @Query("opening_time") String opening_time,

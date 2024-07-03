@@ -142,6 +142,33 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/maintenance_issue"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/C50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Maintenance Issue"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrow_right"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/selection"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/maintenance"
             android:layout_width="match_parent"
             android:layout_height="@dimen/C50dp"

@@ -8,9 +8,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -27,7 +29,13 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +47,7 @@ public class FarmerCreationActivity extends AppCompatActivity {
     private String mCenter, mFarmerGategory, mFarmerName, mAddress, mPhoneNumber, mPinCode, mNoOfAnimalsCow, mNoOfAnimalsBuffalo, mMilkAvailabilityCowLtrs;
     private String mMilkAvailabilityBuffaloLtrs, mMilkSupplyCompany = "", mInterestedForSupply = "";
     private Bitmap bitmapFarmerImage;
+    private ArrayList<String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,46 +57,11 @@ public class FarmerCreationActivity extends AppCompatActivity {
 
         initSpinnerArray();
         onClick();
+
+        list = new ArrayList<>();
     }
 
     private void onClick() {
-                             /*
-           Camera access id
-
-           1, AgronomistFormActivity
-              Farmers meeting = 1
-              CSR Activity    = 2
-              Fodder Development Ac = 3
-
-           2, AITFormActivity
-              breed = 4
-
-           3, CollectionCenterLocationActivity
-              Collection center image = 5
-
-           4, VeterinaryDoctorsFormActivity
-              Type of image image = 6
-              Emergency treatment/EVM Treatment (Breed) = 7
-
-            5, QualityFormActivity
-               Quality fat = 8
-               Quality snf = 9
-               No of vehicle received with hoods = 10
-               No of vehicle received without hoods = 11
-               Awareness program = 12
-
-            6, FarmerCreationActivity
-               Farmer image = 13
-
-            7, MaintenanceIssueActivity
-               Type of repair image = 14
-
-            8, MaintenanceRegularActivity
-               DG Set Running Hrs, After Last Services = 15
-
-            9, New farmer creation ska
-               Competitors = 16
-         */
 
         binding.cameraFarmerImage.setOnClickListener(view -> {
             binding.txtFarmerImageNotValid.setVisibility(View.GONE);
@@ -107,117 +81,91 @@ public class FarmerCreationActivity extends AppCompatActivity {
         });
 
         binding.msHatsun.setOnClickListener(v -> {
-            Toast.makeText(context, "Hatsun", Toast.LENGTH_SHORT).show();
-            mMilkSupplyCompany = "Hatsun";
-
-            binding.msDolda.setChecked(false);
-            binding.msJersey.setChecked(false);
-            binding.msHeritage.setChecked(false);
-            binding.msCooperative.setChecked(false);
-            binding.msMmda.setChecked(false);
-            binding.msSka.setChecked(false);
-            binding.msVijaya.setChecked(false);
+            CheckBox checkBox = (CheckBox) v;
+            if (checkBox.isChecked()) {
+                list.add("Hatsun");
+            }else {
+                binding.msHatsun.setChecked(false);
+                list.remove("Hatsun");
+            }
         });
 
         binding.msDolda.setOnClickListener(v -> {
-            Toast.makeText(context, "Dolda", Toast.LENGTH_SHORT).show();
-            mMilkSupplyCompany = "Dolda";
-
-            binding.msHatsun.setChecked(false);
-            binding.msJersey.setChecked(false);
-            binding.msHeritage.setChecked(false);
-            binding.msCooperative.setChecked(false);
-            binding.msMmda.setChecked(false);
-            binding.msSka.setChecked(false);
-            binding.msVijaya.setChecked(false);
+            CheckBox checkBox = (CheckBox) v;
+            if (checkBox.isChecked()) {
+                list.add("Dolda");
+            }else {
+                binding.msDolda.setChecked(false);
+                list.remove("Dolda");
+            }
         });
 
         binding.msJersey.setOnClickListener(v -> {
-            Toast.makeText(context, "Jersey", Toast.LENGTH_SHORT).show();
-            mMilkSupplyCompany = "Jersey";
-
-            binding.msHatsun.setChecked(false);
-            binding.msDolda.setChecked(false);
-            binding.msHeritage.setChecked(false);
-            binding.msCooperative.setChecked(false);
-            binding.msMmda.setChecked(false);
-            binding.msSka.setChecked(false);
-            binding.msVijaya.setChecked(false);
+            CheckBox checkBox = (CheckBox) v;
+            if (checkBox.isChecked()) {
+                list.add("Jersey");
+            }else {
+                binding.msJersey.setChecked(false);
+                list.remove("Jersey");
+            }
         });
 
         binding.msHeritage.setOnClickListener(v -> {
-            Toast.makeText(context, "Heritage", Toast.LENGTH_SHORT).show();
-            mMilkSupplyCompany = "Heritage";
-
-            binding.msHatsun.setChecked(false);
-            binding.msDolda.setChecked(false);
-            binding.msJersey.setChecked(false);
-            binding.msCooperative.setChecked(false);
-            binding.msMmda.setChecked(false);
-            binding.msSka.setChecked(false);
-            binding.msVijaya.setChecked(false);
+            CheckBox checkBox = (CheckBox) v;
+            if (checkBox.isChecked()) {
+                list.add("Heritage");
+            }else {
+                binding.msHeritage.setChecked(false);
+                list.remove("Heritage");
+            }
         });
 
         binding.msCooperative.setOnClickListener(v -> {
-            Toast.makeText(context, "Cooperative", Toast.LENGTH_SHORT).show();
-            mMilkSupplyCompany = "Cooperative";
-
-            binding.msHatsun.setChecked(false);
-            binding.msDolda.setChecked(false);
-            binding.msJersey.setChecked(false);
-            binding.msHeritage.setChecked(false);
-            binding.msMmda.setChecked(false);
-            binding.msSka.setChecked(false);
-            binding.msVijaya.setChecked(false);
+            CheckBox checkBox = (CheckBox) v;
+            if (checkBox.isChecked()) {
+                list.add("Cooperative");
+            }else {
+                binding.msCooperative.setChecked(false);
+                list.remove("Cooperative");
+            }
         });
 
         binding.msMmda.setOnClickListener(v -> {
-            Toast.makeText(context, "MMDA", Toast.LENGTH_SHORT).show();
-            mMilkSupplyCompany = "MMDA";
-
-            binding.msHatsun.setChecked(false);
-            binding.msDolda.setChecked(false);
-            binding.msJersey.setChecked(false);
-            binding.msHeritage.setChecked(false);
-            binding.msCooperative.setChecked(false);
-            binding.msSka.setChecked(false);
-            binding.msVijaya.setChecked(false);
+            CheckBox checkBox = (CheckBox) v;
+            if (checkBox.isChecked()) {
+                list.add("MMDA");
+            }else {
+                binding.msMmda.setChecked(false);
+                list.remove("MMDA");
+            }
         });
 
         binding.msSka.setOnClickListener(v -> {
-            Toast.makeText(context, "SKA", Toast.LENGTH_SHORT).show();
-            mMilkSupplyCompany = "SKA";
-
-            binding.msHatsun.setChecked(false);
-            binding.msDolda.setChecked(false);
-            binding.msJersey.setChecked(false);
-            binding.msHeritage.setChecked(false);
-            binding.msCooperative.setChecked(false);
-            binding.msMmda.setChecked(false);
-            binding.msVijaya.setChecked(false);
+            CheckBox checkBox = (CheckBox) v;
+            if (checkBox.isChecked()) {
+                list.add("SKA");
+            }else {
+                binding.msSka.setChecked(false);
+                list.remove("SKA");
+            }
         });
 
         binding.msVijaya.setOnClickListener(v -> {
-            Toast.makeText(context, "Vijaya", Toast.LENGTH_SHORT).show();
-            mMilkSupplyCompany = "Vijaya";
-
-            binding.msHatsun.setChecked(false);
-            binding.msDolda.setChecked(false);
-            binding.msJersey.setChecked(false);
-            binding.msHeritage.setChecked(false);
-            binding.msCooperative.setChecked(false);
-            binding.msMmda.setChecked(false);
-            binding.msSka.setChecked(false);
+            CheckBox checkBox = (CheckBox) v;
+            if (checkBox.isChecked()) {
+                list.add("Vijaya");
+            }else {
+                binding.msVijaya.setChecked(false);
+                list.remove("Vijaya");
+            }
         });
 
         binding.interestedYes.setOnClickListener(v -> {
-            Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show();
             binding.interestedNo.setChecked(false);
             mInterestedForSupply = "Yes";
         });
 
         binding.interestedNo.setOnClickListener(v -> {
-            Toast.makeText(context, "No", Toast.LENGTH_SHORT).show();
             binding.interestedYes.setChecked(false);
             mInterestedForSupply = "No";
         });
@@ -376,18 +324,23 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
+
+        Set<String> s = new LinkedHashSet<>(list);
+        String arrayList = s.toString();
+        Log.d("list__", arrayList);
+
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
         serviceIntent.putExtra("center", mCenter);
         serviceIntent.putExtra("farmer_gategory", mFarmerGategory);
         serviceIntent.putExtra("farmer_name", mFarmerName);
-        serviceIntent.putExtra("farmer_address", mAddress);
+        serviceIntent.putExtra("farmer_addr", mAddress);
         serviceIntent.putExtra("phone_number", mPhoneNumber);
         serviceIntent.putExtra("pin_code", mPinCode);
         serviceIntent.putExtra("cow_total", mNoOfAnimalsCow);
         serviceIntent.putExtra("buffalo_total", mNoOfAnimalsBuffalo);
         serviceIntent.putExtra("cow_available_ltrs", mMilkAvailabilityCowLtrs);
         serviceIntent.putExtra("buffalo_available_ltrs", mMilkAvailabilityBuffaloLtrs);
-        serviceIntent.putExtra("milk_supply_company", mMilkSupplyCompany);
+        serviceIntent.putExtra("milk_supply_company", arrayList);
         serviceIntent.putExtra("interested_supply", mInterestedForSupply);
         serviceIntent.putExtra("active_flag", "1");
         serviceIntent.putExtra("upload_service_id", "2");
@@ -476,10 +429,10 @@ public class FarmerCreationActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-        if ("".equals(mMilkSupplyCompany)){
-            Toast.makeText(context, "Please select milk supply company", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+//        if ("".equals(mMilkSupplyCompany)){
+//            Toast.makeText(context, "Please select milk supply company", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
         if ("".equals(mInterestedForSupply)){
             Toast.makeText(context, "Please select Yes or No", Toast.LENGTH_SHORT).show();
             return false;

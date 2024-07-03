@@ -1,7 +1,7 @@
 package com.saneforce.godairy.procurement.reports;
 
 import static android.view.View.GONE;
-import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_MAINTENANCE_REPORT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_MAINTENANCE_REGULAR_REPORT;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,9 +14,9 @@ import android.view.View;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.Model_Class.ProcMaintenanceReport;
+import com.saneforce.godairy.Model_Class.ProcMaintenRegularReport;
 import com.saneforce.godairy.databinding.ActivityMaintenanceReportBinding;
-import com.saneforce.godairy.procurement.adapter.MaintenanceReportAdapter;
+import com.saneforce.godairy.procurement.adapter.MaintenRegularReportAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,10 +31,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MaintenanceReportActivity extends AppCompatActivity {
+public class MaintenanceRegularReportActivity extends AppCompatActivity {
     private ActivityMaintenanceReportBinding binding;
-    private List<ProcMaintenanceReport> maintenanceReportList;
-    private MaintenanceReportAdapter maintenanceReportAdapter;
+    private List<ProcMaintenRegularReport> maintenanceReportList;
+    private MaintenRegularReportAdapter maintenanceReportAdapter;
     private final Context context = this;
 
     @Override
@@ -49,7 +49,7 @@ public class MaintenanceReportActivity extends AppCompatActivity {
 
     private void loadList() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseBody> call = apiInterface.getMaintenanceReport(PROCUREMENT_GET_MAINTENANCE_REPORT);
+        Call<ResponseBody> call = apiInterface.getMaintenanceRegularReport(PROCUREMENT_GET_MAINTENANCE_REGULAR_REPORT);
 
         call.enqueue(new Callback<>() {
             @SuppressLint("NotifyDataSetChanged")
@@ -72,13 +72,13 @@ public class MaintenanceReportActivity extends AppCompatActivity {
                         if (mRecords) {
                             JSONArray jsonArrayData = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArrayData.length(); i++) {
-                                ProcMaintenanceReport maintenanceReport = new ProcMaintenanceReport();
+                                ProcMaintenRegularReport maintenanceReport = new ProcMaintenRegularReport();
                                 JSONObject object = jsonArrayData.getJSONObject(i);
                                 maintenanceReport.setCompany(object.getString("company"));
                                 maintenanceReport.setPlant(object.getString("plant"));
-                                maintenanceReport.setNo_of_equipment(object.getString("equipment"));
-                                maintenanceReport.setRepair_type(object.getString("repair_type"));
-                                maintenanceReport.setRepair_img(object.getString("repair_type_img"));
+                                maintenanceReport.setBmc_hrs_running(object.getString("bmc_hrs_running"));
+                                maintenanceReport.setHrs_runs_image(object.getString("hrs_runs_image"));
+                                maintenanceReport.setBmc_volume_coll(object.getString("bmc_volume_coll"));
                                 maintenanceReport.setCreated_dt(object.getString("created_dt"));
 
                                 maintenanceReportList.add(maintenanceReport);
@@ -88,7 +88,7 @@ public class MaintenanceReportActivity extends AppCompatActivity {
                             binding.recyclerView.setLayoutManager(linearLayoutManager);
                             binding.recyclerView.setHasFixedSize(true);
                             binding.recyclerView.setItemViewCacheSize(20);
-                            maintenanceReportAdapter = new MaintenanceReportAdapter(context, maintenanceReportList);
+                            maintenanceReportAdapter = new MaintenRegularReportAdapter(context, maintenanceReportList);
                             binding.recyclerView.setAdapter(maintenanceReportAdapter);
                             maintenanceReportAdapter.notifyDataSetChanged();
                             return;

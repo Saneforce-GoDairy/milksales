@@ -3,17 +3,21 @@ package com.saneforce.godairy.procurement;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityExistingCenterVisitBinding;
+
+import java.util.Calendar;
 
 public class ExistingCenterVisitActivity extends AppCompatActivity {
     private ActivityExistingCenterVisitBinding binding;
@@ -30,9 +34,49 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
 
         initLoad();
         onClick();
+
+        binding.openingTime.setFocusable(false);
+        binding.closingTime.setFocusable(false);
     }
 
     private void onClick() {
+
+        binding.openingTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        binding.openingTime.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        binding.closingTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        binding.closingTime.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
         binding.back.setOnClickListener(view -> finish());
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
@@ -122,100 +166,6 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
         // 2
         mAssetVerification = binding.edAssetVerification.getText().toString();
         mRenameVillage = binding.edRenameVillage.getText().toString();
-
-/*
-        if ("Select".equals(mPouringActivity)){
-            ((TextView)binding.spinnerPouringActivity.getSelectedView()).setError("Select Pouring Activity");
-            binding.spinnerPouringActivity.getSelectedView().requestFocus();
-            binding.txtPouringNotValid.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mOpeningTime)){
-            binding.openingTime.setError("Enter opening time");
-            binding.openingTime.requestFocus();
-            return false;
-        }
-        if ("".equals(mClosingTime)){
-            binding.closingTime.setError("Enter closing time");
-            binding.closingTime.requestFocus();
-            return false;
-        }
-        if ("".equals(mNoOfFarmers)){
-            binding.edNoFarmers.setError("Please enter");
-            binding.edNoFarmers.requestFocus();
-            return false;
-        }
-        if ("".equals(mVolume)){
-            binding.edVolume.setError("Enter volume");
-            binding.edVolume.requestFocus();
-            return false;
-        }
-        if ("".equals(mAvgFAT)){
-            binding.edAvgFat.setError("Enter Avg FAT");
-            binding.edAvgFat.requestFocus();
-            return false;
-        }
-        if ("".equals(mAvgSNF)){
-            binding.edAvgSnf.setError("Enter Avg SNF");
-            binding.edAvgSnf.requestFocus();
-            return false;
-        }
-        if ("".equals(mAvgRate)){
-            binding.edAvgRate.setError("Enter Avg Rate");
-            binding.edAvgRate.requestFocus();
-            return false;
-        }
-        if ("".equals(mNoOfCansLoad)){
-            binding.edCansLoad.setError("Enter cans load");
-            binding.edCansLoad.requestFocus();
-            return false;
-        }
-        if ("".equals(mNoOfCansReturned)){
-            binding.edCansReturned.setError("Enter returned cans");
-            binding.edCansReturned.requestFocus();
-            return false;
-        }
-        if ("".equals(mCattleFeed)){
-            binding.edCattleFeed.setError("Enter cattle feed");
-            binding.edCattleFeed.requestFocus();
-            return false;
-        }
-        if ("".equals(mOtherStock)){
-            binding.edOtherStock.setError("Enter other stock");
-            binding.edOtherStock.requestFocus();
-            return false;
-        }
-        if ("".equals(mEchoMilkClActivity)){
-            Toast.makeText(context, "Select echo milk clean activity", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if ("Select".equals(mMachineCondition)){
-            ((TextView)binding.spinnerMachineCondition.getSelectedView()).setError("Select machine condition");
-            binding.spinnerMachineCondition.getSelectedView().requestFocus();
-            binding.txtMachineConditionNotValid.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mLoanFarmerIssue)){
-            binding.edLoanFarIssue.setError("Enter loan farmer issue");
-            binding.edLoanFarIssue.requestFocus();
-            return false;
-        }
-        if ("".equals(mIssueFromFarmerSide)){
-            binding.edIssueFrmFarmerSide.setError("Enter issue from farmer side");
-            binding.edIssueFrmFarmerSide.requestFocus();
-            return false;
-        }
-        if ("".equals(mAssetVerification)){
-            binding.edAssetVerification.setError("Enter asset verification");
-            binding.edAssetVerification.requestFocus();
-            return false;
-        }
-        if ("".equals(mRenameVillage)){
-            binding.edRenameVillage.setError("Enter rename village");
-            binding.edRenameVillage.requestFocus();
-            return false;
-        }
- */
         return true;
     }
 

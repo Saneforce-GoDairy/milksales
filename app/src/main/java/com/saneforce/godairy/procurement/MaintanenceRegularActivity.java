@@ -73,43 +73,6 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
                 saveNow();
             }
         });
-               /*
-           Camera access id
-
-           1, AgronomistFormActivity
-              Farmers meeting = 1
-              CSR Activity    = 2
-              Fodder Development Ac = 3
-
-           2, AITFormActivity
-              breed = 4
-
-           3, CollectionCenterLocationActivity
-              Collection center image = 5
-
-           4, VeterinaryDoctorsFormActivity
-              Type of image image = 6
-              Emergency treatment/EVM Treatment (Breed) = 7
-
-            5, QualityFormActivity
-               Quality fat = 8
-               Quality snf = 9
-               No of vehicle received with hoods = 10
-               No of vehicle received without hoods = 11
-               Awareness program = 12
-
-            6, FarmerCreationActivity
-               Farmer image = 13
-
-            7, MaintenanceIssueActivity
-               Type of repair image = 14
-
-            8, MaintenanceRegularActivity
-               DG Set Running Hrs, After Last Services = 15
-
-            9, New farmer creation ska
-               Competitors = 16
-         */
 
         binding.cameraDgRunningHrs.setOnClickListener(v -> {
             binding.txtDgRunningHrsImageNotValid.setVisibility(View.GONE);
@@ -125,6 +88,46 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
             Intent intent = new Intent(context, ImageViewActivity.class);
             intent.putExtra("uri", imagePath);
             intent.putExtra("event_name", "DG Set Running Hrs");
+            startActivity(intent);
+        });
+
+        binding.cameraNoHrsRunning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.txtImgNoHrsRunningNotValid.setVisibility(View.GONE);
+                Intent intent = new Intent(context, ProcurementCameraX.class);
+                intent.putExtra("event_name", "No Hrs Running");
+                intent.putExtra("camera_id", "21");
+                startActivity(intent);
+            }
+        });
+
+        binding.imageViewNoHrsRunningLayout.setOnClickListener(view -> {
+            String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "MAIN_RE_NOHRS_123.jpg";
+
+            Intent intent = new Intent(context, ImageViewActivity.class);
+            intent.putExtra("uri", imagePath);
+            intent.putExtra("event_name", "No Hrs Running");
+            startActivity(intent);
+        });
+
+        binding.cameraAsPerBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.txtImgAsPerBookNotValid.setVisibility(View.GONE);
+                Intent intent = new Intent(context, ProcurementCameraX.class);
+                intent.putExtra("event_name", "As Per Book");
+                intent.putExtra("camera_id", "22");
+                startActivity(intent);
+            }
+        });
+
+        binding.imageViewAsPerBookLayout.setOnClickListener(view -> {
+            String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "MAIN_RE_AS_PER_BOOK_123.jpg";
+
+            Intent intent = new Intent(context, ImageViewActivity.class);
+            intent.putExtra("uri", imagePath);
+            intent.putExtra("event_name", "As Per Book");
             startActivity(intent);
         });
 
@@ -587,10 +590,29 @@ public class MaintanenceRegularActivity extends AppCompatActivity {
         File file = new File(getExternalFilesDir(null), "/procurement/" + "MAIN_REGU_123.jpg");
         bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
+        File fileNofHrsRuns = new File(getExternalFilesDir(null), "/procurement/" + "MAIN_RE_NOHRS_123.jpg");
+        Bitmap bitmap2 = BitmapFactory.decodeFile(fileNofHrsRuns.getAbsolutePath());
+
+        File fileAsPerBook = new File(getExternalFilesDir(null), "/procurement/" + "MAIN_RE_AS_PER_BOOK_123.jpg");
+        Bitmap bitmap3 = BitmapFactory.decodeFile(fileAsPerBook.getAbsolutePath());
+
+
         if (bitmap != null){
             binding.imageViewDgRunningHrsLayout.setVisibility(View.VISIBLE);
             binding.imageDgRunningHrs.setImageBitmap(bitmap);
             binding.txtErrorFound.setVisibility(View.GONE);
+        }
+
+        if (bitmap2 != null){
+            binding.imageViewNoHrsRunningLayout.setVisibility(View.VISIBLE);
+            binding.imageNoHrsRunning.setImageBitmap(bitmap2);
+            binding.txtImgNoHrsRunningNotValid.setVisibility(View.GONE);
+        }
+
+        if (bitmap3 != null){
+            binding.imageViewAsPerBookLayout.setVisibility(View.VISIBLE);
+            binding.imageAsPerBook.setImageBitmap(bitmap3);
+            binding.txtImgAsPerBookNotValid.setVisibility(View.GONE);
         }
     }
 }

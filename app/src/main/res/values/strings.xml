@@ -421,9 +421,11 @@
 
     <string-array name="competitor_array">
         <item>Select</item>
-        <item>Hatsun</item>
-        <item>Dodla</item>
-        <item>Jersey</item>
+        <item>Competitor1 LPD</item>
+        <item>Competitor2 LPD</item>
+        <item>Competitor3 LPD</item>
+        <item>Competitor4 LPD</item>
+        <item>Competitor5 LPD</item>
     </string-array>
 
     <string-array name="veterinary_type_of_service_array">
@@ -504,6 +506,16 @@
         <item>Bank not working</item>
     </string-array>
 
+    <array name="proc_type_of_repair">
+        <item>Select</item>
+        <item>Sensor Issue</item>
+        <item>Board Issue</item>
+        <item>SMPS</item>
+        <item>Motor Issue</item>
+        <item>Weighing scales</item>
+        <item>Others</item>
+    </array>
+
     <string name="toggle_flash">Toggle Flash</string>
     <string name="action_settings">Settings</string>
     <string name="scanned_data">Scanned Data</string>
@@ -528,5 +540,6 @@
     <string name="something_went_wrong">Something went wrong!</string>
     <string name="custom_form">Custom form</string>
     <string name="custom_form_reports">Custom form reports</string>
+    <string name="_3_board_issue">3) Board issue</string>
 
 </resources>

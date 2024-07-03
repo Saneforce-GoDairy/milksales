@@ -40,7 +40,6 @@ public class ProcurementCameraX extends AppCompatActivity {
     private String imageName, DIR;
     private File file;
     private Bitmap bitmap;
-    public static final String APP_DATA = "/procurement";
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -96,7 +95,7 @@ public class ProcurementCameraX extends AppCompatActivity {
     }
 
     private void  createDirectory() {
-        File dir = getExternalFilesDir(APP_DATA);
+        File dir = getExternalFilesDir("/procurement");
         if(!dir.exists()) {
             if (!dir.mkdir()) {
                 Toast.makeText(getApplicationContext(), "The folder " + dir.getPath() + "was not created", Toast.LENGTH_SHORT).show();
@@ -228,6 +227,30 @@ public class ProcurementCameraX extends AppCompatActivity {
             case 16:
                 newFarCreatCompetitor(); // ska client
                 break;
+
+            case 17:
+                maintenanceBoardIs();
+                break;
+
+            case 18:
+                maintenanceSMBS();
+                break;
+
+            case 19:
+                maintenanceMotorIs();
+                break;
+
+            case 20:
+                maintenanceWeighSca();
+                break;
+
+            case 21:
+                maintenanceRegNoHrs();
+                break;
+
+            case 22:
+                maintenanceAsPerBook();
+                break;
         }
 
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
@@ -267,6 +290,36 @@ public class ProcurementCameraX extends AppCompatActivity {
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    private void maintenanceAsPerBook() {
+        imageName = "MAIN_RE_AS_PER_BOOK_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceRegNoHrs() {
+        imageName = "MAIN_RE_NOHRS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceWeighSca() {
+        imageName = "MAIN_WEIGH_SC_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceMotorIs() {
+        imageName = "MAIN_MOTOR_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceSMBS() {
+        imageName = "MAIN_SMBS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceBoardIs() {
+        imageName = "MAIN_IS_BOARD_IS" + ".jpg";
+        file = new File(DIR, imageName);
     }
 
     private void newFarCreatCompetitor() {

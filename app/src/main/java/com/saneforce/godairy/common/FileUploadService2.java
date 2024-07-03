@@ -1,6 +1,6 @@
 package com.saneforce.godairy.common;
 
-import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_MAINTENNACE_REGULAR;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_MAINTENANCE_REGULAR;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_AGENT_VISIT;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_AGRONOMIST;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_ASSET;
@@ -21,6 +21,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -83,7 +85,7 @@ public class FileUploadService2 extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-     // do heavy work on background thread
+        // do heavy work on background thread
 
         String service_id = intent.getStringExtra("upload_service_id");
 
@@ -147,7 +149,7 @@ public class FileUploadService2 extends Service {
             }
 
         }else {
-          //  Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
+            //  Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
             Intent Intent = new Intent();
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , Intent, PendingIntent.FLAG_IMMUTABLE);
 
@@ -286,16 +288,16 @@ public class FileUploadService2 extends Service {
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.submitProcFarmerCreationSka(PROCUREMENT_SUBMIT_FARMER_CREATION_SKA,
-                                                                           audioPart,
-                                                                           imagePart,
-                                                                           mName,
-                                                                           mVillage,
-                                                                           mType,
-                                                                           mCompetitor,
-                                                                           mRemarksType,
-                                                                           mRemarksText,
-                                                                           mActiveFlag,
-                                                                           mTimeDate);
+                audioPart,
+                imagePart,
+                mName,
+                mVillage,
+                mType,
+                mCompetitor,
+                mRemarksType,
+                mRemarksText,
+                mActiveFlag,
+                mTimeDate);
 
         call.enqueue(new Callback<>() {
             @Override
@@ -433,7 +435,16 @@ public class FileUploadService2 extends Service {
         // Maintenance regular image
         File file_image_repair = new File(dir, "MAIN_REGU_123" + ".jpg");
         ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image_repair);
-        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image",file_image_repair.getName(),progressRequestBodyRepair);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file_image_repair.getName(),progressRequestBodyRepair);
+
+        File file_image_no_hrs = new File(dir, "MAIN_RE_NOHRS_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyNoHrs = new ProgressRequestBody(file_image_no_hrs);
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_no_hrs.getName(),progressRequestBodyNoHrs);
+
+        File file_image_as_per_book = new File(dir, "MAIN_RE_AS_PER_BOOK_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyAsPerBook = new ProgressRequestBody(file_image_as_per_book);
+        MultipartBody.Part imagePart2 = MultipartBody.Part.createFormData("image2",file_image_as_per_book.getName(),progressRequestBodyAsPerBook);
+
 
         Intent notificationIntent = new Intent(this, MaintanenceRegularActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -450,7 +461,7 @@ public class FileUploadService2 extends Service {
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ResponseBody> call = apiInterface.submitProcMaintenRegular(PROCUREMENT_MAINTENNACE_REGULAR,
+        Call<ResponseBody> call = apiInterface.submitProcMaintenRegular(PROCUREMENT_MAINTENANCE_REGULAR,
                 mCompany,
                 mPlant,
                 mBmcNoHrsRunning,
@@ -459,7 +470,7 @@ public class FileUploadService2 extends Service {
                 mCcVolumeCollect,
                 mIBTRunningHrs,
                 mDgSetRunnings,
-                imagePart1,
+                imagePart,
                 mPowerFactor,
                 mPipeline,
                 mLeakages,
@@ -470,7 +481,9 @@ public class FileUploadService2 extends Service {
                 mHotWater,
                 mFactoryLicenceIns,
                 mActiveFlag,
-                mTimeDate);
+                mTimeDate,
+                imagePart1,
+                imagePart2);
 
         call.enqueue(new Callback<>() {
             @Override
@@ -558,13 +571,45 @@ public class FileUploadService2 extends Service {
         String mEquipment = intent.getStringExtra("equipment");
         String mRepairType = intent.getStringExtra("repair_type");
         String mActiveFlag = intent.getStringExtra("active_flag");
+        String mOthers = intent.getStringExtra("others");
 
         String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+        MultipartBody.Part imagePart1 = null;
 
-        // Maintenance repair image
-        File file_image_repair = new File(dir, "MAIN_RE_123" + ".jpg");
-        ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image_repair);
-        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_repair.getName(),progressRequestBodyRepair);
+        File fileSensorIssue = new File(dir, "MAIN_RE_123" + ".jpg");
+        Bitmap bitmap1 = BitmapFactory.decodeFile(fileSensorIssue.getAbsolutePath());
+        if (bitmap1 != null){
+            ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(fileSensorIssue);
+            imagePart1 = MultipartBody.Part.createFormData("image1", fileSensorIssue.getName(), progressRequestBodyRepair);
+        }
+
+        File fileBoardImage = new File(dir, "MAIN_IS_BOARD_IS" + ".jpg");
+        Bitmap bitmap2 = BitmapFactory.decodeFile(fileBoardImage.getAbsolutePath());
+        if (bitmap2 != null) {
+            ProgressRequestBody progressRequestBodyBoardIssue = new ProgressRequestBody(fileBoardImage);
+            imagePart1 = MultipartBody.Part.createFormData("image1", fileBoardImage.getName(), progressRequestBodyBoardIssue);
+        }
+
+        File fileSMPS = new File(dir, "MAIN_SMBS_123" + ".jpg");
+        Bitmap bitmap3 = BitmapFactory.decodeFile(fileSMPS.getAbsolutePath());
+        if (bitmap3 != null){
+            ProgressRequestBody progressRequestBodySMBS = new ProgressRequestBody(fileSMPS);
+            imagePart1 = MultipartBody.Part.createFormData("image1",fileSMPS.getName(),progressRequestBodySMBS);
+        }
+
+        File fileMotor = new File(dir, "MAIN_MOTOR_123" + ".jpg");
+        Bitmap bitmap4 = BitmapFactory.decodeFile(fileMotor.getAbsolutePath());
+        if (bitmap4 != null){
+            ProgressRequestBody progressRequestBodyMotors = new ProgressRequestBody(fileMotor);
+            imagePart1 = MultipartBody.Part.createFormData("image1",fileMotor.getName(),progressRequestBodyMotors);
+        }
+
+        File file_scale = new File(dir, "MAIN_WEIGH_SC_123" + ".jpg");
+        Bitmap bitmap5 = BitmapFactory.decodeFile(fileMotor.getAbsolutePath());
+        if (bitmap5 != null){
+            ProgressRequestBody progressRequestBodyScale = new ProgressRequestBody(file_scale);
+            imagePart1 = MultipartBody.Part.createFormData("image1",file_scale.getName(),progressRequestBodyScale);
+        }
 
         Intent notificationIntent = new Intent(this, MaintanenceIssuesFormActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -587,9 +632,10 @@ public class FileUploadService2 extends Service {
                 mPlant,
                 mEquipment,
                 mRepairType,
-                imagePart1,
                 mActiveFlag,
-                mTimeDate);
+                mTimeDate,
+                imagePart1,
+                mOthers);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -910,8 +956,8 @@ public class FileUploadService2 extends Service {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcVeterinary(PROCUREMENT_SUBMIT_VETERINARY,
-                                                                    mCompany,
-                                                                    mPlant,
+                mCompany,
+                mPlant,
                 mCenterName,
                 mFarmerName,
                 mServiceType,
@@ -1044,7 +1090,7 @@ public class FileUploadService2 extends Service {
         String mCenter = intent.getStringExtra("center");
         String mFarmerGategory = intent.getStringExtra("farmer_gategory");
         String mFarmerName = intent.getStringExtra("farmer_name");
-        String mFarmerAddress = intent.getStringExtra("farmer_address");
+        String mFarmerAddress = intent.getStringExtra("farmer_addr");
         String mPhoneNumber = intent.getStringExtra("phone_number");
         String mPinCode = intent.getStringExtra("pin_code");
         String mBuffaloTotal = intent.getStringExtra("buffalo_total");
@@ -1094,10 +1140,12 @@ public class FileUploadService2 extends Service {
                 mTimeDate,
                 thumbnailPart);
 
+        Log.e("rr__", "sssss = 1");
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    Log.e("rr__", "sssss = 2");
                     String res;
                     showUploadCompleteNotification();
                     stopForeground(true);

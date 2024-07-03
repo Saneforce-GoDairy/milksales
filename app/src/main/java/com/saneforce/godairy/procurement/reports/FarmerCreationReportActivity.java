@@ -75,18 +75,18 @@ public class FarmerCreationReportActivity extends AppCompatActivity {
                                 ProcFarmerCreaReport farmerCreaReport = new ProcFarmerCreaReport();
                                 JSONObject object = jsonArrayData.getJSONObject(i);
                                 farmerCreaReport.setCenter(object.getString("center_name"));
-                                farmerCreaReport.setFarmer_category(object.getString("farmer_gategory"));
+                                farmerCreaReport.setFarmer_category(object.getString("farm_gategory"));
                                 farmerCreaReport.setFarmer_name(object.getString("farmer_name"));
                                 farmerCreaReport.setFarmer_img(object.getString("farmer_image"));
-                                farmerCreaReport.setAddress(object.getString("farmer_address"));
-                                farmerCreaReport.setPhone_number(object.getString("phone_number"));
+                                farmerCreaReport.setAddress(object.getString("farmer_addr"));
+                                farmerCreaReport.setPhone_number(object.getString("phone_no"));
                                 farmerCreaReport.setPin_code(object.getString("pin_code"));
                                 farmerCreaReport.setNo_of_ani_cow(object.getString("cow_total"));
-                                farmerCreaReport.setNo_of_ani_buffalo(object.getString("buffalo_total"));
-                                farmerCreaReport.setMilk_avail_lttr_cow(object.getString("cow_milk_availability_ltrs"));
-                                farmerCreaReport.setMilk_avail_lttr_buffalo(object.getString("buffalo_milk_availability_ltrs"));
-                                farmerCreaReport.setMilk_supply_company(object.getString("milk_supply_company"));
-                                farmerCreaReport.setInterested_for_supply(object.getString("interested_supply"));
+                                farmerCreaReport.setNo_of_ani_buffalo(object.getString("buf_total"));
+                                farmerCreaReport.setMilk_avail_lttr_cow(object.getString("cow_milk_avail_ltrs"));
+                                farmerCreaReport.setMilk_avail_lttr_buffalo(object.getString("buf_milk_avail_ltrs"));
+                                farmerCreaReport.setMilk_supply_company(object.getString("milk_sup_company"));
+                                farmerCreaReport.setInterested_for_supply(object.getString("intrstd_supply"));
                                 farmerCreaReport.setCreated_dt(object.getString("created_dt"));
                                 farmerCreaReportList.add(farmerCreaReport);
                             }

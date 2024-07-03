@@ -161,9 +161,15 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         binding.spinnerCompetitorLpd1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerCompetitorLpd1.getSelectedItem().toString();
+                mCompetitorLpdSinner1 = binding.spinnerCompetitorLpd1.getSelectedItem().toString();
                 binding.txtCompetitorLpd1NotValid.setVisibility(View.GONE);
                 binding.txtErrorFound.setVisibility(View.GONE);
+
+                if (i == 0) {
+                    binding.edCompetitorLpd1.setVisibility(View.GONE);
+                } else {
+                    binding.edCompetitorLpd1.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -171,45 +177,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         });
 
         binding.back.setOnClickListener(view -> finish());
-
-                              /*
-           Camera access id
-
-           1, AgronomistFormActivity
-              Farmers meeting = 1
-              CSR Activity    = 2
-              Fodder Development Ac = 3
-
-           2, AITFormActivity
-              breed = 4
-
-           3, CollectionCenterLocationActivity
-              Collection center image = 5
-
-           4, VeterinaryDoctorsFormActivity
-              Type of image image = 6
-              Emergency treatment/EVM Treatment (Breed) = 7
-
-            5, QualityFormActivity
-               Quality fat = 8
-               Quality snf = 9
-               No of vehicle received with hoods = 10
-               No of vehicle received without hoods = 11
-               Awareness program = 12
-
-            6, FarmerCreationActivity
-               Farmer image = 13
-
-            7, MaintenanceIssueActivity
-               Type of repair image = 14
-
-            8, MaintenanceRegularActivity
-               DG Set Running Hrs, After Last Services = 15
-
-            9, New farmer creation ska
-               Competitors = 16
-         */
-
 
         binding.cameraCollectCenter.setOnClickListener(view -> {
             binding.txtCollectCenterNotValid.setVisibility(View.GONE);

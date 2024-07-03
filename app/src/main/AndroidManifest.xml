@@ -59,6 +59,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".procurement.reports.MaintenanceIssueReportAct"
+            android:exported="false" />
+        <activity
             android:name=".procurement.TestActivity"
             android:exported="false" />
         <activity
@@ -75,8 +78,7 @@
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.vwInvoices"
-            android:exported="false" />
-        <!-- <activity -->
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".Activity_Hap.DayReportActivity" -->
         <!-- android:exported="false" /> -->
         <activity
@@ -122,7 +124,7 @@
             android:name=".procurement.reports.ExistingAgentVisitReportActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.reports.MaintenanceReportActivity"
+            android:name=".procurement.reports.MaintenanceRegularReportActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.QualityReportActivity"
@@ -180,7 +182,8 @@
             android:exported="false" />
         <activity
             android:name=".procurement.ImageViewActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".procurement.ProcurementCameraX"
             android:exported="false" />

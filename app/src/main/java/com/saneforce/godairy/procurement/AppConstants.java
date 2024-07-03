@@ -21,13 +21,14 @@ public class AppConstants {
  public static final String PROCUREMENT_GET_AIT_REPORT = "get_ait_report";
  public static final String PROCUREMENT_GET_VETERINARY_REPORT = "get_veterinary_report";
  public static final String PROCUREMENT_GET_QUALITY_REPORT = "get_quality_report";
- public static final String PROCUREMENT_GET_MAINTENANCE_REPORT = "get_maintenance_report";
+ public static final String PROCUREMENT_GET_MAINTENANCE_REGULAR_REPORT = "get_mainten_reg_report";
+ public static final String PROCUREMENT_GET_MAINTENANCE_ISSUE_REPORT = "get_mainten_issue_report";
  public static final String PROCUREMENT_GET_EXISTING_AGENT_REPORT = "get_existing_agent_report";
  public static final String PROCUREMENT_GET_COLLECTION_CENTER_REPORT = "get_colltion_center_report";
  public static final String PROCUREMENT_GET_ASSET_REPORT = "get_asset_report";
  public static final String PROCUREMENT_GET_FARMER_CREATION_REPORT = "get_far_creation_report";
  public static final String PROCUREMENT_GET_SUBDIVISION = "get_subdivision";
- public static final String PROCUREMENT_MAINTENNACE_REGULAR = "save/proc_maintenance_reg";
+ public static final String PROCUREMENT_MAINTENANCE_REGULAR = "save/proc_maintenance_reg";
  public static final String PROCUREMENT_SUBMIT_EXISTING_CENTER_VISIT = "save_exist_cent_visit";
  public static final String PROCUREMENT_SUBMIT_FARMER_CREATION_SKA = "farmer_creation_ska";
  public static final String PROCUREMENT_SUBMIT_EXISTING_FARMER_VISIT_SKA = "ska_existing_farmer_visit";
