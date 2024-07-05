@@ -272,12 +272,9 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(this, "Password Required", Toast.LENGTH_SHORT).show();
             } else if (eMail.contains("-")) {
                 String code = eMail.split("-")[0].toUpperCase();
-                Log.e("login_info", "Company Code: " + code);
                 getBaseURL(code);
             } else {
-                ApiClient.ChangeBaseURL(ApiClient.DEFAULT_BASE_URL);
-                MakeInvisible();
-                login(1);
+                Toast.makeText(this, "Invalid Username Password", Toast.LENGTH_SHORT).show();
             }
 
 
