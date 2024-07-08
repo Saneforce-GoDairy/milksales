@@ -62,7 +62,7 @@ public class MaintenRegularReportAdapter extends RecyclerView.Adapter<MaintenReg
                 .into(holder.binding.noOfHrsRunsImg);
 
         holder.binding.noOfHrsRunsImgCn.setOnClickListener(v -> {
-            String imageUrl = BASE_URL_PROCUREMENT_IMG + maintenanceReportList.get(position).getHrs_runs_image();
+            String imageUrl = BASE_URL_PROCUREMENT_IMG + maintenanceReportList.get(position).getDg_set_running_img();
             Intent intent = new Intent(context, ImageViewActivity.class);
             intent.putExtra("access_id", "1"); // 1 for url ( without access for URI storage image )
             intent.putExtra("event_name", "BMC Hrs Runs image");
@@ -83,6 +83,50 @@ public class MaintenRegularReportAdapter extends RecyclerView.Adapter<MaintenReg
         });
 
         holder.binding.txtVolumeColl.setText(maintenanceReportList.get(position).getBmc_volume_coll());
+        holder.binding.txtCcNoOfHrsRuns.setText(maintenanceReportList.get(position).getCc_hrs_running());
+        holder.binding.txtCcVolumeColl.setText(maintenanceReportList.get(position).getCc_volume_coll());
+        holder.binding.txtCcIbtRunsHrs.setText(maintenanceReportList.get(position).getIbt_running_hrs());
+        holder.binding.txtCcDgSet.setText(maintenanceReportList.get(position).getDg_set_running());
+
+        Glide.with(context)
+                .load(BASE_URL_PROCUREMENT_IMG + maintenanceReportList.get(position).getDg_set_running_img())
+                .into(holder.binding.dgSetImg);
+
+        holder.binding.ccDgSetImgCn.setOnClickListener(v -> {
+            String imageUrl = BASE_URL_PROCUREMENT_IMG + maintenanceReportList.get(position).getDg_set_running_img();
+            Intent intent = new Intent(context, ImageViewActivity.class);
+            intent.putExtra("access_id", "1"); // 1 for url ( without access for URI storage image )
+            intent.putExtra("event_name", "DG Set Running image");
+            intent.putExtra("url", imageUrl); // url not URI
+            context.startActivity(intent);
+        });
+
+        holder.binding.txtPowerFactor.setText(maintenanceReportList.get(position).getPower_factor());
+
+        holder.binding.txtPipline.setText(maintenanceReportList.get(position).getPipeline_condition());
+        holder.binding.txtLeakages.setText(maintenanceReportList.get(position).getLeakage());
+        holder.binding.txtPowerFactor.setText(maintenanceReportList.get(position).getPower_factor());
+        holder.binding.txtScale.setText(maintenanceReportList.get(position).getScale());
+
+        holder.binding.txtAsPerBook.setText(maintenanceReportList.get(position).getPer_book());
+        holder.binding.txtPhysical.setText(maintenanceReportList.get(position).getPhysical());
+
+        Glide.with(context)
+                .load(BASE_URL_PROCUREMENT_IMG + maintenanceReportList.get(position).getAs_per_book_img())
+                .into(holder.binding.asPerBookImg);
+
+        holder.binding.ccAsPerBookImgCn.setOnClickListener(v -> {
+            String imageUrl = BASE_URL_PROCUREMENT_IMG + maintenanceReportList.get(position).getAs_per_book_img();
+            Intent intent = new Intent(context, ImageViewActivity.class);
+            intent.putExtra("access_id", "1"); // 1 for url ( without access for URI storage image )
+            intent.putExtra("event_name", "As Per Book image");
+            intent.putExtra("url", imageUrl); // url not URI
+            context.startActivity(intent);
+        });
+
+        holder.binding.txtEtp.setText(maintenanceReportList.get(position).getEtp());
+        holder.binding.txtHotWater.setText(maintenanceReportList.get(position).getHot_water());
+        holder.binding.txtFactoryLicen.setText(maintenanceReportList.get(position).getFactory_license_ins());
     }
 
     @Override

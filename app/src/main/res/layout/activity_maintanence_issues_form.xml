@@ -8,183 +8,86 @@
     tools:context=".procurement.MaintanenceIssuesFormActivity">
 
     <RelativeLayout
+        android:id="@+id/form_con"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        android:elevation="20dp">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/baseline_arrow_back_35"
-            android:contentDescription="@string/back" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:elevation="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/back"
-            android:fontFamily="@font/ubuntu_medium"
-            android:text="@string/maintenance_issues_form"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/baseline_arrow_back_35"
+                android:contentDescription="@string/back" />
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        android:scrollbars="none"
-        android:layout_marginBottom="60dp"
-        android:layout_marginTop="55dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/back"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="@string/maintenance_issues_form"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </RelativeLayout>
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scrollView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:layout_marginBottom="60dp"
+            android:layout_marginTop="55dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/ubuntu_medium"
-                        android:text="@string/select_company"
-                        android:textStyle="bold"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/txt_company_not_valid"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="More Fonts..."
-                        android:text="@string/not_valid"
-                        android:textColor="#ff0130"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        tools:ignore="SmallSp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/edit_text_common"
-                    android:layout_marginTop="2dp">
-
-                    <com.saneforce.godairy.common.CustomSpinner
-                        android:id="@+id/spinner_company"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/ubuntu_medium"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:text="@string/select_plant"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/txt_plant_not_valid"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:textSize="10sp"
-                        android:fontFamily="@font/ubuntu"
-                        android:text="@string/not_valid"
-                        android:textStyle="bold"
-                        android:textColor="#ff0130"
-                        tools:ignore="SmallSp"
-                        android:visibility="gone"/>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/scrollView1"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    tools:ignore="UselessParent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/edit_text_common"
-                        android:layout_marginTop="2dp">
+                        android:layout_height="wrap_content">
 
-                        <com.saneforce.godairy.common.CustomSpinner
-                            android:id="@+id/spinner_plant"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ubuntu_medium"
+                            android:text="@string/select_company"
+                            android:textStyle="bold"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txt_company_not_valid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="More Fonts..."
+                            android:text="@string/not_valid"
+                            android:textColor="#ff0130"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            tools:ignore="SmallSp" />
 
                     </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/ubuntu_medium"
-                        android:text="@string/_1_no_of_equipment"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/ed_no_of_eqp"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/edit_text_common"
-                        android:fontFamily="@font/ubuntu"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:importantForAutofill="no"
-                        android:inputType="numberDecimal"
-                        tools:ignore="LabelFor" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/ubuntu_medium"
-                        android:text="@string/_2_type_of_repairs"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -193,307 +96,451 @@
                         android:layout_marginTop="2dp">
 
                         <com.saneforce.godairy.common.CustomSpinner
-                            android:id="@+id/spinner_type_of_repair"
+                            android:id="@+id/spinner_company"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/sensor_container"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/txt_img_sensor_not_valid"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="More Fonts..."
-                            android:text="@string/not_valid"
-                            android:textColor="#ff0130"
-                            android:textSize="10sp"
+                            android:fontFamily="@font/ubuntu_medium"
+                            android:layout_marginTop="10dp"
                             android:textStyle="bold"
-                            android:visibility="gone"
-                            tools:ignore="SmallSp" />
-
-                        <ImageView
-                            android:id="@+id/camera_sensor"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_marginTop="5dp"
-                            android:src="@drawable/apple_camera"
-                            android:contentDescription="@string/_2_type_of_repairs" />
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/image_view_sensor_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            app:cardBackgroundColor="@color/white"
-                            android:layout_marginTop="5dp"
-                            app:cardCornerRadius="8dp"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/image_sensor"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/placeholder"
-                                android:contentDescription="@string/todo" />
-
-                        </androidx.cardview.widget.CardView>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/board_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
+                            android:text="@string/select_plant"
+                            android:textColor="@color/black" />
 
                         <TextView
-                            android:id="@+id/txt_img_board_issue_not_valid"
+                            android:id="@+id/txt_plant_not_valid"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="More Fonts..."
-                            android:text="@string/not_valid"
-                            android:textColor="#ff0130"
+                            android:layout_alignParentBottom="true"
                             android:textSize="10sp"
+                            android:fontFamily="@font/ubuntu"
+                            android:text="@string/not_valid"
                             android:textStyle="bold"
-                            android:visibility="gone"
-                            tools:ignore="SmallSp" />
-
-                        <ImageView
-                            android:id="@+id/camera_board_issue"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_marginTop="5dp"
-                            android:src="@drawable/apple_camera"
-                            android:contentDescription="@string/_2_type_of_repairs" />
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/image_view_board_issue_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            app:cardBackgroundColor="@color/white"
-                            android:layout_marginTop="5dp"
-                            app:cardCornerRadius="8dp"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/image_board_issue"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/placeholder"
-                                android:contentDescription="@string/todo" />
-
-                        </androidx.cardview.widget.CardView>
+                            android:textColor="#ff0130"
+                            tools:ignore="SmallSp"
+                            android:visibility="gone"/>
 
                     </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/smbs_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/txt_img_smbs_not_valid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="More Fonts..."
-                            android:text="@string/not_valid"
-                            android:textColor="#ff0130"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            tools:ignore="SmallSp" />
-
-                        <ImageView
-                            android:id="@+id/camera_smbs"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_marginTop="5dp"
-                            android:src="@drawable/apple_camera"
-                            android:contentDescription="@string/_2_type_of_repairs" />
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/image_view_smbs_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            app:cardBackgroundColor="@color/white"
-                            android:layout_marginTop="5dp"
-                            app:cardCornerRadius="8dp"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/image_smbs"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/placeholder"
-                                android:contentDescription="@string/todo" />
-
-                        </androidx.cardview.widget.CardView>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/motor_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/txt_img_motor_not_valid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="More Fonts..."
-                            android:text="@string/not_valid"
-                            android:textColor="#ff0130"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            tools:ignore="SmallSp" />
-
-                        <ImageView
-                            android:id="@+id/camera_motor"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_marginTop="5dp"
-                            android:src="@drawable/apple_camera"
-                            android:contentDescription="@string/_2_type_of_repairs" />
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/image_view_motor_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            app:cardBackgroundColor="@color/white"
-                            android:layout_marginTop="5dp"
-                            app:cardCornerRadius="8dp"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/image_motor"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/placeholder"
-                                android:contentDescription="@string/todo" />
-
-                        </androidx.cardview.widget.CardView>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/weighning_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/txt_img_weigh_scales_not_valid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="5dp"
-                            android:fontFamily="More Fonts..."
-                            android:text="@string/not_valid"
-                            android:textColor="#ff0130"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            tools:ignore="SmallSp" />
-
-                        <ImageView
-                            android:id="@+id/camera_weigh_scales"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_marginTop="5dp"
-                            android:src="@drawable/apple_camera"
-                            android:contentDescription="@string/_2_type_of_repairs" />
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/image_view_weigh_scales_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            app:cardBackgroundColor="@color/white"
-                            android:layout_marginTop="5dp"
-                            app:cardCornerRadius="8dp"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/image_weigh_scales"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:adjustViewBounds="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/placeholder"
-                                android:contentDescription="@string/todo" />
-
-                        </androidx.cardview.widget.CardView>
-
-                    </RelativeLayout>
-
-                    <EditText
-                        android:id="@+id/ed_others"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/edit_text_common"
-                        android:fontFamily="@font/ubuntu"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:importantForAutofill="no"
-                        android:inputType="text"
-                        tools:ignore="LabelFor"
-                        android:visibility="gone"/>
 
                 </LinearLayout>
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-    </ScrollView>
 
 
 
-    <Button
-        android:id="@+id/button_save"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/scrollView1"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        tools:ignore="UselessParent">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="2dp">
+
+                            <EditText
+                                android:id="@+id/ed_plant"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@drawable/edit_text_common"
+                                android:fontFamily="@font/ubuntu"
+                                android:text="Select"
+                                android:textSize="12sp"
+                                android:importantForAutofill="no"
+                                android:inputType="textAutoComplete"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                tools:ignore="LabelFor" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/ubuntu_medium"
+                            android:text="@string/_1_no_of_equipment"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/ed_no_of_eqp"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/edit_text_common"
+                            android:fontFamily="@font/ubuntu"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:importantForAutofill="no"
+                            android:inputType="numberDecimal"
+                            tools:ignore="LabelFor" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/ubuntu_medium"
+                            android:text="@string/_2_type_of_repairs"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/edit_text_common"
+                            android:layout_marginTop="2dp">
+
+                            <com.saneforce.godairy.common.CustomSpinner
+                                android:id="@+id/spinner_type_of_repair"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/sensor_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/txt_img_sensor_not_valid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="More Fonts..."
+                                android:text="@string/not_valid"
+                                android:textColor="#ff0130"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                tools:ignore="SmallSp" />
+
+                            <ImageView
+                                android:id="@+id/camera_sensor"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/apple_camera"
+                                android:contentDescription="@string/_2_type_of_repairs" />
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/image_view_sensor_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                app:cardBackgroundColor="@color/white"
+                                android:layout_marginTop="5dp"
+                                app:cardCornerRadius="8dp"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/image_sensor"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/placeholder"
+                                    android:contentDescription="@string/todo" />
+
+                            </androidx.cardview.widget.CardView>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/board_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/txt_img_board_issue_not_valid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="More Fonts..."
+                                android:text="@string/not_valid"
+                                android:textColor="#ff0130"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                tools:ignore="SmallSp" />
+
+                            <ImageView
+                                android:id="@+id/camera_board_issue"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/apple_camera"
+                                android:contentDescription="@string/_2_type_of_repairs" />
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/image_view_board_issue_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                app:cardBackgroundColor="@color/white"
+                                android:layout_marginTop="5dp"
+                                app:cardCornerRadius="8dp"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/image_board_issue"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/placeholder"
+                                    android:contentDescription="@string/todo" />
+
+                            </androidx.cardview.widget.CardView>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/smbs_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/txt_img_smbs_not_valid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="More Fonts..."
+                                android:text="@string/not_valid"
+                                android:textColor="#ff0130"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                tools:ignore="SmallSp" />
+
+                            <ImageView
+                                android:id="@+id/camera_smbs"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/apple_camera"
+                                android:contentDescription="@string/_2_type_of_repairs" />
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/image_view_smbs_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                app:cardBackgroundColor="@color/white"
+                                android:layout_marginTop="5dp"
+                                app:cardCornerRadius="8dp"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/image_smbs"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/placeholder"
+                                    android:contentDescription="@string/todo" />
+
+                            </androidx.cardview.widget.CardView>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/motor_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/txt_img_motor_not_valid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="More Fonts..."
+                                android:text="@string/not_valid"
+                                android:textColor="#ff0130"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                tools:ignore="SmallSp" />
+
+                            <ImageView
+                                android:id="@+id/camera_motor"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/apple_camera"
+                                android:contentDescription="@string/_2_type_of_repairs" />
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/image_view_motor_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                app:cardBackgroundColor="@color/white"
+                                android:layout_marginTop="5dp"
+                                app:cardCornerRadius="8dp"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/image_motor"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/placeholder"
+                                    android:contentDescription="@string/todo" />
+
+                            </androidx.cardview.widget.CardView>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/weighning_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/txt_img_weigh_scales_not_valid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="More Fonts..."
+                                android:text="@string/not_valid"
+                                android:textColor="#ff0130"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                tools:ignore="SmallSp" />
+
+                            <ImageView
+                                android:id="@+id/camera_weigh_scales"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/apple_camera"
+                                android:contentDescription="@string/_2_type_of_repairs" />
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/image_view_weigh_scales_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                app:cardBackgroundColor="@color/white"
+                                android:layout_marginTop="5dp"
+                                app:cardCornerRadius="8dp"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/image_weigh_scales"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/placeholder"
+                                    android:contentDescription="@string/todo" />
+
+                            </androidx.cardview.widget.CardView>
+
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/ed_others"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/edit_text_common"
+                            android:fontFamily="@font/ubuntu"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            tools:ignore="LabelFor"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/button_blue"
+            android:textColor="@color/white"
+            android:fontFamily="@font/ubuntu"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="@dimen/C10dp"
+            android:layout_marginEnd="@dimen/C10dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            tools:ignore="UnusedAttribute" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/plant_con"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/button_blue"
-        android:textColor="@color/white"
-        android:fontFamily="@font/ubuntu"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="@dimen/C10dp"
-        android:layout_marginEnd="@dimen/C10dp"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        tools:ignore="UnusedAttribute" />
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Primary_blue"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar" />
+
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Results"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

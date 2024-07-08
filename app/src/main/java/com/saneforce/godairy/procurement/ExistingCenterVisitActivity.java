@@ -1,22 +1,17 @@
 package com.saneforce.godairy.procurement;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityExistingCenterVisitBinding;
-
 import java.util.Calendar;
 
 public class ExistingCenterVisitActivity extends AppCompatActivity {
@@ -39,42 +34,27 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
         binding.closingTime.setFocusable(false);
     }
 
+    @SuppressLint("SetTextI18n")
     private void onClick() {
 
-        binding.openingTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        binding.openingTime.setText( selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
-            }
+        binding.openingTime.setOnClickListener(v -> {
+            Calendar mcurrentTime = Calendar.getInstance();
+            int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+            int minute = mcurrentTime.get(Calendar.MINUTE);
+            TimePickerDialog mTimePicker;
+            mTimePicker = new TimePickerDialog(context, (timePicker, selectedHour, selectedMinute) -> binding.openingTime.setText( selectedHour + ":" + selectedMinute), hour, minute, true);//Yes 24 hour time
+            mTimePicker.setTitle("Select Time");
+            mTimePicker.show();
         });
 
-        binding.closingTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        binding.closingTime.setText( selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
-            }
+        binding.closingTime.setOnClickListener(v -> {
+            Calendar mcurrentTime = Calendar.getInstance();
+            int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+            int minute = mcurrentTime.get(Calendar.MINUTE);
+            TimePickerDialog mTimePicker;
+            mTimePicker = new TimePickerDialog(context, (timePicker, selectedHour, selectedMinute) -> binding.closingTime.setText( selectedHour + ":" + selectedMinute), hour, minute, true);//Yes 24 hour time
+            mTimePicker.setTitle("Select Time");
+            mTimePicker.show();
         });
 
         binding.back.setOnClickListener(view -> finish());
@@ -116,23 +96,19 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
         serviceIntent.putExtra("closing_time", mClosingTime);
         serviceIntent.putExtra("no_of_farmer", mNoOfFarmers);
         serviceIntent.putExtra("volume", mVolume);
-
         serviceIntent.putExtra("avg_fat", mAvgFAT);
         serviceIntent.putExtra("avg_snf", mAvgSNF);
         serviceIntent.putExtra("avg_rate", mAvgRate);
         serviceIntent.putExtra("cans_load", mNoOfCansLoad);
         serviceIntent.putExtra("cans_returned", mNoOfCansReturned);
-
         serviceIntent.putExtra("cattle_feed", mCattleFeed);
         serviceIntent.putExtra("other_stock", mOtherStock);
         serviceIntent.putExtra("echo_milk_clean_activity", mEchoMilkClActivity);
         serviceIntent.putExtra("machine_condition", mMachineCondition);
         serviceIntent.putExtra("loan_farmer_issue", mLoanFarmerIssue);
-
         serviceIntent.putExtra("issue_frm_farmer_side", mIssueFromFarmerSide);
         serviceIntent.putExtra("asset_verification", mAssetVerification);
         serviceIntent.putExtra("rename_village", mRenameVillage);
-
         serviceIntent.putExtra("active_flag", "1");
         serviceIntent.putExtra("upload_service_id", "11");
         ContextCompat.startForegroundService(this, serviceIntent);
@@ -142,28 +118,21 @@ public class ExistingCenterVisitActivity extends AppCompatActivity {
     }
 
     private boolean validateInputs() {
-        // 5
         mPouringActivity = binding.spinnerPouringActivity.getSelectedItem().toString();
         mOpeningTime = binding.openingTime.getText().toString();
         mClosingTime = binding.closingTime.getText().toString();
         mNoOfFarmers = binding.edNoFarmers.getText().toString();
         mVolume = binding.edVolume.getText().toString();
-
-        // 5
         mAvgFAT = binding.edAvgFat.getText().toString();
         mAvgSNF = binding.edAvgSnf.getText().toString();
         mAvgRate = binding.edAvgRate.getText().toString();
         mNoOfCansLoad = binding.edCansLoad.getText().toString();
         mNoOfCansReturned = binding.edCansReturned.getText().toString();
-
-        // 5
         mCattleFeed = binding.edCattleFeed.getText().toString();
         mOtherStock = binding.edOtherStock.getText().toString();
         mMachineCondition = binding.spinnerMachineCondition.getSelectedItem().toString();
         mLoanFarmerIssue = binding.edLoanFarIssue.getText().toString();
         mIssueFromFarmerSide = binding.edIssueFrmFarmerSide.getText().toString();
-
-        // 2
         mAssetVerification = binding.edAssetVerification.getText().toString();
         mRenameVillage = binding.edRenameVillage.getText().toString();
         return true;

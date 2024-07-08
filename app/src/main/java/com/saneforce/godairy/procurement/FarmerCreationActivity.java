@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,13 +28,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +57,6 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void onClick() {
-
         binding.cameraFarmerImage.setOnClickListener(view -> {
             binding.txtFarmerImageNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -324,10 +318,8 @@ public class FarmerCreationActivity extends AppCompatActivity {
     }
 
     private void saveNow() {
-
         Set<String> s = new LinkedHashSet<>(list);
         String arrayList = s.toString();
-        Log.d("list__", arrayList);
 
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
         serviceIntent.putExtra("center", mCenter);
@@ -429,10 +421,6 @@ public class FarmerCreationActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-//        if ("".equals(mMilkSupplyCompany)){
-//            Toast.makeText(context, "Please select milk supply company", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
         if ("".equals(mInterestedForSupply)){
             Toast.makeText(context, "Please select Yes or No", Toast.LENGTH_SHORT).show();
             return false;
@@ -442,7 +430,6 @@ public class FarmerCreationActivity extends AppCompatActivity {
 
     private void initSpinnerArray() {
         loadCenterList();
-
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
                 R.array.farmer_gategory_array, R.layout.custom_spinner);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

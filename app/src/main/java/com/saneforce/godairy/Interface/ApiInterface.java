@@ -864,6 +864,8 @@ public interface ApiInterface {
                                                 @Part MultipartBody.Part image2,
                                                 @Query("fodder_dev_acres") String fodder_dev_acres,
                                                 @Part MultipartBody.Part image3,
+                                                @Query("farmer_enrolled") String farmer_enrolled,
+                                                @Query("farmer_inducted") String farmer_inducted,
                                                 @Query("active_flag") String active_flag,
                                                 @Query("created_dt") String created_dt);
 

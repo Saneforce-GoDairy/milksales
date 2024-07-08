@@ -9,13 +9,18 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -24,7 +29,6 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityColletionCenterLocationBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +43,10 @@ import retrofit2.Response;
 
 public class CollectionCenterLocationActivity extends AppCompatActivity {
     private ActivityColletionCenterLocationBinding binding;
+    Toolbar mToolbar;
+    ArrayAdapter<String> mAdapter;
+    ListView mListView;
+    TextView mEmptyView;
     private String mCompanyName, mPlant, mSapCenterCode, mSapCenterName, mCenterAddress, mPotentialLpd;
     private String mNoOfFarmersEnrolled, mCompetitorLpdSinner1, mCompetitorLpdEdText1;
     private final Context context = this;
@@ -61,6 +69,51 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         loadSubDivision();
         initSpinnerArray();
         onClick();
+
+        binding.edPlant.setFocusable(false);
+
+        binding.edPlant.setOnClickListener(v -> {
+            binding.formCon.setVisibility(View.GONE);
+            binding.plantCon.setVisibility(View.VISIBLE);
+        });
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mListView = findViewById(R.id.list);
+        mEmptyView = findViewById(R.id.emptyView);
+
+        mListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            binding.edPlant.setText(adapterView.getItemAtPosition(i).toString());
+            binding.plantCon.setVisibility(View.GONE);
+            binding.formCon.setVisibility(View.VISIBLE);
+        });
+
+        mListView.setEmptyView(mEmptyView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search_toolbar, menu);
+
+        MenuItem mSearch = menu.findItem(R.id.action_search);
+
+        SearchView mSearchView = (SearchView) mSearch.getActionView();
+        mSearchView.setQueryHint("Search plant");
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void loadSubDivision() {
@@ -86,9 +139,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
     }
 
     private void loadPlant() {
-        list.add("Select");
-
-        updatePlant();
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
@@ -99,19 +149,20 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String plantList;
                     try {
-                        binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
-
                         JSONArray jsonArray = new JSONArray(plantList);
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             String plantName = object.optString("plant_name");
 
-                            binding.spinnerPlant.setPrompt(plantName);
                             list.add(plantName);
                         }
-                        updatePlant();
+                        mAdapter = new ArrayAdapter<>(context,
+                                android.R.layout.simple_list_item_1,
+                                list);
+
+                        mListView.setAdapter(mAdapter);
                     } catch (IOException | JSONException e) {
                        // throw new RuntimeException(e);
                         Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
@@ -126,31 +177,12 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePlant() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter);
-    }
-
-
     private void onClick() {
         binding.spinnerCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mCompanyName = binding.spinnerCompany.getSelectedItem().toString();
                 binding.txtCompanyNotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        binding.spinnerPlant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerPlant.getSelectedItem().toString();
-                binding.txtPlantNotValid.setVisibility(View.GONE);
                 binding.txtErrorFound.setVisibility(View.GONE);
             }
 
@@ -314,7 +346,7 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
 
     private boolean validateInputs() {
         mCompanyName = binding.spinnerCompany.getSelectedItem().toString();
-        mPlant = binding.spinnerPlant.getSelectedItem().toString();
+        mPlant = binding.edPlant.getText().toString().trim();
         mSapCenterCode = binding.edSapCenterCode.getText().toString().trim();
         mSapCenterName = binding.edSapCenterName.getText().toString().trim();
         mCenterAddress = binding.edSapAddress.getText().toString().trim();
@@ -331,8 +363,8 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             return false;
         }
         if ("Select".equals(mPlant)){
-            ((TextView)binding.spinnerPlant.getSelectedView()).setError("Select plant");
-            binding.spinnerPlant.getSelectedView().requestFocus();
+            binding.edPlant.setError("Select Plant");
+            binding.edPlant.requestFocus();
             binding.txtPlantNotValid.setVisibility(View.VISIBLE);
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
@@ -354,14 +386,6 @@ public class CollectionCenterLocationActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-        /*
-        if ("".equals(mCenterAddress)){
-            binding.edSapAddress.setError("Enter Center Address");
-            binding.edSapAddress.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-         */
         if ("".equals(mPotentialLpd)){
             binding.edPotentialLpd.setError("Enter Potential LPD");
             binding.edPotentialLpd.requestFocus();

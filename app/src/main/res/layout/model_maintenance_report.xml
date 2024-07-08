@@ -134,6 +134,37 @@
 
                      </LinearLayout>
 
+                     <LinearLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginStart="10dp"
+                         android:orientation="horizontal">
+
+                         <LinearLayout
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical">
+
+                             <TextView
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:fontFamily="@font/ubuntu_medium"
+                                 android:text="Volume Collected"
+                                 android:textColor="#7E7E7E"
+                                 android:textSize="12sp" />
+
+                             <TextView
+                                 android:id="@+id/txt_volume_coll"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:fontFamily="@font/ubuntu_medium"
+                                 android:textColor="#2E7A0E"
+                                 android:textSize="13sp" />
+
+                         </LinearLayout>
+
+                     </LinearLayout>
+
                  </LinearLayout>
              </LinearLayout>
 
@@ -187,43 +218,133 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:text="Volume Collected"
-                            android:textColor="#7E7E7E"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/txt_volume_coll"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:textColor="#2E7A0E"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/second_cn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CC Unit"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="No of Hrs Running"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_cc_no_of_hrs_runs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Volume Collected"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_cc_volume_coll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="IBT Running Hrs"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_cc_ibt_runs_hrs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="DG Set Running Hrs, After last service's"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_cc_dg_set"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -239,7 +360,7 @@
                             android:orientation="vertical">
 
                             <RelativeLayout
-                                android:id="@+id/farmers_img_cn"
+                                android:id="@+id/cc_dg_set_img_cn"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/C50dp">
 
@@ -249,7 +370,7 @@
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="10dp"
                                     android:fontFamily="@font/ubuntu_medium"
-                                    android:text="Breed image" />
+                                    android:text="DG Set Running Hrs image" />
 
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="@dimen/C40dp"
@@ -260,7 +381,251 @@
                                     app:cardCornerRadius="10dp">
 
                                     <ImageView
-                                        android:id="@+id/breed_img"
+                                        android:id="@+id/dg_set_img"
+                                        android:layout_width="@dimen/C40dp"
+                                        android:layout_height="@dimen/C40dp"
+                                        android:adjustViewBounds="true"
+                                        android:scaleType="fitXY" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Power Factor"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_power_factor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ammonia-Compressor Condition"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Pipline"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_pipline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Leakages"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_leakages"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Scale"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_scale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fuel Cpnsumption Stock"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="As Per Book"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_as_per_book"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Physical"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_physical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_radius_proc_img"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/C50dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/cc_as_per_book_img_cn"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/C50dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:fontFamily="@font/ubuntu_medium"
+                                    android:text="As Per Book image" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="@dimen/C40dp"
+                                    android:layout_height="@dimen/C40dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="5dp"
+                                    app:cardCornerRadius="10dp">
+
+                                    <ImageView
+                                        android:id="@+id/as_per_book_img"
                                         android:layout_width="@dimen/C40dp"
                                         android:layout_height="@dimen/C40dp"
                                         android:adjustViewBounds="true"
@@ -277,10 +642,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Service type"
-                        android:layout_marginTop="@dimen/C5dp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="10dp"/>
+                        android:text="ETP (Effluent Treatment Plant )"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -295,48 +662,26 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/txt_etp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
-                                android:text="No of AI"
-                                android:textColor="#7E7E7E"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/txt_no_of_ai"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:textColor="@android:color/black"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:text="Bull no"
-                                android:textColor="#7E7E7E"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/txt_bull_nos"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:textColor="@android:color/black"
+                                android:textColor="@color/grey_500"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hot Water ( Heater )"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -351,48 +696,26 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/txt_hot_water"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
-                                android:text="PD Verification"
-                                android:textColor="#7E7E7E"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/txt_pd_verification"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:textColor="@android:color/black"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:text="Calfbirth verification"
-                                android:textColor="#7E7E7E"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/txt_calfbirth_verification"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:textColor="@android:color/black"
+                                android:textColor="@color/grey_500"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Factory Licence Inspection"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -407,50 +730,18 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/txt_factory_licen"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/ubuntu_medium"
-                                android:text="Mineral mixture sale"
-                                android:textColor="#7E7E7E"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/txt_mineral_mix_sale"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:textColor="@android:color/black"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:text="Seed sales"
-                                android:textColor="#7E7E7E"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/txt_seed_sales"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/ubuntu_medium"
-                                android:textColor="@android:color/black"
+                                android:textColor="@color/grey_500"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
 
                     </LinearLayout>
 
-                </LinearLayout>
+                    </LinearLayout>
 
             </LinearLayout>
 

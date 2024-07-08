@@ -79,6 +79,21 @@ public class MaintenanceRegularReportActivity extends AppCompatActivity {
                                 maintenanceReport.setBmc_hrs_running(object.getString("bmc_hrs_running"));
                                 maintenanceReport.setHrs_runs_image(object.getString("hrs_runs_image"));
                                 maintenanceReport.setBmc_volume_coll(object.getString("bmc_volume_coll"));
+                                maintenanceReport.setCc_hrs_running(object.getString("cc_hrs_running"));
+                                maintenanceReport.setCc_volume_coll(object.getString("cc_volume_coll"));
+                                maintenanceReport.setIbt_running_hrs(object.getString("ibt_running_hrs"));
+                                maintenanceReport.setDg_set_running(object.getString("dg_set_running"));
+                                maintenanceReport.setDg_set_running_img(object.getString("dg_set_running_img"));
+                                maintenanceReport.setPower_factor(object.getString("power_factor"));
+                                maintenanceReport.setPipeline_condition(object.getString("pipeline_condition"));
+                                maintenanceReport.setLeakage(object.getString("leakage"));
+                                maintenanceReport.setScale(object.getString("scale"));
+                                maintenanceReport.setPer_book(object.getString("per_book"));
+                                maintenanceReport.setAs_per_book_img(object.getString("as_per_book_img"));
+                                maintenanceReport.setPhysical(object.getString("physical"));
+                                maintenanceReport.setEtp(object.getString("etp"));
+                                maintenanceReport.setHot_water(object.getString("hot_water"));
+                                maintenanceReport.setFactory_license_ins(object.getString("factory_license_ins"));
                                 maintenanceReport.setCreated_dt(object.getString("created_dt"));
 
                                 maintenanceReportList.add(maintenanceReport);

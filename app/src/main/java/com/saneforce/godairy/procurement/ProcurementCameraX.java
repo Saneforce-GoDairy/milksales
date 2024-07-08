@@ -63,7 +63,6 @@ public class ProcurementCameraX extends AppCompatActivity {
         createDirectory();
         onClick();
 
-        // Load event name
         String eventName = getIntent().getStringExtra("event_name");
 
         if (eventName != null){
@@ -147,19 +146,6 @@ public class ProcurementCameraX extends AppCompatActivity {
     }
 
     public void takePicture(androidx.camera.core.ImageCapture imageCapture) {
-
-//        String userInfo = "MyPrefs";
-//        UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
-//        String SF_Code = UserDetails.getString("Sfcode","");
-
-//        long tsLong = System.currentTimeMillis() / 1000;
-//        capturedImageName = SF_Code +"_"+Long.toString(tsLong) + ".jpg";
-
-//        file = new File(DIR, capturedImageName);
-
-//        long tsLong = System.currentTimeMillis() / 1000;
-//        imageName = tsLong + ".jpg";
-//        file = new File(DIR, imageName);
 
         String cameraEventId = getIntent().getStringExtra("camera_id");
 

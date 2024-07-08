@@ -10,16 +10,22 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.saneforce.godairy.Activity_Hap.MainActivity;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.ProcSubDivison;
@@ -35,6 +41,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -44,8 +51,13 @@ import retrofit2.Response;
 
 public class AgronomistFormActivity extends AppCompatActivity {
     private ActivityAgronomistFormBinding binding;
+    Toolbar mToolbar;
+    ArrayAdapter<String> mAdapter;
+    ListView mListView;
+    TextView mEmptyView;
     private static final String TAG = "Procurement_";
     private String mCompanyName, mPlant, mCenterName, mFarmerCodeName, mTypeOfProduct, mTeatTipCup, mTypeOfService, mFodderDev;
+    private String mNoOfFarmersEnrolled, mNoOfFarmersInducted;
     private final Context context = this;
     private Bitmap bitmapFormersMeeting, bitmapCSRActivity , bitmapFodderDevAcres;
     private final List<String> list = new ArrayList<>();
@@ -65,6 +77,55 @@ public class AgronomistFormActivity extends AppCompatActivity {
         loadSubDivision();
         initSpinnerArray();
         onClick();
+
+        binding.edPlant.setFocusable(false);
+
+        binding.edPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.formCon.setVisibility(View.GONE);
+                binding.plantCon.setVisibility(View.VISIBLE);
+            }
+        });
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mListView = findViewById(R.id.list);
+        mEmptyView = findViewById(R.id.emptyView);
+
+        mListView.setOnItemClickListener((adapterView, view, i, l) -> {
+           // Toast.makeText(AgronomistFormActivity.this, adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_SHORT).show();
+            binding.edPlant.setText(adapterView.getItemAtPosition(i).toString());
+            binding.plantCon.setVisibility(View.GONE);
+            binding.formCon.setVisibility(View.VISIBLE);
+        });
+
+        mListView.setEmptyView(mEmptyView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search_toolbar, menu);
+
+        MenuItem mSearch = menu.findItem(R.id.action_search);
+
+        SearchView mSearchView = (SearchView) mSearch.getActionView();
+        mSearchView.setQueryHint("Search plant");
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void loadSubDivision() {
@@ -97,17 +158,19 @@ public class AgronomistFormActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-        binding.spinnerPlant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerPlant.getSelectedItem().toString();
-                binding.txtPlantNotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
+//        binding.spinnerPlant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                mPlant = binding.spinnerPlant.getSelectedItem().toString();
+//                binding.txtPlantNotValid.setVisibility(View.GONE);
+//                binding.txtErrorFound.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {}
+//        });
+
         binding.spinnerTypeOfProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -318,8 +381,9 @@ public class AgronomistFormActivity extends AppCompatActivity {
     }
 
     private void loadPlant() {
-        list.add("Select");
-        updatePlant();
+//        list.add("Select");
+//        updatePlant();
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -329,7 +393,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String plantList;
                     try {
-                        binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
@@ -338,12 +401,16 @@ public class AgronomistFormActivity extends AppCompatActivity {
                             JSONObject object = jsonArray.getJSONObject(i);
                             String plantName = object.optString("plant_name");
 
-                            binding.spinnerPlant.setPrompt(plantName);
                             list.add(plantName);
                         }
-                        updatePlant();
+                        mAdapter = new ArrayAdapter<>(AgronomistFormActivity.this,
+                                android.R.layout.simple_list_item_1,
+                                list);
+
+                        mListView.setAdapter(mAdapter);
+                        // updatePlant();
                     } catch (IOException | JSONException e) {
-                      //  throw new RuntimeException(e);
+                        //  throw new RuntimeException(e);
                         Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -356,23 +423,23 @@ public class AgronomistFormActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePlant() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter);
-    }
+//    private void updatePlant() {
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        binding.spinnerPlant.setAdapter(adapter);
+//    }
 
     private boolean validateInputs() {
         mCompanyName = binding.spinnerCompany.getSelectedItem().toString();
-        mPlant = binding.spinnerPlant.getSelectedItem().toString();
+        mPlant = binding.edPlant.getText().toString().trim();
         mCenterName = binding.edCenterName.getText().toString().trim();
         mFarmerCodeName = binding.edFarmerCodeName.getText().toString().trim();
         mTypeOfProduct = binding.spinnerTypeOfProduct.getSelectedItem().toString();
         mTeatTipCup = binding.edTeatTipCup.getText().toString().trim();
         mTypeOfService = binding.spinnerTypeOfService.getSelectedItem().toString();
         mFodderDev = binding.edFodderDevelopmentAcres.getText().toString();
-        String mNoOfFarmersEnrolled = binding.edNoOfFarmersEnrolled.getText().toString().trim();
-        String mNoOfFarmersInducted = binding.edNoOfFarmersInducted.getText().toString().trim();
+        mNoOfFarmersEnrolled = binding.edNoOfFarmersEnrolled.getText().toString().trim();
+        mNoOfFarmersInducted = binding.edNoOfFarmersInducted.getText().toString().trim();
 
         /*
         if ("Select".equals(mCompanyName)){
@@ -469,6 +536,10 @@ public class AgronomistFormActivity extends AppCompatActivity {
         serviceIntent.putExtra("teat_dip", mTeatTipCup);
         serviceIntent.putExtra("service_type", mTypeOfService);
         serviceIntent.putExtra("fodder_dev_acres", mFodderDev);
+
+        serviceIntent.putExtra("farmer_enrolled", mNoOfFarmersEnrolled);
+        serviceIntent.putExtra("farmer_inducted", mNoOfFarmersInducted);
+
         serviceIntent.putExtra("active_flag", mActiveFlag);
         serviceIntent.putExtra("upload_service_id", "3");
         ContextCompat.startForegroundService(this, serviceIntent);

@@ -3,35 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
     tools:context=".procurement.ProcurementAssetActivity">
 
     <RelativeLayout
+        android:id="@+id/form_con"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        android:elevation="20dp">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/baseline_arrow_back_35"
-            android:contentDescription="@string/back" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:elevation="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/back"
-            android:fontFamily="@font/ubuntu_medium"
-            android:text="@string/procurement_asset"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/baseline_arrow_back_35"
+                android:contentDescription="@string/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/back"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="@string/procurement_asset"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/container"
@@ -78,14 +85,22 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/edit_text_common"
                 android:layout_marginTop="2dp">
 
-                <com.saneforce.godairy.common.CustomSpinner
-                    android:id="@+id/spinner_plant"
+                <EditText
+                    android:id="@+id/ed_plant"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"/>
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Select"
+                    android:textSize="12sp"
+                    android:importantForAutofill="no"
+                    android:inputType="textAutoComplete"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    tools:ignore="LabelFor" />
 
             </RelativeLayout>
 
@@ -176,69 +191,69 @@
 
             </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
 
-        <CheckBox
-            android:id="@+id/ms_mini_fridge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu"
-            android:text="Mini Fridge" />
+                <CheckBox
+                    android:id="@+id/ms_mini_fridge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Mini Fridge" />
 
 
-        <CheckBox
-            android:id="@+id/ms_cans"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/ubuntu"
-            android:text="Cans" />
+                <CheckBox
+                    android:id="@+id/ms_cans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Cans" />
 
-        <CheckBox
-            android:id="@+id/ms_cennterifuge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/ubuntu"
-            android:text="Centrifuge" />
+                <CheckBox
+                    android:id="@+id/ms_cennterifuge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Centrifuge" />
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/ms_incubator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu"
-            android:text="Incubator" />
+                <CheckBox
+                    android:id="@+id/ms_incubator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Incubator" />
 
-        <CheckBox
-            android:id="@+id/ms_hot_air_oven"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/ubuntu"
-            android:text="Hot Air Oven" />
+                <CheckBox
+                    android:id="@+id/ms_hot_air_oven"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Hot Air Oven" />
 
-        <CheckBox
-            android:id="@+id/ms_silo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/ubuntu"
-            android:text="SILO" />
+                <CheckBox
+                    android:id="@+id/ms_silo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="SILO" />
 
-    </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -271,27 +286,27 @@
 
             </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/ms_ups"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu"
-            android:text="UPS Batteries &amp; Stabilizer" />
+                <CheckBox
+                    android:id="@+id/ms_ups"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="UPS Batteries &amp; Stabilizer" />
 
-        <CheckBox
-            android:id="@+id/ms_ipt_coil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu"
-            android:text="IBT Coil" />
+                <CheckBox
+                    android:id="@+id/ms_ipt_coil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="IBT Coil" />
 
-    </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -332,8 +347,6 @@
 
         </LinearLayout>
 
-
-
         <Button
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
@@ -352,5 +365,38 @@
             android:visibility="visible"
             tools:visibility="visible"
             tools:ignore="UnusedAttribute" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/plant_con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Primary_blue"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar" />
+
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Results"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

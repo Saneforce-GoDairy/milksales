@@ -1009,6 +1009,10 @@ public class FileUploadService2 extends Service {
         String mProductType = intent.getStringExtra("product_type");
         String mTeatDip = intent.getStringExtra("teat_dip");
         String mServiceType = intent.getStringExtra("service_type");
+
+        String mFarmerEnrolled = intent.getStringExtra("farmer_enrolled");
+        String mFarmerInducted = intent.getStringExtra("farmer_inducted");
+
         String mActiveFlag = intent.getStringExtra("active_flag");
 
         String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
@@ -1058,6 +1062,8 @@ public class FileUploadService2 extends Service {
                 imagePart2,
                 mFodderDevAcres,
                 imagePart3,
+                mFarmerEnrolled,
+                mFarmerInducted,
                 mActiveFlag,
                 mTimeDate);
 

@@ -1,8 +1,6 @@
 package com.saneforce.godairy.procurement;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,13 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.saneforce.godairy.Model_Class.ProcSubDivison;
-import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityExistingAgentVisitBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,10 +52,8 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
-
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-
         binding.edSupplyStartDate.setFocusable(false);
 
         loadSubDivision();
@@ -72,7 +67,6 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
             Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
             listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, listSub);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCompany.setAdapter(adapter);
@@ -95,24 +89,19 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
         return null;
     }
 
-    private DatePickerDialog.OnDateSetListener myDateListener = new
-            DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker arg0,
-                                      int arg1, int arg2, int arg3) {
-                    // TODO Auto-generated method stub
-                    // arg1 = year
-                    // arg2 = month
-                    // arg3 = day
-                    showDate(arg1, arg2+1, arg3);
-                }
-            };
+    private DatePickerDialog.OnDateSetListener myDateListener = (arg0, arg1, arg2, arg3) -> {
+        // TODO Auto-generated method stub
+        // arg1 = year
+        // arg2 = month
+        // arg3 = day
+        showDate(arg1, arg2+1, arg3);
+    };
 
     private void showDate(int year, int month, int day)
     {
         String selectedDate = day+"/"+month+"/"+year;
-        SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy");
+        Date date;
         try {
             date = dateFormat.parse(selectedDate);
         } catch (ParseException e) {
@@ -123,12 +112,7 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
 
     private void onClick() {
 
-        binding.edSupplyStartDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDate();
-            }
-        });
+        binding.edSupplyStartDate.setOnClickListener(v -> setDate());
 
         binding.buttonSave.setOnClickListener(view -> {
             if (validateInputs()) {
@@ -253,7 +237,6 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-
         binding.back.setOnClickListener(view -> finish());
     }
 
@@ -268,7 +251,6 @@ public class ExistingAgentVisitActivity extends AppCompatActivity {
         serviceIntent.putExtra("our_company_rate", mOurCompanyRate);
         serviceIntent.putExtra("demand", mDemand);
         serviceIntent.putExtra("supply_start_dt", mSupplyStartDate);
-
         serviceIntent.putExtra("active_flag", mActiveFlag);
         serviceIntent.putExtra("upload_service_id", "6");
         ContextCompat.startForegroundService(this, serviceIntent);

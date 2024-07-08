@@ -38,8 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rounded_dialog_top_right_left"
-                >
+                android:background="@drawable/rounded_dialog_top_right_left">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
