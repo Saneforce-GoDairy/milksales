@@ -6,8 +6,10 @@ import static com.saneforce.godairy.Common_Class.Constants.Rout_List;
 import static com.saneforce.godairy.Common_Class.Constants.Route_Id;
 import static com.saneforce.godairy.Common_Class.Constants.STOCK_LEDGER;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.CurrencySymbol;
+import static com.saneforce.godairy.SFA_Activity.HAPApp.getActiveActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -43,11 +45,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.saneforce.godairy.Activity_Hap.SFA_Activity;
+import com.saneforce.godairy.Common_Class.AlertDialogBox;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AdapterOnClick;
+import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.Master_Interface;
@@ -115,6 +119,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
     ApiInterface apiInterface;
     boolean updSale = true;
     String ViewDist;
+    TextView tvStockTopUp;
 
     com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
 
@@ -212,7 +217,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
             swOTHOutlet = findViewById(R.id.swOTHOutlet);
 
             viewPager = findViewById(R.id.viewpager);
-            viewPager.setOffscreenPageLimit(4);
+            viewPager.setOffscreenPageLimit(2);
             tabLayout = findViewById(R.id.tabs);
             tvStockLoad = findViewById(R.id.tvStockLoad);
             tvStockUnload = findViewById(R.id.tvStockUnload);
@@ -222,6 +227,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
             underTotUni = findViewById(R.id.undrTotUniv);
             tvVanSalPay = findViewById(R.id.tvVanSalPay);
             tvStockView=findViewById(R.id.tvStockView);
+            tvStockTopUp=findViewById(R.id.tvStockTopUp);
 
 
 
@@ -237,6 +243,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
             llInvoice.setOnClickListener(this);
             tvStockLoad.setOnClickListener(this);
             tvStockUnload.setOnClickListener(this);
+            tvStockTopUp.setOnClickListener(this);
 
             tvVanSalPay.setOnClickListener(this);
             tvStockView.setOnClickListener(this);
@@ -509,6 +516,8 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
         }
 
 
+
+
     }
 
 
@@ -570,28 +579,37 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
     @Override
     protected void onResume() {
         super.onResume();
-        if (!Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.Distributor_Id))) {
-            common_class.getDb_310Data(Constants.RETAILER_STATUS, this);
-        }
 
-        if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING))) {
+try{
+        if  (shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING)==null||shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING).equals("")) {
             tvStockUnload.setTextColor(getResources().getColor(R.color.grey_500));
             tvStockUnload.setEnabled(false);
-
+            tvStockLoad.setVisibility(View.VISIBLE);
             tvStockLoad.setTextColor(getResources().getColor(R.color.black));
             tvStockLoad.setEnabled(true);
+            tvStockTopUp.setVisibility(View.GONE);
 
         }
 
-
-        if (!Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING))) {
+        if  (shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING)!=null&&!shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING).equals("")&&shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING_TIME).equals(Common_Class.GetDateOnly())  ) {
             tvStockLoad.setTextColor(getResources().getColor(R.color.grey_500));
             tvStockLoad.setEnabled(false);
+            tvStockLoad.setVisibility(View.GONE);
+            tvStockTopUp.setVisibility(View.VISIBLE);
+
 
             tvStockUnload.setTextColor(getResources().getColor(R.color.black));
             tvStockUnload.setEnabled(true);
 
         }
+
+        if (!Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.Distributor_Id))) {
+            common_class.getDb_310Data(Constants.VAN_RETAILER_STATUS, this);
+        }
+}catch(Exception e){
+    Log.e("errordashboard1",e.getMessage());
+}
+
     }
 
     @Override
@@ -604,6 +622,42 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
                 }
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+try {
+    if (shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING) != null && !shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING).equals("") && shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING_TIME).equals(Common_Class.GetDateOnly())) {
+        tvStockLoad.setTextColor(getResources().getColor(R.color.grey_500));
+        tvStockLoad.setEnabled(false);
+        tvStockLoad.setVisibility(View.GONE);
+        tvStockTopUp.setVisibility(View.VISIBLE);
+        tvStockUnload.setTextColor(getResources().getColor(R.color.black));
+        tvStockUnload.setEnabled(true);
+
+    }
+
+    if (shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING) == null || shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING).equals("")) {
+        tvStockUnload.setTextColor(getResources().getColor(R.color.grey_500));
+        tvStockUnload.setEnabled(false);
+        tvStockLoad.setVisibility(View.VISIBLE);
+        tvStockLoad.setTextColor(getResources().getColor(R.color.black));
+        tvStockLoad.setEnabled(true);
+        tvStockTopUp.setVisibility(View.GONE);
+
+    }
+
+    if (!Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.Distributor_Id))) {
+        common_class.getDb_310Data(Constants.VAN_RETAILER_STATUS, this);
+    }
+}catch(Exception e){
+    Log.e("errordashboard",e.getMessage());
+}
+
+
+    }
+
 
     private void getLastInvoiceData() {
         try {
@@ -674,7 +728,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
         switch (v.getId()) {
             case R.id.tvVanSalPay:
                 Intent payIntent=new Intent(VanSalesDashboardRoute.this, VanSalPaymentActivity.class);
-                payIntent.putExtra("stkLoadAmt",-1);
+                payIntent.putExtra("stkLoadAmt",-1.00);
                 startActivity(payIntent);
                 break;
             case R.id.tvStockView:
@@ -698,6 +752,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
                 Shared_Common_Pref.SFA_MENU = "VanSalesDashboardRoute";
                 Constants.VAN_SALES_MODE = Constants.VAN_STOCK_LOADING;
                 startActivity(load);
+                finish();
                 overridePendingTransition(R.anim.in, R.anim.out);
                 break;
             case R.id.tvStockUnload:
@@ -759,6 +814,17 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
             case R.id.toolbar_home:
                 common_class.CommonIntentwithoutFinish(SFA_Activity.class);
                 break;
+            case R.id.tvStockTopUp:
+                if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING))) {
+                    common_class.showMsg(this, "No Stock");
+                } else {
+                    Intent unload = new Intent(getApplicationContext(), VanSalStockTopUpActivity.class);
+                    Shared_Common_Pref.SFA_MENU = "VanSalesDashboardRoute";
+                    Constants.VAN_SALES_MODE = Constants.VAN_STOCK_TOPUP;
+                    startActivity(unload);
+                    overridePendingTransition(R.anim.in, R.anim.out);
+                }
+                break;
         }
     }
 
@@ -797,7 +863,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
             shared_common_pref.save(Constants.DistributorGst,myDataset.get(position).getDisGst());
             shared_common_pref.save(Constants.DistributorFSSAI,myDataset.get(position).getDisFssai());
 
-            common_class.getDb_310Data(Constants.RETAILER_STATUS, this);
+            common_class.getDb_310Data(Constants.VAN_RETAILER_STATUS, this);
             getLastInvoiceData();
             common_class.getDataFromApi(Retailer_OutletList, this, false);
             common_class.getDb_310Data(Rout_List, this);
@@ -859,7 +925,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
                     case Retailer_OutletList:
                         setPagerAdapter(false);
                         break;
-                    case Constants.RETAILER_STATUS:
+                    case Constants.VAN_RETAILER_STATUS:
                         JSONObject jsonObject = new JSONObject(apiDataResponse);
                         if (jsonObject.getBoolean("success")) {
                             JSONArray jsonArray = jsonObject.getJSONArray("Data");
@@ -871,14 +937,14 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
 
                                 int flag = arrObj.getInt("OrderFlg");
                                 //  BTG=0,invoice-3,order-2,no order-1;
-                                String sMode = flag == 0 ? "BTG" : flag == 3 ? "invoice" : flag == 2 ? "order" : "no order";
+                                String sMode = flag == 0 ? "BTG" : flag == 3 ? "invoice" : flag == 2 ? "order" : flag == 4? "Van invoice " :"no order";
 
                                 outletCode = outletCode + arrObj.getString("ListedDrCode") + sMode + ",";
 
 
                             }
 
-                            shared_common_pref.save(Constants.RETAILER_STATUS, outletCode);
+                            shared_common_pref.save(Constants.VAN_RETAILER_STATUS, outletCode);
 
                             Log.v("statusList:", outletCode);
 
@@ -982,9 +1048,9 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
 
                         if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.Distributor_Id))) {
                             Toast.makeText(getActivity(), "Select Franchise", Toast.LENGTH_SHORT).show();
-                        } else if (dashboard_route.route_text.getText().toString().equals("")) {
+                        } /*else if (dashboard_route.route_text.getText().toString().equals("")) {
                             Toast.makeText(getActivity(), "Select The Route", Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
 
 //                        else if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING))) {
 //                            common_class.showMsg(getActivity(), "No Stock");
@@ -1011,8 +1077,9 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
                             Shared_Common_Pref.Freezer_Required = mRetailer_Modal_ListFilter.get(position).getFreezer_required();
 
                             Shared_Common_Pref.SFA_MENU = "VanSalesDashboardRoute";
-                            common_class.CommonIntentwithoutFinish(Invoice_History.class);
-                            getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                            //  common_class.CommonIntentwithoutFinish(Invoice_History.class);
+                            //  getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                            LoadingMaterials();
 
 
                         }
@@ -1034,7 +1101,40 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
                         startActivity(callIntent);
                     }
                 }
+                public void LoadingMaterials(){
+                    common_class.ProgressdialogShow(1, "Loading Material Details");
+                    common_class.getProductDetails(getActiveActivity(), new OnLiveUpdateListener() {
+                        @Override
+                        public void onUpdate(String mode) {
+                            common_class.CommonIntentwithoutFinish(Invoice_History.class);
+                            //getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                            common_class.ProgressdialogShow(0, "");
+                        }
+
+                        @Override
+                        public void onError(String msg) {
+                            RetryLoadingProds();
+                            common_class.ProgressdialogShow(0, "");
+                        }
+                    });
+                }
+                public void RetryLoadingProds(){
+                    AlertDialogBox.showDialog(getContext(), "HAP SFA", "Product Loading Failed. Do you want to Retry ?", "Retry", "Cancel", false, new AlertBox() {
+                        @Override
+                        public void PositiveMethod(DialogInterface dialog, int id) {
+                            if (common_class.isNetworkAvailable(getContext())) {
+                                LoadingMaterials();
+                                dialog.dismiss();
+                            }
+                        }
+                        @Override
+                        public void NegativeMethod(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                }
             }));
+
         }
 
         @Override
@@ -1045,4 +1145,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
             updateData();
         }
     }
+
+
+
 }

@@ -73,12 +73,29 @@ public class TabAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+
+        //return 4;
+        int count=0;
+        if (mActivityName.equalsIgnoreCase("Dashboard_Route")) {
+            return 4;
+
+        }else{
+            return 3;
+        }
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        String title = (position == 0) ? "BTG" : position == 1 ? "Invoice" : position == 2 ? "Order" : "No Order";
+      /*  String title = (position == 0) ? "BTG" : position == 1 ? "Invoice" : position == 2 ? "Order" : "No Order";
+        OutletFilter(position);
+        title = title + "\n"+Retailer_Modal_ListFilter.size();
+        return title;*/
+        String title="";
+        if (mActivityName.equalsIgnoreCase("Dashboard_Route")) {
+            title = (position == 0) ? "BTG" : position == 1 ? "Invoice" : position == 2 ? "Order" : "No Order";
+        }else{
+            title = (position == 0) ? "BTG" : position == 1 ? "Van Invoice":"No Order";
+        }
         OutletFilter(position);
         title = title + "\n"+Retailer_Modal_ListFilter.size();
         return title;
@@ -93,13 +110,21 @@ public class TabAdapter extends FragmentStatePagerAdapter {
         String Route_id = shared_common_pref.getvalue(Constants.Route_Id);
 
         if (mRetailer_Modal_List != null) {
-            String val = shared_common_pref.getvalue(Constants.RETAILER_STATUS);
-            String sMode = flag == 0 ? "BTG" : flag == 1 ? "invoice" : flag == 2 ? "order" : "no order";
+           // String val = shared_common_pref.getvalue(Constants.RETAILER_STATUS);
+           // String sMode = flag == 0 ? "BTG" : flag == 1 ? "invoice" : flag == 2 ? "order" : "no order";
 
-
+            String val = "";
+            String sMode="";
+            if (mActivityName.equalsIgnoreCase("Dashboard_Route")) {
+                sMode = flag == 0 ? "BTG" : flag == 1 ? "invoice" : flag == 2 ? "order" : "no order";
+                val = shared_common_pref.getvalue(Constants.RETAILER_STATUS);
+            }else{
+                sMode = flag == 0 ? "BTG" : flag == 1 ? "Van invoice" :"no order";
+                val = shared_common_pref.getvalue(Constants.VAN_RETAILER_STATUS);
+            }
             for (int i = 0; i < mRetailer_Modal_List.size(); i++) {
-                Log.v("categoryTypes:res:", "freezer:" + mFreezer + ":" + mRetailer_Modal_List.get(i).getFreezer_required() + mRetailer_Modal_List.get(i).getCategory_Universe_Id() + " :filter:" + mCatType
-                        + " cat:" + mRetailer_Modal_List.get(i).getOutletClass() + " :sub:" + mRetailer_Modal_List.get(i).getSpeciality());
+              //  Log.v("categoryTypes:res:", "freezer:" + mFreezer + ":" + mRetailer_Modal_List.get(i).getFreezer_required() + mRetailer_Modal_List.get(i).getCategory_Universe_Id() + " :filter:" + mCatType
+                    //    + " cat:" + mRetailer_Modal_List.get(i).getOutletClass() + " :sub:" + mRetailer_Modal_List.get(i).getSpeciality());
 
                 String outletType = mRetailer_Modal_List.get(i).getType() == null ? "0" : mRetailer_Modal_List.get(i).getType();
                 if (val.indexOf(mRetailer_Modal_List.get(i).getId() + sMode) > -1 &&
@@ -109,15 +134,16 @@ public class TabAdapter extends FragmentStatePagerAdapter {
                         (";" + mRetailer_Modal_List.get(i).getName().toLowerCase()).indexOf(";" + mSearchText.toLowerCase()) > -1) ||
                         (flag != mTabPos)) && (Common_Class.isNullOrEmpty(mCategory) || mCategory.equalsIgnoreCase("ALL") ||
                         mCategory.equalsIgnoreCase(mRetailer_Modal_List.get(i).getOutletClass())) &&
-                        (mCatType.equalsIgnoreCase("") || (mRetailer_Modal_List.get(i).getCategory_Universe_Id() != null && ((mCatType.contains(mRetailer_Modal_List.get(i).getCategory_Universe_Id())) || (mRetailer_Modal_List.get(i).getCategory_Universe_Id().contains(mCatType)))))
+                        (mCatType.equalsIgnoreCase("") || (mRetailer_Modal_List.get(i).getCategory_Universe_Id() != null && ((mCatType.contains(mRetailer_Modal_List.get(i).getCategory_Universe_Id())) || (mRetailer_Modal_List.get(i).getCategory_Universe_Id().contains(mCatType))||(!mActivityName.equalsIgnoreCase("Dashboard_Route")&&mRetailer_Modal_List.get(i).getCategory_Universe_Id().contains("Ambient")))))//  (mRetailer_Modal_List.get(i).getCategory_Universe_Id().contains(mCatType)))))
                         && (mSubCategory.equalsIgnoreCase("") || mSubCategory.equalsIgnoreCase("ALL") || (mRetailer_Modal_List.get(i).getSpeciality() != null && mRetailer_Modal_List.get(i).getSpeciality().equalsIgnoreCase(mSubCategory)))
                         && (Common_Class.isNullOrEmpty(mFreezer) || (!Common_Class.isNullOrEmpty(mRetailer_Modal_List.get(i).getFreezer_required()) && mFreezer.equalsIgnoreCase(mRetailer_Modal_List.get(i).getFreezer_required())))) {
                     Retailer_Modal_ListFilter.add(mRetailer_Modal_List.get(i));
                 }
+               // Retailer_Modal_ListFilter.add(mRetailer_Modal_List.get(i));
             }
         }
 
-        Log.v("Outlet:" + flag, " filtersize:" + Retailer_Modal_ListFilter.size());
+       // Log.v("Outlet:" + flag, " filtersize:" + Retailer_Modal_ListFilter.size());
 
     }
 

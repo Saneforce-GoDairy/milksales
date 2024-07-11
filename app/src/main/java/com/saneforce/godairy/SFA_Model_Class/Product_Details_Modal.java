@@ -3,6 +3,7 @@ package com.saneforce.godairy.SFA_Model_Class;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,9 +153,21 @@ public class Product_Details_Modal {
     @Expose
     private Double SBRate;
 
+    public int getLoadStock() {
+        return loadStock;
+    }
+
+    public void setLoadStock(int loadStock) {
+        this.loadStock = loadStock;
+    }
+
+    @SerializedName("LoadStock")
+    @Expose
+    private int loadStock;
+
     @SerializedName("Amount")
     @Expose
-    private Double Amount;
+    private Double Amount=0.0;
 
 
     @SerializedName("TaxableAmt")
@@ -332,6 +345,17 @@ public class Product_Details_Modal {
     @Expose
     private Double grnTotal = 0.0;
 
+
+
+    @SerializedName("CateCode")
+    @Expose
+    private Integer pCatCode;
+
+    private List<Scheme> schemeList;
+    public List<Scheme> getSchemeList() {return schemeList;}
+
+    public void setSchemeList(List<Scheme> schemeList) {this.schemeList = schemeList;}
+
     public Product_Details_Modal(double cnvQty, String UOM_Nm) {
         this.CnvQty = cnvQty;
         this.UOM_Nm = UOM_Nm;
@@ -473,7 +497,13 @@ public class Product_Details_Modal {
         this.Off_Pro_Unit = off_Pro_Unit;
 
     }
+    public Integer getpCatCode() {
+        return pCatCode;
+    }
 
+    public void setpCatCode(Integer pCatCode) {
+        this.pCatCode = pCatCode;
+    }
     public String getTransSlNo() {
         return transSlNo;
     }
@@ -1313,6 +1343,114 @@ public class Product_Details_Modal {
 
 
     }
+    public static class Scheme  implements Serializable {
 
+        private String pCode = "";
+        private int scheme = 0;
+        private int fq = 0;
+        private double disc = 0;
+        private String pkg;
+        private String offProd;
+        private String schType;
+        private String schUnit;
+        private String freeUnit;
+        private String offProdNm;
+        private String stockistCode;
+        private String discountType = "%";
+        private boolean isSelected;
+        private String packages;
+        private int free;
+        private String discountValue;
+
+        public int getFree() {return free;}
+        public void setFree(int free) {this.free = free;}
+        public String getPackages() {return packages;}
+        public void setPackages(String packages) {this.packages = packages;}
+        private String offProdUnit;
+        public String getPCode() {
+            return pCode;
+        }
+
+        public void setPCode(String pCode) {
+            this.pCode = pCode;
+        }
+
+        public int getScheme() {
+            return scheme;
+        }
+
+        public void setScheme(int scheme) {
+            this.scheme = scheme;
+        }
+
+        public int getFq() {
+            return fq;
+        }
+
+        public void setFq(int fq) {
+            this.fq = fq;
+        }
+
+        public double getDisc() {
+            return disc;
+        }
+        public void setDisc(double disc) {
+            this.disc = disc;
+        }
+        public String getPkg() {
+            return pkg;
+        }
+        public void setPkg(String pkg) {
+            this.pkg = pkg;
+        }
+        public String getOffProd() {
+            return offProd;
+        }
+        public void setOffProd(String offProd) {
+            this.offProd = offProd;
+        }
+        public String getSchType() {
+            return schType;
+        }
+        public void setSchType(String schType) {
+            this.schType = schType;
+        }
+        public String getOffProdNm() {
+            return offProdNm;
+        }
+        public void setOffProdNm(String offProdNm) {
+            this.offProdNm = offProdNm;
+        }
+        public String getStockistCode() {
+            return stockistCode;
+        }
+        public void setStockistCode(String stockistCode) {
+            this.stockistCode = stockistCode;
+        }
+        public String getDiscountType() {
+            return discountType;
+        }
+        public void setDiscountType(String discountType) {
+            this.discountType = discountType;
+        }
+        public String getSchUnit() {
+            return schUnit;
+        }
+        public void setSchUnit(String schUnit) {
+            this.schUnit = schUnit;
+        }
+        public String getFreeUnit() {
+            return freeUnit;
+        }
+        public void setFreeUnit(String freeUnit) {this.freeUnit = freeUnit;}
+        public boolean getSelected() {return isSelected;}
+        public void setSelected(boolean selected) {isSelected = selected;}
+        public String getOffProdUnit() {return offProdUnit;}
+        public void setOffProdUnit(String offProdUnit) {this.offProdUnit = offProdUnit;}
+        public String getDiscountValue() {return discountValue;}
+        public void setDiscountValue(String discountValue) {this.discountValue = discountValue;}
+
+
+    }
 
 }

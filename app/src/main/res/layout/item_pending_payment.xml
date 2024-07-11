@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="5"
+        android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Bill No"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Bill Date"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <TextView
+                android:id="@+id/tv_bill_no"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tv_bill_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:gravity="end"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:weightSum="3">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Billed Amt"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pending Amt"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/tv_amt_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Amt"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/tv_paid_amt_label"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="Paid Amt"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="5dp"
+        android:weightSum="3">
+        <TextView
+            android:id="@+id/tv_billed_Amt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/tv_pending_Amt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/et_amt"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:hint="0"
+            android:textSize="13sp"
+            android:ems="3"
+            android:maxLength="8"
+            android:visibility="visible"
+            android:inputType="number"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/shape_rect_edit"
+            android:textColor="@color/black"
+            android:focusable="false"
+
+            android:importantForAutofill="no"/>
+        <TextView
+            android:id="@+id/tv_paid_Amt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:visibility="gone"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/quantum_black_divider"/>
+
+   <!--     <TextView
+            android:id="@+id/tv_bill_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/tv_bill_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/tv_billed_Amt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/tv_pending_Amt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+
+            android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/et_amt"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:hint="@string/zero"
+        android:textSize="13sp"
+        android:ems="3"
+        android:maxLength="5"
+        android:visibility="visible"
+        android:inputType="number"
+       android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/shape_rect_edit"
+        android:textColor="@color/black"
+        android:importantForAutofill="no"
+        />-->
+
+    </LinearLayout>
+

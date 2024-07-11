@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -97,6 +98,8 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
     String type = "";
 
     ImageView swipe_left_image;
+    TextView tv_no_data;
+    CardView card_date;
 
     //Updateed
     @Override
@@ -165,7 +168,8 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
             tvStartDate = findViewById(R.id.tvStartDate);
             tvEndDate = findViewById(R.id.tvEndDate);
             tvSalesReturn = findViewById(R.id.tvSalesReturn);
-
+            tv_no_data=findViewById(R.id.tv_no_data);
+            card_date=findViewById(R.id.card_date);
 
             lin_noOrder.setOnClickListener(this);
             lastinvoice.setOnClickListener(this);
@@ -191,6 +195,7 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
             tvOutstanding.setText(CurrencySymbol+" 0.00");
 
             loadNoOrdRemarks();
+
             btnRmkClose.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -247,6 +252,11 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
                 linVanSales.setVisibility(View.VISIBLE);
                 lin_invoice.setVisibility(View.GONE);
                 lin_complementary.setVisibility(View.GONE);
+                lin_order.setVisibility(View.GONE);
+
+                lin_noOrder.setVisibility(View.VISIBLE);
+
+                card_date.setVisibility(View.GONE);
             }
             if (!Common_Class.isNullOrEmpty(Shared_Common_Pref.CUSTOMER_CODE)) {
                 //  common_class.getDentDatas(this);
@@ -261,7 +271,11 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
                 findViewById(R.id.llSecParent).setVisibility(View.GONE);
                 common_class.getDataFromApi(Constants.SR_GetTodayOrder_List, this, false);
 
-            } else {
+            } else if(Shared_Common_Pref.SFA_MENU.equalsIgnoreCase("VanSalesDashboardRoute")){
+
+            common_class.getDataFromApi(Constants.Van_GetTodayOrder_List, this, false);
+
+        }else {
                 common_class.getDataFromApi(Constants.GetTodayOrder_List, this, false);
 
             }
@@ -323,7 +337,11 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
                     tv.setText(date);
                     if (sharedCommonPref.getvalue(Shared_Common_Pref.DCRMode).equalsIgnoreCase("SR"))
                         common_class.getDataFromApi(Constants.SR_GetTodayOrder_List, Invoice_History.this, false);
-                    else
+                    else if(Shared_Common_Pref.SFA_MENU.equalsIgnoreCase("VanSalesDashboardRoute")){
+
+                        common_class.getDataFromApi(Constants.Van_GetTodayOrder_List, Invoice_History.this, false);
+
+                    }else
 
                         common_class.getDataFromApi(Constants.GetTodayOrder_List, Invoice_History.this, false);
                 } else {
@@ -413,8 +431,21 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
                 overridePendingTransition(R.anim.in, R.anim.out);
                 break;
             case R.id.lin_payment:
-                common_class.CommonIntentwithoutFinish(PaymentActivity.class);
-                overridePendingTransition(R.anim.in, R.anim.out);
+                /*common_class.CommonIntentwithoutFinish(PaymentActivity.class);
+                overridePendingTransition(R.anim.in, R.anim.out);*/
+                if(Shared_Common_Pref.SFA_MENU.equalsIgnoreCase("VanSalesDashboardRoute")){
+
+                    common_class.CommonIntentwithoutFinish(VanSalePaymentNewActivity.class);
+
+                    overridePendingTransition(R.anim.in, R.anim.out);
+
+                }else {
+
+                    common_class.CommonIntentwithoutFinish(PaymentActivity.class);
+
+                    overridePendingTransition(R.anim.in, R.anim.out);
+
+                }
                 break;
             case R.id.tvOtherBrand:
                 common_class.CommonIntentwithFinish(OtherBrandActivity.class);
@@ -663,6 +694,10 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
                         HeadItem.put("UKey", Common_Class.GetEkey());
                         HeadItem.put("orderValue", "0");
                         HeadItem.put("DataSF", Shared_Common_Pref.Sf_Code);
+                        String orderType="secOrder";
+                        if(Shared_Common_Pref.SFA_MENU.equalsIgnoreCase("VanSalesDashboardRoute"))
+                            orderType="vanSales";
+                        HeadItem.put("ordType", orderType);
                         ActivityData.put("Activity_Report_Head", HeadItem);
 
                         JSONObject OutletItem = new JSONObject();
@@ -820,7 +855,9 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
                     case Constants.SR_GetTodayOrder_List:
                         setHistoryAdapter(apiDataResponse);
                         break;
-
+                    case Constants.Van_GetTodayOrder_List:
+                        setHistoryAdapter(apiDataResponse);
+                        break;
                     case Constants.PreOrderQtyList:
                         JSONObject jsonObjectPreOrder = new JSONObject(apiDataResponse);
                         if (jsonObjectPreOrder.getBoolean("success")) {
@@ -854,6 +891,20 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
                 }
             }
         }
+        if(FilterOrderList.size()==0){
+
+            tv_no_data.setVisibility(View.VISIBLE);
+
+            invoicerecyclerview.setVisibility(View.GONE);
+
+        }else{
+
+            tv_no_data.setVisibility(View.GONE);
+
+            invoicerecyclerview.setVisibility(View.VISIBLE);
+
+        }
+
         mReportViewAdapter = new Invoice_History_Adapter(Invoice_History.this, FilterOrderList, new AdapterOnClick() {
             @Override
             public void onIntentClick(int position) {
@@ -882,6 +933,7 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
         intent.putExtra("PONumber", FilterOrderList.get(position).getOrderNo());
         intent.putExtra("NetAmount", FilterOrderList.get(position).getNetAmount());
         intent.putExtra("Discount_Amount", FilterOrderList.get(position).getDiscount_Amount());
+        intent.putExtra("Cash_Discount",FilterOrderList.get(position).getTotCashDisc());
         startActivity(intent);
         overridePendingTransition(R.anim.in, R.anim.out);
 

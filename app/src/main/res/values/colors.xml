@@ -83,4 +83,7 @@
     <color name="primaryColor">#009BE1</color>
     <color name="Primary_blue">#1997CE</color>
     <color name="bg_light_blue">#E8F5FB</color>
+
+    <color name="call_preview_header_line">#989898</color>
+    <color name="quantum_black_divider">#1f000000</color>
 </resources>

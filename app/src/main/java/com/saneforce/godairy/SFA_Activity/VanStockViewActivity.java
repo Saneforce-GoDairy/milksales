@@ -46,6 +46,7 @@ public class VanStockViewActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_van_stockview);
 
+
         sharedCommonPref = new Shared_Common_Pref(VanStockViewActivity.this);
         common_class = new Common_Class(this);
 
@@ -169,7 +170,7 @@ public class VanStockViewActivity extends AppCompatActivity implements View.OnCl
 //            tvTotStkQty.setText("" + totStk);
 
 
-          //  tvUnLoadAmt.setText(CurrencySymbol+" " + formatter.format(getIntent().getDoubleExtra("stkLoadAmt", 0) - salAmt));
+            //  tvUnLoadAmt.setText(CurrencySymbol+" " + formatter.format(getIntent().getDoubleExtra("stkLoadAmt", 0) - salAmt));
 
             rvVanStockDets.setAdapter(new rvVanStockview(arr, R.layout.layvanstockadb, this));
 
@@ -178,7 +179,5 @@ public class VanStockViewActivity extends AppCompatActivity implements View.OnCl
         }
 
     }
-
-
 
 }

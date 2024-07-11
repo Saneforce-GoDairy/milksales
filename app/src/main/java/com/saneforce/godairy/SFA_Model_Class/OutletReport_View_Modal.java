@@ -526,7 +526,9 @@ public class OutletReport_View_Modal {
     @SerializedName("Discount_Amount")
     @Expose
     private String Discount_Amount = "";
-
+    @SerializedName("CashDiscount")
+    @Expose
+    private Double totCashDisc = 0.0;
     @SerializedName("InvoiceID")
     @Expose
     private String InvoiceID = "";
@@ -613,6 +615,10 @@ public class OutletReport_View_Modal {
         Discount_Amount = discount_Amount;
     }
 
+    public Double getTotCashDisc() {return totCashDisc;}
+
+    public void setTotCashDisc(Double totCashDisc) {this.totCashDisc = totCashDisc;
+    }
     public String getInvoice_Flag() {
         return Invoice_Flag;
     }

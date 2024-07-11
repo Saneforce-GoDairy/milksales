@@ -449,6 +449,10 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".SFA_Activity.VanSalePaymentNewActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".SFA_Activity.PaymentActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
@@ -592,6 +596,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".SFA_Activity.VanSalStockUnLoadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SFA_Activity.VanSalStockTopUpActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SFA_Activity.VanSalStockLoadActivity"

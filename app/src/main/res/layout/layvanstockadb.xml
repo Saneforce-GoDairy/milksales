@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -173,6 +173,562 @@
             </LinearLayout>
 
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C5dp"
+                android:background="@color/black"
+                android:outlineAmbientShadowColor="@color/statuscolor"></View>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="UnLoading Stock Amount : "
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvUnLoadStkAmt"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="₹8000.00"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/color_red"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/C10dp"
+        android:layout_weight="1"
+        android:padding="@dimen/C8dp"
+        app:cardCornerRadius="@dimen/C5dp">
+
+        <LinearLayout
+            android:layout_marginBottom="@dimen/C10dp"
+            android:id="@+id/lin_orderrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:text="Loading Stock Amount : "
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvLoadStkAmt"
+                    style="@style/TextStyle"
+                    android:text="₹8000.00"
+                    android:textColor="@color/green"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:text="Stock Details"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/tvVSPayDate"
+                    style="@style/TextStyle"
+                    android:text="Date : 25-05-2022"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C5dp"
+                android:background="@color/black"
+                android:outlineAmbientShadowColor="@color/statuscolor"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:id="@+id/tvSku"
+                    style="@style/TextStyle"
+                    android:layout_weight="1.5"
+                    android:text="SKU"></TextView>
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:gravity="end"
+                    android:textAlignment="viewEnd"
+                    android:id="@+id/tvStockQty"
+                    style="@style/TextStyle"
+                    android:layout_weight="0.5"
+                    android:text="Load\nQty"></TextView>
+                <TextView
+                    android:textStyle="bold"
+                    android:text="Topup\nQty"
+                    android:layout_width="0dp"
+                    android:textAlignment="textEnd"
+                    android:id="@+id/tvTopUpQty"
+                    style="@style/TextStyle"
+                    android:layout_weight="0.5"
+                    ></TextView>
+                <TextView
+                    android:textStyle="bold"
+                    android:text="Total\nQty"
+                    android:layout_width="0dp"
+                    android:textAlignment="textEnd"
+                    android:id="@+id/tvTotLoad"
+                    style="@style/TextStyle"
+                    android:layout_weight="0.5"
+                    ></TextView>
+                <TextView
+                    android:textStyle="bold"
+                    android:text="Sale\nQty"
+                    android:layout_width="0dp"
+                    android:textAlignment="textEnd"
+                    android:id="@+id/tvSalQty"
+                    style="@style/TextStyle"
+                    android:layout_weight="0.5">
+                </TextView>
+
+                <TextView
+                    android:textStyle="bold"
+                    android:text="Unload\nQty"
+                    android:layout_width="0dp"
+                    android:textAlignment="textEnd"
+                    android:id="@+id/tvUnloadQty"
+                    style="@style/TextStyle"
+                    android:layout_weight="0.5">
+
+                </TextView>
+
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C5dp"
+                android:background="@color/black"
+                android:outlineAmbientShadowColor="@color/statuscolor"></View>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvVanSal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C5dp"
+                android:background="@color/black"
+                android:outlineAmbientShadowColor="@color/statuscolor"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="Total Loading Qty"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotLoadQty"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text=""
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="Total Loading Value"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotLoadVal"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text=""
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="Total Topup Qty"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotTopUpQty"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text=""
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="Total Topup Value"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotTopUpVal"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text=""
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="Total Sale Qty"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotSalQty"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text=""
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="Total Sale Value"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotSalVal"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text=""
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="Total UnLoad Qty"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotUnLoadQty"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text=""
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="Total UnLoad Value"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotUnLoadVal"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text=""
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C5dp"
+                android:background="@color/black"
+                android:outlineAmbientShadowColor="@color/statuscolor"></View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/ll_vanData">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="SalesManName"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvsalesManName"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="Vehicle No"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvVehicleNo"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="Starting KM"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvSrtKm"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="CheckIn Date"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvCheckInDate"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="CheckIn Time"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvCheckInTime"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="Closing KM"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvEndKm"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="CheckOut Date"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvCheckOutDate"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="CheckOut Time"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvCheckOutTime"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:text="Total KM"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+
+                        android:id="@+id/tvTotalKm"
+                        style="@style/TextStyle"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text=""
+                        android:textStyle="bold"></TextView>
+                </LinearLayout>
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

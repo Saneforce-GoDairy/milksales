@@ -28,11 +28,14 @@ import java.text.NumberFormat;
 public class VanSalPaymentActivity extends AppCompatActivity implements UpdateResponseUI {
 
     Common_Class common_class;
-    TextView tvDt, tvLoadAmt, tvUnLoadAmt, tvTotVanSal;
+    TextView tvDt, tvLoadAmt, tvUnLoadAmt, tvTotVanSal,tvTotCollAmt,tvTotCredit;
     NumberFormat formatter = new DecimalFormat("##0.00");
     RecyclerView rvVanSales;
     private double salAmt;
     private double totStkAmt;
+    public static String stDate = "", endDate = "";
+    private double collectAmt,creditAmt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +49,14 @@ public class VanSalPaymentActivity extends AppCompatActivity implements UpdateRe
         tvDt = findViewById(R.id.tvVSPayDate);
         rvVanSales = findViewById(R.id.rvVanSal);
         tvTotVanSal = findViewById(R.id.tvTotSal);
+        tvTotCollAmt = findViewById(R.id.tvTotCollAmt);
+        tvTotCredit=findViewById(R.id.tvTotCredit);
         tvDt.setText("Date : " + Common_Class.GetDatemonthyearformat());
 
-        totStkAmt = getIntent().getDoubleExtra("stkLoadAmt", -1);
+        totStkAmt = getIntent().getDoubleExtra("stkLoadAmt",-1.00 );
 
         if (totStkAmt == -1) {
-            common_class.getDb_310Data(Constants.VAN_STOCK, this);
+            common_class.getDb_310Data(Constants.VAN_STOCK_AMT, this);
         } else {
             tvLoadAmt.setText(CurrencySymbol+" " + formatter.format(totStkAmt));
 
@@ -74,7 +79,7 @@ public class VanSalPaymentActivity extends AppCompatActivity implements UpdateRe
                     Log.v(key, apiDataResponse);
                     setHistoryAdapter(apiDataResponse);
                     break;
-                case Constants.VAN_STOCK:
+                case Constants.VAN_STOCK_AMT:
                     JSONObject stkObj = new JSONObject(apiDataResponse);
                     totStkAmt = 0;
                     if (stkObj.getBoolean("success")) {
@@ -106,16 +111,22 @@ public class VanSalPaymentActivity extends AppCompatActivity implements UpdateRe
 
                 JSONArray filterArr = new JSONArray();
                 salAmt = 0;
+                collectAmt=0;
+                creditAmt=0;
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
 
                     if (obj.getString("Status") != null && obj.getString("Status").equalsIgnoreCase("VANSALES")) {
                         salAmt += obj.getDouble("Order_Value");
+                        collectAmt+= obj.getDouble("Collect_Amt");
+                        creditAmt+=(obj.getDouble("Order_Value")-obj.getDouble("Collect_Amt"));
                         filterArr.put(obj);
                     }
                 }
                 tvTotVanSal.setText(CurrencySymbol+" "+ formatter.format(salAmt));
+                tvTotCollAmt.setText(CurrencySymbol+" "+ formatter.format(collectAmt));
+                tvTotCredit.setText(CurrencySymbol+" "+ formatter.format(creditAmt));
 
                 tvUnLoadAmt.setText(CurrencySymbol+" " + formatter.format(totStkAmt - salAmt));
                 rvVanSales.setAdapter(new Pay_Adapter(filterArr, R.layout.adapter_vansales_pay, VanSalPaymentActivity.this));
@@ -168,6 +179,9 @@ public class VanSalPaymentActivity extends AppCompatActivity implements UpdateRe
                 holder.tvInvNo.setText("" + obj.getString("OrderNo"));
 
                 holder.tvAmt.setText(CurrencySymbol+" " + formatter.format(obj.getDouble("Order_Value")));
+                holder.tvRetailerName.setText("" + obj.getString("Cus_Name"));
+                holder.tvCollectedAmt.setText(CurrencySymbol+" " + formatter.format(obj.getDouble("Collect_Amt")));
+                holder.tvCredit.setText(CurrencySymbol+" " + formatter.format(obj.getDouble("Order_Value") -obj.getDouble("Collect_Amt")));
 
 
             } catch (Exception e) {
@@ -183,7 +197,7 @@ public class VanSalPaymentActivity extends AppCompatActivity implements UpdateRe
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView tvSNo, tvInvNo, tvAmt;
+            public TextView tvSNo, tvInvNo, tvAmt,tvRetailerName,tvCollectedAmt,tvCredit;
 
 
             public MyViewHolder(View view) {
@@ -191,6 +205,9 @@ public class VanSalPaymentActivity extends AppCompatActivity implements UpdateRe
                 tvSNo = view.findViewById(R.id.tvSNo);
                 tvInvNo = view.findViewById(R.id.tvInvNum);
                 tvAmt = view.findViewById(R.id.tvAmount);
+                tvRetailerName=view.findViewById(R.id.tvRetailerName);
+                tvCollectedAmt=view.findViewById(R.id.tvCollectedAmt);
+                tvCredit=view.findViewById(R.id.tvCredit);
 
             }
         }
