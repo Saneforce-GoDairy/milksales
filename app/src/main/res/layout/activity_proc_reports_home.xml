@@ -30,6 +30,75 @@
         android:layout_margin="10dp"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New forms"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textSize="15sp"/>
+
+            <View
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginStart="5dp"
+                android:background="#CACACA"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/agent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/C50dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            tools:ignore="UnusedAttribute"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agent"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:fontFamily="@font/ubuntu_medium"
+                tools:ignore="RelativeOverlap" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrow_right"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/back" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical">
+
+            <View
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginStart="5dp"
+                android:background="#CACACA"/>
+
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/agronomist"
             android:layout_width="match_parent"

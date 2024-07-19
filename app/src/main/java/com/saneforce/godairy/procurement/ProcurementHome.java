@@ -1,7 +1,6 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_SUBDIVISION;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.ProcSubDivison;
@@ -25,14 +23,14 @@ import com.saneforce.godairy.databinding.ActivityProcurementHomeBinding;
 import com.saneforce.godairy.procurement.custom_form.CustomFormDashboardActivity;
 import com.saneforce.godairy.procurement.custom_form.ReportHomeActivity;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
+import com.saneforce.godairy.procurement.reports.AgentReportActivity;
+import com.saneforce.godairy.procurement.reports.FarmerCreationReportActivity;
 import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
 import com.saneforce.godairy.procurement.ska.ExistingFarmerVisitActivity;
 import com.saneforce.godairy.procurement.ska.NewFarmerCreationActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,10 +122,8 @@ public class ProcurementHome extends AppCompatActivity {
             R.drawable.ic_agent,
             R.drawable.ic_collection,
             R.drawable.ic_procurement,
-                    R.drawable.ic_procurement,
                     R.drawable.ic_maintanence,
                     R.drawable.ic_maintanence,
-                    R.drawable.new_farmer_crea,
                     R.drawable.ic_agent));
 
     ArrayList<String> dashboardName = new ArrayList<>(Arrays.asList(
@@ -139,10 +135,8 @@ public class ProcurementHome extends AppCompatActivity {
             "Existing Agent Visit" ,
             "Collection Center Location" ,
             "Procurement Asset",
-            "Farmer Creation",
             "Maintenance Regular",
             "Existing center visit",
-            "New farmer creation",
             "Existing Farmer Visit"
     ));
         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
@@ -162,6 +156,8 @@ public class ProcurementHome extends AppCompatActivity {
 
         binding.csForm.setOnClickListener(v -> startActivity(new Intent(context, CustomFormDashboardActivity.class)));
         binding.csFormReport.setOnClickListener(v -> startActivity(new Intent(context, ReportHomeActivity.class)));
+        binding.agent.setOnClickListener(v -> startActivity(new Intent(context, AgentReportActivity.class)));
+        binding.farmer.setOnClickListener(v -> startActivity(new Intent(context, FarmerCreationReportActivity.class)));
     }
 
     public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
@@ -223,21 +219,14 @@ public class ProcurementHome extends AppCompatActivity {
                         break;
 
                     case 8:
-                        startActivity(new Intent(context, FarmerCreationActivity.class));
-                        break;
-                    case 9:
                         startActivity(new Intent(context, MaintanenceRegularActivity.class));
                         break;
 
-                    case 10:
+                    case 9:
                         startActivity(new Intent(context, ExistingCenterVisitActivity.class));
                         break;
 
-                    // for ska clients
-                    case 11:
-                        startActivity(new Intent(context, NewFarmerCreationActivity.class));
-                        break;
-                    case 12:
+                    case 10:
                         startActivity(new Intent(context, ExistingFarmerVisitActivity.class));
                         break;
                 }

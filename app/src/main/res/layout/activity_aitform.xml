@@ -51,7 +51,6 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -238,7 +237,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
 
                     <TextView
                         android:id="@+id/txt_breed_image_not_valid"

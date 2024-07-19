@@ -61,7 +61,7 @@ public class FarmerCreaReportAdapter extends RecyclerView.Adapter<FarmerCreaRepo
             throw new RuntimeException(e);
         }
 
-        String BASE_URL_PROCUREMENT_IMG = url.getProtocol() + "://" + url.getHost() + "/" + "Proc_Photos/";
+        String BASE_URL_PROCUREMENT_IMG = url.getProtocol() + "://" + url.getHost() + "/" + "Procurement/Proc_Photos/";
         Log.e("proc_img_url", BASE_URL_PROCUREMENT_IMG);
 
         Glide.with(context)

@@ -194,45 +194,6 @@ public class AgronomistFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-                     /*
-           Camera access id
-
-           1, AgronomistFormActivity
-              Farmers meeting = 1
-              CSR Activity    = 2
-              Fodder Development Ac = 3
-
-           2, AITFormActivity
-              breed = 4
-
-           3, CollectionCenterLocationActivity
-              Collection center image = 5
-
-           4, VeterinaryDoctorsFormActivity
-              Type of image image = 6
-              Emergency treatment/EVM Treatment (Breed) = 7
-
-            5, QualityFormActivity
-               Quality fat = 8
-               Quality snf = 9
-               No of vehicle received with hoods = 10
-               No of vehicle received without hoods = 11
-               Awareness program = 12
-
-            6, FarmerCreationActivity
-               Farmer image = 13
-
-            7, MaintenanceIssueActivity
-               Type of repair image = 14
-
-            8, MaintenanceRegularActivity
-               DG Set Running Hrs, After Last Services = 15
-
-            9, New farmer creation ska
-               Competitors = 16
-         */
-
-
         binding.cameraFarmersMeeting.setOnClickListener(view -> {
             binding.txtFarmersImageNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -411,7 +372,7 @@ public class AgronomistFormActivity extends AppCompatActivity {
                         // updatePlant();
                     } catch (IOException | JSONException e) {
                         //  throw new RuntimeException(e);
-                        Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Plant list load error! :" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

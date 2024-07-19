@@ -5,11 +5,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-
 import com.saneforce.godairy.Model_Class.ProcSubDivison;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseManager {
     public static final String TABLE_NAME = "proc_sub_division";

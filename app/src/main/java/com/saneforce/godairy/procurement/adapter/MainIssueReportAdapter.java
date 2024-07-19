@@ -49,7 +49,7 @@ public class MainIssueReportAdapter extends RecyclerView.Adapter<MainIssueReport
             throw new RuntimeException(e);
         }
 
-        String BASE_URL_PROCUREMENT_IMG = url.getProtocol() + "://" + url.getHost() + "/" + "Proc_Photos/";
+        String BASE_URL_PROCUREMENT_IMG = url.getProtocol() + "://" + url.getHost() + "/" + "Procurement/Proc_Photos/";
 
         Glide.with(context)
                 .load(BASE_URL_PROCUREMENT_IMG + maintenIssueList.get(position).getRepair_type_img())

@@ -36,6 +36,12 @@ public class AppConstants {
  public static final String PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST = "get_custom_field_list";
  public static final String PROCUREMENT_SAVE_CUSTOM_FORM = "save_custom_form";
  public static final String PROCUREMENT_GET_CUSTOM_FORM_REPORTS = "get_custom_reports";
+ public static final String MAS_GET_STATES = "get_states";
+ public static final String MAS_GET_DISTRICTS = "get_districts";
+ public static final String PROCUREMENT_SAVE_AGENT = "save_agent";
+ public static final String PROCUREMENT_SAVE_FARMER_CEATION = "save_farmer2";
+ public static final String PROCUREMENT_GET_AGENT = "get_agent";
+ public static final String PROCUREMENT_SAVE_MILK_COLLECTION = "save_milk_collection";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}

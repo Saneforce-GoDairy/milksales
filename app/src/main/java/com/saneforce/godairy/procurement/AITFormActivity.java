@@ -117,6 +117,9 @@ public class AITFormActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
+
+
     private void loadSubDivision() {
         subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
         listSub.add("Select");

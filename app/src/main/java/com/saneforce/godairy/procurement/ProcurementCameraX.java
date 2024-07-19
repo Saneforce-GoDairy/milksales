@@ -150,93 +150,104 @@ public class ProcurementCameraX extends AppCompatActivity {
         String cameraEventId = getIntent().getStringExtra("camera_id");
 
         switch (Integer.parseInt(cameraEventId)){
-            case 1:
-                farmersMeetingImage();
+
+            case 24:
+                imageName = "FAMC2_123" + ".jpg";
+                file = new File(DIR, imageName);
                 break;
 
-            case 2:
-                csrActivityImage();
+            case 23:
+                agentCreat();
                 break;
 
-            case 3:
-                fodderDevAcres();
-                break;
-
-            case 4:
-                nameOfBreed();
-                break;
-
-            case 5:
-                collectionCenter();
-                break;
-
-            case 6:
-                VeteriDocFormTypeOfSer();
-                break;
-
-            case 7:
-                VeteriDocFormEVM();
-                break;
-
-            case 8:
-                qualityFormFat();
-                break;
-
-            case 9:
-                qualityFormSNF();
-                break;
-
-            case 10:
-                qualityReceivedNofVehicle();
-                break;
-
-            case 11:
-                qualityReceivedNofVehicleWithout();
-                break;
-
-            case 12:
-                qualityAws();
-                break;
-
-            case 13:
-                farmerCreation();
-                break;
-
-            case 14:
-                maintenanceRepair();
-                break;
-
-            case 15:
-                maintenanceRegular();
-                break;
-
-            case 16:
-                newFarCreatCompetitor(); // ska client
-                break;
-
-            case 17:
-                maintenanceBoardIs();
-                break;
-
-            case 18:
-                maintenanceSMBS();
-                break;
-
-            case 19:
-                maintenanceMotorIs();
-                break;
-
-            case 20:
-                maintenanceWeighSca();
+            case 22:
+                maintenanceAsPerBook();
                 break;
 
             case 21:
                 maintenanceRegNoHrs();
                 break;
 
-            case 22:
-                maintenanceAsPerBook();
+            case 20:
+                maintenanceWeighSca();
                 break;
+
+            case 19:
+                maintenanceMotorIs();
+                break;
+
+            case 18:
+                maintenanceSMBS();
+                break;
+
+            case 17:
+                maintenanceBoardIs();
+                break;
+
+            case 16:
+                newFarCreatCompetitor(); // ska client
+                break;
+
+            case 15:
+                maintenanceRegular();
+                break;
+
+            case 14:
+                maintenanceRepair();
+                break;
+
+            case 13:
+                farmerCreation();
+                break;
+
+            case 12:
+                qualityAws();
+                break;
+
+            case 11:
+                qualityReceivedNofVehicleWithout();
+                break;
+
+            case 10:
+                qualityReceivedNofVehicle();
+                break;
+
+            case 9:
+                qualityFormSNF();
+                break;
+
+            case 8:
+                qualityFormFat();
+                break;
+
+            case 7:
+                VeteriDocFormEVM();
+                break;
+
+            case 6:
+                VeteriDocFormTypeOfSer();
+                break;
+
+            case 5:
+                collectionCenter();
+                break;
+
+            case 4:
+                nameOfBreed();
+                break;
+
+            case 3:
+                fodderDevAcres();
+                break;
+
+            case 2:
+                csrActivityImage();
+                break;
+
+            case 1:
+                farmersMeetingImage();
+                break;
+
         }
 
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
@@ -276,6 +287,11 @@ public class ProcurementCameraX extends AppCompatActivity {
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    private void agentCreat() {
+        imageName = "AGENT_CREAT_123" + ".jpg";
+        file = new File(DIR, imageName);
     }
 
     private void maintenanceAsPerBook() {

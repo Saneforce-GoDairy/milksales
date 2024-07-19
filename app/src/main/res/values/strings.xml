@@ -366,6 +366,12 @@
     <string name="remarks_purpose_of_visit">Remarks (Purpose of Visit)<font fgcolor='#E53935'> *</font></string>
     <string name="remarks_purpose_of_visit_without_star">Remarks (Purpose of Visit)</string>
 
+    <array name="agent_type">
+        <item>Select</item>
+        <item>Exclusive Agent</item>
+        <item>Dual Agent</item>
+    </array>
+
     <array name="company_array">
         <item>Select</item>
         <item>Tirumala Milk</item>

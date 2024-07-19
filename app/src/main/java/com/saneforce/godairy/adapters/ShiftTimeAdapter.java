@@ -106,6 +106,6 @@ public class ShiftTimeAdapter extends RecyclerView.Adapter<ShiftTimeAdapter.View
     }
 
     public interface OnClickInterface{
-        public void onClickInterface(Intent intent);
+            public void onClickInterface(Intent intent);
     }
 }

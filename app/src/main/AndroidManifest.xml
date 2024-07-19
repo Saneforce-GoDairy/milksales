@@ -59,10 +59,16 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name=".procurement.reports.MaintenanceIssueReportAct"
+            android:name=".procurement.MilkCollEntryActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.TestActivity"
+            android:name=".procurement.reports.AgentReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.AgentCreatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.MaintenanceIssueReportAct"
             android:exported="false" />
         <activity
             android:name=".procurement.custom_form.ReportPreviewActivity"
@@ -215,9 +221,6 @@
             android:exported="false" />
         <activity
             android:name=".Activity_Hap.LoginHome"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.TestActivity"
             android:exported="false" />
         <activity
             android:name=".CCAvenue.StatusActivity"

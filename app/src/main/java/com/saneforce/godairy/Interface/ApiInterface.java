@@ -10,15 +10,11 @@ import com.saneforce.godairy.Model_Class.Model;
 import com.saneforce.godairy.Model_Class.POSDataList;
 import com.saneforce.godairy.Model_Class.ReportDataList;
 import com.saneforce.godairy.Model_Class.RetailerViewDetails;
-
 import org.json.JSONArray;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.transform.Result;
-
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -43,7 +39,6 @@ public interface ApiInterface {
     @GET("Db_v300.php?")
     Call<Model> login(@Query("axn") String axn, @Query("Email") String Email, @Query("UserID") String UserID, @Query("Pwd") String Password, @Query("AppVer") String AppVer, @Query("DvID") String deveiceId);
 
-
     @POST("db_new_activity.php?")
     Call<Object> GettpWorktypeFields(@QueryMap Map<String, String> params);
 
@@ -59,17 +54,12 @@ public interface ApiInterface {
     @GET("Db_v300.php?")
     Call<JsonArray> getSetups(@Query("axn") String axn, @Query("rSF") String Sf_code);
 
-
-
-
-    /* get Data as Array List */
     @GET("Db_v300.php?")
     Call<JsonArray> getDataArrayList(@Query("axn") String axn, @Query("divisionCode") String divisionCode, @Query("Sf_code") String Sf_code);
 
     @FormUrlEncoded
     @POST("Db_v310.php?")
     Call<JsonArray> getDataArrayList(@Query("axn") String axn, @Field("data") String data);
-
 
     @FormUrlEncoded
     @POST("Db_v300.php?")
@@ -110,11 +100,9 @@ public interface ApiInterface {
     @POST("Db_v300.php?")
     Call<JsonArray> getDataArrayList(@Query("axn") String axn, @Query("divisionCode") String divisionCode, @Query("sfCode") String Sf_code, @Query("State_Code") String State_code, @Query("desig") String desig, @Field("data") String body);
 
-
     @FormUrlEncoded
     @POST("Db_v300.php?")
     Call<JsonArray> getDataArrayListDist(@Query("axn") String axn, @Query("divisionCode") String divisionCode, @Query("sfCode") String Sf_code, @Query("distributorId") String distributorId, @Query("desig") String desig, @Field("data") String body);
-
 
     @FormUrlEncoded
     @POST("Db_v300.php?")
@@ -164,9 +152,7 @@ public interface ApiInterface {
     @POST("db_activity.php?axn=save/view")
     Call<ResponseBody> saveView(@Field("data") String userData);
 
-
     /*LEAVE APPROVAL*/
-
     @GET("Db_v300.php?")
     Call<List<Approval>> approval(@Query("axn") String axn, @Query("divisionCode") String divisionCode, @Query("Sf_code") String Sf_code, @Query("rSF") String rSf, @Query("State_Code") String State_code);
 
@@ -177,7 +163,6 @@ public interface ApiInterface {
     @Multipart
     @POST("Db_v300.php")
     Call<Result> addImage(@Part MultipartBody.Part file);
-
 
     @POST("Db_v300.php")
     Call<ResponseBody> changePassword(@Query("axn") String axn,
@@ -216,19 +201,16 @@ public interface ApiInterface {
     Call<Object> GetPJPApproval(@Query("divisionCode") String disvisonCode, @Query("sfCode") String sfCode,
                                                          @Query("rSF") String rSF, @Query("State_Code") String StateCode, @Query("axn") String axn,
                                                          @Field("data") String data);
-
     @FormUrlEncoded
     @POST("Db_v300.php?axn=table/list")
     Call<Object> GettpRespnse(@Query("divisionCode") String disvisonCode, @Query("sfCode") String sFCode,
                               @Query("rSF") String rSF, @Query("State_Code") String StateCode, @Query("CMonth") String CMonth, @Query("CYr") String CYr,
                               @Field("data") String data);
-
     @FormUrlEncoded
     @POST("Db_v300.php")
     Call<Object> GetTPObject1(@Query("AMod") String Amod, @Query("divisionCode") String disvisonCode, @Query("sfCode") String sFCode,
                               @Query("rSF") String rSF, @Query("State_Code") String StateCode, @Query("axn") String axn,
                               @Field("data") String data);
-
     @FormUrlEncoded
     @POST("Db_v300.php?axn=dcr/save")
     Call<JsonObject> leaveSubmit(@Query("sf_name") String SfName, @Query("divisionCode") String disvisonCode, @Query("sfCode") String sFCode,
@@ -349,8 +331,6 @@ public interface ApiInterface {
     @POST("db_new_activity.php?axn=reject/taapprove")
     Call<ResponseBody> rejectTAApprove(@Field("data") String userData);
 
-    /*Done by Karthic */
-
     /*category*/
     @FormUrlEncoded
     @POST("Db_v301.php?axn=table/list")
@@ -428,7 +408,6 @@ public interface ApiInterface {
     @POST("Db_v300.php")
     Call<Object> getHolidayStatus(@Query("AMod") String Amod, @Query("divisionCode") String disvisonCode, @Query("sfCode") String sFCode, @Query("rSF") String rSF, @Query("State_Code") String StateCode, @Query("axn") String axn, @Field("data") String data);
 
-
     @FormUrlEncoded
     @POST("db_new_activity.php")
     Call<Object> getHolidayStatuss(@Query("AMod") String Amod, @Query("divisionCode") String disvisonCode, @Query("sfCode") String sFCode, @Query("rSF") String rSF, @Query("State_Code") String StateCode, @Query("axn") String axn, @Field("data") String data);
@@ -447,7 +426,6 @@ public interface ApiInterface {
 
     @POST("db_new_activity.php?axn=get/taapprovehistory")
     Call<JsonArray> getTaApprovHistory(@Query("SF_Code") String SF_Code);
-
 
     @FormUrlEncoded
     @POST("db_new_activity.php?axn=get/expensesflist")
@@ -471,24 +449,20 @@ public interface ApiInterface {
     Call<ResponseBody> CheckImage(@Query("sfCode") String sfcode,
                                   @Part MultipartBody.Part files);
 
-
     @Multipart
     @POST("db_new_activity.php?axn=upload/checkinimage")
     Call<ResponseBody> onTAFileUpload(@Query("sfCode") String sfcode, @Query("FileName") String FileName, @Query("Mode") String Mode,
                                       @Part MultipartBody.Part file);
-
 
     @Multipart
     @POST("db_new_activity.php?axn=upload/checkinimage")
     Single<ResponseBody> onFileUpload(@Query("sfCode") String sfcode, @Query("FileName") String FileName, @Query("Mode") String Mode,
                                       @Part MultipartBody.Part file);
 
-
     @Multipart
     @POST("db_new_activity.php?axn=upload/checkinimage")
     Call<ResponseBody> outletFileUpload(@Query("sfCode") String sfcode, @Query("FileName") String FileName, @Query("Mode") String Mode,
                                         @Part MultipartBody.Part file);
-
 
     @POST("db_new_activity.php?axn=get/TA_Image")
     Call<JsonArray> allPreview(@Query("U_key") String keyCode,
@@ -514,7 +488,6 @@ public interface ApiInterface {
     @POST("db_new_activity.php?axn=save/editstartactivity")
     Call<JsonObject> upteAllowance(@Field("data") String body);
 
-
     @FormUrlEncoded
     @POST("db_v310.php?axn=save/salescalls")
     Call<JsonObject> saveCalls(@Query("divisionCode") String div_code, @Query("Sf_code") String sf_code, @Field("data") String toString);
@@ -535,7 +508,6 @@ public interface ApiInterface {
     @POST("db_v310.php?")
     Call<JsonObject> savePOSStock(@Query("axn") String axn, @Query("divisionCode") String div_code, @Query("Sf_code") String sf_code, @Field("data") String toString);
 
-
     @FormUrlEncoded
     @POST("db_v310.php?")
     Call<JsonObject> saveIndent(@Query("axn") String axn, @Query("divisionCode") String div_code, @Query("Sf_code") String sf_code, @Field("data") String toString);
@@ -547,7 +519,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("db_v310.php?axn=save/posorder")
     Call<JsonObject> savePOS(@Query("divisionCode") String div_code, @Query("Sf_code") String sf_code, @Field("data") String toString);
-
 
     @FormUrlEncoded
     @POST("db_v310.php?axn=save/primaryorder")
@@ -627,7 +598,6 @@ public interface ApiInterface {
     @POST("Db_v300.php?axn=get/ondutystat")
     Call<JsonObject> getOnDutyStatus(@Field("data") String body);
 
-
     @FormUrlEncoded
     @POST("Db_v300.php?axn=save/ondutyupdate")
     Call<JsonObject> viewStatusUpdate(@Field("data") String body);
@@ -639,7 +609,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Db_v300_i.php?axn=approve/pjpdetails")
     Call<JsonObject> pjpApprove(@Query("sfCode") String sFCode, @Query("rSF") String rSF,@Query("Confirmed_Date") String ConfirmedDate,@Field("data") String body);
-
 
     @FormUrlEncoded
     @POST("Db_v310.php?")
@@ -662,11 +631,9 @@ public interface ApiInterface {
     @POST("Db_v310.php?")
     Call<ResponseBody> sendUpldPhotoErrorMsg(@Query("axn") String axn, @Field("data") String body);
 
-
     @FormUrlEncoded
     @POST("Db_v310.php?axn=save/qpsentry")
     Call<ResponseBody> submitQPSData(@Field("data") String body);
-
 
     @FormUrlEncoded
     @POST("Db_v310.php?axn=get/savepaymententry")
@@ -740,8 +707,6 @@ public interface ApiInterface {
     @POST("MyPHP.php?")
     Call<ResponseBody> getDataFromMyPHP(@FieldMap Map<String, Object> params);
 
-    // - - - - - - - - - - - - - - - - - - - - -
-
     //    @FormUrlEncoded
     @GET("Db_v300_i.php?")
     Call<ResponseBody> getInshopRetailer(@Query("axn") String axn,
@@ -809,11 +774,11 @@ public interface ApiInterface {
     Call<ResponseBody> getPrimaryNoOrderList(@Query("axn") String axn,
                                                    @Query("erp_code") String distribute_code);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getProcPlant(@Query("axn") String axn);
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcCollectionCenterLo(@Query("axn") String axn,
                                                     @Query("company") String company,
                                                     @Query("plant") String plant,
@@ -828,11 +793,11 @@ public interface ApiInterface {
                                                     @Query("created_dt") String created_dt,
                                                     @Part MultipartBody.Part image);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getProcCenterList(@Query("axn") String axn);
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcFarmerCreation(@Query("axn") String axn,
                                                     @Query("center") String center,
                                                     @Query("farmer_gategory") String plant,
@@ -851,7 +816,7 @@ public interface ApiInterface {
                                                     @Part MultipartBody.Part image);
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcAgronomist(@Query("axn") String axn,
                                                 @Query("company") String company,
                                                 @Query("plant") String plant,
@@ -871,7 +836,7 @@ public interface ApiInterface {
 
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcVeterinary(@Query("axn") String axn,
                                             @Query("company") String company,
                                             @Query("plant") String plant,
@@ -895,7 +860,7 @@ public interface ApiInterface {
                                             @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcAIT(@Query("axn") String axn,
                                      @Query("company") String company,
                                      @Query("plant") String plant,
@@ -912,7 +877,7 @@ public interface ApiInterface {
                                      @Query("active_flag") String active_flag,
                                      @Query("created_dt") String created_dt);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcAgentVisit(@Query("axn") String axn,
                                      @Query("visit_agent") String visit_agent,
                                      @Query("company") String company,
@@ -926,7 +891,7 @@ public interface ApiInterface {
                                      @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcQuality(@Query("axn") String axn,
                                             @Query("company") String company,
                                             @Query("plant") String plant,
@@ -953,7 +918,7 @@ public interface ApiInterface {
                                             @Query("created_dt") String created_dt
                                          );
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcMaintenance(@Query("axn") String axn,
                                              @Query("company") String company,
                                              @Query("plant") String plant,
@@ -964,7 +929,7 @@ public interface ApiInterface {
                                              @Part MultipartBody.Part image1,
                                              @Query("others") String others);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcAsset(@Query("axn") String axn,
                                              @Query("company") String company,
                                              @Query("plant") String plant,
@@ -974,41 +939,48 @@ public interface ApiInterface {
                                              @Query("created_dt") String created_dt
     );
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getAgronomistReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getAITReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getVeterinaryReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getQualityReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getMaintenanceIssueReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getMaintenanceRegularReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getExistingAgentReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getCollectionCenterReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getAssetReport(@Query("axn") String axn);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getFarmerCreationReport(@Query("axn") String axn);
 
-    @POST("test_prasanth.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getSubDivision(@Query("axn") String axn);
 
+    @POST("Procurement.php")
+    Call<ResponseBody> getStates(@Query("axn") String axn);
+
+    @POST("Procurement.php")
+    Call<ResponseBody> getDistricts(@Query("axn") String axn,
+                                    @Query("stateCode") String stateCode);
+
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcMaintenRegular(@Query("axn") String axn,
                                                 @Query("company") String company,
                                                 @Query("plant") String plant,
@@ -1034,7 +1006,7 @@ public interface ApiInterface {
                                                 @Part MultipartBody.Part image2
     );
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcExistingCenterVist(@Query("axn") String axn,
                                                 @Query("pouring_act") String pouring_act,
                                                 @Query("opening_time") String opening_time,
@@ -1058,7 +1030,7 @@ public interface ApiInterface {
                                                     @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcExistingFarmerVisitSka(@Query("axn") String str,
                                                         @Part MultipartBody.Part audio,
                                                         @Part MultipartBody.Part image,
@@ -1074,7 +1046,7 @@ public interface ApiInterface {
                                                         @Query("created_dt") String created_dt);
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> submitProcFarmerCreationSka(@Query("axn") String str,
                                                    @Part MultipartBody.Part audio,
                                                    @Part MultipartBody.Part image,
@@ -1087,30 +1059,83 @@ public interface ApiInterface {
                                                    @Query("active_flag") String active_flag,
                                                    @Query("created_dt") String created_dt);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getProcCustomFormModule(@Query("axn") String axn, @Query("isPrimary") int isPrimary);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getProcCustomFormFieldLists(@Query("axn") String axn,
                                                    @Query("module_id") String module_id);
 
     @Multipart
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> save1JSONArray(@Query("axn") String axn,
                                       @Part("data")RequestBody data,
                                       @Query("divisionCode") String divisionCode,
                                       @Query("sfCode") String sfCode);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody> getCustomFormReportsModuleList(@QueryMap Map<String,Object>queryParrams);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     @FormUrlEncoded
     Call<ResponseBody> getCustomFormDataPreview(@QueryMap Map<String, Object> queryParrams,
                                     @FieldMap Map<String, Object> fieldParrams);
 
-    @POST("Db_v310.php")
+    @POST("Procurement.php")
     Call<ResponseBody>getCustomFormMater(@QueryMap Map<String,Object>queryParrams);
+
+    @Multipart
+    @POST("Procurement.php")
+    Call<ResponseBody> saveProAgent(@Query("axn") String str,
+                                    @Part MultipartBody.Part agent,
+                                    @Query("agent_name") String agent_name,
+                                    @Query("state") String state,
+                                    @Query("district") String district,
+                                    @Query("town") String town,
+                                    @Query("coll_center") String coll_center,
+                                    @Query("ag_category") String ag_category,
+                                    @Query("company") String company,
+                                    @Query("addr") String addr,
+                                    @Query("pin_code") String pin_code,
+                                    @Query("city") String city,
+                                    @Query("mobile_no") String mobile_no,
+                                    @Query("email") String email,
+                                    @Query("incentive_amt") String incentive_amt,
+                                    @Query("cartage_amt") String cartage_amt);
+
+    @Multipart
+    @POST("Procurement.php")
+    Call<ResponseBody> saveProFarmerCrea2(@Query("axn") String str,
+                                    @Part MultipartBody.Part agent,
+                                    @Query("state") String state,
+                                    @Query("district") String district,
+                                    @Query("town") String town,
+                                          @Query("coll_center") String coll_center,
+                                          @Query("fa_category") String fa_category,
+                                          @Query("addr") String addr,
+                                          @Query("pin_code") String pin_code,
+                                          @Query("city") String city,
+                                          @Query("mobile_no") String mobile_no,
+                                          @Query("email") String email,
+                                          @Query("incentive_amt") String incentive_amt,
+                                          @Query("cartage_amt") String cartage_amt);
+
+    @Multipart
+    @POST("Procurement.php")
+    Call<ResponseBody> saveProcMilkCollEntry(@Query("axn") String axn,
+                                             @Query("cans") String cans,
+                                             @Query("milk_weight") String milk_weight,
+                                             @Query("total_milk_qty") String total_milk_qty,
+                                             @Query("milk_sample_no") String milk_sample_no,
+                                             @Query("fat") String fat,
+                                             @Query("snf") String snf,
+                                             @Query("clr") String clr,
+                                             @Query("milk_rate") String milk_rate,
+                                             @Query("total_milk_amt") String total_milk_amt);
+
+
+    @POST("Procurement.php")
+    Call<ResponseBody> getAgentReport(@Query("axn") String axn);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
