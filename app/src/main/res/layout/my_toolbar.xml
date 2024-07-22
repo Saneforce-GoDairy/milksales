@@ -25,6 +25,8 @@
         android:paddingBottom="2dp"
         android:textStyle="bold"
         android:text="@string/milk_sales_daily"
+        android:ellipsize="marquee"
+        android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="15sp" />
 

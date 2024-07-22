@@ -2,15 +2,21 @@ package com.saneforce.godairy.Activity_Hap;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.saneforce.godairy.Activity.MyPDFViewer;
+import com.saneforce.godairy.Activity.PDFActivity;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.R;
@@ -21,9 +27,14 @@ import com.saneforce.godairy.databinding.ActivityDayReportBinding;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
@@ -51,6 +62,26 @@ public class Day_Report_Activity extends AppCompatActivity {
         reportArray = new JSONArray();
 
         binding.toolbar.back.setOnClickListener(v -> onBackPressed());
+        binding.toolbar.share.setVisibility(View.VISIBLE);
+        binding.toolbar.share.setImageResource(R.drawable.ic_baseline_picture_as_pdf_24);
+        binding.toolbar.share.setColorFilter(Color.WHITE);
+        binding.toolbar.share.setOnClickListener(v -> {
+            if (id.isEmpty() || date.isEmpty()) {
+                Toast.makeText(context, "Please select a 'Date' or 'Fieldforce'", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String day = date.substring(0, 2);
+            String month = date.substring(3, 5);
+            String year = date.substring(6);
+            Intent intent = new Intent(context, MyPDFViewer.class);
+            intent.putExtra("axn", "getDayReportAsPDF");
+            intent.putExtra("sfCode", id);
+            intent.putExtra("day", day);
+            intent.putExtra("month", month);
+            intent.putExtra("year", year);
+            intent.putExtra("title", "Day Report - (" + date + ")");
+            startActivity(intent);
+        });
         binding.toolbar.title.setText("Day Report");
         common_class.gotoHomeScreen(context, binding.toolbar.home);
 

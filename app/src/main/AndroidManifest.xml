@@ -60,129 +60,174 @@
         tools:targetApi="n">
         <activity
             android:name=".Activity.ViewInvoiceActivity"
+            android:screenOrientation="nosensor"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.MyPDFViewer"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.vwInvoices"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <!-- <activity -->
         <!-- android:name=".Activity_Hap.DayReportActivity" -->
         <!-- android:exported="false" /> -->
         <activity
             android:name=".Activity.GeoTagActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.custom_form.CustomFormHomeActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.custom_form.CustomFormDetailsViewActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.MaintanenceRegularActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.ExistingCenterVisitActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.ska.NewFarmerCreationActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.ska.ExistingFarmerVisitActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.RetailerGeoTaggingActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".Activity_Hap.Day_Report_Activity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".Activity_Hap.Monthly_Report_Activity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.FarmerCreationReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.AssetReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.CollectionCenterReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.ExistingAgentVisitReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.MaintenanceReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.QualityReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.VeterinaryReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.AITReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.AgronomistReportActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.ProcReportsHomeActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".Activity_Hap.ChangePasswordActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".Activity_Hap.ProfileActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".Activity.TravelPunchHistoryActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".Activity.TravelPunchLocationActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.vwAllPrimaryOrders"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.PaymentResult"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.FarmerCreationActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.ProcurementAssetActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.CollectionCenterLocationActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.ExistingAgentVisitActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.MaintanenceIssuesFormActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.QualityFormActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.VeterinaryDoctorsFormActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.ImageViewActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.ProcurementCameraX"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.AITFormActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.AgronomistFormActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".procurement.ProcurementHome"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".SFA_Activity.ChallanActivity"
+            android:screenOrientation="nosensor"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
@@ -190,6 +235,7 @@
         </activity>
         <activity
             android:name=".Activity_Hap.CameraxActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".Activity_Hap.ImageCapture"
