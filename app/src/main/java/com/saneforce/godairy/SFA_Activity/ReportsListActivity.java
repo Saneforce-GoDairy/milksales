@@ -65,11 +65,11 @@ public class ReportsListActivity extends AppCompatActivity {
             obj5.put("name", "QPS Follow up");
             obj5.put("des", "web");
             JSONArray jsonArray = new JSONArray();
-            jsonArray.put(obj1);
-            jsonArray.put(obj2);
-            jsonArray.put(obj3);
-            jsonArray.put(obj4);
-            jsonArray.put(obj5);
+//            jsonArray.put(obj1);
+//            jsonArray.put(obj2);
+//            jsonArray.put(obj3);
+//            jsonArray.put(obj4);
+//            jsonArray.put(obj5);
             if(shared_common_pref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.CHECKIN_TYPE)){
                 JSONObject obj6 = new JSONObject();
                 obj6.put("name", "DAY REPORTS");

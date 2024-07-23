@@ -12,14 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.saneforce.godairy.R;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class AdapterDayReport extends RecyclerView.Adapter<AdapterDayReport.ViewHolder> {
     Context context;
     JSONArray array;
 
-    public AdapterDayReport(Context context, JSONArray array) {
+    OnItemClick onItemClick;
+
+    public AdapterDayReport(Context context, JSONArray array, OnItemClick onItemClick) {
         this.context = context;
         this.array = array;
+        this.onItemClick = onItemClick;
     }
 
     @NonNull
@@ -38,9 +42,13 @@ public class AdapterDayReport extends RecyclerView.Adapter<AdapterDayReport.View
         holder.visited_distributor.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("DistVisitedCount"));
         holder.visited_outlet.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("RetVisitedCount"));
         holder.distOrderTaken.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("DistOrderCount"));
+        holder.distOrderTaken.setOnClickListener(v -> onItemClick.onDistOrderCountClick(holder.getBindingAdapterPosition(), array.optJSONObject(holder.getBindingAdapterPosition())));
         holder.outletOrderTaken.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("RetOrderCount"));
+        holder.outletOrderTaken.setOnClickListener(v -> onItemClick.onRetOrderCountClick(holder.getBindingAdapterPosition(), array.optJSONObject(holder.getBindingAdapterPosition())));
         holder.count_distributor.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("DistInvoiceCount"));
+        holder.count_distributor.setOnClickListener(v -> onItemClick.onDistInvoiceCountClick(holder.getBindingAdapterPosition(), array.optJSONObject(holder.getBindingAdapterPosition())));
         holder.count_outlet.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("RetInvoiceCount"));
+        holder.count_outlet.setOnClickListener(v -> onItemClick.onRetInvoiceCountClick(holder.getBindingAdapterPosition(), array.optJSONObject(holder.getBindingAdapterPosition())));
         holder.ordered_distributor.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("DistOrderAmt"));
         holder.ordered_outlet.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("RetOrderAmt"));
         holder.invoiced_distributor.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("DistInvoiceAmt"));
@@ -72,5 +80,12 @@ public class AdapterDayReport extends RecyclerView.Adapter<AdapterDayReport.View
             invoiced_distributor = itemView.findViewById(R.id.invoiced_distributor);
             invoiced_outlet = itemView.findViewById(R.id.invoiced_outlet);
         }
+    }
+
+    public interface OnItemClick {
+        void onDistOrderCountClick(int position, JSONObject object);
+        void onRetOrderCountClick(int position, JSONObject object);
+        void onDistInvoiceCountClick(int position, JSONObject object);
+        void onRetInvoiceCountClick(int position, JSONObject object);
     }
 }

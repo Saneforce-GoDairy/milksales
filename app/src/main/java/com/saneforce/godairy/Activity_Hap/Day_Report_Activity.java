@@ -43,7 +43,7 @@ public class Day_Report_Activity extends AppCompatActivity {
     Common_Class common_class;
     AssistantClass assistantClass;
     JSONArray hierarchyArray, reportArray;
-    String id = "", date = "";
+    String id = "", name = "", date = "";
     AdapterDayReport adapter;
     double distVisitedCount = 0, retVisitedCount = 0, distOrderTaken = 0, retOrderTaken = 0, distInvoicedCount = 0, retInvoicedCount = 0, distOrderedAmt = 0, retOrderedAmt = 0, distInvoicedAmt = 0, retInvoicedAmt = 0;
     private ActivityDayReportBinding binding;
@@ -66,21 +66,7 @@ public class Day_Report_Activity extends AppCompatActivity {
         binding.toolbar.share.setImageResource(R.drawable.ic_baseline_picture_as_pdf_24);
         binding.toolbar.share.setColorFilter(Color.WHITE);
         binding.toolbar.share.setOnClickListener(v -> {
-            if (id.isEmpty() || date.isEmpty()) {
-                Toast.makeText(context, "Please select a 'Date' or 'Fieldforce'", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String day = date.substring(0, 2);
-            String month = date.substring(3, 5);
-            String year = date.substring(6);
-            Intent intent = new Intent(context, MyPDFViewer.class);
-            intent.putExtra("axn", "getDayReportAsPDF");
-            intent.putExtra("sfCode", id);
-            intent.putExtra("day", day);
-            intent.putExtra("month", month);
-            intent.putExtra("year", year);
-            intent.putExtra("title", "Day Report - (" + date + ")");
-            startActivity(intent);
+            openPDFViewer("getDayReportAsPDF", id, name + " - Day Report");
         });
         binding.toolbar.title.setText("Day Report");
         common_class.gotoHomeScreen(context, binding.toolbar.home);
@@ -91,7 +77,8 @@ public class Day_Report_Activity extends AppCompatActivity {
             getReport();
         }));
         binding.selectFieldForce.setOnClickListener(v -> assistantClass.showDropdown("Select Employee", hierarchyArray, object -> {
-            binding.selectFieldForce.setText(object.optString("sfName"));
+            name = object.optString("sfName");
+            binding.selectFieldForce.setText(name);
             id = object.optString("id");
             getReport();
         }));
@@ -110,7 +97,8 @@ public class Day_Report_Activity extends AppCompatActivity {
         tv_view_summery.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
         id = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getString("Sfcode", "");
-        binding.selectFieldForce.setText(getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getString("SfName", ""));
+        name = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getString("SfName", "");
+        binding.selectFieldForce.setText(name);
         getReport();
     }
 
@@ -147,7 +135,27 @@ public class Day_Report_Activity extends AppCompatActivity {
         if (reportArray == null) {
             reportArray = new JSONArray();
         }
-        adapter = new AdapterDayReport(context, reportArray);
+        adapter = new AdapterDayReport(context, reportArray, new AdapterDayReport.OnItemClick() {
+            @Override
+            public void onDistOrderCountClick(int position, JSONObject object) {
+                openPDFViewer("getDistOrdersAsPDF_DR", object.optString("id"), object.optString("title") + " - Distributor Orders");
+            }
+
+            @Override
+            public void onRetOrderCountClick(int position, JSONObject object) {
+                openPDFViewer("getRetOrdersAsPDF_DR", object.optString("id"), object.optString("title") + " - Retailer Orders");
+            }
+
+            @Override
+            public void onDistInvoiceCountClick(int position, JSONObject object) {
+                openPDFViewer("getDistInvoiceAsPDF_DR", object.optString("id"), object.optString("title") + " - Distributor Invoices");
+            }
+
+            @Override
+            public void onRetInvoiceCountClick(int position, JSONObject object) {
+                openPDFViewer("getRetInvoiceAsPDF_DR", object.optString("id"), object.optString("title") + " - Retailer Invoices");
+            }
+        });
         binding.recyclerView.setAdapter(adapter);
         Executors.newSingleThreadExecutor().execute(() -> {
             distVisitedCount = 0;
@@ -199,6 +207,24 @@ public class Day_Report_Activity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void openPDFViewer(String axn, String id, String title) {
+        if (id.isEmpty() || date.isEmpty()) {
+            Toast.makeText(context, "Please select a 'Date' or 'Fieldforce'", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String day = date.substring(0, 2);
+        String month = date.substring(3, 5);
+        String year = date.substring(6);
+        Intent intent = new Intent(context, MyPDFViewer.class);
+        intent.putExtra("axn", axn);
+        intent.putExtra("sfCode", id);
+        intent.putExtra("day", day);
+        intent.putExtra("month", month);
+        intent.putExtra("year", year);
+        intent.putExtra("title", title + " - (" + date + ")");
+        startActivity(intent);
     }
 
     private void getFieldForceList() {

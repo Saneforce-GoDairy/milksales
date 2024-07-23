@@ -95,6 +95,7 @@ public class MyPDFViewer extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
                 String pdfUrl = ApiClient.BASE_URL + "MyPHP.php?axn=" + axn + "&sfCode=" + sfCode + "&month=" + month + "&year=" + year + "&day=" + day;
+                assistantClass.log(pdfUrl);
                 URL url = new URL(pdfUrl);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 if (urlConnection.getResponseCode() == 200) {
