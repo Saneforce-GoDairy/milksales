@@ -1105,8 +1105,30 @@ public interface ApiInterface {
 
     @Multipart
     @POST("Procurement.php")
+    Call<ResponseBody> updateProAgent(@Query("axn") String str,
+                                      @Query("id") String id,
+                                    @Part MultipartBody.Part agent,
+                                    @Query("agent_name") String agent_name,
+                                    @Query("state") String state,
+                                    @Query("district") String district,
+                                    @Query("town") String town,
+                                    @Query("coll_center") String coll_center,
+                                    @Query("ag_category") String ag_category,
+                                    @Query("company") String company,
+                                    @Query("addr") String addr,
+                                    @Query("pin_code") String pin_code,
+                                    @Query("city") String city,
+                                    @Query("mobile_no") String mobile_no,
+                                    @Query("email") String email,
+                                    @Query("incentive_amt") String incentive_amt,
+                                    @Query("cartage_amt") String cartage_amt);
+
+
+    @Multipart
+    @POST("Procurement.php")
     Call<ResponseBody> saveProFarmerCrea2(@Query("axn") String str,
                                     @Part MultipartBody.Part agent,
+                                          @Query("farmer_name") String farmer_name,
                                     @Query("state") String state,
                                     @Query("district") String district,
                                     @Query("town") String town,
@@ -1119,6 +1141,13 @@ public interface ApiInterface {
                                           @Query("email") String email,
                                           @Query("incentive_amt") String incentive_amt,
                                           @Query("cartage_amt") String cartage_amt);
+
+    @Multipart
+    @POST("Procurement.php")
+    Call<ResponseBody> updateProFarmer(@Query("axn") String str,
+                                       @Part MultipartBody.Part farmerImg,
+                                       @Query("id") String id,
+                                       @Query("farmer_name")String farmer_name);
 
     @Multipart
     @POST("Procurement.php")

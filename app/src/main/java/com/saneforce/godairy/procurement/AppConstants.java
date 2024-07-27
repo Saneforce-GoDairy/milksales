@@ -26,7 +26,7 @@ public class AppConstants {
  public static final String PROCUREMENT_GET_EXISTING_AGENT_REPORT = "get_existing_agent_report";
  public static final String PROCUREMENT_GET_COLLECTION_CENTER_REPORT = "get_colltion_center_report";
  public static final String PROCUREMENT_GET_ASSET_REPORT = "get_asset_report";
- public static final String PROCUREMENT_GET_FARMER_CREATION_REPORT = "get_far_creation_report";
+ // public static final String PROCUREMENT_GET_FARMER_CREATION_REPORT = "get_far_creation_report"; removed in 1.0
  public static final String PROCUREMENT_GET_SUBDIVISION = "get_subdivision";
  public static final String PROCUREMENT_MAINTENANCE_REGULAR = "save/proc_maintenance_reg";
  public static final String PROCUREMENT_SUBMIT_EXISTING_CENTER_VISIT = "save_exist_cent_visit";
@@ -41,7 +41,10 @@ public class AppConstants {
  public static final String PROCUREMENT_SAVE_AGENT = "save_agent";
  public static final String PROCUREMENT_SAVE_FARMER_CEATION = "save_farmer2";
  public static final String PROCUREMENT_GET_AGENT = "get_agent";
+ public static final String PROCUREMENT_GET_FARMER = "get_farmer";
  public static final String PROCUREMENT_SAVE_MILK_COLLECTION = "save_milk_collection";
+ public static final String PROCUREMENT_UPDATE_AGENT = "update_agent";
+ public static final String PROCUREMENT_UPDATE_FARMER = "update_farmer";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}

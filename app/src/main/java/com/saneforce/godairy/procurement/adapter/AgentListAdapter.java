@@ -1,16 +1,20 @@
 package com.saneforce.godairy.procurement.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.saneforce.godairy.R;
 import com.saneforce.godairy.databinding.ModelAgentReportMainBinding;
 import com.saneforce.godairy.procurement.AgentCreatActivity;
+import com.saneforce.godairy.procurement.AgentUpdateActivity;
 import com.saneforce.godairy.procurement.reports.model.Agent;
 
 import java.util.ArrayList;
@@ -45,18 +49,40 @@ public class AgentListAdapter extends RecyclerView.Adapter<AgentListAdapter.View
     public void onBindViewHolder(@NonNull AgentListAdapter.ViewHolder holder, int position) {
         String agentName = agentList.get(position).getAgent_name();
 
-        holder.binding.firstLetter.setText(agentName.substring(0,1).toUpperCase());
-        holder.binding.txtName.setText(agentName);
+        if (!agentName.isEmpty()) {
+            holder.binding.firstLetter.setText(agentName.substring(0,1).toUpperCase());
+            holder.binding.txtName.setText(agentName);
+        }else {
+            holder.binding.firstLetter.setText("E");
+            holder.binding.txtName.setText("Error! No Name");
+        }
+
         holder.binding.txtPhone.setText(agentList.get(position).getMobile());
 
         holder.binding.createSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(context, AgentCreatActivity.class);
+                Activity activity = (Activity) context;
+               Intent intent = new Intent(context, AgentUpdateActivity.class);
+                intent.putExtra("id", agentList.get(position).getId());
                intent.putExtra("agent_name", agentList.get(position).getAgent_name());
                intent.putExtra("agent_photo", agentList.get(position).getAgentImage());
+               intent.putExtra("state", agentList.get(position).getState());
+               intent.putExtra("district", agentList.get(position).getDistrict());
+               intent.putExtra("town", agentList.get(position).getTown());
+               intent.putExtra("coll_center", agentList.get(position).getColl_center());
+               intent.putExtra("agent_category", agentList.get(position).getAgent_category());
+               intent.putExtra("company", agentList.get(position).getCompany());
+               intent.putExtra("address", agentList.get(position).getAddress());
+               intent.putExtra("pin_code", agentList.get(position).getPin_code());
+               intent.putExtra("city", agentList.get(position).getCity());
+               intent.putExtra("mobile_no", agentList.get(position).getMobile());
+               intent.putExtra("email", agentList.get(position).getEmail());
+               intent.putExtra("incentive_amt", agentList.get(position).getIncentive());
+               intent.putExtra("cartage_amt", agentList.get(position).getCartage());
                intent.putExtra("form_id", "1"); // id 1 for edit and updation of data
                context.startActivity(intent);
+               activity.overridePendingTransition(0, 0);
             }
         });
 

@@ -1,8 +1,16 @@
 package com.saneforce.godairy.procurement.reports.model;
 
 public class Agent {
-    private String agentImage, state, district, town, coll_center, agent_category,company,  address, pin_code;
+    private String id, agentImage, state, district, town, coll_center, agent_category,company,  address, pin_code;
     private String city, mobile, incentive, cartage, email, agent_name;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public void setAgentImage(String agentImage) {
         this.agentImage = agentImage;

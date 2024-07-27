@@ -128,6 +128,14 @@
                             android:src="@drawable/placeholder"
                             android:contentDescription="@string/todo" />
 
+                        <ProgressBar
+                            android:id="@+id/image_loading_progress"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center"
+                            android:indeterminateDrawable="@drawable/progressbar_custom_blue"
+                            android:visibility="visible" />
+
                     </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
@@ -510,20 +518,6 @@
                     android:clickable="true"
                     android:focusable="true"
                     tools:ignore="UnusedAttribute" />
-
-                <Button
-                    android:id="@+id/update"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Update"
-                    android:background="@drawable/btnstylegreen"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/ubuntu"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    tools:ignore="UnusedAttribute"
-                    android:visibility="gone"/>
 
             </LinearLayout>
 

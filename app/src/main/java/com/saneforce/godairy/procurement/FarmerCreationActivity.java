@@ -56,6 +56,7 @@ public class FarmerCreationActivity extends AppCompatActivity implements Selecti
     private Bitmap bitmapFarmerPhoto;
     private String mState, mDistrict, mTown , mCollectionCenter, mFarmerCategory, mAddress, mPincode;
     private String mCity, mMobileNo, mEmailId, mIncentiveAmt, mCartageAmt;
+    private String mFarmerName;
 
     /*
 
@@ -261,7 +262,7 @@ public class FarmerCreationActivity extends AppCompatActivity implements Selecti
     private void saveNow() {
         String mActiveFlag = "1";
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
-
+        serviceIntent.putExtra("farmer_name", mFarmerName);
         serviceIntent.putExtra("state", mState);
         serviceIntent.putExtra("district", mDistrict);
         serviceIntent.putExtra("town", mTown);
@@ -286,6 +287,7 @@ public class FarmerCreationActivity extends AppCompatActivity implements Selecti
     }
 
     private boolean validateInputs() {
+        mFarmerName = binding.edFarmerName.getText().toString();
         mState = binding.edState.getText().toString();
         mDistrict = binding.edDistrict.getText().toString();
         mTown = binding.edTown.getText().toString();
@@ -301,6 +303,12 @@ public class FarmerCreationActivity extends AppCompatActivity implements Selecti
         mIncentiveAmt = binding.edIncen.getText().toString();
         mCartageAmt = binding.edCartage.getText().toString();
 
+        if ("".equals(mFarmerName)) {
+            binding.edFarmerName.setError("Empty field");
+            binding.edFarmerName.requestFocus();
+            binding.txtErrorFound.setVisibility(View.VISIBLE);
+            return false;
+        }
         if (bitmapFarmerPhoto == null) {
             binding.txtFarmerImageNotValid.setVisibility(View.VISIBLE);
             binding.txtErrorFound.setVisibility(View.VISIBLE);

@@ -1,6 +1,5 @@
 package com.saneforce.godairy.procurement;
 
-import static com.saneforce.godairy.Interface.ApiClient.BASE_URL;
 import static com.saneforce.godairy.procurement.AppConstants.MAS_GET_DISTRICTS;
 import static com.saneforce.godairy.procurement.AppConstants.MAS_GET_STATES;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CENTER;
@@ -24,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bumptech.glide.Glide;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.Procurement;
@@ -37,19 +35,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
-import android.os.StrictMode;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,101 +75,6 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
         deletePreviousData();
         loadCollectionCenter();
         initSpinner();
-
-        String form_id = getIntent().getStringExtra("form_id");
-
-        if (form_id != null) {
-            loadFormEdit();
-        }else {
-            binding.title.setText("Agent creation");
-        }
-}
-
-    private void loadFormEdit() {
-
-            binding.title.setText("Agent update");
-
-                String agentName = getIntent().getStringExtra("agent_name");
-                binding.edAgentName.setText(agentName);
-
-                binding.update.setVisibility(View.VISIBLE);
-                binding.save.setVisibility(View.GONE);
-
-        String agent_photo = getIntent().getStringExtra("agent_photo");
-
-            if (agent_photo != null) {
-                binding.imageViewAgentLayout.setVisibility(View.VISIBLE);
-
-                String baseURL = getBaseUrl() + agent_photo;
-
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        File file = new File(getExternalFilesDir(null), "/procurement/" + "AGENT_CREAT_123.jpg");
-                        downloadFile(baseURL, file, context);
-                    }
-                });
-                thread.start();
-
-                Log.e("agent_update_", "Perfect url :" + baseURL);
-            }else {
-                Log.e("agent_update_", "not valid image url");
-
-                binding.imageViewAgentLayout.setVisibility(View.VISIBLE);
-                binding.imageAgent.setImageResource(R.drawable.error_image1);
-            }
-    }
-
-    private String getBaseUrl() {
-        URL url = null;
-        try {
-            url = new URL(BASE_URL);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        return url.getProtocol() + "://" + url.getHost() + "/" + "Procurement/Proc_Photos/";
-    }
-
-     void downloadFile(String url, File outputFile, Context context) {
-        try {
-            URL u = new URL(url);
-            URLConnection conn = u.openConnection();
-            int contentLength = conn.getContentLength();
-
-            DataInputStream stream = new DataInputStream(u.openStream());
-
-            byte[] buffer = new byte[contentLength];
-            stream.readFully(buffer);
-            stream.close();
-
-            DataOutputStream fos = new DataOutputStream(new FileOutputStream(outputFile));
-            fos.write(buffer);
-            fos.flush();
-            fos.close();
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    loadAgentImage();
-                    Toast.makeText(context, "Download success", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        } catch (IOException e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void loadAgentImage() {
-        File file = new File(getExternalFilesDir(null), "/procurement/" + "AGENT_CREAT_123.jpg");
-        bitmapAgentPhoto = BitmapFactory.decodeFile(file.getAbsolutePath());
-
-        if (bitmapAgentPhoto != null){
-            binding.imageViewAgentLayout.setVisibility(View.VISIBLE);
-            binding.imageAgent.setImageBitmap(bitmapAgentPhoto);
-            binding.txtAgentImageNotValid.setVisibility(View.GONE);
-            binding.txtErrorFound.setVisibility(View.GONE);
-        }
     }
 
     private void deletePreviousData() {
@@ -787,6 +682,7 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
         bitmapAgentPhoto = BitmapFactory.decodeFile(file.getAbsolutePath());
 
         if (bitmapAgentPhoto != null){
+            binding.imageLoadingProgress.setVisibility(View.GONE);
             binding.imageViewAgentLayout.setVisibility(View.VISIBLE);
             binding.imageAgent.setImageBitmap(bitmapAgentPhoto);
             binding.txtAgentImageNotValid.setVisibility(View.GONE);

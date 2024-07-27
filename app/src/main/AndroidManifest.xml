@@ -59,6 +59,12 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".procurement.FarmerUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.AgentUpdateActivity"
+            android:exported="false" />
+        <activity
             android:name=".procurement.MilkCollEntryActivity"
             android:exported="false" />
         <activity

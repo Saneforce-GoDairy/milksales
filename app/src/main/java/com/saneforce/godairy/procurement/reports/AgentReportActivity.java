@@ -50,9 +50,6 @@ public class AgentReportActivity extends AppCompatActivity {
         binding.searchToolbar.setTitleTextColor(getResources().getColor(R.color.grey_500));
         setSupportActionBar(binding.searchToolbar);
 
-        agentList = new ArrayList<>();
-        loadList();
-
         onClick();
     }
 
@@ -135,6 +132,7 @@ public class AgentReportActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArrayData.length(); i++) {
                                 Agent agent = new Agent();
                                 JSONObject object = jsonArrayData.getJSONObject(i);
+                                agent.setId(object.getString("id"));
                                 agent.setAgent_name(object.getString("agent_name"));
                                 agent.setAgentImage(object.getString("agent_img"));
 
@@ -150,9 +148,9 @@ public class AgentReportActivity extends AppCompatActivity {
 
                                 agent.setCity(object.getString("city"));
                                 agent.setMobile(object.getString("mobile_no"));
-                                agent.setIncentive(object.getString("email"));
-                                agent.setCartage(object.getString("incentive_amt"));
-                                agent.setEmail(object.getString("cartage_amt"));
+                                agent.setIncentive(object.getString("incentive_amt"));
+                                agent.setCartage(object.getString("cartage_amt"));
+                                agent.setEmail(object.getString("email"));
                                 agentList.add(agent);
                             }
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
@@ -187,5 +185,16 @@ public class AgentReportActivity extends AppCompatActivity {
         binding.recyclerView.setVisibility(GONE);
         binding.nullError.setVisibility(View.VISIBLE);
         binding.message.setText("Something went wrong!");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (agentList != null){
+            agentList.clear();
+        }
+        agentList = new ArrayList<>();
+        loadList();
     }
 }
