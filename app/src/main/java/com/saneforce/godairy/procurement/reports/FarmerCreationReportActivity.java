@@ -139,6 +139,7 @@ public class FarmerCreationReportActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArrayData.length(); i++) {
                                 Farmer farmer = new Farmer();
                                 JSONObject object = jsonArrayData.getJSONObject(i);
+                                farmer.setId(object.getString("id"));
                                 farmer.setFarmer_name(object.getString("farmer_name"));
                                 farmer.setFarmer_mobile(object.getString("mobile_no"));
                                 farmer.setFarmer_photo(object.getString("farmer_img"));

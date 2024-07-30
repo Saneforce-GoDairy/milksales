@@ -282,7 +282,7 @@ public class FarmerCreationActivity extends AppCompatActivity implements Selecti
         serviceIntent.putExtra("upload_service_id", "15");
         ContextCompat.startForegroundService(this, serviceIntent);
 
-        // finish();
+         finish();
         Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
     }
 

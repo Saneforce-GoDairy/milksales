@@ -206,6 +206,22 @@ public class FileUploadService2 extends Service {
     private void farmerUpdate(Intent intent) {
         String mId = intent.getStringExtra("id");
         String mFarmerName = intent.getStringExtra("farmer_name");
+        String mState = intent.getStringExtra("state");
+        String mDistrict = intent.getStringExtra("district");
+
+        String mTown = intent.getStringExtra("town");
+        String mCollCenter = intent.getStringExtra("coll_center");
+        String mFaCategory = intent.getStringExtra("fa_category");
+
+        String mAddr = intent.getStringExtra("addr");
+        String mPinCode = intent.getStringExtra("pin_code");
+
+        String mCity = intent.getStringExtra("city");
+        String mMobile = intent.getStringExtra("mobile_no");
+
+        String mEmail = intent.getStringExtra("email");
+        String mIncentiveAmt = intent.getStringExtra("incentive_amt");
+        String mCartageAmt = intent.getStringExtra("cartage_amt");
 
         String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
 
@@ -230,7 +246,19 @@ public class FileUploadService2 extends Service {
         Call<ResponseBody> call = apiInterface.updateProFarmer(PROCUREMENT_UPDATE_FARMER,
                 imagePart,
                 mId,
-                mFarmerName);
+                mFarmerName,
+                mState,
+                mDistrict,
+                mTown,
+                mCollCenter,
+                mFaCategory,
+                mAddr,
+                mPinCode,
+                mCity,
+                mMobile,
+                mEmail,
+                mIncentiveAmt,
+                mCartageAmt);
 
         call.enqueue(new Callback<>() {
             @Override
@@ -336,15 +364,18 @@ public class FileUploadService2 extends Service {
     }
 
     private void milkCollEntry(Intent intent) {
+        String mActiveFlag = intent.getStringExtra("active_flag");
         String mCans = intent.getStringExtra("cans");
         String mMilkWeight = intent.getStringExtra("milk_weight");
         String mTotalMilkQty = intent.getStringExtra("total_milk_qty");
+
         String mMilkSampleNo = intent.getStringExtra("milk_sample_no");
         String mFat = intent.getStringExtra("fat");
-        String mSNF = intent.getStringExtra("snf");
+        String mSnf = intent.getStringExtra("snf");
+
         String mCLR = intent.getStringExtra("clr");
         String mMilkRate = intent.getStringExtra("milk_rate");
-        String mTotalMilkAmount = intent.getStringExtra("total_milk_amount");
+        String mTotalMilkAmount = intent.getStringExtra("total_milk_amt");
 
         Intent notificationIntent = new Intent(this, NewFarmerCreationActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -360,21 +391,41 @@ public class FileUploadService2 extends Service {
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-//        Call<ResponseBody> call = apiInterface.saveProFarmerCrea2(PROCUREMENT_SAVE_MILK_COLLECTION,
-//                imagePart,
-//                mState,
-//                mDistrict,
-//                mTown,
-//                mCollCenter,
-//                mFarmerCategory,
-//                mAddress,
-//                mPinCode,
-//                mCity,
-//                mMobileNo,
-//                mEmail,
-//                mIncentiveAmt,
-//                mCartageAmt);
+        Call<ResponseBody> call = apiInterface.saveProcMilkCollEntry(PROCUREMENT_SAVE_MILK_COLLECTION,
+                mCans,
+                mMilkWeight,
+                mTotalMilkQty,
+                mMilkSampleNo,
+                mFat,
+                mSnf,
+                mCLR,
+                mMilkRate,
+                mTotalMilkAmount,
+                mTimeDate,
+                mActiveFlag);
 
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        //   throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

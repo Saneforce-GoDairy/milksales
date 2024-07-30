@@ -42,7 +42,7 @@ public class AppConstants {
  public static final String PROCUREMENT_SAVE_FARMER_CEATION = "save_farmer2";
  public static final String PROCUREMENT_GET_AGENT = "get_agent";
  public static final String PROCUREMENT_GET_FARMER = "get_farmer";
- public static final String PROCUREMENT_SAVE_MILK_COLLECTION = "save_milk_collection";
+ public static final String PROCUREMENT_SAVE_MILK_COLLECTION = "save_milk_coll";
  public static final String PROCUREMENT_UPDATE_AGENT = "update_agent";
  public static final String PROCUREMENT_UPDATE_FARMER = "update_farmer";
 

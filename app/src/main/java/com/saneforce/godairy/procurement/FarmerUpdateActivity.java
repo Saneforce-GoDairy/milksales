@@ -70,6 +70,7 @@ public class FarmerUpdateActivity extends AppCompatActivity implements Selection
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        deletePreviousData();
         binding = ActivityFarmerUpdateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -84,6 +85,18 @@ public class FarmerUpdateActivity extends AppCompatActivity implements Selection
         onClick();
         loadCollectionCenter();
         initSpinner();
+    }
+
+    private void deletePreviousData() {
+        File file = new File(getExternalFilesDir(null), "/procurement/" + "FAMC2_123.jpg");
+        if (file.exists()) {
+            if (file.delete()) {
+                Log.d(TAG, "File deleted successfully!");
+
+            } else {
+                System.out.println("File not Deleted" + file.getAbsoluteFile());
+            }
+        }
     }
 
     private void onClick() {
@@ -177,6 +190,23 @@ public class FarmerUpdateActivity extends AppCompatActivity implements Selection
             }
         });
 
+        binding.cameraFarmer.setOnClickListener(view -> {
+            binding.txtFarmerImageNotValid.setVisibility(View.GONE);
+            Intent intent = new Intent(context, ProcurementCameraX.class);
+            intent.putExtra("event_name", "Farmer Photo");
+            intent.putExtra("camera_id", "24");
+            startActivity(intent);
+        });
+
+        binding.imageViewFarmerLayout.setOnClickListener(view -> {
+            String imagePath = getExternalFilesDir("/").getPath() + "/" + "procurement/" + "FAMC2_123.jpg";
+
+            Intent intent = new Intent(context, ImageViewActivity.class);
+            intent.putExtra("uri", imagePath);
+            intent.putExtra("event_name", "Farmer Photo");
+            startActivity(intent);
+        });
+
     }
 
     private void updateNow() {
@@ -185,11 +215,27 @@ public class FarmerUpdateActivity extends AppCompatActivity implements Selection
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
         serviceIntent.putExtra("id", mId);
         serviceIntent.putExtra("farmer_name", mFarmerName);
+        serviceIntent.putExtra("state", mState);
+        serviceIntent.putExtra("district", mDistrict);
 
+        serviceIntent.putExtra("town", mTown);
+        serviceIntent.putExtra("coll_center", mCollectionCenter);
+        serviceIntent.putExtra("fa_category", mFarmerCategory);
+
+        serviceIntent.putExtra("addr", mAddress);
+        serviceIntent.putExtra("pin_code", mPincode);
+
+        serviceIntent.putExtra("city", mCity);
+        serviceIntent.putExtra("mobile_no", mMobileNo);
+
+        serviceIntent.putExtra("email", mEmailId);
+        serviceIntent.putExtra("incentive_amt", mIncentiveAmt);
+
+        serviceIntent.putExtra("cartage_amt", mCartageAmt);
         serviceIntent.putExtra("upload_service_id", "18");
         ContextCompat.startForegroundService(this, serviceIntent);
 
-        //  finish();
+        finish();
         Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
     }
 
@@ -577,6 +623,19 @@ public class FarmerUpdateActivity extends AppCompatActivity implements Selection
         gfgThread.start();
     }
 
+    private void loadAgentImage() {
+        File file = new File(getExternalFilesDir(null), "/procurement/" + "FAMC2_123.jpg");
+        bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+
+        if (bitmap != null){
+            binding.imageViewFarmerLayout.setVisibility(View.VISIBLE);
+            binding.imageFarmer.setImageBitmap(bitmap);
+            binding.txtFarmerImageNotValid.setVisibility(GONE);
+            binding.txtErrorFound.setVisibility(GONE);
+            binding.imageLoadingProgress.setVisibility(GONE);
+        }
+    }
+
     @Override
     public void onClickInterface(Intent intent) {
         String requestId = intent.getStringExtra("request_id");
@@ -602,16 +661,17 @@ public class FarmerUpdateActivity extends AppCompatActivity implements Selection
         }
     }
 
-    private void loadAgentImage() {
+    @Override
+    protected void onResume() {
+        super.onResume();
         File file = new File(getExternalFilesDir(null), "/procurement/" + "FAMC2_123.jpg");
         bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
         if (bitmap != null){
             binding.imageViewFarmerLayout.setVisibility(View.VISIBLE);
             binding.imageFarmer.setImageBitmap(bitmap);
-            binding.txtFarmerImageNotValid.setVisibility(GONE);
-            binding.txtErrorFound.setVisibility(GONE);
-            binding.imageLoadingProgress.setVisibility(GONE);
+            binding.txtFarmerImageNotValid.setVisibility(View.GONE);
+            binding.txtErrorFound.setVisibility(View.GONE);
         }
     }
 }

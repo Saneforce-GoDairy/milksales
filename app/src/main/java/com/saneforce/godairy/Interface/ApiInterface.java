@@ -1147,9 +1147,24 @@ public interface ApiInterface {
     Call<ResponseBody> updateProFarmer(@Query("axn") String str,
                                        @Part MultipartBody.Part farmerImg,
                                        @Query("id") String id,
-                                       @Query("farmer_name")String farmer_name);
+                                       @Query("farmer_name")String farmer_name,
+                                       @Query("state") String state,
+                                       @Query("district") String district,
 
-    @Multipart
+                                       @Query("town")String town,
+                                       @Query("coll_center") String coll_center,
+                                       @Query("fa_category") String fa_category,
+
+                                       @Query("addr") String addr,
+                                       @Query("pin_code") String pin_code,
+
+    @Query("city") String city,
+                                       @Query("mobile_no") String mobile_no,
+
+                                       @Query("email") String email,
+                                       @Query("incentive_amt") String incentive_amt,
+                                       @Query("cartage_amt") String cartage_amt);
+
     @POST("Procurement.php")
     Call<ResponseBody> saveProcMilkCollEntry(@Query("axn") String axn,
                                              @Query("cans") String cans,
@@ -1160,8 +1175,9 @@ public interface ApiInterface {
                                              @Query("snf") String snf,
                                              @Query("clr") String clr,
                                              @Query("milk_rate") String milk_rate,
-                                             @Query("total_milk_amt") String total_milk_amt);
-
+                                             @Query("total_milk_amt") String total_milk_amt,
+                                             @Query("date") String date,
+                                             @Query("active_flag") String active_flag);
 
     @POST("Procurement.php")
     Call<ResponseBody> getAgentReport(@Query("axn") String axn);

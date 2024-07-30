@@ -25,6 +25,7 @@ import com.saneforce.godairy.procurement.custom_form.ReportHomeActivity;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
 import com.saneforce.godairy.procurement.reports.AgentReportActivity;
 import com.saneforce.godairy.procurement.reports.FarmerCreationReportActivity;
+import com.saneforce.godairy.procurement.reports.MilkCollectionReport;
 import com.saneforce.godairy.procurement.reports.ProcReportsHomeActivity;
 import com.saneforce.godairy.procurement.ska.ExistingFarmerVisitActivity;
 import com.saneforce.godairy.procurement.ska.NewFarmerCreationActivity;
@@ -156,6 +157,7 @@ public class ProcurementHome extends AppCompatActivity {
 
         binding.csForm.setOnClickListener(v -> startActivity(new Intent(context, CustomFormDashboardActivity.class)));
         binding.csFormReport.setOnClickListener(v -> startActivity(new Intent(context, ReportHomeActivity.class)));
+        binding.milkColl.setOnClickListener(v -> startActivity(new Intent(context, MilkCollectionReport.class)));
         binding.agent.setOnClickListener(v -> startActivity(new Intent(context, AgentReportActivity.class)));
         binding.farmer.setOnClickListener(v -> startActivity(new Intent(context, FarmerCreationReportActivity.class)));
     }
