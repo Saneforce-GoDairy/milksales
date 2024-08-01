@@ -1182,6 +1182,9 @@ public interface ApiInterface {
     @POST("Procurement.php")
     Call<ResponseBody> getAgentReport(@Query("axn") String axn);
 
+    @POST("Procurement.php")
+    Call<ResponseBody> getCustomers(@Query("axn") String axn);
+
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
 }

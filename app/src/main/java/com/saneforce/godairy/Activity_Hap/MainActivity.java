@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.databinding.ActivityMainBinding;
 import com.saneforce.godairy.procurement.FarmerCreationActivity;
+import com.saneforce.godairy.procurement.MilkCollEntryActivity;
 import com.saneforce.godairy.procurement.ProcurementHome;
 
 import java.util.Objects;

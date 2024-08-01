@@ -95,6 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
+                android:maxLength="10"
                 android:background="@drawable/edit_text_common"
                 android:fontFamily="@font/ubuntu"
                 android:inputType="numberDecimal"
@@ -124,8 +125,8 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/edit_text_common"
                     android:fontFamily="@font/ubuntu"
-                    android:inputType="numberDecimal"
                     android:paddingStart="10dp"
+                    android:hint="DD/MM/YYYY"
                     android:paddingEnd="10dp"
                     android:drawableEnd="@drawable/ic_date"
                     android:drawableTint="@color/grey_500"
@@ -452,5 +453,54 @@
     </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/selection_con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:visibility="gone">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--add  several shimmer placeholder layout -->
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

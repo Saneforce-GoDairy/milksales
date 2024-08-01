@@ -410,7 +410,7 @@ public class FarmerCreationActivity extends AppCompatActivity implements Selecti
 
         if (mSelect == 1){
             binding.scrollView1.setVisibility(View.VISIBLE);
-            binding.title.setText("Agent creation");
+            binding.title.setText("Farmer creation");
             binding.selectionCon.setVisibility(View.GONE);
             mSelect = 0;
         }

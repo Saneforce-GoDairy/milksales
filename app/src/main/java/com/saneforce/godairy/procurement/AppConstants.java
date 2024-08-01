@@ -45,6 +45,7 @@ public class AppConstants {
  public static final String PROCUREMENT_SAVE_MILK_COLLECTION = "save_milk_coll";
  public static final String PROCUREMENT_UPDATE_AGENT = "update_agent";
  public static final String PROCUREMENT_UPDATE_FARMER = "update_farmer";
+ public static final String MAS_GET_CUSTOMERS = "get_mlk_customers";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}
