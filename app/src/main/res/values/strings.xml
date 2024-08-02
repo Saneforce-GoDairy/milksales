@@ -560,5 +560,12 @@
     <string name="custom_form">Custom form</string>
     <string name="custom_form_reports">Custom form reports</string>
     <string name="_3_board_issue">3) Board issue</string>
+    <string name="printer_settings">Printer Settings</string>
+    <string name="x">X</string>
+    <string name="select_paper_size">Select Paper Size</string>
+    <string name="paper_size_58mm">Paper Size 58mm</string>
+    <string name="paper_size_80mm">Paper Size 80mm</string>
+    <string name="paper_size_102mm">Paper Size 102mm</string>
+    <string name="go">Go</string>
 
 </resources>

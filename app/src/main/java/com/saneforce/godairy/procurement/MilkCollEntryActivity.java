@@ -3,17 +3,30 @@ package com.saneforce.godairy.procurement;
 import static com.saneforce.godairy.procurement.AppConstants.MAS_GET_CUSTOMERS;
 import static com.saneforce.godairy.procurement.AppConstants.MAS_GET_STATES;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -21,6 +34,7 @@ import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.Procurement;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.SFA_Activity.Printama;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityMilkCollEntryBinding;
 import com.saneforce.godairy.procurement.adapter.SelectionAdapter;
@@ -46,7 +60,7 @@ import retrofit2.Response;
 public class MilkCollEntryActivity extends AppCompatActivity implements SelectionAdapter.OnClickInterface{
     private ActivityMilkCollEntryBinding binding;
     private final Context context = this;
-    private final String TAG = "MilkCollEntryActivity";
+    private final String TAG = "MilkCollEntryActivity_";
     private String mNoOfCans, mMilkWeight, mMilkToatlQty, mMilkSample, mFat, mSnf;
     private String mCustomerName, mCustomerNo, mDate, mSession, mMilkType;
     private String mClr, mMilkRate, mTotalMilkAmt;
@@ -58,6 +72,8 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     private Calendar calendar;
     private int year, month, day;
     int datePickerId = 0;
+    private Dialog printDialog;
+    private int paperSize = 80;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +85,93 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
 
         onClick();
         initSpinner();
+        initPrintDialog();
 
         selectionsLists = new ArrayList<>();;
         binding.edCustomerSel.setFocusable(false);
         binding.edDate.setFocusable(false);
+    }
+
+    private void initPrintDialog() {
+        printDialog = new Dialog(context);
+        printDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        printDialog.setContentView(R.layout.model_print_dialog);
+        printDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        printDialog.setCancelable(true);
+
+        Button print = printDialog.findViewById(R.id.print);
+        Button ignore = printDialog.findViewById(R.id.ignore);
+
+        print.setOnClickListener(v -> printInvoice());
+        ignore.setOnClickListener(v -> ignoreNow());
+    }
+
+    private void ignoreNow() {
+
+    }
+
+    private void printInvoice() {
+        try {
+            if (!isBluetoothAvailable()) {
+                Toast.makeText(getApplicationContext(),"Check Bluetooth Connection",Toast.LENGTH_SHORT).show();
+            }else if (isBluetoothAvailable()&&ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(MilkCollEntryActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+            } else {
+                showPrinterSettingDialog();
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Bluetooth error!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    private void showPrinterSettingDialog() {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.model_dialog_printer_size);
+        Button print = dialog.findViewById(R.id.print);
+        ImageView close=dialog.findViewById(R.id.close);
+
+        RadioGroup radioGroup = dialog.findViewById(R.id.radioGroup);
+        RadioButton radioButton2 = dialog.findViewById(R.id.rb_size_80);
+        radioButton2.setChecked(true);
+        paperSize = 80;
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton radioButton = dialog.findViewById(checkedId);
+
+            switch(checkedId) {
+                case R.id.rb_size_58:
+                    paperSize=58;
+                    break;
+
+                case R.id.rb_size_102:
+                    paperSize=102;
+                    break;
+
+                default:
+                    paperSize=80;
+            }
+        });
+
+        print.setOnClickListener(view -> {
+            dialog.cancel();
+            Log.e(TAG, "Selected" + paperSize);
+            showPrinterList(paperSize);
+        });
+        close.setOnClickListener(view -> dialog.cancel());
+
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+    }
+
+    private void showPrinterList(int size) {
+        Printama.showPrinterList(this, R.color.blue_1,size, printerName -> {
+            Toast.makeText(context, printerName, Toast.LENGTH_SHORT).show();
+            String text = "Connected to : " + printerName;
+            if (!printerName.contains("failed")) {
+                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initSpinner() {
@@ -230,6 +329,9 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
 
     private void saveNow() {
         Toast.makeText(context, "Valid", Toast.LENGTH_SHORT).show();
+
+
+
         /*
         String mActiveFlag = "1";
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
@@ -341,5 +443,12 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
             return false;
         }
         return true;
+    }
+
+    public boolean isBluetoothAvailable(){
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return bluetoothAdapter != null
+                && bluetoothAdapter.isEnabled()
+                && bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON;
     }
 }
