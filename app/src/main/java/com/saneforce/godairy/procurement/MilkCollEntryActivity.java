@@ -1,7 +1,6 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.procurement.AppConstants.MAS_GET_CUSTOMERS;
-import static com.saneforce.godairy.procurement.AppConstants.MAS_GET_STATES;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -11,6 +10,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -20,9 +20,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,15 +35,15 @@ import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.Procurement;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.Printama;
-import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityMilkCollEntryBinding;
 import com.saneforce.godairy.procurement.adapter.SelectionAdapter;
+import com.saneforce.godairy.procurement.printer.Printama2;
+import com.saneforce.godairy.universal.Constant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,6 +64,8 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     private String mNoOfCans, mMilkWeight, mMilkToatlQty, mMilkSample, mFat, mSnf;
     private String mCustomerName, mCustomerNo, mDate, mSession, mMilkType;
     private String mClr, mMilkRate, mTotalMilkAmt;
+    @SuppressLint("StaticFieldLeak")
+    public static MilkCollEntryActivity milkCollEntryActivity;
     private List<Procurement> selectionsLists;
     private int mSelect = 0;
     private ApiInterface apiInterface;
@@ -74,6 +76,7 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     int datePickerId = 0;
     private Dialog printDialog;
     private int paperSize = 80;
+    int reportType = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,8 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
         onClick();
         initSpinner();
         initPrintDialog();
+
+        printDialog.show();
 
         selectionsLists = new ArrayList<>();;
         binding.edCustomerSel.setFocusable(false);
@@ -120,8 +125,13 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
                 showPrinterSettingDialog();
             }
         } catch (Exception e) {
-            Toast.makeText(context, "Bluetooth error!", Toast.LENGTH_SHORT).show();
+            showToast("Bluetooth error!");
+            Log.e(TAG, "Bluetooth error : " + e.getMessage());
         }
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(context, message , Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -129,7 +139,7 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.model_dialog_printer_size);
         Button print = dialog.findViewById(R.id.print);
-        ImageView close=dialog.findViewById(R.id.close);
+        RelativeLayout close =dialog.findViewById(R.id.close);
 
         RadioGroup radioGroup = dialog.findViewById(R.id.radioGroup);
         RadioButton radioButton2 = dialog.findViewById(R.id.rb_size_80);
@@ -165,11 +175,14 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     }
 
     private void showPrinterList(int size) {
-        Printama.showPrinterList(this, R.color.blue_1,size, printerName -> {
-            Toast.makeText(context, printerName, Toast.LENGTH_SHORT).show();
-            String text = "Connected to : " + printerName;
-            if (!printerName.contains("failed")) {
-                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        Printama2.showPrinterList(this, R.color.blue_1,size, new Printama2.OnConnectPrinter() {
+            @Override
+            public void onConnectPrinter(String printerName) {
+                Toast.makeText(context, printerName, Toast.LENGTH_SHORT).show();
+                String text = "Connected to : " + printerName;
+                if (!printerName.contains("failed")) {
+                    Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -443,6 +456,44 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
             return false;
         }
         return true;
+    }
+
+    public void printBill() {
+        try {
+
+            Bitmap logo = Printama2.getBitmapFromVector(this, R.drawable.godairy_logo_jpeg);
+            Printama2.with(context, paperSize).connect(printama -> {
+
+                printama.setWideTallBold();
+                printama.setTallBold();
+                printama.printTextln(Printama.CENTER, "Godairy");
+                printama.addNewLine();
+                printama.setNormalText();
+                printama.printTextln(Printama.LEFT, "Prasanth");
+                printama.setNormalText();
+                printama.printTextln(Printama.LEFT,"Mob No : "+ "8940570614");
+                printama.setBold();
+
+                if(paperSize==80||paperSize==102) {
+                    printama.printLine();
+                }else{
+                    printama.printSmallLine();
+                }
+
+                if(paperSize==80||paperSize==102) {
+                    printama.printLine();
+                }else{
+                    printama.printSmallLine();
+                }
+                printama.setBold();
+                printama.addNewLine();
+                printama.setLineSpacing(5);
+                printama.feedPaper();
+                printama.close();
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Error! MilkCollEntryActivity printBill : " + e.getMessage());
+        }
     }
 
     public boolean isBluetoothAvailable(){

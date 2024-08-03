@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -61,6 +60,12 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="n">
+        <activity
+            android:name=".procurement.printer.CallPreviewActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.printer.ChoosePrinterActivity2"
+            android:exported="false" />
         <activity
             android:name=".procurement.reports.MilkCollectionReport"
             android:exported="false" />

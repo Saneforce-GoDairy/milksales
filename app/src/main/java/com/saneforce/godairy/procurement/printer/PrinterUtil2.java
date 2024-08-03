@@ -1,23 +1,30 @@
-package com.saneforce.godairy.SFA_Activity;
+package com.saneforce.godairy.procurement.printer;
 
+import static com.saneforce.godairy.procurement.printer.Printama2.CENTER;
+import static com.saneforce.godairy.procurement.printer.Printama2.FULL_WIDTH;
+import static com.saneforce.godairy.procurement.printer.Printama2.ORIGINAL_WIDTH;
+import static com.saneforce.godairy.procurement.printer.Printama2.RIGHT;
+
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.os.Build;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.UUID;
 
-import static com.saneforce.godairy.SFA_Activity.Printama.CENTER;
-import static com.saneforce.godairy.SFA_Activity.Printama.FULL_WIDTH;
-import static com.saneforce.godairy.SFA_Activity.Printama.ORIGINAL_WIDTH;
-import static com.saneforce.godairy.SFA_Activity.Printama.RIGHT;
-
-
-public class PrinterUtil {
+public class PrinterUtil2 {
     private static final String TAG = "PRINTAMA";
 
     private static final int PRINTER_WIDTH = 384;
@@ -44,13 +51,27 @@ public class PrinterUtil {
     private static final byte[] TALL_BOLD = new byte[]{0x1B, 0x21, 0x10 | 0x08};
     private static final byte[] WIDE_TALL = new byte[]{0x1B, 0x21, 0x20 | 0x10};
     private static final byte[] WIDE_TALL_BOLD = new byte[]{0x1B, 0x21, 0x20 | 0x10 | 0x08};
+    String queryPaperSizeCommand = new String(new byte[]{0x1D, 0x49} );
+    byte[] fontSizeCommand = new byte[]{0x1B, 0x21, 0x30};
 
     private BluetoothDevice printer;
     private BluetoothSocket btSocket = null;
     private OutputStream btOutputStream = null;
+    //int fontSize=16;
 
-    public PrinterUtil(BluetoothDevice printer) {
+    PrinterUtil2(BluetoothDevice printer,int paperSize ) {
         this.printer = printer;
+        if(paperSize==58) {
+            this.fontSizeCommand =  new byte[]{0x1B, 0x4d, 0x00};
+
+        } else if (paperSize == 80) {
+            this.fontSizeCommand = new byte[]{0x1B, 0x21, 0x08};
+        } else if (paperSize == 102) {
+            this.fontSizeCommand = new byte[]{0x1B, 0x21, 0x30};
+        } else {
+            this.fontSizeCommand = new byte[]{0x1B, 0x21, 0x10};
+        }
+      //  printUsrLog("ytugym",""+paperSize+"papersize1e"+fontSizeCommand);
     }
 
     void connectPrinter(final PrinterConnected successListener, PrinterConnectFailed failedListener) {
@@ -60,7 +81,9 @@ public class PrinterUtil {
                 btSocket = socket;
                 try {
                     btOutputStream = socket.getOutputStream();
+
                     successListener.onConnected();
+
                 } catch (IOException e) {
                     failedListener.onFailed();
                 }
@@ -91,6 +114,7 @@ public class PrinterUtil {
 
     private boolean printUnicode(byte[] data) {
         try {
+
             btOutputStream.write(data);
             return true;
         } catch (IOException e) {
@@ -106,7 +130,11 @@ public class PrinterUtil {
     boolean printText(String text) {
         try {
             String s = StrUtil.encodeNonAscii(text);
-            btOutputStream.write(s.getBytes());
+            // sendEscPosCommand(btOutputStream, queryPaperSizeCommand.getBytes());
+
+            btOutputStream.write(fontSizeCommand);
+            btOutputStream.write(s.getBytes(Charset.forName("UTF-8")));
+
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -188,6 +216,9 @@ public class PrinterUtil {
                 break;
         }
         try {
+            //  sendEscPosCommand(btOutputStream, queryPaperSizeCommand.getBytes());
+            //printUsrLog("ytugym","papersize4e"+fontSizeCommand);
+            btOutputStream.write(fontSizeCommand);
             btOutputStream.write(d);
         } catch (IOException e) {
             e.printStackTrace();
@@ -208,7 +239,7 @@ public class PrinterUtil {
             int width = bitmap.getWidth() > PRINTER_WIDTH ? FULL_WIDTH : ORIGINAL_WIDTH;
             return printImage(CENTER, bitmap, width);
         } catch (NullPointerException e) {
-            Log.e(TAG, "Maybe resource is vector or mipmap?");
+         //   printUsrLog(TAG, "Maybe resource is vector or mipmap?");
             return false;
         }
     }
@@ -279,7 +310,7 @@ public class PrinterUtil {
             height = (int) (bitmap.getHeight() * scale);
             return Bitmap.createScaledBitmap(bitmap, desiredWidth, height, true);
         } catch (NullPointerException e) {
-            Log.e(TAG, "Maybe resource is vector or mipmap?");
+       //     printUsrLog(TAG, "Maybe resource is vector or mipmap?");
             return null;
         }
     }
@@ -298,26 +329,48 @@ public class PrinterUtil {
             this.listener = listener;
         }
 
+
         @Override
         protected BluetoothSocket doInBackground(BluetoothDevice... bluetoothDevices) {
-            BluetoothDevice device = bluetoothDevices[0];
-            UUID uuid;
-            if (device != null) {
+            // BluetoothDevice device1 = BluetoothAdapter.getDefaultAdapter().getRemoteDevice("00:11:22:33:44:55");
+
+
+            UUID uuidSting = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+            BluetoothDevice device1 = bluetoothDevices[0];
+            //  UUID uuid;
+
+            //  ParcelUuid[] uuids = device1.getUuids();
+
+            //  printUsrLog("czx","fdf"+device1.getUuids());
+         /*  if (device1 != null) {
                 uuid = device.getUuids()[0].getUuid();
             } else {
-                return null;
-            }
+              return null;
+            }*/
             BluetoothSocket socket = null;
             boolean connected = true;
             try {
-                socket = device.createRfcommSocketToServiceRecord(uuid);
-                socket.connect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e2) {
+//
+//                if (!isBluetoothAvailable()) {
+//                    Toast.makeText(MilkCollEntryActivity.mPrint_view_activity!=null?PrintViewActivity.mPrint_view_activity:CallPreviewActivity.mPrint_view_activity,"Check Bluetooth Connection",Toast.LENGTH_SHORT).show();
+//                }else if (isBluetoothAvailable()&& ContextCompat.checkSelfPermission(PrintViewActivity.mPrint_view_activity!=null?PrintViewActivity.mPrint_view_activity:CallPreviewActivity.mPrint_view_activity, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                    ActivityCompat.requestPermissions(MilkCollEntryActivity.mPrint_view_activity!=null?PrintViewActivity.mPrint_view_activity:CallPreviewActivity.mPrint_view_activity, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+//                } else {
+//                    socket = device1.createRfcommSocketToServiceRecord(uuidSting);
+//                    socket.connect();
+//                }
+
+                // socket = device1.createRfcommSocketToServiceRecord(uuidSting);
+                //socket.connect();
+                //  }
+
+            } catch(Exception e2){
                 connected = false;
+
             }
             return connected ? socket : null;
+
+
         }
 
         @Override
@@ -343,4 +396,19 @@ public class PrinterUtil {
         void onFailed();
     }
 
+    private static void sendEscPosCommand(OutputStream outputStream, byte[] command) {
+        try {
+            outputStream.write(command);
+            outputStream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static boolean isBluetoothAvailable() {
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        return bluetoothAdapter != null
+                && bluetoothAdapter.isEnabled()
+                && bluetoothAdapter.getState() == BluetoothAdapter.STATE_ON;
+    }
 }
