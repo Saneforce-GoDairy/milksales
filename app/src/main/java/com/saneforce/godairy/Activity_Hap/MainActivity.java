@@ -29,17 +29,19 @@ public class MainActivity extends AppCompatActivity {
             View view = binding.getRoot();
             setContentView(view);
 
-            shared_common_pref = new Shared_Common_Pref(this);
-            new Handler().postDelayed(() -> {
-                SharedPreferences sharedpreferences;
-                sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+            startActivity(new Intent(context, ProcurementHome.class));
 
-                if (sharedpreferences.getString("nameKey", "").equals("")) {
-                    startActivity(new Intent(context, PrivacyPolicy.class));
-                } else {
-                    startActivity(new Intent(context, LoginHome.class));
-                }
-                finish();
-            }, 3000);
+//            shared_common_pref = new Shared_Common_Pref(this);
+//            new Handler().postDelayed(() -> {
+//                SharedPreferences sharedpreferences;
+//                sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+//
+//                if (sharedpreferences.getString("nameKey", "").equals("")) {
+//                    startActivity(new Intent(context, PrivacyPolicy.class));
+//                } else {
+//                    startActivity(new Intent(context, LoginHome.class));
+//                }
+//                finish();
+//            }, 3000);
     }
 }

@@ -35,6 +35,7 @@ import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.Procurement;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.Printama;
+import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityMilkCollEntryBinding;
 import com.saneforce.godairy.procurement.adapter.SelectionAdapter;
 import com.saneforce.godairy.procurement.printer.Printama2;
@@ -51,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -77,6 +79,9 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     private Dialog printDialog;
     private int paperSize = 80;
     int reportType = 0;
+    String mDate2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+    String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+    String mTimeDate  = mDate2 +" "+mTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +91,13 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
+        milkCollEntryActivity = this;
+
         onClick();
         initSpinner();
         initPrintDialog();
 
-        printDialog.show();
+     //   printDialog.show();
 
         selectionsLists = new ArrayList<>();;
         binding.edCustomerSel.setFocusable(false);
@@ -268,6 +275,11 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
 
 
     private void loadCustomer() {
+
+        if (selectionsLists != null){
+            selectionsLists.clear();
+        }
+
         Call<ResponseBody> call =
                 apiInterface.getCustomers(MAS_GET_CUSTOMERS);
 
@@ -343,30 +355,32 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     private void saveNow() {
         Toast.makeText(context, "Valid", Toast.LENGTH_SHORT).show();
 
+      //  printDialog.show();
 
 
-        /*
         String mActiveFlag = "1";
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
-         serviceIntent.putExtra("cans", mNoOfCans);
+        serviceIntent.putExtra("session", mSession);
+        serviceIntent.putExtra("milk_type", mMilkType);
+
+        serviceIntent.putExtra("cans", mNoOfCans);
+        serviceIntent.putExtra("customer_name", mCustomerName);
+        serviceIntent.putExtra("customer_no", mCustomerNo);
         serviceIntent.putExtra("milk_weight", mMilkWeight);
         serviceIntent.putExtra("total_milk_qty", mMilkToatlQty);
-
         serviceIntent.putExtra("milk_sample_no", mMilkSample);
         serviceIntent.putExtra("fat", mFat);
         serviceIntent.putExtra("snf", mSnf);
-
         serviceIntent.putExtra("clr", mClr);
         serviceIntent.putExtra("milk_rate", mMilkRate);
         serviceIntent.putExtra("total_milk_amt", mTotalMilkAmt);
-
         serviceIntent.putExtra("active_flag", mActiveFlag);
         serviceIntent.putExtra("upload_service_id", "16");
         ContextCompat.startForegroundService(this, serviceIntent);
 
         finish();
         Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
-         */
+
     }
 
     private boolean validateInputs() {
@@ -389,6 +403,7 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
         mMilkRate = binding.edMilkRate.getText().toString();
         mTotalMilkAmt = binding.edTotalMilkAmount.getText().toString();
 
+        /*
         if (mCustomerName.isEmpty()){
             Toast.makeText(context, "Select Customer", Toast.LENGTH_SHORT).show();
             return false;
@@ -455,6 +470,8 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
             binding.edTotalMilkAmount.setError("Required");
             return false;
         }
+
+         */
         return true;
     }
 
@@ -466,13 +483,22 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
 
                 printama.setWideTallBold();
                 printama.setTallBold();
-                printama.printTextln(Printama.CENTER, "Godairy");
+                printama.printTextln(Printama2.CENTER, "ENTRY SLIP");
                 printama.addNewLine();
                 printama.setNormalText();
-                printama.printTextln(Printama.LEFT, "Prasanth");
+                printama.printTextln(Printama2.LEFT, "Customer ID :" + "TESTID77722");
+                printama.addNewLine();
                 printama.setNormalText();
-                printama.printTextln(Printama.LEFT,"Mob No : "+ "8940570614");
+                printama.printTextln(Printama2.LEFT,"Customer Name : "+ mCustomerName);
                 printama.setBold();
+                printama.printTextln(Printama2.LEFT, "Date : " + mTimeDate);
+                printama.printTextln(Printama2.LEFT, "Milk : " + mMilkToatlQty);
+                printama.printTextln(Printama2.LEFT, "Fat : " + mFat);
+                printama.printTextln(Printama2.LEFT, "SNF : " + mSnf);
+                printama.printTextln(Printama2.LEFT, "Rate : " + mMilkRate);
+                printama.printTextln(Printama2.LEFT, "Amount : " + mTotalMilkAmt);
+                printama.addNewLine();
+                printama.printTextln(Printama2.CENTER, "Thank you!");
 
                 if(paperSize==80||paperSize==102) {
                     printama.printLine();

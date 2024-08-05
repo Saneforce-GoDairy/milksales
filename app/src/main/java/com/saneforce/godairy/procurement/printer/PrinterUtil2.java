@@ -19,6 +19,8 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.saneforce.godairy.procurement.MilkCollEntryActivity;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -350,19 +352,19 @@ public class PrinterUtil2 {
             BluetoothSocket socket = null;
             boolean connected = true;
             try {
-//
-//                if (!isBluetoothAvailable()) {
-//                    Toast.makeText(MilkCollEntryActivity.mPrint_view_activity!=null?PrintViewActivity.mPrint_view_activity:CallPreviewActivity.mPrint_view_activity,"Check Bluetooth Connection",Toast.LENGTH_SHORT).show();
-//                }else if (isBluetoothAvailable()&& ContextCompat.checkSelfPermission(PrintViewActivity.mPrint_view_activity!=null?PrintViewActivity.mPrint_view_activity:CallPreviewActivity.mPrint_view_activity, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                    ActivityCompat.requestPermissions(MilkCollEntryActivity.mPrint_view_activity!=null?PrintViewActivity.mPrint_view_activity:CallPreviewActivity.mPrint_view_activity, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
-//                } else {
-//                    socket = device1.createRfcommSocketToServiceRecord(uuidSting);
-//                    socket.connect();
-//                }
 
-                // socket = device1.createRfcommSocketToServiceRecord(uuidSting);
-                //socket.connect();
-                //  }
+                if (!isBluetoothAvailable()) {
+                 //   Toast.makeText(MilkCollEntryActivity.mPrint_view_activity!=null?PrintViewActivity.mPrint_view_activity:CallPreviewActivity.mPrint_view_activity,"Check Bluetooth Connection",Toast.LENGTH_SHORT).show();
+                }else if (isBluetoothAvailable()&& ContextCompat.checkSelfPermission(MilkCollEntryActivity.milkCollEntryActivity!=null?MilkCollEntryActivity.milkCollEntryActivity:CallPreviewActivity2.mCallPreviewActivity2, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                //    ActivityCompat.requestPermissions(MilkCollEntryActivity.mPrint_view_activity!=null?PrintViewActivity.mPrint_view_activity:CallPreviewActivity.mPrint_view_activity, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
+                } else {
+                    socket = device1.createRfcommSocketToServiceRecord(uuidSting);
+                    socket.connect();
+                }
+
+                 socket = device1.createRfcommSocketToServiceRecord(uuidSting);
+                socket.connect();
+
 
             } catch(Exception e2){
                 connected = false;

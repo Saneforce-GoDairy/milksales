@@ -31,7 +31,7 @@ public class CallPreviewActivity2 extends AppCompatActivity {
 
                 printama.setWideTallBold();
                 printama.setTallBold();
-                printama.printTextln(Printama.CENTER, "Godairy");
+                printama.printTextln(Printama.CENTER, "ENTRY SLIP");
                 printama.addNewLine();
                 printama.setNormalText();
                 printama.printTextln(Printama.LEFT, "Prasanth");

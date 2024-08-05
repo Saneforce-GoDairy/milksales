@@ -365,6 +365,14 @@ public class FileUploadService2 extends Service {
 
     private void milkCollEntry(Intent intent) {
         String mActiveFlag = intent.getStringExtra("active_flag");
+
+        String mSession = intent.getStringExtra("session");
+        String mMilkType = intent.getStringExtra("milk_type");
+
+
+        String mCustomerName = intent.getStringExtra("customer_name");
+        String mCustomerNo = intent.getStringExtra("customer_no");
+
         String mCans = intent.getStringExtra("cans");
         String mMilkWeight = intent.getStringExtra("milk_weight");
         String mTotalMilkQty = intent.getStringExtra("total_milk_qty");
@@ -392,6 +400,10 @@ public class FileUploadService2 extends Service {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.saveProcMilkCollEntry(PROCUREMENT_SAVE_MILK_COLLECTION,
+                mSession,
+                mMilkType,
+                mCustomerName,
+                mCustomerNo,
                 mCans,
                 mMilkWeight,
                 mTotalMilkQty,

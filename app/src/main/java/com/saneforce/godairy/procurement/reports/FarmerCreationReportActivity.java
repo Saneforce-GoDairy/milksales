@@ -183,6 +183,7 @@ public class FarmerCreationReportActivity extends AppCompatActivity {
             }
         });
     }
+
     private void showError() {
         binding.shimmerLayout.setVisibility(GONE);
         binding.recyclerView.setVisibility(GONE);

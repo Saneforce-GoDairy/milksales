@@ -1167,6 +1167,10 @@ public interface ApiInterface {
 
     @POST("Procurement.php")
     Call<ResponseBody> saveProcMilkCollEntry(@Query("axn") String axn,
+                                             @Query("session") String session,
+                                             @Query("milk_type") String milk_type,
+                                             @Query("customer_name") String customer_name,
+                                             @Query("customer_no") String customer_no,
                                              @Query("cans") String cans,
                                              @Query("milk_weight") String milk_weight,
                                              @Query("total_milk_qty") String total_milk_qty,
@@ -1184,6 +1188,9 @@ public interface ApiInterface {
 
     @POST("Procurement.php")
     Call<ResponseBody> getCustomers(@Query("axn") String axn);
+
+    @POST("Procurement.php")
+    Call<ResponseBody> getMilkColl(@Query("axn") String axn);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
