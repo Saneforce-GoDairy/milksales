@@ -14,6 +14,8 @@ import com.saneforce.godairy.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 public class AdapterDayReport extends RecyclerView.Adapter<AdapterDayReport.ViewHolder> {
     Context context;
     JSONArray array;
@@ -49,10 +51,10 @@ public class AdapterDayReport extends RecyclerView.Adapter<AdapterDayReport.View
         holder.count_distributor.setOnClickListener(v -> onItemClick.onDistInvoiceCountClick(holder.getBindingAdapterPosition(), array.optJSONObject(holder.getBindingAdapterPosition())));
         holder.count_outlet.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("RetInvoiceCount"));
         holder.count_outlet.setOnClickListener(v -> onItemClick.onRetInvoiceCountClick(holder.getBindingAdapterPosition(), array.optJSONObject(holder.getBindingAdapterPosition())));
-        holder.ordered_distributor.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("DistOrderAmt"));
-        holder.ordered_outlet.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("RetOrderAmt"));
-        holder.invoiced_distributor.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("DistInvoiceAmt"));
-        holder.invoiced_outlet.setText(array.optJSONObject(holder.getBindingAdapterPosition()).optString("RetInvoiceAmt"));
+        holder.ordered_distributor.setText(new DecimalFormat("0.00").format(array.optJSONObject(holder.getBindingAdapterPosition()).optDouble("DistOrderAmt")));
+        holder.ordered_outlet.setText(new DecimalFormat("0.00").format(array.optJSONObject(holder.getBindingAdapterPosition()).optDouble("RetOrderAmt")));
+        holder.invoiced_distributor.setText(new DecimalFormat("0.00").format(array.optJSONObject(holder.getBindingAdapterPosition()).optDouble("DistInvoiceAmt")));
+        holder.invoiced_outlet.setText(new DecimalFormat("0.00").format(array.optJSONObject(holder.getBindingAdapterPosition()).optDouble("RetInvoiceAmt")));
     }
 
     @Override

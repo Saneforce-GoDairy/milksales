@@ -138,22 +138,22 @@ public class Day_Report_Activity extends AppCompatActivity {
         adapter = new AdapterDayReport(context, reportArray, new AdapterDayReport.OnItemClick() {
             @Override
             public void onDistOrderCountClick(int position, JSONObject object) {
-                openPDFViewer("getDistOrdersAsPDF_DR", object.optString("id"), object.optString("title") + " - Distributor Orders");
+//                openPDFViewer("getDistOrdersAsPDF_DR", object.optString("id"), object.optString("title") + " - Distributor Orders");
             }
 
             @Override
             public void onRetOrderCountClick(int position, JSONObject object) {
-                openPDFViewer("getRetOrdersAsPDF_DR", object.optString("id"), object.optString("title") + " - Retailer Orders");
+//                openPDFViewer("getRetOrdersAsPDF_DR", object.optString("id"), object.optString("title") + " - Retailer Orders");
             }
 
             @Override
             public void onDistInvoiceCountClick(int position, JSONObject object) {
-                openPDFViewer("getDistInvoiceAsPDF_DR", object.optString("id"), object.optString("title") + " - Distributor Invoices");
+//                openPDFViewer("getDistInvoiceAsPDF_DR", object.optString("id"), object.optString("title") + " - Distributor Invoices");
             }
 
             @Override
             public void onRetInvoiceCountClick(int position, JSONObject object) {
-                openPDFViewer("getRetInvoiceAsPDF_DR", object.optString("id"), object.optString("title") + " - Retailer Invoices");
+//                openPDFViewer("getRetInvoiceAsPDF_DR", object.optString("id"), object.optString("title") + " - Retailer Invoices");
             }
         });
         binding.recyclerView.setAdapter(adapter);
@@ -200,10 +200,10 @@ public class Day_Report_Activity extends AppCompatActivity {
                     retOrderCount.setText(new DecimalFormat("00").format(retOrderTaken));
                     count_distributor.setText(new DecimalFormat("00").format(distInvoicedCount));
                     count_outlet.setText(new DecimalFormat("00").format(retInvoicedCount));
-                    ordered_distributor.setText(new DecimalFormat("00").format(distOrderedAmt));
-                    ordered_outlet.setText(new DecimalFormat("00").format(retOrderedAmt));
-                    invoiced_distributor.setText(new DecimalFormat("00").format(distInvoicedAmt));
-                    invoiced_outlet.setText(new DecimalFormat("00").format(retInvoicedAmt));
+                    ordered_distributor.setText(new DecimalFormat("0.00").format(distOrderedAmt));
+                    ordered_outlet.setText(new DecimalFormat("0.00").format(retOrderedAmt));
+                    invoiced_distributor.setText(new DecimalFormat("0.00").format(distInvoicedAmt));
+                    invoiced_outlet.setText(new DecimalFormat("0.00").format(retInvoicedAmt));
                 });
             }
         });
