@@ -1181,7 +1181,8 @@ public interface ApiInterface {
                                              @Query("milk_rate") String milk_rate,
                                              @Query("total_milk_amt") String total_milk_amt,
                                              @Query("date") String date,
-                                             @Query("active_flag") String active_flag);
+                                             @Query("active_flag") String active_flag,
+                                             @Query("coll_entry_date") String coll_entry_date);
 
     @POST("Procurement.php")
     Call<ResponseBody> getAgentReport(@Query("axn") String axn);

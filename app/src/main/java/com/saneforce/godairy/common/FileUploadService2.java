@@ -365,22 +365,17 @@ public class FileUploadService2 extends Service {
 
     private void milkCollEntry(Intent intent) {
         String mActiveFlag = intent.getStringExtra("active_flag");
-
         String mSession = intent.getStringExtra("session");
         String mMilkType = intent.getStringExtra("milk_type");
-
-
         String mCustomerName = intent.getStringExtra("customer_name");
         String mCustomerNo = intent.getStringExtra("customer_no");
-
+        String mMilkCollEntryDate = intent.getStringExtra("coll_entry_date");
         String mCans = intent.getStringExtra("cans");
         String mMilkWeight = intent.getStringExtra("milk_weight");
         String mTotalMilkQty = intent.getStringExtra("total_milk_qty");
-
         String mMilkSampleNo = intent.getStringExtra("milk_sample_no");
         String mFat = intent.getStringExtra("fat");
         String mSnf = intent.getStringExtra("snf");
-
         String mCLR = intent.getStringExtra("clr");
         String mMilkRate = intent.getStringExtra("milk_rate");
         String mTotalMilkAmount = intent.getStringExtra("total_milk_amt");
@@ -414,7 +409,8 @@ public class FileUploadService2 extends Service {
                 mMilkRate,
                 mTotalMilkAmount,
                 mTimeDate,
-                mActiveFlag);
+                mActiveFlag,
+                mMilkCollEntryDate);
 
         call.enqueue(new Callback<>() {
             @Override
@@ -438,7 +434,6 @@ public class FileUploadService2 extends Service {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void farmerCreation2(Intent intent) {

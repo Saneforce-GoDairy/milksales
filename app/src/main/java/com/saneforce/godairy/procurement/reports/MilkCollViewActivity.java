@@ -29,9 +29,9 @@ public class MilkCollViewActivity extends AppCompatActivity {
         String fat = getIntent().getStringExtra("fat");
         String snf = getIntent().getStringExtra("snf");
         String clr = getIntent().getStringExtra("clr");
-
         String milkRate = getIntent().getStringExtra("milk_rate");
         String totalAmount = getIntent().getStringExtra("total_amount");
+        String collectionEntryDate = getIntent().getStringExtra("coll_entry_date");
 
         if (!customerName.isEmpty()) {
             binding.customerName.setText(customerName);
@@ -80,6 +80,9 @@ public class MilkCollViewActivity extends AppCompatActivity {
         }
         if (totalAmount != null) {
             binding.totalAmount.setText(totalAmount);
+        }
+        if (collectionEntryDate != null) {
+            binding.collDate.setText(collectionEntryDate);
         }
     }
 }

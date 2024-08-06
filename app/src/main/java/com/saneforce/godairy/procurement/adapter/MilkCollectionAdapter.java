@@ -55,6 +55,7 @@ public class MilkCollectionAdapter extends RecyclerView.Adapter<MilkCollectionAd
         String fat = milkCollectionList.get(position).getMilkFat();
         String snf = milkCollectionList.get(position).getMilkSnf();
         String clr = milkCollectionList.get(position).getMilkClr();
+        String collectionEntryDate = milkCollectionList.get(position).getCollEntryDate();
 
         String milkRate = milkCollectionList.get(position).getMilkRate();
         String totalAmount = milkCollectionList.get(position).getTotalAmount();
@@ -66,6 +67,8 @@ public class MilkCollectionAdapter extends RecyclerView.Adapter<MilkCollectionAd
             holder.binding.firstLetter.setText("E");
             holder.binding.txtName.setText("Error! No Name");
         }
+
+        holder.binding.txtPhone.setText(milkCollectionList.get(position).getCustomerNo());
 
         holder.binding.layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +89,7 @@ public class MilkCollectionAdapter extends RecyclerView.Adapter<MilkCollectionAd
                 intent.putExtra("clr", clr);
                 intent.putExtra("milk_rate", milkRate);
                 intent.putExtra("total_amount", totalAmount);
+                intent.putExtra("coll_entry_date", collectionEntryDate);
                 context.startActivity(intent);
                 activity.overridePendingTransition(0, 0);
             }

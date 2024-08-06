@@ -25,26 +25,22 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.Procurement;
 import com.saneforce.godairy.R;
-import com.saneforce.godairy.SFA_Activity.Printama;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityMilkCollEntryBinding;
 import com.saneforce.godairy.procurement.adapter.SelectionAdapter;
 import com.saneforce.godairy.procurement.printer.Printama2;
-import com.saneforce.godairy.universal.Constant;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,7 +49,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,10 +73,9 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     int datePickerId = 0;
     private Dialog printDialog;
     private int paperSize = 80;
-    int reportType = 0;
-    String mDate2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-    String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-    String mTimeDate  = mDate2 +" "+mTime;
+    private final String mDate2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+    private final String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+    private final String mTimeDate  = mDate2 +" "+mTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,14 +84,11 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
         setContentView(binding.getRoot());
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
         milkCollEntryActivity = this;
 
         onClick();
         initSpinner();
         initPrintDialog();
-
-     //   printDialog.show();
 
         selectionsLists = new ArrayList<>();;
         binding.edCustomerSel.setFocusable(false);
@@ -119,21 +110,20 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     }
 
     private void ignoreNow() {
-
+        saveNow();
     }
 
     private void printInvoice() {
         try {
             if (!isBluetoothAvailable()) {
-                Toast.makeText(getApplicationContext(),"Check Bluetooth Connection",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.check_bluetooth_connection,Toast.LENGTH_SHORT).show();
             }else if (isBluetoothAvailable()&&ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 ActivityCompat.requestPermissions(MilkCollEntryActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
             } else {
                 showPrinterSettingDialog();
             }
         } catch (Exception e) {
-            showToast("Bluetooth error!");
-            Log.e(TAG, "Bluetooth error : " + e.getMessage());
+            showToast(getString(R.string.bluetooth_error));
         }
     }
 
@@ -154,7 +144,7 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
         paperSize = 80;
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton radioButton = dialog.findViewById(checkedId);
+            dialog.findViewById(checkedId);
 
             switch(checkedId) {
                 case R.id.rb_size_58:
@@ -209,12 +199,13 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
     private void onClick() {
         binding.save.setOnClickListener(v -> {
             if (validateInputs()) {
-                saveNow();
+                // saveNow();
+                printDialog.show();
             }
         });
 
         binding.edCustomerSel.setOnClickListener(v -> {
-            binding.title.setText("Select Customer");
+            binding.title.setText(R.string.select_customer);
             loadCustomer();
             binding.scrollView1.setVisibility(View.GONE);
             binding.selectionCon.setVisibility(View.VISIBLE);
@@ -248,7 +239,7 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
         return null;
     }
 
-    private DatePickerDialog.OnDateSetListener myDateListener = (arg0, arg1, arg2, arg3) -> {
+    private final DatePickerDialog.OnDateSetListener myDateListener = (arg0, arg1, arg2, arg3) -> {
         // TODO Auto-generated method stub
         // arg1 = year
         // arg2 = month
@@ -283,10 +274,11 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
         Call<ResponseBody> call =
                 apiInterface.getCustomers(MAS_GET_CUSTOMERS);
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()){
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
                     binding.shimmerLayout.setVisibility(View.GONE);
                     String customersList = "";
 
@@ -295,7 +287,7 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
                         JSONObject jsonObject = new JSONObject(customersList);
                         boolean mRecords = jsonObject.getBoolean("status");
 
-                        if (mRecords){
+                        if (mRecords) {
                             JSONArray jsonArrayData = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArrayData.length(); i++) {
                                 Procurement customer = new Procurement();
@@ -309,20 +301,19 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
                             binding.recyclerView.setLayoutManager(linearLayoutManager);
                             binding.recyclerView.setHasFixedSize(true);
                             binding.recyclerView.setItemViewCacheSize(20);
-                            SelectionAdapter selectionAdapter = new SelectionAdapter(0,selectionsLists, context);
+                            SelectionAdapter selectionAdapter = new SelectionAdapter(0, selectionsLists, context);
                             binding.recyclerView.setAdapter(selectionAdapter);
                             selectionAdapter.notifyDataSetChanged();
                         }
                     } catch (IOException | JSONException e) {
-                        // throw new RuntimeException(e);
-                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        showToast(e.getMessage());
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                showToast(t.getMessage());
             }
         });
     }
@@ -333,9 +324,9 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
 
         int mRequestId = Integer.parseInt(requestId);
 
+        String mSelectedName;
         if (mRequestId == 0) {
             mSelectedName = intent.getStringExtra("selection_name");
-            mSelectedCode = intent.getStringExtra("selection_code");
             binding.edCustomerSel.setText(mSelectedName);
         }
 
@@ -346,26 +337,21 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
 
         if (mSelect == 1){
             binding.scrollView1.setVisibility(View.VISIBLE);
-            binding.title.setText("Milk Collection Entry");
+            binding.title.setText(R.string.milk_collection_entry);
             binding.selectionCon.setVisibility(View.GONE);
             mSelect = 0;
         }
     }
 
     private void saveNow() {
-        Toast.makeText(context, "Valid", Toast.LENGTH_SHORT).show();
-
-      //  printDialog.show();
-
-
         String mActiveFlag = "1";
         Intent serviceIntent = new Intent(this, FileUploadService2.class);
         serviceIntent.putExtra("session", mSession);
         serviceIntent.putExtra("milk_type", mMilkType);
-
         serviceIntent.putExtra("cans", mNoOfCans);
         serviceIntent.putExtra("customer_name", mCustomerName);
         serviceIntent.putExtra("customer_no", mCustomerNo);
+        serviceIntent.putExtra("coll_entry_date", mDate);
         serviceIntent.putExtra("milk_weight", mMilkWeight);
         serviceIntent.putExtra("total_milk_qty", mMilkToatlQty);
         serviceIntent.putExtra("milk_sample_no", mMilkSample);
@@ -377,33 +363,26 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
         serviceIntent.putExtra("active_flag", mActiveFlag);
         serviceIntent.putExtra("upload_service_id", "16");
         ContextCompat.startForegroundService(this, serviceIntent);
-
         finish();
-        Toast.makeText(context, "form submit started", Toast.LENGTH_SHORT).show();
-
+        showToast(getString(R.string.form_submit_started));
     }
 
     private boolean validateInputs() {
-
         mCustomerName = binding.edCustomerSel.getText().toString();
         mCustomerNo = binding.edCustomerNo.getText().toString();
         mDate = binding.edDate.getText().toString();
         mSession = binding.spinnerSession.getSelectedItem().toString();
         mMilkType = binding.spinnerMilkType.getSelectedItem().toString();
-
         mNoOfCans = binding.edCans.getText().toString();
         mMilkWeight = binding.edMilkWeight.getText().toString();
         mMilkToatlQty = binding.edMilkToalQty.getText().toString();
-
         mMilkSample = binding.edMilkSampleNo.getText().toString();
         mFat = binding.edFat.getText().toString();
         mSnf = binding.edSnf.getText().toString();
-
         mClr = binding.edClr.getText().toString();
         mMilkRate = binding.edMilkRate.getText().toString();
         mTotalMilkAmt = binding.edTotalMilkAmount.getText().toString();
 
-        /*
         if (mCustomerName.isEmpty()){
             Toast.makeText(context, "Select Customer", Toast.LENGTH_SHORT).show();
             return false;
@@ -470,8 +449,6 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
             binding.edTotalMilkAmount.setError("Required");
             return false;
         }
-
-         */
         return true;
     }
 
@@ -500,23 +477,25 @@ public class MilkCollEntryActivity extends AppCompatActivity implements Selectio
                 printama.addNewLine();
                 printama.printTextln(Printama2.CENTER, "Thank you!");
 
-                if(paperSize==80||paperSize==102) {
-                    printama.printLine();
-                }else{
-                    printama.printSmallLine();
-                }
-
-                if(paperSize==80||paperSize==102) {
-                    printama.printLine();
-                }else{
-                    printama.printSmallLine();
-                }
+//                if(paperSize==80||paperSize==102) {
+//                    printama.printLine();
+//                }else{
+//                    printama.printSmallLine();
+//                }
+//
+//                if(paperSize==80||paperSize==102) {
+//                    printama.printLine();
+//                }else{
+//                    printama.printSmallLine();
+//                }
                 printama.setBold();
-                printama.addNewLine();
+            //    printama.addNewLine();
                 printama.setLineSpacing(5);
                 printama.feedPaper();
                 printama.close();
             });
+
+            saveNow();
         } catch (Exception e) {
             Log.e(TAG, "Error! MilkCollEntryActivity printBill : " + e.getMessage());
         }

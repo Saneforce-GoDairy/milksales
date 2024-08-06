@@ -4,7 +4,15 @@ public class MilkCollection {
     private String customerNo, date, session;
     private String milkType, noOfCans, milkWeight;
     private String milkTotalQty, milkSampleNo, milkFat, milkSnf, milkClr;
-    private String milkRate, totalAmount;
+    private String milkRate, totalAmount, collEntryDate;
+
+    public String getCollEntryDate() {
+        return collEntryDate;
+    }
+
+    public void setCollEntryDate(String collEntryDate) {
+        this.collEntryDate = collEntryDate;
+    }
 
     public String getMilkRate() {
         return milkRate;

@@ -101,6 +101,7 @@ public class MilkCollectionReport extends AppCompatActivity {
                                 milkCollection.setMilkClr(object.getString("clr"));
                                 milkCollection.setMilkRate(object.getString("milk_rate"));
                                 milkCollection.setTotalAmount(object.getString("total_milk_amt"));
+                                milkCollection.setCollEntryDate(object.getString("coll_entry_date"));
 
                                 milkCollectionList.add(milkCollection);
                             }
