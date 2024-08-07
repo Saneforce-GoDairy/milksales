@@ -77,6 +77,7 @@ import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.CtrlsListModel;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Common_Class.Util;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -89,6 +90,7 @@ import com.saneforce.godairy.Model_Class.ModeOfTravel;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.HAPApp;
 import com.saneforce.godairy.adapters.FuelListAdapter;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
 
@@ -143,6 +145,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     Common_Class mCommon_class;
     GoogleMap mGoogleMap;
     ApiInterface apiInterface;
+    AssistantClass assistantClass;
     DatabaseHandler db;
     Uri outputFileUri;
     FuelListAdapter fuelListAdapter;
@@ -247,6 +250,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     private ShimmerFrameLayout mShimmerViewContainer;
     private String Ukey = "";
     String StartFrom,EndTo,StartKM,EndKM,PersonalKM,TravelledKM;
+    Context context = this;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -256,7 +260,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmer();
 
-
+        assistantClass = new AssistantClass(context);
         mCommon_class = new Common_Class(this);
         util = new Util();
 
@@ -668,7 +672,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         ldg_typ_sp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ldgModes.clear();
                 LDGType();
             }
         });
@@ -1513,6 +1516,33 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             shouldShowRequestPermissionRationale("true");
         }
+    }
+
+    private void loadLDGTypes() {
+        assistantClass.showProgressDialog("Loading Lodging types...", false);
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getLodgingAllowanceTypes");
+        params.put("date", DateTime);
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                ldgModes.clear();
+                JSONArray array1 = jsonObject.optJSONArray("response");
+                if (array1 == null) {
+                    array1 = new JSONArray();
+                }
+                for (int i = 0; i < array1.length(); i++) {
+                    ldgModes.add(new Common_Model(array1.optJSONObject(i).optString("logName"), array1.optJSONObject(i).optString("logCode")));
+                }
+                assistantClass.dismissProgressDialog();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithDismiss(error);
+            }
+        });
     }
 
 
@@ -3299,6 +3329,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                 }
             });
+            loadLDGTypes();
 
         } catch (Exception exception) {
         }
@@ -5632,14 +5663,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     }
 
     public void LDGType() {
-
-        mCommon_model_spinner = new Common_Model("Independent Stay", "IS");
-        ldgModes.add(mCommon_model_spinner);
-        mCommon_model_spinner = new Common_Model("Joined Stay", "JS");
-        ldgModes.add(mCommon_model_spinner);
-        mCommon_model_spinner = new Common_Model("Stay At Relative's House", "RS");
-        ldgModes.add(mCommon_model_spinner);
-
         customDialog = new CustomListViewDialog(TAClaimActivity.this, ldgModes, 9);
         Window window = customDialog.getWindow();
         window.setGravity(Gravity.CENTER);

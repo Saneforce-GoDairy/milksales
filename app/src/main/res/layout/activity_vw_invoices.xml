@@ -88,7 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/basic"
-                        android:text="Sale Oreder Number"
+                        android:text="Sale Order Number"
                         android:paddingEnd="@dimen/C5dp"
                         android:textColorHint="@color/grey_300"
                         android:textSize="12sp"
