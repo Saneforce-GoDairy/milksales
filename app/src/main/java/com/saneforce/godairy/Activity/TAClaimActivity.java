@@ -127,6 +127,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     public static final String SKM = "Started_km";
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String CheckInfo = "CheckInDetail";
+    String lodgingAllowType = "";
+    String allowType = "", lodgingStayTypeId = "";
     static Util util;
     static TransferUtility transferUtility;
     final Handler handler = new Handler();
@@ -1532,7 +1534,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                     array1 = new JSONArray();
                 }
                 for (int i = 0; i < array1.length(); i++) {
-                    ldgModes.add(new Common_Model(array1.optJSONObject(i).optString("logName"), array1.optJSONObject(i).optString("logCode")));
+                    ldgModes.add(new Common_Model(array1.optJSONObject(i).optString("logCode"), array1.optJSONObject(i).optString("logName"), array1.optJSONObject(i).optString("jointWork")));
                 }
                 assistantClass.dismissProgressDialog();
             }
@@ -5115,6 +5117,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         if (type == 9) {
             stayDays.setVisibility(View.VISIBLE);
             ValCd = myDataset.get(position).getId();
+            lodgingStayTypeId = myDataset.get(position).getId();
             String Valname = myDataset.get(position).getName();
             if (LodingCon.size() != 0) {
                 mChckEarly.setVisibility(View.GONE);
@@ -5195,10 +5198,30 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             edtLdgGstAmt.setText("");
             edtLdgGstBillNo.setText("");
 
+            sLocId = "";
+            sLocName = "";
+            sDrvLocName = "";
+            txt_Styloc.setText("");
+            txt_drvStyloc.setText("");
+            lodgStyLocation.setText("");
+            drvStyLocation.setText("");
+            ldgEliAmt = 0.0;
+            txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
+
+            if (myDataset.get(position).getFlag() == "1") {
+                lodgJoin.setVisibility(View.VISIBLE);
+                JNLdgEAra.setVisibility(View.VISIBLE);
+                img_lodg_prvw.setVisibility(View.VISIBLE);
+                linImgPrv.setVisibility(View.VISIBLE);
+                viewBilling.setVisibility(View.VISIBLE);
+                /*tTotAmt = 0;*/
+                ttLod = 1;
+                txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
+                lodingView();
+            }
 
             getStayAllow();
             SumOFJointLodging();
-            SumOFLodging(0);
         }
         if (type == 12) {
             boolean sameDrvldg=false;
@@ -5206,6 +5229,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             sLocId = myDataset.get(position).getId();
             sLocName = myDataset.get(position).getName();
             sDrvLocName = myDataset.get(position).getName();
+            allowType = myDataset.get(position).getJSONObject().optString("HQ_Type");
 
             if(sameDrvldg==true){
                 sDrvLocId = myDataset.get(position).getId();
@@ -5290,9 +5314,11 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             linFareAmount.setVisibility(View.VISIBLE);
             linback.setVisibility(View.GONE);*/
 
-        } else if (type == 11) {
+        }
+        else if (type == 11) {
             modeTextView.setText(myDataset.get(position).getName());
-        } else if (type == 8) {
+        }
+        else if (type == 8) {
             Integer editTextPosition = myDataset.get(position).getPho();
             View view = travelDynamicLoaction.getChildAt(editTextPosition);
             editText = (TextView) (view.findViewById(R.id.enter_mode));
@@ -5359,7 +5385,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             } else {
                 txtTAFare.setVisibility(View.VISIBLE);
             }
-        } else if (type == 80) {
+        }
+        else if (type == 80) {
             editTextPositionss = myDataset.get(position).getPho();
             View view = linlocalCon.getChildAt(editTextPositionss);
 
@@ -5410,7 +5437,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 lcGstLayout.setVisibility(View.GONE);
             }
 
-        } else if (type == 90) {
+        }
+        else if (type == 90) {
 
             editTextPositionss = myDataset.get(position).getPho();
             View view = LinearOtherAllowance.getChildAt(editTextPositionss);
@@ -5463,7 +5491,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             }
 
 
-        } else if (type == 100) {
+        }
+        else if (type == 100) {
             String TrTyp = myDataset.get(position).getName();
             travelTypeMode.setText(TrTyp);
 
@@ -5475,10 +5504,37 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 diverAllowanceLinear.setVisibility(View.GONE);
             }
 
-        } else if (type == 1) {
+        }
+        else if (type == 1) {
             enterMode.setText(myDataset.get(position).getName());
         }
 
+    }
+
+    private void getLodgingAllowanceEligibleAmt() {
+        ldgDrvEligi = 0.0;
+        chkDrvAlw.setVisibility(View.GONE);
+        txtDrivEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgDrvEligi));
+        assistantClass.showProgressDialog("Loading Lodging allowance eligible amount...", false);
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getLodgingAllowanceEligibleAmt");
+        params.put("logCode", lodgingStayTypeId);
+        params.put("allowanceType", allowType);
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                ldgEliAmt = jsonObject.optDouble("amount");
+                txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
+                SumOFLodging(0);
+                assistantClass.dismissProgressDialog();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithDismiss(error);
+            }
+        });
     }
 
     public void changeDate(String chooseDate) {
@@ -5498,8 +5554,9 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     }
 
     public void getStayAllow() {
+        getLodgingAllowanceEligibleAmt();
 
-        JSONObject item = new JSONObject();
+        /*JSONObject item = new JSONObject();
         try {
             item.put("sfCode", UserDetails.getString("Sfcode", ""));
             item.put("HQID", sLocId);
@@ -5545,7 +5602,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
 
                 Log.d("Error:", "Alwance Error");
             }
-        });
+        });*/
 
     }
 
