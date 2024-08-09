@@ -2258,7 +2258,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         if (sLateAmt.equalsIgnoreCase("")) sLateAmt = "0";
         tTotAmt = Double.parseDouble(sMyAmt) + ldgDrvEligi + Float.parseFloat(sJnAmt) + Double.parseDouble(sErlyAmt) + Double.parseDouble(sLateAmt);
 
-        txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
         //ldgWOBBal.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
 
         if (!mChckCont.isChecked())
@@ -2270,7 +2269,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         edtEarBill.setFilters(new InputFilter[]{new Common_Class.InputFilterMinMax(0, IntValue)});
 
 
-        SumWOBLodging();
         String sBillAmt = edt_ldg_bill.getText().toString().replaceAll("₹", "");
         if (sBillAmt.isEmpty()) sBillAmt = "0";
         if ((nofNght < 1 && OnlyNight == 1) || transferflg == 1)
@@ -2286,14 +2284,15 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
 
 
         Log.v("COunt_stay", String.valueOf(count));
-        if (mChckCont.isChecked())//if (count == 1)
+        /*if (mChckCont.isChecked())//if (count == 1)
         {
             tTotAmt = 0;
             calOverAllTotal(localCov, otherExp, tTotAmt);
         } else {
             Log.v("TOTAL_continueStay", String.valueOf(continueStay));
             calOverAllTotal(localCov, otherExp, tTotAmt);
-        }
+        }*/
+        SumWOBLodging();
 
     }
 
@@ -2302,23 +2301,39 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         String sJnAmt = txtJNEligi.getText().toString().replaceAll("₹", "");
         String sldgAmt = txtDrivEligi.getText().toString().replaceAll("₹", "");
 
-        Double tBillTotAmt = Double.parseDouble(sMyAmt) + ldgDrvEligi + Float.parseFloat(sJnAmt);
+        if (sMyAmt.isEmpty()) {
+            sMyAmt = "0";
+        }
+        if (sJnAmt.isEmpty()) {
+            sJnAmt = "0";
+        }
+        if (sldgAmt.isEmpty()) {
+            sldgAmt = "0";
+        }
 
-        String sBillAmt = edt_ldg_bill.getText().toString().replaceAll("₹", "");
+        Double totalBill = Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
 
-        if (sBillAmt.isEmpty()) sBillAmt = "0";
-        double tBalAmt = tTotAmt - Float.parseFloat(sBillAmt);
+        String bill = edt_ldg_bill.getText().toString().replaceAll("₹", "");
+
+        if (bill.isEmpty()) {
+            bill = "0";
+        };
+
+        tTotAmt = Float.parseFloat(bill);
+        if (mChckCont.isChecked()) {
+            tTotAmt = totalBill;
+        }
+        txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
+        lbl_ldg_eligi.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
+
+        double tBalAmt = totalBill - tTotAmt;
         if ((nofNght < 1 && OnlyNight == 1) || transferflg == 1) {
             tBalAmt = 0;
-
-            tTotAmt = Float.parseFloat(sBillAmt);
-            lbl_ldg_eligi.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
-            txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
         }
         witOutBill = String.valueOf(tBalAmt);
-        // if (tBalAmt > 0) {
         ldgWOBBal.setText("₹" + new DecimalFormat("##0.00").format(tBalAmt));
 
+        calOverAllTotal(localCov, otherExp, tTotAmt);
         // }
 
     }
@@ -3268,7 +3283,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         if (ldArray.size() != 0)
                             ldgAdd.setText("- Remove");
 
-                        JNLdgEAra.setVisibility(View.GONE);
+//                        JNLdgEAra.setVisibility(View.GONE);
                         if (txt_ldg_type.getText().toString().equals("Joined Stay")) {
                             JNLdgEAra.setVisibility(View.VISIBLE);
                             TotalDays.setVisibility(View.VISIBLE);
@@ -3295,7 +3310,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                     } else {
                         //lodgContvw.setVisibility(View.GONE);
                         Log.v("LODGING_ARRAY_ELSE", String.valueOf(ldArray.size()));
-                        jointLodging.setVisibility(View.GONE);
+//                        jointLodging.setVisibility(View.GONE);
                         ldg_cin.setText("");
                         ldg_cout.setText("");
                         //ldg_coutDt.setText("");
@@ -5208,16 +5223,19 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             ldgEliAmt = 0.0;
             txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
 
-            if (myDataset.get(position).getFlag() == "1") {
-                lodgJoin.setVisibility(View.VISIBLE);
+            if (myDataset.get(position).getFlag().equals("1")) {
+                jointLodging.setVisibility(View.VISIBLE);
                 JNLdgEAra.setVisibility(View.VISIBLE);
-                img_lodg_prvw.setVisibility(View.VISIBLE);
-                linImgPrv.setVisibility(View.VISIBLE);
-                viewBilling.setVisibility(View.VISIBLE);
-                /*tTotAmt = 0;*/
-                ttLod = 1;
-                txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
-                lodingView();
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                layoutParams.setMargins(15, 15, 15, 15);
+                View rowView = inflater.inflate(R.layout.activity_loding_layout, null);
+                jointLodging.addView(rowView, layoutParams);
+            } else {
+                JNLdgEAra.setVisibility(View.GONE);
+                jointLodging.setVisibility(View.GONE);
             }
 
             getStayAllow();
