@@ -151,6 +151,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     DatabaseHandler db;
     Uri outputFileUri;
     FuelListAdapter fuelListAdapter;
+    boolean isJointWork = false, isFullPay = false;
     LinearLayout Dynamicallowance, OtherExpense, localTotal, otherExpenseLayout, linAll, linRemarks,
             linFareAmount, ldg_typ_sp, linLocalSpinner, linOtherSpinner, ldg_StylocSpinner,ldg_DrvStylocSpinner, DA_TypSpinner, DA_locSpinner, lodgCont, lodgContvw, ldg_stayloc, ldg_stayDt,
             lodgJoin, ldgEAra, ldgMyEAra, JNLdgEAra, drvldgEAra, jointLodging, vwBoarding, vwDrvBoarding, linAddplaces,
@@ -507,36 +508,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         mChckCont.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    //linCheckOut.setVisibility(View.INVISIBLE);
-                    vwldgBillAmt.setVisibility(View.GONE);
-                    ldgGstLayout.setVisibility(View.GONE);
-                    ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd"));
-                    cnSty = 1;
-                    // ldg_cout.setText("");
-                    // ldg_coutDt.setText("");
-                    SumOFLodging(1);
-                    countLoding = 1;
-
-                } else {
-
-                    COutDate = DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd");
-                    ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd"));
-                    SumOFLodging(0);
-                    countLoding = 0;
-                    cnSty = 0;
-                    vwldgBillAmt.setVisibility(View.VISIBLE);
-                    ldgGstLayout.setVisibility(View.VISIBLE);
-                    linCheckOut.setVisibility(View.VISIBLE);
-                }
-
-                nofNght = DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00");
-                //if(nofNght==0) nofNght=1;
-                NoofNight.setText(" - " + nofNght + " Nights - ");
-                linContinueStay.setVisibility(View.VISIBLE);
-                // if(DT.Daybetween(DateTime+" 00:00:00",ldg_coutDt.getText().toString()+ " 00:00:00")<=1)
-                //     linContinueStay.setVisibility(View.GONE);
-                getStayAllow();
+                ContinueStayChecked(isChecked);
             }
         });
         mChckEarly.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1520,6 +1492,37 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         }
     }
 
+    private void ContinueStayChecked(boolean isChecked) {
+        if (isChecked) {
+            //linCheckOut.setVisibility(View.INVISIBLE);
+            vwldgBillAmt.setVisibility(View.GONE);
+            ldgGstLayout.setVisibility(View.GONE);
+            ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd"));
+            cnSty = 1;
+            // ldg_cout.setText("");
+            // ldg_coutDt.setText("");
+            SumOFLodging(1);
+            countLoding = 1;
+        } else {
+            COutDate = DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd");
+            ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd"));
+            SumOFLodging(0);
+            countLoding = 0;
+            cnSty = 0;
+            vwldgBillAmt.setVisibility(View.VISIBLE);
+            ldgGstLayout.setVisibility(View.VISIBLE);
+            linCheckOut.setVisibility(View.VISIBLE);
+        }
+
+        nofNght = DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00");
+        //if(nofNght==0) nofNght=1;
+        NoofNight.setText(" - " + nofNght + " Nights - ");
+        linContinueStay.setVisibility(View.VISIBLE);
+        // if(DT.Daybetween(DateTime+" 00:00:00",ldg_coutDt.getText().toString()+ " 00:00:00")<=1)
+        //     linContinueStay.setVisibility(View.GONE);
+        getStayAllow();
+    }
+
     private void loadLDGTypes() {
         assistantClass.showProgressDialog("Loading Lodging types...", false);
         Map<String, String> params = new HashMap<>();
@@ -1534,7 +1537,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                     array1 = new JSONArray();
                 }
                 for (int i = 0; i < array1.length(); i++) {
-                    ldgModes.add(new Common_Model(array1.optJSONObject(i).optString("logCode"), array1.optJSONObject(i).optString("logName"), array1.optJSONObject(i).optString("jointWork")));
+                    ldgModes.add(new Common_Model(array1.optJSONObject(i).optString("logCode"), array1.optJSONObject(i).optString("logName"), array1.optJSONObject(i).optString("jointWork"), array1.optJSONObject(i).optString("fullPay")));
                 }
                 assistantClass.dismissProgressDialog();
             }
@@ -1664,6 +1667,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         ldgEmpName = "";
         witOutBill = "";
         ValCd = "";
+        isJointWork = false;
+        isFullPay = false;
         fullPath = "";
         filePath = "";
         editMode = "";
@@ -2240,6 +2245,10 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             View childView = jointLodging.getChildAt(i);
             TextView jLdgEli = (TextView) childView.findViewById(R.id.txtJNMyEli);
             String sAmt = jLdgEli.getText().toString().replaceAll("₹", "");
+            sAmt = sAmt.replaceAll("Rs. ", "").trim();
+            if (sAmt.equals("")) {
+                sAmt = "0.0";
+            }
             tJointAmt = tJointAmt + Float.parseFloat(sAmt);
         }
         txtJNEligi.setText("₹" + new DecimalFormat("##0.00").format(tJointAmt));
@@ -3283,16 +3292,19 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         if (ldArray.size() != 0)
                             ldgAdd.setText("- Remove");
 
-//                        JNLdgEAra.setVisibility(View.GONE);
-                        if (txt_ldg_type.getText().toString().equals("Joined Stay")) {
+                        lodgJoin.setVisibility(View.GONE);
+                        JNLdgEAra.setVisibility(View.GONE);
+                        TotalDays.setVisibility(View.VISIBLE);
+
+                        if (isJointWork) {
+                            lodgJoin.setVisibility(View.VISIBLE);
                             JNLdgEAra.setVisibility(View.VISIBLE);
                             TotalDays.setVisibility(View.VISIBLE);
-                        } else if (txt_ldg_type.getText().toString().equals("Independent Stay")) {
-                            lodgJoin.setVisibility(View.GONE);
-                            TotalDays.setVisibility(View.VISIBLE);
-                        } else if (txt_ldg_type.getText().toString().equals("Stay At Relative's House")) {
+                        }
+
+                        if (isFullPay) {
                             linContinueStay.setVisibility(View.GONE);
-//                            ldg_stayloc.setVisibility(View.GONE);
+                            ldg_stayloc.setVisibility(View.GONE);
                             ldg_stayDt.setVisibility(View.GONE);
                             lodgJoin.setVisibility(View.GONE);
                             JNLdgEAra.setVisibility(View.GONE);
@@ -3304,7 +3316,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                             ldgWOBBal.setVisibility(View.GONE);
                             drvldgEAra.setVisibility(View.GONE);
                             ldgGstLayout.setVisibility(View.GONE);
-
                         }
 
                     } else {
@@ -5131,9 +5142,14 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         customDialog.dismiss();
         if (type == 9) {
             stayDays.setVisibility(View.VISIBLE);
+
+            isJointWork = myDataset.get(position).getFlag().equals("1");
+            isFullPay = myDataset.get(position).getCheckouttime().equals("1");
+
             ValCd = myDataset.get(position).getId();
             lodgingStayTypeId = myDataset.get(position).getId();
             String Valname = myDataset.get(position).getName();
+
             if (LodingCon.size() != 0) {
                 mChckEarly.setVisibility(View.GONE);
             }
@@ -5162,7 +5178,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             mChckLate.setChecked(false);
             mChckEarly.setChecked(false);
 
-            if (ValCd.equalsIgnoreCase("JS")) {
+            if (isJointWork) {
                 linContinueStay.setVisibility(View.VISIBLE);
                 lodgJoin.setVisibility(View.VISIBLE);
                 JNLdgEAra.setVisibility(View.VISIBLE);
@@ -5173,14 +5189,18 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 ttLod = 1;
                 txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
                 lodingView();
-            } else if (ValCd.equalsIgnoreCase("RS")) {
+            }
+
+            if (isFullPay) {
+                viewBilling.setVisibility(View.GONE);
+                linImgPrv.setVisibility(View.GONE);
                 linContinueStay.setVisibility(View.GONE);
             } else {
                 linContinueStay.setVisibility(View.VISIBLE);
             }
 
             ldg_stayloc.setVisibility(View.VISIBLE);
-            if (ValCd != "RS") {
+            if (!isFullPay) {
                 ldg_stayDt.setVisibility(View.VISIBLE);
                 lblHdBill.setVisibility(View.VISIBLE);
                 edt_ldg_bill.setVisibility(View.VISIBLE);
@@ -5222,21 +5242,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             drvStyLocation.setText("");
             ldgEliAmt = 0.0;
             txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
-
-            if (myDataset.get(position).getFlag().equals("1")) {
-                jointLodging.setVisibility(View.VISIBLE);
-                JNLdgEAra.setVisibility(View.VISIBLE);
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                layoutParams.setMargins(15, 15, 15, 15);
-                View rowView = inflater.inflate(R.layout.activity_loding_layout, null);
-                jointLodging.addView(rowView, layoutParams);
-            } else {
-                JNLdgEAra.setVisibility(View.GONE);
-                jointLodging.setVisibility(View.GONE);
-            }
 
             getStayAllow();
             SumOFJointLodging();
