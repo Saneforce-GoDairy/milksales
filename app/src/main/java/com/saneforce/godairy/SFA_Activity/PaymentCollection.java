@@ -553,7 +553,7 @@ public class PaymentCollection extends AppCompatActivity implements UpdateRespon
         Log.e("resultCode", "resultCode: " + resultCode);
         if (requestCode == 1) {
             try {
-                Log.e("nttdataTransaction", data.getExtras().getString("response"));
+                assistantClass.log("Transaction Response: " + data.getExtras().getString("response"));
             } catch (Exception ignored) {}
             if (resultCode == 2) {
                 Toast.makeText(context, "Transaction cancelled by user...", Toast.LENGTH_SHORT).show();

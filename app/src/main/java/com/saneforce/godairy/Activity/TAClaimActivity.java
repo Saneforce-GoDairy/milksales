@@ -1509,8 +1509,10 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             SumOFLodging(0);
             countLoding = 0;
             cnSty = 0;
-            vwldgBillAmt.setVisibility(View.VISIBLE);
-            ldgGstLayout.setVisibility(View.VISIBLE);
+            if (!isFullPay) {
+                vwldgBillAmt.setVisibility(View.VISIBLE);
+                ldgGstLayout.setVisibility(View.VISIBLE);
+            }
             linCheckOut.setVisibility(View.VISIBLE);
         }
 
@@ -2245,7 +2247,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             View childView = jointLodging.getChildAt(i);
             TextView jLdgEli = (TextView) childView.findViewById(R.id.txtJNMyEli);
             String sAmt = jLdgEli.getText().toString().replaceAll("₹", "");
-            sAmt = sAmt.replaceAll("Rs. ", "").trim();
+            sAmt = sAmt.replaceAll("Rs.", "").trim();
             if (sAmt.equals("")) {
                 sAmt = "0.0";
             }
@@ -2329,6 +2331,10 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         };
 
         tTotAmt = Float.parseFloat(bill);
+        if (isFullPay) {
+            tTotAmt = Double.parseDouble(sMyAmt);
+        }
+
         if (mChckCont.isChecked()) {
             tTotAmt = totalBill;
         }
@@ -5166,6 +5172,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             viewBilling.setVisibility(View.GONE);
             lblHdBln.setVisibility(View.GONE);
             ldgWOBBal.setVisibility(View.GONE);
+            linContinueStay.setVisibility(View.VISIBLE);
+            ldg_stayDt.setVisibility(View.VISIBLE);
 
             if (myldgEliAmt.equalsIgnoreCase("")) myldgEliAmt = "0.0";
 
@@ -5194,14 +5202,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             if (isFullPay) {
                 viewBilling.setVisibility(View.GONE);
                 linImgPrv.setVisibility(View.GONE);
-                linContinueStay.setVisibility(View.GONE);
             } else {
-                linContinueStay.setVisibility(View.VISIBLE);
-            }
-
-            ldg_stayloc.setVisibility(View.VISIBLE);
-            if (!isFullPay) {
-                ldg_stayDt.setVisibility(View.VISIBLE);
                 lblHdBill.setVisibility(View.VISIBLE);
                 edt_ldg_bill.setVisibility(View.VISIBLE);
                 ldgGstLayout.setVisibility(View.VISIBLE);
@@ -5218,6 +5219,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 lbl_ldg_eligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
                 img_lodg_prvw.setVisibility(View.VISIBLE);
             }
+
+            ldg_stayloc.setVisibility(View.VISIBLE);
             //ldg_cout.setText("");
             //ldg_coutDt.setText("");
             if (ldg_cin.getText().toString().equals("") || ldg_coutDt.getText().toString().equals("")) {
@@ -5236,6 +5239,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             sLocId = "";
             sLocName = "";
             sDrvLocName = "";
+            allowType = "";
             txt_Styloc.setText("");
             txt_drvStyloc.setText("");
             lodgStyLocation.setText("");
