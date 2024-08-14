@@ -4,6 +4,7 @@ import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SAVE_CUSTOM_FORM;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -17,6 +18,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -38,6 +41,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -139,6 +144,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
     private Boolean isToTimeEmpty =true;
     private Map<Integer, ImageView> imageViewMap;
     private Map<Integer, TextView> textViewMap;
+    private Map<Integer, TextView> textViewMap2;
     private String picturePathFinal1;
     String mEkey = "";
     SharedPreferences UserDetails;
@@ -150,6 +156,8 @@ public class CustomFormMainActivity extends AppCompatActivity {
     static TransferUtility transferUtility;
     static Util util;
     Common_Class common_class;
+
+    private static final int CUSTOM_FSCM = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +173,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
         store_list = new ArrayList<>();
         imageViewMap = new HashMap<>();
         textViewMap = new HashMap<>();
+        textViewMap2 = new HashMap<>();
 
         dbController = new DBController(context);
 
@@ -235,7 +244,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
     private void showError2() {
         binding.errorContainer.setVisibility(View.VISIBLE);
         Handler handler = new Handler();
-        handler.postDelayed(() -> binding.errorContainer.setVisibility(View.GONE), 2000);
+        handler.postDelayed(() -> binding.errorContainer.setVisibility(GONE), 2000);
     }
 
     private void saveDynamicData() {
@@ -309,7 +318,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                             boolean isSuccess = jsonObject.getBoolean("success");
                             if (isSuccess) {
                                 Toast.makeText(context, "Form Submit Success", Toast.LENGTH_LONG).show();
-                                finish();
+                             //   finish();
                             } else
                                 Toast.makeText(getApplicationContext(), "Response : null", Toast.LENGTH_LONG).show();
                         }
@@ -384,7 +393,11 @@ public class CustomFormMainActivity extends AppCompatActivity {
         binding.message.setText("Something went wrong!");
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadData(JSONArray groupJsonArray, JSONArray fieldJsonArray) {
+
+        Log.e(TAG, fieldJsonArray.toString());
+
         try {
             if(groupJsonArray.length()>0) {
                 for (int i = 0; i < groupJsonArray.length(); i++) {
@@ -425,7 +438,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
                     textView30.setText(grpName);
                     binding.linearLayout.addView(textView30);
-                    textView30.setVisibility(View.GONE);
+                    textView30.setVisibility(GONE);
 
                     DynamicField dataModels = new DynamicField();
                     dataModels.setFldGrpId(grpId);
@@ -434,7 +447,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                     group_list.add(dataModels);
 
                     if (fieldJsonArray.length() > 0) {
-                        binding.noRecordsLayout.setVisibility(View.GONE);
+                        binding.noRecordsLayout.setVisibility(GONE);
                         for (int j = 0; j < fieldJsonArray.length(); j++) {
                             JSONObject jsonObject = fieldJsonArray.getJSONObject(j);
                             int fieldGroupId = 0;
@@ -456,16 +469,174 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                 String tableName = jsonObject.getString("FGTableName");
                                 binding.submit.setVisibility(View.VISIBLE);
 
+                                Log.e(TAG, Type_to_Add);
+
+                                if (Type_to_Add.equals("FCM")){
+
+                                    LinearLayout.LayoutParams imageUploadParams = new LinearLayout.LayoutParams(
+                                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    imageUploadParams.gravity = Gravity.CENTER;
+
+
+                                    TextView txtHeadLabel = new TextView(context);
+                                    txtHeadLabel.setTextColor(Color.BLACK); // For dev (txtHeadLabel.setTextColor(Color.BLACK);)
+                                    txtHeadLabel.setTextSize(15);
+                                    txtHeadLabel.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                    txtHeadLabel.setPadding((int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
+                                                    .getDisplayMetrics()), 0, 0, 0);
+                                    String text = Heading_Label + "<font color='red'> *</font>";
+                                    if (mandate == 1) {
+                                        txtHeadLabel.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+                                    } else {
+                                        txtHeadLabel.setText(Heading_Label);
+                                    }
+                                    binding.linearLayout.addView(txtHeadLabel);
+
+                                    // Parent layout main (VERTICAL )
+                                    LinearLayout imageUploadContainer = new LinearLayout(context);
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    imageUploadContainer.setOrientation(LinearLayout.VERTICAL);
+                                    imageUploadContainer.setBackground(getResources().getDrawable(R.drawable.button_whitebg));
+                                    layoutParams.setMargins(30,0,30,0);
+
+                                    //=============================================================================================
+                                    // child 1
+                                    LinearLayout childLayout1 = new LinearLayout(context);
+                                    int mId = 100 + i++;
+                                    childLayout1.setId(mId);
+                                    LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout1.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout1.setBackgroundColor(Color.WHITE);
+                                    layoutParams1.setMargins(30,30,30,0);
+
+                                    ImageView imageUpload1 = new ImageView(context);
+                                    imageUpload1.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload1.setLayoutParams(imageUploadParams);
+                                    childLayout1.addView(imageUpload1);
+
+                                    TextView fileNameTxt1 = new TextView(context);
+                                    TextView textMandatory = new TextView(context);
+                                    textMandatory.setTextColor(Color.RED);
+                                    String text2 = "<font color=#FFFFFFFF>Select File/Camera</font> <font color='red'>*</font>";
+                                    fileNameTxt1.setText( Html.fromHtml(text2));
+                                    fileNameTxt1.setTextColor(Color.BLACK);
+                                    fileNameTxt1.setLayoutParams(imageUploadParams);
+
+                                    //================================================================================================
+                                    // child 2
+                                    LinearLayout childLayout2 = new LinearLayout(context);
+                                    int mId2 = 200 + i++;
+                                    childLayout2.setId(mId2);
+                                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout2.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout2.setBackgroundColor(Color.WHITE);
+                                    layoutParams2.setMargins(30,10,30,0);
+
+                                    ImageView imageUpload2 = new ImageView(context);
+                                    imageUpload2.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload2.setLayoutParams(imageUploadParams);
+
+                                    TextView fileNameTxt2 = new TextView(context);
+                                    fileNameTxt2.setText("Select File/Camera");
+                                    fileNameTxt2.setTextColor(Color.BLACK);
+                                    fileNameTxt2.setLayoutParams(imageUploadParams);
+
+                                    //================================================================================================
+                                    // child 3
+                                    LinearLayout childLayout3 = new LinearLayout(context);
+                                    int mId3 = 500 + i++;
+                                    childLayout3.setId(mId3);
+                                    LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout3.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout3.setBackgroundColor(Color.WHITE);
+                                    layoutParams3.setMargins(30,10,30,30);
+
+                                    ImageView imageUpload3 = new ImageView(context);
+                                    imageUpload3.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload3.setLayoutParams(imageUploadParams);
+
+                                    TextView fileNameTxt3 = new TextView(context);
+                                    fileNameTxt3.setText("Select File/Camera");
+                                    fileNameTxt3.setTextColor(Color.BLACK);
+                                    fileNameTxt3.setLayoutParams(imageUploadParams);
+
+                                    //===========================================================================================
+                                    // onClickListener
+
+                                    String key = 200 + String.valueOf(i);
+                                    String key2 = 300 + String.valueOf(i);
+                                    String key3 = 400 + String.valueOf(i);
+
+                                    int finalLabelId = i;
+                                    childLayout1.setOnClickListener(view -> {
+
+                                        Log.e("css__", "Fld_Type = " + Type_to_Add + "\n" +
+                                                        "Field_Name = " + Heading_Label + "\n" +
+                                                        "Field_Col = " + Column_Store + "\n" +
+                                                        "ModuleId = " + mModuleId);
+
+//                                        Log.e(TAG, "onClick : childLayout1 \n" +
+//                                                        "findViewById :" + childLayout1.getId() +"\n" +
+//                                                        "key :" + key +"\n\n");
+                                        if (Constant.isNetworkAvailable(getApplicationContext()))
+                                            checkPermission(CUSTOM_FSCM, Integer.parseInt(key));
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    childLayout2.setOnClickListener(v -> {
+                                        Log.e("css__", "Fld_Type = " + Type_to_Add + "\n" +
+                                                "Field_Name = " + Heading_Label + "\n" +
+                                                "Field_Col = " + Column_Store + "\n" +
+                                                "ModuleId = " + mModuleId);
+                                        if (Constant.isNetworkAvailable(getApplicationContext()))
+                                            checkPermission(CUSTOM_FSCM, Integer.parseInt(key2));
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    childLayout3.setOnClickListener(v -> {
+                                        Log.e("css__", "Fld_Type = " + Type_to_Add + "\n" +
+                                                "Field_Name = " + Heading_Label + "\n" +
+                                                "Field_Col = " + Column_Store + "\n" +
+                                                "ModuleId = " + mModuleId);
+                                        if (Constant.isNetworkAvailable(getApplicationContext()))
+                                            checkPermission(CUSTOM_FSCM, Integer.parseInt(key3));
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    textViewMap.put(Integer.parseInt(key), fileNameTxt1);
+                                    textViewMap.put(Integer.parseInt(key2), fileNameTxt2);
+                                    textViewMap.put(Integer.parseInt(key3), fileNameTxt3);
+
+                                    binding.linearLayout.addView(imageUploadContainer, layoutParams);
+                                    imageUploadContainer.addView(childLayout1, layoutParams1);
+                                    childLayout1.addView(fileNameTxt1);
+                                    imageUploadContainer.addView(childLayout2, layoutParams2);
+                                    childLayout2.addView(imageUpload2);
+                                    childLayout2.addView(fileNameTxt2);
+                                    imageUploadContainer.addView(childLayout3, layoutParams3);
+                                    childLayout3.addView(imageUpload3);
+                                    childLayout3.addView(fileNameTxt3);
+
+                                    DynamicField dataModel = new DynamicField();
+                                    dataModel.setColumn(Column_Store);
+                                    dataModel.setMandatory(mandate);
+                                    dataModel.setFldGrpId(fieldGroupId);
+                                    dataModel.setFldType(Type_to_Add);
+                                    dataModel.setGrpTableName(tableName);
+                                    dataModel.setImgKey(key);
+                                    store_list.add(dataModel);
+                                }
+
                                 if ((Type_to_Add.contains("TA")) || (Type_to_Add.equals("N")) || (Type_to_Add.equals("NP")) || (Type_to_Add.equals("TAS"))||(Type_to_Add.equals("TAM"))) {
 
                                     CardView card = new CardView(getApplicationContext());
                                     TextView textView = new TextView(getApplicationContext());
                                     EditText editText = new EditText(getApplicationContext());
-                                    card.setLayoutParams(params);
-                                    card.setRadius(10);
-                                    card.setCardBackgroundColor(Color.WHITE);
-                                    card.setMaxCardElevation(15);
-                                    card.setCardElevation(10);
+
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                         textView.setTextColor(getResources().getColor(R.color.primaryDark, null));
                                     }
@@ -1465,7 +1636,9 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     layout.addView(card);
                                     imageview.setImageResource(R.drawable.ic_upload_file);
                                     imageview.setLayoutParams(image_param);
-                                    imageview.setId(1000+i);
+
+                                    imageview.setId(1000+i); // 10001
+
                                     layout.addView(imageview);
                                     layout.setLayoutParams(param1);
                                     textView.setTextColor(Color.BLACK);
@@ -1515,6 +1688,14 @@ public class CustomFormMainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showTag(String attributeId) {
+        Log.e(TAG, attributeId);
     }
 
     public SelectionModel[]  getListWithModel(String srcName,String SrcFieldName) {
@@ -1648,6 +1829,57 @@ public class CustomFormMainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void captureFSCM(Integer reqCode) {
+        Log.e(TAG, "RequestCode/dynamic id :" + reqCode.toString());
+        AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
+            @SuppressLint("SetTextI18n")
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
+                if(textViewMap.containsKey(reqCode)){
+                    File file = new File(fullPath);
+                    picturePathFinal1=file.getAbsolutePath();
+
+                    TextView textViewToModify=textViewMap.get(reqCode);
+                    textViewToModify.setVisibility(View.VISIBLE);
+
+                    textViewToModify.setText(Constant.SF_CODE+"_"+file.getName());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                    }else {
+                        textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                    }
+
+                    textViewToModify.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
+                    for (int i=0;i<store_list.size();i++){
+
+                        String reqId =reqCode==0?"00":String.valueOf(reqCode);
+
+                        if(store_list.get(i).getImgKey()!=null && store_list.get(i).getImgKey().equals(reqId)){
+                            store_list.get(i).setData(Constant.SF_CODE+file.getName());
+                        }
+                    }
+
+                    Log.e(TAG, "store_list.size() :" + store_list.size());
+                    for (int i = 0; i < store_list.size(); i++) {
+
+                        Log.e(TAG, store_list.get(i).getData() + " ");
+                    }
+
+//                    Log.e(TAG, "method : captureFile(Integer reqCode) \n" +
+//                            "requestCode :" + reqCode +"\n" +
+//                            "picture path fianl :" + picturePathFinal1 +"\n\n");
+
+                    uploadImageFile(picturePathFinal1); // "/storage/emulated/0/Pictures/Attendance/Images/MGR168_1718000389.jpg"
+                }
+            }
+        });
+        Intent intent = new Intent(context, AllowancCapture.class);
+        intent.putExtra("allowance", "TAClaim");
+        startActivity(intent);
+    }
+
     private void imageChooser(int dynamicId) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -1657,14 +1889,28 @@ public class CustomFormMainActivity extends AppCompatActivity {
         startActivityForResult(intent, dynamicId);
     }
 
+    private void imageChooserFSCM(int dynamicId) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        String[] mimeTypes = {"application/pdf", "image/*"};
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        startActivityForResult(intent, dynamicId);
+    }
+
+    @SuppressLint("SetTextI18n")
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
-            if(imageViewMap.containsKey(requestCode)){
-                if(data!=null && data.getData()!=null) {
+            Log.e(TAG, "onActivityResult: " + data.getData());
+                if(data.getData() != null) {
+
                     Uri selectedImageUri = data.getData();
-                    if (selectedImageUri!=null&&!selectedImageUri.equals("")) {
+
+                    if (selectedImageUri != null && !String.valueOf(selectedImageUri).isEmpty()) {
+
                         String mimeType =getApplicationContext().getContentResolver().getType(selectedImageUri);
+
                         if (mimeType != null) {
                             if (mimeType.equals("application/pdf")) {
                                 picturePathFinal1 = processContentUri(selectedImageUri);
@@ -1672,10 +1918,9 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                 picturePathFinal1 = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
                             }
 
-                            ImageView imageViewToModify = imageViewMap.get(requestCode);
                             TextView textViewToModify=textViewMap.get(requestCode);
                             textViewToModify.setVisibility(View.VISIBLE);
-                            if (imageViewToModify != null) {
+
                                 if (mimeType.startsWith("image/")) {
                                     textViewToModify.setText(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
                                 }else {
@@ -1690,14 +1935,11 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     }
                                 }
                                 uploadImageFile(picturePathFinal1);
-                            }
                         }
-
                     }else
-                        Toast.makeText(getApplicationContext(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
+                        showToast("Something went wrong, please try again");
                 }else
-                    Toast.makeText(getApplicationContext(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
-            }
+                    showToast("Something went wrong, please try again");
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -1874,10 +2116,13 @@ public class CustomFormMainActivity extends AppCompatActivity {
                     public void onPermissionsChecked(MultiplePermissionsReport report)
                     {
                         if(report.areAllPermissionsGranted()){
-                            if(position==999999)
-                                showDynamicImageChooserDialog(position,dynamicId);
-                            else
-                                captureFile(99999999);
+                            if(position == 999999){
+                                mediaPickerDialog(position,dynamicId);
+                            }
+
+                            if (position == CUSTOM_FSCM){
+                                mediaPickerDialog(position,dynamicId);
+                            }
                         }
                     }
 
@@ -1889,26 +2134,35 @@ public class CustomFormMainActivity extends AppCompatActivity {
                 }).check();
     }
 
-    private void showDynamicImageChooserDialog(int position,int dynamicId){
+    private void mediaPickerDialog(int position,int dynamicId){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_upload_image);
 
-        ImageView ibClose = dialog.findViewById(R.id.ib_close);
-        ImageView ibCamera = dialog.findViewById(R.id.ib_camera);
-        ImageView ibGallery = dialog.findViewById(R.id.ib_gallery);
+        ImageView close = dialog.findViewById(R.id.close);
+        ImageView camera = dialog.findViewById(R.id.camera);
+        ImageView gallery = dialog.findViewById(R.id.gallery);
 
-        ibClose.setOnClickListener(view -> dialog.dismiss());
-
-        ibCamera.setOnClickListener(view -> {
+        camera.setOnClickListener(view -> {
+          //  Log.e(TAG, "onClick: camera \n Position : " + position + "\n Dynamic Id :" + dynamicId);
             dialog.dismiss();
-            // callCamera();
+            if (position == CUSTOM_FSCM){
+                Log.e(TAG, "Loop: if (position == CUSTOM_FSCM) \n Position : " + position + " \n Dynamic Id :" + dynamicId);
+                captureFSCM(dynamicId);
+                return;
+            }
             captureFile(dynamicId);
         });
 
-        ibGallery.setOnClickListener(view -> {
+        gallery.setOnClickListener(view -> {
             dialog.dismiss();
+            if (position == CUSTOM_FSCM){
+                imageChooserFSCM(dynamicId);
+                return;
+            }
             imageChooser(dynamicId);
         });
+
+        close.setOnClickListener(view -> dialog.dismiss());
         dialog.show();
     }
 }
