@@ -2127,6 +2127,46 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         if (edt_ldg_JnEmp.getText().toString().equals("")) {
 
         } else {
+            assistantClass.showProgressDialog("Getting employee details...", false);
+            Map<String, String> params = new HashMap<>();
+            params.put("axn", "get/EmpByID");
+            params.put("logCode", lodgingStayTypeId);
+            params.put("allowanceType", allowType);
+            params.put("empId", sEmpID);
+            params.put("date", DateTime);
+            assistantClass.makeApiCall(params, "", new APIResult() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) {
+                    txtJNName = pv.findViewById(R.id.txtJNName);
+                    txtJNDesig = pv.findViewById(R.id.txtJNDesig);
+                    txtJNDept = pv.findViewById(R.id.txtJNDept);
+                    txtJNHQ = pv.findViewById(R.id.txtJNHQ);
+                    txtJNMob = pv.findViewById(R.id.txtJNMob);
+                    txtJNMyEli = pv.findViewById(R.id.txtJNMyEli);
+
+                    JSONObject object = jsonObject.optJSONArray("response").optJSONObject(0);
+                    txtJNName.setText(object.optString("Name"));
+                    txtJNDesig.setText(object.optString("Desig"));
+                    txtJNDept.setText(object.optString("DeptName"));
+                    txtJNHQ.setText(object.optString("HQ"));
+                    txtJNMob.setText(object.optString("Mob"));
+                    double sum = jsonObject.optDouble("amount");
+                    Log.v("Allowance_Amount", String.valueOf(sum));
+                    ldgEmpName = String.valueOf(sum);
+
+                    txtJNMyEli.setText("₹" + new DecimalFormat("##0.00").format(sum));
+                    SumOFJointLodging();
+
+                    assistantClass.dismissProgressDialog();
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    assistantClass.dismissProgressDialog();
+                    assistantClass.showAlertDialogWithDismiss(error);
+                }
+            });
+
 
             Call<JsonArray> Callto = apiInterface.getDataArrayListA("get/EmpByID",
                     UserDetails.getString("Divcode", ""),
@@ -3457,8 +3497,10 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 SumOFLodging(0);
                 cnSty = 0;
                 countLoding = 0;
-                vwldgBillAmt.setVisibility(View.VISIBLE);
-                ldgGstLayout.setVisibility(View.VISIBLE);
+                if (!isFullPay) {
+                    vwldgBillAmt.setVisibility(View.VISIBLE);
+                    ldgGstLayout.setVisibility(View.VISIBLE);
+                }
                 linCheckOut.setVisibility(View.VISIBLE);
             }
 
