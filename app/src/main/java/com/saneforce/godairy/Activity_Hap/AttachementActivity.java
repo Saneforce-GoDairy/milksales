@@ -105,7 +105,7 @@ public class AttachementActivity extends AppCompatActivity {
                             jsonObject.get("Imageurl").getAsString().endsWith(".jpg")) {
 
                         Glide.with(AttachementActivity.this)
-                                .load(jsonObject.get("Imageurl").getAsString())
+                                .load(ApiClient.BASE_URL.replace("server/", "") + "TAphotos/" + jsonObject.get("Imageurl").getAsString())
                                 .into(taAttach);
 
                     } else {
@@ -139,12 +139,12 @@ public class AttachementActivity extends AppCompatActivity {
                                     jsonObject.get("Imageurl").getAsString().endsWith(".jpg")) {
 
                                 Intent intent = new Intent(getApplicationContext(), ProductImageView.class);
-                                intent.putExtra("ImageUrl", jsonObject.get("Imageurl").getAsString());
+                                intent.putExtra("ImageUrl", ApiClient.BASE_URL.replace("server/", "") + "TAphotos/" + jsonObject.get("Imageurl").getAsString());
                                 startActivity(intent);
 
                             } else {
                                 Intent stat = new Intent(getApplicationContext(), PdfViewerActivity.class);
-                                stat.putExtra("PDF_ONE", jsonObject.get("Imageurl").getAsString());
+                                stat.putExtra("PDF_ONE", ApiClient.BASE_URL.replace("server/", "") + "TAphotos/" + jsonObject.get("Imageurl").getAsString());
                                 stat.putExtra("PDF_FILE", "Web");
                                 startActivity(stat);
 
