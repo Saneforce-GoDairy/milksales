@@ -128,7 +128,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String CheckInfo = "CheckInDetail";
     String lodgingAllowType = "";
-    String allowType = "", lodgingStayTypeId = "";
     static Util util;
     static TransferUtility transferUtility;
     final Handler handler = new Handler();
@@ -151,7 +150,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     DatabaseHandler db;
     Uri outputFileUri;
     FuelListAdapter fuelListAdapter;
-    boolean isJointWork = false, isFullPay = false;
+    String allowType = "", lodgingStayTypeId = "", billAmts = "";
+    boolean isJointWork = false, isFullPay = false, isSavedBill = false;
     LinearLayout Dynamicallowance, OtherExpense, localTotal, otherExpenseLayout, linAll, linRemarks,
             linFareAmount, ldg_typ_sp, linLocalSpinner, linOtherSpinner, ldg_StylocSpinner,ldg_DrvStylocSpinner, DA_TypSpinner, DA_locSpinner, lodgCont, lodgContvw, ldg_stayloc, ldg_stayDt,
             lodgJoin, ldgEAra, ldgMyEAra, JNLdgEAra, drvldgEAra, jointLodging, vwBoarding, vwDrvBoarding, linAddplaces,
@@ -1497,6 +1497,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             //linCheckOut.setVisibility(View.INVISIBLE);
             vwldgBillAmt.setVisibility(View.GONE);
             ldgGstLayout.setVisibility(View.GONE);
+            COutDate = DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd");
             ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd"));
             cnSty = 1;
             // ldg_cout.setText("");
@@ -1522,6 +1523,9 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         linContinueStay.setVisibility(View.VISIBLE);
         // if(DT.Daybetween(DateTime+" 00:00:00",ldg_coutDt.getText().toString()+ " 00:00:00")<=1)
         //     linContinueStay.setVisibility(View.GONE);
+        jointLodging.removeAllViews();
+        lodingView();
+        SumOFJointLodging();
         getStayAllow();
     }
 
@@ -1671,6 +1675,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         ValCd = "";
         isJointWork = false;
         isFullPay = false;
+        isSavedBill = false;
         fullPath = "";
         filePath = "";
         editMode = "";
@@ -1940,6 +1945,9 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         linContinueStay.setVisibility(View.VISIBLE);
                         // if (DT.Daybetween(DateTime + " 00:00:00", ldg_coutDt.getText().toString() + " 00:00:00") < 1)
                         //    linContinueStay.setVisibility(View.GONE);
+                        jointLodging.removeAllViews();
+                        lodingView();
+                        SumOFJointLodging();
                         getStayAllow();
                     }
                 }, yr, mnth, day);
@@ -2150,7 +2158,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                     txtJNDept.setText(object.optString("DeptName"));
                     txtJNHQ.setText(object.optString("HQ"));
                     txtJNMob.setText(object.optString("Mob"));
-                    double sum = jsonObject.optDouble("amount");
+                    double sum = nofNght * jsonObject.optDouble("amount");
                     Log.v("Allowance_Amount", String.valueOf(sum));
                     ldgEmpName = String.valueOf(sum);
 
@@ -2364,6 +2372,10 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
 
         Double totalBill = Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
 
+        if (isSavedBill) {
+            isSavedBill = false;
+            edt_ldg_bill.setText(billAmts);
+        }
         String bill = edt_ldg_bill.getText().toString().replaceAll("₹", "");
 
         if (bill.isEmpty()) {
@@ -3318,7 +3330,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                             txtMyEligi.setText("₹" + 0.00);
                             ldgWOBBal.setText("₹" + 0.00);
                             //  lbl_ldg_eligi.setText("₹" + 0.00);
-                            edt_ldg_bill.setText("");
+//                            edt_ldg_bill.setText("");
                             edtLdgGstNum.setText("");
                             edtLdgGstAmt.setText("");
                             edtLdgGstBillNo.setText("");
@@ -3347,7 +3359,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         //ldg_coutDt.setText("");
                         txtMyEligi.setText("₹" + 0.00);
                         ldgWOBBal.setText("₹" + 0.00);
-                        edt_ldg_bill.setText("");
+//                        edt_ldg_bill.setText("");
                         txt_ldg_type.setText("");
 
                         edtLdgGstNum.setText("");
@@ -3464,24 +3476,12 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 allowType = ldraft.get("allowType").getAsString();
                 isJointWork = ldraft.get("isJointWork").getAsString().equals("1");
                 isFullPay = ldraft.get("isFullPay").getAsString().equals("1");
+                billAmts = ldraft.get("Bill_Amt").getAsString();
+                isSavedBill = true;
             } catch (Exception e) { }
-
-            String bill = ldraft.get("Bill_Amt").getAsString();
-            if (bill.isEmpty()) {
-                bill = "0.0";
-            }
-            tTotAmt = Double.parseDouble(bill);
-            edt_ldg_bill.setText(bill);
-
-            if (isJointWork) {
-                lodgJoin.setVisibility(View.VISIBLE);
-                JNLdgEAra.setVisibility(View.VISIBLE);
-            }
 
             if (isFullPay) {
                 linContinueStay.setVisibility(View.GONE);
-                ldg_stayloc.setVisibility(View.GONE);
-                ldg_stayDt.setVisibility(View.GONE);
                 lodgJoin.setVisibility(View.GONE);
                 JNLdgEAra.setVisibility(View.GONE);
                 edt_ldg_bill.setVisibility(View.GONE);
@@ -3492,6 +3492,11 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 ldgWOBBal.setVisibility(View.GONE);
                 drvldgEAra.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
+            }
+
+            if (isJointWork) {
+                lodgJoin.setVisibility(View.VISIBLE);
+                JNLdgEAra.setVisibility(View.VISIBLE);
             }
 
             if (mChckCont.isChecked()) {
@@ -5189,6 +5194,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         customDialog.dismiss();
         if (type == 9) {
             stayDays.setVisibility(View.VISIBLE);
+            isSavedBill = false;
 
             isJointWork = myDataset.get(position).getFlag().equals("1");
             isFullPay = myDataset.get(position).getCheckouttime().equals("1");
@@ -5226,6 +5232,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             mChckCont.setChecked(false);
             mChckLate.setChecked(false);
             mChckEarly.setChecked(false);
+            viewBilling.setVisibility(View.VISIBLE);
 
             if (isJointWork) {
                 linContinueStay.setVisibility(View.VISIBLE);
@@ -5250,7 +5257,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 lblHdBln.setVisibility(View.VISIBLE);
                 ldgWOBBal.setVisibility(View.VISIBLE);
                 linImgPrv.setVisibility(View.VISIBLE);
-                viewBilling.setVisibility(View.VISIBLE);
 
                 ttLod = 1;
                 /*tTotAmt = 0;*/
@@ -5272,7 +5278,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                     linContinueStay.setVisibility(View.GONE);
             }
 
-            edt_ldg_bill.setText("");
+//            edt_ldg_bill.setText("");
             edtLdgGstNum.setText("");
             edtLdgGstAmt.setText("");
             edtLdgGstBillNo.setText("");
@@ -5580,6 +5586,9 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     }
 
     private void getLodgingAllowanceEligibleAmt() {
+        if (lodgingStayTypeId.isEmpty()) {
+            return;
+        }
         ldgDrvEligi = 0.0;
         chkDrvAlw.setVisibility(View.GONE);
         txtDrivEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgDrvEligi));
@@ -5591,7 +5600,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         assistantClass.makeApiCall(params, "", new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
-                ldgEliAmt = jsonObject.optDouble("amount");
+                edt_ldg_bill.setText("");
+                ldgEliAmt = nofNght * jsonObject.optDouble("amount");
                 txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
                 SumOFLodging(0);
                 assistantClass.dismissProgressDialog();

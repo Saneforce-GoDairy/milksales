@@ -129,6 +129,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
     DatabaseHandler db;
     Uri outputFileUri;
     FuelListAdapter fuelListAdapter;
+    String allowType = "", lodgingStayTypeId = "", billAmts = "";
+    boolean isJointWork = false, isFullPay = false, isSavedBill = false;
 
     LinearLayout Dynamicallowance, OtherExpense, localTotal, otherExpenseLayout, linAll, linRemarks,
             linFareAmount, ldg_typ_sp, linLocalSpinner, linOtherSpinner, ldg_StylocSpinner, DA_TypSpinner, DA_locSpinner, lodgCont, lodgContvw, ldg_stayloc, ldg_stayDt,
@@ -1132,6 +1134,9 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
         DateForAPi = "";
         shortName = "";
         Exp_Name = "";
+        isJointWork = false;
+        isFullPay = false;
+        isSavedBill = false;
         Id = "";
         userEnter = "";
         attachment = "";
@@ -1749,7 +1754,6 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
         if (sLateAmt.equalsIgnoreCase("")) sLateAmt = "0";
         tTotAmt = Double.parseDouble(sMyAmt) + ldgDrvEligi + Float.parseFloat(sJnAmt) + Double.parseDouble(sErlyAmt) + Double.parseDouble(sLateAmt);
 
-        txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
         //ldgWOBBal.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
 
         if (!mChckCont.isChecked())
@@ -1761,7 +1765,6 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
         edtEarBill.setFilters(new InputFilter[]{new Common_Class.InputFilterMinMax(0, IntValue)});
 
 
-        SumWOBLodging();
         String sBillAmt = edt_ldg_bill.getText().toString().replaceAll("₹", "");
         if (sBillAmt.isEmpty()) sBillAmt = "0";
         if ((nofNght < 1 && OnlyNight == 1) || transferflg == 1)
@@ -1777,14 +1780,15 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
 
 
         Log.v("COunt_stay", String.valueOf(count));
-        if (mChckCont.isChecked())//if (count == 1)
+        /*if (mChckCont.isChecked())//if (count == 1)
         {
             tTotAmt = 0;
             calOverAllTotal(localCov, otherExp, tTotAmt);
         } else {
             Log.v("TOTAL_continueStay", String.valueOf(continueStay));
             calOverAllTotal(localCov, otherExp, tTotAmt);
-        }
+        }*/
+        SumWOBLodging();
 
     }
 
@@ -1793,24 +1797,47 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
         String sJnAmt = txtJNEligi.getText().toString().replaceAll("₹", "");
         String sldgAmt = txtDrivEligi.getText().toString().replaceAll("₹", "");
 
-        Double tBillTotAmt = Double.parseDouble(sMyAmt) + ldgDrvEligi + Float.parseFloat(sJnAmt);
+        if (sMyAmt.isEmpty()) {
+            sMyAmt = "0";
+        }
+        if (sJnAmt.isEmpty()) {
+            sJnAmt = "0";
+        }
+        if (sldgAmt.isEmpty()) {
+            sldgAmt = "0";
+        }
 
-        String sBillAmt = edt_ldg_bill.getText().toString().replaceAll("₹", "");
+        Double totalBill = Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
 
-        if (sBillAmt.isEmpty()) sBillAmt = "0";
-        double tBalAmt = tTotAmt - Float.parseFloat(sBillAmt);
+        if (isSavedBill) {
+            isSavedBill = false;
+            edt_ldg_bill.setText(billAmts);
+        }
+        String bill = edt_ldg_bill.getText().toString().replaceAll("₹", "");
+
+        if (bill.isEmpty()) {
+            bill = "0";
+        };
+
+        tTotAmt = Float.parseFloat(bill);
+        if (isFullPay) {
+            tTotAmt = totalBill;
+        }
+
+        if (mChckCont.isChecked()) {
+            tTotAmt = 0;
+        }
+        txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
+        lbl_ldg_eligi.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
+
+        double tBalAmt = totalBill - tTotAmt;
         if ((nofNght < 1 && OnlyNight == 1) || transferflg == 1) {
             tBalAmt = 0;
-
-            tTotAmt = Float.parseFloat(sBillAmt);
-            lbl_ldg_eligi.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
-            txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
         }
         witOutBill = String.valueOf(tBalAmt);
-        // if (tBalAmt > 0) {
         ldgWOBBal.setText("₹" + new DecimalFormat("##0.00").format(tBalAmt));
 
-        // }
+        calOverAllTotal(localCov, otherExp, tTotAmt);
 
     }
 
@@ -2533,9 +2560,10 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     viewContinue.removeAllViews();
                     viewContinueTotal.removeAllViews();
 
-                    lodgContvw.setVisibility(View.GONE);
+                    /*lodgContvw.setVisibility(View.GONE);
                     linContinueStay.setVisibility(View.GONE);
-                    linearConView.setVisibility(View.GONE);
+                    linearConView.setVisibility(View.GONE);*/
+                    mChckCont.setEnabled(false);
 
                     ldg_cout.setText("");
                     //ldg_coutDt.setText("");
@@ -2642,8 +2670,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     }
                     SumOFLodging(0);
                     linContinueStay.setVisibility(View.VISIBLE);
-                    if (DT.Daybetween(COutDate + " 00:00:00", DateTime + " 00:00:00") < 1)
-                        linContinueStay.setVisibility(View.GONE);
+                    if (DT.Daybetween(COutDate + " 00:00:00", DateTime + " 00:00:00") < 1)  {}
+//                        linContinueStay.setVisibility(View.GONE); // Todo
 
                     /*
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -2680,21 +2708,38 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             ldraft = (JsonObject) lodingDraft.get(i);
             jsonAddition = ldraft.getAsJsonArray("Additional");
 
-//             ldg_cin.setText(ldraft.get("Stay_Date").getAsString());
+            // ldg_cin.setText(ldraft.get("Stay_Date").getAsString());
             if (ContSty.size() < 1) {
                 sLocId = ldraft.get("LocId").getAsString();
                 sLocName = ldraft.get("Ldg_Stay_Loc").getAsString();
+//                sDrvLocId=ldraft.get("DrvLocId").getAsString();
+//                sDrvLocName = ldraft.get("DrvStayLoc").getAsString();
+
+
                 lodgStyLocation.setText(sLocName);
+//                drvStyLocation.setText(sDrvLocName);
+//                Log.v("spinner",drvStyLocation.toString());
+
                 if (sLocId.equalsIgnoreCase("-1"))
                     sLocName = "Other Location";
                 txt_Styloc.setText(sLocName);
+//                txt_drvStyloc.setText(sDrvLocName);
             }
             Double drvAmt = Double.valueOf(ldraft.get("Driver_Ldg_Amount").getAsString());
             txtDrivEligi.setVisibility(View.GONE);
+//            chkDrvAlw.setVisibility(View.GONE);
             if (drvAmt != 0) {
                 txtDrivEligi.setVisibility(View.VISIBLE);
+//                chkDrvAlw.setVisibility(View.VISIBLE);
+//                chkDrvAlw.setChecked(true);
                 txtDrivEligi.setText("₹" + new DecimalFormat("##0.00").format(drvAmt));
                 ldgDrvEligi = drvAmt;
+//                ldgDrvAlw=drvAmt;
+                drvldgEAra.setVisibility(View.VISIBLE);
+//                driverStayLocLayout.setVisibility(View.VISIBLE);
+            }else{
+//                chkDrvAlw.setChecked(false);
+                ldgDrvEligi = 0.0;
             }
             ConStay = ldraft.get("Continuous_Stay").getAsString();
             ErlyStay = ldraft.get("Early_Checkin").getAsString();
@@ -2716,48 +2761,80 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             edtEarBill.setText(ErlyAmt);
             edtLateBill.setText(LteAmt);
 
-            if (ConStay.equalsIgnoreCase("1")) mChckCont.setChecked(true);
-            //if (ErlyStay.equalsIgnoreCase("1")) mChckEarly.setChecked(true);
-            //if (LteStay.equalsIgnoreCase("1")) mChckLate.setChecked(true);
+            if (ConStay.equalsIgnoreCase("1")) {
+                mChckCont.setVisibility(View.VISIBLE);
+                mChckCont.setChecked(true);
+            }
+
+            lodgJoin.setVisibility(View.GONE);
+            JNLdgEAra.setVisibility(View.GONE);
+
+            try {
+                lodgingStayTypeId = ldraft.get("lodgingStayTypeId").getAsString();
+                allowType = ldraft.get("allowType").getAsString();
+                isJointWork = ldraft.get("isJointWork").getAsString().equals("1");
+                isFullPay = ldraft.get("isFullPay").getAsString().equals("1");
+                billAmts = ldraft.get("Bill_Amt").getAsString();
+                isSavedBill = true;
+            } catch (Exception e) { }
+
+            linContinueStay.setVisibility(View.VISIBLE);
+
+            if (isFullPay) {
+                View gstBill = (View) edtLdgGstBillNo.getParent();
+                gstBill.setVisibility(View.GONE);
+
+                lodgJoin.setVisibility(View.GONE);
+                JNLdgEAra.setVisibility(View.GONE);
+                edt_ldg_bill.setVisibility(View.GONE);
+                lblHdBill.setVisibility(View.GONE);
+                linImgPrv.setVisibility(View.GONE);
+                viewBilling.setVisibility(View.GONE);
+                lblHdBln.setVisibility(View.GONE);
+                ldgWOBBal.setVisibility(View.GONE);
+                drvldgEAra.setVisibility(View.GONE);
+                ldgGstLayout.setVisibility(View.GONE);
+            }
+
+            if (isJointWork) {
+                lodgJoin.setVisibility(View.VISIBLE);
+                JNLdgEAra.setVisibility(View.VISIBLE);
+            }
 
             if (mChckCont.isChecked()) {
-                //linCheckOut.setVisibility(View.INVISIBLE);
                 vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
                 cnSty = 1;
                 countLoding = 1;
-                //ldg_cout.setText("");
-                //ldg_coutDt.setText("");
-                SumOFLodging(1);
             } else {
-                SumOFLodging(0);
                 cnSty = 0;
                 countLoding = 0;
-                vwldgBillAmt.setVisibility(View.VISIBLE);
-                ldgGstLayout.setVisibility(View.VISIBLE);
+                if (!isFullPay) {
+                    vwldgBillAmt.setVisibility(View.VISIBLE);
+                    ldgGstLayout.setVisibility(View.VISIBLE);
+                }
                 linCheckOut.setVisibility(View.VISIBLE);
             }
 
             stayDays.setVisibility(View.VISIBLE);
-            Double totlLdgAmt = Double.valueOf(ldraft.get("Total_Ldg_Amount").getAsString());
-            Integer noday = Integer.valueOf(ldraft.get("NO_Of_Days").getAsString());
+//            Double totlLdgAmt = Double.valueOf(ldraft.get("Total_Ldg_Amount").getAsString());
+//            Integer noday = Integer.valueOf(ldraft.get("NO_Of_Days").getAsString());
 
             txtLodgUKey.setText(ldraft.get("Ukey").getAsString());
 
-            double elibs = Integer.valueOf(ldraft.get("Eligible").getAsString());
+            double elibs = Integer.valueOf(Common_Class.isNullOrEmpty(ldraft.get("Eligible").getAsString()) ? "0" : ldraft.get("Eligible").getAsString());
 
 
             txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(elibs));
 
-            double srtjdgAmt = Integer.valueOf(ldraft.get("Joining_Ldg_Amount").getAsString());
+            double srtjdgAmt = Integer.valueOf(Common_Class.isNullOrEmpty(ldraft.get("Joining_Ldg_Amount").getAsString()) ? "0" : ldraft.get("Joining_Ldg_Amount").getAsString());
             txtJNEligi.setText("₹" + new DecimalFormat("##0.00").format(srtjdgAmt));
-            Double wobal = Double.valueOf(ldraft.get("WOB_Amt").getAsString());
+            Double wobal = Double.valueOf(Common_Class.isNullOrEmpty(ldraft.get("WOB_Amt").getAsString()) ? "0" : ldraft.get("WOB_Amt").getAsString());
 
             Log.v("ldgWOBBal", String.valueOf(wobal));
             ldgWOBBal.setText("₹" + new DecimalFormat("##0.00").format(wobal));
             Log.v("ldgWOBBal_______", ldgWOBBal.getText().toString());
 
-            edt_ldg_bill.setText(ldraft.get("Bill_Amt").getAsString());
             txtStyDays.setText(ldraft.get("NO_Of_Days").getAsString());
             ldg_cin.setText(ldraft.get("Stay_Date").getAsString());
             ldg_cout.setText(ldraft.get("To_Date").getAsString());
@@ -2765,56 +2842,46 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             edtLdgGstAmt.setText(ldraft.get("GSTAmt").getAsString());
             edtLdgGstBillNo.setText(ldraft.get("GSTBNo").getAsString());
 
-
-            JNLdgEAra.setVisibility(View.GONE);
-            if (ldraft.get("Lodging_Type").getAsString().equals("Joined Stay")) {
-                txt_ldg_type.setText("Joined Stay");
-                JNLdgEAra.setVisibility(View.VISIBLE);
-                TotalDays.setVisibility(View.VISIBLE);
-            } else if (ldraft.get("Lodging_Type").getAsString().equals("Independent Stay")) {
-                txt_ldg_type.setText("Independent Stay");
-                lodgJoin.setVisibility(View.GONE);
-                TotalDays.setVisibility(View.VISIBLE);
-            } else {
-                txt_ldg_type.setText("Stay At Relative's House");
-            }
+            txt_ldg_type.setText(ldraft.get("Lodging_Type").getAsString());
 
             JsonObject jsonObjectAdd = null;
-            for (int l = 0; l < jsonAddition.size(); l++) {
-                Log.e("LOCTAION_LRD", String.valueOf(jsonAddition.size()));
-                jsonObjectAdd = (JsonObject) jsonAddition.get(l);
+            if (jsonAddition.size() > 0) {
+                for (int l = 0; l < jsonAddition.size(); l++) {
+                    Log.e("LOCTAION_LRD", String.valueOf(jsonAddition.size()));
+                    jsonObjectAdd = (JsonObject) jsonAddition.get(l);
 
-                jointLodging.setVisibility(View.VISIBLE);
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    jointLodging.setVisibility(View.VISIBLE);
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                layoutParams.setMargins(15, 15, 15, 15);
-                View rowView = inflater.inflate(R.layout.activity_loding_layout, null);
-                jointLodging.addView(rowView, layoutParams);
+                    layoutParams.setMargins(15, 15, 15, 15);
+                    View rowView = inflater.inflate(R.layout.activity_loding_layout, null);
+                    jointLodging.addView(rowView, layoutParams);
 
-                Integer jfd = jointLodging.indexOfChild(rowView);
+                    Integer jfd = jointLodging.indexOfChild(rowView);
 
-                View jdV = jointLodging.getChildAt(jfd);
-                edt_ldg_JnEmp = (EditText) jdV.findViewById(R.id.edt_ldg_JnEmp);
-                txtJNName = (TextView) jdV.findViewById(R.id.txtJNName);
-                txtJNDesig = (TextView) jdV.findViewById(R.id.txtJNDesig);
-                txtJNDept = (TextView) jdV.findViewById(R.id.txtJNDept);
-                txtJNHQ = (TextView) jdV.findViewById(R.id.txtJNHQ);
-                txtJNMob = (TextView) jdV.findViewById(R.id.txtJNMob);
-                txtJNMyEli = (TextView) jdV.findViewById(R.id.txtJNMyEli);
+                    View jdV = jointLodging.getChildAt(jfd);
+                    edt_ldg_JnEmp = (EditText) jdV.findViewById(R.id.edt_ldg_JnEmp);
+                    txtJNName = (TextView) jdV.findViewById(R.id.txtJNName);
+                    txtJNDesig = (TextView) jdV.findViewById(R.id.txtJNDesig);
+                    txtJNDept = (TextView) jdV.findViewById(R.id.txtJNDept);
+                    txtJNHQ = (TextView) jdV.findViewById(R.id.txtJNHQ);
+                    txtJNMob = (TextView) jdV.findViewById(R.id.txtJNMob);
+                    txtJNMyEli = (TextView) jdV.findViewById(R.id.txtJNMyEli);
 
-                edt_ldg_JnEmp.setText(jsonObjectAdd.get("Emp_Code").getAsString());
-                txtJNName.setText(jsonObjectAdd.get("Sf_Name").getAsString());
-                txtJNDesig.setText(jsonObjectAdd.get("Desig").getAsString());
-                txtJNDept.setText(jsonObjectAdd.get("Dept").getAsString());
-                txtJNHQ.setText(jsonObjectAdd.get("Sf_Hq").getAsString());
-                txtJNMob.setText(jsonObjectAdd.get("Sf_Mobile").getAsString());
+                    edt_ldg_JnEmp.setText(jsonObjectAdd.get("Emp_Code").getAsString());
+                    txtJNName.setText(jsonObjectAdd.get("Sf_Name").getAsString());
+                    txtJNDesig.setText(jsonObjectAdd.get("Desig").getAsString());
+                    txtJNDept.setText(jsonObjectAdd.get("Dept").getAsString());
+                    txtJNHQ.setText(jsonObjectAdd.get("Sf_Hq").getAsString());
+                    txtJNMob.setText(jsonObjectAdd.get("Sf_Mobile").getAsString());
 
-                float sum = jsonObjectAdd.get("Ldg_Amount").getAsFloat();
-                txtJNMyEli.setText("₹" + new DecimalFormat("##0.00").format(sum));
-
+                    float sum = jsonObjectAdd.get("Ldg_Amount").getAsFloat();
+                    txtJNMyEli.setText("₹" + new DecimalFormat("##0.00").format(sum));
+                }
             }
+            SumOFLodging(0);
         }
 
     }
@@ -4376,8 +4443,15 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
         linback.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+    }
+
     public void getStayAllow() {
 
+        SumOFLodging(0);
+/*
         JSONObject item = new JSONObject();
         try {
             item.put("sfCode", sfCode);
@@ -4420,12 +4494,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                 Log.d("Error:", "Alwance Error");
             }
         });
+*/
 
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
     }
 
     public void localCon(Integer countPosition) {
