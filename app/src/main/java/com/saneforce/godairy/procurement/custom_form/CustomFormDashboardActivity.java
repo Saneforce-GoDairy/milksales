@@ -65,6 +65,7 @@ public class CustomFormDashboardActivity extends AppCompatActivity {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                String hi = "";
                 if (response.isSuccessful()) {
                     binding.shimmerLayout.setVisibility(GONE);
                     String moduleList;

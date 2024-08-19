@@ -104,6 +104,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
@@ -158,6 +159,8 @@ public class CustomFormMainActivity extends AppCompatActivity {
     Common_Class common_class;
 
     private static final int CUSTOM_FSCM = 100;
+    private boolean FILE_CHOOSER = false;
+    private String FILE_CHOOSER_ENABLED_COLUMN_NAME = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -309,32 +312,30 @@ public class CustomFormMainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
                     try {
-                        String res = response.body().string();
-                        Log.e("res__", res);
-
-                        if (res != null) {
+                        if (response.isSuccessful()) {
+                            String res = response.body().string();
                             JSONObject jsonObject = new JSONObject(res);
 
                             boolean isSuccess = jsonObject.getBoolean("success");
                             if (isSuccess) {
-                                Toast.makeText(context, "Form Submit Success", Toast.LENGTH_LONG).show();
-                             //   finish();
+                                showToast("Form Submit Success");
+                                finish();
                             } else
-                                Toast.makeText(getApplicationContext(), "Response : null", Toast.LENGTH_LONG).show();
+                                showToast("Response : null");
                         }
                     } catch (JSONException | IOException ex) {
-                        ex.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Exception error " + ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                       // ex.printStackTrace();
+                        showToast("Exception error" + ex.getLocalizedMessage());
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Failure : " + t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    showToast("Failed " + t.getLocalizedMessage());
                 }
             });
         }else{
-            Toast.makeText(getApplicationContext(),"Check Internet Connection",Toast.LENGTH_SHORT).show();
+            showToast("Check internet!");
         }
     }
 
@@ -395,9 +396,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void loadData(JSONArray groupJsonArray, JSONArray fieldJsonArray) {
-
-        Log.e(TAG, fieldJsonArray.toString());
-
         try {
             if(groupJsonArray.length()>0) {
                 for (int i = 0; i < groupJsonArray.length(); i++) {
@@ -469,17 +467,15 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                 String tableName = jsonObject.getString("FGTableName");
                                 binding.submit.setVisibility(View.VISIBLE);
 
-                                Log.e(TAG, Type_to_Add);
+                                Log.e("test_", Type_to_Add);
 
-                                if (Type_to_Add.equals("FCM")){
-
+                                if (Type_to_Add.equals("FSCM")){
                                     LinearLayout.LayoutParams imageUploadParams = new LinearLayout.LayoutParams(
                                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     imageUploadParams.gravity = Gravity.CENTER;
 
-
                                     TextView txtHeadLabel = new TextView(context);
-                                    txtHeadLabel.setTextColor(Color.BLACK); // For dev (txtHeadLabel.setTextColor(Color.BLACK);)
+                                    txtHeadLabel.setTextColor(Color.BLACK);
                                     txtHeadLabel.setTextSize(15);
                                     txtHeadLabel.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                     txtHeadLabel.setPadding((int) TypedValue.applyDimension(
@@ -492,8 +488,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                         txtHeadLabel.setText(Heading_Label);
                                     }
                                     binding.linearLayout.addView(txtHeadLabel);
-
-                                    // Parent layout main (VERTICAL )
                                     LinearLayout imageUploadContainer = new LinearLayout(context);
                                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     imageUploadContainer.setOrientation(LinearLayout.VERTICAL);
@@ -560,7 +554,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     fileNameTxt3.setText("Select File/Camera");
                                     fileNameTxt3.setTextColor(Color.BLACK);
                                     fileNameTxt3.setLayoutParams(imageUploadParams);
-
                                     //===========================================================================================
                                     // onClickListener
 
@@ -568,41 +561,309 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     String key2 = 300 + String.valueOf(i);
                                     String key3 = 400 + String.valueOf(i);
 
-                                    int finalLabelId = i;
                                     childLayout1.setOnClickListener(view -> {
-
-                                        Log.e("css__", "Fld_Type = " + Type_to_Add + "\n" +
-                                                        "Field_Name = " + Heading_Label + "\n" +
-                                                        "Field_Col = " + Column_Store + "\n" +
-                                                        "ModuleId = " + mModuleId);
-
-//                                        Log.e(TAG, "onClick : childLayout1 \n" +
-//                                                        "findViewById :" + childLayout1.getId() +"\n" +
-//                                                        "key :" + key +"\n\n");
                                         if (Constant.isNetworkAvailable(getApplicationContext()))
-                                            checkPermission(CUSTOM_FSCM, Integer.parseInt(key));
+                                            checkPermission(CUSTOM_FSCM, Column_Store, Integer.parseInt(key));
                                         else
                                             showToast("Check internet!");
                                     });
 
                                     childLayout2.setOnClickListener(v -> {
-                                        Log.e("css__", "Fld_Type = " + Type_to_Add + "\n" +
-                                                "Field_Name = " + Heading_Label + "\n" +
-                                                "Field_Col = " + Column_Store + "\n" +
-                                                "ModuleId = " + mModuleId);
                                         if (Constant.isNetworkAvailable(getApplicationContext()))
-                                            checkPermission(CUSTOM_FSCM, Integer.parseInt(key2));
+                                            checkPermission(CUSTOM_FSCM, Column_Store, Integer.parseInt(key2));
                                         else
                                             showToast("Check internet!");
                                     });
 
                                     childLayout3.setOnClickListener(v -> {
-                                        Log.e("css__", "Fld_Type = " + Type_to_Add + "\n" +
-                                                "Field_Name = " + Heading_Label + "\n" +
-                                                "Field_Col = " + Column_Store + "\n" +
-                                                "ModuleId = " + mModuleId);
                                         if (Constant.isNetworkAvailable(getApplicationContext()))
-                                            checkPermission(CUSTOM_FSCM, Integer.parseInt(key3));
+                                            checkPermission(CUSTOM_FSCM, Column_Store, Integer.parseInt(key3));
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    textViewMap.put(Integer.parseInt(key), fileNameTxt1);
+                                    textViewMap.put(Integer.parseInt(key2), fileNameTxt2);
+                                    textViewMap.put(Integer.parseInt(key3), fileNameTxt3);
+
+                                    binding.linearLayout.addView(imageUploadContainer, layoutParams);
+                                    imageUploadContainer.addView(childLayout1, layoutParams1);
+                                    childLayout1.addView(fileNameTxt1);
+                                    imageUploadContainer.addView(childLayout2, layoutParams2);
+                                    childLayout2.addView(imageUpload2);
+                                    childLayout2.addView(fileNameTxt2);
+                                    imageUploadContainer.addView(childLayout3, layoutParams3);
+                                    childLayout3.addView(imageUpload3);
+                                    childLayout3.addView(fileNameTxt3);
+
+                                    DynamicField dataModel = new DynamicField();
+                                    dataModel.setColumn(Column_Store);
+                                    dataModel.setMandatory(mandate);
+                                    dataModel.setFldGrpId(fieldGroupId);
+                                    dataModel.setFldType(Type_to_Add);
+                                    dataModel.setGrpTableName(tableName);
+                                    dataModel.setImgKey(key);
+                                    store_list.add(dataModel);
+                                }
+
+                                if (Type_to_Add.equals("FCM")){
+                                    LinearLayout.LayoutParams imageUploadParams = new LinearLayout.LayoutParams(
+                                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    imageUploadParams.gravity = Gravity.CENTER;
+
+                                    TextView txtHeadLabel = new TextView(context);
+                                    txtHeadLabel.setTextColor(Color.BLACK); // For dev (txtHeadLabel.setTextColor(Color.BLACK);)
+                                    txtHeadLabel.setTextSize(15);
+                                    txtHeadLabel.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                    txtHeadLabel.setPadding((int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
+                                                    .getDisplayMetrics()), 0, 0, 0);
+                                    String text = Heading_Label + "<font color='red'> *</font>";
+                                    if (mandate == 1) {
+                                        txtHeadLabel.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+                                    } else {
+                                        txtHeadLabel.setText(Heading_Label);
+                                    }
+                                    binding.linearLayout.addView(txtHeadLabel);
+
+                                    // Parent layout main (VERTICAL )
+                                    LinearLayout imageUploadContainer = new LinearLayout(context);
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    imageUploadContainer.setOrientation(LinearLayout.VERTICAL);
+                                    imageUploadContainer.setBackground(getResources().getDrawable(R.drawable.button_whitebg));
+                                    layoutParams.setMargins(30,0,30,0);
+
+                                    //=============================================================================================
+                                    // child 1
+                                    LinearLayout childLayout1 = new LinearLayout(context);
+                                    int mId = 100 + i++;
+                                    childLayout1.setId(mId);
+                                    LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout1.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout1.setBackgroundColor(Color.WHITE);
+                                    layoutParams1.setMargins(30,30,30,0);
+
+                                    ImageView imageUpload1 = new ImageView(context);
+                                    imageUpload1.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload1.setLayoutParams(imageUploadParams);
+                                    childLayout1.addView(imageUpload1);
+
+                                    TextView fileNameTxt1 = new TextView(context);
+                                    TextView textMandatory = new TextView(context);
+                                    textMandatory.setTextColor(Color.RED);
+                                    String text2 = "<font color=#FFFFFFFF>Capture image</font> <font color='red'>*</font>";
+                                    fileNameTxt1.setText( Html.fromHtml(text2));
+                                    fileNameTxt1.setTextColor(Color.BLACK);
+                                    fileNameTxt1.setLayoutParams(imageUploadParams);
+
+                                    //================================================================================================
+                                    // child 2
+                                    LinearLayout childLayout2 = new LinearLayout(context);
+                                    int mId2 = 200 + i++;
+                                    childLayout2.setId(mId2);
+                                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout2.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout2.setBackgroundColor(Color.WHITE);
+                                    layoutParams2.setMargins(30,10,30,0);
+
+                                    ImageView imageUpload2 = new ImageView(context);
+                                    imageUpload2.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload2.setLayoutParams(imageUploadParams);
+
+                                    TextView fileNameTxt2 = new TextView(context);
+                                    fileNameTxt2.setText("Capture image");
+                                    fileNameTxt2.setTextColor(Color.BLACK);
+                                    fileNameTxt2.setLayoutParams(imageUploadParams);
+
+                                    //================================================================================================
+                                    // child 3
+                                    LinearLayout childLayout3 = new LinearLayout(context);
+                                    int mId3 = 500 + i++;
+                                    childLayout3.setId(mId3);
+                                    LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout3.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout3.setBackgroundColor(Color.WHITE);
+                                    layoutParams3.setMargins(30,10,30,30);
+
+                                    ImageView imageUpload3 = new ImageView(context);
+                                    imageUpload3.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload3.setLayoutParams(imageUploadParams);
+
+                                    TextView fileNameTxt3 = new TextView(context);
+                                    fileNameTxt3.setText("Capture image");
+                                    fileNameTxt3.setTextColor(Color.BLACK);
+                                    fileNameTxt3.setLayoutParams(imageUploadParams);
+
+                                    //===========================================================================================
+                                    // onClickListener
+                                    String key = 200 + String.valueOf(i);
+                                    String key2 = 300 + String.valueOf(i);
+                                    String key3 = 400 + String.valueOf(i);
+
+                                    childLayout1.setOnClickListener(view -> {
+                                        if (Constant.isNetworkAvailable(getApplicationContext()))
+                                            captureMultiple(Integer.parseInt(key), Column_Store);
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    childLayout2.setOnClickListener(v -> {
+                                        if (Constant.isNetworkAvailable(getApplicationContext()))
+                                            captureMultiple(Integer.parseInt(key2), Column_Store);
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    childLayout3.setOnClickListener(v -> {
+                                        if (Constant.isNetworkAvailable(getApplicationContext()))
+                                            captureMultiple(Integer.parseInt(key3), Column_Store);
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    textViewMap.put(Integer.parseInt(key), fileNameTxt1);
+                                    textViewMap.put(Integer.parseInt(key2), fileNameTxt2);
+                                    textViewMap.put(Integer.parseInt(key3), fileNameTxt3);
+
+                                    binding.linearLayout.addView(imageUploadContainer, layoutParams);
+                                    imageUploadContainer.addView(childLayout1, layoutParams1);
+                                    childLayout1.addView(fileNameTxt1);
+                                    imageUploadContainer.addView(childLayout2, layoutParams2);
+                                    childLayout2.addView(imageUpload2);
+                                    childLayout2.addView(fileNameTxt2);
+                                    imageUploadContainer.addView(childLayout3, layoutParams3);
+                                    childLayout3.addView(imageUpload3);
+                                    childLayout3.addView(fileNameTxt3);
+
+                                    DynamicField dataModel = new DynamicField();
+                                    dataModel.setColumn(Column_Store);
+                                    dataModel.setMandatory(mandate);
+                                    dataModel.setFldGrpId(fieldGroupId);
+                                    dataModel.setFldType(Type_to_Add);
+                                    dataModel.setGrpTableName(tableName);
+                                    dataModel.setImgKey(key);
+                                    store_list.add(dataModel);
+                                }
+
+                                if (Type_to_Add.equals("FSM")){
+                                    LinearLayout.LayoutParams imageUploadParams = new LinearLayout.LayoutParams(
+                                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    imageUploadParams.gravity = Gravity.CENTER;
+
+                                    TextView txtHeadLabel = new TextView(context);
+                                    txtHeadLabel.setTextColor(Color.BLACK); // For dev (txtHeadLabel.setTextColor(Color.BLACK);)
+                                    txtHeadLabel.setTextSize(15);
+                                    txtHeadLabel.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                    txtHeadLabel.setPadding((int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
+                                                    .getDisplayMetrics()), 0, 0, 0);
+                                    String text = Heading_Label + "<font color='red'> *</font>";
+                                    if (mandate == 1) {
+                                        txtHeadLabel.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+                                    } else {
+                                        txtHeadLabel.setText(Heading_Label);
+                                    }
+                                    binding.linearLayout.addView(txtHeadLabel);
+
+                                    // Parent layout main (VERTICAL )
+                                    LinearLayout imageUploadContainer = new LinearLayout(context);
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    imageUploadContainer.setOrientation(LinearLayout.VERTICAL);
+                                    imageUploadContainer.setBackground(getResources().getDrawable(R.drawable.button_whitebg));
+                                    layoutParams.setMargins(30,0,30,0);
+
+                                    //=============================================================================================
+                                    // child 1
+                                    LinearLayout childLayout1 = new LinearLayout(context);
+                                    int mId = 100 + i++;
+                                    childLayout1.setId(mId);
+                                    LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout1.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout1.setBackgroundColor(Color.WHITE);
+                                    layoutParams1.setMargins(30,30,30,0);
+
+                                    ImageView imageUpload1 = new ImageView(context);
+                                    imageUpload1.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload1.setLayoutParams(imageUploadParams);
+                                    childLayout1.addView(imageUpload1);
+
+                                    TextView fileNameTxt1 = new TextView(context);
+                                    TextView textMandatory = new TextView(context);
+                                    textMandatory.setTextColor(Color.RED);
+                                    String text2 = "<font color=#FFFFFFFF>Select File</font> <font color='red'>*</font>";
+                                    fileNameTxt1.setText( Html.fromHtml(text2));
+                                    fileNameTxt1.setTextColor(Color.BLACK);
+                                    fileNameTxt1.setLayoutParams(imageUploadParams);
+
+                                    //================================================================================================
+                                    // child 2
+                                    LinearLayout childLayout2 = new LinearLayout(context);
+                                    int mId2 = 200 + i++;
+                                    childLayout2.setId(mId2);
+                                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout2.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout2.setBackgroundColor(Color.WHITE);
+                                    layoutParams2.setMargins(30,10,30,0);
+
+                                    ImageView imageUpload2 = new ImageView(context);
+                                    imageUpload2.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload2.setLayoutParams(imageUploadParams);
+
+                                    TextView fileNameTxt2 = new TextView(context);
+                                    fileNameTxt2.setText("Select File");
+                                    fileNameTxt2.setTextColor(Color.BLACK);
+                                    fileNameTxt2.setLayoutParams(imageUploadParams);
+
+                                    //================================================================================================
+                                    // child 3
+                                    LinearLayout childLayout3 = new LinearLayout(context);
+                                    int mId3 = 500 + i++;
+                                    childLayout3.setId(mId3);
+                                    LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    childLayout3.setOrientation(LinearLayout.HORIZONTAL);
+                                    childLayout3.setBackgroundColor(Color.WHITE);
+                                    layoutParams3.setMargins(30,10,30,30);
+
+                                    ImageView imageUpload3 = new ImageView(context);
+                                    imageUpload3.setImageResource(R.drawable.ic_upload_file);
+                                    imageUpload3.setLayoutParams(imageUploadParams);
+
+                                    TextView fileNameTxt3 = new TextView(context);
+                                    fileNameTxt3.setText("Select File");
+                                    fileNameTxt3.setTextColor(Color.BLACK);
+                                    fileNameTxt3.setLayoutParams(imageUploadParams);
+
+                                    //===========================================================================================
+                                    // onClickListener
+
+
+                                    String key = 200 + String.valueOf(i);
+                                    String key2 = 300 + String.valueOf(i);
+                                    String key3 = 400 + String.valueOf(i);
+
+                                    childLayout1.setOnClickListener(view -> {
+                                        if (Constant.isNetworkAvailable(getApplicationContext())) {
+                                            FILE_CHOOSER_ENABLED_COLUMN_NAME = Column_Store;
+                                            imageChooserFSCM(Integer.parseInt(key));
+                                        }
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    childLayout2.setOnClickListener(v -> {
+                                        if (Constant.isNetworkAvailable(getApplicationContext())) {
+                                            FILE_CHOOSER_ENABLED_COLUMN_NAME = Column_Store;
+                                            imageChooserFSCM(Integer.parseInt(key2));
+                                        }
+                                        else
+                                            showToast("Check internet!");
+                                    });
+
+                                    childLayout3.setOnClickListener(v -> {
+                                        if (Constant.isNetworkAvailable(getApplicationContext())) {
+                                            FILE_CHOOSER_ENABLED_COLUMN_NAME = Column_Store;
+                                            imageChooserFSCM(Integer.parseInt(key3));
+                                        }
                                         else
                                             showToast("Check internet!");
                                     });
@@ -1661,7 +1922,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                             } else if (Type_to_Add.equals("FS")) {
                                                 imageChooser(Integer.parseInt(key));
                                             } else {
-                                                checkPermission(999999, Integer.parseInt(key));
+                                                checkPermission(999999,"", Integer.parseInt(key));
                                             }
                                         else
                                             Toast.makeText(getApplicationContext(), "Please check the internet connectivity", Toast.LENGTH_SHORT).show();
@@ -1692,10 +1953,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void showTag(String attributeId) {
-        Log.e(TAG, attributeId);
     }
 
     public SelectionModel[]  getListWithModel(String srcName,String SrcFieldName) {
@@ -1829,8 +2086,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void captureFSCM(Integer reqCode) {
-        Log.e(TAG, "RequestCode/dynamic id :" + reqCode.toString());
+    public void captureMultiple(Integer reqCode, String mCoumnName) {
         AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
             @SuppressLint("SetTextI18n")
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -1849,29 +2105,20 @@ public class CustomFormMainActivity extends AppCompatActivity {
                     }else {
                         textViewToModify.setTextColor(getColor(R.color.colorAccent));
                     }
-
                     textViewToModify.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 
                     for (int i=0;i<store_list.size();i++){
-
-                        String reqId =reqCode==0?"00":String.valueOf(reqCode);
-
-                        if(store_list.get(i).getImgKey()!=null && store_list.get(i).getImgKey().equals(reqId)){
-                            store_list.get(i).setData(Constant.SF_CODE+file.getName());
+                        if (store_list.get(i).getColumn().contains(mCoumnName)){
+                            String mCheckNullValues = store_list.get(i).getData();
+                            String previousFileName = store_list.get(i).getData();
+                            if (mCheckNullValues == null){
+                                store_list.get(i).setData(Constant.SF_CODE+file.getName());
+                            }else{
+                                store_list.get(i).setData(previousFileName + ", " + Constant.SF_CODE+file.getName());
+                            }
                         }
                     }
-
-                    Log.e(TAG, "store_list.size() :" + store_list.size());
-                    for (int i = 0; i < store_list.size(); i++) {
-
-                        Log.e(TAG, store_list.get(i).getData() + " ");
-                    }
-
-//                    Log.e(TAG, "method : captureFile(Integer reqCode) \n" +
-//                            "requestCode :" + reqCode +"\n" +
-//                            "picture path fianl :" + picturePathFinal1 +"\n\n");
-
-                    uploadImageFile(picturePathFinal1); // "/storage/emulated/0/Pictures/Attendance/Images/MGR168_1718000389.jpg"
+                    uploadImageFile(picturePathFinal1);
                 }
             }
         });
@@ -1890,6 +2137,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
     }
 
     private void imageChooserFSCM(int dynamicId) {
+        FILE_CHOOSER = true;
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         String[] mimeTypes = {"application/pdf", "image/*"};
@@ -1898,14 +2146,58 @@ public class CustomFormMainActivity extends AppCompatActivity {
         startActivityForResult(intent, dynamicId);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "NewApi"})
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
-            Log.e(TAG, "onActivityResult: " + data.getData());
                 if(data.getData() != null) {
 
                     Uri selectedImageUri = data.getData();
+                    TextView textViewToModify=textViewMap.get(requestCode);
+                    textViewToModify.setVisibility(View.VISIBLE);
+
+                    if (FILE_CHOOSER){
+                        if (selectedImageUri != null){
+                            String mimeType = context.getContentResolver().getType(selectedImageUri);
+
+                            if (mimeType.equals("application/pdf")) {
+                                picturePathFinal1 = processContentUri(selectedImageUri);
+                            } else if (mimeType.startsWith("image/")) {
+                                picturePathFinal1 = ImageFilePath.getPath(context, selectedImageUri);
+                            }
+
+                            if (mimeType.startsWith("image/")) {
+                                textViewToModify.setText(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
+                            }else {
+                                textViewToModify.setText(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
+                            }
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                            }else {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                                }else {
+                                    textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                                }
+                            }
+
+                            for (int i=0;i<store_list.size();i++){
+
+                                if (store_list.get(i).getColumn().contains(FILE_CHOOSER_ENABLED_COLUMN_NAME)){
+                                    String mCheckNullValues = store_list.get(i).getData();
+                                    String previousFileName = store_list.get(i).getData();
+                                    if (mCheckNullValues == null){
+                                        store_list.get(i).setData(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
+                                    }else{
+                                        store_list.get(i).setData(previousFileName + ", " + Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
+                                    }
+                                }
+                            }
+                        }
+                        uploadImageFile(picturePathFinal1);
+                        return;
+                    }
 
                     if (selectedImageUri != null && !String.valueOf(selectedImageUri).isEmpty()) {
 
@@ -1917,9 +2209,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                             } else if (mimeType.startsWith("image/")) {
                                 picturePathFinal1 = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
                             }
-
-                            TextView textViewToModify=textViewMap.get(requestCode);
-                            textViewToModify.setVisibility(View.VISIBLE);
 
                                 if (mimeType.startsWith("image/")) {
                                     textViewToModify.setText(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
@@ -2063,24 +2352,8 @@ public class CustomFormMainActivity extends AppCompatActivity {
             });
         }
         catch (Exception e){
-            Log.e("upload__", "onError: " + e.getMessage());
+            Toast.makeText(context, "Upload error :" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public AmazonS3Client getS3Client(Context context) {
-        if (sS3Client == null) {
-            try {
-                String regionString = new AWSConfiguration(context)
-                        .optJsonObject("S3TransferUtility")
-                        .getString("Region");
-                Region region = Region.getRegion(regionString);
-                sS3Client = new AmazonS3Client(getCredProvider(context), region);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return sS3Client;
     }
 
     private AWSCredentialsProvider getCredProvider(Context context) {
@@ -2108,7 +2381,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
         return sMobileClient;
     }
 
-    public void checkPermission(int position,int dynamicId){
+    public void checkPermission(int position,String mCoumnName, int dynamicId){
         Dexter.withContext(getApplicationContext())
                 .withPermissions(PermissionUtils.getCameraStoragePermissionList())
                 .withListener(new MultiplePermissionsListener() {
@@ -2117,11 +2390,11 @@ public class CustomFormMainActivity extends AppCompatActivity {
                     {
                         if(report.areAllPermissionsGranted()){
                             if(position == 999999){
-                                mediaPickerDialog(position,dynamicId);
+                                mediaPickerDialog(position,mCoumnName, dynamicId);
                             }
 
                             if (position == CUSTOM_FSCM){
-                                mediaPickerDialog(position,dynamicId);
+                                mediaPickerDialog(position,mCoumnName, dynamicId);
                             }
                         }
                     }
@@ -2134,20 +2407,17 @@ public class CustomFormMainActivity extends AppCompatActivity {
                 }).check();
     }
 
-    private void mediaPickerDialog(int position,int dynamicId){
+    private void mediaPickerDialog(int position,String mCoumnName, int dynamicId){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_upload_image);
-
         ImageView close = dialog.findViewById(R.id.close);
         ImageView camera = dialog.findViewById(R.id.camera);
         ImageView gallery = dialog.findViewById(R.id.gallery);
 
         camera.setOnClickListener(view -> {
-          //  Log.e(TAG, "onClick: camera \n Position : " + position + "\n Dynamic Id :" + dynamicId);
             dialog.dismiss();
             if (position == CUSTOM_FSCM){
-                Log.e(TAG, "Loop: if (position == CUSTOM_FSCM) \n Position : " + position + " \n Dynamic Id :" + dynamicId);
-                captureFSCM(dynamicId);
+                captureMultiple(dynamicId, mCoumnName);
                 return;
             }
             captureFile(dynamicId);
@@ -2156,6 +2426,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
         gallery.setOnClickListener(view -> {
             dialog.dismiss();
             if (position == CUSTOM_FSCM){
+                FILE_CHOOSER_ENABLED_COLUMN_NAME = mCoumnName;
                 imageChooserFSCM(dynamicId);
                 return;
             }
