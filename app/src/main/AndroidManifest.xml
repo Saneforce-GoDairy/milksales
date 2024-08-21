@@ -67,6 +67,10 @@
             android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
+            android:name=".Activity.UniversalPDFViewer"
+            android:screenOrientation="nosensor"
+            android:exported="false" />
+        <activity
             android:name=".SFA_Activity.vwInvoices"
             android:screenOrientation="nosensor"
             android:exported="false" />

@@ -50,6 +50,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.saneforce.godairy.Activity.ProcPrimaryOrderActivity;
+import com.saneforce.godairy.Activity.UniversalPDFViewer;
 import com.saneforce.godairy.Activity.Util.ListModel;
 import com.saneforce.godairy.Activity.ViewActivity;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
@@ -274,6 +275,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Distributor", "", "", "", R.drawable.ic_distributor_sf));
                     menuList.add(new ListModel("", "Customer On Boarding", "", "", "", R.drawable.ic_distributor_sf));
                     menuList.add(new ListModel("", "My Team", "", "", "", R.drawable.ic_my_team_sf));
+                    menuList.add(new ListModel("", "SOA", "", "", "", R.drawable.ic_my_team_sf));
                     //menuList.add(new ListModel("", "Projection", "", "", "", R.drawable.ic_projection_sf));
                     // menuList.add(new ListModel("", "Stock Audit", "", "", "", R.drawable.ic_stock_audit));
                    // menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop_sf));
@@ -502,6 +504,14 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     case "Customer On Boarding":
                         common_class.CommonIntentwithNEwTask(CustomerOnBoarding.class);
+                        break;
+
+                    case "SOA":
+                        Intent in = new Intent(context, UniversalPDFViewer.class);
+                        in.putExtra("mode", "url");
+                        in.putExtra("title", "Statement of Account");
+                        in.putExtra("url", "https://hap.sanfmcg.com/HAP_ANNEXURE_C.pdf");
+                        startActivity(in);
                         break;
 
                     case "Approve Outlets":

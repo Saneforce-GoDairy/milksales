@@ -94,7 +94,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     ActivityAddNewDistributorBinding binding;
 
     TextView select_sales_office_name, select_route_name, select_channel, select_state, date_of_creation, downloadGSTDeclarationForm, uidType, downloadTCSDeclarationForm, purchaseType, submit, select_bank_details, select_agreement_copy, select_sub_channel, selectReportingVerticals, downloadfssaiDeclarationForm, fssaiFromDate, fssaiToDate;
-    ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai, display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, home, display_aadhaar_number, capture_aadhaar_number, display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration, fssaiInfo, previewfssaiDeclaration, capturefssaiDeclaration, capture_customer_application, display_customer_application;
+    ImageView refreshLocation, display_customer_photo, capture_customer_photo, display_shop_photo, capture_shop_photo, display_bank_details, capture_bank_details, display_fssai, capture_fssai, display_gst, capture_gst, display_agreement_copy, capture_agreement_copy, home, display_aadhaar_number, capture_aadhaar_number, display_aadhaar_back, capture_aadhaar_back, display_pan_number, capture_pan_number, gstInfo, previewGSTDeclaration, captureGSTDeclaration, tcsInfo, previewTCSDeclaration, captureTCSDeclaration, fssaiInfo, previewfssaiDeclaration, capturefssaiDeclaration, capture_customer_application, display_customer_application;
     EditText type_city, type_pincode, type_name_of_the_customer, type_name_of_the_owner, type_mobile_number, type_email_id, type_pan_name, type_sales_executive_name, type_sales_executive_employee_id, type_aadhaar_number, type_pan_number, type_gst, type_fssai, businessAddressNo, businessAddressCity, businessAddressPincode, ownerAddressNo, ownerAddressCity, ownerAddressPincode;
     LinearLayout gstDeclarationLL, gstLL, tcsDeclarationLL, fssaiDeclarationLL, fssaiLL;
     SwitchMaterial gstSwitch, tcsSwitch, fssaiSwitch;
@@ -118,7 +118,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
     DatePickerDialog fromDatePickerDialog;
 
     double Lat = 0, Long = 0;
-    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", gstDeclarationImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", doorNo = "", street = "", city = "", district = "", state = "", country = "", pincode = "", feature = "";
+    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", aadhaarImageBack = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", gstDeclarationImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", aadhaarImageBackFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", doorNo = "", street = "", city = "", district = "", state = "", country = "", pincode = "", feature = "";
     boolean isEditMode = false;
     ArrayList<String> FSSAIList, GSTList;
     private String mUkey;
@@ -171,6 +171,8 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         type_fssai = findViewById(R.id.type_fssai);
         display_aadhaar_number = findViewById(R.id.display_aadhaar_number);
         capture_aadhaar_number = findViewById(R.id.capture_aadhaar_number);
+        display_aadhaar_back = findViewById(R.id.display_aadhaar_back);
+        capture_aadhaar_back = findViewById(R.id.capture_aadhaar_back);
         display_pan_number = findViewById(R.id.display_pan_number);
         capture_pan_number = findViewById(R.id.capture_pan_number);
         refreshLocation = findViewById(R.id.refreshLocation);
@@ -423,6 +425,29 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                             aadhaarImageFullPath = fullPath;
                             display_aadhaar_number.setImageBitmap(image);
                             display_aadhaar_number.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFail() {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+            Intent intent = new Intent(context, AllowancCapture.class);
+            startActivity(intent);
+        });
+        capture_aadhaar_back.setOnClickListener(v -> {
+            AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
+                @Override
+                public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
+                    com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
+                        @Override
+                        public void onSuccess() {
+                            aadhaarImageBack = FileName;
+                            aadhaarImageBackFullPath = fullPath;
+                            display_aadhaar_back.setImageBitmap(image);
+                            display_aadhaar_back.setVisibility(View.VISIBLE);
                         }
 
                         @Override
@@ -758,6 +783,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
             new Handler().postDelayed(() -> display_aadhaar_number.setEnabled(true), 1500);
             showImage(aadhaarImageFullPath);
         });
+        display_aadhaar_back.setOnClickListener(v -> {
+            display_aadhaar_back.setEnabled(false);
+            new Handler().postDelayed(() -> display_aadhaar_back.setEnabled(true), 1500);
+            showImage(aadhaarImageBackFullPath);
+        });
         display_pan_number.setOnClickListener(v -> {
             display_pan_number.setEnabled(false);
             new Handler().postDelayed(() -> display_pan_number.setEnabled(true), 1500);
@@ -1005,8 +1035,11 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                         aadhaarStr = "";
                         aadhaarImageName = "";
                         aadhaarImageFullPath = "";
+                        aadhaarImageBack = "";
+                        aadhaarImageBackFullPath = "";
                         binding.typeAadhaarNumber.setText("");
                         binding.displayAadhaarNumber.setVisibility(View.GONE);
+                        binding.displayAadhaarBack.setVisibility(View.GONE);
                     } else {
                         binding.aadhaarLL.setVisibility(View.VISIBLE);
                     }
@@ -1166,7 +1199,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
         binding.clearAgreement.setOnClickListener(v -> {
             agreementDetailsStr = "";
             agreementImageName = "";
-            aadhaarImageFullPath = "";
+            agreementImageFullPath = "";
             select_agreement_copy.setText("");
             display_agreement_copy.setVisibility(View.GONE);
         });
@@ -1353,6 +1386,13 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
                     display_aadhaar_number.setImageBitmap(bmp);
                     display_aadhaar_number.setVisibility(View.VISIBLE);
                     aadhaarImageFullPath = path;
+                });
+
+                aadhaarImageBack = jsonObject.optString("AadhaarImgBack");
+                common_class.getImageFromS3Bucket(context, aadhaarImageBack, "stockist_info", (bmp, path) -> {
+                    display_aadhaar_back.setImageBitmap(bmp);
+                    display_aadhaar_back.setVisibility(View.VISIBLE);
+                    aadhaarImageBackFullPath = path;
                 });
             }
 
@@ -2257,6 +2297,7 @@ public class AddNewDistributor extends AppCompatActivity implements OnMapReadyCa
 
             object.put("aadhaarStr", aadhaarStr);
             object.put("aadhaarImage", aadhaarImageName);
+            object.put("aadhaarImageBack", aadhaarImageBack);
 
             object.put("PANStr", PANStr);
             object.put("panImage", panImageName);
