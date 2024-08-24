@@ -2379,9 +2379,13 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             tTotAmt = 0;
         }
         txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
+        double tBalAmt = totalBill - tTotAmt;
+
+        if (!mChckCont.isChecked()) {
+            tTotAmt = continueStay + tTotAmt;
+        }
         lbl_ldg_eligi.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
 
-        double tBalAmt = totalBill - tTotAmt;
         if ((nofNght < 1 && OnlyNight == 1) || transferflg == 1) {
             tBalAmt = 0;
         }
@@ -3438,8 +3442,12 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 cnSty = 0;
                 countLoding = 0;
                 if (!isFullPay) {
-                    vwldgBillAmt.setVisibility(View.VISIBLE);
+                    edt_ldg_bill.setVisibility(View.VISIBLE);
+                    lblHdBill.setVisibility(View.VISIBLE);
+                    linImgPrv.setVisibility(View.VISIBLE);
+                    viewBilling.setVisibility(View.VISIBLE);
                     ldgGstLayout.setVisibility(View.VISIBLE);
+                    vwldgBillAmt.setVisibility(View.VISIBLE);
                 }
                 linCheckOut.setVisibility(View.VISIBLE);
             }
@@ -3510,6 +3518,12 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             lodgJoin.setVisibility(View.GONE);
             JNLdgEAra.setVisibility(View.GONE);
 
+            edt_ldg_bill.setVisibility(View.VISIBLE);
+            lblHdBill.setVisibility(View.VISIBLE);
+            linImgPrv.setVisibility(View.VISIBLE);
+            viewBilling.setVisibility(View.VISIBLE);
+            ldgGstLayout.setVisibility(View.VISIBLE);
+
             try {
                 lodgingStayTypeId = ldraft.get("lodgingStayTypeId").getAsString();
                 allowType = ldraft.get("allowType").getAsString();
@@ -3547,8 +3561,12 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 cnSty = 0;
                 countLoding = 0;
                 if (!isFullPay) {
-                    vwldgBillAmt.setVisibility(View.VISIBLE);
+                    edt_ldg_bill.setVisibility(View.VISIBLE);
+                    lblHdBill.setVisibility(View.VISIBLE);
+                    linImgPrv.setVisibility(View.VISIBLE);
+                    viewBilling.setVisibility(View.VISIBLE);
                     ldgGstLayout.setVisibility(View.VISIBLE);
+                    vwldgBillAmt.setVisibility(View.VISIBLE);
                 }
                 linCheckOut.setVisibility(View.VISIBLE);
             }
