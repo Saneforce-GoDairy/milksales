@@ -54,6 +54,7 @@ public class CustomListViewDialog extends Dialog implements View.OnClickListener
     ImageView mIvAddMapKey;
     EditText etAddKey;
     TextView tvtitle;
+    String title_text = "";
     Master_Interface updateUi;
 
 
@@ -62,6 +63,17 @@ public class CustomListViewDialog extends Dialog implements View.OnClickListener
         this.activity = a;
         this.type = type;
         this.mDataset = wk;
+        this.da = new DataAdapter(mDataset, activity, type);
+        setupLayout();
+    }
+
+
+    public CustomListViewDialog(Activity a, String title, List<Common_Model> wk, int type) {
+        super(a);
+        this.activity = a;
+        this.type = type;
+        this.mDataset = wk;
+        title_text = title;
         this.da = new DataAdapter(mDataset, activity, type);
         setupLayout();
     }
@@ -82,6 +94,10 @@ public class CustomListViewDialog extends Dialog implements View.OnClickListener
         mBtnSave = findViewById(R.id.btn_save);
         etAddKey = findViewById(R.id.et_addMapKey);
         tvtitle = findViewById(R.id.txt);
+
+        if (!title_text.isEmpty()) {
+            tvtitle.setText(title_text);
+        }
 
         if (type == 1000) {
             searchView.setVisibility(View.GONE);

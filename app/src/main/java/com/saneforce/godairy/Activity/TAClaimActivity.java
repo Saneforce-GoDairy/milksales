@@ -2085,6 +2085,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     }
 
     public void onLodingDelete(View v) {
+        edt_ldg_bill.setText("");
         if (jointLodging.getChildCount() > 1) {
             jointLodging.removeView((View) v.getParent());
         } else {
@@ -5357,6 +5358,13 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         }
         if (type == 12) {
             boolean sameDrvldg=false;
+            edt_ldg_bill.setText("");
+            if (isJointWork) {
+                jointLodging.removeAllViews();
+                lodingView();
+                SumOFJointLodging();
+                SumOFLodging(0);
+            }
             if (sDrvLocId=="" || sDrvLocId==sLocId) sameDrvldg=true;
             sLocId = myDataset.get(position).getId();
             sLocName = myDataset.get(position).getName();
@@ -5855,7 +5863,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     }
 
     public void LDGType() {
-        customDialog = new CustomListViewDialog(TAClaimActivity.this, ldgModes, 9);
+        customDialog = new CustomListViewDialog(TAClaimActivity.this, "Select Lodging Type", ldgModes, 9);
         Window window = customDialog.getWindow();
         window.setGravity(Gravity.CENTER);
         window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
