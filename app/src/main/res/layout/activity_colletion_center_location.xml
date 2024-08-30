@@ -294,7 +294,7 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="@dimen/C10dp"
                     android:autofillHints="name"
-                    android:inputType="text"
+                    android:inputType="numberDecimal"
                     tools:ignore="LabelFor" />
 
                 <TextView

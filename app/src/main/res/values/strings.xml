@@ -260,7 +260,7 @@
     <string name="no_of_snf">No of snf</string>
     <string name="_12_samples_calibiration">12) Samples Calibiration</string>
     <string name="awareness_program">Awareness program</string>
-    <string name="_5_mbr">5, MBR</string>
+    <string name="_5_mbr">5, MBRT</string>
     <string name="_6_rejection">6, Rejection</string>
     <string name="_7_special_cleaning">7, Special cleaning</string>
     <string name="_8_cleaning_efficiency">8, Cleaning efficiency</string>
@@ -441,14 +441,20 @@
     <string-array name="competitor_array">
         <item>Select</item>
         <item>Competitor1 LPD</item>
-        <item>Competitor2 LPD</item>
-        <item>Competitor3 LPD</item>
-        <item>Competitor4 LPD</item>
-        <item>Competitor5 LPD</item>
     </string-array>
+
+    <!--    <string-array name="competitor_array">-->
+    <!--        <item>Select</item>-->
+    <!--        <item>Competitor1 LPD</item>-->
+    <!--        <item>Competitor2 LPD</item>-->
+    <!--        <item>Competitor3 LPD</item>-->
+    <!--        <item>Competitor4 LPD</item>-->
+    <!--        <item>Competitor5 LPD</item>-->
+    <!--    </string-array>-->
 
     <string-array name="veterinary_type_of_service_array">
         <item>Select</item>
+        <item>CSR Activity</item>
         <item>Animal insurance</item>
         <item>Farmer meeting</item>
         <item>Free vet camp</item>

@@ -777,6 +777,10 @@ public interface ApiInterface {
     @POST("Procurement.php")
     Call<ResponseBody> getProcPlant(@Query("axn") String axn);
 
+    @POST("Procurement.php")
+    Call<ResponseBody> getProcPlant2(@Query("axn") String axn,
+                                    @Query("company") String company);
+
     @Multipart
     @POST("Procurement.php")
     Call<ResponseBody> submitProcCollectionCenterLo(@Query("axn") String axn,
@@ -844,7 +848,6 @@ public interface ApiInterface {
                                             @Query("farmer_name") String farmer_name,
                                             @Query("service_type") String service_type,
                                             @Part MultipartBody.Part image1,
-                                            @Query("product_type") String product_type,
                                             @Query("seed_sale") String seed_sale,
                                             @Query("mineral_mixture") String mineral_mixture,
                                             @Query("fodder_setts_sale_kg") String fodder_setts_sale_kg,
@@ -1192,6 +1195,21 @@ public interface ApiInterface {
 
     @POST("Procurement.php")
     Call<ResponseBody> getMilkColl(@Query("axn") String axn);
+
+    @Multipart
+    @POST("Procurement.php")
+    Call<ResponseBody> proCollCenterCr(@Query("axn") String axn,
+                                       @Part MultipartBody.Part centerImg,
+                                       @Query("center_name") String center_name,
+                                       @Query("state")String state,
+                                       @Query("district") String district,
+                                       @Query("plant")String plant,
+                                       @Query("business_addr")String business_addr,
+                                       @Query("owner_name")String owner_name,
+                                       @Query("owner_addr1")String owner_addr1,
+                                       @Query("owner_pincode")String owner_pincode,
+                                       @Query("mobile")String mobile,
+                                       @Query("email")String email);
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();

@@ -710,8 +710,10 @@
                     android:text="@string/antibiotics_awareness" />
 
                 <RelativeLayout
+                    android:id="@+id/anti_biotic_awarenes_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/txt_img_awarenes_not_valid"

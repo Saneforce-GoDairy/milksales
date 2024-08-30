@@ -89,9 +89,9 @@ public class ProcurementHome extends AppCompatActivity {
                             for (int i = 0; i < jsonArrayData.length(); i++) {
                                 ProcSubDivison subDivison = new ProcSubDivison();
                                 JSONObject object = jsonArrayData.getJSONObject(i);
-                                subDivison.setSubdivision_sname(object.getString("subdivision_sname"));
+                                subDivison.setSubdivision_sname(object.getString("subdivision_name"));
                                 subDivisionList.add(subDivison);
-                                SubDivisionArray.add(object.getString("subdivision_sname"));
+                                SubDivisionArray.add(object.getString("subdivision_name"));
 
                                 // for database
                                 databaseManager.open();
@@ -160,6 +160,7 @@ public class ProcurementHome extends AppCompatActivity {
         binding.milkColl.setOnClickListener(v -> startActivity(new Intent(context, MilkCollectionReport.class)));
         binding.agent.setOnClickListener(v -> startActivity(new Intent(context, AgentReportActivity.class)));
         binding.farmer.setOnClickListener(v -> startActivity(new Intent(context, FarmerCreationReportActivity.class)));
+        binding.newCollCenter.setOnClickListener(v -> startActivity(new Intent(context, NewCollectionCenter.class)));
     }
 
     public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {

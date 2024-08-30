@@ -340,6 +340,8 @@ public class QualityFormActivity extends AppCompatActivity {
             binding.awsHealthCamp.setChecked(false);
             binding.awsCleanMilkProduction.setChecked(false);
             binding.awsTraining.setChecked(false);
+
+            binding.antiBioticAwarenesLayout.setVisibility(View.VISIBLE);
         });
 
         // Awareness program capture image

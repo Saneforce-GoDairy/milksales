@@ -14,6 +14,7 @@ import com.saneforce.godairy.databinding.ActivityMainBinding;
 import com.saneforce.godairy.procurement.FarmerCreationActivity;
 import com.saneforce.godairy.procurement.MilkCollEntryActivity;
 import com.saneforce.godairy.procurement.ProcurementHome;
+import com.saneforce.godairy.procurement.ska.NewFarmerCreationActivity;
 
 import java.util.Objects;
 
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
             ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
             View view = binding.getRoot();
             setContentView(view);
+
+//            startActivity(new Intent(context, NewFarmerCreationActivity.class));
+//            finish();
 
 
             shared_common_pref = new Shared_Common_Pref(this);

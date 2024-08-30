@@ -151,6 +151,12 @@ public class ProcurementCameraX extends AppCompatActivity {
 
         switch (Integer.parseInt(cameraEventId)){
 
+            case 25:
+                imageName = "CENP_123" + ".jpg";
+                file = new File(DIR, imageName);
+                break;
+
+
             case 24:
                 imageName = "FAMC2_123" + ".jpg";
                 file = new File(DIR, imageName);

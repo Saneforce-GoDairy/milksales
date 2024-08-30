@@ -212,26 +212,31 @@ public class CustomFormMainActivity extends AppCompatActivity {
                     try {
                         if (store_list.get(i).getMandatory() == 1&&(store_list.get(i).getData() == null ||store_list.get(i).getData().trim().isEmpty())) {
                             showError2();
+                            Toast.makeText(context, "Please fill all the Mandatory Fields!", Toast.LENGTH_SHORT).show();
                             checked_All = false;
                             break;
                         }
                         else if(isDateclicked&&isDateShow&&(isFromDateEmpty)){
                             showError2();
+                            Toast.makeText(context, "Please fill all the Mandatory Fields!", Toast.LENGTH_SHORT).show();
                             checked_All = false;
                             break;
                         }
                         else if(isDateclicked&&isDateShow&&(isToDateEmpty)){
                             showError2();
+                            Toast.makeText(context, "Please fill all the Mandatory Fields!", Toast.LENGTH_SHORT).show();
                             checked_All = false;
                             break;
                         }
                         else if(isTimeclicked&&isTimeShow&&(isFromTimeEmpty||isToTimeEmpty)){
                             showError2();
+                            Toast.makeText(context, "Please fill all the Mandatory Fields!", Toast.LENGTH_SHORT).show();
                             checked_All = false;
                             break;
                         }
                     }catch (Exception e){
-                        e.printStackTrace();
+                     //   e.printStackTrace();
+                        Toast.makeText(context, "Form validation error!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -511,10 +516,16 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
                                     TextView fileNameTxt1 = new TextView(context);
                                     TextView textMandatory = new TextView(context);
-                                    textMandatory.setTextColor(Color.RED);
-                                    String text2 = "<font color=#FFFFFFFF>Select File/Camera</font> <font color='red'>*</font>";
-                                    fileNameTxt1.setText( Html.fromHtml(text2));
-                                    fileNameTxt1.setTextColor(Color.BLACK);
+
+                                    if (mandate == 1) {
+                                        textMandatory.setTextColor(Color.RED);
+                                        String text2 = "<font color=#FFFFFFFF>Select File/Camera</font> <font color='red'>*</font>";
+                                        fileNameTxt1.setText( Html.fromHtml(text2));
+                                        fileNameTxt1.setTextColor(Color.BLACK);
+                                    } else {
+                                        fileNameTxt1.setText("Select File/Camera");
+                                    }
+
                                     fileNameTxt1.setLayoutParams(imageUploadParams);
 
                                     //================================================================================================
@@ -650,10 +661,19 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
                                     TextView fileNameTxt1 = new TextView(context);
                                     TextView textMandatory = new TextView(context);
-                                    textMandatory.setTextColor(Color.RED);
-                                    String text2 = "<font color=#FFFFFFFF>Capture image</font> <font color='red'>*</font>";
-                                    fileNameTxt1.setText( Html.fromHtml(text2));
-                                    fileNameTxt1.setTextColor(Color.BLACK);
+                                 //   textMandatory.setTextColor(Color.RED);
+                                //    String text2 = "<font color=#FFFFFFFF>Capture image</font> <font color='red'>*</font>";
+                                //    fileNameTxt1.setText( Html.fromHtml(text2));
+                                 //   fileNameTxt1.setTextColor(Color.BLACK);
+
+                                    if (mandate == 1) {
+                                        textMandatory.setTextColor(Color.RED);
+                                        String textFCM = "<font color=#FFFFFFFF>Select File/Camera</font> <font color='red'>*</font>";
+                                        fileNameTxt1.setText( Html.fromHtml(textFCM));
+                                        fileNameTxt1.setTextColor(Color.BLACK);
+                                    } else {
+                                        fileNameTxt1.setText("Capture image");
+                                    }
                                     fileNameTxt1.setLayoutParams(imageUploadParams);
 
                                     //================================================================================================
@@ -789,10 +809,18 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
                                     TextView fileNameTxt1 = new TextView(context);
                                     TextView textMandatory = new TextView(context);
-                                    textMandatory.setTextColor(Color.RED);
-                                    String text2 = "<font color=#FFFFFFFF>Select File</font> <font color='red'>*</font>";
-                                    fileNameTxt1.setText( Html.fromHtml(text2));
-                                    fileNameTxt1.setTextColor(Color.BLACK);
+                              //      textMandatory.setTextColor(Color.RED);
+                              //      String text2 = "<font color=#FFFFFFFF>Select File</font> <font color='red'>*</font>";
+                               //     fileNameTxt1.setText( Html.fromHtml(text2));
+                               //     fileNameTxt1.setTextColor(Color.BLACK);
+                                    if (mandate == 1) {
+                                        textMandatory.setTextColor(Color.RED);
+                                        String textFSM = "<font color=#FFFFFFFF>Select File/Camera</font> <font color='red'>*</font>";
+                                        fileNameTxt1.setText( Html.fromHtml(textFSM));
+                                        fileNameTxt1.setTextColor(Color.BLACK);
+                                    } else {
+                                        fileNameTxt1.setText("Select File");
+                                    }
                                     fileNameTxt1.setLayoutParams(imageUploadParams);
 
                                     //================================================================================================
@@ -2114,7 +2142,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                             if (mCheckNullValues == null){
                                 store_list.get(i).setData(Constant.SF_CODE+file.getName());
                             }else{
-                                store_list.get(i).setData(previousFileName + ", " + Constant.SF_CODE+file.getName());
+                                store_list.get(i).setData(previousFileName + "," + Constant.SF_CODE+file.getName());
                             }
                         }
                     }
@@ -2182,15 +2210,26 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                 }
                             }
 
+                            File file;
+                            if (picturePathFinal1.contains(".png") || picturePathFinal1.contains(".jpg") || picturePathFinal1.contains(".jpeg")) {
+                                try {
+                                    file = new Compressor(context).compressToFile(new File(picturePathFinal1));
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            } else {
+                                file = new File(picturePathFinal1);
+                            }
+
                             for (int i=0;i<store_list.size();i++){
 
                                 if (store_list.get(i).getColumn().contains(FILE_CHOOSER_ENABLED_COLUMN_NAME)){
                                     String mCheckNullValues = store_list.get(i).getData();
                                     String previousFileName = store_list.get(i).getData();
                                     if (mCheckNullValues == null){
-                                        store_list.get(i).setData(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
+                                        store_list.get(i).setData(file.getName());
                                     }else{
-                                        store_list.get(i).setData(previousFileName + ", " + Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
+                                        store_list.get(i).setData(previousFileName + ", " + file.getName());
                                     }
                                 }
                             }

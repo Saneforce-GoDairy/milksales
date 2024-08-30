@@ -253,6 +253,7 @@ public class ReportDetailsActivity extends AppCompatActivity {
                         customReportList = response.body().string();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
+
                     }
                     Log.e("res_", customReportList);
 

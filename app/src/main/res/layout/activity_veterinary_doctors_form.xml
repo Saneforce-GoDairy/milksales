@@ -235,6 +235,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/csr_camera_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -280,48 +281,6 @@
                             android:contentDescription="@string/todo" />
 
                     </androidx.cardview.widget.CardView>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/ubuntu_medium"
-                        android:text="@string/_4_types_of_product"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txt_type_of_pro_not_valid"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:fontFamily="More Fonts..."
-                        android:text="@string/not_valid"
-                        android:textColor="#ff0130"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:visibility="visible"
-                        tools:ignore="SmallSp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/edit_text_common"
-                    android:layout_marginTop="2dp">
-
-                    <com.saneforce.godairy.common.CustomSpinner
-                        android:id="@+id/spinner_type_of_product"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
                 </RelativeLayout>
 

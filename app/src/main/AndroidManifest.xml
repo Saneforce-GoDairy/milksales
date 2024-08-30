@@ -61,6 +61,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".procurement.NewCollectionCenter"
+            android:exported="false" />
+        <activity
             android:name=".procurement.reports.MilkCollViewActivity"
             android:exported="false" />
         <activity

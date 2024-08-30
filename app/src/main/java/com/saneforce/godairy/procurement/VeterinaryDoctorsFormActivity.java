@@ -141,11 +141,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTypeOfService.setAdapter(adapter3);
 
-        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,
-                R.array.veterinary_type_of_product_array, R.layout.custom_spinner);
-        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTypeOfProduct.setAdapter(adapter4);
-
         ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(this,
                 R.array.veterinary_evm_array, R.layout.custom_spinner);
         adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -154,7 +149,7 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter6 = ArrayAdapter.createFromResource(this,
                 R.array.veterinary_type_of_case_array, R.layout.custom_spinner);
         adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTypeOfCases.setAdapter(adapter5);
+        binding.spinnerTypeOfCases.setAdapter(adapter6);
     }
 
     private void loadPlant() {
@@ -239,18 +234,12 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
                 mPlant = binding.spinnerTypeOfService.getSelectedItem().toString();
                 binding.txtTypeOfServiceNotValid.setVisibility(View.GONE);
                 binding.txtErrorFound.setVisibility(View.GONE);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        binding.spinnerTypeOfProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerTypeOfProduct.getSelectedItem().toString();
-                binding.txtTypeOfProNotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
+                if (i == 1){
+                    binding.csrCameraLayout.setVisibility(View.VISIBLE);
+                }else {
+                    binding.csrCameraLayout.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -469,7 +458,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         mCenterName = binding.edCenterNameVisit.getText().toString().trim();
         mFarmerName = binding.edFarmerCode.getText().toString().trim();
         mTypeOfService = binding.spinnerTypeOfService.getSelectedItem().toString();
-        mTypeOfProduct = binding.spinnerTypeOfProduct.getSelectedItem().toString();
         mSeedSales = binding.edSeedSale.getText().toString().trim();
         mMinaralMixture = binding.edMineralMixture.getText().toString().trim();
         mFodderSales = binding.edFodderSettsSale.getText().toString().trim();

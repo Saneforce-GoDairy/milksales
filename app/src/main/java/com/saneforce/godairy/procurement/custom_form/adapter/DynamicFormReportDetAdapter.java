@@ -2,6 +2,7 @@ package com.saneforce.godairy.procurement.custom_form.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.saneforce.godairy.procurement.custom_form.model.CustomReportModel;
 import java.util.ArrayList;
 
 public class DynamicFormReportDetAdapter  extends RecyclerView.Adapter<DynamicFormReportDetAdapter.MyviewHolder>{
+    private static final String TAG = "DynamicFormReportDetAdapter";
     ArrayList<CustomReportModel> modelArrayList;
     Context context;
     String moduleId="";
@@ -55,7 +57,7 @@ public class DynamicFormReportDetAdapter  extends RecyclerView.Adapter<DynamicFo
         holder.ll_parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Log.e(TAG, moduleId);
                 Intent intent = new Intent(context, ReportPreviewActivity.class);
                 intent.putExtra("moduleId",moduleId);
                 intent.putExtra("entryId",model.getEntryId());

@@ -6,6 +6,7 @@ public class AppConstants {
  public static final String INTENT_PROCUREMENT_MODE = "proc";
  public static final String INTENT_MODE_SFA = "sfa";
  public static final String INTENT_PROCUREMENT_USER_DOC_MODE = "proc_doc";
+ public static final String PROCUREMENT_GET_PLANT2 = "proc_get_plant2";
  public static final String PROCUREMENT_GET_PLANT = "proc_get_plant";
  public static final String PROCUREMENT_GET_CENTER = "proc_get_center";
  public static final String PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION = "save/proc_coll_center";
@@ -47,6 +48,7 @@ public class AppConstants {
  public static final String PROCUREMENT_UPDATE_FARMER = "update_farmer";
  public static final String MAS_GET_CUSTOMERS = "get_mlk_customers";
  public static final String GET_MILK_COLL = "get_milk_coll";
+ public static final String PROC_COLL_CENTER_CR2 = "save_coll_center2";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}

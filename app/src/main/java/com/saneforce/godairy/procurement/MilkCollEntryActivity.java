@@ -54,7 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MilkCollEntryActivity extends AppCompatActivity implements SelectionAdapter.OnClickInterface{
+public class  MilkCollEntryActivity extends AppCompatActivity implements SelectionAdapter.OnClickInterface{
     private ActivityMilkCollEntryBinding binding;
     private final Context context = this;
     private final String TAG = "MilkCollEntryActivity_";
