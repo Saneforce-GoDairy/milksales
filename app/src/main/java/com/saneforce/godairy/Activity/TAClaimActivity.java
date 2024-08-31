@@ -1495,6 +1495,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     private void ContinueStayChecked(boolean isChecked) {
         if (isChecked) {
             //linCheckOut.setVisibility(View.INVISIBLE);
+            viewBilling.setVisibility(View.GONE);
             vwldgBillAmt.setVisibility(View.GONE);
             ldgGstLayout.setVisibility(View.GONE);
             COutDate = DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd");
@@ -1509,6 +1510,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             countLoding = 0;
             SumOFLodging(0);
             if (!isFullPay) {
+                viewBilling.setVisibility(View.VISIBLE);
                 vwldgBillAmt.setVisibility(View.VISIBLE);
                 ldgGstLayout.setVisibility(View.VISIBLE);
             }
@@ -1893,8 +1895,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
 
                 if (str.equalsIgnoreCase("Lod_Check_In")) {
                     ldg_cin.setText(hour + ":" + min);
-                    if (ldg_cout.getText().toString().equalsIgnoreCase(""))
-                        ldg_cout.setText(hour + ":" + min);
+                    if (ldg_cout.getText().toString().equalsIgnoreCase("")) {}
+                        //ldg_cout.setText(hour + ":" + min);
                 } else if (str.equalsIgnoreCase("Lod_Check_Out")) {
                     ldg_cout.setText(hour + ":" + min);
                 } else if (str.equalsIgnoreCase("Ear_Check_In")) {
@@ -1933,6 +1935,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         nofNght = DT.Daybetween(DateTime + " 00:00:00", year + "-" + ((monthOfYear < 9) ? "0" : "") + (monthOfYear + 1) + "-" + ((dayOfMonth < 10) ? "0" : "") + dayOfMonth + " 00:00:00");
                         //if(nofNght==0) nofNght=1;
                         NoofNight.setText(" - " + nofNght + " Nights - ");
+                        mChckCont.setChecked(nofNght > 1);
                         linContinueStay.setVisibility(View.VISIBLE);
                         // if (DT.Daybetween(DateTime + " 00:00:00", ldg_coutDt.getText().toString() + " 00:00:00") < 1)
                         //    linContinueStay.setVisibility(View.GONE);
@@ -2116,6 +2119,22 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         View pv = (View) v.getParent().getParent();
         edt_ldg_JnEmp = pv.findViewById(R.id.edt_ldg_JnEmp);
         String sEmpID = String.valueOf(edt_ldg_JnEmp.getText());
+        int count = 0;
+
+        for (int jd = 0; jd < jointLodging.getChildCount(); jd++) {
+            View jdV = jointLodging.getChildAt(jd);
+            EditText edt_ldg_JnEmps = (EditText) jdV.findViewById(R.id.edt_ldg_JnEmp);
+            String sEmpIDs = String.valueOf(edt_ldg_JnEmps.getText());
+            if (sEmpIDs.equals(sEmpID)) {
+                count++;
+            }
+        }
+
+        if (count > 1) {
+            Toast.makeText(context, "Duplicate Employee Details Found!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         DateTime = DateTime.replaceAll("^[\"']+|[\"']+$", "");
         if (sLocId.equalsIgnoreCase("")) {
             Toast.makeText(getApplicationContext(), "Select the Stay Location !", Toast.LENGTH_LONG).show();
@@ -3253,7 +3272,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         ldg_cout.setText(StayDate.get(0).getAsJsonObject().get("COutTm").getAsString());
                         ldg_coutDt.setText(StayDate.get(0).getAsJsonObject().get("uCOutDate").getAsString());
 
-                        nofNght = DT.Daybetween(CInDate + " 00:00:00", COutDate + " 00:00:00");
+                        nofNght = DT.Daybetween(CInDate + " " + StayDate.get(0).getAsJsonObject().get("CInTime").getAsString(), COutDate + " " + StayDate.get(0).getAsJsonObject().get("COutTm").getAsString());
                         //if(nofNght==0) nofNght=1;
                         NoofNight.setText(" - " + nofNght + " Nights - ");
 
@@ -3422,10 +3441,11 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 edt_ldg_bill.setVisibility(View.GONE);
                 lblHdBill.setVisibility(View.GONE);
                 linImgPrv.setVisibility(View.GONE);
-                viewBilling.setVisibility(View.GONE);
                 lblHdBln.setVisibility(View.GONE);
                 ldgWOBBal.setVisibility(View.GONE);
                 drvldgEAra.setVisibility(View.GONE);
+                viewBilling.setVisibility(View.GONE);
+                vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
             }
 
@@ -3435,6 +3455,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             }
 
             if (mChckCont.isChecked()) {
+                viewBilling.setVisibility(View.GONE);
                 vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
                 cnSty = 1;
@@ -3447,8 +3468,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                     lblHdBill.setVisibility(View.VISIBLE);
                     linImgPrv.setVisibility(View.VISIBLE);
                     viewBilling.setVisibility(View.VISIBLE);
-                    ldgGstLayout.setVisibility(View.VISIBLE);
                     vwldgBillAmt.setVisibility(View.VISIBLE);
+                    ldgGstLayout.setVisibility(View.VISIBLE);
                 }
                 linCheckOut.setVisibility(View.VISIBLE);
             }
@@ -3523,6 +3544,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             lblHdBill.setVisibility(View.VISIBLE);
             linImgPrv.setVisibility(View.VISIBLE);
             viewBilling.setVisibility(View.VISIBLE);
+            vwldgBillAmt.setVisibility(View.VISIBLE);
             ldgGstLayout.setVisibility(View.VISIBLE);
 
             try {
@@ -3541,10 +3563,11 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 edt_ldg_bill.setVisibility(View.GONE);
                 lblHdBill.setVisibility(View.GONE);
                 linImgPrv.setVisibility(View.GONE);
-                viewBilling.setVisibility(View.GONE);
                 lblHdBln.setVisibility(View.GONE);
                 ldgWOBBal.setVisibility(View.GONE);
                 drvldgEAra.setVisibility(View.GONE);
+                viewBilling.setVisibility(View.GONE);
+                vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
             }
 
@@ -3554,6 +3577,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             }
 
             if (mChckCont.isChecked()) {
+                viewBilling.setVisibility(View.GONE);
                 vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
                 cnSty = 1;
@@ -3566,8 +3590,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                     lblHdBill.setVisibility(View.VISIBLE);
                     linImgPrv.setVisibility(View.VISIBLE);
                     viewBilling.setVisibility(View.VISIBLE);
-                    ldgGstLayout.setVisibility(View.VISIBLE);
                     vwldgBillAmt.setVisibility(View.VISIBLE);
+                    ldgGstLayout.setVisibility(View.VISIBLE);
                 }
                 linCheckOut.setVisibility(View.VISIBLE);
             }
@@ -5271,10 +5295,11 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             lodgJoin.setVisibility(View.GONE);
             JNLdgEAra.setVisibility(View.GONE);
             edt_ldg_bill.setVisibility(View.GONE);
-            ldgGstLayout.setVisibility(View.GONE);
             lblHdBill.setVisibility(View.GONE);
             linImgPrv.setVisibility(View.GONE);
             viewBilling.setVisibility(View.GONE);
+            vwldgBillAmt.setVisibility(View.GONE);
+            ldgGstLayout.setVisibility(View.GONE);
             lblHdBln.setVisibility(View.GONE);
             ldgWOBBal.setVisibility(View.GONE);
             linContinueStay.setVisibility(View.VISIBLE);
@@ -5311,11 +5336,12 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             } else {
                 lblHdBill.setVisibility(View.VISIBLE);
                 edt_ldg_bill.setVisibility(View.VISIBLE);
-                ldgGstLayout.setVisibility(View.VISIBLE);
                 lblHdBln.setVisibility(View.VISIBLE);
                 ldgWOBBal.setVisibility(View.VISIBLE);
                 linImgPrv.setVisibility(View.VISIBLE);
                 viewBilling.setVisibility(View.VISIBLE);
+                vwldgBillAmt.setVisibility(View.VISIBLE);
+                ldgGstLayout.setVisibility(View.VISIBLE);
 
                 ttLod = 1;
                 /*tTotAmt = 0;*/

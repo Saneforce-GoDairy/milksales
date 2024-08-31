@@ -74,6 +74,7 @@ import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.CtrlsListModel;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AlertBox;
+import com.saneforce.godairy.Interface.AlertDialogClickListener;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.DistanceMeterWatcher;
@@ -83,6 +84,7 @@ import com.saneforce.godairy.Interface.OnAttachmentDelete;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.HAPApp;
 import com.saneforce.godairy.adapters.FuelListAdapter;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
 
@@ -124,6 +126,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
     Common_Model mCommon_model_spinner;
     Common_Model Model_Pojo;
     Common_Class mCommon_class;
+    AssistantClass assistantClass;
     GoogleMap mGoogleMap;
     ApiInterface apiInterface;
     DatabaseHandler db;
@@ -258,6 +261,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
         }
         mShared_common_pref = new Shared_Common_Pref(this);
         getToolbar();
+
+        assistantClass = new AssistantClass(TAViewStatus.this);
 
         DateTime = String.valueOf(getIntent().getSerializableExtra("TA_Date"));
         SlStart = String.valueOf(getIntent().getSerializableExtra("Sl_No"));
@@ -485,9 +490,9 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     //linCheckOut.setVisibility(View.INVISIBLE);
+                    viewBilling.setVisibility(View.GONE);
                     vwldgBillAmt.setVisibility(View.GONE);
                     ldgGstLayout.setVisibility(View.GONE);
-                    gstBillLayout.setVisibility(View.GONE);
                     ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd"));
                     cnSty = 1;
                     // ldg_cout.setText("");
@@ -502,9 +507,9 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     SumOFLodging(0);
                     countLoding = 0;
                     cnSty = 0;
+                    viewBilling.setVisibility(View.VISIBLE);
                     vwldgBillAmt.setVisibility(View.VISIBLE);
                     ldgGstLayout.setVisibility(View.VISIBLE);
-                    gstBillLayout.setVisibility(View.VISIBLE);
                     linCheckOut.setVisibility(View.VISIBLE);
                 }
 
@@ -2719,10 +2724,11 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                 edt_ldg_bill.setVisibility(View.GONE);
                 lblHdBill.setVisibility(View.GONE);
                 linImgPrv.setVisibility(View.GONE);
-                viewBilling.setVisibility(View.GONE);
                 lblHdBln.setVisibility(View.GONE);
                 ldgWOBBal.setVisibility(View.GONE);
                 drvldgEAra.setVisibility(View.GONE);
+                viewBilling.setVisibility(View.GONE);
+                vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
                 gstBillLayout.setVisibility(View.GONE);
             }
@@ -2733,9 +2739,9 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             }
 
             if (mChckCont.isChecked()) {
+                viewBilling.setVisibility(View.GONE);
                 vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
-                gstBillLayout.setVisibility(View.GONE);
                 cnSty = 1;
                 countLoding = 1;
             } else {
@@ -2746,9 +2752,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     lblHdBill.setVisibility(View.VISIBLE);
                     linImgPrv.setVisibility(View.VISIBLE);
                     viewBilling.setVisibility(View.VISIBLE);
-                    ldgGstLayout.setVisibility(View.VISIBLE);
-                    gstBillLayout.setVisibility(View.VISIBLE);
                     vwldgBillAmt.setVisibility(View.VISIBLE);
+                    ldgGstLayout.setVisibility(View.VISIBLE);
                 }
                 linCheckOut.setVisibility(View.VISIBLE);
             }
@@ -2809,8 +2814,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             lblHdBill.setVisibility(View.VISIBLE);
             linImgPrv.setVisibility(View.VISIBLE);
             viewBilling.setVisibility(View.VISIBLE);
+            vwldgBillAmt.setVisibility(View.VISIBLE);
             ldgGstLayout.setVisibility(View.VISIBLE);
-            gstBillLayout.setVisibility(View.VISIBLE);
 
             try {
                 lodgingStayTypeId = ldraft.get("lodgingStayTypeId").getAsString();
@@ -2828,12 +2833,12 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                 edt_ldg_bill.setVisibility(View.GONE);
                 lblHdBill.setVisibility(View.GONE);
                 linImgPrv.setVisibility(View.GONE);
-                viewBilling.setVisibility(View.GONE);
                 lblHdBln.setVisibility(View.GONE);
                 ldgWOBBal.setVisibility(View.GONE);
                 drvldgEAra.setVisibility(View.GONE);
+                viewBilling.setVisibility(View.GONE);
+                vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
-                gstBillLayout.setVisibility(View.GONE);
             }
 
             if (isJointWork) {
@@ -2842,9 +2847,9 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             }
 
             if (mChckCont.isChecked()) {
+                viewBilling.setVisibility(View.GONE);
                 vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
-                gstBillLayout.setVisibility(View.GONE);
                 cnSty = 1;
                 countLoding = 1;
             } else {
@@ -2855,8 +2860,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     lblHdBill.setVisibility(View.VISIBLE);
                     linImgPrv.setVisibility(View.VISIBLE);
                     viewBilling.setVisibility(View.VISIBLE);
-                    ldgGstLayout.setVisibility(View.VISIBLE);
                     vwldgBillAmt.setVisibility(View.VISIBLE);
+                    ldgGstLayout.setVisibility(View.VISIBLE);
                 }
                 linCheckOut.setVisibility(View.VISIBLE);
             }
@@ -4175,11 +4180,11 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             lodgJoin.setVisibility(View.GONE);
             JNLdgEAra.setVisibility(View.GONE);
             edt_ldg_bill.setVisibility(View.GONE);
-            ldgGstLayout.setVisibility(View.GONE);
-            gstBillLayout.setVisibility(View.GONE);
             lblHdBill.setVisibility(View.GONE);
             linImgPrv.setVisibility(View.GONE);
             viewBilling.setVisibility(View.GONE);
+            vwldgBillAmt.setVisibility(View.GONE);
+            ldgGstLayout.setVisibility(View.GONE);
             lblHdBln.setVisibility(View.GONE);
             ldgWOBBal.setVisibility(View.GONE);
 
@@ -4201,6 +4206,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                 img_lodg_prvw.setVisibility(View.VISIBLE);
                 linImgPrv.setVisibility(View.VISIBLE);
                 viewBilling.setVisibility(View.VISIBLE);
+                vwldgBillAmt.setVisibility(View.VISIBLE);
+                ldgGstLayout.setVisibility(View.VISIBLE);
                 /*tTotAmt = 0;*/
                 ttLod = 1;
                 txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
@@ -4215,13 +4222,12 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             if (ValCd != "RS") {
                 ldg_stayDt.setVisibility(View.VISIBLE);
                 lblHdBill.setVisibility(View.VISIBLE);
-                edt_ldg_bill.setVisibility(View.VISIBLE);
-                ldgGstLayout.setVisibility(View.VISIBLE);
-                gstBillLayout.setVisibility(View.VISIBLE);
                 lblHdBln.setVisibility(View.VISIBLE);
                 ldgWOBBal.setVisibility(View.VISIBLE);
                 linImgPrv.setVisibility(View.VISIBLE);
                 viewBilling.setVisibility(View.VISIBLE);
+                vwldgBillAmt.setVisibility(View.VISIBLE);
+                ldgGstLayout.setVisibility(View.VISIBLE);
 
                 ttLod = 1;
                 /*tTotAmt = 0;*/
@@ -4972,8 +4978,26 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
         linReject.setVisibility(View.VISIBLE);
     }
 
+    private void SendtpApproval(int i) {
+        String status = "Approve";
+        if (i == 2) {
+            status = "Reject";
+        }
+        assistantClass.showAlertDialog("Confirmation", "Are you sure you want to " + status + "?", true, "Yes", "No", new AlertDialogClickListener() {
+            @Override
+            public void onPositiveButtonClick(DialogInterface dialog) {
+                SendtpApprovals(i);
+            }
 
-    private void SendtpApproval(int flag) {
+            @Override
+            public void onNegativeButtonClick(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
+    private void SendtpApprovals(int flag) {
         JSONObject taReq = new JSONObject();
         try {
             taReq.put("login_sfCode", SF_code);

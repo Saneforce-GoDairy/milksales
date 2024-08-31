@@ -18,6 +18,8 @@
                 android:layout_height="500dp"
                 android:layout_margin="@dimen/C20dp"
                 android:background="#FFF"
+                android:columnCount="3"
+                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal"/>
 
         <ImageView
