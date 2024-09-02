@@ -2742,6 +2742,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                 viewBilling.setVisibility(View.GONE);
                 vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
+                gstBillLayout.setVisibility(View.GONE);
                 cnSty = 1;
                 countLoding = 1;
             } else {
@@ -2839,6 +2840,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                 viewBilling.setVisibility(View.GONE);
                 vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
+                gstBillLayout.setVisibility(View.GONE);
             }
 
             if (isJointWork) {
@@ -2850,6 +2852,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                 viewBilling.setVisibility(View.GONE);
                 vwldgBillAmt.setVisibility(View.GONE);
                 ldgGstLayout.setVisibility(View.GONE);
+                gstBillLayout.setVisibility(View.GONE);
                 cnSty = 1;
                 countLoding = 1;
             } else {

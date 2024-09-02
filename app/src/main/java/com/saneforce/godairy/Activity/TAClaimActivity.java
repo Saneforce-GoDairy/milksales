@@ -99,6 +99,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -151,7 +152,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
     Uri outputFileUri;
     FuelListAdapter fuelListAdapter;
     String allowType = "", lodgingStayTypeId = "", billAmts = "";
-    boolean isJointWork = false, isFullPay = false, isSavedBill = false;
+    boolean isJointWork = false, isFullPay = false, isSavedBill = false, isMultipleDays = false;
     LinearLayout Dynamicallowance, OtherExpense, localTotal, otherExpenseLayout, linAll, linRemarks,
             linFareAmount, ldg_typ_sp, linLocalSpinner, linOtherSpinner, ldg_StylocSpinner,ldg_DrvStylocSpinner, DA_TypSpinner, DA_locSpinner, lodgCont, lodgContvw, ldg_stayloc, ldg_stayDt,
             lodgJoin, ldgEAra, ldgMyEAra, JNLdgEAra, drvldgEAra, jointLodging, vwBoarding, vwDrvBoarding, linAddplaces,
@@ -505,6 +506,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         if (ldgLocations.size() < 2) {
             getHapLocations();
         }
+
+        mChckCont.setEnabled(false);
         mChckCont.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -1498,14 +1501,14 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             viewBilling.setVisibility(View.GONE);
             vwldgBillAmt.setVisibility(View.GONE);
             ldgGstLayout.setVisibility(View.GONE);
-            COutDate = DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd");
-            ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd"));
+//            COutDate = DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd");
+//            ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd"));
             cnSty = 1;
             countLoding = 1;
             SumOFLodging(1);
         } else {
-            COutDate = DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd");
-            ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd"));
+//            COutDate = DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd");
+//            ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd"));
             cnSty = 0;
             countLoding = 0;
             SumOFLodging(0);
@@ -2378,7 +2381,12 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             sldgAmt = "0";
         }
 
-        Double totalBill = Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
+        Double totalBill = 0.0;
+        if (!mChckCont.isChecked() && isMultipleDays) {
+            totalBill = continueStay + Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
+        } else {
+            totalBill = Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
+        }
 
         if (isSavedBill) {
             isSavedBill = false;
@@ -2401,9 +2409,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
         txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
         double tBalAmt = totalBill - tTotAmt;
 
-        if (!mChckCont.isChecked()) {
-            tTotAmt = continueStay + tTotAmt;
-        }
         lbl_ldg_eligi.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
 
         if ((nofNght < 1 && OnlyNight == 1) || transferflg == 1) {
@@ -2543,6 +2548,8 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
 
                     Log.v("JSON_TRAVEL_DETAILS", jsonObjects.toString());
                     ExpSetup = jsonObjects.getAsJsonArray("Settings");
+
+                    isMultipleDays = false;
 
                     jsonFuelAllowance = jsonObjects.getAsJsonArray("FuelAllowance");
                     jsonArray = jsonObjects.getAsJsonArray("TodayStart_Details");
@@ -3272,9 +3279,10 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         ldg_cout.setText(StayDate.get(0).getAsJsonObject().get("COutTm").getAsString());
                         ldg_coutDt.setText(StayDate.get(0).getAsJsonObject().get("uCOutDate").getAsString());
 
-                        nofNght = DT.Daybetween(CInDate + " " + StayDate.get(0).getAsJsonObject().get("CInTime").getAsString(), COutDate + " " + StayDate.get(0).getAsJsonObject().get("COutTm").getAsString());
+                        nofNght = DT.Daybetween(CInDate + " 00:00:00", COutDate + " 00:00:00");
                         //if(nofNght==0) nofNght=1;
                         NoofNight.setText(" - " + nofNght + " Nights - ");
+                        mChckCont.setChecked(DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00") > 1);
 
                         sLocId = StayDate.get(0).getAsJsonObject().get("LocId").getAsString();
                         sLocName = StayDate.get(0).getAsJsonObject().get("StayLoc").getAsString();
@@ -3317,6 +3325,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         TextCheckInDate.setOnClickListener(null);
                         countLoding = 1;
                         for (int i = 0; i < LodingCon.size(); i++) {
+                            isMultipleDays = true;
                             eachData = (JsonObject) LodingCon.get(i);
                             lodgContvw.setVisibility(View.VISIBLE);
                             linContinueStay.setVisibility(View.VISIBLE);
@@ -5109,6 +5118,17 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                     Log.v("TA_Response", response.body().toString());
+                    try {
+                        String raw = response.body().string();
+                        JSONObject object = new JSONObject(raw);
+                        if (object.has("success")) {
+                            if (!object.optBoolean("success")) {
+                                Toast.makeText(context, object.optString("Msg"), Toast.LENGTH_SHORT).show();
+                                ResetSubmitBtn(2, btnAnim);
+                                return;
+                            }
+                        }
+                    } catch (JSONException e) { } catch (IOException e) { }
                     //startActivity(new Intent(getApplicationContext(), Dashboard.class));
                     // openHome();
                     if (responseVal.equals("Save")) {

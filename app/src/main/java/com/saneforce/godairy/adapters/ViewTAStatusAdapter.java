@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -89,6 +90,16 @@ public class ViewTAStatusAdapter extends RecyclerView.Adapter<ViewTAStatusAdapte
         if (jsonObject.get("ApSTatus").getAsString().equalsIgnoreCase("Approval Pending"))
             holder.btnCancel.setVisibility(View.VISIBLE);
 
+        if (jsonObject.get("ApSTatus").getAsString().equalsIgnoreCase("Rejected")) {
+            holder.rejectReasonLayout.setVisibility(View.VISIBLE);
+            try {
+                holder.rejectReason.setText(jsonObject.get("reject_reason").getAsString());
+            } catch (Exception e) { }
+        } else {
+            holder.rejectReasonLayout.setVisibility(View.GONE);
+            holder.rejectReason.setText("");
+        }
+
         holder.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,8 +128,8 @@ public class ViewTAStatusAdapter extends RecyclerView.Adapter<ViewTAStatusAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        TextView taDate, taStatus, taTotalAmt, taDaAmt, taTLAmt, taFaAmt, taLaAmt, taLcAmt, taOeAmt;
+        LinearLayout rejectReasonLayout;
+        TextView rejectReason, taDate, taStatus, taTotalAmt, taDaAmt, taTLAmt, taFaAmt, taLaAmt, taLcAmt, taOeAmt;
         CardView mCardView;
         Button btnCancel;
 
@@ -135,6 +146,8 @@ public class ViewTAStatusAdapter extends RecyclerView.Adapter<ViewTAStatusAdapte
             taOeAmt = (TextView) itemView.findViewById(R.id.txt_oe);
             mCardView = itemView.findViewById(R.id.ta_row_item);
             btnCancel = itemView.findViewById(R.id.btn_cancel);
+            rejectReasonLayout = itemView.findViewById(R.id.rejectReasonLayout);
+            rejectReason = itemView.findViewById(R.id.rejectReason);
         }
     }
 
