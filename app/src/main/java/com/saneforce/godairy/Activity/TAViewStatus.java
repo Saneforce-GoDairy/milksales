@@ -493,7 +493,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     viewBilling.setVisibility(View.GONE);
                     vwldgBillAmt.setVisibility(View.GONE);
                     ldgGstLayout.setVisibility(View.GONE);
-                    ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd"));
+//                    ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 2, "yyyy-MM-dd"));
                     cnSty = 1;
                     // ldg_cout.setText("");
                     // ldg_coutDt.setText("");
@@ -502,8 +502,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
 
                 } else {
 
-                    COutDate = DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd");
-                    ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd"));
+//                    COutDate = DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd");
+//                    ldg_coutDt.setText(DT.AddDays(DateTime + " 00:00:00", 1, "yyyy-MM-dd"));
                     SumOFLodging(0);
                     countLoding = 0;
                     cnSty = 0;
