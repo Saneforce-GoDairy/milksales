@@ -1520,7 +1520,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             linCheckOut.setVisibility(View.VISIBLE);
         }
         nofNght = DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00");
-        NoofNight.setText(" - " + nofNght + " Nights - ");
+        NoofNight.setText(" - " + nofNght + " Nights - "); // Todo: NoofNight.setText()
         linContinueStay.setVisibility(View.VISIBLE);
         getStayAllow();
     }

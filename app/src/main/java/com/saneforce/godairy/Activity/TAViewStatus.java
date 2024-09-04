@@ -133,7 +133,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
     Uri outputFileUri;
     FuelListAdapter fuelListAdapter;
     String allowType = "", lodgingStayTypeId = "", billAmts = "";
-    boolean isJointWork = false, isFullPay = false, isSavedBill = false;
+    boolean isJointWork = false, isFullPay = false, isSavedBill = false, isMultipleDays = false;
 
     LinearLayout Dynamicallowance, OtherExpense, localTotal, otherExpenseLayout, linAll, linRemarks,
             linFareAmount, ldg_typ_sp, linLocalSpinner, linOtherSpinner, ldg_StylocSpinner, DA_TypSpinner, DA_locSpinner, lodgCont, lodgContvw, ldg_stayloc, ldg_stayDt,
@@ -1815,7 +1815,12 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
             sldgAmt = "0";
         }
 
-        Double totalBill = Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
+        Double totalBill = 0.0;
+        if (!mChckCont.isChecked() && isMultipleDays) {
+            totalBill = continueStay + Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
+        } else {
+            totalBill = Double.parseDouble(sMyAmt) + Double.parseDouble(sJnAmt) + Double.parseDouble(sldgAmt);
+        }
 
         if (isSavedBill) {
             isSavedBill = false;
@@ -1838,9 +1843,6 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
         txldgTdyAmt.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
         double tBalAmt = totalBill - tTotAmt;
 
-        if (!mChckCont.isChecked()) {
-            tTotAmt = continueStay + tTotAmt;
-        }
         lbl_ldg_eligi.setText("₹" + new DecimalFormat("##0.00").format(tTotAmt));
 
         if ((nofNght < 1 && OnlyNight == 1) || transferflg == 1) {
@@ -1940,6 +1942,8 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
 
                     Log.v("JSON_TRAVEL_DETAILS", jsonObjects.toString());
                     ExpSetup = jsonObjects.getAsJsonArray("Settings");
+
+                    isMultipleDays = false;
 
                     // Todo: Json Response
                     jsonFuelAllowance = jsonObjects.getAsJsonArray("FuelAllowance");
@@ -2616,6 +2620,7 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                         ldg_cin.setOnClickListener(null);
                         countLoding = 1;
                         for (int i = 0; i < LodingCon.size(); i++) {
+                            isMultipleDays = true;
                             eachData = (JsonObject) LodingCon.get(i);
                             lodgContvw.setVisibility(View.VISIBLE);
                             linContinueStay.setVisibility(View.VISIBLE);
