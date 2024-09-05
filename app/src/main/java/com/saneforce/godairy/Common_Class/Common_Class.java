@@ -1592,7 +1592,11 @@ public class Common_Class {
                 String DivERP = jsonObject1.optString("DivERP");
                 String DisGst = jsonObject1.optString("GSTN");
                 String DisFssai = jsonObject1.optString("FSSAI");
-                Model_Pojo = new Common_Model(name, id, flag, Add2, Mob, ERP_Code, DivERP,DisGst,DisFssai, jsonObject1.optString("Latlong"), jsonObject1.getString("CusSubGrpErp"));
+                String Out_stand = jsonObject1.optString("Out_stand");
+                if (Out_stand.isEmpty()) {
+                    Out_stand = "0.00";
+                }
+                Model_Pojo = new Common_Model(name, id, flag, Add2, Mob, ERP_Code, DivERP,DisGst,DisFssai, jsonObject1.optString("Latlong"), jsonObject1.getString("CusSubGrpErp"), "Outstanding: Rs. " + Out_stand);
                 distributor_master.add(Model_Pojo);
 
 

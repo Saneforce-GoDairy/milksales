@@ -74,6 +74,12 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
             holder.tvDistName.setText(itm.getString("name"));
             holder.tvDistAdd.setText(itm.getString("Addr1"));
             holder.tvLatLng.setText("");
+            holder.outStanding.setVisibility(View.VISIBLE);
+            try {
+                holder.outStanding.setText("Outstanding: Rs. " + itm.getDouble("Out_stand"));
+            } catch (Exception e) {
+                holder.outStanding.setText("Outstanding: Rs. 0.00");
+            }
 
             holder.tvDistName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.drawable.eye), null);
             String flag = itm.getString("flag");
@@ -313,7 +319,7 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvDistName, tvbal, tvAvailBal, tvAmtBlk, tvBalUpdTime, tvDistAdd, tvLocUpdTime, tvLatLng, tvMobile, status, remarks;
+        public TextView outStanding, tvDistName, tvbal, tvAvailBal, tvAmtBlk, tvBalUpdTime, tvDistAdd, tvLocUpdTime, tvLatLng, tvMobile, status, remarks;
         RelativeLayout rlRefresh;
         LinearLayout llDirection, llParent, llRefreshLoc, llMobile;
         ProgressBar pb;
@@ -321,6 +327,7 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
         public MyViewHolder(View view) {
             super(view);
             tvDistName = view.findViewById(R.id.tvDistName);
+            outStanding = view.findViewById(R.id.outStanding);
             tvbal = view.findViewById(R.id.tvACBal);
             tvAvailBal = view.findViewById(R.id.tvAvailBal);
             tvAmtBlk = view.findViewById(R.id.tvAmtBlk);

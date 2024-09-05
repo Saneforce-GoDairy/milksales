@@ -87,6 +87,7 @@ import com.saneforce.godairy.SFA_Adapter.RyclGrpListItemAdb;
 import com.saneforce.godairy.SFA_Adapter.RyclShortageListItemAdb;
 import com.saneforce.godairy.SFA_Model_Class.Category_Universe_Modal;
 import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.databinding.ActivityPrimaryOrderLayoutBinding;
@@ -923,6 +924,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         int mType;
         Activity activity;
         private final List<Common_Model> mFilteredList;
+        AssistantClass assistantClass;
         public MyFilter mFilter;
 
         public DistributerAdapter(Context context, List<Common_Model> distList, int i) {
@@ -930,6 +932,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             this.distList = distList;
             this.mType = i;
             this.mFilteredList = new ArrayList< >();
+            assistantClass = new AssistantClass(context);
         }
 
         @Override
@@ -957,6 +960,26 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             String distributerName = contact.getName();
 
+            holder.outStanding.setVisibility(View.VISIBLE);
+            holder.outStanding.setText(contact.getOut_stand());
+            holder.outStanding.setOnClickListener(view -> {
+                Map<String, String> params = new HashMap<>();
+                params.put("axn", "getOutstandingBal");
+                assistantClass.showProgressDialog("Refreshing...", false);
+                assistantClass.makeApiCall(params, "", new APIResult() {
+                    @Override
+                    public void onSuccess(JSONObject jsonObject) {
+                        holder.outStanding.setText("Outstanding: Rs. " + jsonObject.optString("Out_stand"));
+                        assistantClass.dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        assistantClass.dismissProgressDialog();
+                    }
+                });
+            });
+
             holder.firstLetterText.setText(distributerName.substring(0,1).toUpperCase());
             holder.mainLayout.setOnClickListener(v -> {
 
@@ -976,12 +999,13 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             return distList.size();
         }
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView text, firstLetterText, phoneText;
+            TextView text, firstLetterText, phoneText, outStanding;
             LinearLayout mainLayout;
 
             public ViewHolder(View view) {
                 super(view);
                 text = view.findViewById(R.id.txt_name);
+                outStanding = view.findViewById(R.id.outStanding);
                 firstLetterText = view.findViewById(R.id.first_letter);
                 phoneText = view.findViewById(R.id.txt_phone);
                 mainLayout = view.findViewById(R.id.layout);

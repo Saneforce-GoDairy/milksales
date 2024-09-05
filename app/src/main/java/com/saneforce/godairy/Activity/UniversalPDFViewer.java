@@ -16,11 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.saneforce.godairy.Common_Class.Common_Class;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.PdfDocumentAdapter;
 import com.saneforce.godairy.assistantClass.AssistantClass;
+import com.saneforce.godairy.assistantClass.Base64ToFileConverter;
 import com.saneforce.godairy.databinding.ActivityMyPdfViewerBinding;
+
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -30,6 +34,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 
 public class UniversalPDFViewer extends AppCompatActivity {
@@ -41,6 +47,7 @@ public class UniversalPDFViewer extends AppCompatActivity {
     Common_Class common_class;
     AssistantClass assistantClass;
 
+    Map<String, String> params;
     File file;
 
     @Override
@@ -49,6 +56,7 @@ public class UniversalPDFViewer extends AppCompatActivity {
         binding = ActivityMyPdfViewerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        params = new HashMap<>();
         common_class = new Common_Class(context);
         assistantClass = new AssistantClass(context);
 
@@ -67,13 +75,35 @@ public class UniversalPDFViewer extends AppCompatActivity {
 
         if (getIntent().hasExtra("mode")) {
             mode = getIntent().getStringExtra("mode");
-        } else {
-            assistantClass.showAlertDialogWithFinish("Invalid intent...");
         }
 
         if (mode.equalsIgnoreCase("url")) {
             downloadPdfFromURL(getIntent().getStringExtra("url"));
+        } else if (mode.equalsIgnoreCase("base64")) {
+            params.put("axn", "getSOA");
+            getBase64Data(params);
+        } else {
+            assistantClass.showAlertDialogWithFinish("Invalid intent...");
         }
+    }
+
+    private void getBase64Data(Map<String, String> params) {
+        assistantClass.showProgressDialog("Please wait...", false);
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                String base64Data = jsonObject.optString("data");
+                file = Base64ToFileConverter.convert(base64Data);
+                binding.pdfView.fromFile(file).load();
+                assistantClass.dismissProgressDialog();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithFinish(error);
+            }
+        });
     }
 
     private void downloadPdfFromURL(String pdfUrl) {

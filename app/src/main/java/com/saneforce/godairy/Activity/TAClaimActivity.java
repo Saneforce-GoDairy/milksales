@@ -5402,6 +5402,13 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             ldgEliAmt = 0.0;
             txtMyEligi.setText("₹" + new DecimalFormat("##0.00").format(ldgEliAmt));
 
+            nofNght = DT.Daybetween(CInDate + " 00:00:00", COutDate + " 00:00:00");
+            if (nofNght == 0) {
+                nofNght = 1;
+            }
+            NoofNight.setText(" - " + nofNght + " Nights - ");
+            mChckCont.setChecked(DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00") > 1);
+
             getStayAllow();
             SumOFJointLodging();
         }

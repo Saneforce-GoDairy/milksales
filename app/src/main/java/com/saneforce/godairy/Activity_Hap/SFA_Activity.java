@@ -508,9 +508,8 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
 
                     case "SOA":
                         Intent in = new Intent(context, UniversalPDFViewer.class);
-                        in.putExtra("mode", "url");
+                        in.putExtra("mode", "base64");
                         in.putExtra("title", "Statement of Account");
-                        in.putExtra("url", "https://hap.sanfmcg.com/HAP_ANNEXURE_C.pdf");
                         startActivity(in);
                         break;
 
