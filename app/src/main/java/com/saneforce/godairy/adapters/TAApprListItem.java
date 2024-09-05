@@ -25,11 +25,13 @@ import com.saneforce.godairy.Activity.TAApprovalActivity;
 import com.saneforce.godairy.Activity_Hap.TACumulativeApproval;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.AlertDialogClickListener;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.onPayslipItemClick;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Activity.HAPApp;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +52,7 @@ public class TAApprListItem extends RecyclerView.Adapter<TAApprListItem.ViewHold
     NumberFormat formatter = new DecimalFormat("##0.00");
     Shared_Common_Pref sharedCommonPref;
     Common_Class common_class;
+    AssistantClass assistantClass;
 
 
     public TAApprListItem(JSONArray mlist, Context mContext) {
@@ -57,6 +60,7 @@ public class TAApprListItem extends RecyclerView.Adapter<TAApprListItem.ViewHold
         this.mContext = mContext;
         sharedCommonPref = new Shared_Common_Pref(mContext);
         common_class = new Common_Class(mContext);
+        assistantClass = new AssistantClass(mContext);
     }
 
     @NonNull
@@ -105,22 +109,43 @@ public class TAApprListItem extends RecyclerView.Adapter<TAApprListItem.ViewHold
             holder.btnApprov.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        SendtpApproval(1, mlist.getJSONObject(position), "");
-                    } catch (Exception e) {
+                    assistantClass.showAlertDialog("", "Are you sure you want to Approve?", true, "Yes", "No", new AlertDialogClickListener() {
+                        @Override
+                        public void onPositiveButtonClick(DialogInterface dialog) {
+                            try {
+                                SendtpApproval(1, mlist.getJSONObject(position), "");
+                            } catch (Exception e) {
 
-                    }
+                            }
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onNegativeButtonClick(DialogInterface dialog) {
+                            dialog.dismiss();
+                        }
+                    });
                 }
             });
             holder.btnRjct.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
+                    assistantClass.showAlertDialog("", "Are you sure you want to Reject?", true, "Yes", "No", new AlertDialogClickListener() {
+                        @Override
+                        public void onPositiveButtonClick(DialogInterface dialog) {
+                            try {
+                                showAlertDialogButtonClicked(2, mlist.getJSONObject(position));
+                            } catch (Exception e) {
 
-                        showAlertDialogButtonClicked(2, mlist.getJSONObject(position));
-                    } catch (Exception e) {
+                            }
+                            dialog.dismiss();
+                        }
 
-                    }
+                        @Override
+                        public void onNegativeButtonClick(DialogInterface dialog) {
+                            dialog.dismiss();
+                        }
+                    });
                 }
             });
 
@@ -189,7 +214,7 @@ public class TAApprListItem extends RecyclerView.Adapter<TAApprListItem.ViewHold
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(mContext);
         builder.setTitle(HAPApp.Title);
-        builder.setMessage("Do you confirm to Reject Travel Allowance Approval?");
+        builder.setMessage("Reject Reason?");
 
         // set the custom layout
         final View customLayout
@@ -199,7 +224,7 @@ public class TAApprListItem extends RecyclerView.Adapter<TAApprListItem.ViewHold
                         null);
         builder.setView(customLayout);
 
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -210,7 +235,7 @@ public class TAApprListItem extends RecyclerView.Adapter<TAApprListItem.ViewHold
         // add a button
         builder
                 .setPositiveButton(
-                        "Yes",
+                        "REJECT",
                         new DialogInterface.OnClickListener() {
 
                             @Override

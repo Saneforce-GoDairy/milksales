@@ -75,6 +75,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
     private final Context context = this;
     private Common_Class common_class;
     private Shared_Common_Pref sharedCommonPref;
+    ArrayList<String> noOrderVisitList;
     @SuppressLint("StaticFieldLeak")
     public static TodayPrimOrdActivity mTdPriAct;
     private String mSelectedNoOrderReason, distributerCode, mDistributerName, date = "", groupType = "All";
@@ -110,6 +111,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             iniVariable();
             intialize();
             onClickListener();
+            noOrderVisitList = new ArrayList<>();
             common_class.gotoHomeScreen(this, ivToolbarHome);
             stDate = Common_Class.GetDatewothouttime();
             endDate = Common_Class.GetDatewothouttime();
@@ -122,6 +124,29 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)){
                navbtns.setVisibility(View.GONE);
            }
+            getNoOrderTeplates();
+    }
+
+    private void getNoOrderTeplates() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getPrimaryNoOrderTemplates");
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                JSONArray array = jsonObject.optJSONArray("response");
+                if (array == null) {
+                    array = new JSONArray();
+                }
+                for (int i = 0; i < array.length(); i++) {
+                    noOrderVisitList.add(array.optJSONObject(i).optString("template"));
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
     }
 
     private void loadList() {
@@ -208,17 +233,6 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             LinearLayout noOrderPurposeOfVisit = noOrderDialog.findViewById(R.id.purpose_of_visit);
 
             noOrderPurposeOfVisit.setOnClickListener(v13 -> {
-                ArrayList<String> noOrderVisitList = new ArrayList<>(Arrays.asList(
-                        "Retail work for volume increase",
-                        "Other brand conversion",
-                        "Complaint Resolving",
-                        "Merchandising",
-                        "Sampling" ,
-                        "Event participation",
-                        "Training" ,
-                        "Collection Center Location"
-                ));
-
                 purposeOfVisitDialog = new Dialog(context);
                 purposeOfVisitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 purposeOfVisitDialog.setContentView(R.layout.model_purpose_of_visit_dialog);
@@ -256,7 +270,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
                 String mSFCode =UserDetails.getString("Sfcode","");
 
                 Call<ResponseBody> call = apiInterface.primaryNoOrderReasonSubmit("save/no_order_reason",
-                        mSelectedNoOrderReason,
+                        mChannealName,
                         mSFCode,
                         String.valueOf(mERPCode),
                         mDistributerName,

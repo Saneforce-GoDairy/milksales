@@ -8,8 +8,8 @@ android {
         compileSdk 33
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 19
-        versionName "1.10 T5"
+        versionCode 20
+        versionName "1.10 T6"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

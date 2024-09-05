@@ -1519,9 +1519,6 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
             }
             linCheckOut.setVisibility(View.VISIBLE);
         }
-        nofNght = DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00");
-        NoofNight.setText(" - " + nofNght + " Nights - "); // Todo: NoofNight.setText()
-        linContinueStay.setVisibility(View.VISIBLE);
         getStayAllow();
     }
 
@@ -1935,10 +1932,14 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         ldg_coutDt.setText(year + "-" + ((monthOfYear < 9) ? "0" : "") + (monthOfYear + 1) + "-" + ((dayOfMonth < 10) ? "0" : "") + dayOfMonth);//(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                         COutDate = year + "-" + ((monthOfYear < 9) ? "0" : "") + (monthOfYear + 1) + "-" + ((dayOfMonth < 10) ? "0" : "") + dayOfMonth;
-                        nofNght = DT.Daybetween(DateTime + " 00:00:00", year + "-" + ((monthOfYear < 9) ? "0" : "") + (monthOfYear + 1) + "-" + ((dayOfMonth < 10) ? "0" : "") + dayOfMonth + " 00:00:00");
-                        //if(nofNght==0) nofNght=1;
+
+                        nofNght = DT.Daybetween(CInDate + " 00:00:00", COutDate + " 00:00:00");
+                        if (nofNght == 0) {
+                            nofNght = 1;
+                        }
                         NoofNight.setText(" - " + nofNght + " Nights - ");
-                        mChckCont.setChecked(nofNght > 1);
+                        mChckCont.setChecked(DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00") > 1);
+
                         linContinueStay.setVisibility(View.VISIBLE);
                         // if (DT.Daybetween(DateTime + " 00:00:00", ldg_coutDt.getText().toString() + " 00:00:00") < 1)
                         //    linContinueStay.setVisibility(View.GONE);
@@ -3280,7 +3281,9 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         ldg_coutDt.setText(StayDate.get(0).getAsJsonObject().get("uCOutDate").getAsString());
 
                         nofNght = DT.Daybetween(CInDate + " 00:00:00", COutDate + " 00:00:00");
-                        //if(nofNght==0) nofNght=1;
+                        if (nofNght == 0) {
+                            nofNght = 1;
+                        }
                         NoofNight.setText(" - " + nofNght + " Nights - ");
                         mChckCont.setChecked(DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00") > 1);
 
@@ -5123,7 +5126,7 @@ public class TAClaimActivity extends AppCompatActivity implements Master_Interfa
                         JSONObject object = new JSONObject(raw);
                         if (object.has("success")) {
                             if (!object.optBoolean("success")) {
-                                Toast.makeText(context, object.optString("Msg"), Toast.LENGTH_SHORT).show();
+                                assistantClass.showAlertDialogWithDismiss(object.optString("Msg"));
                                 ResetSubmitBtn(2, btnAnim);
                                 return;
                             }

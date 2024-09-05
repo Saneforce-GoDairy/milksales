@@ -513,9 +513,6 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     linCheckOut.setVisibility(View.VISIBLE);
                 }
 
-                nofNght = DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00");
-                //if(nofNght==0) nofNght=1;
-                NoofNight.setText(" - " + String.valueOf(nofNght) + " Nights - ");
                 linContinueStay.setVisibility(View.VISIBLE);
                 // if(DT.Daybetween(DateTime+" 00:00:00",ldg_coutDt.getText().toString()+ " 00:00:00")<=1)
                 //     linContinueStay.setVisibility(View.GONE);
@@ -1430,12 +1427,14 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         ldg_coutDt.setText(year + "-" + ((monthOfYear < 9) ? "0" : "") + (monthOfYear + 1) + "-" + ((dayOfMonth < 10) ? "0" : "") + dayOfMonth);//(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                         COutDate = year + "-" + ((monthOfYear < 9) ? "0" : "") + (monthOfYear + 1) + "-" + ((dayOfMonth < 10) ? "0" : "") + dayOfMonth;
-                        nofNght = DT.Daybetween(DateTime + " 00:00:00", year + "-" + ((monthOfYear < 9) ? "0" : "") + (monthOfYear + 1) + "-" + ((dayOfMonth < 10) ? "0" : "") + dayOfMonth + " 00:00:00");
-                        //if(nofNght==0) nofNght=1;
-                        NoofNight.setText(" - " + String.valueOf(nofNght) + " Nights - ");
-                        linContinueStay.setVisibility(View.VISIBLE);
-                        if (DT.Daybetween(DateTime + " 00:00:00", ldg_coutDt.getText().toString() + " 00:00:00") < 1)
-                            linContinueStay.setVisibility(View.GONE);
+
+                        nofNght = DT.Daybetween(CInDate + " 00:00:00", COutDate + " 00:00:00");
+                        if (nofNght == 0) {
+                            nofNght = 1;
+                        }
+                        NoofNight.setText(" - " + nofNght + " Nights - ");
+                        mChckCont.setChecked(DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00") > 1);
+
                         getStayAllow();
                     }
                 }, yr, mnth, day);
@@ -2596,8 +2595,12 @@ public class TAViewStatus extends AppCompatActivity implements Master_Interface,
                         ldg_coutDt.setText(StayDate.get(0).getAsJsonObject().get("uCOutDate").getAsString());
 
                         nofNght = DT.Daybetween(CInDate + " 00:00:00", COutDate + " 00:00:00");
-                        //if(nofNght==0) nofNght=1;
-                        NoofNight.setText(" - " + String.valueOf(nofNght) + " Nights - ");
+                        if (nofNght == 0) {
+                            nofNght = 1;
+                        }
+                        NoofNight.setText(" - " + nofNght + " Nights - ");
+                        mChckCont.setChecked(DT.Daybetween(DateTime + " 00:00:00", COutDate + " 00:00:00") > 1);
+
 
                         sLocId = StayDate.get(0).getAsJsonObject().get("LocId").getAsString();
                         sLocName = StayDate.get(0).getAsJsonObject().get("StayLoc").getAsString();
