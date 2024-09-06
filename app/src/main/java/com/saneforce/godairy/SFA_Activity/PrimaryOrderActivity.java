@@ -127,6 +127,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     List<Category_Universe_Modal> listt;
     Type userType;
     Gson gson;
+    AssistantClass assistantClass;
     CircularProgressButton takeorder, btnRepeat;
     TextView Category_Nametext, selectDeliveryAddress,
             tvTimer, txBalAmt, txAmtWalt, txAvBal, tvDistId, tvDate, tvGrpName;
@@ -195,6 +196,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Search");
+
+        assistantClass = new AssistantClass(context);
 
         ordersViewMode = getIntent().getStringExtra("Mode");
 
@@ -331,8 +334,30 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 common_class.getDb_310Data(Constants.POS_NETAMT_TAX, this);
 
         getLastOrderedQty();
-
+        getOutStandingBalance();
         loadDistributer(common_class.getDistList(), 2);
+    }
+
+    private void getOutStandingBalance() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getOutstandingBal");
+        params.put("stockistCode", sharedCommonPref.getvalue(Constants.Distributor_Id));
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                double Out_stand = jsonObject.optDouble("Out_stand");
+                if (Double.isNaN(Out_stand)) {
+                    Out_stand = 0.0;
+                }
+                binding.outStanding.setText("Outstanding: " + common_class.formatCurrency(Out_stand));
+                updateOutStandingBal(sharedCommonPref.getvalue(Constants.Distributor_Id), Out_stand);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.log("getOutstandingBal Error: " + error);
+            }
+        });
     }
 
     @Override
@@ -961,15 +986,26 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             String distributerName = contact.getName();
 
             holder.outStanding.setVisibility(View.VISIBLE);
-            holder.outStanding.setText(contact.getOut_stand());
+
+            double Out_stand = contact.getOut_stand();
+            if (Double.isNaN(Out_stand)) {
+                Out_stand = 0.0;
+            }
+            holder.outStanding.setText("Outstanding: " + common_class.formatCurrency(Out_stand));
             holder.outStanding.setOnClickListener(view -> {
                 Map<String, String> params = new HashMap<>();
                 params.put("axn", "getOutstandingBal");
+                params.put("stockistCode", contact.getId());
                 assistantClass.showProgressDialog("Refreshing...", false);
                 assistantClass.makeApiCall(params, "", new APIResult() {
                     @Override
                     public void onSuccess(JSONObject jsonObject) {
-                        holder.outStanding.setText("Outstanding: Rs. " + jsonObject.optString("Out_stand"));
+                        double Out_stand = jsonObject.optDouble("Out_stand");
+                        if (Double.isNaN(Out_stand)) {
+                            Out_stand = 0.0;
+                        }
+                        holder.outStanding.setText("Outstanding: " + common_class.formatCurrency(Out_stand));
+                        updateOutStandingBal(contact.getId(), Out_stand);
                         assistantClass.dismissProgressDialog();
                     }
 
@@ -1051,6 +1087,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 myAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    private void updateOutStandingBal(String stockistCode, double outStandBal) {
+
     }
 
     @Override

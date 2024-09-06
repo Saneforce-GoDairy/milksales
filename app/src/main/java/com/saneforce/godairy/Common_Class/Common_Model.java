@@ -19,7 +19,8 @@ public class Common_Model {
 
     private String Days_Period;
     private String retGst;
-    private String disFssai, Out_stand;
+    private String disFssai;
+    double Out_stand;
     private String disGst;
 
     public String getDisGst() {
@@ -38,11 +39,11 @@ public class Common_Model {
         this.retGst = retGst;
     }
 
-    public String getOut_stand() {
+    public double getOut_stand() {
         return Out_stand;
     }
 
-    public void setOut_stand(String out_stand) {
+    public void setOut_stand(double out_stand) {
         Out_stand = out_stand;
     }
 
@@ -145,7 +146,7 @@ public class Common_Model {
         this.disFssai=disFssai;
     }
 
-    public Common_Model(String name, String id, String flag, String address, String phone, String cont, String DivERP,String disGst,String disFssai, String Latlong, String CusSubGrpErp, String Out_stand) {
+    public Common_Model(String name, String id, String flag, String address, String phone, String cont, String DivERP,String disGst,String disFssai, String Latlong, String CusSubGrpErp, double Out_stand) {
         this.name = name;
         this.id = id;
         this.flag = flag;

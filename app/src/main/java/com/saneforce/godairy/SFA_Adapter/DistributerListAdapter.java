@@ -75,11 +75,12 @@ public class DistributerListAdapter extends RecyclerView.Adapter<DistributerList
             holder.tvDistAdd.setText(itm.getString("Addr1"));
             holder.tvLatLng.setText("");
             holder.outStanding.setVisibility(View.VISIBLE);
-            try {
-                holder.outStanding.setText("Outstanding: Rs. " + itm.getDouble("Out_stand"));
-            } catch (Exception e) {
-                holder.outStanding.setText("Outstanding: Rs. 0.00");
+
+            double Out_stand = itm.optDouble("Out_stand");
+            if (Double.isNaN(Out_stand)) {
+                Out_stand = 0.0;
             }
+            holder.outStanding.setText("Outstanding: " + common_class.formatCurrency(Out_stand));
 
             holder.tvDistName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, context.getResources().getDrawable(R.drawable.eye), null);
             String flag = itm.getString("flag");

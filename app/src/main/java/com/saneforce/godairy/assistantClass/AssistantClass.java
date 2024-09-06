@@ -45,6 +45,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.saneforce.godairy.Activity_Hap.Login;
+import com.saneforce.godairy.BuildConfig;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.APIResult;
@@ -471,7 +472,9 @@ public class AssistantClass extends AppCompatActivity {
     }
 
     public void log(String toString) {
-        Log.e("checkMyLog", toString);
+        if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug")) {
+            Log.e("checkMyLog", toString);
+        }
     }
 
     public void showDropdown(String dropdownTitle, JSONArray array, DropdownSelectListener listener) {
