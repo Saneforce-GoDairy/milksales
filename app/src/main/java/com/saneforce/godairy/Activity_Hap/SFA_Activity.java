@@ -264,7 +264,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 case Constants.CHECKIN_TYPE:
                     menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_primary_order_sf));
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
-                    // menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
+                     menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
                     menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
                     menuList.add(new ListModel("", "Geo Tagging", "", "", "", R.drawable.ic_outlets_sf));
                     if (UserDetails.getString("Sfcode", "").equals("MGR8171")) {
@@ -286,7 +286,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                 case Constants.DISTRIBUTER_TYPE:
                     menuList.add(new ListModel("", "Primary Order", "", "", "", R.drawable.ic_projection_sf));
                     menuList.add(new ListModel("", "Secondary Order", "", "", "", R.drawable.ic_secondary_order_sf));
-                    // menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
+                    menuList.add(new ListModel("", "Van Sales", "", "", "", R.drawable.ic_outline_local_shipping_24));
                     menuList.add(new ListModel("", "Pay Bills", "", "", "", R.drawable.ic_secondary_order_sf));
                     menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
 //                    menuList.add(new ListModel("", "Geo Tagging", "", "", "", R.drawable.ic_outlets_sf));
@@ -483,11 +483,12 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                         break;
 
                     case "Van Sales":
-                        if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.VAN_STOCK_LOADING)))
+                     /*   if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.VAN_STOCK_LOADING)))
                             common_class.getDb_310Data(Constants.VAN_STOCK, SFA_Activity.this);
                         sharedCommonPref.save(Shared_Common_Pref.DCRMode, "Van Sales");
-                        startActivity(new Intent(SFA_Activity.this, VanSalesDashboardRoute.class));
-
+                        startActivity(new Intent(SFA_Activity.this, VanSalesDashboardRoute.class));*/
+                        common_class.getDb_310Data(Constants.VAN_STOCK, SFA_Activity.this);
+                        sharedCommonPref.save(Shared_Common_Pref.DCRMode, "Van Sales");
                         break;
 
                     case "Outlets":
@@ -1083,7 +1084,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
             if (apiDataResponse != null) {
                 switch (key) {
                     case VAN_STOCK:
-                        JSONObject stkObj = new JSONObject(apiDataResponse);
+                       /* JSONObject stkObj = new JSONObject(apiDataResponse);
 
                         if (stkObj.getBoolean("success")) {
                             JSONArray arr = stkObj.getJSONArray("Data");
@@ -1094,7 +1095,27 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                             }
                             sharedCommonPref.save(Constants.VAN_STOCK_LOADING, gson.toJson(stkList));
                         }
-                        Log.v(key, apiDataResponse);
+                        Log.v(key, apiDataResponse);*/
+                        try {
+                            JSONObject stkObj = new JSONObject(apiDataResponse);
+
+                            if (stkObj.getBoolean("success")) {
+                                JSONArray arr = stkObj.getJSONArray("Data");
+                                List<Product_Details_Modal> stkList = new ArrayList<>();
+                                for (int i = 0; i < arr.length(); i++) {
+                                    JSONObject obj = arr.getJSONObject(i);
+                                    stkList.add(new Product_Details_Modal(obj.getString("PCode"), obj.getInt("Cr"), obj.getInt("Dr"), (obj.getInt("Bal"))));
+                                }
+
+                                sharedCommonPref.save(Constants.VAN_STOCK_LOADING, gson.toJson(stkList));
+                                sharedCommonPref.save(Constants.VAN_STOCK_LOADING_TIME, Common_Class.GetDateOnly());
+
+                            }
+                            startActivity(new Intent(SFA_Activity.this, VanSalesDashboardRoute.class));
+                            Log.v(key, apiDataResponse);
+                        }catch (Exception e){
+
+                        }
                         break;
 
                     case GroupFilter:

@@ -602,6 +602,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8">
+                <TextView
+                    android:id="@+id/tv_no_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="No Data Found"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:visibility="gone"/>
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/invoicerecyclerview"
@@ -740,7 +750,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
                                     android:paddingLeft="@dimen/C3dp"
-                                    android:text="INVOICE"
+                                    android:text="VAN INVOICE"
                                     android:textColor="@color/white"
                                     android:textSize="11sp"
                                     android:textStyle="bold" />
@@ -923,26 +933,6 @@
                                     android:textSize="11sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/marketingActivityLayout"
-                                style="@style/OrderTypesButton"
-                                android:layout_width="160dp">
-
-                                <TextView
-                                    android:id="@+id/marketingActivity"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:paddingLeft="@dimen/C3dp"
-                                    android:text="Marketing Activity"
-                                    android:textAllCaps="true"
-                                    android:textColor="@color/white"
-                                    android:textSize="11sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
                         </LinearLayout>
 
                     </HorizontalScrollView>

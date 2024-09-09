@@ -274,5 +274,28 @@ public class Constants {
     public static final String GroupFilter="groupFilter";
     public static final String Freezer_Mandatory="freezerMandatory";
     public static final String VanSalOrderList="vansalOrderList";
+    public static final String Van_ProdGroups_List = "VanProdGroupList";
+    public static final String VAN_STOCK_LOADING_TIME = "Stock Loading Time";
+
+    public static final String VAN_RETAILER_STATUS = "vanretailerStatus";
+    public static final String VAN_STOCK_TOPUP = "StockTopUp";
+    public static final String Vansales_StartKm="Vansales_StartKm";
+    public static final String Vansales_SalesManName="Vansales_SalesManName";
+
+    public static final String Van_GetTodayOrder_List="vanGetOrderDetailList";
+    public static final String Van_Get_Payment_Details="VanGetPaymentDetails";
+
+
+    public static final String VanTodayOrderDetails_List = "VanTodayOrderDetails_List";
+
+    public static final String VAN_OUTSTANDING = "vanoutstanding";
+    public static final String VAN_STOCK_AMT = "vanStockAmt";
+    public static final String VAN_LOAD_DETAILS = "vanLoadDetails";
+    public static final String VAN_APPROVE_FLAG = "vanApproveFlag";
+
+
+
+
+
 
 }

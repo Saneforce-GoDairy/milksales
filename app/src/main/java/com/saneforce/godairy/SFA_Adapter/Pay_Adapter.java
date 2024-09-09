@@ -50,7 +50,7 @@ public class Pay_Adapter extends RecyclerView.Adapter<Pay_Adapter.MyViewHolder> 
         try {
 
 
-            JSONObject obj = arr.getJSONObject(position);
+           /* JSONObject obj = arr.getJSONObject(position);
 
             try {
                 holder.tvSku.setText("" + (obj.getString("PName")));
@@ -60,8 +60,21 @@ public class Pay_Adapter extends RecyclerView.Adapter<Pay_Adapter.MyViewHolder> 
 
             holder.tvSalQty.setText(String.valueOf("" + obj.getInt("Dr")).toString().trim());
 
-            holder.tvStkQty.setText("" + (obj.getInt("Cr")));
+            holder.tvStkQty.setText("" + (obj.getInt("Cr")));*/
 
+            JSONObject obj = arr.getJSONObject(position);
+
+            try {
+                holder.tvSku.setText("" + (obj.getString("PName")));
+            } catch (Exception e) {
+
+            }
+
+            holder.tvSalQty.setText("" + obj.getInt("salDr"));
+            holder.tvStkQty.setText("" + obj.getInt("loadCr"));
+            holder.tvTopUpQty.setText("" + obj.getInt("topupCr"));
+            holder.tvUnLoadQty.setText("" + obj.getInt("unloadDr"));
+            holder.tvTotLoadQty.setText(""+(obj.getInt("loadCr")+obj.getInt("topupCr")));
 
         } catch (Exception e) {
             Log.e("adapterProduct: ", e.getMessage());
@@ -76,7 +89,7 @@ public class Pay_Adapter extends RecyclerView.Adapter<Pay_Adapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvSku, tvStkQty, tvSalQty;
+        public TextView tvSku, tvStkQty, tvSalQty,tvTopUpQty,tvUnLoadQty,tvTotLoadQty;
 
 
         public MyViewHolder(View view) {
@@ -84,7 +97,9 @@ public class Pay_Adapter extends RecyclerView.Adapter<Pay_Adapter.MyViewHolder> 
             tvSku = view.findViewById(R.id.tvSku);
             tvStkQty = view.findViewById(R.id.tvStockQty);
             tvSalQty = view.findViewById(R.id.tvSalQty);
-
+            tvTopUpQty = view.findViewById(R.id.tvTopUpQty);
+            tvUnLoadQty = view.findViewById(R.id.tvUnLoadQty);
+            tvTotLoadQty=view.findViewById(R.id.tvTotLoadQty);
         }
     }
 

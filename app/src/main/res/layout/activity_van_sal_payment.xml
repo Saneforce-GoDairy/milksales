@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -221,6 +221,287 @@
 
 
     </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SFA_Activity.Order_Category_Select">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/db1_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/sfatoolbar"></include>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_bg"
+                android:orientation="horizontal"
+                android:padding="@dimen/C3dp">
+
+                <TextView
+                    android:id="@+id/tvHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/basic"
+                    android:paddingLeft="@dimen/C5dp"
+                    android:text="Van Sales Transaction"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="true"
+                    android:textColor="#FFF"
+                    android:textSize="18dp"
+
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/C10dp"
+                android:layout_weight="1"
+                android:padding="@dimen/C8dp"
+                app:cardCornerRadius="@dimen/C5dp"/>
+
+            <LinearLayout
+
+                android:id="@+id/lin_orderrecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                >
+
+                <TextView
+                    android:textStyle="bold"
+                    android:id="@+id/tvVSPayDate"
+                    style="@style/TextStyle"
+                    android:text="Date : 25-05-2022" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+
+                    <TextView
+                        android:textStyle="bold"
+                        style="@style/TextStyle"
+                        android:text="Loading Stock Amount : "
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvLoadStkAmt"
+                        style="@style/TextStyle"
+                        android:text="₹0.00"
+                        android:textColor="@color/green"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:textStyle="bold"
+                    style="@style/TextStyle"
+                    android:text="Invoice Details"
+                    android:textSize="15sp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="@dimen/C5dp"
+                    android:layout_marginRight="@dimen/C5dp"
+                    android:background="@color/black"
+                    android:outlineAmbientShadowColor="@color/statuscolor"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_marginStart="@dimen/C5dp"
+                        android:text="S.No"></TextView>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Retailer Name"
+                        android:gravity="start"></TextView>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="INV NO"
+                        android:gravity="end"
+                        android:layout_marginEnd="@dimen/C3dp"></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Amount"
+                        android:layout_marginStart="@dimen/C8dp"
+                        android:gravity="end"></TextView>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Cash"
+                        android:gravity="end"></TextView>
+                    <TextView
+                        android:id="@+id/tvCredit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Credit"
+                        android:gravity="end"
+                        android:layout_marginEnd="@dimen/C3dp"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C5dp"
+                android:background="@color/black"
+                android:outlineAmbientShadowColor="@color/statuscolor"></View>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:id="@+id/rvVanSal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/adapter_vansales_pay"
+                tools:itemCount="5"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C5dp"
+                android:background="@color/black"
+                android:outlineAmbientShadowColor="@color/statuscolor"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="7"
+                android:visibility="visible"
+                android:layout_margin="@dimen/C5dp">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total"></TextView>
+
+                <TextView
+
+                    android:id="@+id/tvTotSal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textStyle="bold"
+                    android:text=""
+                    android:gravity="end"></TextView>
+                <TextView
+
+                    android:id="@+id/tvTotCollAmt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textStyle="bold"
+                    android:text=""
+                    android:gravity="end"></TextView>
+                <TextView
+
+                    android:id="@+id/tvTotCredit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:text=""></TextView>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:layout_marginLeft="@dimen/C5dp"
+                android:layout_marginRight="@dimen/C5dp"
+                android:background="@color/black"
+                android:outlineAmbientShadowColor="@color/statuscolor"></View>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:textStyle="bold"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="UnLoading Stock Amount : "
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tvUnLoadStkAmt"
+                    style="@style/TextStyle"
+                    android:layout_weight="1"
+                    android:text="₹0.00"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/color_red"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+
 
     </ScrollView>
 </RelativeLayout>

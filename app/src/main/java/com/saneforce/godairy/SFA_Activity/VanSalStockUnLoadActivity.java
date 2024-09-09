@@ -2,6 +2,7 @@ package com.saneforce.godairy.SFA_Activity;
 
 import static com.saneforce.godairy.SFA_Activity.HAPApp.CurrencySymbol;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.MRPCap;
+import static com.saneforce.godairy.SFA_Activity.HAPApp.getActiveActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -59,6 +60,7 @@ import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.LocationEvents;
 import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.Interface.OnImagePickListener;
+import com.saneforce.godairy.Interface.OnLiveUpdateListener;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.Interface.onListItemClick;
 import com.saneforce.godairy.R;
@@ -107,14 +109,14 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
     Common_Class common_class;
     String Ukey;
     String[] strLoc;
-    String Worktype_code = "", Route_Code = "", Dirtributor_Cod = "", Distributor_Name = "",vehNo="", UserInfo = "MyPrefs";
+    String Worktype_code = "", Route_Code = "", Dirtributor_Cod = "", Distributor_Name = "",vehNo="", salesManName="",UserInfo = "MyPrefs";
     Shared_Common_Pref sharedCommonPref;
     Prodct_Adapter mProdct_Adapter;
     String TAG = "VanSalesOrderActivity";
     DatabaseHandler db;
     RelativeLayout rlCategoryItemSearch;
     ImageView ivClose, attachedImage, endKmImg;
-    EditText etCategoryItemSearch, edtEndKm;
+    EditText etCategoryItemSearch, edtEndKm,edtSalesManName;
     int cashDiscount;
     NumberFormat formatter = new DecimalFormat("##0.00");
     private RecyclerView recyclerView, categorygrid, Grpgrid, Brndgrid, freeRecyclerview;
@@ -130,8 +132,8 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
 
     String axn = "",imageSet = "", imageServer = "",imageConvert = "";
     private double totStkAmt;
-
-
+    TextView tvsrtKm;
+    private double startKm=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -168,6 +170,8 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
             retaileAddress = findViewById(R.id.retaileAddress);
             tvRetailorPhone = findViewById(R.id.retailePhoneNum);
             edtEndKm=findViewById(R.id.edtEndKm);
+            edtSalesManName=findViewById(R.id.edtSaleManName);
+            tvsrtKm=findViewById(R.id.tvsrtKm);
 
             endKmImg=findViewById(R.id.endKm_attach);
             attachedImage=findViewById(R.id.attachedUnloadEndImage);
@@ -189,9 +193,39 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
             categorygrid.setLayoutManager(layoutManager);
 
             vehNo=sharedCommonPref.getvalue(Constants.Vansales_VehNo);
+            salesManName=sharedCommonPref.getvalue(Constants.Vansales_SalesManName);
             Log.v("vehNo_ghj",vehNo);
             tvVehNo.setText(vehNo);
+            edtSalesManName.setText(salesManName);
+            if(!sharedCommonPref.getvalue(Constants.Vansales_StartKm).equals("")) {
+                startKm = Double.parseDouble(sharedCommonPref.getvalue(Constants.Vansales_StartKm));
+                tvsrtKm.setText(""+startKm);
+            }
+            common_class.getDb_310Data(Constants.VAN_LOAD_DETAILS, getActiveActivity());
 
+
+           /* edtEndKm.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if(!editable.toString().equalsIgnoreCase("")){
+                        if(startKm>=Double.parseDouble(editable.toString())){
+                            Toast.makeText(getApplicationContext(),"Enter Valid Km",Toast.LENGTH_SHORT).show();
+                            edtEndKm.setText("");
+                        }
+                    }
+
+                }
+            });*/
             endKmImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -245,14 +279,14 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
             Out_Let_Name.setText(sharedCommonPref.getvalue(Constants.Distributor_name));
 
             //GetJsonData(String.valueOf(db.getMasterData(Constants.Category_List)), "1", "");
-            String OrdersTable = String.valueOf(db.getMasterData(Constants.Product_List));
-            userType = new TypeToken<ArrayList<Product_Details_Modal>>() {
-            }.getType();
+            //  String OrdersTable = String.valueOf(db.getMasterData(Constants.Product_List));
+            // userType = new TypeToken<ArrayList<Product_Details_Modal>>() {
+            //}.getType();
 
 //            if (!Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.LOC_VANSALES_DATA)) && Constants.VAN_SALES_MODE.equalsIgnoreCase(Constants.VAN_STOCK_UNLOADING))
 //                Product_Modal = gson.fromJson(sharedCommonPref.getvalue(Constants.LOC_VANSALES_DATA), userType);
 //            else {
-            Product_Modal = gson.fromJson(OrdersTable, userType);
+            //   Product_Modal = gson.fromJson(OrdersTable, userType);
 
             // }
 
@@ -427,9 +461,9 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                 findViewById(R.id.orderTypesLayout).setVisibility(View.GONE);
 
             GetJsonData(String.valueOf(db.getMasterData(Constants.Todaydayplanresult)), "6", "");
+            getProductList();
 
-
-            JSONArray ProdGroups = db.getMasterData(Constants.ProdGroups_List);
+        /*    JSONArray ProdGroups = db.getMasterData(Constants.ProdGroups_List);
             LinearLayoutManager GrpgridlayManager = new LinearLayoutManager(this);
             GrpgridlayManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             Grpgrid.setLayoutManager(GrpgridlayManager);
@@ -448,7 +482,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
             });
             Grpgrid.setAdapter(grplistItems);
 
-            FilterTypes(ProdGroups.getJSONObject(0).getString("id"));
+            FilterTypes(ProdGroups.getJSONObject(0).getString("id"));*/
 
             tvHeader.setText(Constants.VAN_SALES_MODE);
 
@@ -472,7 +506,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                 tvCoolerInfo.setVisibility(View.VISIBLE);
 
 
-            common_class.getDb_310Data(Constants.VAN_STOCK, this);
+            //   common_class.getDb_310Data(Constants.VAN_STOCK, this);
         } catch (Exception e) {
             Log.v(TAG, " order oncreate: " + e.getMessage());
 
@@ -785,27 +819,37 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                     if (takeorder.getText().toString().equalsIgnoreCase("SUBMIT")) {
                         if (Getorder_Array_List != null
                                 && Getorder_Array_List.size() > 0) {
-                            Log.d("RepeatAni", String.valueOf(takeorder.isAnimating()));
-                            if (takeorder.isAnimating()) return;
-                            takeorder.startAnimation();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String sLoc = sharedCommonPref.getvalue("CurrLoc");
-                                    if (sLoc.equalsIgnoreCase("")) {
-                                        new LocationFinder(getApplication(), new LocationEvents() {
-                                            @Override
-                                            public void OnLocationRecived(Location location) {
-                                                strLoc = (location.getLatitude() + ":" + location.getLongitude()).split(":");
-                                                SaveOrder(axn);
-                                            }
-                                        });
-                                    } else {
-                                        strLoc = sLoc.split(":");
-                                        SaveOrder(axn);
+                            if(tvVehNo.getText().toString().equals(""))  {
+                                Toast.makeText(getApplicationContext(),"Enter the Vehicle No",Toast.LENGTH_SHORT ).show();
+                            }else if(edtEndKm.getText().toString().equals("")) {
+                                Toast.makeText(getApplicationContext(),"Enter the Closing Km",Toast.LENGTH_SHORT ).show();
+                            }else if(startKm>Double.parseDouble(edtEndKm.getText().toString())) {
+                                Toast.makeText(getApplicationContext(),"Enter Valid Closing Km",Toast.LENGTH_SHORT ).show();
+                            }else if(imageSet.equals("")) {
+                                Toast.makeText(getApplicationContext(),"Please Attach Photo",Toast.LENGTH_SHORT ).show();
+                            }else {
+                                Log.d("RepeatAni", String.valueOf(takeorder.isAnimating()));
+                                if (takeorder.isAnimating()) return;
+                                takeorder.startAnimation();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String sLoc = sharedCommonPref.getvalue("CurrLoc");
+                                        if (sLoc.equalsIgnoreCase("")) {
+                                            new LocationFinder(getApplication(), new LocationEvents() {
+                                                @Override
+                                                public void OnLocationRecived(Location location) {
+                                                    strLoc = (location.getLatitude() + ":" + location.getLongitude()).split(":");
+                                                    SaveOrder(axn);
+                                                }
+                                            });
+                                        } else {
+                                            strLoc = sLoc.split(":");
+                                            SaveOrder(axn);
+                                        }
                                     }
-                                }
-                            }, 500);
+                                }, 500);
+                            }
                         } else {
                             common_class.showMsg(this, "Your Cart is empty...");
                         }
@@ -824,7 +868,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
     private void SaveOrder(String axn) {
         if (common_class.isNetworkAvailable(this)) {
 
-            AlertDialogBox.showDialog(VanSalStockUnLoadActivity.this, HAPApp.Title, "Are You Sure Want to Submit?", "OK", "Cancel", false, new AlertBox() {
+            AlertDialogBox.showDialog(VanSalStockUnLoadActivity.this, "HAP SFA", "Are You Sure Want to Submit?", "OK", "Cancel", false, new AlertBox() {
                 @Override
                 public void PositiveMethod(DialogInterface dialog, int id) {
                     common_class.ProgressdialogShow(1, "");
@@ -847,6 +891,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
 
                         HeadItem.put("Vansales_VehNo",vehNo);
                         HeadItem.put("Vansales_EndKm",edtEndKm.getText().toString());
+                        HeadItem.put("VanSales_SalesManNm",edtSalesManName.getText().toString());
                         HeadItem.put("Vansales_Endkm_Image",imageSet);
 
                         Log.v("vansalesUnload",HeadItem.toString());
@@ -884,7 +929,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                             ProdItem.put("product_code", Getorder_Array_List.get(z).getId());
                             ProdItem.put("Stock_Qty", Getorder_Array_List.get(z).getQty());
 
-                            ProdItem.put("Product_Qty", Getorder_Array_List.get(z).getQty());
+                            ProdItem.put("Product_Qty", Getorder_Array_List.get(z).getQty()-Getorder_Array_List.get(z).getDr());
                             //   ProdItem.put("Product_RegularQty", Getorder_Array_List.get(z).getRegularQty());
 //                            ProdItem.put("Product_Total_Qty", Getorder_Array_List.get(z).getQty() +
 //                                    Getorder_Array_List.get(z).getRegularQty());
@@ -950,6 +995,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    Log.e("vanstockunload data:", data.toString());
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<JsonObject> responseBodyCall = apiInterface.saveVanSales(axn, Shared_Common_Pref.Div_Code, Shared_Common_Pref.Sf_Code, data.toString());
                     responseBodyCall.enqueue(new Callback<JsonObject>() {
@@ -966,6 +1012,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                                     if (san.equals("true")) {
                                         sharedCommonPref.clear_pref(Constants.LOC_VANSALES_DATA);
                                         sharedCommonPref.clear_pref(Constants.VAN_STOCK_LOADING);
+                                        sharedCommonPref.clear_pref(Constants.VAN_STOCK_LOADING_TIME);
                                         //  common_class.CommonIntentwithFinish(Invoice_History.class);
                                         finish();
                                     }
@@ -1070,7 +1117,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
 
                     cashDiscount += (int) Product_Modal.get(pm).getDiscount();
 
-                    totalvalues += Product_Modal.get(pm).getAmount();
+                    totalvalues += Product_Modal.get(pm).getCrAmt()-Product_Modal.get(pm).getDrAmt();
 
                     totalQty += Product_Modal.get(pm).getQty() + Product_Modal.get(pm).getRegularQty();
 
@@ -1232,8 +1279,26 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                     }
 
                     break;
+                case Constants.VAN_LOAD_DETAILS:
+                    // Log.v("data","van startkm"+apiDataResponse);
+                    JSONArray vanarr = new JSONArray(apiDataResponse);
+
+                    if(vanarr.length()>0){
+                        JSONObject obj = vanarr.getJSONObject(0);
+                        vehNo=obj.getString("vehno");
+                        salesManName=obj.getString("smname");
+                        tvVehNo.setText(""+vehNo);
+                        edtSalesManName.setText(""+salesManName);
+                        startKm=obj.getDouble("startkm");
+                        tvsrtKm.setText(""+obj.getDouble("startkm")+" KM");
+                    }
+
+                    break;
+
+
             }
         } catch (Exception e) {
+            Log.e("data error",e.getMessage());
 
         }
     }
@@ -1255,7 +1320,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
 
     void moveProductScreen() {
         lin_gridcategory.setVisibility(View.VISIBLE);
-        findViewById(R.id.orderTypesLayout).setVisibility(View.VISIBLE);
+        //  findViewById(R.id.orderTypesLayout).setVisibility(View.VISIBLE);
         findViewById(R.id.rlSearchParent).setVisibility(View.VISIBLE);
         findViewById(R.id.rlCategoryItemSearch).setVisibility(View.GONE);
         findViewById(R.id.llBillHeader).setVisibility(View.GONE);
@@ -1287,7 +1352,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
         common_class.dismissCommonDialog(type);
         switch (type) {
             case 1:
-                Product_ModalSetAdapter.get(uomPos).setCnvQty(Double.parseDouble((myDataset.get(position).getPhone())));
+                Product_ModalSetAdapter.get(uomPos).setCnvQty(1);
                 Product_ModalSetAdapter.get(uomPos).setUOM_Id(myDataset.get(position).getId());
                 Product_ModalSetAdapter.get(uomPos).setUOM_Nm(myDataset.get(position).getName());
                 mProdct_Adapter.notify(Product_ModalSetAdapter, R.layout.vansales_product_order_recyclerview, getApplicationContext(), 1);
@@ -1449,6 +1514,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                 Product_Details_Modal Product_Details_Modal = Product_Details_Modalitem.get(holder.getBindingAdapterPosition());
 
                 holder.productname.setText("" + Product_Details_Modal.getName().toUpperCase());
+              //  holder.erpCode.setText(Product_Details_Modal.getERP_Code().toUpperCase());
                 holder.Amount.setText(CurrencySymbol+" " + new DecimalFormat("##0.00").format(Product_Details_Modal.getAmount()));
                 holder.RegularQty.setText("" + Product_Details_Modal.getRegularQty());
 
@@ -1459,7 +1525,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                     holder.tvUOM.setText(Product_Details_Modal.getDefault_UOM_Name());
                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setUOM_Nm(Product_Details_Modal.getDefault_UOM_Name());
                     Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setUOM_Id("" + Product_Details_Modal.getDefaultUOM());
-                    Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setCnvQty(Product_Details_Modal.getDefaultUOMQty());
+                    Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).setCnvQty(1);
 
 
                 }
@@ -1782,14 +1848,19 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
 
 
                     holder.tvunloadQty.setText("" + (Product_Details_Modal.getCr() - Product_Details_Modal.getDr()));
-                    holder.tvUnloadAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modal.getCrAmt() - Product_Details_Modal.getDrAmt()));
+                    double unloadAmt=Product_Details_Modal.getCrAmt() - Product_Details_Modal.getDrAmt();
+                    if(unloadAmt>=0) {
+                        holder.tvUnloadAmt.setText(CurrencySymbol + " " + formatter.format(Product_Details_Modal.getCrAmt() - Product_Details_Modal.getDrAmt()));
+                    }else{
+                        holder.tvUnloadAmt.setText(CurrencySymbol + " " + formatter.format(0));
+                    }
 
 
                     holder.ivDel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            AlertDialogBox.showDialog(VanSalStockUnLoadActivity.this, HAPApp.Title,
+                            AlertDialogBox.showDialog(VanSalStockUnLoadActivity.this, "HAP SFA",
                                     "Do you want to remove " + Product_Details_Modalitem.get(position).getName().toUpperCase() + " from your cart?"
                                     , "OK", "Cancel", false, new AlertBox() {
                                         @Override
@@ -1881,7 +1952,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView productname, Rate, Amount, Disc, Free, RegularQty, lblRQty, productQty, regularAmt, tvUOM,
-                    QtyAmt, totalQty, tvTaxLabel, tvMRP, tvStock, tvSalesQty, tvSalesAmt, tvunloadQty, tvUnloadAmt;
+                    QtyAmt, totalQty, tvTaxLabel, tvMRP, tvStock, tvSalesQty, tvSalesAmt, tvunloadQty, tvUnloadAmt,erpCode;
             ImageView ImgVwProd, QtyPls, QtyMns, ivDel;
             EditText Qty;
 
@@ -1903,7 +1974,7 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
                 llRegular = view.findViewById(R.id.llRegular);
                 tvUOM = view.findViewById(R.id.tvUOM);
                 ImgVwProd = view.findViewById(R.id.ivAddShoppingCart);
-
+                erpCode = view.findViewById(R.id.erpCode);
 
                 if (CategoryType >= 0) {
                     tvMRP = view.findViewById(R.id.MrpRate);
@@ -1997,5 +2068,46 @@ public class VanSalStockUnLoadActivity extends AppCompatActivity implements View
         }
 
 
+    }
+    private void getProductList(){
+        common_class.ProgressdialogShow(1, "Getting Material Details");
+
+        common_class.getPOSStockProduct(this, new OnLiveUpdateListener() {
+            @Override
+            public void onUpdate(String mode) {
+
+                String OrdersTable = String.valueOf(db.getMasterData(Constants.ProductStock_List));
+                userType = new TypeToken<ArrayList<Product_Details_Modal>>() {
+                }.getType();
+
+                Product_Modal = gson.fromJson(OrdersTable, userType);
+                common_class.getDb_310Data(Constants.VAN_STOCK, getActiveActivity());
+            /*    JSONArray ProdGroups = db.getMasterData(Constants.ProdGroups_List);
+                LinearLayoutManager GrpgridlayManager = new LinearLayoutManager(VanSalStockUnLoadActivity.this);
+                GrpgridlayManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                Grpgrid.setLayoutManager(GrpgridlayManager);
+
+                RyclListItemAdb grplistItems = new RyclListItemAdb(ProdGroups, VanSalStockUnLoadActivity.this, new onListItemClick() {
+                    @Override
+                    public void onItemClick(JSONObject item) {
+
+                        try {
+                            FilterTypes(item.getString("id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                Grpgrid.setAdapter(grplistItems);
+                try {
+                    FilterTypes(ProdGroups.getJSONObject(0).getString("id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
+                //selectedPos=0;
+                //showOrderItemList(selectedPos, "");
+                common_class.ProgressdialogShow(0, "");
+            }
+        });
     }
 }

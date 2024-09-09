@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -32,6 +32,157 @@
             android:text="Amount"></TextView>
 
     </LinearLayout>
+
+
+</RelativeLayout>-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/C5dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3.5">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:id="@+id/tvSNo"
+                android:layout_weight="0.5"
+                android:layout_marginStart="@dimen/C5dp"
+                android:text="S.No"></TextView>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:id="@+id/tvRetailerName"
+                android:layout_weight="1.5"
+                android:text="Retailer Name"
+                android:gravity="start"></TextView>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:id="@+id/tvInvNum"
+                android:layout_weight="1.5"
+                android:text="Inv No"
+                android:gravity="end"
+                android:layout_marginEnd="@dimen/C3dp"></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:id="@+id/tvAmount"
+                android:layout_weight="1"
+                android:text="Amount"
+                android:layout_marginStart="@dimen/C8dp"
+                android:gravity="end"></TextView>
+
+            <!-- <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:textColor="@color/green"
+                 android:id="@+id/tvInvNum"
+                 android:layout_weight="1.5"
+                 android:text="INV NO"
+                 android:gravity="start"
+                ></TextView>
+
+
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:textColor="@color/green"
+                 android:id="@+id/tvAmount"
+                 android:layout_weight="1"
+                 android:text="Amount"></TextView>-->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:id="@+id/tvCollectedAmt"
+                android:layout_weight="1.5"
+                android:text="CollectedAmount"
+                android:gravity="end"></TextView>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:id="@+id/tvCredit"
+                android:layout_weight="1.5"
+                android:text="Credit"
+                android:gravity="end"
+                android:layout_marginEnd="@dimen/C3dp"></TextView>
+
+
+        </LinearLayout>
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/tvSNo"
+                style="@style/TextStyle"
+                android:layout_weight="1"
+                android:text="S.No"></TextView>
+            <TextView
+                android:id="@+id/tvRetailerName"
+                style="@style/TextStyle"
+                android:layout_weight="1.5"
+                android:text="Retailer\nName"></TextView>
+            <TextView
+                android:id="@+id/tvInvNum"
+                style="@style/TextStyle"
+                android:layout_weight="1.5"
+                android:text="INV NO"></TextView>
+
+            <TextView
+                android:id="@+id/tvAmount"
+                style="@style/TextStyle"
+                android:layout_weight="1"
+                android:text="Amount"></TextView>
+            <TextView
+                android:id="@+id/tvCollectedAmt"
+                style="@style/TextStyle"
+                android:layout_weight="1"
+                android:text="Collected\nAmount"></TextView>
+            <TextView
+
+                android:id="@+id/tvCredit"
+                style="@style/TextStyle"
+                android:layout_weight="1"
+                android:text="Credit"></TextView>
+
+        </LinearLayout>-->
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/C5dp"
+        android:layout_marginRight="@dimen/C5dp"
+        android:background="@color/statuscolor">
+
+    </View>
+
+
 
 
 </RelativeLayout>

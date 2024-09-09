@@ -1213,4 +1213,19 @@ public interface ApiInterface {
 
     @GET(ApiClient.CONFIG_URL)
     Call<ResponseBody> getBaseConfig();
+
+    @POST("Db_v310.php?")
+    Call<ResponseBody>getPendPayDets(@QueryMap Map<String,Object>queryParrams);
+
+    @Multipart
+    @POST("Db_v300.php?")
+    Call<ResponseBody> getResponses(@Part("data") RequestBody data,
+                                    @QueryMap Map<String, Object> queryParrams);
+    @FormUrlEncoded
+    @POST("db_v310.php?axn=save/vansales")
+    Call<JsonObject> saveVanInvoice(@Query("divisionCode") String div_code, @Query("Sf_code") String sf_code, @Query("loginType") String loginType, @Field("data") String toString);
+
+    @FormUrlEncoded
+    @POST("Db_v310.php?axn=get/vanapprovedata")
+    Call<ResponseBody> getVanApproveData(@Field("data") String body);
 }
