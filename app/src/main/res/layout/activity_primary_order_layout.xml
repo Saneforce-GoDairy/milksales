@@ -38,8 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rounded_dialog_top_right_left"
-                >
+                android:background="@drawable/rounded_dialog_top_right_left">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
@@ -65,7 +64,7 @@
 
 
 
-<!--    Previous design code. modified by prasanth assigned by anbu sir-->
+<!-- order screen -->
     <RelativeLayout
         android:id="@+id/old_primary_layout"
         android:layout_width="match_parent"
@@ -1176,15 +1175,17 @@
                 android:background="@drawable/bottom_button"
                 android:padding="@dimen/C5dp"
                 android:visibility="visible">
+
                 <ImageView
 
                     android:id="@+id/ivCart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/C5dp"
+                    android:layout_marginStart="@dimen/C5dp"
                     android:src="@drawable/ic_round_shopping_bag_24"
-                    app:tint="@color/white"></ImageView>
+                    app:tint="@color/white" />
+
                 <TextView
                     android:id="@+id/tvCart"
                     android:layout_width="wrap_content"

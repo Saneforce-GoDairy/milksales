@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.saneforce.godairy.databinding.ModelCustomFormBinding;
-import com.saneforce.godairy.procurement.custom_form.CustomFormDetailsViewActivity;
+import com.saneforce.godairy.procurement.custom_form.CustomFormMainActivity;
 import com.saneforce.godairy.procurement.custom_form.model.ModuleList;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
                 String mModuleId = moduleList.getModuleId();
                 String debug = "";
 
-                Intent intent = new Intent(context, CustomFormDetailsViewActivity.class);
+                Intent intent = new Intent(context, CustomFormMainActivity.class);
                 intent.putExtra("title", moduleList.getModuleName());
                 intent.putExtra("moduleId",moduleList.getModuleId());
                 intent.putExtra("moduleName",moduleList.getModuleName());

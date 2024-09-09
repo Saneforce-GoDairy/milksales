@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".procurement.AgentUpdateActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:elevation="20dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/baseline_arrow_back_35"
+            android:contentDescription="@string/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/back"
+            android:fontFamily="@font/ubuntu_medium"
+            android:text="Agent Update"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Agent Name"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_agent_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textPostalAddress"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:text="Agent Photo"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_agent_image_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+                <ImageView
+                    android:id="@+id/camera_agent"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/apple_camera"
+                    android:contentDescription="Camera icon for agent photo" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_agent_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="5dp"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/image_agent"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder"
+                        android:contentDescription="@string/todo" />
+
+                    <ProgressBar
+                        android:id="@+id/image_loading_progress"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:indeterminateDrawable="@drawable/progressbar_custom_blue"
+                        android:visibility="visible" />
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="State"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_state_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/state_con"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
+            <EditText
+                android:id="@+id/ed_state"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Select"
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="District"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_district"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Select"
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Town"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_town"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textPostalAddress"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Collection Center"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_coll_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp"
+                    android:layout_alignParentBottom="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common_green"
+                android:layout_marginTop="5dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_collection_ce"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Agent Gategory"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_agent_not_valid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:fontFamily="More Fonts..."
+                    android:text="@string/not_valid"
+                    android:textColor="#ff0130"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:ignore="SmallSp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common_green"
+                android:layout_marginTop="5dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_agent_gate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Company"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_company"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textPostalAddress"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Address"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_address"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <EditText
+                android:id="@+id/ed_pin_code"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:autofillHints="none"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Pin code"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="City"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_city"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textPostalAddress"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Mobile Number"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_mobile_no"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="phone"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Email Id"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_email_id"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="textEmailAddress"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Incentive Amount (per litre)"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_incen"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Cartage Amount (per litre)"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_Cartage"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common_green"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:id="@+id/txt_error_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/error_empty_field_found"
+                    android:textStyle="bold"
+                    android:textColor="#ff0130"
+                    tools:ignore="SmallSp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+
+            <Button
+                android:id="@+id/update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update"
+                android:background="@drawable/btnstylegreen"
+                android:textColor="@color/white"
+                android:fontFamily="@font/ubuntu"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                tools:ignore="UnusedAttribute"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/selection_con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:visibility="gone">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--add  several shimmer placeholder layout -->
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/state_not_select_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_marginTop="50dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:src="@drawable/india_map1"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please select state"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/ubuntu"
+                android:textSize="25sp"
+                android:layout_marginTop="@dimen/C20dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.databinding.ActivityMainBinding;
+import com.saneforce.godairy.procurement.FarmerCreationActivity;
+import com.saneforce.godairy.procurement.MilkCollEntryActivity;
+import com.saneforce.godairy.procurement.ProcurementHome;
+import com.saneforce.godairy.procurement.ska.NewFarmerCreationActivity;
 
 import java.util.Objects;
 
@@ -21,32 +25,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try {
             super.onCreate(savedInstanceState);
             ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
             View view = binding.getRoot();
             setContentView(view);
 
+//            startActivity(new Intent(context, NewFarmerCreationActivity.class));
+//            finish();
+
+
             shared_common_pref = new Shared_Common_Pref(this);
-
             new Handler().postDelayed(() -> {
-
                 SharedPreferences sharedpreferences;
                 sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
 
                 if (sharedpreferences.getString("nameKey", "").equals("")) {
-                    Intent intent = new Intent(context, PrivacyPolicy.class);
-                    startActivity(intent);
+                    startActivity(new Intent(context, PrivacyPolicy.class));
                 } else {
-
-                    Intent intent = new Intent(context, LoginHome.class);
-                    startActivity(intent);
+                    startActivity(new Intent(context, LoginHome.class));
                 }
                 finish();
             }, 3000);
-        } catch (Exception e) {
-            Log.v("MainActivity:", Objects.requireNonNull(e.getMessage()));
-        }
     }
-
 }

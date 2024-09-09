@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".procurement.MilkCollEntryActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:elevation="20dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_35"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/back"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/ubuntu_medium"
+            android:text="Milk collection entry"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:id="@+id/title"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_radis_con"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textStyle="bold"
+                android:text="Customer Name"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_customer_sel"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:hint="Select"
+                android:inputType="textAutoComplete"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Customer No"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_customer_no"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:maxLength="10"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Date"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <EditText
+                    android:id="@+id/ed_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:hint="DD/MM/YYYY"
+                    android:paddingEnd="10dp"
+                    android:drawableEnd="@drawable/ic_date"
+                    android:drawableTint="@color/grey_500"
+                    android:autofillHints="none"
+                    tools:ignore="LabelFor" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Session"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="5dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_session"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Milk type"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_common"
+                android:layout_marginTop="5dp">
+
+                <com.saneforce.godairy.common.CustomSpinner
+                    android:id="@+id/spinner_milk_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_radis_con"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:text="Milk Weighing "
+                android:textSize="15sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textStyle="bold"
+                android:text="No of Cans"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_cans"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Milk Weight ( in Kg )"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_milk_weight"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Milk Total Quantity ( in Litres )"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_milk_toal_qty"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_radis_con"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:text="Milk Analyzing "
+                android:textSize="15sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textStyle="bold"
+                android:text="Milk Sample No"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_milk_sample_no"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="Fat ( in % )"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_fat"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="SNF ( in % )"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_snf"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:text="CLR"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_clr"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_radis_con"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:text="Milk Price "
+                android:textSize="15sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textStyle="bold"
+                android:text="Milk Rate Per Litre ( Rs. )"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_milk_rate"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textStyle="bold"
+                android:text="Total Milk Amount ( Rs. )"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/ed_total_milk_amount"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_common"
+                android:fontFamily="@font/ubuntu"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:autofillHints="none"
+                tools:ignore="LabelFor" />
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:background="@drawable/button_blue"
+            android:textColor="@color/white"
+            android:fontFamily="@font/ubuntu"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="10dp"
+            tools:ignore="UnusedAttribute" />
+
+    </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/selection_con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:visibility="gone">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--add  several shimmer placeholder layout -->
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+                <include layout="@layout/m_selection_shimmer" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

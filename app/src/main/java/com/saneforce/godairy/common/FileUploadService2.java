@@ -1,6 +1,9 @@
 package com.saneforce.godairy.common;
 
-import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_MAINTENNACE_REGULAR;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_MAINTENANCE_REGULAR;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SAVE_AGENT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SAVE_FARMER_CEATION;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SAVE_MILK_COLLECTION;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_AGENT_VISIT;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_AGRONOMIST;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_ASSET;
@@ -13,6 +16,9 @@ import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_QUALITY;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_VETERINARY;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SUBMIT_AIT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_UPDATE_AGENT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_UPDATE_FARMER;
+import static com.saneforce.godairy.procurement.AppConstants.PROC_COLL_CENTER_CR2;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -21,6 +27,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -32,13 +41,16 @@ import androidx.core.app.NotificationCompat;
 
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
+import com.saneforce.godairy.Model_Class.Procurement;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.procurement.AITFormActivity;
+import com.saneforce.godairy.procurement.AgentUpdateActivity;
 import com.saneforce.godairy.procurement.AgronomistFormActivity;
 import com.saneforce.godairy.procurement.CollectionCenterLocationActivity;
 import com.saneforce.godairy.procurement.ExistingAgentVisitActivity;
 import com.saneforce.godairy.procurement.ExistingCenterVisitActivity;
 import com.saneforce.godairy.procurement.FarmerCreationActivity;
+import com.saneforce.godairy.procurement.FarmerUpdateActivity;
 import com.saneforce.godairy.procurement.MaintanenceIssuesFormActivity;
 import com.saneforce.godairy.procurement.MaintanenceRegularActivity;
 import com.saneforce.godairy.procurement.ProcurementAssetActivity;
@@ -51,6 +63,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import okhttp3.MediaType;
@@ -83,71 +96,94 @@ public class FileUploadService2 extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-     // do heavy work on background thread
+        // do heavy work on background thread
 
         String service_id = intent.getStringExtra("upload_service_id");
 
         if (service_id != null){
             switch (Integer.parseInt(service_id)){
-                case 1:
-                    procCollectionCenter(intent);
+                case 19:
+                    newCollCenterCrea(intent);
+                    break;
+                case 18:
+                    farmerUpdate(intent);
                     break;
 
-                case 2:
-                    procFarmerCreation(intent);
+                case 17:
+                    agentUpdation(intent);
                     break;
 
-                case 3:
-                    procAgronomist(intent);
+                case 16:
+                    milkCollEntry(intent);
                     break;
 
-                case 4:
-                    procVeterinary(intent);
+                case 15:
+                    farmerCreation2(intent);
                     break;
 
-                case 5:
-                    procAIT(intent);
-                    break;
-
-                case 6:
-                    procAgentVisit(intent);
-                    break;
-
-                case 7:
-                    procQuality(intent);
-                    break;
-
-                case 8:
-                    procMaintenanceIssue(intent);
-                    break;
-
-                case 9:
-                    procAsset(intent);
-                    break;
-
-                case 10:
-                    procMaintenanceRegular(intent);
-                    break;
-
-                case 11:
-                    procExistingCenterVisit(intent);
-                    break;
-
-                case 12:
-                    procFarmerCreationSka(intent);
+                case 14:
+                    agentCreation(intent);
                     break;
 
                 case 13:
                     procExistingFarmerSka(intent);
                     break;
 
+                case 12:
+                    procFarmerCreationSka(intent);
+                    break;
+
+                case 11:
+                    procExistingCenterVisit(intent);
+                    break;
+
+                case 10:
+                    procMaintenanceRegular(intent);
+                    break;
+
+                case 9:
+                    procAsset(intent);
+                    break;
+
+                case 8:
+                    procMaintenanceIssue(intent);
+                    break;
+
+                case 7:
+                    procQuality(intent);
+                    break;
+
+                case 6:
+                    procAgentVisit(intent);
+                    break;
+
+                case 5:
+                    procAIT(intent);
+                    break;
+
+                case 4:
+                    procVeterinary(intent);
+                    break;
+
+                case 3:
+                    procAgronomist(intent);
+                    break;
+
+                case 2:
+                    procFarmerCreation(intent);
+                    break;
+
+                case 1:
+                    procCollectionCenter(intent);
+                    break;
+
                 default:
-                    Toast.makeText(context, "service id is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error! form submitting. service id is empty", Toast.LENGTH_SHORT).show();
                     break;
             }
 
         }else {
-          //  Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
+            //  Intent notificationIntent = new Intent(this, CollectionCenterLocationActivity.class);
             Intent Intent = new Intent();
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , Intent, PendingIntent.FLAG_IMMUTABLE);
 
@@ -168,6 +204,470 @@ public class FileUploadService2 extends Service {
 
         // stopself
         return START_NOT_STICKY;
+    }
+
+    private void newCollCenterCrea(Intent intent) {
+        String mCenterName = intent.getStringExtra("center_name");
+        String mState = intent.getStringExtra("state");
+        String mDistrict = intent.getStringExtra("district");
+        String mPlant = intent.getStringExtra("plant");
+        String mAddr1 = intent.getStringExtra("addr1");
+        String mAddr2 = intent.getStringExtra("addr2");
+        String mAddr3 = intent.getStringExtra("addr3");
+
+        String mOwnerName = intent.getStringExtra("owner_name");
+        String mOwnerAddr1 = intent.getStringExtra("owner_addr1");
+        String mOwnerPinCode = intent.getStringExtra("owner_pincode");
+
+        String mMobile = intent.getStringExtra("mobile");
+        String mEmail = intent.getStringExtra("email");
+
+        String mBusinessAddr = mAddr1 + " " + mAddr2 + " " + mAddr3;
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        File file = new File(dir, "CENP_123" + ".jpg");
+        ProgressRequestBody progressRequestBody = new ProgressRequestBody(file);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file.getName(),progressRequestBody);
+
+        Intent notificationIntent = new Intent(this, FarmerUpdateActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.proCollCenterCr(PROC_COLL_CENTER_CR2,
+                imagePart,
+                mCenterName,
+                mState,
+                mDistrict,
+                mPlant,
+                mBusinessAddr,
+                mOwnerName,
+                mOwnerAddr1,
+                mOwnerPinCode,
+                mMobile,
+                mEmail);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form update success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        //   throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void farmerUpdate(Intent intent) {
+        String mId = intent.getStringExtra("id");
+        String mFarmerName = intent.getStringExtra("farmer_name");
+        String mState = intent.getStringExtra("state");
+        String mDistrict = intent.getStringExtra("district");
+
+        String mTown = intent.getStringExtra("town");
+        String mCollCenter = intent.getStringExtra("coll_center");
+        String mFaCategory = intent.getStringExtra("fa_category");
+
+        String mAddr = intent.getStringExtra("addr");
+        String mPinCode = intent.getStringExtra("pin_code");
+
+        String mCity = intent.getStringExtra("city");
+        String mMobile = intent.getStringExtra("mobile_no");
+
+        String mEmail = intent.getStringExtra("email");
+        String mIncentiveAmt = intent.getStringExtra("incentive_amt");
+        String mCartageAmt = intent.getStringExtra("cartage_amt");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        File file = new File(dir, "FAMC2_123" + ".jpg");
+        ProgressRequestBody progressRequestBody = new ProgressRequestBody(file);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file.getName(),progressRequestBody);
+
+        Intent notificationIntent = new Intent(this, FarmerUpdateActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.updateProFarmer(PROCUREMENT_UPDATE_FARMER,
+                imagePart,
+                mId,
+                mFarmerName,
+                mState,
+                mDistrict,
+                mTown,
+                mCollCenter,
+                mFaCategory,
+                mAddr,
+                mPinCode,
+                mCity,
+                mMobile,
+                mEmail,
+                mIncentiveAmt,
+                mCartageAmt);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form update success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        //   throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void agentUpdation(Intent intent) {
+        String mId = intent.getStringExtra("id");
+        String mAgentName = intent.getStringExtra("agent_name");
+        String mState = intent.getStringExtra("state");
+        String mDistrict = intent.getStringExtra("district");
+        String mTown = intent.getStringExtra("town");
+        String mCollCenter = intent.getStringExtra("coll_center");
+        String mAgentCategory = intent.getStringExtra("ag_category");
+        String mCompany = intent.getStringExtra("company");
+        String mAddress = intent.getStringExtra("addr");
+        String mPinCode = intent.getStringExtra("pin_code");
+        String mCity = intent.getStringExtra("city");
+        String mMobileNo = intent.getStringExtra("mobile_no");
+        String mEmail = intent.getStringExtra("email");
+        String mIncentiveAmt = intent.getStringExtra("incentive_amt");
+        String mCartageAmt = intent.getStringExtra("cartage_amt");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        File file = new File(dir, "AGENT_CREAT_123" + ".jpg");
+        ProgressRequestBody progressRequestBody = new ProgressRequestBody(file);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file.getName(),progressRequestBody);
+
+        Intent notificationIntent = new Intent(this, AgentUpdateActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.updateProAgent(PROCUREMENT_UPDATE_AGENT,
+                mId,
+                imagePart,
+                mAgentName,
+                mState,
+                mDistrict,
+                mTown,
+                mCollCenter,
+                mAgentCategory,
+                mCompany,
+                mAddress,
+                mPinCode,
+                mCity,
+                mMobileNo,
+                mEmail,
+                mIncentiveAmt,
+                mCartageAmt);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form update success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        //   throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(FileUploadService2.this.context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void milkCollEntry(Intent intent) {
+        String mActiveFlag = intent.getStringExtra("active_flag");
+        String mSession = intent.getStringExtra("session");
+        String mMilkType = intent.getStringExtra("milk_type");
+        String mCustomerName = intent.getStringExtra("customer_name");
+        String mCustomerNo = intent.getStringExtra("customer_no");
+        String mMilkCollEntryDate = intent.getStringExtra("coll_entry_date");
+        String mCans = intent.getStringExtra("cans");
+        String mMilkWeight = intent.getStringExtra("milk_weight");
+        String mTotalMilkQty = intent.getStringExtra("total_milk_qty");
+        String mMilkSampleNo = intent.getStringExtra("milk_sample_no");
+        String mFat = intent.getStringExtra("fat");
+        String mSnf = intent.getStringExtra("snf");
+        String mCLR = intent.getStringExtra("clr");
+        String mMilkRate = intent.getStringExtra("milk_rate");
+        String mTotalMilkAmount = intent.getStringExtra("total_milk_amt");
+
+        Intent notificationIntent = new Intent(this, NewFarmerCreationActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.saveProcMilkCollEntry(PROCUREMENT_SAVE_MILK_COLLECTION,
+                mSession,
+                mMilkType,
+                mCustomerName,
+                mCustomerNo,
+                mCans,
+                mMilkWeight,
+                mTotalMilkQty,
+                mMilkSampleNo,
+                mFat,
+                mSnf,
+                mCLR,
+                mMilkRate,
+                mTotalMilkAmount,
+                mTimeDate,
+                mActiveFlag,
+                mMilkCollEntryDate);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        //   throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void farmerCreation2(Intent intent) {
+        String mFarmerName = intent.getStringExtra("farmer_name");
+        String mState = intent.getStringExtra("state");
+        String mDistrict = intent.getStringExtra("district");
+        String mTown = intent.getStringExtra("town");
+
+        String mCollCenter = intent.getStringExtra("coll_center");
+        String mFarmerCategory = intent.getStringExtra("fa_category");
+        String mAddress = intent.getStringExtra("addr");
+        String mPinCode = intent.getStringExtra("pin_code");
+
+        String mCity = intent.getStringExtra("city");
+        String mMobileNo = intent.getStringExtra("mobile_no");
+        String mEmail = intent.getStringExtra("email");
+        String mIncentiveAmt = intent.getStringExtra("incentive_amt");
+        String mCartageAmt = intent.getStringExtra("cartage_amt");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        File file = new File(dir, "FAMC2_123" + ".jpg");
+        ProgressRequestBody progressRequestBody = new ProgressRequestBody(file);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file.getName(),progressRequestBody);
+
+        Intent notificationIntent = new Intent(this, NewFarmerCreationActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.saveProFarmerCrea2(PROCUREMENT_SAVE_FARMER_CEATION,
+                imagePart,
+                mFarmerName,
+                mState,
+                mDistrict,
+                mTown,
+                mCollCenter,
+                mFarmerCategory,
+                mAddress,
+                mPinCode,
+                mCity,
+                mMobileNo,
+                mEmail,
+                mIncentiveAmt,
+                mCartageAmt);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        //   throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(FileUploadService2.this.context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void agentCreation(Intent intent) {
+        String mAgentName = intent.getStringExtra("agent_name");
+        String mState = intent.getStringExtra("state");
+        String mDistrict = intent.getStringExtra("district");
+        String mTown = intent.getStringExtra("town");
+        String mCollCenter = intent.getStringExtra("coll_center");
+        String mAgentCategory = intent.getStringExtra("ag_category");
+        String mCompany = intent.getStringExtra("company");
+        String mAddress = intent.getStringExtra("addr");
+        String mPinCode = intent.getStringExtra("pin_code");
+        String mCity = intent.getStringExtra("city");
+        String mMobileNo = intent.getStringExtra("mobile_no");
+        String mEmail = intent.getStringExtra("email");
+        String mIncentiveAmt = intent.getStringExtra("incentive_amt");
+        String mCartageAmt = intent.getStringExtra("cartage_amt");
+
+        String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+
+        File file = new File(dir, "AGENT_CREAT_123" + ".jpg");
+        ProgressRequestBody progressRequestBody = new ProgressRequestBody(file);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file.getName(),progressRequestBody);
+
+        Intent notificationIntent = new Intent(this, NewFarmerCreationActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setOnlyAlertOnce(true)
+                .setContentTitle("File uploading service")
+                .setContentText("Procurement uploading")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.saveProAgent(PROCUREMENT_SAVE_AGENT,
+                imagePart,
+                mAgentName,
+                mState,
+                mDistrict,
+                mTown,
+                mCollCenter,
+                mAgentCategory,
+                mCompany,
+                mAddress,
+                mPinCode,
+                mCity,
+                mMobileNo,
+                mEmail,
+                mIncentiveAmt,
+                mCartageAmt);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    showUploadCompleteNotification();
+                    stopForeground(true);
+                    try {
+                        String string = response.body().string();
+                        Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                     //   throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                FileUploadService2.this.stopForeground(true);
+                Toast.makeText(FileUploadService2.this.context, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void procExistingFarmerSka(Intent intent) {
@@ -238,7 +738,8 @@ public class FileUploadService2 extends Service {
                         String string = response.body().string();
                         Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -286,16 +787,16 @@ public class FileUploadService2 extends Service {
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.submitProcFarmerCreationSka(PROCUREMENT_SUBMIT_FARMER_CREATION_SKA,
-                                                                           audioPart,
-                                                                           imagePart,
-                                                                           mName,
-                                                                           mVillage,
-                                                                           mType,
-                                                                           mCompetitor,
-                                                                           mRemarksType,
-                                                                           mRemarksText,
-                                                                           mActiveFlag,
-                                                                           mTimeDate);
+                audioPart,
+                imagePart,
+                mName,
+                mVillage,
+                mType,
+                mCompetitor,
+                mRemarksType,
+                mRemarksText,
+                mActiveFlag,
+                mTimeDate);
 
         call.enqueue(new Callback<>() {
             @Override
@@ -307,7 +808,8 @@ public class FileUploadService2 extends Service {
                         String string = response.body().string();
                         Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -392,7 +894,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -433,7 +936,16 @@ public class FileUploadService2 extends Service {
         // Maintenance regular image
         File file_image_repair = new File(dir, "MAIN_REGU_123" + ".jpg");
         ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image_repair);
-        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image",file_image_repair.getName(),progressRequestBodyRepair);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image",file_image_repair.getName(),progressRequestBodyRepair);
+
+        File file_image_no_hrs = new File(dir, "MAIN_RE_NOHRS_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyNoHrs = new ProgressRequestBody(file_image_no_hrs);
+        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_no_hrs.getName(),progressRequestBodyNoHrs);
+
+        File file_image_as_per_book = new File(dir, "MAIN_RE_AS_PER_BOOK_123" + ".jpg");
+        ProgressRequestBody progressRequestBodyAsPerBook = new ProgressRequestBody(file_image_as_per_book);
+        MultipartBody.Part imagePart2 = MultipartBody.Part.createFormData("image2",file_image_as_per_book.getName(),progressRequestBodyAsPerBook);
+
 
         Intent notificationIntent = new Intent(this, MaintanenceRegularActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -450,7 +962,7 @@ public class FileUploadService2 extends Service {
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ResponseBody> call = apiInterface.submitProcMaintenRegular(PROCUREMENT_MAINTENNACE_REGULAR,
+        Call<ResponseBody> call = apiInterface.submitProcMaintenRegular(PROCUREMENT_MAINTENANCE_REGULAR,
                 mCompany,
                 mPlant,
                 mBmcNoHrsRunning,
@@ -459,7 +971,7 @@ public class FileUploadService2 extends Service {
                 mCcVolumeCollect,
                 mIBTRunningHrs,
                 mDgSetRunnings,
-                imagePart1,
+                imagePart,
                 mPowerFactor,
                 mPipeline,
                 mLeakages,
@@ -470,7 +982,9 @@ public class FileUploadService2 extends Service {
                 mHotWater,
                 mFactoryLicenceIns,
                 mActiveFlag,
-                mTimeDate);
+                mTimeDate,
+                imagePart1,
+                imagePart2);
 
         call.enqueue(new Callback<>() {
             @Override
@@ -483,7 +997,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Maintenance regular form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -538,7 +1053,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Asset form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -558,13 +1074,45 @@ public class FileUploadService2 extends Service {
         String mEquipment = intent.getStringExtra("equipment");
         String mRepairType = intent.getStringExtra("repair_type");
         String mActiveFlag = intent.getStringExtra("active_flag");
+        String mOthers = intent.getStringExtra("others");
 
         String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
+        MultipartBody.Part imagePart1 = null;
 
-        // Maintenance repair image
-        File file_image_repair = new File(dir, "MAIN_RE_123" + ".jpg");
-        ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(file_image_repair);
-        MultipartBody.Part imagePart1 = MultipartBody.Part.createFormData("image1",file_image_repair.getName(),progressRequestBodyRepair);
+        File fileSensorIssue = new File(dir, "MAIN_RE_123" + ".jpg");
+        Bitmap bitmap1 = BitmapFactory.decodeFile(fileSensorIssue.getAbsolutePath());
+        if (bitmap1 != null){
+            ProgressRequestBody progressRequestBodyRepair = new ProgressRequestBody(fileSensorIssue);
+            imagePart1 = MultipartBody.Part.createFormData("image1", fileSensorIssue.getName(), progressRequestBodyRepair);
+        }
+
+        File fileBoardImage = new File(dir, "MAIN_IS_BOARD_IS" + ".jpg");
+        Bitmap bitmap2 = BitmapFactory.decodeFile(fileBoardImage.getAbsolutePath());
+        if (bitmap2 != null) {
+            ProgressRequestBody progressRequestBodyBoardIssue = new ProgressRequestBody(fileBoardImage);
+            imagePart1 = MultipartBody.Part.createFormData("image1", fileBoardImage.getName(), progressRequestBodyBoardIssue);
+        }
+
+        File fileSMPS = new File(dir, "MAIN_SMBS_123" + ".jpg");
+        Bitmap bitmap3 = BitmapFactory.decodeFile(fileSMPS.getAbsolutePath());
+        if (bitmap3 != null){
+            ProgressRequestBody progressRequestBodySMBS = new ProgressRequestBody(fileSMPS);
+            imagePart1 = MultipartBody.Part.createFormData("image1",fileSMPS.getName(),progressRequestBodySMBS);
+        }
+
+        File fileMotor = new File(dir, "MAIN_MOTOR_123" + ".jpg");
+        Bitmap bitmap4 = BitmapFactory.decodeFile(fileMotor.getAbsolutePath());
+        if (bitmap4 != null){
+            ProgressRequestBody progressRequestBodyMotors = new ProgressRequestBody(fileMotor);
+            imagePart1 = MultipartBody.Part.createFormData("image1",fileMotor.getName(),progressRequestBodyMotors);
+        }
+
+        File file_scale = new File(dir, "MAIN_WEIGH_SC_123" + ".jpg");
+        Bitmap bitmap5 = BitmapFactory.decodeFile(fileMotor.getAbsolutePath());
+        if (bitmap5 != null){
+            ProgressRequestBody progressRequestBodyScale = new ProgressRequestBody(file_scale);
+            imagePart1 = MultipartBody.Part.createFormData("image1",file_scale.getName(),progressRequestBodyScale);
+        }
 
         Intent notificationIntent = new Intent(this, MaintanenceIssuesFormActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -587,9 +1135,10 @@ public class FileUploadService2 extends Service {
                 mPlant,
                 mEquipment,
                 mRepairType,
-                imagePart1,
                 mActiveFlag,
-                mTimeDate);
+                mTimeDate,
+                imagePart1,
+                mOthers);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -602,7 +1151,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Maintenance form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -708,7 +1258,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Quality form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -771,7 +1322,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Agent visit form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -848,7 +1400,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "AIT form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -881,7 +1434,6 @@ public class FileUploadService2 extends Service {
         ProgressRequestBody progressRequestBodyEVM = new ProgressRequestBody(file_image_evm);
         MultipartBody.Part imagePart2 = MultipartBody.Part.createFormData("image2",file_image_evm.getName(),progressRequestBodyEVM);
 
-        String mProductType = intent.getStringExtra("product_type");
         String mSeedSale = intent.getStringExtra("seed_sale");
         String mMineralMixture = intent.getStringExtra("mineral_mixture");
         String mFodderSetts = intent.getStringExtra("fodder_setts_sale_kg");
@@ -910,13 +1462,12 @@ public class FileUploadService2 extends Service {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.submitProcVeterinary(PROCUREMENT_SUBMIT_VETERINARY,
-                                                                    mCompany,
-                                                                    mPlant,
+                mCompany,
+                mPlant,
                 mCenterName,
                 mFarmerName,
                 mServiceType,
                 imagePart1,
-                mProductType,
                 mSeedSale,
                 mMineralMixture,
                 mFodderSetts,
@@ -942,7 +1493,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Veterinary form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -963,6 +1515,10 @@ public class FileUploadService2 extends Service {
         String mProductType = intent.getStringExtra("product_type");
         String mTeatDip = intent.getStringExtra("teat_dip");
         String mServiceType = intent.getStringExtra("service_type");
+
+        String mFarmerEnrolled = intent.getStringExtra("farmer_enrolled");
+        String mFarmerInducted = intent.getStringExtra("farmer_inducted");
+
         String mActiveFlag = intent.getStringExtra("active_flag");
 
         String dir = getExternalFilesDir("/").getPath() + "/" + "procurement/";
@@ -1012,6 +1568,8 @@ public class FileUploadService2 extends Service {
                 imagePart2,
                 mFodderDevAcres,
                 imagePart3,
+                mFarmerEnrolled,
+                mFarmerInducted,
                 mActiveFlag,
                 mTimeDate);
 
@@ -1026,7 +1584,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Farmer agronomist form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -1044,7 +1603,7 @@ public class FileUploadService2 extends Service {
         String mCenter = intent.getStringExtra("center");
         String mFarmerGategory = intent.getStringExtra("farmer_gategory");
         String mFarmerName = intent.getStringExtra("farmer_name");
-        String mFarmerAddress = intent.getStringExtra("farmer_address");
+        String mFarmerAddress = intent.getStringExtra("farmer_addr");
         String mPhoneNumber = intent.getStringExtra("phone_number");
         String mPinCode = intent.getStringExtra("pin_code");
         String mBuffaloTotal = intent.getStringExtra("buffalo_total");
@@ -1094,10 +1653,12 @@ public class FileUploadService2 extends Service {
                 mTimeDate,
                 thumbnailPart);
 
+        Log.e("rr__", "sssss = 1");
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    Log.e("rr__", "sssss = 2");
                     String res;
                     showUploadCompleteNotification();
                     stopForeground(true);
@@ -1105,7 +1666,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Farmer creation form submit success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -1177,7 +1739,8 @@ public class FileUploadService2 extends Service {
                         res = response.body().string();
                         Toast.makeText(context, "Collection form submitted success", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        // throw new RuntimeException(e);
+                        Toast.makeText(context, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

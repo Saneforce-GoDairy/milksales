@@ -40,7 +40,6 @@ public class ProcurementCameraX extends AppCompatActivity {
     private String imageName, DIR;
     private File file;
     private Bitmap bitmap;
-    public static final String APP_DATA = "/procurement";
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -64,7 +63,6 @@ public class ProcurementCameraX extends AppCompatActivity {
         createDirectory();
         onClick();
 
-        // Load event name
         String eventName = getIntent().getStringExtra("event_name");
 
         if (eventName != null){
@@ -73,6 +71,7 @@ public class ProcurementCameraX extends AppCompatActivity {
     }
 
     private void onClick() {
+        binding.back.setOnClickListener(v -> finish());
         binding.buttonSwitchCam.setOnClickListener(v -> {
             if (cameraFacing == CameraSelector.LENS_FACING_BACK) {
                 cameraFacing = CameraSelector.LENS_FACING_FRONT;
@@ -95,7 +94,7 @@ public class ProcurementCameraX extends AppCompatActivity {
     }
 
     private void  createDirectory() {
-        File dir = getExternalFilesDir(APP_DATA);
+        File dir = getExternalFilesDir("/procurement");
         if(!dir.exists()) {
             if (!dir.mkdir()) {
                 Toast.makeText(getApplicationContext(), "The folder " + dir.getPath() + "was not created", Toast.LENGTH_SHORT).show();
@@ -148,85 +147,113 @@ public class ProcurementCameraX extends AppCompatActivity {
 
     public void takePicture(androidx.camera.core.ImageCapture imageCapture) {
 
-//        String userInfo = "MyPrefs";
-//        UserDetails = getSharedPreferences(userInfo, Context.MODE_PRIVATE);
-//        String SF_Code = UserDetails.getString("Sfcode","");
-
-//        long tsLong = System.currentTimeMillis() / 1000;
-//        capturedImageName = SF_Code +"_"+Long.toString(tsLong) + ".jpg";
-
-//        file = new File(DIR, capturedImageName);
-
-//        long tsLong = System.currentTimeMillis() / 1000;
-//        imageName = tsLong + ".jpg";
-//        file = new File(DIR, imageName);
-
         String cameraEventId = getIntent().getStringExtra("camera_id");
 
         switch (Integer.parseInt(cameraEventId)){
-            case 1:
-                farmersMeetingImage();
+
+            case 25:
+                imageName = "CENP_123" + ".jpg";
+                file = new File(DIR, imageName);
                 break;
 
-            case 2:
-                csrActivityImage();
+
+            case 24:
+                imageName = "FAMC2_123" + ".jpg";
+                file = new File(DIR, imageName);
                 break;
 
-            case 3:
-                fodderDevAcres();
+            case 23:
+                agentCreat();
                 break;
 
-            case 4:
-                nameOfBreed();
+            case 22:
+                maintenanceAsPerBook();
                 break;
 
-            case 5:
-                collectionCenter();
+            case 21:
+                maintenanceRegNoHrs();
                 break;
 
-            case 6:
-                VeteriDocFormTypeOfSer();
+            case 20:
+                maintenanceWeighSca();
                 break;
 
-            case 7:
-                VeteriDocFormEVM();
+            case 19:
+                maintenanceMotorIs();
                 break;
 
-            case 8:
-                qualityFormFat();
+            case 18:
+                maintenanceSMBS();
                 break;
 
-            case 9:
-                qualityFormSNF();
+            case 17:
+                maintenanceBoardIs();
                 break;
 
-            case 10:
-                qualityReceivedNofVehicle();
-                break;
-
-            case 11:
-                qualityReceivedNofVehicleWithout();
-                break;
-
-            case 12:
-                qualityAws();
-                break;
-
-            case 13:
-                farmerCreation();
-                break;
-
-            case 14:
-                maintenanceRepair();
+            case 16:
+                newFarCreatCompetitor(); // ska client
                 break;
 
             case 15:
                 maintenanceRegular();
                 break;
 
-            case 16:
-                newFarCreatCompetitor(); // ska client
+            case 14:
+                maintenanceRepair();
                 break;
+
+            case 13:
+                farmerCreation();
+                break;
+
+            case 12:
+                qualityAws();
+                break;
+
+            case 11:
+                qualityReceivedNofVehicleWithout();
+                break;
+
+            case 10:
+                qualityReceivedNofVehicle();
+                break;
+
+            case 9:
+                qualityFormSNF();
+                break;
+
+            case 8:
+                qualityFormFat();
+                break;
+
+            case 7:
+                VeteriDocFormEVM();
+                break;
+
+            case 6:
+                VeteriDocFormTypeOfSer();
+                break;
+
+            case 5:
+                collectionCenter();
+                break;
+
+            case 4:
+                nameOfBreed();
+                break;
+
+            case 3:
+                fodderDevAcres();
+                break;
+
+            case 2:
+                csrActivityImage();
+                break;
+
+            case 1:
+                farmersMeetingImage();
+                break;
+
         }
 
         androidx.camera.core.ImageCapture.OutputFileOptions outputFileOptions = new androidx.camera.core.ImageCapture.OutputFileOptions.Builder(file).build();
@@ -266,6 +293,41 @@ public class ProcurementCameraX extends AppCompatActivity {
                 startCamera(cameraFacing);
             }
         });
+    }
+
+    private void agentCreat() {
+        imageName = "AGENT_CREAT_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceAsPerBook() {
+        imageName = "MAIN_RE_AS_PER_BOOK_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceRegNoHrs() {
+        imageName = "MAIN_RE_NOHRS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceWeighSca() {
+        imageName = "MAIN_WEIGH_SC_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceMotorIs() {
+        imageName = "MAIN_MOTOR_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceSMBS() {
+        imageName = "MAIN_SMBS_123" + ".jpg";
+        file = new File(DIR, imageName);
+    }
+
+    private void maintenanceBoardIs() {
+        imageName = "MAIN_IS_BOARD_IS" + ".jpg";
+        file = new File(DIR, imageName);
     }
 
     private void newFarCreatCompetitor() {

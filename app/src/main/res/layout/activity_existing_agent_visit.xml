@@ -3,290 +3,427 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".procurement.ExistingAgentVisitActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        android:elevation="20dp">
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/baseline_arrow_back_35"
-            android:contentDescription="@string/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/back"
-            android:fontFamily="@font/ubuntu_medium"
-            android:text="@string/existing_agent_visit"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-    </RelativeLayout>
-
-    <ScrollView
-        android:id="@+id/scrollView1"
+        android:id="@+id/plant_con"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="none"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="10dp">
+        android:visibility="gone">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/Primary_blue"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar" />
+
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Results"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/form_con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:elevation="20dp">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/baseline_arrow_back_35"
+                android:contentDescription="@string/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/back"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="@string/existing_agent_visit"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </RelativeLayout>
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/ag_exclusive_agent"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ubuntu_medium"
+                        android:text="@string/select_company"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txt_company_not_valid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="More Fonts..."
+                        android:text="@string/not_valid"
+                        android:textColor="#ff0130"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:ignore="SmallSp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_text_common"
+                    android:layout_marginTop="2dp">
+
+                    <com.saneforce.godairy.common.CustomSpinner
+                        android:id="@+id/spinner_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ubuntu_medium"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:text="@string/select_plant"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txt_plant_not_valid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="@string/not_valid"
+                        android:textStyle="bold"
+                        android:textColor="#ff0130"
+                        tools:ignore="SmallSp"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp">
+
+                    <EditText
+                        android:id="@+id/ed_plant"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/edit_text_common"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="Select"
+                        android:textSize="12sp"
+                        android:importantForAutofill="no"
+                        android:inputType="textAutoComplete"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        tools:ignore="LabelFor" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ubuntu_medium"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:text="Select MCC"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txt_mcc_not_valid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="@string/not_valid"
+                        android:textStyle="bold"
+                        android:textColor="#ff0130"
+                        tools:ignore="SmallSp"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp">
+
+                    <EditText
+                        android:id="@+id/ed_mcc"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/edit_text_common"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="Select"
+                        android:textSize="12sp"
+                        android:importantForAutofill="no"
+                        android:inputType="textAutoComplete"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        tools:ignore="LabelFor" />
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/ubuntu"
-                    android:text="@string/exclusive_agent" />
+                    android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/ag_dual_agent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/ubuntu"
-                    android:text="@string/dual_agent" />
+                    <RadioButton
+                        android:id="@+id/ag_exclusive_agent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="@string/exclusive_agent" />
 
-            </LinearLayout>
+                    <RadioButton
+                        android:id="@+id/ag_dual_agent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="@string/dual_agent" />
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/ubuntu_medium"
-                    android:text="@string/select_company"
+                    android:text="@string/total_milk_availability"
                     android:textStyle="bold"
                     android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/txt_company_not_valid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:fontFamily="More Fonts..."
-                    android:text="@string/not_valid"
-                    android:textColor="#ff0130"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    tools:ignore="SmallSp" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/edit_text_common"
-                android:layout_marginTop="2dp">
-
-                <com.saneforce.godairy.common.CustomSpinner
-                    android:id="@+id/spinner_company"
+                <EditText
+                    android:id="@+id/ed_total_milk_avai"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="@string/total_milk_availability"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/ed_total_milk_avai"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/edit_text_common"
-                android:fontFamily="@font/ubuntu"
-                android:paddingStart="10dp"
-                android:paddingEnd="@dimen/C10dp"
-                android:importantForAutofill="no"
-                android:inputType="numberDecimal"
-                tools:ignore="LabelFor" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="@string/our_company_ltrs"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/ed_our_company_ltrs"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/edit_text_common"
-                android:fontFamily="@font/ubuntu"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:importantForAutofill="no"
-                android:inputType="numberDecimal"
-                tools:ignore="LabelFor" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="@string/what_is_competitor_rate"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/ed_competitor_rate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/edit_text_common"
-                android:fontFamily="@font/ubuntu"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:importantForAutofill="no"
-                android:inputType="numberDecimal"
-                tools:ignore="LabelFor" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="@string/what_is_our_company_rate"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/ed_our_compny_rate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/edit_text_common"
-                android:fontFamily="@font/ubuntu"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:importantForAutofill="no"
-                tools:ignore="LabelFor"
-                android:inputType="numberDecimal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="@string/demand"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-
-            <EditText
-                android:id="@+id/ed_demand"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/edit_text_common"
-                android:fontFamily="@font/ubuntu"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:importantForAutofill="no"
-                tools:ignore="LabelFor"
-                android:inputType="text" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="@string/supply_start_date"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-
-            <EditText
-                android:id="@+id/ed_supply_start_date"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/edit_text_common"
-                android:fontFamily="@font/ubuntu"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:importantForAutofill="no"
-                android:inputType="date|text"
-                tools:ignore="LabelFor" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp">
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="@dimen/C10dp"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal"
+                    tools:ignore="LabelFor" />
 
                 <TextView
-                    android:id="@+id/txt_error_found"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:textSize="10sp"
-                    android:fontFamily="@font/ubuntu"
-                    android:text="@string/error_empty_field_found"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="@string/our_company_ltrs"
                     android:textStyle="bold"
-                    android:textColor="#ff0130"
-                    tools:ignore="SmallSp"
-                    android:visibility="gone"/>
+                    android:textColor="@color/black" />
 
-            </RelativeLayout>
+                <EditText
+                    android:id="@+id/ed_our_company_ltrs"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal"
+                    tools:ignore="LabelFor" />
 
-            <Button
-                android:id="@+id/button_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/save"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/button_blue"
-                android:textColor="@color/white"
-                android:fontFamily="@font/ubuntu"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                tools:ignore="UnusedAttribute" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="@string/what_is_competitor_rate"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
 
-    </ScrollView>
+                <EditText
+                    android:id="@+id/ed_competitor_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal"
+                    tools:ignore="LabelFor" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="@string/what_is_our_company_rate"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/ed_our_compny_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:importantForAutofill="no"
+                    tools:ignore="LabelFor"
+                    android:inputType="numberDecimal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="@string/demand"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
 
 
+                <EditText
+                    android:id="@+id/ed_demand"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:importantForAutofill="no"
+                    tools:ignore="LabelFor"
+                    android:inputType="text" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="@string/supply_start_date"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+
+                <EditText
+                    android:id="@+id/ed_supply_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/txt_error_found"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="@string/error_empty_field_found"
+                        android:textStyle="bold"
+                        android:textColor="#ff0130"
+                        tools:ignore="SmallSp"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/button_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/button_blue"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/ubuntu"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    tools:ignore="UnusedAttribute" />
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
 
 </RelativeLayout>

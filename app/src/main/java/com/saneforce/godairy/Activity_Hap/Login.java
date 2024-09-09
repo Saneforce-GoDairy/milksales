@@ -383,6 +383,10 @@ public class Login extends AppCompatActivity {
                             ApiClient.ChangeBaseURL(baseURL);
                             shared_common_pref.save("base_url", baseURL);
                             shared_common_pref.save("company_code", code.toLowerCase());
+
+                            SharedPreferences.Editor userEditor = UserDetails.edit();
+                            userEditor.putString("base_url", baseURL);
+                            userEditor.apply();
                         }
                         login(1);
                     } catch (Exception e) {

@@ -1,22 +1,29 @@
 package com.saneforce.godairy.procurement.reports;
 
 import static android.view.View.GONE;
-import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_MAINTENANCE_REPORT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_AIT_REPORT;
+import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_MAINTENANCE_ISSUE_REPORT;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
-import com.saneforce.godairy.Model_Class.ProcMaintenanceReport;
-import com.saneforce.godairy.databinding.ActivityMaintenanceReportBinding;
-import com.saneforce.godairy.procurement.adapter.MaintenanceReportAdapter;
+import com.saneforce.godairy.Model_Class.ProcAITReport;
+import com.saneforce.godairy.Model_Class.ProcMaintenIssue;
+import com.saneforce.godairy.R;
+import com.saneforce.godairy.databinding.ActivityMaintenanceIssueReportBinding;
+import com.saneforce.godairy.procurement.adapter.AITReportListAdapter;
+import com.saneforce.godairy.procurement.adapter.MainIssueReportAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,66 +38,63 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MaintenanceReportActivity extends AppCompatActivity {
-    private ActivityMaintenanceReportBinding binding;
-    private List<ProcMaintenanceReport> maintenanceReportList;
-    private MaintenanceReportAdapter maintenanceReportAdapter;
+public class MaintenanceIssueReportAct extends AppCompatActivity {
+    private ActivityMaintenanceIssueReportBinding binding;
     private final Context context = this;
+    List<ProcMaintenIssue> list;
+    private MainIssueReportAdapter mainIssueReportAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMaintenanceReportBinding.inflate(getLayoutInflater());
+        binding = ActivityMaintenanceIssueReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        maintenanceReportList = new ArrayList<>();
+        list = new ArrayList<>();
         loadList();
     }
 
     private void loadList() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseBody> call = apiInterface.getMaintenanceReport(PROCUREMENT_GET_MAINTENANCE_REPORT);
+        Call<ResponseBody> call = apiInterface.getMaintenanceIssueReport(PROCUREMENT_GET_MAINTENANCE_ISSUE_REPORT);
 
         call.enqueue(new Callback<>() {
-            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful()){
                     binding.shimmerLayout.setVisibility(GONE);
-                    String maintenanceList;
+                    String  maintenIssueList;
                     try {
-                        maintenanceList = response.body().string();
+                        maintenIssueList = response.body().string();
 
-                        if (maintenanceList.isEmpty()){
+                        if (maintenIssueList.isEmpty()){
                             showError();
                             return;
                         }
 
-                        JSONObject jsonObject = new JSONObject(maintenanceList);
+                        JSONObject jsonObject = new JSONObject(maintenIssueList);
                         boolean mRecords = jsonObject.getBoolean("status");
 
                         if (mRecords) {
                             JSONArray jsonArrayData = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArrayData.length(); i++) {
-                                ProcMaintenanceReport maintenanceReport = new ProcMaintenanceReport();
+                                ProcMaintenIssue procMaintenIssue = new ProcMaintenIssue();
                                 JSONObject object = jsonArrayData.getJSONObject(i);
-                                maintenanceReport.setCompany(object.getString("company"));
-                                maintenanceReport.setPlant(object.getString("plant"));
-                                maintenanceReport.setNo_of_equipment(object.getString("equipment"));
-                                maintenanceReport.setRepair_type(object.getString("repair_type"));
-                                maintenanceReport.setRepair_img(object.getString("repair_type_img"));
-                                maintenanceReport.setCreated_dt(object.getString("created_dt"));
-
-                                maintenanceReportList.add(maintenanceReport);
+                                procMaintenIssue.setCompany(object.getString("company"));
+                                procMaintenIssue.setPlant(object.getString("plant"));
+                                procMaintenIssue.setEquipment(object.getString("equipment"));
+                                procMaintenIssue.setRepair_type(object.getString("repair_type"));
+                                procMaintenIssue.setRepair_type_img(object.getString("repair_type_img"));
+                                list.add(procMaintenIssue);
                             }
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                             binding.recyclerView.setLayoutManager(linearLayoutManager);
                             binding.recyclerView.setHasFixedSize(true);
                             binding.recyclerView.setItemViewCacheSize(20);
-                            maintenanceReportAdapter = new MaintenanceReportAdapter(context, maintenanceReportList);
-                            binding.recyclerView.setAdapter(maintenanceReportAdapter);
-                            maintenanceReportAdapter.notifyDataSetChanged();
+                            mainIssueReportAdapter = new MainIssueReportAdapter(context, list);
+                            binding.recyclerView.setAdapter(mainIssueReportAdapter);
+                            mainIssueReportAdapter.notifyDataSetChanged();
                             return;
                         }
                         binding.shimmerLayout.setVisibility(GONE);
@@ -105,10 +109,11 @@ public class MaintenanceReportActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                showError();
+
             }
         });
     }
+
     private void showError() {
         binding.shimmerLayout.setVisibility(GONE);
         binding.recyclerView.setVisibility(GONE);

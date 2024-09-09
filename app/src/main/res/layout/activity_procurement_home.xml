@@ -37,19 +37,18 @@
 
   </RelativeLayout>
 
-  <ScrollView
+  <androidx.core.widget.NestedScrollView
       android:id="@+id/scrollView1"
       android:layout_width="match_parent"
       android:fillViewport="true"
       android:layout_height="match_parent"
       android:scrollbars="none"
-
       android:layout_marginTop="5dp"
       android:layout_marginBottom="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
       <androidx.recyclerview.widget.RecyclerView
@@ -59,12 +58,30 @@
           android:layout_marginStart="10dp"
           />
 
-      <View
-          android:visibility="visible"
+
+      <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="0.1dp"
-          android:background="#CACACA"
-          android:layout_marginTop="10dp"/>
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="10dp"
+          android:layout_marginStart="10dp"
+          android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Milk collection"
+            android:fontFamily="@font/ubuntu_medium"
+            android:textSize="15sp"/>
+
+        <View
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="#CACACA"/>
+
+      </LinearLayout>
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -72,17 +89,265 @@
           android:orientation="vertical">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal">
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/milk_coll"
+              android:layout_width="110dp"
+              android:layout_height="110dp"
+              android:layout_marginEnd="10dp"
+              android:layout_marginTop="10dp"
+              app:cardBackgroundColor="#C1E3FF"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:clickable="true"
+              app:cardCornerRadius="10dp"
+              android:focusable="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical"
+                  android:padding="10dp"
+                  tools:ignore="UseCompoundDrawables,UselessParent">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/ic_report_new"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="Milk collection entry"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#858585"
+                    android:gravity="center_horizontal"
+                    tools:text="Milk collection entry" />
+
+              </LinearLayout>
+
+            </RelativeLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/farmer"
+              android:layout_width="110dp"
+              android:layout_height="110dp"
+              android:layout_marginEnd="10dp"
+              android:layout_marginTop="10dp"
+              app:cardBackgroundColor="#C1E3FF"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:clickable="true"
+              app:cardCornerRadius="10dp"
+              android:focusable="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical"
+                  android:padding="10dp"
+                  tools:ignore="UseCompoundDrawables,UselessParent">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/ic_report_new"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="Farmer"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#858585"
+                    android:gravity="center_horizontal"
+                    />
+
+              </LinearLayout>
+
+            </RelativeLayout>
+
+          </androidx.cardview.widget.CardView>
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/agent"
+              android:layout_width="110dp"
+              android:layout_height="110dp"
+              android:layout_marginEnd="10dp"
+              android:layout_marginTop="10dp"
+              app:cardBackgroundColor="#C1E3FF"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:clickable="true"
+              app:cardCornerRadius="10dp"
+              android:focusable="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical"
+                  android:padding="10dp"
+                  tools:ignore="UseCompoundDrawables,UselessParent">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/ic_report_new"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="Agent"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#858585"
+                    android:gravity="center_horizontal"
+                    />
+
+              </LinearLayout>
+
+            </RelativeLayout>
+
+          </androidx.cardview.widget.CardView>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/new_coll_center"
+              android:layout_width="110dp"
+              android:layout_height="110dp"
+              android:layout_marginEnd="10dp"
+              android:layout_marginTop="10dp"
+              app:cardBackgroundColor="#C1E3FF"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:clickable="true"
+              app:cardCornerRadius="10dp"
+              android:focusable="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical"
+                  android:padding="10dp"
+                  tools:ignore="UseCompoundDrawables,UselessParent">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/ic_report_new"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="New collection center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#858585"
+                    android:gravity="center_horizontal"
+                    tools:text="New collection center" />
+
+              </LinearLayout>
+
+            </RelativeLayout>
+
+          </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="10dp"
+          android:layout_marginStart="10dp"
+          android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reports &amp; Custom forms"
+            android:fontFamily="@font/ubuntu_medium"
+            android:textSize="15sp"/>
+
+        <View
             android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="#CACACA"/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="20dp"
+          android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginStart="10dp">
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp">
 
           <androidx.cardview.widget.CardView
               android:id="@+id/reports"
               android:layout_width="110dp"
               android:layout_height="110dp"
               android:layout_marginEnd="10dp"
+              android:layout_marginBottom="10dp"
               android:layout_marginTop="10dp"
               app:cardBackgroundColor="#C1E3FF"
               android:foreground="?android:attr/selectableItemBackground"
@@ -175,10 +440,58 @@
             </RelativeLayout>
 
           </androidx.cardview.widget.CardView>
+
+          <androidx.cardview.widget.CardView
+              android:id="@+id/cs_form_report"
+              android:layout_width="110dp"
+              android:layout_height="110dp"
+              android:layout_marginEnd="10dp"
+              android:layout_marginTop="10dp"
+              app:cardBackgroundColor="#C1E3FF"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:clickable="true"
+              app:cardCornerRadius="10dp"
+              android:focusable="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical"
+                  android:padding="10dp"
+                  tools:ignore="UseCompoundDrawables,UselessParent">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/ic_report_new"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:text="Custom Report"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#858585"
+                    />
+
+              </LinearLayout>
+
+            </RelativeLayout>
+
+          </androidx.cardview.widget.CardView>
         </LinearLayout>
 
       </LinearLayout>
 
     </LinearLayout>
-  </ScrollView>
-  </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+</LinearLayout>

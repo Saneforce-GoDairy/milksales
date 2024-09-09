@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context=".procurement.NewCollectionCenter">
+
+    <RelativeLayout
+        android:id="@+id/plant_con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Primary_blue"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar" />
+
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Results"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/form_con">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:elevation="20dp">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/baseline_arrow_back_35"
+                android:contentDescription="@string/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/back"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Add collection center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:text="Center Photo"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txt_img_center_not_valid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="More Fonts..."
+                        android:text="@string/not_valid"
+                        android:textColor="#ff0130"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:ignore="SmallSp" />
+
+                    <ImageView
+                        android:id="@+id/camera_center"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/apple_camera"
+                        android:contentDescription="@string/fat_image" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/image_view_center_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        app:cardBackgroundColor="@color/white"
+                        android:layout_marginTop="5dp"
+                        app:cardCornerRadius="8dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/image_center"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/placeholder"
+                            android:contentDescription="@string/todo" />
+
+                    </androidx.cardview.widget.CardView>
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:text="Center Name"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/ed_center_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ubuntu_medium"
+                        android:text="State"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txt_state_not_valid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="More Fonts..."
+                        android:text="@string/not_valid"
+                        android:textColor="#ff0130"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:ignore="SmallSp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/state_con"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </RelativeLayout>
+                <EditText
+                    android:id="@+id/ed_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Select"
+                    android:inputType="textAutoComplete"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:autofillHints="none"
+                    tools:ignore="LabelFor" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="District"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/ed_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Select"
+                    android:inputType="textAutoComplete"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:autofillHints="none"
+                    tools:ignore="LabelFor" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ubuntu_medium"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:text="@string/select_plant"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txt_plant_not_valid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="@string/not_valid"
+                        android:textStyle="bold"
+                        android:textColor="#ff0130"
+                        tools:ignore="SmallSp"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp">
+
+                    <EditText
+                        android:id="@+id/ed_plant"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/edit_text_common"
+                        android:fontFamily="@font/ubuntu"
+                        android:text="Select"
+                        android:textSize="12sp"
+                        android:importantForAutofill="no"
+                        android:inputType="textAutoComplete"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        tools:ignore="LabelFor" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:text="Business address"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <fragment
+                    android:id="@+id/route_map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="10dp" />
+
+                <EditText
+                    android:id="@+id/ed_addr1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:hint="Address Line 1"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/ed_addr2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:hint="Address Line 2"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/ed_addr3"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:hint="Address Line 3"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:text="Owner Name"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/ed_owner_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:text="Owner address"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/ed_owner_addr1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:hint="Address"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/ed_owner_pincode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    android:hint="Pin code"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:text="Mobile No"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/ed_mobile_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:layout_marginTop="10dp"
+                    android:text="Email"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/ed_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:paddingStart="10dp"
+                    tools:ignore="LabelFor,RtlSymmetry"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_blue"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/ubuntu"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    tools:ignore="UnusedAttribute" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

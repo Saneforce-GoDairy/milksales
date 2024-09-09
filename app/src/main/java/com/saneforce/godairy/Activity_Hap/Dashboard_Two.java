@@ -142,7 +142,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     private final String ModeOfTravel = "";
     private String dashMdeCnt = "";
     private String datefrmt = "";
-    private final String TAG = "Dashboard_Two";
+    private final String TAG = "Dashboard_Two_";
     private String checkInUrl = "";
     private String timerDate, key, timerTime;
     LinearLayout approval;
@@ -640,6 +640,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             long diffDays = diff / (24 * 60 * 60 * 1000);
 
             binding.checkOutBtn.setText("CHECK OUT (" + addZero(Math.toIntExact(diffHours)) +":" +  addZero(Math.toIntExact(diffMinutes)) + ":" + diffSeconds + ")");
+    String debug = "";
         } catch (ParseException e) {
             e.printStackTrace();
         }    }
@@ -1019,7 +1020,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
 
     private void assignDyReports(JsonArray res) {
         try {
-            Log.v(TAG, res.toString());
+            Log.v(TAG, "Server res : " + res.toString());
             if (res.size() < 1) {
                 Toast.makeText(getApplicationContext(), "No Records Today", Toast.LENGTH_LONG).show();
 

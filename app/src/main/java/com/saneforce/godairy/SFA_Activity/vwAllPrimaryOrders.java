@@ -1,21 +1,22 @@
 package com.saneforce.godairy.SFA_Activity;
 
-import static com.saneforce.godairy.Common_Class.Constants.GroupFilter;
-import static com.saneforce.godairy.Common_Class.Constants.PRIMARY_VIEWALL;
-import static com.saneforce.godairy.Common_Class.Constants.Rout_List;
-import static com.saneforce.godairy.SFA_Activity.HAPApp.CurrencySymbol;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
@@ -25,32 +26,38 @@ import com.saneforce.godairy.Interface.Master_Interface;
 import com.saneforce.godairy.Interface.UpdateResponseUI;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.PrimaryOrder_History_Adapter;
-import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
-
+import com.saneforce.godairy.databinding.ActivityVwallPrimaryOrdersBinding;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Interface,UpdateResponseUI {
-
+    private ActivityVwallPrimaryOrdersBinding binding;
+    private final Context context = this;
     private Common_Class common_class;
     private Shared_Common_Pref sharedCommonPref;
     private RecyclerView recyclerView;
     private LinearLayout ldllDist;
     private TextView txtDist;
     JSONArray jData;
+    private DistributerAdapter distributerAdapter;
+    String orderId = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vwall_primary_orders);
+        binding = ActivityVwallPrimaryOrdersBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         recyclerView=findViewById(R.id.rvPrimary);
         ldllDist=findViewById(R.id.layout_distributer);
         txtDist=findViewById(R.id.txt_distributor);
+
         common_class = new Common_Class(this);
         sharedCommonPref = new Shared_Common_Pref(vwAllPrimaryOrders.this);
         common_class.getDb_310Data(Constants.PRIMARY_VIEWALL, vwAllPrimaryOrders.this);
@@ -61,6 +68,115 @@ public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Inte
                 common_class.showCommonDialog(common_class.getDistList(), 2, vwAllPrimaryOrders.this);
             }
         });
+
+        loadDistributer(common_class.getDistList(), 2);
+    }
+
+    private void loadDistributer(List<Common_Model> distList, int i) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setItemViewCacheSize(20);
+        distributerAdapter = new DistributerAdapter(context, distList, 2);
+        binding.recyclerView.setAdapter(distributerAdapter);
+    }
+
+    public class DistributerAdapter extends RecyclerView.Adapter<DistributerAdapter.ViewHolder> implements Filterable {
+        Context context;
+        List<Common_Model> distList;
+        int mType;
+        Activity activity;
+        private final List<Common_Model> mFilteredList;
+        public MyFilter mFilter;
+
+        public DistributerAdapter(Context context, List<Common_Model> distList, int i) {
+            this.context = context;
+            this.distList = distList;
+            this.mType = i;
+            this.mFilteredList = new ArrayList< >();
+        }
+
+        @Override
+        public Filter getFilter() {
+            if (mFilter == null){
+                mFilteredList.clear();
+                mFilteredList.addAll(this.distList);
+                mFilter = new DistributerAdapter.MyFilter(this,mFilteredList);
+            }
+            return mFilter;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_primary_no_orders_list, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            final Common_Model contact = distList.get(holder.getBindingAdapterPosition());
+            holder.mCustomerName.setText(contact.getName());
+            holder.mMobileNo.setText(contact.getPhone());
+        }
+
+        @Override
+        public int getItemCount() {
+            if (distList == null) return 0;
+            return distList.size();
+        }
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView mCustomerName, mMobileNo;
+            LinearLayout mainLayout;
+
+            public ViewHolder(View view) {
+                super(view);
+                mCustomerName = view.findViewById(R.id.customer_name);
+                mMobileNo = view.findViewById(R.id.mobile);
+                mainLayout = view.findViewById(R.id.layout);
+            }
+        }
+
+        private class MyFilter extends Filter {
+
+            private final DistributerAdapter myAdapter;
+            private final List<Common_Model> originalList;
+            private final List<Common_Model> filteredList;
+
+            private MyFilter(DistributerAdapter myAdapter, List<Common_Model> originalList) {
+                this.myAdapter = myAdapter;
+                this.originalList = originalList;
+                this.filteredList = new ArrayList<>();
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                filteredList.clear();
+                final FilterResults results = new FilterResults();
+                if (charSequence.length() == 0){
+                    filteredList.addAll(originalList);
+                }else {
+                    final String filterPattern = charSequence.toString().toLowerCase().trim();
+                    for ( Common_Model user : originalList){
+                        if (user.getName().toLowerCase().contains(filterPattern)){
+                            filteredList.add(user);
+                        }
+                    }
+                }
+                results.values = filteredList;
+                results.count = filteredList.size();
+                return results;
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                myAdapter.distList.clear();
+                myAdapter.distList.addAll((ArrayList<Common_Model>)filterResults.values);
+                myAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -87,26 +203,23 @@ public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Inte
                 break;
         }
     }
+
     @Override
     public void onLoadDataUpdateUI(String apiDataResponse, String key) {
         try {
             if (apiDataResponse != null && !apiDataResponse.equals("")) {
-
             switch (key) {
                 case Constants.PRIMARY_VIEWALL:
                     JSONArray priArrData = new JSONArray(apiDataResponse);
                     jData=priArrData.getJSONObject(0).getJSONArray("Data");
                     setHistoryAdapter(jData);
                     break;
-
-
             }
         }
         } catch (Exception e) {
             Log.v("Invoice History: ", e.getMessage());
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     void setHistoryAdapter(JSONArray arr) {
@@ -142,7 +255,6 @@ public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Inte
                     } catch (Exception e) {
                         Log.v("TAG", e.getMessage());
                     }
-
                 }
 
                 @Override
@@ -175,6 +287,7 @@ public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Inte
                     }
                 }
             });
+
             recyclerView.setAdapter(mReportViewAdapter);
 
             double totAmt = 0;
@@ -192,5 +305,4 @@ public class vwAllPrimaryOrders extends AppCompatActivity implements Master_Inte
             Log.v("TAG", e.getMessage());
         }
     }
-
 }

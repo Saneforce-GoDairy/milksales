@@ -1037,12 +1037,16 @@ public class Common_Class {
 
                 }
 
+                Log.e("sw__", "QueryString :" + QueryString + "\n" + "data :" + data);
+
                 QueryString.put("axn", axnname);
                 ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
                 Call<ResponseBody> call = service.GetRouteObject310(QueryString, data.toString());
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        String respo = response.raw().toString();
+                        Log.v("rs__", respo);
                         InputStreamReader ip = null;
                         StringBuilder is = new StringBuilder();
                         String line = null;
@@ -1054,7 +1058,6 @@ public class Common_Class {
                                     is.append(line);
                                     Log.v("Res>>" + key + ": ", is.toString());
                                 }
-
 
                                 shared_common_pref.save(key, is.toString());
                                 updateUi = ((UpdateResponseUI) activity);

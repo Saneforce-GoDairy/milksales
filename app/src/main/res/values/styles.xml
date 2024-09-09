@@ -8,6 +8,11 @@
         <!--        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>-->
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+
     <style name="AppBarCustomTheme"
         parent="Theme.Design.Light.BottomSheetDialog">
         <item name="colorPrimary">#008EFF</item>

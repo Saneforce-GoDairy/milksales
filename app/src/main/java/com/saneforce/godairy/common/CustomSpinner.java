@@ -29,6 +29,11 @@ public class CustomSpinner extends Spinner {
     public void setSelection(int position) {
         boolean sameSelected = position == getSelectedItemPosition();
         super.setSelection(position);
+
+        if (getSelectedView() != null){
+            return;
+        }
+
         if (sameSelected) {
             // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
             getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".procurement.custom_form.CustomFormDetailsViewActivity">
+    tools:context=".procurement.custom_form.CustomFormMainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -95,7 +95,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="51dp">
 
@@ -117,14 +117,18 @@
                 android:layout_centerVertical="true"/>
 
         </RelativeLayout>
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="70dp"
+    >
         <LinearLayout
             android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             />
-
+</ScrollView>
     </LinearLayout>
 
     <LinearLayout

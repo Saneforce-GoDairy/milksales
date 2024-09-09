@@ -260,7 +260,7 @@
     <string name="no_of_snf">No of snf</string>
     <string name="_12_samples_calibiration">12) Samples Calibiration</string>
     <string name="awareness_program">Awareness program</string>
-    <string name="_5_mbr">5, MBR</string>
+    <string name="_5_mbr">5, MBRT</string>
     <string name="_6_rejection">6, Rejection</string>
     <string name="_7_special_cleaning">7, Special cleaning</string>
     <string name="_8_cleaning_efficiency">8, Cleaning efficiency</string>
@@ -366,6 +366,25 @@
     <string name="remarks_purpose_of_visit">Remarks (Purpose of Visit)<font fgcolor='#E53935'> *</font></string>
     <string name="remarks_purpose_of_visit_without_star">Remarks (Purpose of Visit)</string>
 
+    <array name="milk_type_array">
+        <item>Select</item>
+        <item>Cow Milk</item>
+        <item>Buffalo Milk</item>
+    </array>
+
+
+    <array name="session_array">
+        <item>Select</item>
+        <item>AM</item>
+        <item>PM</item>
+    </array>
+
+    <array name="agent_type">
+        <item>Select</item>
+        <item>Exclusive Agent</item>
+        <item>Dual Agent</item>
+    </array>
+
     <array name="company_array">
         <item>Select</item>
         <item>Tirumala Milk</item>
@@ -421,13 +440,21 @@
 
     <string-array name="competitor_array">
         <item>Select</item>
-        <item>Hatsun</item>
-        <item>Dodla</item>
-        <item>Jersey</item>
+        <item>Competitor1 LPD</item>
     </string-array>
+
+    <!--    <string-array name="competitor_array">-->
+    <!--        <item>Select</item>-->
+    <!--        <item>Competitor1 LPD</item>-->
+    <!--        <item>Competitor2 LPD</item>-->
+    <!--        <item>Competitor3 LPD</item>-->
+    <!--        <item>Competitor4 LPD</item>-->
+    <!--        <item>Competitor5 LPD</item>-->
+    <!--    </string-array>-->
 
     <string-array name="veterinary_type_of_service_array">
         <item>Select</item>
+        <item>CSR Activity</item>
         <item>Animal insurance</item>
         <item>Farmer meeting</item>
         <item>Free vet camp</item>
@@ -495,6 +522,24 @@
         <item>Not good</item>
     </string-array>
 
+    <string-array name="proc_pouring_activity">
+        <item>Select</item>
+        <item>Regular farmer </item>
+        <item>Training farmer</item>
+        <item>Loans</item>
+        <item>Distributive products</item>
+        <item>Bank not working</item>
+    </string-array>
+
+    <array name="proc_type_of_repair">
+        <item>Select</item>
+        <item>Sensor Issue</item>
+        <item>Board Issue</item>
+        <item>SMPS</item>
+        <item>Motor Issue</item>
+        <item>Weighing scales</item>
+        <item>Others</item>
+    </array>
 
     <string name="toggle_flash">Toggle Flash</string>
     <string name="action_settings">Settings</string>
@@ -517,5 +562,21 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="something_went_wrong">Something went wrong!</string>
+    <string name="custom_form">Custom form</string>
+    <string name="custom_form_reports">Custom form reports</string>
+    <string name="_3_board_issue">3) Board issue</string>
+    <string name="printer_settings">Printer Settings</string>
+    <string name="x">X</string>
+    <string name="select_paper_size">Select Paper Size</string>
+    <string name="paper_size_58mm">Paper Size 58mm</string>
+    <string name="paper_size_80mm">Paper Size 80mm</string>
+    <string name="paper_size_102mm">Paper Size 102mm</string>
+    <string name="go">Go</string>
+    <string name="check_bluetooth_connection">Check Bluetooth Connection!</string>
+    <string name="bluetooth_error">Bluetooth error!</string>
+    <string name="select_customer">Select Customer</string>
+    <string name="milk_collection_entry">Milk Collection Entry</string>
+    <string name="form_submit_started">Form submit started</string>
 
 </resources>

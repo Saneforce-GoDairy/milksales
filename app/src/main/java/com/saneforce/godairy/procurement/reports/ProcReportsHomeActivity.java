@@ -3,6 +3,8 @@ package com.saneforce.godairy.procurement.reports;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.saneforce.godairy.databinding.ActivityProcReportsHomeBinding;
 
@@ -20,6 +22,9 @@ public class ProcReportsHomeActivity extends AppCompatActivity {
     }
 
     private void onClick() {
+
+        binding.agent.setOnClickListener(v -> startActivity(new Intent(context, AgentReportActivity.class)));
+
        binding.agronomist.setOnClickListener(v -> {
            startActivity(new Intent(context, AgronomistReportActivity.class));
        });
@@ -36,8 +41,10 @@ public class ProcReportsHomeActivity extends AppCompatActivity {
             startActivity(new Intent(context, QualityReportActivity.class));
         });
 
+        binding.maintenanceIssue.setOnClickListener(v -> startActivity(new Intent(context, MaintenanceIssueReportAct.class)));
+
         binding.maintenance.setOnClickListener(v -> {
-            startActivity(new Intent(context, MaintenanceReportActivity.class));
+            startActivity(new Intent(context, MaintenanceRegularReportActivity.class));
         });
 
         binding.existing.setOnClickListener(v -> {

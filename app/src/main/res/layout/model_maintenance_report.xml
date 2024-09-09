@@ -25,8 +25,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
-            tools:ignore="UselessParent">
+            android:layout_marginEnd="5dp">
 
             <LinearLayout
                 android:id="@+id/last_cn"
@@ -34,30 +33,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/ubuntu_medium"
-                    android:text="@string/company_name"
-                    android:textColor="#7E7E7E"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/txt_company_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/ubuntu_medium"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginStart="10dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -68,7 +48,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/ubuntu_medium"
-                            android:text="@string/plant"
+                            android:text="Company name"
+                            android:textColor="#7E7E7E"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/txt_company_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/ubuntu_medium"
+                            android:textColor="@android:color/black"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ubuntu_medium"
+                            android:text="Plant"
                             android:textColor="#7E7E7E"
                             android:textSize="12sp" />
 
@@ -82,59 +87,131 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:text="@string/no_of_equipment"
-                            android:textColor="#7E7E7E"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/txt_no_equipment"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:textColor="@android:color/black"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
                 </LinearLayout>
 
+             <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="10dp"
+                 android:orientation="vertical">
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="BMC Unit"
+                     android:layout_marginStart="10dp"
+                     android:textColor="@color/black"
+                     android:fontFamily="@font/ubuntu_bold"
+                     android:textStyle="bold"/>
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="10dp"
+                     android:layout_marginTop="10dp"
+                     android:orientation="horizontal">
+
+                     <LinearLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical">
+
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:fontFamily="@font/ubuntu_medium"
+                             android:text="No of Hrs Running"
+                             android:textColor="#7E7E7E"
+                             android:textSize="12sp" />
+
+                         <TextView
+                             android:id="@+id/txt_bmc_no_hrs_runs"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:fontFamily="@font/ubuntu_medium"
+                             android:textColor="@android:color/black"
+                             android:textSize="13sp" />
+
+                     </LinearLayout>
+
+                     <LinearLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginStart="10dp"
+                         android:orientation="horizontal">
+
+                         <LinearLayout
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical">
+
+                             <TextView
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:fontFamily="@font/ubuntu_medium"
+                                 android:text="Volume Collected"
+                                 android:textColor="#7E7E7E"
+                                 android:textSize="12sp" />
+
+                             <TextView
+                                 android:id="@+id/txt_volume_coll"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:fontFamily="@font/ubuntu_medium"
+                                 android:textColor="#2E7A0E"
+                                 android:textSize="13sp" />
+
+                         </LinearLayout>
+
+                     </LinearLayout>
+
+                 </LinearLayout>
+             </LinearLayout>
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/bg_radius_proc_img"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/C50dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:text="@string/repair_type"
-                            android:textColor="#7E7E7E"
-                            android:textSize="12sp" />
+                        <RelativeLayout
+                            android:id="@+id/no_of_hrs_runs_img_cn"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/C50dp">
 
-                        <TextView
-                            android:id="@+id/txt_repair_type"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/ubuntu_medium"
-                            android:textColor="#2E7A0E"
-                            android:textSize="13sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="No of Hrs Running image" />
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/C40dp"
+                                android:layout_height="@dimen/C40dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="5dp"
+                                app:cardCornerRadius="10dp">
+
+                                <ImageView
+                                    android:id="@+id/no_of_hrs_runs_img"
+                                    android:layout_width="@dimen/C40dp"
+                                    android:layout_height="@dimen/C40dp"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitXY" />
+
+                            </androidx.cardview.widget.CardView>
+
+                        </RelativeLayout>
 
                     </LinearLayout>
 
@@ -145,7 +222,129 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CC Unit"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="No of Hrs Running"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_cc_no_of_hrs_runs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Volume Collected"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_cc_volume_coll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="IBT Running Hrs"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_cc_ibt_runs_hrs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="DG Set Running Hrs, After last service's"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_cc_dg_set"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -161,7 +360,7 @@
                             android:orientation="vertical">
 
                             <RelativeLayout
-                                android:id="@+id/farmers_img_cn"
+                                android:id="@+id/cc_dg_set_img_cn"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/C50dp">
 
@@ -171,8 +370,7 @@
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="10dp"
                                     android:fontFamily="@font/ubuntu_medium"
-                                    android:text="@string/repair_image"
-                                    tools:ignore="RelativeOverlap" />
+                                    android:text="DG Set Running Hrs image" />
 
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="@dimen/C40dp"
@@ -183,13 +381,11 @@
                                     app:cardCornerRadius="10dp">
 
                                     <ImageView
-                                        android:id="@+id/img_repair"
+                                        android:id="@+id/dg_set_img"
                                         android:layout_width="@dimen/C40dp"
                                         android:layout_height="@dimen/C40dp"
                                         android:adjustViewBounds="true"
-                                        android:scaleType="fitXY"
-                                        android:contentDescription="@string/repair_image"
-                                        tools:ignore="TooDeepLayout" />
+                                        android:scaleType="fitXY" />
 
                                 </androidx.cardview.widget.CardView>
 
@@ -204,10 +400,348 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UselessLeaf" />
+                        android:orientation="horizontal">
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Power Factor"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_power_factor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ammonia-Compressor Condition"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Pipline"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_pipline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Leakages"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_leakages"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Scale"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_scale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fuel Cpnsumption Stock"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="As Per Book"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_as_per_book"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:text="Physical"
+                                android:textColor="#7E7E7E"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_physical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@android:color/black"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_radius_proc_img"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/C50dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:id="@+id/cc_as_per_book_img_cn"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/C50dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:fontFamily="@font/ubuntu_medium"
+                                    android:text="As Per Book image" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="@dimen/C40dp"
+                                    android:layout_height="@dimen/C40dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="5dp"
+                                    app:cardCornerRadius="10dp">
+
+                                    <ImageView
+                                        android:id="@+id/as_per_book_img"
+                                        android:layout_width="@dimen/C40dp"
+                                        android:layout_height="@dimen/C40dp"
+                                        android:adjustViewBounds="true"
+                                        android:scaleType="fitXY" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ETP (Effluent Treatment Plant )"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txt_etp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@color/grey_500"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hot Water ( Heater )"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txt_hot_water"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@color/grey_500"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Factory Licence Inspection"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/ubuntu_bold"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txt_factory_licen"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/ubuntu_medium"
+                                android:textColor="@color/grey_500"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    </LinearLayout>
 
             </LinearLayout>
 
@@ -219,8 +753,34 @@
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/ubuntu_medium"
                 android:textSize="13sp"
-                android:textColor="@android:color/black"
-                tools:ignore="RelativeOverlap" />
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/txt_view_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_below="@id/last_cn"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:text="View details"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textSize="13sp"
+                android:textColor="#007CB5"/>
+
+            <TextView
+                android:id="@+id/txt_view_less"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_below="@id/last_cn"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:text="View less"
+                android:fontFamily="@font/ubuntu_medium"
+                android:textSize="13sp"
+                android:textColor="#007CB5"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

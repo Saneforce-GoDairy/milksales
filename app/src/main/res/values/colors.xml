@@ -73,6 +73,7 @@
     <color name="red">#1AFF0000</color>
     <color name="dividerList">#FAFAFA</color>
     <color name="mDyPlan">#0080ff</color>
+    <color name="blue_1">#008eff</color>
     <color name="CheckIn">#009688</color>
     <color name="Exit">#d34836</color>
     <color name="black_80">#CC000000</color>
@@ -84,7 +85,7 @@
     <color name="Primary_blue">#1997CE</color>
     <color name="bg_light_blue">#E8F5FB</color>
     <color name="purple_500">#2196F3</color>
-
+    <color name="call_preview_text2">#39ac08</color>
     <color name="purple_200">#0F9D58</color>
     <color name="stop_reco">#DA0F00</color>
     <color name="purple_700">#0F9D58</color>

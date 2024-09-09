@@ -17,7 +17,7 @@ import static com.saneforce.godairy.SFA_Activity.Printama.ORIGINAL_WIDTH;
 import static com.saneforce.godairy.SFA_Activity.Printama.RIGHT;
 
 
-class PrinterUtil {
+public class PrinterUtil {
     private static final String TAG = "PRINTAMA";
 
     private static final int PRINTER_WIDTH = 384;
@@ -49,7 +49,7 @@ class PrinterUtil {
     private BluetoothSocket btSocket = null;
     private OutputStream btOutputStream = null;
 
-    PrinterUtil(BluetoothDevice printer) {
+    public PrinterUtil(BluetoothDevice printer) {
         this.printer = printer;
     }
 

@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -59,6 +61,48 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
+            android:name=".procurement.NewCollectionCenter"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.MilkCollViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.printer.CallPreviewActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.printer.ChoosePrinterActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.MilkCollectionReport"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.FarmerUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.AgentUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.MilkCollEntryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.AgentReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.AgentCreatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.reports.MaintenanceIssueReportAct"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.custom_form.ReportPreviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.custom_form.ReportDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".procurement.custom_form.ReportHomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.ViewInvoiceActivity"
             android:screenOrientation="nosensor"
             android:exported="false" />
@@ -82,12 +126,10 @@
             android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
-            android:name=".procurement.custom_form.CustomFormHomeActivity"
-            android:screenOrientation="nosensor"
+            android:name=".procurement.custom_form.CustomFormDashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".procurement.custom_form.CustomFormDetailsViewActivity"
-            android:screenOrientation="nosensor"
+            android:name=".procurement.custom_form.CustomFormMainActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.MaintanenceRegularActivity"
@@ -134,8 +176,7 @@
             android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
-            android:name=".procurement.reports.MaintenanceReportActivity"
-            android:screenOrientation="nosensor"
+            android:name=".procurement.reports.MaintenanceRegularReportActivity"
             android:exported="false" />
         <activity
             android:name=".procurement.reports.QualityReportActivity"
@@ -211,8 +252,8 @@
             android:exported="false" />
         <activity
             android:name=".procurement.ImageViewActivity"
-            android:screenOrientation="nosensor"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".procurement.ProcurementCameraX"
             android:screenOrientation="nosensor"
@@ -252,9 +293,6 @@
             android:name=".Activity_Hap.LoginHome"
             android:exported="false" />
         <activity
-            android:name=".Activity.TestActivity"
-            android:exported="false" />
-        <activity
             android:name=".CCAvenue.StatusActivity"
             android:exported="false">
             <meta-data
@@ -285,14 +323,6 @@
         <activity
             android:name=".SFA_Activity.FeedbackActivitySFA"
             android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".SFA_Activity.CustomerOnBoarding"
-            android:exported="false"
-            android:screenOrientation="nosensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

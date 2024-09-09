@@ -1,9 +1,10 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_PLANT;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +14,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.saneforce.godairy.Interface.ApiClient;
@@ -25,7 +29,6 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityVeterinaryDoctorsFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +43,10 @@ import retrofit2.Response;
 
 public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
     private ActivityVeterinaryDoctorsFormBinding binding;
+    Toolbar mToolbar;
+    ArrayAdapter<String> mAdapter;
+    ListView mListView;
+    TextView mEmptyView;
     private final Context context = this;
     private String mCompanyName, mPlant, mCenterName, mFarmerName, mTypeOfService, mTypeOfProduct, mSeedSales;
     private String mMinaralMixture, mFodderSales, mCattleOrder, mTeatTipCup, mEmergencyEvm, mTypesOfCases;
@@ -48,7 +55,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
     private final List<String> list = new ArrayList<>();
     private static final String TAG = "Procurement";
     private DatabaseManager databaseManager;
-    private ArrayList<ProcSubDivison> subDivisonArrayList;
     private final List<String> listSub = new ArrayList<>();
 
     @Override
@@ -63,12 +69,61 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         loadSubDivision();
         initSpinnerArray();
         onClick();
+
+        binding.edPlant.setFocusable(false);
+
+        binding.edPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.formCon.setVisibility(View.GONE);
+                binding.plantCon.setVisibility(View.VISIBLE);
+            }
+        });
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mListView = findViewById(R.id.list);
+        mEmptyView = findViewById(R.id.emptyView);
+
+        mListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            binding.edPlant.setText(adapterView.getItemAtPosition(i).toString());
+            binding.plantCon.setVisibility(View.GONE);
+            binding.formCon.setVisibility(View.VISIBLE);
+        });
+
+        mListView.setEmptyView(mEmptyView);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search_toolbar, menu);
+
+        MenuItem mSearch = menu.findItem(R.id.action_search);
+
+        SearchView mSearchView = (SearchView) mSearch.getActionView();
+        mSearchView.setQueryHint("Search plant");
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     private void loadSubDivision() {
-        subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
+        ArrayList<ProcSubDivison> subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
         listSub.add("Select");
-        for (int i = 0; i<subDivisonArrayList.size(); i++){
+        for (int i = 0; i< subDivisonArrayList.size(); i++){
             Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
             listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
         }
@@ -81,16 +136,10 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
 
     private void initSpinnerArray() {
         loadPlant();
-
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
                 R.array.veterinary_type_of_service_array, R.layout.custom_spinner);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTypeOfService.setAdapter(adapter3);
-
-        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,
-                R.array.veterinary_type_of_product_array, R.layout.custom_spinner);
-        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTypeOfProduct.setAdapter(adapter4);
 
         ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(this,
                 R.array.veterinary_evm_array, R.layout.custom_spinner);
@@ -100,14 +149,10 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter6 = ArrayAdapter.createFromResource(this,
                 R.array.veterinary_type_of_case_array, R.layout.custom_spinner);
         adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTypeOfCases.setAdapter(adapter5);
+        binding.spinnerTypeOfCases.setAdapter(adapter6);
     }
 
     private void loadPlant() {
-        list.add("Select");
-
-        updatePlant();
-
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -117,7 +162,6 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String plantList;
                     try {
-                        binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
@@ -126,10 +170,13 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
                             JSONObject object = jsonArray.getJSONObject(i);
                             String plantName = object.optString("plant_name");
 
-                            binding.spinnerPlant.setPrompt(plantName);
                             list.add(plantName);
                         }
-                        updatePlant();
+                        mAdapter = new ArrayAdapter<>(context,
+                                android.R.layout.simple_list_item_1,
+                                list);
+
+                        mListView.setAdapter(mAdapter);
                     } catch (IOException | JSONException e) {
                       //  throw new RuntimeException(e);
                         Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
@@ -144,51 +191,7 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePlant() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter);
-    }
-
     private void onClick() {
-
-                         /*
-           Camera access id
-
-           1, AgronomistFormActivity
-              Farmers meeting = 1
-              CSR Activity    = 2
-              Fodder Development Ac = 3
-
-           2, AITFormActivity
-              breed = 4
-
-           3, CollectionCenterLocationActivity
-              Collection center image = 5
-
-           4, VeterinaryDoctorsFormActivity
-              Type of image image = 6
-              Emergency treatment/EVM Treatment (Breed) = 7
-
-            5, QualityFormActivity
-               Quality fat = 8
-               Quality snf = 9
-               No of vehicle received with hoods = 10
-               No of vehicle received without hoods = 11
-               Awareness program = 12
-
-            6, FarmerCreationActivity
-               Farmer image = 13
-
-            7, MaintenanceIssueActivity
-               Type of repair image = 14
-
-            8, MaintenanceRegularActivity
-               DG Set Running Hrs, After Last Services = 15
-
-            9, New farmer creation ska
-               Competitors = 16
-         */
 
         binding.cameraTypeOfService.setOnClickListener(view -> {
             binding.txtImgTypeOfServiceNotValid.setVisibility(View.GONE);
@@ -225,36 +228,18 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        binding.spinnerPlant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerPlant.getSelectedItem().toString();
-                binding.txtPlantNotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
         binding.spinnerTypeOfService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mPlant = binding.spinnerTypeOfService.getSelectedItem().toString();
                 binding.txtTypeOfServiceNotValid.setVisibility(View.GONE);
                 binding.txtErrorFound.setVisibility(View.GONE);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        binding.spinnerTypeOfProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerTypeOfProduct.getSelectedItem().toString();
-                binding.txtTypeOfProNotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
+                if (i == 1){
+                    binding.csrCameraLayout.setVisibility(View.VISIBLE);
+                }else {
+                    binding.csrCameraLayout.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -469,140 +454,20 @@ public class VeterinaryDoctorsFormActivity extends AppCompatActivity {
 
     private boolean validateInputs() {
         mCompanyName = binding.spinnerCompany.getSelectedItem().toString();
-        mPlant = binding.spinnerPlant.getSelectedItem().toString();
+        mPlant = binding.edPlant.getText().toString().trim();
         mCenterName = binding.edCenterNameVisit.getText().toString().trim();
         mFarmerName = binding.edFarmerCode.getText().toString().trim();
         mTypeOfService = binding.spinnerTypeOfService.getSelectedItem().toString();
-        mTypeOfProduct = binding.spinnerTypeOfProduct.getSelectedItem().toString();
-
         mSeedSales = binding.edSeedSale.getText().toString().trim();
         mMinaralMixture = binding.edMineralMixture.getText().toString().trim();
-
         mFodderSales = binding.edFodderSettsSale.getText().toString().trim();
         mCattleOrder = binding.edCattleFeedOrder.getText().toString().trim();
-
         mTeatTipCup = binding.edTeatDipCup.getText().toString().trim();
         mEmergencyEvm = binding.spinnerEmerEvm.getSelectedItem().toString();
-
         mTypesOfCases = binding.spinnerTypeOfCases.getSelectedItem().toString();
         mFamilyFarmDev = binding.edFamilyFarmDev.getText().toString().trim();
-
         mNoOfFarmersEnrolled = binding.edNoOfFarmerEnrolled.getText().toString().trim();
         mNoOfFarmersInducted = binding.edNoOfFarmerInducted.getText().toString().trim();
-
-
-        if ("Select".equals(mCompanyName)){
-            ((TextView)binding.spinnerCompany.getSelectedView()).setError("Select company");
-            binding.spinnerCompany.getSelectedView().requestFocus();
-            binding.txtCompanyNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mPlant)){
-            ((TextView)binding.spinnerPlant.getSelectedView()).setError("Select plant");
-            binding.spinnerPlant.getSelectedView().requestFocus();
-            binding.txtPlantNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mCenterName)){
-            binding.edCenterNameVisit.setError("Enter center name");
-            binding.edCenterNameVisit.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mFarmerName)){
-            binding.edFarmerCode.setError("Enter farmer name");
-            binding.edFarmerCode.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mTypeOfService)){
-            ((TextView)binding.spinnerTypeOfService.getSelectedView()).setError("Select type of service");
-            binding.spinnerTypeOfService.getSelectedView().requestFocus();
-            binding.txtTypeOfServiceNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if (bitmapTypeOfSer == null){
-            binding.txtImgTypeOfServiceNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mTypeOfProduct)){
-            ((TextView)binding.spinnerTypeOfProduct.getSelectedView()).setError("Select type of product");
-            binding.spinnerTypeOfProduct.getSelectedView().requestFocus();
-            binding.txtTypeOfProNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mSeedSales)){
-            binding.edSeedSale.setError("Enter seed sale");
-            binding.edSeedSale.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mMinaralMixture)){
-            binding.edMineralMixture.setError("Enter mineral mixture");
-            binding.edMineralMixture.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mFodderSales)){
-            binding.edFodderSettsSale.setError("Enter fodder setts sales");
-            binding.edFodderSettsSale.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mCattleOrder)){
-            binding.edCattleFeedOrder.setError("Enter cattle feed order");
-            binding.edCattleFeedOrder.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mTeatTipCup)){
-            binding.edTeatDipCup.setError("Enter teat dip cup & solution");
-            binding.edTeatDipCup.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mEmergencyEvm)){
-            ((TextView)binding.spinnerEmerEvm.getSelectedView()).setError("Select emergency treatment/EVM");
-            binding.spinnerEmerEvm.getSelectedView().requestFocus();
-            binding.txtEmerEvmNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if (bitmapEVM == null){
-            binding.txtImgEmerEvmNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mTypesOfCases)){
-            ((TextView)binding.spinnerTypeOfCases.getSelectedView()).setError("Select type of cases");
-            binding.spinnerTypeOfCases.getSelectedView().requestFocus();
-            binding.txtTypeOfCasesNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mFamilyFarmDev)){
-            binding.edFamilyFarmDev.setError("Enter family farm development");
-            binding.edFamilyFarmDev.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mNoOfFarmersEnrolled)){
-            binding.edNoOfFarmerEnrolled.setError("Enter no of farmers enrolled");
-            binding.edNoOfFarmerEnrolled.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mNoOfFarmersInducted)){
-            binding.edNoOfFarmerInducted.setError("Enter no of farmers inducted");
-            binding.edNoOfFarmerInducted.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
         return true;
     }
 

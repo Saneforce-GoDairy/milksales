@@ -4,6 +4,8 @@ import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_PLA
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +15,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.saneforce.godairy.Interface.ApiClient;
@@ -25,7 +30,6 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityAitformBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +44,10 @@ import retrofit2.Response;
 
 public class AITFormActivity extends AppCompatActivity {
     private ActivityAitformBinding binding;
+    Toolbar mToolbar;
+    ArrayAdapter<String> mAdapter;
+    ListView mListView;
+    TextView mEmptyView;
     private String mCompanyName, mPlant, mCenterName, mFarmerCode, mBreed, mNoOfAi, mBullNos;
     private String mPdVerification = "", mCalfBirthVerification, mMineralMixtureSale, mSeedSale;
     private final Context context = this;
@@ -62,7 +70,55 @@ public class AITFormActivity extends AppCompatActivity {
         loadSubDivision();
         initSpinnerArray();
         onClick();
+
+        binding.edPlant.setFocusable(false);
+
+        binding.edPlant.setOnClickListener(v -> {
+            binding.formCon.setVisibility(View.GONE);
+            binding.plantCon.setVisibility(View.VISIBLE);
+        });
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mListView = findViewById(R.id.list);
+        mEmptyView = findViewById(R.id.emptyView);
+
+        mListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            binding.edPlant.setText(adapterView.getItemAtPosition(i).toString());
+            binding.plantCon.setVisibility(View.GONE);
+            binding.formCon.setVisibility(View.VISIBLE);
+        });
+
+        mListView.setEmptyView(mEmptyView);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search_toolbar, menu);
+
+        MenuItem mSearch = menu.findItem(R.id.action_search);
+
+        SearchView mSearchView = (SearchView) mSearch.getActionView();
+        mSearchView.setQueryHint("Search plant");
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
 
     private void loadSubDivision() {
         subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
@@ -96,18 +152,6 @@ public class AITFormActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        binding.spinnerPlant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerPlant.getSelectedItem().toString();
-                binding.txtPlantNotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
         binding.spinnerBreed.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -131,46 +175,6 @@ public class AITFormActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-
-                          /*
-           Camera access id
-
-           1, AgronomistFormActivity
-              Farmers meeting = 1
-              CSR Activity    = 2
-              Fodder Development Ac = 3
-
-           2, AITFormActivity
-              breed = 4
-
-           3, CollectionCenterLocationActivity
-              Collection center image = 5
-
-           4, VeterinaryDoctorsFormActivity
-              Type of image image = 6
-              Emergency treatment/EVM Treatment (Breed) = 7
-
-            5, QualityFormActivity
-               Quality fat = 8
-               Quality snf = 9
-               No of vehicle received with hoods = 10
-               No of vehicle received without hoods = 11
-               Awareness program = 12
-
-            6, FarmerCreationActivity
-               Farmer image = 13
-
-            7, MaintenanceIssueActivity
-               Type of repair image = 14
-
-            8, MaintenanceRegularActivity
-               DG Set Running Hrs, After Last Services = 15
-
-            9, New farmer creation ska
-               Competitors = 16
-         */
-
-
 
         binding.cameraBreed.setOnClickListener(view -> {
             binding.txtSpinnerBreedNameNotValid.setVisibility(View.GONE);
@@ -287,9 +291,7 @@ public class AITFormActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
-        binding.back.setOnClickListener(view -> {
-            finish();
-        });
+        binding.back.setOnClickListener(view -> finish());
     }
 
     private void initSpinnerArray() {
@@ -307,10 +309,6 @@ public class AITFormActivity extends AppCompatActivity {
     }
 
     private void loadPlant() {
-        list.add("Select");
-
-        updatePlant();
-
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -320,19 +318,20 @@ public class AITFormActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String plantList;
                     try {
-                        binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
-
                         JSONArray jsonArray = new JSONArray(plantList);
 
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             String plantName = object.optString("plant_name");
 
-                            binding.spinnerPlant.setPrompt(plantName);
                             list.add(plantName);
                         }
-                        updatePlant();
+                        mAdapter = new ArrayAdapter<>(context,
+                                android.R.layout.simple_list_item_1,
+                                list);
+
+                        mListView.setAdapter(mAdapter);
                     } catch (IOException | JSONException e) {
                        // throw new RuntimeException(e);
                         Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
@@ -345,12 +344,6 @@ public class AITFormActivity extends AppCompatActivity {
                 Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void updatePlant() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter);
     }
 
     private void saveNow() {
@@ -377,7 +370,7 @@ public class AITFormActivity extends AppCompatActivity {
 
     private boolean validateInputs() {
         mCompanyName = binding.spinnerCompany.getSelectedItem().toString();
-        mPlant = binding.spinnerPlant.getSelectedItem().toString();
+        mPlant = binding.edPlant.getText().toString().trim();
         mCenterName = binding.edCenterName.getText().toString().trim();
         mFarmerCode = binding.edFarmerCodeName.getText().toString();
         mBreed = binding.spinnerBreed.getSelectedItem().toString();
@@ -386,89 +379,12 @@ public class AITFormActivity extends AppCompatActivity {
         mCalfBirthVerification = binding.spinnerCalfbirthVerification.getSelectedItem().toString();
         mMineralMixtureSale = binding.edMineralMixtureSale.getText().toString().trim();
         mSeedSale = binding.edSeedSale.getText().toString().trim();
-
-        if ("Select".equals(mCompanyName)){
-            ((TextView)binding.spinnerCompany.getSelectedView()).setError("Select company");
-            binding.spinnerCompany.getSelectedView().requestFocus();
-            binding.txtCompanyNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mPlant)){
-            ((TextView)binding.spinnerPlant.getSelectedView()).setError("Select plant");
-            binding.spinnerPlant.getSelectedView().requestFocus();
-            binding.txtPlantNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mCenterName)){
-            binding.edCenterName.setError("Empty field");
-            binding.edCenterName.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mFarmerCode)){
-            binding.edFarmerCodeName.setError("Empty field");
-            binding.edFarmerCodeName.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mBreed)){
-            ((TextView)binding.spinnerBreed.getSelectedView()).setError("Select breed");
-            binding.spinnerBreed.getSelectedView().requestFocus();
-            binding.txtSpinnerBreedNameNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if (bitmapBreed == null){
-            binding.txtBreedImageNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mNoOfAi)){
-            binding.edNoOfAi.setError("Empty field");
-            binding.edNoOfAi.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mBullNos)){
-            binding.edBullNos.setError("Empty field");
-            binding.edBullNos.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mPdVerification))
-        {
-            binding.txtPdVerificationNotValid.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("Select".equals(mCalfBirthVerification)){
-            ((TextView)binding.spinnerCalfbirthVerification.getSelectedView()).setError("Select plant");
-            binding.spinnerCalfbirthVerification.getSelectedView().requestFocus();
-            binding.txtCalfbirthVeriNotValid.setVisibility(View.VISIBLE);
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mMineralMixtureSale)){
-            binding.edMineralMixtureSale.setError("Empty field");
-            binding.edMineralMixtureSale.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
-        if ("".equals(mSeedSale)){
-            binding.edSeedSale.setError("Empty field");
-            binding.edSeedSale.requestFocus();
-            binding.txtErrorFound.setVisibility(View.VISIBLE);
-            return false;
-        }
         return true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // Farmers meeting
         File fileBreed = new File(getExternalFilesDir(null), "/procurement/" + "NOB_123.jpg");
         bitmapBreed = BitmapFactory.decodeFile(fileBreed.getAbsolutePath());
 

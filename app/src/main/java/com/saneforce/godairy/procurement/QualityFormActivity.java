@@ -1,9 +1,10 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_PLANT;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import android.content.Context;
 import android.content.Intent;
@@ -13,18 +14,21 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Model_Class.ProcSubDivison;
+import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityQualityFormBinding;
 import com.saneforce.godairy.procurement.database.DatabaseManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +43,10 @@ import retrofit2.Response;
 
 public class QualityFormActivity extends AppCompatActivity {
     private ActivityQualityFormBinding binding;
+    Toolbar mToolbar;
+    ArrayAdapter<String> mAdapter;
+    ListView mListView;
+    TextView mEmptyView;
     private String mCompanyName, mPlant, mMassBalance, mMilkCollection, mMBRT, mRejection, mSpecialCleaning, mCleaningEfficiency;
     private String mNoOfVehiclesReceivedWithHood, mNoOfVehiclesReceivedWithOutHood,mRecordChemicals, mRecordStock, mRecordMilk;
     private String mAwarenessProgram = "", mSamplesCalibrationNoOfFat, mSamplesCalibrationNoOfSnf, mSamplesCalibrationNoOfWeight;
@@ -47,7 +55,6 @@ public class QualityFormActivity extends AppCompatActivity {
     private final List<String> list = new ArrayList<>();
     private static final String TAG = "Procurement_";
     private DatabaseManager databaseManager;
-    private ArrayList<ProcSubDivison> subDivisonArrayList;
     private final List<String> listSub = new ArrayList<>();
 
     @Override
@@ -62,12 +69,58 @@ public class QualityFormActivity extends AppCompatActivity {
         loadSubDivision();
         loadPlant();
         onClick();
+
+        binding.edPlant.setFocusable(false);
+
+        binding.edPlant.setOnClickListener(v -> {
+            binding.formCon.setVisibility(View.GONE);
+            binding.plantCon.setVisibility(View.VISIBLE);
+        });
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mListView = findViewById(R.id.list);
+        mEmptyView = findViewById(R.id.emptyView);
+
+        mListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            binding.edPlant.setText(adapterView.getItemAtPosition(i).toString());
+            binding.plantCon.setVisibility(View.GONE);
+            binding.formCon.setVisibility(View.VISIBLE);
+        });
+
+        mListView.setEmptyView(mEmptyView);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search_toolbar, menu);
+
+        MenuItem mSearch = menu.findItem(R.id.action_search);
+
+        SearchView mSearchView = (SearchView) mSearch.getActionView();
+        mSearchView.setQueryHint("Search plant");
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     private void loadSubDivision() {
-        subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
+        ArrayList<ProcSubDivison> subDivisonArrayList = new ArrayList<>(databaseManager.loadSubDivision());
         listSub.add("Select");
-        for (int i = 0; i<subDivisonArrayList.size(); i++){
+        for (int i = 0; i< subDivisonArrayList.size(); i++){
             Log.e(TAG, subDivisonArrayList.get(i).getSubdivision_sname());
             listSub.add(subDivisonArrayList.get(i).getSubdivision_sname());
         }
@@ -78,10 +131,6 @@ public class QualityFormActivity extends AppCompatActivity {
     }
 
     private void loadPlant() {
-        list.add("Select");
-
-        updatePlant();
-
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getProcPlant(PROCUREMENT_GET_PLANT);
 
@@ -91,7 +140,6 @@ public class QualityFormActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String plantList;
                     try {
-                        binding.spinnerPlant.setAdapter(null);
                         plantList = response.body().string();
 
                         JSONArray jsonArray = new JSONArray(plantList);
@@ -100,10 +148,13 @@ public class QualityFormActivity extends AppCompatActivity {
                             JSONObject object = jsonArray.getJSONObject(i);
                             String plantName = object.optString("plant_name");
 
-                            binding.spinnerPlant.setPrompt(plantName);
                             list.add(plantName);
                         }
-                        updatePlant();
+                        mAdapter = new ArrayAdapter<>(context,
+                                android.R.layout.simple_list_item_1,
+                                list);
+
+                        mListView.setAdapter(mAdapter);
                     } catch (IOException | JSONException e) {
                        // throw new RuntimeException(e);
                         Toast.makeText(context, "Plant list load error!", Toast.LENGTH_SHORT).show();
@@ -118,51 +169,7 @@ public class QualityFormActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePlant() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerPlant.setAdapter(adapter);
-    }
-
     private void onClick() {
-                           /*
-           Camera access id
-
-           1, AgronomistFormActivity
-              Farmers meeting = 1
-              CSR Activity    = 2
-              Fodder Development Ac = 3
-
-           2, AITFormActivity
-              breed = 4
-
-           3, CollectionCenterLocationActivity
-              Collection center image = 5
-
-           4, VeterinaryDoctorsFormActivity
-              Type of image image = 6
-              Emergency treatment/EVM Treatment (Breed) = 7
-
-            5, QualityFormActivity
-               Quality fat = 8
-               Quality snf = 9
-               No of vehicle received with hoods = 10
-               No of vehicle received without hoods = 11
-               Awareness program = 12
-
-            6, FarmerCreationActivity
-               Farmer image = 13
-
-            7, MaintenanceIssueActivity
-               Type of repair image = 14
-
-            8, MaintenanceRegularActivity
-               DG Set Running Hrs, After Last Services = 15
-
-            9, New farmer creation ska
-               Competitors = 16
-         */
-        // FAT
         binding.cameraFat.setOnClickListener(view -> {
             binding.txtImgFatNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -180,7 +187,6 @@ public class QualityFormActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // SNF
         binding.cameraSnf.setOnClickListener(view -> {
             binding.txtImgSnfNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -198,7 +204,6 @@ public class QualityFormActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // WithHood
         binding.cameraWithHood.setOnClickListener(view -> {
             binding.txtImgWithHoodNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -216,7 +221,6 @@ public class QualityFormActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // WithoutHood
         binding.cameraWithoutHood.setOnClickListener(view -> {
             binding.txtImgWithoutHoodNotValid.setVisibility(View.GONE);
             Intent intent = new Intent(context, ProcurementCameraX.class);
@@ -234,133 +238,110 @@ public class QualityFormActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Awareness program
-        binding.awsGeneral.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "General", Toast.LENGTH_SHORT).show();
-                mAwarenessProgram = "General";
+        binding.awsGeneral.setOnClickListener(v -> {
+            Toast.makeText(context, "General", Toast.LENGTH_SHORT).show();
+            mAwarenessProgram = "General";
 
-                binding.awsCalibration.setChecked(false);
-                binding.awsAudit.setChecked(false);
-                binding.awsFieldIntelligenceReport.setChecked(false);
-                binding.awsHealthCamp.setChecked(false);
-                binding.awsCleanMilkProduction.setChecked(false);
-                binding.awsTraining.setChecked(false);
-                binding.awsAntibioticAwareness.setChecked(false);
-            }
+            binding.awsCalibration.setChecked(false);
+            binding.awsAudit.setChecked(false);
+            binding.awsFieldIntelligenceReport.setChecked(false);
+            binding.awsHealthCamp.setChecked(false);
+            binding.awsCleanMilkProduction.setChecked(false);
+            binding.awsTraining.setChecked(false);
+            binding.awsAntibioticAwareness.setChecked(false);
         });
 
-        binding.awsCalibration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Calibration", Toast.LENGTH_SHORT).show();
-                mAwarenessProgram = "Calibration";
+        binding.awsCalibration.setOnClickListener(v -> {
+            Toast.makeText(context, "Calibration", Toast.LENGTH_SHORT).show();
+            mAwarenessProgram = "Calibration";
 
-                binding.awsGeneral.setChecked(false);
-                binding.awsAudit.setChecked(false);
-                binding.awsFieldIntelligenceReport.setChecked(false);
-                binding.awsHealthCamp.setChecked(false);
-                binding.awsCleanMilkProduction.setChecked(false);
-                binding.awsTraining.setChecked(false);
-                binding.awsAntibioticAwareness.setChecked(false);
-            }
+            binding.awsGeneral.setChecked(false);
+            binding.awsAudit.setChecked(false);
+            binding.awsFieldIntelligenceReport.setChecked(false);
+            binding.awsHealthCamp.setChecked(false);
+            binding.awsCleanMilkProduction.setChecked(false);
+            binding.awsTraining.setChecked(false);
+            binding.awsAntibioticAwareness.setChecked(false);
         });
 
-        binding.awsAudit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Audit", Toast.LENGTH_SHORT).show();
-                mAwarenessProgram = "Audit";
+        binding.awsAudit.setOnClickListener(v -> {
+            Toast.makeText(context, "Audit", Toast.LENGTH_SHORT).show();
+            mAwarenessProgram = "Audit";
 
-                binding.awsGeneral.setChecked(false);
-                binding.awsCalibration.setChecked(false);
-                binding.awsFieldIntelligenceReport.setChecked(false);
-                binding.awsHealthCamp.setChecked(false);
-                binding.awsCleanMilkProduction.setChecked(false);
-                binding.awsTraining.setChecked(false);
-                binding.awsAntibioticAwareness.setChecked(false);
-            }
+            binding.awsGeneral.setChecked(false);
+            binding.awsCalibration.setChecked(false);
+            binding.awsFieldIntelligenceReport.setChecked(false);
+            binding.awsHealthCamp.setChecked(false);
+            binding.awsCleanMilkProduction.setChecked(false);
+            binding.awsTraining.setChecked(false);
+            binding.awsAntibioticAwareness.setChecked(false);
         });
 
-        binding.awsFieldIntelligenceReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Field Intelligence Report", Toast.LENGTH_SHORT).show();
-                mAwarenessProgram = "Field Intelligence Report";
+        binding.awsFieldIntelligenceReport.setOnClickListener(v -> {
+            Toast.makeText(context, "Field Intelligence Report", Toast.LENGTH_SHORT).show();
+            mAwarenessProgram = "Field Intelligence Report";
 
-                binding.awsGeneral.setChecked(false);
-                binding.awsCalibration.setChecked(false);
-                binding.awsAudit.setChecked(false);
-                binding.awsHealthCamp.setChecked(false);
-                binding.awsCleanMilkProduction.setChecked(false);
-                binding.awsTraining.setChecked(false);
-                binding.awsAntibioticAwareness.setChecked(false);
-            }
+            binding.awsGeneral.setChecked(false);
+            binding.awsCalibration.setChecked(false);
+            binding.awsAudit.setChecked(false);
+            binding.awsHealthCamp.setChecked(false);
+            binding.awsCleanMilkProduction.setChecked(false);
+            binding.awsTraining.setChecked(false);
+            binding.awsAntibioticAwareness.setChecked(false);
         });
 
-        binding.awsHealthCamp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Health Camp", Toast.LENGTH_SHORT).show();
-                mAwarenessProgram = "Health Camp";
+        binding.awsHealthCamp.setOnClickListener(v -> {
+            Toast.makeText(context, "Health Camp", Toast.LENGTH_SHORT).show();
+            mAwarenessProgram = "Health Camp";
 
-                binding.awsGeneral.setChecked(false);
-                binding.awsCalibration.setChecked(false);
-                binding.awsAudit.setChecked(false);
-                binding.awsFieldIntelligenceReport.setChecked(false);
-                binding.awsCleanMilkProduction.setChecked(false);
-                binding.awsTraining.setChecked(false);
-                binding.awsAntibioticAwareness.setChecked(false);
-            }
+            binding.awsGeneral.setChecked(false);
+            binding.awsCalibration.setChecked(false);
+            binding.awsAudit.setChecked(false);
+            binding.awsFieldIntelligenceReport.setChecked(false);
+            binding.awsCleanMilkProduction.setChecked(false);
+            binding.awsTraining.setChecked(false);
+            binding.awsAntibioticAwareness.setChecked(false);
         });
 
-        binding.awsCleanMilkProduction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Clean Milk Production", Toast.LENGTH_SHORT).show();
-                mAwarenessProgram = "Clean Milk Production";
+        binding.awsCleanMilkProduction.setOnClickListener(v -> {
+            Toast.makeText(context, "Clean Milk Production", Toast.LENGTH_SHORT).show();
+            mAwarenessProgram = "Clean Milk Production";
 
-                binding.awsGeneral.setChecked(false);
-                binding.awsCalibration.setChecked(false);
-                binding.awsAudit.setChecked(false);
-                binding.awsFieldIntelligenceReport.setChecked(false);
-                binding.awsHealthCamp.setChecked(false);
-                binding.awsTraining.setChecked(false);
-                binding.awsAntibioticAwareness.setChecked(false);
-            }
+            binding.awsGeneral.setChecked(false);
+            binding.awsCalibration.setChecked(false);
+            binding.awsAudit.setChecked(false);
+            binding.awsFieldIntelligenceReport.setChecked(false);
+            binding.awsHealthCamp.setChecked(false);
+            binding.awsTraining.setChecked(false);
+            binding.awsAntibioticAwareness.setChecked(false);
         });
 
-        binding.awsTraining.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Training", Toast.LENGTH_SHORT).show();
-                mAwarenessProgram = "Training";
+        binding.awsTraining.setOnClickListener(v -> {
+            Toast.makeText(context, "Training", Toast.LENGTH_SHORT).show();
+            mAwarenessProgram = "Training";
 
-                binding.awsGeneral.setChecked(false);
-                binding.awsCalibration.setChecked(false);
-                binding.awsAudit.setChecked(false);
-                binding.awsFieldIntelligenceReport.setChecked(false);
-                binding.awsHealthCamp.setChecked(false);
-                binding.awsCleanMilkProduction.setChecked(false);
-                binding.awsAntibioticAwareness.setChecked(false);
-            }
+            binding.awsGeneral.setChecked(false);
+            binding.awsCalibration.setChecked(false);
+            binding.awsAudit.setChecked(false);
+            binding.awsFieldIntelligenceReport.setChecked(false);
+            binding.awsHealthCamp.setChecked(false);
+            binding.awsCleanMilkProduction.setChecked(false);
+            binding.awsAntibioticAwareness.setChecked(false);
         });
 
-        binding.awsAntibioticAwareness.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Antibiotic Awareness", Toast.LENGTH_SHORT).show();
-                mAwarenessProgram = "Antibiotic Awareness";
+        binding.awsAntibioticAwareness.setOnClickListener(v -> {
+            Toast.makeText(context, "Antibiotic Awareness", Toast.LENGTH_SHORT).show();
+            mAwarenessProgram = "Antibiotic Awareness";
 
-                binding.awsGeneral.setChecked(false);
-                binding.awsCalibration.setChecked(false);
-                binding.awsAudit.setChecked(false);
-                binding.awsFieldIntelligenceReport.setChecked(false);
-                binding.awsHealthCamp.setChecked(false);
-                binding.awsCleanMilkProduction.setChecked(false);
-                binding.awsTraining.setChecked(false);
-            }
+            binding.awsGeneral.setChecked(false);
+            binding.awsCalibration.setChecked(false);
+            binding.awsAudit.setChecked(false);
+            binding.awsFieldIntelligenceReport.setChecked(false);
+            binding.awsHealthCamp.setChecked(false);
+            binding.awsCleanMilkProduction.setChecked(false);
+            binding.awsTraining.setChecked(false);
+
+            binding.antiBioticAwarenesLayout.setVisibility(View.VISIBLE);
         });
 
         // Awareness program capture image
@@ -386,18 +367,6 @@ public class QualityFormActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mCompanyName = binding.spinnerCompany.getSelectedItem().toString();
                 binding.txtCompanyNotValid.setVisibility(View.GONE);
-                binding.txtErrorFound.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
-        binding.spinnerPlant.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPlant = binding.spinnerPlant.getSelectedItem().toString();
-                binding.txtPlantNotValid.setVisibility(View.GONE);
                 binding.txtErrorFound.setVisibility(View.GONE);
             }
 
@@ -653,7 +622,7 @@ public class QualityFormActivity extends AppCompatActivity {
 
     private boolean validateInputs() {
         mCompanyName = binding.spinnerCompany.getSelectedItem().toString();
-        mPlant = binding.spinnerPlant.getSelectedItem().toString();
+        mPlant = binding.edPlant.getText().toString().trim();
 
         mMassBalance = binding.edMassBalance.getText().toString().trim();
         mMilkCollection = binding.edMilkCollection.getText().toString().trim();
@@ -683,8 +652,6 @@ public class QualityFormActivity extends AppCompatActivity {
             return false;
         }
         if ("Select".equals(mPlant)){
-            ((TextView)binding.spinnerPlant.getSelectedView()).setError("Select plant");
-            binding.spinnerPlant.getSelectedView().requestFocus();
             binding.txtPlantNotValid.setVisibility(View.VISIBLE);
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
@@ -796,7 +763,7 @@ public class QualityFormActivity extends AppCompatActivity {
             binding.txtErrorFound.setVisibility(View.VISIBLE);
             return false;
         }
-        if ("".equals(mSamplesCalibrationNoOfWeight)){
+        if (mSamplesCalibrationNoOfWeight.isEmpty()){
             binding.edNoOfWeight.setError("Enter No Of Weight");
             binding.edNoOfWeight.requestFocus();
             binding.txtErrorFound.setVisibility(View.VISIBLE);
