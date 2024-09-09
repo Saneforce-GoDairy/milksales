@@ -749,6 +749,9 @@
             android:name=".SFA_Activity.SFA_Dashboard"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".SFA_Activity.CustomerOnBoarding"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".SFA_Activity.New_Outlet_Map_creations"
             android:screenOrientation="portrait" />
         <activity

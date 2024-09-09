@@ -52,7 +52,9 @@ import com.saneforce.godairy.SFA_Model_Class.OutletReport_View_Modal;
 import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
-import com.saneforce.godairy.procurement.custom_form.CustomFormHomeActivity;
+import com.saneforce.godairy.procurement.custom_form.CustomFormDashboardActivity;
+import com.saneforce.godairy.procurement.custom_form.CustomFormMainActivity;
+import com.saneforce.godairy.procurement.custom_form.ReportHomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,7 +82,7 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
     public static TextView tvStartDate, tvEndDate;
     TextView outlet_name, lastinvoice, tvOtherBrand, tvQPS, tvPOP, tvCoolerInfo, tvOrder, txRmkTmplSpinn,
             txRmksNoOrd, tvOutstanding, txPrvBal, txSalesAmt, txPayment, tvSalesReturn;
-    LinearLayout marketingActivityLayout, lin_order, lin_repeat_order, lin_invoice, lin_complementary, lin_repeat_invoice, lin_noOrder, linNoOrderRmks, linPayment, linRpt,
+    LinearLayout marketingActivityLayout, activityViewLayout, lin_order, lin_repeat_order, lin_invoice, lin_complementary, lin_repeat_invoice, lin_noOrder, linNoOrderRmks, linPayment, linRpt,
             linVanSales, linintent, linSalesReturn, linStockRot;
     Common_Class common_class;
     List<OutletReport_View_Modal> OutletReport_View_Modal = new ArrayList<>();
@@ -142,6 +144,7 @@ int approveFlagValue=-1;
             lin_invoice = findViewById(R.id.lin_invoice);
             lin_complementary = findViewById(R.id.lin_complementary);
             marketingActivityLayout = findViewById(R.id.marketingActivityLayout);
+            activityViewLayout = findViewById(R.id.activityViewLayout);
             lin_repeat_invoice = findViewById(R.id.lin_repeat_invoice);
             lastinvoice = findViewById(R.id.lastinvoice);
             lin_noOrder = findViewById(R.id.lin_noOrder);
@@ -229,6 +232,7 @@ int approveFlagValue=-1;
             lin_invoice.setOnClickListener(this);
             lin_complementary.setOnClickListener(this);
             marketingActivityLayout.setOnClickListener(this);
+            activityViewLayout.setOnClickListener(this);
 
             GetJsonData(String.valueOf(db.getMasterData(Constants.Todaydayplanresult)), "6");
 
@@ -264,6 +268,7 @@ int approveFlagValue=-1;
 
                 card_date.setVisibility(View.GONE);
                 marketingActivityLayout.setVisibility(View.GONE);
+                activityViewLayout.setVisibility(View.GONE);
             }
             if (!Common_Class.isNullOrEmpty(Shared_Common_Pref.CUSTOMER_CODE)) {
                 //  common_class.getDentDatas(this);
@@ -493,9 +498,15 @@ int approveFlagValue=-1;
                 break;
 
             case R.id.marketingActivityLayout:
-                Intent intent = new Intent(this, CustomFormHomeActivity.class);
+                Intent intent = new Intent(this, CustomFormDashboardActivity.class);
                 intent.putExtra("isPrimary", 2);
                 startActivity(intent);
+                break;
+
+            case R.id.activityViewLayout:
+                Intent intents = new Intent(this, ReportHomeActivity.class);
+                intents.putExtra("isPrimary", 2);
+                startActivity(intents);
                 break;
 
             case R.id.lin_vanSales:
