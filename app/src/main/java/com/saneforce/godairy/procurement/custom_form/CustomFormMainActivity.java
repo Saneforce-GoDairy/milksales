@@ -3,34 +3,30 @@ package com.saneforce.godairy.procurement.custom_form;
 import static android.view.View.GONE;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_CUSTOM_FORM_FIELD_LIST;
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_SAVE_CUSTOM_FORM;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -41,8 +37,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Gallery;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -57,8 +51,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-
-import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.UserStateDetails;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -87,8 +87,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -104,8 +102,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.stream.Collectors;
-
 import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -113,17 +109,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.mobile.client.UserStateDetails;
-import com.amazonaws.mobile.config.AWSConfiguration;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 
 public class CustomFormMainActivity extends AppCompatActivity {
     private ActivityCustomFormMainBinding binding;
@@ -146,7 +131,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
     private Map<Integer, ImageView> imageViewMap;
     private Map<Integer, TextView> textViewMap;
     private Map<Integer, TextView> textViewMap2;
-    private String picturePathFinal1;
+    private String filePath;
     String mEkey = "";
     SharedPreferences UserDetails;
     public static final String MyPREFERENCES = "MyPrefs";
@@ -161,6 +146,13 @@ public class CustomFormMainActivity extends AppCompatActivity {
     private static final int CUSTOM_FSCM = 100;
     private boolean FILE_CHOOSER = false;
     private String FILE_CHOOSER_ENABLED_COLUMN_NAME = "";
+    int IMAGE_MULTIPLE = 1;
+
+    int PICK_IMAGE_MULTIPLE = 1;
+    String imageEncoded;
+    List<MultipleImage> fileEncodedList;
+
+    private int IMAGE_SELECTION_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +169,8 @@ public class CustomFormMainActivity extends AppCompatActivity {
         imageViewMap = new HashMap<>();
         textViewMap = new HashMap<>();
         textViewMap2 = new HashMap<>();
+
+        fileEncodedList = new ArrayList<>();
 
         dbController = new DBController(context);
 
@@ -195,7 +189,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
         UserDetails = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         sf_code = Shared_Common_Pref.Sf_Code;
-        div_code = UserDetails.getString("Divcode", ""); // DesigNm
+        div_code = UserDetails.getString("Divcode", "");
         disign = UserDetails.getString("DesigNm", "");
 
         mEkey = sf_code + "-" + TimeUtils.getTimeStamp(TimeUtils.getCurrentTime(TimeUtils.FORMAT), TimeUtils.FORMAT);
@@ -235,12 +229,10 @@ public class CustomFormMainActivity extends AppCompatActivity {
                             break;
                         }
                     }catch (Exception e){
-                     //   e.printStackTrace();
                         Toast.makeText(context, "Form validation error!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-
             if (checked_All) {
                 saveDynamicData();
             }
@@ -304,7 +296,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
         if (Constant.isNetworkAvailable(getApplicationContext())) {
             ApiInterface request = ApiClient.getClient().create(ApiInterface.class);
-            Log.e("commonDynamicJsonArray:",commonDynamicJsonArray.toString());
             RequestBody mJsonArrayPart = RequestBody.create(MediaType.parse("text/plain"), commonDynamicJsonArray.toString());
 
             Call<ResponseBody> call = request.save1JSONArray(
@@ -329,7 +320,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                 showToast("Response : null");
                         }
                     } catch (JSONException | IOException ex) {
-                       // ex.printStackTrace();
                         showToast("Exception error" + ex.getLocalizedMessage());
                     }
                 }
@@ -379,7 +369,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                             loadData(groupJsonArray,fieldJsonArray);
                         }
                     } catch (IOException | JSONException e) {
-                        // throw new RuntimeException(e);
                         showError();
                     }
                 }
@@ -472,8 +461,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                 String tableName = jsonObject.getString("FGTableName");
                                 binding.submit.setVisibility(View.VISIBLE);
 
-                                Log.e("test_", Type_to_Add);
-
                                 if (Type_to_Add.equals("FSCM")){
                                     LinearLayout.LayoutParams imageUploadParams = new LinearLayout.LayoutParams(
                                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -499,8 +486,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     imageUploadContainer.setBackground(getResources().getDrawable(R.drawable.button_whitebg));
                                     layoutParams.setMargins(30,0,30,0);
 
-                                    //=============================================================================================
-                                    // child 1
                                     LinearLayout childLayout1 = new LinearLayout(context);
                                     int mId = 100 + i++;
                                     childLayout1.setId(mId);
@@ -528,49 +513,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
                                     fileNameTxt1.setLayoutParams(imageUploadParams);
 
-                                    //================================================================================================
-                                    // child 2
-                                    LinearLayout childLayout2 = new LinearLayout(context);
-                                    int mId2 = 200 + i++;
-                                    childLayout2.setId(mId2);
-                                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    childLayout2.setOrientation(LinearLayout.HORIZONTAL);
-                                    childLayout2.setBackgroundColor(Color.WHITE);
-                                    layoutParams2.setMargins(30,10,30,0);
-
-                                    ImageView imageUpload2 = new ImageView(context);
-                                    imageUpload2.setImageResource(R.drawable.ic_upload_file);
-                                    imageUpload2.setLayoutParams(imageUploadParams);
-
-                                    TextView fileNameTxt2 = new TextView(context);
-                                    fileNameTxt2.setText("Select File/Camera");
-                                    fileNameTxt2.setTextColor(Color.BLACK);
-                                    fileNameTxt2.setLayoutParams(imageUploadParams);
-
-                                    //================================================================================================
-                                    // child 3
-                                    LinearLayout childLayout3 = new LinearLayout(context);
-                                    int mId3 = 500 + i++;
-                                    childLayout3.setId(mId3);
-                                    LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    childLayout3.setOrientation(LinearLayout.HORIZONTAL);
-                                    childLayout3.setBackgroundColor(Color.WHITE);
-                                    layoutParams3.setMargins(30,10,30,30);
-
-                                    ImageView imageUpload3 = new ImageView(context);
-                                    imageUpload3.setImageResource(R.drawable.ic_upload_file);
-                                    imageUpload3.setLayoutParams(imageUploadParams);
-
-                                    TextView fileNameTxt3 = new TextView(context);
-                                    fileNameTxt3.setText("Select File/Camera");
-                                    fileNameTxt3.setTextColor(Color.BLACK);
-                                    fileNameTxt3.setLayoutParams(imageUploadParams);
-                                    //===========================================================================================
-                                    // onClickListener
-
                                     String key = 200 + String.valueOf(i);
-                                    String key2 = 300 + String.valueOf(i);
-                                    String key3 = 400 + String.valueOf(i);
 
                                     childLayout1.setOnClickListener(view -> {
                                         if (Constant.isNetworkAvailable(getApplicationContext()))
@@ -579,34 +522,11 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                             showToast("Check internet!");
                                     });
 
-                                    childLayout2.setOnClickListener(v -> {
-                                        if (Constant.isNetworkAvailable(getApplicationContext()))
-                                            checkPermission(CUSTOM_FSCM, Column_Store, Integer.parseInt(key2));
-                                        else
-                                            showToast("Check internet!");
-                                    });
-
-                                    childLayout3.setOnClickListener(v -> {
-                                        if (Constant.isNetworkAvailable(getApplicationContext()))
-                                            checkPermission(CUSTOM_FSCM, Column_Store, Integer.parseInt(key3));
-                                        else
-                                            showToast("Check internet!");
-                                    });
 
                                     textViewMap.put(Integer.parseInt(key), fileNameTxt1);
-                                    textViewMap.put(Integer.parseInt(key2), fileNameTxt2);
-                                    textViewMap.put(Integer.parseInt(key3), fileNameTxt3);
-
                                     binding.linearLayout.addView(imageUploadContainer, layoutParams);
                                     imageUploadContainer.addView(childLayout1, layoutParams1);
                                     childLayout1.addView(fileNameTxt1);
-                                    imageUploadContainer.addView(childLayout2, layoutParams2);
-                                    childLayout2.addView(imageUpload2);
-                                    childLayout2.addView(fileNameTxt2);
-                                    imageUploadContainer.addView(childLayout3, layoutParams3);
-                                    childLayout3.addView(imageUpload3);
-                                    childLayout3.addView(fileNameTxt3);
-
                                     DynamicField dataModel = new DynamicField();
                                     dataModel.setColumn(Column_Store);
                                     dataModel.setMandatory(mandate);
@@ -623,7 +543,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     imageUploadParams.gravity = Gravity.CENTER;
 
                                     TextView txtHeadLabel = new TextView(context);
-                                    txtHeadLabel.setTextColor(Color.BLACK); // For dev (txtHeadLabel.setTextColor(Color.BLACK);)
+                                    txtHeadLabel.setTextColor(Color.BLACK);
                                     txtHeadLabel.setTextSize(15);
                                     txtHeadLabel.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                     txtHeadLabel.setPadding((int) TypedValue.applyDimension(
@@ -637,15 +557,12 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     }
                                     binding.linearLayout.addView(txtHeadLabel);
 
-                                    // Parent layout main (VERTICAL )
                                     LinearLayout imageUploadContainer = new LinearLayout(context);
                                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     imageUploadContainer.setOrientation(LinearLayout.VERTICAL);
                                     imageUploadContainer.setBackground(getResources().getDrawable(R.drawable.button_whitebg));
                                     layoutParams.setMargins(30,0,30,0);
 
-                                    //=============================================================================================
-                                    // child 1
                                     LinearLayout childLayout1 = new LinearLayout(context);
                                     int mId = 100 + i++;
                                     childLayout1.setId(mId);
@@ -661,10 +578,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
                                     TextView fileNameTxt1 = new TextView(context);
                                     TextView textMandatory = new TextView(context);
-                                 //   textMandatory.setTextColor(Color.RED);
-                                //    String text2 = "<font color=#FFFFFFFF>Capture image</font> <font color='red'>*</font>";
-                                //    fileNameTxt1.setText( Html.fromHtml(text2));
-                                 //   fileNameTxt1.setTextColor(Color.BLACK);
 
                                     if (mandate == 1) {
                                         textMandatory.setTextColor(Color.RED);
@@ -676,49 +589,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     }
                                     fileNameTxt1.setLayoutParams(imageUploadParams);
 
-                                    //================================================================================================
-                                    // child 2
-                                    LinearLayout childLayout2 = new LinearLayout(context);
-                                    int mId2 = 200 + i++;
-                                    childLayout2.setId(mId2);
-                                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    childLayout2.setOrientation(LinearLayout.HORIZONTAL);
-                                    childLayout2.setBackgroundColor(Color.WHITE);
-                                    layoutParams2.setMargins(30,10,30,0);
-
-                                    ImageView imageUpload2 = new ImageView(context);
-                                    imageUpload2.setImageResource(R.drawable.ic_upload_file);
-                                    imageUpload2.setLayoutParams(imageUploadParams);
-
-                                    TextView fileNameTxt2 = new TextView(context);
-                                    fileNameTxt2.setText("Capture image");
-                                    fileNameTxt2.setTextColor(Color.BLACK);
-                                    fileNameTxt2.setLayoutParams(imageUploadParams);
-
-                                    //================================================================================================
-                                    // child 3
-                                    LinearLayout childLayout3 = new LinearLayout(context);
-                                    int mId3 = 500 + i++;
-                                    childLayout3.setId(mId3);
-                                    LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    childLayout3.setOrientation(LinearLayout.HORIZONTAL);
-                                    childLayout3.setBackgroundColor(Color.WHITE);
-                                    layoutParams3.setMargins(30,10,30,30);
-
-                                    ImageView imageUpload3 = new ImageView(context);
-                                    imageUpload3.setImageResource(R.drawable.ic_upload_file);
-                                    imageUpload3.setLayoutParams(imageUploadParams);
-
-                                    TextView fileNameTxt3 = new TextView(context);
-                                    fileNameTxt3.setText("Capture image");
-                                    fileNameTxt3.setTextColor(Color.BLACK);
-                                    fileNameTxt3.setLayoutParams(imageUploadParams);
-
-                                    //===========================================================================================
-                                    // onClickListener
-                                    String key = 200 + String.valueOf(i);
-                                    String key2 = 300 + String.valueOf(i);
-                                    String key3 = 400 + String.valueOf(i);
+                                    String key = 250 + String.valueOf(i);
 
                                     childLayout1.setOnClickListener(view -> {
                                         if (Constant.isNetworkAvailable(getApplicationContext()))
@@ -727,33 +598,11 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                             showToast("Check internet!");
                                     });
 
-                                    childLayout2.setOnClickListener(v -> {
-                                        if (Constant.isNetworkAvailable(getApplicationContext()))
-                                            captureMultiple(Integer.parseInt(key2), Column_Store);
-                                        else
-                                            showToast("Check internet!");
-                                    });
-
-                                    childLayout3.setOnClickListener(v -> {
-                                        if (Constant.isNetworkAvailable(getApplicationContext()))
-                                            captureMultiple(Integer.parseInt(key3), Column_Store);
-                                        else
-                                            showToast("Check internet!");
-                                    });
-
                                     textViewMap.put(Integer.parseInt(key), fileNameTxt1);
-                                    textViewMap.put(Integer.parseInt(key2), fileNameTxt2);
-                                    textViewMap.put(Integer.parseInt(key3), fileNameTxt3);
 
                                     binding.linearLayout.addView(imageUploadContainer, layoutParams);
                                     imageUploadContainer.addView(childLayout1, layoutParams1);
                                     childLayout1.addView(fileNameTxt1);
-                                    imageUploadContainer.addView(childLayout2, layoutParams2);
-                                    childLayout2.addView(imageUpload2);
-                                    childLayout2.addView(fileNameTxt2);
-                                    imageUploadContainer.addView(childLayout3, layoutParams3);
-                                    childLayout3.addView(imageUpload3);
-                                    childLayout3.addView(fileNameTxt3);
 
                                     DynamicField dataModel = new DynamicField();
                                     dataModel.setColumn(Column_Store);
@@ -771,7 +620,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     imageUploadParams.gravity = Gravity.CENTER;
 
                                     TextView txtHeadLabel = new TextView(context);
-                                    txtHeadLabel.setTextColor(Color.BLACK); // For dev (txtHeadLabel.setTextColor(Color.BLACK);)
+                                    txtHeadLabel.setTextColor(Color.BLACK);
                                     txtHeadLabel.setTextSize(15);
                                     txtHeadLabel.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                     txtHeadLabel.setPadding((int) TypedValue.applyDimension(
@@ -785,15 +634,12 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     }
                                     binding.linearLayout.addView(txtHeadLabel);
 
-                                    // Parent layout main (VERTICAL )
                                     LinearLayout imageUploadContainer = new LinearLayout(context);
                                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     imageUploadContainer.setOrientation(LinearLayout.VERTICAL);
                                     imageUploadContainer.setBackground(getResources().getDrawable(R.drawable.button_whitebg));
                                     layoutParams.setMargins(30,0,30,0);
 
-                                    //=============================================================================================
-                                    // child 1
                                     LinearLayout childLayout1 = new LinearLayout(context);
                                     int mId = 100 + i++;
                                     childLayout1.setId(mId);
@@ -809,10 +655,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
                                     TextView fileNameTxt1 = new TextView(context);
                                     TextView textMandatory = new TextView(context);
-                              //      textMandatory.setTextColor(Color.RED);
-                              //      String text2 = "<font color=#FFFFFFFF>Select File</font> <font color='red'>*</font>";
-                               //     fileNameTxt1.setText( Html.fromHtml(text2));
-                               //     fileNameTxt1.setTextColor(Color.BLACK);
+
                                     if (mandate == 1) {
                                         textMandatory.setTextColor(Color.RED);
                                         String textFSM = "<font color=#FFFFFFFF>Select File/Camera</font> <font color='red'>*</font>";
@@ -823,51 +666,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     }
                                     fileNameTxt1.setLayoutParams(imageUploadParams);
 
-                                    //================================================================================================
-                                    // child 2
-                                    LinearLayout childLayout2 = new LinearLayout(context);
-                                    int mId2 = 200 + i++;
-                                    childLayout2.setId(mId2);
-                                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    childLayout2.setOrientation(LinearLayout.HORIZONTAL);
-                                    childLayout2.setBackgroundColor(Color.WHITE);
-                                    layoutParams2.setMargins(30,10,30,0);
-
-                                    ImageView imageUpload2 = new ImageView(context);
-                                    imageUpload2.setImageResource(R.drawable.ic_upload_file);
-                                    imageUpload2.setLayoutParams(imageUploadParams);
-
-                                    TextView fileNameTxt2 = new TextView(context);
-                                    fileNameTxt2.setText("Select File");
-                                    fileNameTxt2.setTextColor(Color.BLACK);
-                                    fileNameTxt2.setLayoutParams(imageUploadParams);
-
-                                    //================================================================================================
-                                    // child 3
-                                    LinearLayout childLayout3 = new LinearLayout(context);
-                                    int mId3 = 500 + i++;
-                                    childLayout3.setId(mId3);
-                                    LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    childLayout3.setOrientation(LinearLayout.HORIZONTAL);
-                                    childLayout3.setBackgroundColor(Color.WHITE);
-                                    layoutParams3.setMargins(30,10,30,30);
-
-                                    ImageView imageUpload3 = new ImageView(context);
-                                    imageUpload3.setImageResource(R.drawable.ic_upload_file);
-                                    imageUpload3.setLayoutParams(imageUploadParams);
-
-                                    TextView fileNameTxt3 = new TextView(context);
-                                    fileNameTxt3.setText("Select File");
-                                    fileNameTxt3.setTextColor(Color.BLACK);
-                                    fileNameTxt3.setLayoutParams(imageUploadParams);
-
-                                    //===========================================================================================
-                                    // onClickListener
-
-
                                     String key = 200 + String.valueOf(i);
-                                    String key2 = 300 + String.valueOf(i);
-                                    String key3 = 400 + String.valueOf(i);
 
                                     childLayout1.setOnClickListener(view -> {
                                         if (Constant.isNetworkAvailable(getApplicationContext())) {
@@ -878,37 +677,11 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                             showToast("Check internet!");
                                     });
 
-                                    childLayout2.setOnClickListener(v -> {
-                                        if (Constant.isNetworkAvailable(getApplicationContext())) {
-                                            FILE_CHOOSER_ENABLED_COLUMN_NAME = Column_Store;
-                                            imageChooserFSCM(Integer.parseInt(key2));
-                                        }
-                                        else
-                                            showToast("Check internet!");
-                                    });
-
-                                    childLayout3.setOnClickListener(v -> {
-                                        if (Constant.isNetworkAvailable(getApplicationContext())) {
-                                            FILE_CHOOSER_ENABLED_COLUMN_NAME = Column_Store;
-                                            imageChooserFSCM(Integer.parseInt(key3));
-                                        }
-                                        else
-                                            showToast("Check internet!");
-                                    });
-
                                     textViewMap.put(Integer.parseInt(key), fileNameTxt1);
-                                    textViewMap.put(Integer.parseInt(key2), fileNameTxt2);
-                                    textViewMap.put(Integer.parseInt(key3), fileNameTxt3);
 
                                     binding.linearLayout.addView(imageUploadContainer, layoutParams);
                                     imageUploadContainer.addView(childLayout1, layoutParams1);
                                     childLayout1.addView(fileNameTxt1);
-                                    imageUploadContainer.addView(childLayout2, layoutParams2);
-                                    childLayout2.addView(imageUpload2);
-                                    childLayout2.addView(fileNameTxt2);
-                                    imageUploadContainer.addView(childLayout3, layoutParams3);
-                                    childLayout3.addView(imageUpload3);
-                                    childLayout3.addView(fileNameTxt3);
 
                                     DynamicField dataModel = new DynamicField();
                                     dataModel.setColumn(Column_Store);
@@ -998,7 +771,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     binding.linearLayout.addView(card);
 
                                 }
-                                //textview for label and data required
                                 else if (Type_to_Add.equals("L")) {
                                     TextView textView = new TextView(getApplicationContext());
                                     textView.setTextColor(Color.BLACK);
@@ -1023,7 +795,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     store_list.add(dataModel);
                                     binding.linearLayout.addView(textView);
                                 }
-                                //Date Picker for date range/date
                                 else if (Type_to_Add.equals("DR")) {
                                     TextView textView = new TextView(getApplicationContext());
                                     isDateShow=true;
@@ -1169,7 +940,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     layout.addView(From_Date);
                                     layout.addView(between);
                                     layout.addView(To_Date);
-                                    // Put the TextView inside CardView
                                     card.addView(layout);
                                     binding.linearLayout.addView(textView);
                                     binding.linearLayout.addView(card);
@@ -1260,11 +1030,9 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     binding.linearLayout.addView(textView);
                                     binding.linearLayout.addView(card);
                                 }
-                                //spinner for selection or options and data required
                                 else if (Type_to_Add.equals("SSO") || Type_to_Add.equals("SSM")) {
                                     CardView card = new CardView(getApplicationContext());
                                     TextView textView = new TextView(getApplicationContext());
-                                    //need to change this to the length of getting value from the server
                                     Spinner selection_Spinner = new Spinner(getApplicationContext());
                                     DynamicField dataModel = new DynamicField();
                                     card.setLayoutParams(params);
@@ -1675,7 +1443,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     binding.linearLayout.addView(textView);
                                     binding.linearLayout.addView(card);
                                 }
-                                //radio group for options and data required
                                 else if (Type_to_Add.equals("RO") || Type_to_Add.equals("RM")) {
                                     ArrayList<String> all_Data = new ArrayList<>();
                                     CardView card = new CardView(getApplicationContext());
@@ -1752,7 +1519,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     binding.linearLayout.addView(textView);
                                     binding.linearLayout.addView(card);
                                 }
-                                //checkbox for CheckBox and data required
                                 else if (Type_to_Add.equals("CO") || Type_to_Add.equals("CM") || Type_to_Add.equals("SMO") || Type_to_Add.equals("SMM")) {
                                     CardView card = new CardView(getApplicationContext());
                                     TextView textView = new TextView(getApplicationContext());
@@ -1770,7 +1536,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     textView.setPadding((int) TypedValue.applyDimension(
                                             TypedValue.COMPLEX_UNIT_DIP, 18, getResources()
                                                     .getDisplayMetrics()), 0, 0, 0);
-                                    //textView.setLayoutParams(params);
                                     String text = Heading_Label + "<font color='red'> *</font>";
                                     if (mandate == 1) {
                                         textView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
@@ -1897,7 +1662,6 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                             TypedValue.COMPLEX_UNIT_DIP, Horizontal_margin1, getResources()
                                                     .getDisplayMetrics());
                                     param1.setMargins(Horizontal_marginInDp1, vertical_marginInDp1, Horizontal_marginInDp1, vertical_marginInDp1);
-                                    // Add image path from drawable folder.
                                     LinearLayout.LayoutParams text_param = new LinearLayout.LayoutParams(
                                             0,
                                             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -1926,7 +1690,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                                     imageview.setImageResource(R.drawable.ic_upload_file);
                                     imageview.setLayoutParams(image_param);
 
-                                    imageview.setId(1000+i); // 10001
+                                    imageview.setId(1000+i);
 
                                     layout.addView(imageview);
                                     layout.setLayoutParams(param1);
@@ -2085,14 +1849,14 @@ public class CustomFormMainActivity extends AppCompatActivity {
         }
         return ss;
     }
-// s1
+
     public void captureFile(Integer reqCode) {
         AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
             @Override
             public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
                 if(imageViewMap.containsKey(reqCode)){
                     File file = new File(fullPath);
-                    picturePathFinal1=file.getAbsolutePath();
+                    filePath =file.getAbsolutePath();
                     ImageView imageViewToModify = imageViewMap.get(reqCode);
                     TextView textViewToModify=textViewMap.get(reqCode);
                     textViewToModify.setVisibility(View.VISIBLE);
@@ -2105,7 +1869,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
                             store_list.get(i).setData(Constant.SF_CODE+file.getName());
                         }
                     }
-                    uploadImageFile(picturePathFinal1); // "/storage/emulated/0/Pictures/Attendance/Images/MGR168_1718000389.jpg"
+                    uploadImageFile(filePath);
                 }
             }
         });
@@ -2120,33 +1884,67 @@ public class CustomFormMainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
+
                 if(textViewMap.containsKey(reqCode)){
+
+                    if (IMAGE_SELECTION_ID == reqCode){
+
+                    }else {
+                        fileEncodedList.clear();
+                    }
+                    IMAGE_SELECTION_ID = reqCode;
+
                     File file = new File(fullPath);
-                    picturePathFinal1=file.getAbsolutePath();
+                    filePath = file.getAbsolutePath();
+
+                    MultipleImage multipleImage = new MultipleImage();
+                    multipleImage.setFilePath(filePath);
+                    multipleImage.setFileName(file.getName());
+                    fileEncodedList.add(multipleImage);
 
                     TextView textViewToModify=textViewMap.get(reqCode);
                     textViewToModify.setVisibility(View.VISIBLE);
 
-                    textViewToModify.setText(Constant.SF_CODE+"_"+file.getName());
+                    String mFileName = "";
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    for (MultipleImage multipleImage2: fileEncodedList) {
+                        stringBuilder.append(multipleImage2.getFileName()).append(", \n");
+                    }
+
+                    mFileName = stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString();
+                    StringBuffer stringBuffer = new StringBuffer(mFileName);
+                    stringBuffer.deleteCharAt(stringBuffer.length()-2);
+
+                    textViewToModify.setText(stringBuffer.toString());
+                    textViewToModify.setTextSize(13);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         textViewToModify.setTextColor(getColor(R.color.colorAccent));
                     }else {
-                        textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                        }else {
+                            textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                        }
                     }
-                    textViewToModify.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
+
 
                     for (int i=0;i<store_list.size();i++){
                         if (store_list.get(i).getColumn().contains(mCoumnName)){
-                            String mCheckNullValues = store_list.get(i).getData();
-                            String previousFileName = store_list.get(i).getData();
-                            if (mCheckNullValues == null){
-                                store_list.get(i).setData(Constant.SF_CODE+file.getName());
-                            }else{
-                                store_list.get(i).setData(previousFileName + "," + Constant.SF_CODE+file.getName());
+                            if (store_list.get(i).getColumn().contains(FILE_CHOOSER_ENABLED_COLUMN_NAME)) {
+                                String mCheckNullValues = store_list.get(i).getData();
+                                String previousFileName = store_list.get(i).getData();
+                                if (mCheckNullValues == null){
+                                    store_list.get(i).setData(file.getName());
+                                }else{
+                                    store_list.get(i).setData(previousFileName + "," + file.getName());
+                                }
                             }
                         }
                     }
-                    uploadImageFile(picturePathFinal1);
+                    uploadImageFile(filePath);
+                    Toast.makeText(context, "Upload success", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -2166,109 +1964,134 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
     private void imageChooserFSCM(int dynamicId) {
         FILE_CHOOSER = true;
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        String[] mimeTypes = {"application/pdf", "image/*"};
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        startActivityForResult(intent, dynamicId);
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select Picture"), dynamicId);
     }
 
-    @SuppressLint({"SetTextI18n", "NewApi"})
+    public static class MultipleImage {
+        private String filePath;
+        private String fileName;
+
+        public void setFileName(String fileName) {
+            this.fileName = fileName;
+        }
+
+        public void setFilePath(String filePath) {
+            this.filePath = filePath;
+        }
+
+        public String getFileName() {
+            return fileName;
+        }
+
+        public String getFilePath() {
+            return filePath;
+        }
+    }
+
+    @SuppressLint({"NewApi", "ObsoleteSdkInt"})
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK) {
-                if(data.getData() != null) {
+        try {
+            if ( resultCode == RESULT_OK
+                    && null != data) {
 
-                    Uri selectedImageUri = data.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+                if(data.getData()!=null){
+                    Uri mImageUri=data.getData();
+
                     TextView textViewToModify=textViewMap.get(requestCode);
                     textViewToModify.setVisibility(View.VISIBLE);
 
-                    if (FILE_CHOOSER){
-                        if (selectedImageUri != null){
-                            String mimeType = context.getContentResolver().getType(selectedImageUri);
+                    Cursor cursor = getContentResolver().query(mImageUri,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
 
-                            if (mimeType.equals("application/pdf")) {
-                                picturePathFinal1 = processContentUri(selectedImageUri);
-                            } else if (mimeType.startsWith("image/")) {
-                                picturePathFinal1 = ImageFilePath.getPath(context, selectedImageUri);
-                            }
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imageEncoded  = cursor.getString(columnIndex);
+                    cursor.close();
+                    
+                }else {
+                    if (data.getClipData() != null) {
+                        if (IMAGE_SELECTION_ID == requestCode){
 
-                            if (mimeType.startsWith("image/")) {
-                                textViewToModify.setText(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
-                            }else {
-                                textViewToModify.setText(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
-                            }
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                textViewToModify.setTextColor(getColor(R.color.colorAccent));
-                            }else {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    textViewToModify.setTextColor(getColor(R.color.colorAccent));
-                                }else {
-                                    textViewToModify.setTextColor(getColor(R.color.colorAccent));
-                                }
-                            }
-
-                            File file;
-                            if (picturePathFinal1.contains(".png") || picturePathFinal1.contains(".jpg") || picturePathFinal1.contains(".jpeg")) {
-                                try {
-                                    file = new Compressor(context).compressToFile(new File(picturePathFinal1));
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            } else {
-                                file = new File(picturePathFinal1);
-                            }
-
-                            for (int i=0;i<store_list.size();i++){
-
-                                if (store_list.get(i).getColumn().contains(FILE_CHOOSER_ENABLED_COLUMN_NAME)){
-                                    String mCheckNullValues = store_list.get(i).getData();
-                                    String previousFileName = store_list.get(i).getData();
-                                    if (mCheckNullValues == null){
-                                        store_list.get(i).setData(file.getName());
-                                    }else{
-                                        store_list.get(i).setData(previousFileName + ", " + file.getName());
-                                    }
-                                }
-                            }
+                        }else {
+                            fileEncodedList.clear();
                         }
-                        uploadImageFile(picturePathFinal1);
-                        return;
+                        IMAGE_SELECTION_ID = requestCode;
+                        TextView textViewToModify=textViewMap.get(requestCode);
+                        textViewToModify.setVisibility(View.VISIBLE);
+
+                        ClipData mClipData = data.getClipData();
+                        ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+                            ClipData.Item item = mClipData.getItemAt(i);
+                            Uri uri = item.getUri();
+                            mArrayUri.add(uri);
+                            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                            cursor.moveToFirst();
+
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            imageEncoded  = cursor.getString(columnIndex);
+                            Uri fileUrl = data.getClipData().getItemAt(i).getUri();
+
+                            filePath = ImageFilePath.getPath(context, fileUrl);
+                            String fileName = filePath.substring( filePath.lastIndexOf('/')+1, filePath.length() );
+
+                            MultipleImage multipleImage = new MultipleImage();
+                            multipleImage.setFilePath(filePath);
+                            multipleImage.setFileName(fileName);
+                            fileEncodedList.add(multipleImage);
+                            cursor.close();
+                        }
+
+                        String mFileName = "";
+                       for (MultipleImage multipleImage: fileEncodedList){
+
+                           StringBuilder stringBuilder = new StringBuilder();
+                           for (MultipleImage multipleImage1: fileEncodedList) {
+                               stringBuilder.append(multipleImage1.getFileName()).append(", \n");
+                           }
+                           mFileName = stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString();
+                           StringBuffer stringBuffer = new StringBuffer(mFileName);
+                           stringBuffer.deleteCharAt(stringBuffer.length()-2);
+
+                           textViewToModify.setText(stringBuffer.toString());
+                           textViewToModify.setTextSize(13);
+                           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                               textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                           }else {
+                               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                   textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                               }else {
+                                   textViewToModify.setTextColor(getColor(R.color.colorAccent));
+                               }
+                           }
+
+                           for (int i=0;i<store_list.size();i++){
+                               if (store_list.get(i).getColumn().contains(FILE_CHOOSER_ENABLED_COLUMN_NAME)){
+                                   String mCheckNullValues = store_list.get(i).getData();
+                                   String previousFileName = store_list.get(i).getData();
+                                   if (mCheckNullValues == null){
+                                       store_list.get(i).setData(multipleImage.getFileName());
+                                   }else{
+                                       store_list.get(i).setData(previousFileName + ", " + multipleImage.getFileName());
+                                   }
+                               }
+                           }
+                           uploadImageFile(multipleImage.getFilePath());
+                       }
                     }
-
-                    if (selectedImageUri != null && !String.valueOf(selectedImageUri).isEmpty()) {
-
-                        String mimeType =getApplicationContext().getContentResolver().getType(selectedImageUri);
-
-                        if (mimeType != null) {
-                            if (mimeType.equals("application/pdf")) {
-                                picturePathFinal1 = processContentUri(selectedImageUri);
-                            } else if (mimeType.startsWith("image/")) {
-                                picturePathFinal1 = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
-                            }
-
-                                if (mimeType.startsWith("image/")) {
-                                    textViewToModify.setText(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
-                                }else {
-                                    textViewToModify.setText(Constant.SF_CODE+"_"+getFileInfoFromUri(selectedImageUri));
-                                }
-
-                                File file = new File(picturePathFinal1);
-                                for (int i = 0; i < store_list.size(); i++) {
-                                    String reqId = requestCode == 0 ? "00" : String.valueOf(requestCode);
-                                    if (store_list.get(i).getImgKey() != null && store_list.get(i).getImgKey().equals(reqId)) {
-                                        store_list.get(i).setData(Constant.SF_CODE+file.getName());
-                                    }
-                                }
-                                uploadImageFile(picturePathFinal1);
-                        }
-                    }else
-                        showToast("Something went wrong, please try again");
-                }else
-                    showToast("Something went wrong, please try again");
-            return;
+                    Toast.makeText(context, "Upload success", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            Log.e("upload__", "Something went wrong!");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -2297,7 +2120,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
     }
 
     private String getFileInfoFromUri(Uri uri) {
-        String fileInfo = ""; // Index 0: file name, Index 1: file path
+        String fileInfo = "";
         String filePath="";
         String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME, MediaStore.MediaColumns.DATA};
 
@@ -2310,23 +2133,9 @@ public class CustomFormMainActivity extends AppCompatActivity {
                 int pathIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
 
                 if (nameIndex != -1) {
-                    fileInfo = cursor.getString(nameIndex); // File name
+                    fileInfo = cursor.getString(nameIndex);
                     filePath=  cursor.getString(pathIndex);
                 }
-
-              /* InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
-               File outputFile = new File(getContext().getExternalCacheDir().getAbsolutePath() + File.separator + fileInfo); // Provide a desired file name
-               OutputStream outputStream = new FileOutputStream(outputFile);
-
-               byte[] buffer = new byte[1024];
-               int length;
-               while ((length = inputStream.read(buffer)) > 0) {
-                   outputStream.write(buffer, 0, length);
-               }
-
-               inputStream.close();
-               outputStream.close();
-               filePath = outputFile.getPath();*/
             }
         } finally {
             if (cursor != null) {
@@ -2337,11 +2146,10 @@ public class CustomFormMainActivity extends AppCompatActivity {
     }
 
     private File createTempFileWithExtension(String extension) throws IOException {
-        File directory = getApplicationContext().getCacheDir(); // Use getExternalCacheDir() for external storage
+        File directory = getApplicationContext().getCacheDir();
         return File.createTempFile("file_", extension, directory);
     }
 
-    // s2
     public void uploadImageFile(String filePath){
 
         try{
