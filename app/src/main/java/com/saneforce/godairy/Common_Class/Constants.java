@@ -279,6 +279,8 @@ public class Constants {
     public static final String VAN_OUTSTANDING = "vanoutstanding";
     public static final String VAN_STOCK_AMT = "vanStockAmt";
     public static final String VAN_LOAD_DETAILS = "vanLoadDetails";
+    public static final String VAN_APPROVE_FLAG = "vanApproveFlag";
+
 
 
 

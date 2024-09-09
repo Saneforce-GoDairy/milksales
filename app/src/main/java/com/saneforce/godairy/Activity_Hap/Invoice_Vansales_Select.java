@@ -723,7 +723,7 @@ public class Invoice_Vansales_Select extends AppCompatActivity implements View.O
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-          /*  case R.id.btnRepeat:
+           case R.id.btnRepeat:
                 if (btnRepeat.isAnimating()) return;
                 btnRepeat.startAnimation();
                 handler.postDelayed(new Runnable() {
@@ -732,7 +732,7 @@ public class Invoice_Vansales_Select extends AppCompatActivity implements View.O
                         common_class.getDataFromApi(Constants.PreInvOrderQty, Invoice_Vansales_Select.this, false);
                     }
                 }, 500);
-                break;*/
+                break;
             case R.id.rlAddProduct:
                 moveProductScreen();
                 break;
@@ -1896,7 +1896,8 @@ public class Invoice_Vansales_Select extends AppCompatActivity implements View.O
             this.rowLayout = rowLayout;
             this.context = context;
             this.CategoryType = categoryType;
-            if(Product_Details_Modalitem.size()>0)  notifyItemRangeChanged(0,Product_Details_Modalitem.size());
+            //if(Product_Details_Modalitem.size()>0)  notifyItemRangeChanged(0,Product_Details_Modalitem.size());
+            notifyItemChanged(uomPos);
         }
 
 

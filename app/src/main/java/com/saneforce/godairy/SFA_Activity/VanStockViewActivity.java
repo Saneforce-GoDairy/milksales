@@ -39,6 +39,7 @@ public class VanStockViewActivity extends AppCompatActivity implements View.OnCl
     String date = "";
 
     Shared_Common_Pref sharedCommonPref;
+    TextView tv_no_data;
 
 
     @Override
@@ -57,6 +58,7 @@ public class VanStockViewActivity extends AppCompatActivity implements View.OnCl
 
         tvStartDate = findViewById(R.id.tvStartDate);
         tvEndDate = findViewById(R.id.tvEndDate);
+        tv_no_data=findViewById(R.id.tv_no_data);
 
         stDate = Common_Class.GetDatewothouttime();
         endDate = Common_Class.GetDatewothouttime();
@@ -171,8 +173,14 @@ public class VanStockViewActivity extends AppCompatActivity implements View.OnCl
 
 
             //  tvUnLoadAmt.setText(CurrencySymbol+" " + formatter.format(getIntent().getDoubleExtra("stkLoadAmt", 0) - salAmt));
-
-            rvVanStockDets.setAdapter(new rvVanStockview(arr, R.layout.layvanstockadb, this));
+             if(arr.length()>0) {
+                 rvVanStockDets.setVisibility(View.VISIBLE);
+                 tv_no_data.setVisibility(View.GONE);
+                 rvVanStockDets.setAdapter(new rvVanStockview(arr, R.layout.layvanstockadb, this));
+             }else{
+                 rvVanStockDets.setVisibility(View.GONE);
+                 tv_no_data.setVisibility(View.VISIBLE);
+             }
 
         } catch (Exception e) {
             Log.v("adap:", e.getMessage());

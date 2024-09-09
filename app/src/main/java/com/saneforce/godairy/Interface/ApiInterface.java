@@ -1015,5 +1015,7 @@ public interface ApiInterface {
     @POST("db_v310.php?axn=save/vansales")
     Call<JsonObject> saveVanInvoice(@Query("divisionCode") String div_code, @Query("Sf_code") String sf_code, @Query("loginType") String loginType, @Field("data") String toString);
 
-
+    @FormUrlEncoded
+    @POST("Db_v310.php?axn=get/vanapprovedata")
+    Call<ResponseBody> getVanApproveData(@Field("data") String body);
 }

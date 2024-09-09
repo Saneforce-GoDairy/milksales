@@ -8,6 +8,8 @@ import static com.saneforce.godairy.Common_Class.Constants.STOCK_LEDGER;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.CurrencySymbol;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.getActiveActivity;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -120,8 +122,10 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
     boolean updSale = true;
     String ViewDist;
     TextView tvStockTopUp;
-
+    int approveFlagValue=0;
     com.saneforce.godairy.Activity_Hap.Common_Class DT = new com.saneforce.godairy.Activity_Hap.Common_Class();
+    LinearLayout ll_reject;
+    TextView tv_reject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,6 +232,8 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
             tvVanSalPay = findViewById(R.id.tvVanSalPay);
             tvStockView=findViewById(R.id.tvStockView);
             tvStockTopUp=findViewById(R.id.tvStockTopUp);
+            ll_reject=findViewById(R.id.ll_reject);
+            tv_reject=findViewById(R.id.tv_reject);
 
 
 
@@ -509,6 +515,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
             }
 
             common_class.getDb_310Data(Constants.Product_List,this);
+            getApprovalData();
 
         } catch (Exception e) {
             Log.e("Retailor List:ex ", e.getMessage());
@@ -579,6 +586,7 @@ public class VanSalesDashboardRoute extends AppCompatActivity implements Main_Mo
     @Override
     protected void onResume() {
         super.onResume();
+        getApprovalData();
 
 try{
         if  (shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING)==null||shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING).equals("")) {
@@ -626,7 +634,7 @@ try{
     @Override
     protected void onStart() {
         super.onStart();
-
+        getApprovalData();
 try {
     if (shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING) != null && !shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING).equals("") && shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING_TIME).equals(Common_Class.GetDateOnly())) {
         tvStockLoad.setTextColor(getResources().getColor(R.color.grey_500));
@@ -657,7 +665,73 @@ try {
 
 
     }
+    private void getApprovalData() {
+        try {
 
+            if (common_class.isNetworkAvailable(this)) {
+                ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+                JSONObject HeadItem = new JSONObject();
+                HeadItem.put("distributorCode", shared_common_pref.getvalue(Constants.Distributor_Id));
+
+                String div_code = Shared_Common_Pref.Div_Code.replaceAll(",", "");
+                HeadItem.put("divisionCode", div_code);
+
+
+                Call<ResponseBody> call = service.getVanApproveData(HeadItem.toString());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        InputStreamReader ip = null;
+                        StringBuilder is = new StringBuilder();
+                        String line = null;
+                        try {
+
+
+                            if (response.isSuccessful()) {
+                                ip = new InputStreamReader(response.body().byteStream());
+                                BufferedReader bf = new BufferedReader(ip);
+                                while ((line = bf.readLine()) != null) {
+                                    is.append(line);
+                                    Log.v("Res>>", is.toString());
+                                }
+                                JSONArray array=new JSONArray(is.toString());
+                                JSONObject jsonObject = array.getJSONObject(0);
+                                 approveFlagValue = jsonObject.getInt("ApproveFlag");
+                                 if(approveFlagValue==2){
+                                     ll_reject.setVisibility(View.VISIBLE);
+                                     shared_common_pref.clear_pref(Constants.VAN_STOCK_LOADING);
+                                     tv_reject.setText(jsonObject.getString("RejectReason"));
+                                 }else{
+                                     ll_reject.setVisibility(View.GONE);
+                                 }
+
+                               // shared_common_pref.save(Constants.RetailorTodayData, is.toString());
+
+                            }
+
+                        } catch (Exception e) {
+
+                            Log.v("fail>>1", e.getMessage());
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.v("fail>>2", t.toString());
+
+
+                    }
+                });
+            } else {
+                common_class.showMsg(VanSalesDashboardRoute.dashboard_route, "Please check your internet connection");
+            }
+        } catch (Exception e) {
+            Log.v("fail>>", e.getMessage());
+
+
+        }
+    }
 
     private void getLastInvoiceData() {
         try {
@@ -747,16 +821,20 @@ try {
                 }
                 break;
             case R.id.tvStockLoad:
-                common_class.getDb_310Data(Constants.STOCK_LEDGER, this);
+                /*common_class.getDb_310Data(Constants.STOCK_LEDGER, this);
                 Intent load = new Intent(getApplicationContext(), VanSalStockLoadActivity.class);
                 Shared_Common_Pref.SFA_MENU = "VanSalesDashboardRoute";
                 Constants.VAN_SALES_MODE = Constants.VAN_STOCK_LOADING;
                 startActivity(load);
                 finish();
-                overridePendingTransition(R.anim.in, R.anim.out);
+                overridePendingTransition(R.anim.in, R.anim.out);*/
+                LoadingMaterialsNew();
                 break;
             case R.id.tvStockUnload:
-                if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING))) {
+                if(approveFlagValue==0){
+                    Toast.makeText(getApplicationContext(),"Please load stock or get approved by Admin",Toast.LENGTH_SHORT).show();
+
+                }else if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING))) {
                     common_class.showMsg(this, "No Stock");
                 } else {
                     Intent unload = new Intent(getApplicationContext(), VanSalStockUnLoadActivity.class);
@@ -815,7 +893,10 @@ try {
                 common_class.CommonIntentwithoutFinish(SFA_Activity.class);
                 break;
             case R.id.tvStockTopUp:
-                if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING))) {
+                if(approveFlagValue==0){
+                    Toast.makeText(getApplicationContext(),"Please load stock or get approved by Admin",Toast.LENGTH_SHORT).show();
+
+                }else if (Common_Class.isNullOrEmpty(shared_common_pref.getvalue(Constants.VAN_STOCK_LOADING))) {
                     common_class.showMsg(this, "No Stock");
                 } else {
                     Intent unload = new Intent(getApplicationContext(), VanSalStockTopUpActivity.class);
@@ -827,6 +908,7 @@ try {
                 break;
         }
     }
+
 
     @Override
     public void showProgress() {
@@ -1106,9 +1188,11 @@ try {
                     common_class.getProductDetails(getActiveActivity(), new OnLiveUpdateListener() {
                         @Override
                         public void onUpdate(String mode) {
-                            common_class.CommonIntentwithoutFinish(Invoice_History.class);
-                            //getActivity().overridePendingTransition(R.anim.in, R.anim.out);
-                            common_class.ProgressdialogShow(0, "");
+
+                                common_class.CommonIntentwithoutFinish(Invoice_History.class);
+                                //getActivity().overridePendingTransition(R.anim.in, R.anim.out);
+                                common_class.ProgressdialogShow(0, "");
+
                         }
 
                         @Override
@@ -1145,6 +1229,45 @@ try {
             updateData();
         }
     }
+
+    public void LoadingMaterialsNew(){
+        common_class.ProgressdialogShow(1, "Loading Material Details");
+        common_class.getProductDetails(getActiveActivity(), new OnLiveUpdateListener() {
+            @Override
+            public void onUpdate(String mode) {
+
+                common_class.getDb_310Data(Constants.STOCK_LEDGER, VanSalesDashboardRoute.this);
+                Intent load = new Intent(getApplicationContext(), VanSalStockLoadActivity.class);
+                Shared_Common_Pref.SFA_MENU = "VanSalesDashboardRoute";
+                Constants.VAN_SALES_MODE = Constants.VAN_STOCK_LOADING;
+                startActivity(load);
+                finish();
+                overridePendingTransition(R.anim.in, R.anim.out);
+            }
+
+            @Override
+            public void onError(String msg) {
+                RetryLoadingProds();
+                common_class.ProgressdialogShow(0, "");
+            }
+        });
+    }
+    public void RetryLoadingProds(){
+        AlertDialogBox.showDialog(getApplicationContext(), "HAP SFA", "Product Loading Failed. Do you want to Retry ?", "Retry", "Cancel", false, new AlertBox() {
+            @Override
+            public void PositiveMethod(DialogInterface dialog, int id) {
+                if (common_class.isNetworkAvailable(getApplicationContext())) {
+                    LoadingMaterialsNew();
+                    dialog.dismiss();
+                }
+            }
+            @Override
+            public void NegativeMethod(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+    }
+
 
 
 

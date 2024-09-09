@@ -57,12 +57,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,7 +103,7 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
     ImageView swipe_left_image;
     TextView tv_no_data;
     CardView card_date;
-
+int approveFlagValue=-1;
     //Updateed
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +198,7 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
             tvOutstanding.setText(CurrencySymbol+" 0.00");
 
             loadNoOrdRemarks();
-
+            getApprovalData();
             btnRmkClose.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -487,7 +490,9 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
                 break;
 
             case R.id.lin_vanSales:
-                if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.VAN_STOCK_LOADING))) {
+                if(approveFlagValue==0){
+                    Toast.makeText(getApplicationContext(),"Please load stock or get approved by Admin",Toast.LENGTH_SHORT).show();
+                }else if (Common_Class.isNullOrEmpty(sharedCommonPref.getvalue(Constants.VAN_STOCK_LOADING))) {
                     common_class.showMsg(Invoice_History.this, "No Stock");
                 } else {
                 Shared_Common_Pref.Invoicetoorder = "1";
@@ -546,6 +551,66 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
             case R.id.tvSalesReturn:
                 startActivity(new Intent(this, SalesReturnActivity.class));
                 break;
+        }
+    }
+    private void getApprovalData() {
+        try {
+
+            if (common_class.isNetworkAvailable(this)) {
+                ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+                JSONObject HeadItem = new JSONObject();
+                HeadItem.put("distributorCode", sharedCommonPref.getvalue(Constants.Distributor_Id));
+
+                String div_code = Shared_Common_Pref.Div_Code.replaceAll(",", "");
+                HeadItem.put("divisionCode", div_code);
+
+
+                Call<ResponseBody> call = service.getVanApproveData(HeadItem.toString());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        InputStreamReader ip = null;
+                        StringBuilder is = new StringBuilder();
+                        String line = null;
+                        try {
+
+
+                            if (response.isSuccessful()) {
+                                ip = new InputStreamReader(response.body().byteStream());
+                                BufferedReader bf = new BufferedReader(ip);
+                                while ((line = bf.readLine()) != null) {
+                                    is.append(line);
+                                    Log.v("Res>>", is.toString());
+                                }
+                                JSONArray array=new JSONArray(is.toString());
+                                JSONObject jsonObject = array.getJSONObject(0);
+                                approveFlagValue = jsonObject.getInt("ApproveFlag");
+
+                                // shared_common_pref.save(Constants.RetailorTodayData, is.toString());
+
+                            }
+
+                        } catch (Exception e) {
+
+                            Log.v("fail>>1", e.getMessage());
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.v("fail>>2", t.toString());
+
+
+                    }
+                });
+            } else {
+                common_class.showMsg(VanSalesDashboardRoute.dashboard_route, "Please check your internet connection");
+            }
+        } catch (Exception e) {
+            Log.v("fail>>", e.getMessage());
+
+
         }
     }
 
