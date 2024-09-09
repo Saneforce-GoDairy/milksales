@@ -275,7 +275,6 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Distributor", "", "", "", R.drawable.ic_distributor_sf));
                     menuList.add(new ListModel("", "Customer On Boarding", "", "", "", R.drawable.ic_distributor_sf));
                     menuList.add(new ListModel("", "My Team", "", "", "", R.drawable.ic_my_team_sf));
-                    menuList.add(new ListModel("", "SOA", "", "", "", R.drawable.ic_my_team_sf));
                     //menuList.add(new ListModel("", "Projection", "", "", "", R.drawable.ic_projection_sf));
                     // menuList.add(new ListModel("", "Stock Audit", "", "", "", R.drawable.ic_stock_audit));
                    // menuList.add(new ListModel("", "Inshop", "", "", "", R.drawable.ic_inshop_sf));
@@ -292,6 +291,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
                     menuList.add(new ListModel("", "Outlets", "", "", "", R.drawable.ic_outlets_sf));
 //                    menuList.add(new ListModel("", "Geo Tagging", "", "", "", R.drawable.ic_outlets_sf));
                     menuList.add(new ListModel("", "Nearby Outlets", "", "", "", R.drawable.ic_near_outlets_sf));
+                    menuList.add(new ListModel("", "SOA", "", "", "", R.drawable.ic_my_team_sf));
                     menuList.add(new ListModel("", "Reports", "", "", "", R.drawable.ic_reports_sf));
                     //menuList.add(new ListModel("", "Counter Sales", "", "", "", R.drawable.ic_outline_assignment_48));
                     //menuList.add(new ListModel("", "GRN", "", "", "", R.drawable.ic_outline_assignment_turned_in_24));
