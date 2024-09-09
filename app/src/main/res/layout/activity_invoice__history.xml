@@ -923,6 +923,26 @@
                                     android:textSize="11sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/marketingActivityLayout"
+                                style="@style/OrderTypesButton"
+                                android:layout_width="160dp">
+
+                                <TextView
+                                    android:id="@+id/marketingActivity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="@dimen/C3dp"
+                                    android:text="Marketing Activity"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/white"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </HorizontalScrollView>
