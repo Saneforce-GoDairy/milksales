@@ -49,14 +49,13 @@ android {
         repositories {
             google()
             mavenCentral()
-            jcenter()
-            maven { url 'https://jitpack.io' }
         }
     }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.aar"])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
@@ -80,19 +79,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.1.2'
     implementation 'com.google.firebase:firebase-messaging-directboot:23.1.2'
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
-    implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
-    implementation 'br.com.simplepass:loading-button-android:1.14.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'id.zelory:compressor:2.1.1'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
-    implementation 'com.toptoche.searchablespinner:searchablespinnerlibrary:1.3.1'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'com.google.android.gms:play-services-basement:18.2.0'
-    implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'androidx.room:room-runtime:2.5.1'
     annotationProcessor 'androidx.room:room-compiler:2.5.1'
@@ -103,14 +98,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:20.1.3'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.cuneytayyildiz:gestureimageview:1.0.0'
     implementation 'com.google.dagger:dagger:2.28.3'
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'commons-net:commons-net:3.8.0'
-    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
@@ -118,7 +111,6 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.google.maps.android:android-maps-utils:3.5.3'
     implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.github.kenglxn.QRGen:android:2.6.0'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
     implementation 'com.ogaclejapan.smarttablayout:utils-v4:2.0.0@aar'
@@ -138,8 +130,16 @@ dependencies {
     implementation 'androidx.camera:camera-lifecycle:1.2.2'
     implementation 'androidx.camera:camera-view:1.2.2'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    implementation files('libs/atomPaynetzSDK-release.aar')
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.6'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
+
+
+//    implementation files('libs/atomPaynetzSDK-release.aar')
+//    implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
+//    implementation 'br.com.simplepass:loading-button-android:1.14.0'
+//    implementation 'com.toptoche.searchablespinner:searchablespinnerlibrary:1.3.1'
+//    implementation 'com.google.android:flexbox:2.0.1'
+//    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+//    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
 }
