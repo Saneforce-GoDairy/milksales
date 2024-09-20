@@ -1138,28 +1138,10 @@
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/capture_aadhaar_number"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/ic_round_photo_camera_24" />
-
-                    <ImageView
-                        android:id="@+id/display_aadhaar_back"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/capture_aadhaar_back"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"
@@ -1213,8 +1195,7 @@
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/capture_pan_number"
@@ -1315,8 +1296,7 @@
                         android:layout_height="25dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/capture_bank_details"
@@ -1402,9 +1382,8 @@
                         android:id="@+id/previewfssaiDeclaration"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/capturefssaiDeclaration"
@@ -1578,9 +1557,8 @@
                         android:id="@+id/previewGSTDeclaration"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/captureGSTDeclaration"
@@ -1712,9 +1690,8 @@
                         android:id="@+id/previewTCSDeclaration"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:layout_marginEnd="@dimen/C8dp"
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/captureTCSDeclaration"
@@ -1786,12 +1763,11 @@
 
                     <ImageView
                         android:id="@+id/display_agreement_copy"
+                        android:layout_marginTop="10dp"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="@dimen/C8dp"
-                        android:src="@drawable/ic_round_photo_camera_24"
-                        android:visibility="gone" />
+                        android:src="@drawable/image_preview_24" />
 
                     <ImageView
                         android:id="@+id/capture_agreement_copy"

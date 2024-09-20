@@ -117,9 +117,8 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
     DatePickerDialog fromDatePickerDialog;
 
     double Lat = 0, Long = 0;
-    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", aadhaarImageName = "", PANStr = "", panImageName = "", PANName = "", bankDetailsStr = "", bankImageName = "", FSSAIDetailsStr = "", fssaiFromStr = "", fssaitoStr = "", FSSAIDeclarationImageName = "", GSTDetailsStr = "", gstDeclarationImageName = "", tcsDeclarationImageName = "", agreementDetailsStr = "", agreementImageName = "", purchaseTypeID = "", purchaseTypeName = "", FSSAIDeclarationImageFullPath = "", gstDeclarationImageFullPath = "", tcsDeclarationImageFullPath = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", aadhaarImageFullPath = "", panImageFullPath = "", bankImageFullPath = "", agreementImageFullPath = "", customerApplicationImageFullPath = "", subChannelIDStr = "", doorNo = "", street = "", city = "", district = "", state = "", country = "", pincode = "", feature = "";
-//    boolean isEditMode = false;
-    ArrayList<String> FSSAIList, GSTList;
+    String customer_photo_name = "", shop_photo_name = "", customerApplicationImageName = "", stateCodeStr = "", stateNameStr = "", officeCodeStr = "", officeNameStr = "", routeCodeStr = "", routeNameStr = "", channelIDStr = "", channelStr = "", subChannelNameStr = "", ReportingVerticalsID = "", ReportingVerticalsStr = "", cityStr = "", customerNameStr = "", ownerNameStr = "", businessAddressNoStr = "", businessAddressCityStr = "", businessAddressPincodeStr = "", pincodeStr = "", ownerAddressNoStr = "", ownerAddressCityStr = "", ownerAddressPincodeStr = "", mobileNumberStr = "", emailAddressStr = "", executiveNameStr = "", employeeIdStr = "", UIDType = "", aadhaarStr = "", PANStr = "", PANName = "", bankDetailsStr = "", FSSAIDetailsStr = "", fssaiFromStr = "", fssaitoStr = "", GSTDetailsStr = "", agreementDetailsStr = "", purchaseTypeID = "", purchaseTypeName = "", stockistCode = "", customer_photo_url = "", shop_photo_url = "", customer_application_url = "", subChannelIDStr = "", doorNo = "", street = "", city = "", district = "", state = "", country = "", pincode = "", feature = "";
+    ArrayList<String> FSSAIList, GSTList, AadhaarImgList, PanImgList, GSTDeclarationImgList, FSSAIDeclarationImgList, TCSDeclarationImgList, BankImgList, AgreementImgList;
     private String mUkey;
 
     @Override
@@ -214,11 +213,9 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
         fssaiSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                previewfssaiDeclaration.setVisibility(View.GONE);
                 fssaiDeclarationLL.setVisibility(View.GONE);
-                FSSAIDeclarationImageName = "";
-                FSSAIDeclarationImageFullPath = "";
                 fssaiLL.setVisibility(View.VISIBLE);
+                FSSAIDeclarationImgList.clear();
             } else {
                 fssaiFromDate.setText("");
                 fssaiFromStr = "";
@@ -234,9 +231,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
         gstSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                gstDeclarationImageName = "";
-                gstDeclarationImageFullPath = "";
-                previewGSTDeclaration.setVisibility(View.GONE);
+                GSTDeclarationImgList.clear();
                 gstDeclarationLL.setVisibility(View.GONE);
                 gstLL.setVisibility(View.VISIBLE);
             } else {
@@ -285,9 +280,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
         tcsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                previewTCSDeclaration.setVisibility(View.GONE);
-                tcsDeclarationImageName = "";
-                tcsDeclarationImageFullPath = "";
+                TCSDeclarationImgList.clear();
                 tcsDeclarationLL.setVisibility(View.GONE);
             } else {
                 tcsDeclarationLL.setVisibility(View.VISIBLE);
@@ -325,6 +318,13 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
         tempRouteList = new ArrayList<>();
         FSSAIList = new ArrayList<>();
         GSTList = new ArrayList<>();
+        AadhaarImgList = new ArrayList<>();
+        PanImgList = new ArrayList<>();
+        GSTDeclarationImgList = new ArrayList<>();
+        FSSAIDeclarationImgList = new ArrayList<>();
+        TCSDeclarationImgList = new ArrayList<>();
+        BankImgList = new ArrayList<>();
+        AgreementImgList = new ArrayList<>();
 
         subChannelResponse = new JSONArray();
         filteredSubChannel = new JSONArray();
@@ -400,10 +400,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
-                            aadhaarImageName = FileName;
-                            aadhaarImageFullPath = fullPath;
-                            display_aadhaar_number.setImageBitmap(image);
-                            display_aadhaar_number.setVisibility(View.VISIBLE);
+                            AadhaarImgList.add(FileName);
                         }
 
                         @Override
@@ -423,10 +420,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
-                            panImageName = FileName;
-                            panImageFullPath = fullPath;
-                            display_pan_number.setImageBitmap(image);
-                            display_pan_number.setVisibility(View.VISIBLE);
+                            PanImgList.add(FileName);
                         }
 
                         @Override
@@ -446,10 +440,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
-                            bankImageName = FileName;
-                            bankImageFullPath = fullPath;
-                            display_bank_details.setImageBitmap(image);
-                            display_bank_details.setVisibility(View.VISIBLE);
+                            BankImgList.add(FileName);
                         }
 
                         @Override
@@ -466,10 +457,10 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             AllowancCapture.setOnImagePickListener(new OnImagePickListener() {
                 @Override
                 public void OnImageURIPick(Bitmap image, String FileName, String fullPath) {
-                    FSSAIList.add(FileName);
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
+                            FSSAIList.add(FileName);
                         }
 
                         @Override
@@ -489,6 +480,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
+                            GSTList.add(FileName);
                         }
 
                         @Override
@@ -496,7 +488,6 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                             Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    GSTList.add(FileName);
                 }
             });
             Intent intent = new Intent(context, AllowancCapture.class);
@@ -509,10 +500,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
-                            agreementImageName = FileName;
-                            agreementImageFullPath = fullPath;
-                            display_agreement_copy.setImageBitmap(image);
-                            display_agreement_copy.setVisibility(View.VISIBLE);
+                            AgreementImgList.add(FileName);
                         }
 
                         @Override
@@ -532,10 +520,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
-                            gstDeclarationImageName = FileName;
-                            gstDeclarationImageFullPath = fullPath;
-                            previewGSTDeclaration.setImageBitmap(image);
-                            previewGSTDeclaration.setVisibility(View.VISIBLE);
+                            GSTDeclarationImgList.add(FileName);
                         }
 
                         @Override
@@ -555,10 +540,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
-                            tcsDeclarationImageName = FileName;
-                            tcsDeclarationImageFullPath = fullPath;
-                            previewTCSDeclaration.setImageBitmap(image);
-                            previewTCSDeclaration.setVisibility(View.VISIBLE);
+                            TCSDeclarationImgList.add(FileName);
                         }
 
                         @Override
@@ -578,10 +560,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     Common_Class.uploadToS3Bucket(context, fullPath, FileName, "stockist_info", new Common_Class.ImageUploadListener() {
                         @Override
                         public void onSuccess() {
-                            FSSAIDeclarationImageName = FileName;
-                            FSSAIDeclarationImageFullPath = fullPath;
-                            previewfssaiDeclaration.setImageBitmap(image);
-                            previewfssaiDeclaration.setVisibility(View.VISIBLE);
+                            FSSAIDeclarationImgList.add(FileName);
                         }
 
                         @Override
@@ -602,7 +581,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                         @Override
                         public void onSuccess() {
                             customerApplicationImageName = FileName;
-                            customerApplicationImageFullPath = fullPath;
+                            customer_application_url = fullPath;
                             display_customer_application.setImageBitmap(image);
                             display_customer_application.setVisibility(View.VISIBLE);
                         }
@@ -663,23 +642,23 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
         previewGSTDeclaration.setOnClickListener(v -> {
             previewGSTDeclaration.setEnabled(false);
             new Handler().postDelayed(() -> previewGSTDeclaration.setEnabled(true), 1500);
-            showImage(gstDeclarationImageFullPath);
+            ShowImages("GST Declaration Images", GSTDeclarationImgList);
         });
         previewTCSDeclaration.setOnClickListener(v -> {
             previewTCSDeclaration.setEnabled(false);
             new Handler().postDelayed(() -> previewTCSDeclaration.setEnabled(true), 1500);
-            showImage(tcsDeclarationImageFullPath);
+            ShowImages("TCS Declaration Images", TCSDeclarationImgList);
         });
         previewfssaiDeclaration.setOnClickListener(v -> {
             previewfssaiDeclaration.setEnabled(false);
             new Handler().postDelayed(() -> previewfssaiDeclaration.setEnabled(true), 1500);
-            showImage(FSSAIDeclarationImageFullPath);
+            ShowImages("FSSAI Declaration Images", FSSAIDeclarationImgList);
 
         });
         display_customer_application.setOnClickListener(v -> {
             display_customer_application.setEnabled(false);
             new Handler().postDelayed(() -> display_customer_application.setEnabled(true), 1500);
-            showImage(customerApplicationImageFullPath);
+            showImage(customer_application_url);
 
         });
         display_customer_photo.setOnClickListener(v -> {
@@ -695,54 +674,28 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
         display_bank_details.setOnClickListener(v -> {
             display_bank_details.setEnabled(false);
             new Handler().postDelayed(() -> display_bank_details.setEnabled(true), 1500);
-            showImage(bankImageFullPath);
+            ShowImages("Bank Details Images", BankImgList);
         });
         display_fssai.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setCancelable(true);
-            View view = LayoutInflater.from(context).inflate(R.layout.layout_show_multiple_images, null, false);
-            builder.setView(view);
-            AlertDialog dialog = builder.create();
-            TextView title = view.findViewById(R.id.title);
-            ImageView close = view.findViewById(R.id.close);
-            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-            title.setText("FSSAI Images");
-            close.setOnClickListener(v1 -> dialog.dismiss());
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
-            recyclerView.setAdapter(new AdapterShowMultipleImages(context, FSSAIList));
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            dialog.show();
+            ShowImages("FSSAI Images", FSSAIList);
         });
         display_gst.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setCancelable(true);
-            View view = LayoutInflater.from(context).inflate(R.layout.layout_show_multiple_images, null, false);
-            builder.setView(view);
-            AlertDialog dialog = builder.create();
-            TextView title = view.findViewById(R.id.title);
-            ImageView close = view.findViewById(R.id.close);
-            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-            title.setText("GST Images");
-            close.setOnClickListener(v1 -> dialog.dismiss());
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
-            recyclerView.setAdapter(new AdapterShowMultipleImages(context, GSTList));
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            dialog.show();
+            ShowImages("GST Images", GSTList);
         });
         display_agreement_copy.setOnClickListener(v -> {
             display_agreement_copy.setEnabled(false);
             new Handler().postDelayed(() -> display_agreement_copy.setEnabled(true), 1500);
-            showImage(agreementImageFullPath);
+            ShowImages("Agreement Copy Images", AgreementImgList);
         });
         display_aadhaar_number.setOnClickListener(v -> {
             display_aadhaar_number.setEnabled(false);
             new Handler().postDelayed(() -> display_aadhaar_number.setEnabled(true), 1500);
-            showImage(aadhaarImageFullPath);
+            ShowImages("Aadhaar Images", AadhaarImgList);
         });
         display_pan_number.setOnClickListener(v -> {
             display_pan_number.setEnabled(false);
             new Handler().postDelayed(() -> display_pan_number.setEnabled(true), 1500);
-            showImage(panImageFullPath);
+            ShowImages("PAN Images", PanImgList);
         });
         select_state.setOnClickListener(v -> {
             if (stateArray.length() == 0) {
@@ -984,10 +937,8 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                     if (!UIDType.equals("Aadhaar")) {
                         binding.aadhaarLL.setVisibility(View.GONE);
                         aadhaarStr = "";
-                        aadhaarImageName = "";
-                        aadhaarImageFullPath = "";
+                        AadhaarImgList.clear();
                         binding.typeAadhaarNumber.setText("");
-                        binding.displayAadhaarNumber.setVisibility(View.GONE);
                     } else {
                         binding.aadhaarLL.setVisibility(View.VISIBLE);
                     }
@@ -1138,19 +1089,32 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
         binding.clearBank.setOnClickListener(v -> {
             bankDetailsStr = "";
-            bankImageName = "";
-            bankImageFullPath = "";
+            BankImgList.clear();
             select_bank_details.setText("");
-            display_bank_details.setVisibility(View.GONE);
         });
 
         binding.clearAgreement.setOnClickListener(v -> {
             agreementDetailsStr = "";
-            agreementImageName = "";
-            aadhaarImageFullPath = "";
+            AgreementImgList.clear();
             select_agreement_copy.setText("");
-            display_agreement_copy.setVisibility(View.GONE);
         });
+    }
+
+    private void ShowImages(String TITLE, ArrayList<String> LIST) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(true);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_show_multiple_images, null, false);
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        TextView title = view.findViewById(R.id.title);
+        ImageView close = view.findViewById(R.id.close);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        title.setText(TITLE);
+        close.setOnClickListener(v1 -> dialog.dismiss());
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
+        recyclerView.setAdapter(new AdapterShowMultipleImages(context, LIST));
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show();
     }
 
     private void MakeFieldsEnabled(boolean isEnabled) {
@@ -1251,7 +1215,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             common_class.getImageFromS3Bucket(context, customerApplicationImageName, "stockist_info", (bmp, path) -> {
                 display_customer_application.setImageBitmap(bmp);
                 display_customer_application.setVisibility(View.VISIBLE);
-                customerApplicationImageFullPath = path;
+                customer_application_url = path;
             });
 
             stateCodeStr = jsonObject.optString("state_Code");
@@ -1329,23 +1293,17 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                 aadhaarStr = jsonObject.optString("Aadhaar");
                 type_aadhaar_number.setText(aadhaarStr);
 
-                aadhaarImageName = jsonObject.optString("AadhaarImg");
-                common_class.getImageFromS3Bucket(context, aadhaarImageName, "stockist_info", (bmp, path) -> {
-                    display_aadhaar_number.setImageBitmap(bmp);
-                    display_aadhaar_number.setVisibility(View.VISIBLE);
-                    aadhaarImageFullPath = path;
-                });
+                String aadhaarImageName = jsonObject.optString("AadhaarImg");
+                AadhaarImgList.clear();
+                AadhaarImgList.addAll(Arrays.asList(aadhaarImageName.split(",")));
             }
 
             PANStr = jsonObject.optString("Pan");
             type_pan_number.setText(PANStr);
 
-            panImageName = jsonObject.optString("PanImg");
-            common_class.getImageFromS3Bucket(context, panImageName, "stockist_info", (bmp, path) -> {
-                display_pan_number.setImageBitmap(bmp);
-                display_pan_number.setVisibility(View.VISIBLE);
-                panImageFullPath = path;
-            });
+            String panImageName = jsonObject.optString("PanImg");
+            PanImgList.clear();
+            PanImgList.addAll(Arrays.asList(panImageName.split(",")));
 
             PANName = jsonObject.optString("Pan_Name");
             type_pan_name.setText(PANName);
@@ -1353,12 +1311,9 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             bankDetailsStr = jsonObject.optString("BankAccNo");
             select_bank_details.setText(bankDetailsStr);
 
-            bankImageName = jsonObject.optString("BankAccImg");
-            common_class.getImageFromS3Bucket(context, bankImageName, "stockist_info", (bmp, path) -> {
-                display_bank_details.setImageBitmap(bmp);
-                display_bank_details.setVisibility(View.VISIBLE);
-                bankImageFullPath = path;
-            });
+            String bankImageName = jsonObject.optString("BankAccImg");
+            BankImgList.clear();
+            BankImgList.addAll(Arrays.asList(bankImageName.split(",")));
 
             String have_fssai = jsonObject.optString("have_fssai");
             fssaiSwitch.setChecked(have_fssai.equals("1"));
@@ -1376,12 +1331,9 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             fssaitoStr = jsonObject.optString("fssaiTo");
             fssaiToDate.setText(fssaitoStr);
 
-            FSSAIDeclarationImageName = jsonObject.optString("fssaiDecImg");
-            common_class.getImageFromS3Bucket(context, FSSAIDeclarationImageName, "stockist_info", (bmp, path) -> {
-                previewfssaiDeclaration.setImageBitmap(bmp);
-                previewfssaiDeclaration.setVisibility(View.VISIBLE);
-                FSSAIDeclarationImageFullPath = path;
-            });
+            String FSSAIDeclarationImageName = jsonObject.optString("fssaiDecImg");
+            FSSAIDeclarationImgList.clear();
+            FSSAIDeclarationImgList.addAll(Arrays.asList(FSSAIDeclarationImageName.split(",")));
 
             String GST_type = jsonObject.optString("GST_type");
             gstSwitch.setChecked(GST_type.equals("1"));
@@ -1393,32 +1345,23 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             GSTList.clear();
             GSTList.addAll(Arrays.asList(GSTImageName.split(",")));
 
-            gstDeclarationImageName = jsonObject.optString("gstDecImg");
-            common_class.getImageFromS3Bucket(context, gstDeclarationImageName, "stockist_info", (bmp, path) -> {
-                previewGSTDeclaration.setImageBitmap(bmp);
-                previewGSTDeclaration.setVisibility(View.VISIBLE);
-                gstDeclarationImageFullPath = path;
-            });
+            String gstDeclarationImageName = jsonObject.optString("gstDecImg");
+            GSTDeclarationImgList.clear();
+            GSTDeclarationImgList.addAll(Arrays.asList(gstDeclarationImageName.split(",")));
 
             String have_tcs = jsonObject.optString("have_tcs");
             tcsSwitch.setChecked(have_tcs.equals("0"));
 
-            tcsDeclarationImageName = jsonObject.optString("tcsDecImg");
-            common_class.getImageFromS3Bucket(context, tcsDeclarationImageName, "stockist_info", (bmp, path) -> {
-                previewTCSDeclaration.setImageBitmap(bmp);
-                previewTCSDeclaration.setVisibility(View.VISIBLE);
-                tcsDeclarationImageFullPath = path;
-            });
+            String tcsDeclarationImageName = jsonObject.optString("tcsDecImg");
+            TCSDeclarationImgList.clear();
+            TCSDeclarationImgList.addAll(Arrays.asList(tcsDeclarationImageName.split(",")));
 
             agreementDetailsStr = jsonObject.optString("Agreement");
             select_agreement_copy.setText(agreementDetailsStr);
 
-            agreementImageName = jsonObject.optString("AgreementImg");
-            common_class.getImageFromS3Bucket(context, agreementImageName, "stockist_info", (bmp, path) -> {
-                display_agreement_copy.setImageBitmap(bmp);
-                display_agreement_copy.setVisibility(View.VISIBLE);
-                agreementImageFullPath = path;
-            });
+            String agreementImageName = jsonObject.optString("AgreementImg");
+            AgreementImgList.clear();
+            AgreementImgList.addAll(Arrays.asList(agreementImageName.split(",")));
 
             purchaseTypeID = jsonObject.optString("purchaseTypeId");
             purchaseTypeName = jsonObject.optString("purchaseType");
@@ -2104,7 +2047,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             Toast.makeText(context, "Please enter the aadhaar number", Toast.LENGTH_SHORT).show();
         } else if (binding.aadhaarLL.getVisibility() == View.VISIBLE && binding.aadhaarTitle.getText().toString().contains("*") && UIDType.equals("Aadhaar") && aadhaarStr.length() != 12) {
             Toast.makeText(context, "Please enter 12 digit aadhaar number", Toast.LENGTH_SHORT).show();
-        } else if (binding.aadhaarLL.getVisibility() == View.VISIBLE && binding.aadhaarTitle.getText().toString().contains("*") && UIDType.equals("Aadhaar") && (TextUtils.isEmpty(aadhaarImageName) || TextUtils.isEmpty(aadhaarImageFullPath))) {
+        } else if (binding.aadhaarLL.getVisibility() == View.VISIBLE && binding.aadhaarTitle.getText().toString().contains("*") && UIDType.equals("Aadhaar") && AadhaarImgList.isEmpty()) {
             Toast.makeText(context, "Please capture the aadhaar photo", Toast.LENGTH_SHORT).show();
         } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && TextUtils.isEmpty(PANStr)) {
             Toast.makeText(context, "Please enter the PAN number", Toast.LENGTH_SHORT).show();
@@ -2112,15 +2055,15 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             Toast.makeText(context, "Please enter 10 digit PAN number", Toast.LENGTH_SHORT).show();
         } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && !PANStr.matches("[A-Z]{5}[0-9]{4}[A-Z]{1}")) {
             Toast.makeText(context, "Please enter valid PAN number", Toast.LENGTH_SHORT).show();
-        } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && (TextUtils.isEmpty(panImageName) || TextUtils.isEmpty(panImageFullPath))) {
+        } else if (binding.panNumberLL.getVisibility() == View.VISIBLE && binding.panNumberTitle.getText().toString().contains("*") && PanImgList.isEmpty()) {
             Toast.makeText(context, "Please capture the PAN photo", Toast.LENGTH_SHORT).show();
         } else if (binding.panNameTitle.getVisibility() == View.VISIBLE && binding.panNameTitle.getText().toString().contains("*") && TextUtils.isEmpty(PANName)) {
             Toast.makeText(context, "Please enter the PAN name", Toast.LENGTH_SHORT).show();
-        } else if (!TextUtils.isEmpty(bankDetailsStr) && bankImageName.isEmpty()) {
+        } else if (!TextUtils.isEmpty(bankDetailsStr) && BankImgList.isEmpty()) {
             Toast.makeText(context, "Please capture the bank details photo", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(bankDetailsStr) && !bankImageName.isEmpty()) {
+        } else if (TextUtils.isEmpty(bankDetailsStr) && !BankImgList.isEmpty()) {
             Toast.makeText(context, "Please enter the bank details", Toast.LENGTH_SHORT).show();
-        } else if (binding.bankLL.getVisibility() == View.VISIBLE && binding.bankTitle.getText().toString().contains("*") && (TextUtils.isEmpty(bankDetailsStr) || bankImageName.isEmpty())) {
+        } else if (binding.bankLL.getVisibility() == View.VISIBLE && binding.bankTitle.getText().toString().contains("*") && (TextUtils.isEmpty(bankDetailsStr) || BankImgList.isEmpty())) {
             Toast.makeText(context, "Please enter the bank details", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() != 14 && fssaiSwitch.isChecked()) {
             Toast.makeText(context, "Please enter 14 digit FSSAI number", Toast.LENGTH_SHORT).show();
@@ -2128,7 +2071,7 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             Toast.makeText(context, "Please capture FSSAI license certificate", Toast.LENGTH_SHORT).show();
         } else if (!TextUtils.isEmpty(FSSAIDetailsStr) && FSSAIDetailsStr.length() == 14 && fssaiSwitch.isChecked() && (fssaiFromStr.isEmpty() || fssaitoStr.isEmpty())) {
             Toast.makeText(context, "Please select FSSAI valid dates", Toast.LENGTH_SHORT).show();
-        } else if (binding.fssaiMasterLL.getVisibility() == View.VISIBLE && binding.fssaiNumberTitle.getText().toString().contains("*") && !fssaiSwitch.isChecked() && FSSAIDeclarationImageName.isEmpty()) {
+        } else if (binding.fssaiMasterLL.getVisibility() == View.VISIBLE && binding.fssaiNumberTitle.getText().toString().contains("*") && !fssaiSwitch.isChecked() && FSSAIDeclarationImgList.isEmpty()) {
             Toast.makeText(context, "Please capture FSSAI declaration", Toast.LENGTH_SHORT).show();
         } else if (binding.fssaiMasterLL.getVisibility() == View.VISIBLE && binding.fssaiNumberTitle.getText().toString().contains("*") && fssaiSwitch.isChecked() && (FSSAIDetailsStr.isEmpty() || FSSAIList.isEmpty() || fssaiFromStr.isEmpty() || fssaitoStr.isEmpty())) {
             Toast.makeText(context, "Please provide valid FSSAI details", Toast.LENGTH_SHORT).show();
@@ -2138,19 +2081,19 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             Toast.makeText(context, "Please enter valid GST number", Toast.LENGTH_SHORT).show();
         } else if (binding.gstMasterLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && gstSwitch.isChecked() && (GSTList.isEmpty())) {
             Toast.makeText(context, "Please capture the GST certificate", Toast.LENGTH_SHORT).show();
-        } else if (binding.gstMasterLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && !gstSwitch.isChecked() && TextUtils.isEmpty(gstDeclarationImageName)) {
+        } else if (binding.gstMasterLL.getVisibility() == View.VISIBLE && binding.gstTitle.getText().toString().contains("*") && !gstSwitch.isChecked() && GSTDeclarationImgList.isEmpty()) {
             Toast.makeText(context, "Please capture the GST declaration certificate", Toast.LENGTH_SHORT).show();
         } else if ((Lat == 0) || (Long == 0)) {
             Toast.makeText(context, "Location can't be fetched", Toast.LENGTH_SHORT).show();
-        } else if (binding.tcsMasterLL.getVisibility() == View.VISIBLE && binding.tcsTitle.getText().toString().contains("*") && !tcsSwitch.isChecked() && tcsDeclarationImageName.isEmpty()) {
+        } else if (binding.tcsMasterLL.getVisibility() == View.VISIBLE && binding.tcsTitle.getText().toString().contains("*") && !tcsSwitch.isChecked() && TCSDeclarationImgList.isEmpty()) {
             Toast.makeText(context, "Please capture the TCS declaration", Toast.LENGTH_SHORT).show();
         } else if (binding.agreementLL.getVisibility() == View.VISIBLE && binding.agreementTitle.getText().toString().contains("*") && agreementDetailsStr.isEmpty()) {
             Toast.makeText(context, "Please select agreement copy", Toast.LENGTH_SHORT).show();
-        } else if (binding.agreementLL.getVisibility() == View.VISIBLE && binding.agreementTitle.getText().toString().contains("*") && agreementImageName.isEmpty()) {
+        } else if (binding.agreementLL.getVisibility() == View.VISIBLE && binding.agreementTitle.getText().toString().contains("*") && AgreementImgList.isEmpty()) {
             Toast.makeText(context, "Please capture agreement copy", Toast.LENGTH_SHORT).show();
-        } else if (agreementDetailsStr.isEmpty() && !agreementImageName.isEmpty()) {
+        } else if (agreementDetailsStr.isEmpty() && !AgreementImgList.isEmpty()) {
             Toast.makeText(context, "Please select agreement copy", Toast.LENGTH_SHORT).show();
-        } else if (!agreementDetailsStr.isEmpty() && agreementImageName.isEmpty()) {
+        } else if (!agreementDetailsStr.isEmpty() && AgreementImgList.isEmpty()) {
             Toast.makeText(context, "Please capture the agreement copy", Toast.LENGTH_SHORT).show();
         } else if (binding.purchaseTypeTitle.getVisibility() == View.VISIBLE && binding.purchaseTypeTitle.getText().toString().contains("*") && (purchaseTypeID.isEmpty() || purchaseTypeName.isEmpty())) {
             Toast.makeText(context, "Please select purchase type", Toast.LENGTH_SHORT).show();
@@ -2229,14 +2172,41 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
             object.put("UIDType", UIDType);
 
             object.put("aadhaarStr", aadhaarStr);
+
+            StringBuilder AadhaarImgBuilder = new StringBuilder();
+            for (String name : AadhaarImgList) {
+                AadhaarImgBuilder.append(",").append(name);
+            }
+            String aadhaarImageName = AadhaarImgBuilder.toString();
+            if (!aadhaarImageName.isEmpty()) {
+                aadhaarImageName = aadhaarImageName.substring(1);
+            }
             object.put("aadhaarImage", aadhaarImageName);
 
             object.put("PANStr", PANStr);
+
+            StringBuilder panImgBuilder = new StringBuilder();
+            for (String name : PanImgList) {
+                panImgBuilder.append(",").append(name);
+            }
+            String panImageName = panImgBuilder.toString();
+            if (!panImageName.isEmpty()) {
+                panImageName = panImageName.substring(1);
+            }
             object.put("panImage", panImageName);
 
             object.put("PANName", PANName);
 
             object.put("bankDetailsStr", bankDetailsStr);
+
+            StringBuilder bankImgBuilder = new StringBuilder();
+            for (String name : BankImgList) {
+                bankImgBuilder.append(",").append(name);
+            }
+            String bankImageName = bankImgBuilder.toString();
+            if (!bankImageName.isEmpty()) {
+                bankImageName = bankImageName.substring(1);
+            }
             object.put("bankImageName", bankImageName);
 
             object.put("fssaiStatus", fssaiSwitch.isChecked() ? "1" : "0");
@@ -2247,29 +2217,66 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
                 FSSAIImageName.append(",").append(name);
             }
             String fssaiImageName = FSSAIImageName.toString();
-            if (fssaiImageName.length() > 0) {
+            if (!fssaiImageName.isEmpty()) {
                 fssaiImageName = fssaiImageName.substring(1);
             }
             object.put("FSSAIImageName", fssaiImageName);
             object.put("fssaiFromStr", fssaiFromStr);
             object.put("fssaitoStr", fssaitoStr);
-            object.put("FSSAIDeclarationImageName", FSSAIDeclarationImageName);
+
+            StringBuilder fssaiDecImgBuilder = new StringBuilder();
+            for (String name : FSSAIDeclarationImgList) {
+                fssaiDecImgBuilder.append(",").append(name);
+            }
+            String fssaiDecImageName = fssaiDecImgBuilder.toString();
+            if (!fssaiDecImageName.isEmpty()) {
+                fssaiDecImageName = fssaiDecImageName.substring(1);
+            }
+            object.put("FSSAIDeclarationImageName", fssaiDecImageName);
             object.put("gstStatus", gstSwitch.isChecked() ? "1" : "0");
             object.put("GSTDetailsStr", GSTDetailsStr);
+
             StringBuilder GSTImageName = new StringBuilder();
             for (String name : GSTList) {
                 GSTImageName.append(",").append(name);
             }
             String gstImageName = GSTImageName.toString();
-            if (gstImageName.length() > 0) {
+            if (!gstImageName.isEmpty()) {
                 gstImageName = gstImageName.substring(1);
             }
             object.put("GSTImageName", gstImageName);
-            object.put("gstDeclarationImageName", gstDeclarationImageName);
+
+            StringBuilder gstDecImgBuilder = new StringBuilder();
+            for (String name : GSTDeclarationImgList) {
+                gstDecImgBuilder.append(",").append(name);
+            }
+            String gstDecImageName = gstDecImgBuilder.toString();
+            if (!gstDecImageName.isEmpty()) {
+                gstDecImageName = gstDecImageName.substring(1);
+            }
+            object.put("gstDeclarationImageName", gstDecImageName);
             object.put("tcsStatus", tcsSwitch.isChecked() ? "0" : "1");
-            object.put("tcsDeclarationImageName", tcsDeclarationImageName);
+
+            StringBuilder tcsDecImgBuilder = new StringBuilder();
+            for (String name : TCSDeclarationImgList) {
+                tcsDecImgBuilder.append(",").append(name);
+            }
+            String tcsDecImageName = tcsDecImgBuilder.toString();
+            if (!tcsDecImageName.isEmpty()) {
+                tcsDecImageName = tcsDecImageName.substring(1);
+            }
+            object.put("tcsDeclarationImageName", tcsDecImageName);
 
             object.put("agreementDetailsStr", agreementDetailsStr);
+
+            StringBuilder agreementImgBuilder = new StringBuilder();
+            for (String name : AgreementImgList) {
+                agreementImgBuilder.append(",").append(name);
+            }
+            String agreementImageName = agreementImgBuilder.toString();
+            if (!agreementImageName.isEmpty()) {
+                agreementImageName = agreementImageName.substring(1);
+            }
             object.put("agreementImageName", agreementImageName);
 
             object.put("purchaseTypeId", purchaseTypeID);
