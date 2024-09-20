@@ -1,47 +1,60 @@
 package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.procurement.AppConstants.PROCUREMENT_GET_PLANT;
-
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.saneforce.godairy.Activity_Hap.MainActivity;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.R;
 import com.saneforce.godairy.common.FileUploadService2;
 import com.saneforce.godairy.databinding.ActivityNewCollectionCenterBinding;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class NewCollectionCenter extends AppCompatActivity {
+public class NewCollectionCenter extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
     private ActivityNewCollectionCenterBinding binding;
     private final Context context = this;
     private final String TAG = "NewCollectionCenter_";
@@ -53,12 +66,29 @@ public class NewCollectionCenter extends AppCompatActivity {
     ArrayAdapter<String> mAdapter;
     ListView mListView;
     TextView mEmptyView;
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityNewCollectionCenterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if (!enabled) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
+
+        SupportMapFragment mapFragment = (SupportMapFragment)
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.google_map);
+
+        mapFragment.getMapAsync(this);
+
+        updateLocation();
 
         binding.edPlant.setFocusable(false);
 
@@ -87,6 +117,53 @@ public class NewCollectionCenter extends AppCompatActivity {
 
         onClick();
         loadPlant();
+    }
+
+    private void updateLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.e(TAG, "Missing location permission");
+            return;
+        }
+        LocationServices.getFusedLocationProviderClient(NewCollectionCenter.this).getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+             //   Toast.makeText(NewCollectionCenter.this, "Location Updated", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "LastLocation: " + (location == null ? "NO LastLocation" : location.toString()));
+                if (location != null) {
+                    //  binding.latText.setText("" + location.getLatitude());
+                    //  binding.langText.setText("" + location.getLongitude());
+
+                    LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(userLocation).title("title"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 16));
+                    TextView textView = findViewById(R.id.ed_address);
+
+                      binding.edAddr1.setText("" + getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+                }
+            }
+        });
+    }
+
+    private String getCompleteAddressString(double latitude, double longitude) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder();
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i));
+                }
+                strAdd = strReturnedAddress.toString();
+            }
+        } catch (Exception e) {
+            //  e.printStackTrace();
+            Log.e(TAG, "Error! " + e.getMessage());
+        }
+        return strAdd;
     }
 
     private void loadPlant() {
@@ -272,6 +349,32 @@ public class NewCollectionCenter extends AppCompatActivity {
             binding.imageViewCenterLayout.setVisibility(View.VISIBLE);
             binding.imageCenter.setImageBitmap(bitmap);
             binding.txtImgCenterNotValid.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
+        //Initialize Google Play Services
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                //  buildGoogleApiClient();
+                mMap.setMyLocationEnabled(false);
+            }
+        } else {
+            // buildGoogleApiClient();
+            mMap.setMyLocationEnabled(false);
         }
     }
 }

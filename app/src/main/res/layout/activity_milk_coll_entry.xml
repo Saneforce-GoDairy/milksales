@@ -67,19 +67,57 @@
                 android:text="Customer Name"
                 android:textColor="@color/black" />
 
-            <EditText
-                android:id="@+id/ed_customer_sel"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/edit_text_common"
-                android:fontFamily="@font/ubuntu"
-                android:hint="Select"
-                android:inputType="textAutoComplete"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:autofillHints="none"
-                tools:ignore="LabelFor" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp">
+
+                <EditText
+                    android:id="@+id/ed_customer_sel"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Select"
+                    android:inputType="textAutoComplete"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:autofillHints="none"
+                    tools:ignore="LabelFor" />
+
+              <LinearLayout
+                  android:id="@+id/state_text_con"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="5dp"
+                  android:orientation="horizontal"
+                  android:visibility="gone">
+
+                  <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/ubuntu"
+                      android:hint="Selected State : "
+                      android:inputType="textAutoComplete"
+                      android:paddingStart="10dp"
+                      android:autofillHints="none"
+                      tools:ignore="LabelFor" />
+
+                  <TextView
+                      android:id="@+id/state_text"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/ubuntu"
+                      android:textColor="@color/black"
+                      android:layout_marginStart="5dp"
+                      android:inputType="textAutoComplete"
+                      android:autofillHints="none"
+                      tools:ignore="LabelFor" />
+
+              </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -1,7 +1,7 @@
 package com.saneforce.godairy.procurement;
 
+import static com.saneforce.godairy.procurement.AppConstants.GET_RATE_CARD_PRICE;
 import static com.saneforce.godairy.procurement.AppConstants.MAS_GET_CUSTOMERS;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -10,11 +10,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -24,7 +25,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -45,7 +45,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -66,16 +65,16 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
     private List<Procurement> selectionsLists;
     private int mSelect = 0;
     private ApiInterface apiInterface;
-    private String mSelectedName;
-    private String mSelectedCode;
-    private Calendar calendar;
-    private int year, month, day;
+    public int year, month, day;
     int datePickerId = 0;
     private Dialog printDialog;
     private int paperSize = 80;
     private final String mDate2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
     private final String mTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
     private final String mTimeDate  = mDate2 +" "+mTime;
+    String mSelectedStateCode;
+    double milkTotalQuantity;
+    String RateCardPrice = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +89,7 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
         initSpinner();
         initPrintDialog();
 
-        selectionsLists = new ArrayList<>();;
+        selectionsLists = new ArrayList<>();
         binding.edCustomerSel.setFocusable(false);
         binding.edDate.setFocusable(false);
     }
@@ -172,14 +171,11 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
     }
 
     private void showPrinterList(int size) {
-        Printama2.showPrinterList(this, R.color.blue_1,size, new Printama2.OnConnectPrinter() {
-            @Override
-            public void onConnectPrinter(String printerName) {
-                Toast.makeText(context, printerName, Toast.LENGTH_SHORT).show();
-                String text = "Connected to : " + printerName;
-                if (!printerName.contains("failed")) {
-                    Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-                }
+        Printama2.showPrinterList(this, R.color.blue_1,size, printerName -> {
+            Toast.makeText(context, printerName, Toast.LENGTH_SHORT).show();
+            String text = "Connected to : " + printerName;
+            if (!printerName.contains("failed")) {
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -214,11 +210,33 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
 
         binding.back.setOnClickListener(v -> finish());
 
-        binding.edDate.setOnClickListener(new View.OnClickListener() {
+        binding.edDate.setOnClickListener(v -> {
+            datePickerId = 1;
+            setDate();
+        });
+
+        binding.edMilkWeight.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                datePickerId = 1;
-                setDate();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String milkWeight = binding.edMilkWeight.getText().toString();
+
+                if (!milkWeight.isEmpty()){
+                    milkTotalQuantity = Integer.parseInt(milkWeight) * 1.03;
+
+                    binding.edMilkToalQty.setText(milkTotalQuantity+"");
+                    updateTotalAmount(RateCardPrice);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
@@ -251,22 +269,17 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
     {
         String selectedDate = day+"/"+month+"/"+year;
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy");
-        Date date;
+        Date date = new Date();
         try {
             date = dateFormat.parse(selectedDate);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
+            Toast.makeText(context, "Date Picker Error! " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        if (datePickerId == 0){
-            binding.edDate.setText(dateFormat.format(date));
-        }else {
-            binding.edDate.setText(dateFormat.format(date));
-        }
+        binding.edDate.setText(dateFormat.format(date));
     }
 
-
     private void loadCustomer() {
-
         if (selectionsLists != null){
             selectionsLists.clear();
         }
@@ -280,8 +293,7 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     binding.shimmerLayout.setVisibility(View.GONE);
-                    String customersList = "";
-
+                    String customersList;
                     try {
                         customersList = response.body().string();
                         JSONObject jsonObject = new JSONObject(customersList);
@@ -294,6 +306,7 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
                                 JSONObject object = jsonArrayData.getJSONObject(i);
                                 customer.setSelectionCode(object.getString("Customer_Code"));
                                 customer.setSelectionName(object.getString("Customer_Name"));
+                                customer.setStateName(object.getString("State_Name"));
                                 selectionsLists.add(customer);
                             }
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
@@ -321,13 +334,22 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
     @Override
     public void onClickInterface(Intent intent) {
         String requestId = intent.getStringExtra("request_id");
-
         int mRequestId = Integer.parseInt(requestId);
-
         String mSelectedName;
+
         if (mRequestId == 0) {
             mSelectedName = intent.getStringExtra("selection_name");
+            mSelectedStateCode = intent.getStringExtra("selection_code");
+            Log.e("state__", mSelectedStateCode);
             binding.edCustomerSel.setText(mSelectedName);
+
+            String mSelectedStateName = intent.getStringExtra("state_name");
+            if (!mSelectedStateName.isEmpty()){
+                binding.stateTextCon.setVisibility(View.VISIBLE);
+                binding.stateText.setText(mSelectedStateName);
+
+                loadRateCard(mSelectedStateCode);
+            }
         }
 
         if (mRequestId == 1) {
@@ -341,6 +363,48 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
             binding.selectionCon.setVisibility(View.GONE);
             mSelect = 0;
         }
+    }
+
+    private void loadRateCard(String stateCode) {
+        Call<ResponseBody> call =
+                apiInterface.getRateCardPrice(GET_RATE_CARD_PRICE,
+                                              stateCode);
+       call.enqueue(new Callback<>() {
+           @Override
+           public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+               if (response.isSuccessful()) {
+                   if (response.body() != null) {
+                       try {
+                           String customersList = response.body().string();
+                           JSONObject jsonObject = new JSONObject(customersList);
+                           boolean mRecords = jsonObject.getBoolean("status");
+                           if (mRecords) {
+                               JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+                               for (int i = 0; i < jsonArrayData.length(); i++) {
+                                   JSONObject object = jsonArrayData.getJSONObject(0);
+                                   RateCardPrice = object.getString("Price");
+                               }
+                               binding.edMilkRate.setText(RateCardPrice);
+                               updateTotalAmount(RateCardPrice);
+                           }
+                       } catch (IOException | JSONException e) {
+                           showToast(e.getMessage());
+                       }
+                   }
+               }
+           }
+
+           @Override
+           public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+               Toast.makeText(context, "Error! " + t.getMessage(), Toast.LENGTH_SHORT).show();
+           }
+       });
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateTotalAmount(String price) {
+        double totalAmount = Double.parseDouble(price) * milkTotalQuantity;
+        binding.edTotalMilkAmount.setText(totalAmount+"");
     }
 
     private void saveNow() {
@@ -454,8 +518,6 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
 
     public void printBill() {
         try {
-
-            Bitmap logo = Printama2.getBitmapFromVector(this, R.drawable.godairy_logo_jpeg);
             Printama2.with(context, paperSize).connect(printama -> {
 
                 printama.setWideTallBold();
@@ -476,28 +538,14 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
                 printama.printTextln(Printama2.LEFT, "Amount : " + mTotalMilkAmt);
                 printama.addNewLine();
                 printama.printTextln(Printama2.CENTER, "Thank you!");
-
-//                if(paperSize==80||paperSize==102) {
-//                    printama.printLine();
-//                }else{
-//                    printama.printSmallLine();
-//                }
-//
-//                if(paperSize==80||paperSize==102) {
-//                    printama.printLine();
-//                }else{
-//                    printama.printSmallLine();
-//                }
                 printama.setBold();
-            //    printama.addNewLine();
                 printama.setLineSpacing(5);
                 printama.feedPaper();
                 printama.close();
             });
-
             saveNow();
         } catch (Exception e) {
-            Log.e(TAG, "Error! MilkCollEntryActivity printBill : " + e.getMessage());
+            Log.e(TAG, "Error! printBill : " + e.getMessage());
         }
     }
 

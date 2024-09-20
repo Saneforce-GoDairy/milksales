@@ -49,6 +49,7 @@ public class AppConstants {
  public static final String MAS_GET_CUSTOMERS = "get_mlk_customers";
  public static final String GET_MILK_COLL = "get_milk_coll";
  public static final String PROC_COLL_CENTER_CR2 = "save_coll_center2";
+ public static final String GET_RATE_CARD_PRICE = "get_rate_card_price";
 
 /* private Constructor to avoid instanciating this class */
 private AppConstants() {}
