@@ -289,7 +289,6 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
         downloadGSTDeclarationForm.setOnClickListener(v -> {
             Long downloadID = FileDownloader.downloadFile(context, "https://admin.godairy.in/Downloads/THIRUMALA/GST%20Non-Regsitration%20Declaration.docx", "GST Non-Registration Declaration.docx");
-
         });
 
         downloadTCSDeclarationForm.setOnClickListener(v -> {
@@ -1295,7 +1294,9 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
                 String aadhaarImageName = jsonObject.optString("AadhaarImg");
                 AadhaarImgList.clear();
-                AadhaarImgList.addAll(Arrays.asList(aadhaarImageName.split(",")));
+                if (aadhaarImageName.length() > 1) {
+                    AadhaarImgList.addAll(Arrays.asList(aadhaarImageName.split(",")));
+                }
             }
 
             PANStr = jsonObject.optString("Pan");
@@ -1303,7 +1304,9 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
             String panImageName = jsonObject.optString("PanImg");
             PanImgList.clear();
-            PanImgList.addAll(Arrays.asList(panImageName.split(",")));
+            if (panImageName.length() > 1) {
+                PanImgList.addAll(Arrays.asList(panImageName.split(",")));
+            }
 
             PANName = jsonObject.optString("Pan_Name");
             type_pan_name.setText(PANName);
@@ -1313,7 +1316,9 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
             String bankImageName = jsonObject.optString("BankAccImg");
             BankImgList.clear();
-            BankImgList.addAll(Arrays.asList(bankImageName.split(",")));
+            if (bankImageName.length() > 1) {
+                BankImgList.addAll(Arrays.asList(bankImageName.split(",")));
+            }
 
             String have_fssai = jsonObject.optString("have_fssai");
             fssaiSwitch.setChecked(have_fssai.equals("1"));
@@ -1323,7 +1328,9 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
             String FSSAIImageName = jsonObject.optString("FssaiImg");
             FSSAIList.clear();
-            FSSAIList.addAll(Arrays.asList(FSSAIImageName.split(",")));
+            if (FSSAIImageName.length() > 1) {
+                FSSAIList.addAll(Arrays.asList(FSSAIImageName.split(",")));
+            }
 
             fssaiFromStr = jsonObject.optString("fssaiFrom");
             fssaiFromDate.setText(fssaiFromStr);
@@ -1333,7 +1340,9 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
             String FSSAIDeclarationImageName = jsonObject.optString("fssaiDecImg");
             FSSAIDeclarationImgList.clear();
-            FSSAIDeclarationImgList.addAll(Arrays.asList(FSSAIDeclarationImageName.split(",")));
+            if (FSSAIDeclarationImageName.length() > 1) {
+                FSSAIDeclarationImgList.addAll(Arrays.asList(FSSAIDeclarationImageName.split(",")));
+            }
 
             String GST_type = jsonObject.optString("GST_type");
             gstSwitch.setChecked(GST_type.equals("1"));
@@ -1343,25 +1352,33 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
 
             String GSTImageName = jsonObject.optString("GstImg");
             GSTList.clear();
-            GSTList.addAll(Arrays.asList(GSTImageName.split(",")));
+            if (GSTImageName.length() > 1) {
+                GSTList.addAll(Arrays.asList(GSTImageName.split(",")));
+            }
 
             String gstDeclarationImageName = jsonObject.optString("gstDecImg");
             GSTDeclarationImgList.clear();
-            GSTDeclarationImgList.addAll(Arrays.asList(gstDeclarationImageName.split(",")));
+            if (gstDeclarationImageName.length() > 1) {
+                GSTDeclarationImgList.addAll(Arrays.asList(gstDeclarationImageName.split(",")));
+            }
 
             String have_tcs = jsonObject.optString("have_tcs");
             tcsSwitch.setChecked(have_tcs.equals("0"));
 
             String tcsDeclarationImageName = jsonObject.optString("tcsDecImg");
             TCSDeclarationImgList.clear();
-            TCSDeclarationImgList.addAll(Arrays.asList(tcsDeclarationImageName.split(",")));
+            if (tcsDeclarationImageName.length() > 1) {
+                TCSDeclarationImgList.addAll(Arrays.asList(tcsDeclarationImageName.split(",")));
+            }
 
             agreementDetailsStr = jsonObject.optString("Agreement");
             select_agreement_copy.setText(agreementDetailsStr);
 
             String agreementImageName = jsonObject.optString("AgreementImg");
             AgreementImgList.clear();
-            AgreementImgList.addAll(Arrays.asList(agreementImageName.split(",")));
+            if (agreementImageName.length() > 1) {
+                AgreementImgList.addAll(Arrays.asList(agreementImageName.split(",")));
+            }
 
             purchaseTypeID = jsonObject.optString("purchaseTypeId");
             purchaseTypeName = jsonObject.optString("purchaseType");
