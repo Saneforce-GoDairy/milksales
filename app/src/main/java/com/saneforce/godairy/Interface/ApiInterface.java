@@ -1231,5 +1231,6 @@ public interface ApiInterface {
 
     @POST("Procurement.php")
     Call<ResponseBody> getRateCardPrice(@Query("axn") String axn,
-                                        @Query("state_code") String State_Code);
+                                        @Query("state_code") String State_Code,
+                                        @Query("milk_type") String milk_type);
 }

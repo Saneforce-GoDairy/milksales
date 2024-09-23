@@ -2,6 +2,9 @@ package com.saneforce.godairy.procurement;
 
 import static com.saneforce.godairy.procurement.AppConstants.GET_RATE_CARD_PRICE;
 import static com.saneforce.godairy.procurement.AppConstants.MAS_GET_CUSTOMERS;
+
+import static java.lang.String.format;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -19,6 +22,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -92,6 +96,8 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
         selectionsLists = new ArrayList<>();
         binding.edCustomerSel.setFocusable(false);
         binding.edDate.setFocusable(false);
+
+        binding.edMilkRate.setFocusable(false);
     }
 
     private void initPrintDialog() {
@@ -239,6 +245,34 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
 
             }
         });
+
+        binding.spinnerMilkType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mMilkType = binding.spinnerMilkType.getSelectedItem().toString();
+
+                if (!mMilkType.isEmpty()){
+                    if (!mMilkType.equals("Select")){
+
+                        String mMilkTypeFinal = "";
+                        if (mMilkType.equals("Cow Milk")){
+                            mMilkTypeFinal = "C";
+                        }
+                        if (mMilkType.equals("Buffalo Milk")){
+                            mMilkTypeFinal = "B";
+                        }
+
+                        loadRateCard(mSelectedStateCode, mMilkTypeFinal);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
+        binding.back2.setOnClickListener(view -> finish());
+
     }
 
     public void setDate()
@@ -340,7 +374,7 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
         if (mRequestId == 0) {
             mSelectedName = intent.getStringExtra("selection_name");
             mSelectedStateCode = intent.getStringExtra("selection_code");
-            Log.e("state__", mSelectedStateCode);
+            Log.e(TAG, "Selected State Code = " + mSelectedStateCode);
             binding.edCustomerSel.setText(mSelectedName);
 
             String mSelectedStateName = intent.getStringExtra("state_name");
@@ -348,7 +382,7 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
                 binding.stateTextCon.setVisibility(View.VISIBLE);
                 binding.stateText.setText(mSelectedStateName);
 
-                loadRateCard(mSelectedStateCode);
+            //    loadRateCard(mSelectedStateCode);
             }
         }
 
@@ -365,10 +399,14 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
         }
     }
 
-    private void loadRateCard(String stateCode) {
+    private void loadRateCard(String stateCode, String mMilkType) {
+        Log.e(TAG, "Selected Milk Type Short = " + mMilkType);
         Call<ResponseBody> call =
                 apiInterface.getRateCardPrice(GET_RATE_CARD_PRICE,
-                                              stateCode);
+                                              stateCode,
+                                              mMilkType);
+
+        Log.e(TAG, "Post data = \n " + "State Code = " + mSelectedStateCode + "Milk Type = " + mMilkType);
        call.enqueue(new Callback<>() {
            @Override
            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -376,15 +414,24 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
                    if (response.body() != null) {
                        try {
                            String customersList = response.body().string();
+                           Log.e(TAG, "Received Server Response = " + customersList);
                            JSONObject jsonObject = new JSONObject(customersList);
                            boolean mRecords = jsonObject.getBoolean("status");
                            if (mRecords) {
                                JSONArray jsonArrayData = jsonObject.getJSONArray("data");
+
+                               if (jsonArrayData.length() == 0){
+                                   binding.scrollView1.setVisibility(View.GONE);
+                                   binding.rateCardError.setVisibility(View.VISIBLE);
+                                   return;
+                               }
+
                                for (int i = 0; i < jsonArrayData.length(); i++) {
                                    JSONObject object = jsonArrayData.getJSONObject(0);
                                    RateCardPrice = object.getString("Price");
                                }
                                binding.edMilkRate.setText(RateCardPrice);
+                               Log.e(TAG, "Received Rate Card Price = " + RateCardPrice);
                                updateTotalAmount(RateCardPrice);
                            }
                        } catch (IOException | JSONException e) {
@@ -396,15 +443,19 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
 
            @Override
            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+               binding.scrollView1.setVisibility(View.GONE);
+               binding.rateCardError.setVisibility(View.VISIBLE);
                Toast.makeText(context, "Error! " + t.getMessage(), Toast.LENGTH_SHORT).show();
            }
        });
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void updateTotalAmount(String price) {
         double totalAmount = Double.parseDouble(price) * milkTotalQuantity;
-        binding.edTotalMilkAmount.setText(totalAmount+"");
+        binding.edTotalMilkAmount.setText(format("%.2f", totalAmount));
+
+        Log.e(TAG, "Final Total Amount 'Received Rate Card Price * Milk Quantity' = " + totalAmount);
     }
 
     private void saveNow() {
