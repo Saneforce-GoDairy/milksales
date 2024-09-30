@@ -210,6 +210,15 @@
 
                 </LinearLayout>
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editOrder"
+                    android:src="@drawable/edit"
+                    android:padding="5dp"
+                    android:visibility="gone"
+                    app:tint="#950000"/>
+
 
             </LinearLayout>
 

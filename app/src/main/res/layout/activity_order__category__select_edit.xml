@@ -45,13 +45,29 @@
             layout="@layout/procuct_category_types"
             android:visibility="visible"></include>
 
+        <TextView
+            android:id="@+id/repeatOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/button_blueg"
+            android:drawableStart="@drawable/ic_refresh"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/white"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="Repeat Order"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/more_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/C15dp"
-            android:layout_marginTop="@dimen/C8dp"
             android:orientation="vertical">
 
 

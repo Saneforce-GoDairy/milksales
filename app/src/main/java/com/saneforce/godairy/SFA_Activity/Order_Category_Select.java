@@ -47,6 +47,7 @@ import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -59,8 +60,10 @@ import com.saneforce.godairy.SFA_Adapter.RyclBrandListItemAdb;
 import com.saneforce.godairy.SFA_Adapter.RyclListItemAdb;
 import com.saneforce.godairy.SFA_Model_Class.Category_Universe_Modal;
 import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
+import com.saneforce.godairy.databinding.ActivityOrderCategorySelectEditBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,7 +74,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import retrofit2.Call;
@@ -87,6 +92,8 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
     List<Product_Details_Modal> freeQty_Array_List;
     List<Category_Universe_Modal> listt;
     Type userType;
+    AssistantClass assistantClass;
+    Context context = this;
     Gson gson;
     CircularProgressButton takeorder;
     TextView Out_Let_Name, Category_Nametext,
@@ -118,13 +125,18 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
     private ArrayList<Common_Model> uomList;
 
     //String CurrencySymbol="B$"; //₹
-
+    String mode = "", orderId = "";
+    ActivityOrderCategorySelectEditBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_order__category__select_edit);
+            binding = ActivityOrderCategorySelectEditBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
+
+            assistantClass = new AssistantClass(context);
+
             order_category_select = this;
             db = new DatabaseHandler(this);
             sharedCommonPref = new Shared_Common_Pref(Order_Category_Select.this);
@@ -395,13 +407,42 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
 
             tvCoolerInfo.setVisibility(View.GONE);
 
+            binding.repeatOrder.setOnClickListener(v -> getOrderDetails("last"));
+
             if(Shared_Common_Pref.Freezer_Required.equalsIgnoreCase("yes"))
                 tvCoolerInfo.setVisibility(View.VISIBLE);
+
+            if (getIntent().hasExtra("mode")) {
+                mode = getIntent().getStringExtra("mode");
+                if (mode.equalsIgnoreCase("edit")) {
+                    orderId = getIntent().getStringExtra("orderId");
+                    getOrderDetails(orderId);
+                }
+            }
 
         } catch (Exception e) {
             Log.v(TAG, " order oncreate: " + e.getMessage());
 
         }
+    }
+
+    private void getOrderDetails(String orderId) {
+        assistantClass.showProgressDialog("Getting Order Details...");
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getOrderDetails");
+        params.put("orderId", orderId);
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                assistantClass.dismissProgressDialog();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.dismissProgressDialog();
+                assistantClass.showAlertDialogWithDismiss(error);
+            }
+        });
     }
 
     public void sumofTax(List<Product_Details_Modal> Product_Details_Modalitem, int pos) {

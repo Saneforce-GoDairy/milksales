@@ -56,7 +56,6 @@ import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -415,9 +414,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
             update_text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-                        @Override
-                        public void onSuccess(AppUpdateInfo result) {
+                    appUpdateManager.getAppUpdateInfo().addOnSuccessListener(result -> {
 
                             if (result.updateAvailability() == UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                                 try {
@@ -427,7 +424,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                                 }
                             }else
                                 lnupdate_text.setVisibility(View.GONE);
-                        }
                     });
                 }
             });
@@ -490,9 +486,7 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
     }
 
     private void checkUpdates() {
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-            @Override
-            public void onSuccess(AppUpdateInfo result) {
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(result -> {
 
                 if (result.updateAvailability() == UPDATE_AVAILABLE ){
 
@@ -517,7 +511,6 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                     */
                 }else
                     lnupdate_text.setVisibility(View.GONE);
-            }
         });
     }
     private void loadExploreGrid() {

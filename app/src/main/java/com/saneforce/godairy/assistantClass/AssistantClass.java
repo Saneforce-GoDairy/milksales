@@ -318,6 +318,28 @@ public class AssistantClass extends AppCompatActivity {
         }
     }
 
+    public void showProgressDialog(String msg) {
+        if (!isNullOrEmpty(msg)) {
+            progressDialog.setMessage(msg);
+        }
+        progressDialog.setCancelable(false);
+        try {
+            progressDialog.show();
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void showCancelableProgressDialog(String msg) {
+        if (!isNullOrEmpty(msg)) {
+            progressDialog.setMessage(msg);
+        }
+        progressDialog.setCancelable(true);
+        try {
+            progressDialog.show();
+        } catch (Exception ignored) {
+        }
+    }
+
     public void dismissProgressDialog() {
         try {
             progressDialog.dismiss();

@@ -19,6 +19,7 @@ import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AdapterOnClick;
 import com.saneforce.godairy.R;
+import com.saneforce.godairy.SFA_Activity.Order_Category_Select;
 import com.saneforce.godairy.SFA_Activity.Print_Invoice_Activity;
 import com.saneforce.godairy.SFA_Model_Class.OutletReport_View_Modal;
 
@@ -52,6 +53,7 @@ public class Invoice_History_Adapter extends RecyclerView.Adapter<Invoice_Histor
     public void onBindViewHolder(Invoice_History_Adapter.MyViewHolder holder, int position) {
         //   holder.llReturnInv.setVisibility(View.GONE);
 
+        holder.editOrder.setVisibility(View.GONE);
         if (mDate.get(position).getInvoice_Flag().equals("1")) {
             //  holder.llReturnInv.setVisibility(View.VISIBLE);
             holder.Statusinvoice.setText("Invoice Complete.");
@@ -61,6 +63,7 @@ public class Invoice_History_Adapter extends RecyclerView.Adapter<Invoice_Histor
             // holder.parent_layout.setBackgroundResource(R.color.white);
         } else {
             holder.Statusinvoice.setText("Order received.Pending for Invoice.");
+            holder.editOrder.setVisibility(View.VISIBLE);
             holder.ivStatus.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24);
             holder.Statusinvoice.setTextColor(context.getResources().getColor(R.color.checkout));
 
@@ -82,7 +85,12 @@ public class Invoice_History_Adapter extends RecyclerView.Adapter<Invoice_Histor
 
         }
 
-
+        holder.editOrder.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Order_Category_Select.class);
+            intent.putExtra("mode", "edit");
+            intent.putExtra("orderId", mDate.get(position).getTransSlNo());
+            context.startActivity(intent);
+        });
 
         if (mDate.get(position).getStatus().equalsIgnoreCase("Completed")) {
             holder.Statusinvoice.setText("GRN Complete.");
@@ -136,7 +144,7 @@ public class Invoice_History_Adapter extends RecyclerView.Adapter<Invoice_Histor
         TextView Statusinvoice, txtOrderDate, txtOrderID, txtValue, Itemcountinvoice, txtType, tvIndent, tvQty;
         LinearLayout linearLayout, llReturnInv, llIndent;
         RelativeLayout parent_layout;
-        ImageView ivStatus;
+        ImageView ivStatus, editOrder;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -153,8 +161,7 @@ public class Invoice_History_Adapter extends RecyclerView.Adapter<Invoice_Histor
             llIndent = itemView.findViewById(R.id.llIndent);
             tvIndent = itemView.findViewById(R.id.txt_indent);
             tvQty = itemView.findViewById(R.id.tvQty);
-
-
+            editOrder = itemView.findViewById(R.id.editOrder);
         }
     }
 }

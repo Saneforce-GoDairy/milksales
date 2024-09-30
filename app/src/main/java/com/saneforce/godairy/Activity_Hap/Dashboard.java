@@ -36,7 +36,6 @@ import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -65,9 +64,7 @@ import com.saneforce.godairy.procurement.ProcurementHome;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -258,25 +255,17 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         lnupdate_text = findViewById(R.id.updateAvailable);
         appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
         checkUpdates();
-        update_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-                    @Override
-                    public void onSuccess(AppUpdateInfo result) {
-
-                        if (result.updateAvailability() == UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                            try {
-                                appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, Dashboard.this, APP_UPDATE);
-                            } catch (IntentSender.SendIntentException e) {
-                                e.printStackTrace();
-                            }
-                        }else
-                            lnupdate_text.setVisibility(View.GONE);
-                    }
-                });
+        update_text.setOnClickListener(view12 -> appUpdateManager.getAppUpdateInfo().addOnSuccessListener(result -> {
+            if (result.updateAvailability() == UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, Dashboard.this, APP_UPDATE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                lnupdate_text.setVisibility(View.GONE);
             }
-        });
+        }));
         binding.linMydayPlan.setOnClickListener(this);
         binding.linCheckIn.setOnClickListener(this);
         linRequstStaus.setOnClickListener(this);
@@ -301,9 +290,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     private void checkUpdates() {
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-            @Override
-            public void onSuccess(AppUpdateInfo result) {
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(result -> {
 
                 if (result.updateAvailability() == UPDATE_AVAILABLE ){
 
@@ -328,8 +315,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     */
                 }else
                     lnupdate_text.setVisibility(View.GONE);
-            }
-        });
+            });
     }
 
     private void loadExploreGrid() {
