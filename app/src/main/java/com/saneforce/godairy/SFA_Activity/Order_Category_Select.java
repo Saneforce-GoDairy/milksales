@@ -93,6 +93,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
     List<Category_Universe_Modal> listt;
     Type userType;
     AssistantClass assistantClass;
+    JSONArray orderDetailArray;
     Context context = this;
     Gson gson;
     CircularProgressButton takeorder;
@@ -136,6 +137,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
             setContentView(binding.getRoot());
 
             assistantClass = new AssistantClass(context);
+            orderDetailArray = new JSONArray();
 
             order_category_select = this;
             db = new DatabaseHandler(this);
@@ -426,14 +428,21 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
         }
     }
 
+    // Todo: getOrderDetails
     private void getOrderDetails(String orderId) {
         assistantClass.showProgressDialog("Getting Order Details...");
         Map<String, String> params = new HashMap<>();
         params.put("axn", "getOrderDetails");
         params.put("orderId", orderId);
+        params.put("retailerId", Shared_Common_Pref.Sf_Code);
         assistantClass.makeApiCall(params, "", new APIResult() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
+                orderDetailArray = jsonObject.optJSONArray("response");
+                if (orderDetailArray == null) {
+                    orderDetailArray = new JSONArray();
+                }
+                prepareOrder(orderDetailArray);
                 assistantClass.dismissProgressDialog();
             }
 
@@ -443,6 +452,9 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
                 assistantClass.showAlertDialogWithDismiss(error);
             }
         });
+    }
+
+    private void prepareOrder(JSONArray orderDetailArray) {
     }
 
     public void sumofTax(List<Product_Details_Modal> Product_Details_Modalitem, int pos) {
