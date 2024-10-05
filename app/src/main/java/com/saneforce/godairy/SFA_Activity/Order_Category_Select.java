@@ -407,7 +407,9 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
 
             tvCoolerInfo.setVisibility(View.GONE);
 
-            binding.repeatOrder.setOnClickListener(v -> getOrderDetails("last"));
+            binding.repeatOrder.setOnClickListener(v -> {
+                getOrderDetails("getLastOrderDetails");
+            });
 
             if(Shared_Common_Pref.Freezer_Required.equalsIgnoreCase("yes"))
                 tvCoolerInfo.setVisibility(View.VISIBLE);
@@ -416,7 +418,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
                 mode = getIntent().getStringExtra("mode");
                 if (mode.equalsIgnoreCase("edit")) {
                     orderId = getIntent().getStringExtra("orderId");
-                    getOrderDetails(orderId);
+                    getOrderDetails("getOrderDetails");
                 } else {
                     FilterTypes(OrderTypId);
                 }
@@ -431,10 +433,10 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
     }
 
     // Todo: getOrderDetails
-    private void getOrderDetails(String orderId) {
+    private void getOrderDetails(String axn) {
         assistantClass.showProgressDialog("Getting Order Details...");
         Map<String, String> params = new HashMap<>();
-        params.put("axn", "getOrderDetails");
+        params.put("axn", axn);
         params.put("orderId", orderId);
         params.put("retailerId", Shared_Common_Pref.OutletCode);
         assistantClass.makeApiCall(params, "", new APIResult() {
@@ -820,6 +822,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
                         HeadItem.put("orderValue", formatter.format(totalvalues));
                         HeadItem.put("DataSF", Shared_Common_Pref.Sf_Code);
                         HeadItem.put("AppVer", BuildConfig.VERSION_NAME);
+
                         ActivityData.put("Activity_Report_Head", HeadItem);
 
                         JSONObject OutletItem = new JSONObject();
@@ -829,6 +832,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
                         OutletItem.put("stockist_name", sharedCommonPref.getvalue(Constants.Distributor_name));
                         OutletItem.put("orderValue", formatter.format(totalvalues));
                         OutletItem.put("CashDiscount", cashDiscount);
+                        OutletItem.put("orderId", orderId);
                         OutletItem.put("NetAmount", formatter.format(totalvalues));
                         OutletItem.put("No_Of_items", tvBillTotItem.getText().toString());
                         OutletItem.put("Invoice_Flag", Shared_Common_Pref.Invoicetoorder);
