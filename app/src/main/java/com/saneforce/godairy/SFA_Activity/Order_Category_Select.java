@@ -417,6 +417,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
             if (getIntent().hasExtra("mode")) {
                 mode = getIntent().getStringExtra("mode");
                 if (mode.equalsIgnoreCase("edit")) {
+                    binding.title.setText("Edit Order");
                     orderId = getIntent().getStringExtra("orderId");
                     getOrderDetails("getOrderDetails");
                 } else {
