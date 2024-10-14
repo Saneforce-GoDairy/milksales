@@ -46,6 +46,7 @@ public class SelectionAdapter extends RecyclerView.Adapter<SelectionAdapter.View
             Intent intent = new Intent();
             intent.putExtra("selection_name", selectionList.get(position).getSelectionName());
             intent.putExtra("selection_code", selectionList.get(position).getSelectionCode());
+            intent.putExtra("state_name", selectionList.get(position).getStateName());
             intent.putExtra("request_id", String.valueOf(requestId));
             onClickInterface.onClickInterface(intent);
         });

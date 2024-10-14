@@ -1228,4 +1228,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Db_v310.php?axn=get/vanapprovedata")
     Call<ResponseBody> getVanApproveData(@Field("data") String body);
+
+    @POST("Procurement.php")
+    Call<ResponseBody> getRateCardPrice(@Query("axn") String axn,
+                                        @Query("state_code") String State_Code,
+                                        @Query("milk_type") String milk_type);
 }

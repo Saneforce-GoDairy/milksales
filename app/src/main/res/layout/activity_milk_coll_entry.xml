@@ -67,19 +67,57 @@
                 android:text="Customer Name"
                 android:textColor="@color/black" />
 
-            <EditText
-                android:id="@+id/ed_customer_sel"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/edit_text_common"
-                android:fontFamily="@font/ubuntu"
-                android:hint="Select"
-                android:inputType="textAutoComplete"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:autofillHints="none"
-                tools:ignore="LabelFor" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp">
+
+                <EditText
+                    android:id="@+id/ed_customer_sel"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_text_common"
+                    android:fontFamily="@font/ubuntu"
+                    android:hint="Select"
+                    android:inputType="textAutoComplete"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:autofillHints="none"
+                    tools:ignore="LabelFor" />
+
+              <LinearLayout
+                  android:id="@+id/state_text_con"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="5dp"
+                  android:orientation="horizontal"
+                  android:visibility="gone">
+
+                  <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/ubuntu"
+                      android:hint="Selected State : "
+                      android:inputType="textAutoComplete"
+                      android:paddingStart="10dp"
+                      android:autofillHints="none"
+                      tools:ignore="LabelFor" />
+
+                  <TextView
+                      android:id="@+id/state_text"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:fontFamily="@font/ubuntu"
+                      android:textColor="@color/black"
+                      android:layout_marginStart="5dp"
+                      android:inputType="textAutoComplete"
+                      android:autofillHints="none"
+                      tools:ignore="LabelFor" />
+
+              </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -391,13 +429,25 @@
                 android:textSize="15sp"
                 android:textColor="@color/black" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_medium"
-                android:textStyle="bold"
-                android:text="Milk Rate Per Litre ( Rs. )"
-                android:textColor="@color/black" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:textStyle="bold"
+                    android:text="Milk Rate Per Litre ( Rs. )"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Not enterable."/>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/ed_milk_rate"
@@ -502,5 +552,61 @@
             />
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rate_card_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="52dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/null_error"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="Rate card details fetching error!"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate card price fetching error!"
+                android:layout_marginTop="20dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/ubuntu_medium"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/back2"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_blue"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="10dp"
+            tools:ignore="UnusedAttribute" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:textColor="@color/white"
+                android:fontFamily="@font/ubuntu"
+                android:layout_centerInParent="true"
+                android:textSize="15sp"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
