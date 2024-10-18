@@ -4,10 +4,12 @@ import static com.saneforce.godairy.SFA_Activity.HAPApp.CurrencySymbol;
 import static com.saneforce.godairy.SFA_Activity.HAPApp.MRPCap;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -32,6 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +44,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.saneforce.godairy.Activity_Hap.CameraxActivity;
 import com.saneforce.godairy.BuildConfig;
 import com.saneforce.godairy.Common_Class.AlertDialogBox;
 import com.saneforce.godairy.Common_Class.Common_Class;
@@ -93,6 +97,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
     List<Category_Universe_Modal> listt;
     Type userType;
     AssistantClass assistantClass;
+    String eventCaptureImageName = "";
     JSONArray orderDetailArray;
     Context context = this;
     Gson gson;
@@ -427,9 +432,27 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
                 FilterTypes(OrderTypId);
             }
 
+            prepareEventCapture();
+
         } catch (Exception e) {
             Log.v(TAG, " order oncreate: " + e.getMessage());
 
+        }
+    }
+
+    private void prepareEventCapture() {
+        int eventCapture = assistantClass.getIntFromLocal("eventCapture");
+        int eventCaptureMandatory = assistantClass.getIntFromLocal("eventCaptureMandatory");
+        if (eventCapture == 1) {
+            Intent intent = new Intent(context, CameraxActivity.class);
+            intent.putExtra("Mode", "secondaryEventCapture");
+            intent.putExtra("mandatory", eventCaptureMandatory);
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    eventCaptureImageName = result.getData().getStringExtra("eventCaptureImageName");
+                    assistantClass.log("eventCaptureImageName: " + eventCaptureImageName);
+                }
+            }).launch(intent);
         }
     }
 
@@ -833,6 +856,7 @@ public class Order_Category_Select extends AppCompatActivity implements View.OnC
                         OutletItem.put("stockist_name", sharedCommonPref.getvalue(Constants.Distributor_name));
                         OutletItem.put("orderValue", formatter.format(totalvalues));
                         OutletItem.put("CashDiscount", cashDiscount);
+                        OutletItem.put("eventCaptureImageName", eventCaptureImageName);
                         OutletItem.put("orderId", orderId);
                         OutletItem.put("NetAmount", formatter.format(totalvalues));
                         OutletItem.put("No_Of_items", tvBillTotItem.getText().toString());

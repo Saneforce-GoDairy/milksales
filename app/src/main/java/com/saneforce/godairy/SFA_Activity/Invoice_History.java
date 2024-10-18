@@ -114,7 +114,6 @@ int approveFlagValue=-1;
 
     AssistantClass assistantClass;
     Context context = this;
-    int eventCapture = 0, eventCaptureMandatory = 0;
 
     //Updateed
     @Override
@@ -308,28 +307,10 @@ int approveFlagValue=-1;
             if (Shared_Common_Pref.Freezer_Required.equalsIgnoreCase("yes"))
                 tvCoolerInfo.setVisibility(View.VISIBLE);
 
-            getEventCaptureInfo();
         } catch (Exception e) {
             Log.v(TAG, e.getMessage());
         }
 
-    }
-
-    private void getEventCaptureInfo() {
-        Map<String, String> params = new HashMap<>();
-        params.put("axn", "getEventCaptureInfo");
-        assistantClass.makeApiCall(params, "", new APIResult() {
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-                eventCapture = jsonObject.optInt("eventCapture");
-                eventCaptureMandatory = jsonObject.optInt("eventCaptureMandatory");
-            }
-
-            @Override
-            public void onFailure(String error) {
-                assistantClass.showAlertDialogWithDismiss("Event capture API error: " + error);
-            }
-        });
     }
 
     @SuppressLint("ClickableViewAccessibility")

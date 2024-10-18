@@ -58,6 +58,7 @@ import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AdapterOnClick;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
@@ -160,6 +161,7 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
     int update_available = 0;
     int version;
     AssistantClass assistantClass;
+    int eventCapture = 0, eventCaptureMandatory = 0, eventCapturePrimary = 0, eventCapturePrimaryMandatory = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -358,6 +360,31 @@ public class SFA_Activity extends AppCompatActivity implements View.OnClickListe
         }
 
         binding.logout.setOnClickListener(v -> assistantClass.logout());
+
+        getEventCaptureInfo();
+    }
+
+    private void getEventCaptureInfo() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getEventCaptureInfo");
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                eventCapture = jsonObject.optInt("eventCapture");
+                eventCaptureMandatory = jsonObject.optInt("eventCaptureMandatory");
+                eventCapturePrimary = jsonObject.optInt("eventCapturePrimary");
+                eventCapturePrimaryMandatory = jsonObject.optInt("eventCapturePrimaryMandatory");
+                assistantClass.saveToLocal("eventCapture", eventCapture);
+                assistantClass.saveToLocal("eventCaptureMandatory", eventCaptureMandatory);
+                assistantClass.saveToLocal("eventCapturePrimary", eventCapturePrimary);
+                assistantClass.saveToLocal("eventCapturePrimaryMandatory", eventCapturePrimaryMandatory);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.showAlertDialogWithDismiss("Event capture API error: " + error);
+            }
+        });
     }
 
     private void checkUpdates() {

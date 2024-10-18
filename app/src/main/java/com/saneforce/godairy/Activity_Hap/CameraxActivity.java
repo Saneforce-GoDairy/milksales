@@ -65,6 +65,7 @@ import com.saneforce.godairy.Common_Class.CameraPermission;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.AlertBox;
+import com.saneforce.godairy.Interface.AlertDialogClickListener;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
 import com.saneforce.godairy.Interface.LocationEvents;
@@ -108,6 +109,7 @@ public class CameraxActivity extends AppCompatActivity {
     private final Common_Class DT = new Common_Class();
     double lat = 0.0, lng = 0.0;
     AssistantClass assistantClass;
+    int mandatory = 0;
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private ActivityCameraxBinding binding;
     private File file;
@@ -203,12 +205,17 @@ public class CameraxActivity extends AppCompatActivity {
         assistantClass = new AssistantClass(context);
         String intentMode = getIntent().getStringExtra("Mode");
 
-        if (intentMode.equals("COUT")) {
+        if (intentMode.equals("COUT") || intentMode.equals("EXOUT")) {
             binding.headerText.setText("Check Out");
-        }
-
-        if (intentMode.equals("EXOUT")) {
-            binding.headerText.setText("Check Out");
+        } else if (intentMode.equalsIgnoreCase("secondaryEventCapture") || intentMode.equalsIgnoreCase("primaryEventCapture")) {
+            binding.headerText.setText("Event Capture");
+            mandatory = getIntent().getIntExtra("mandatory", 0);
+            if (mandatory == 1) {
+                binding.back.setVisibility(View.GONE);
+            }
+            binding.submit.setVisibility(View.GONE);
+            binding.top2.setVisibility(View.INVISIBLE);
+            binding.submit.setText("Proceed to order entry");
         }
 
         if (Shared_Common_Pref.Outletlat != null) {
@@ -336,7 +343,7 @@ public class CameraxActivity extends AppCompatActivity {
             binding.cameraxClickLayout.setVisibility(View.VISIBLE);
             binding.cameraFunctionContainer.setVisibility(View.VISIBLE);
         });
-        binding.back.setOnClickListener(v -> finish());
+        binding.back.setOnClickListener(v -> onBackPressed());
         binding.buttonFlash.setOnClickListener(v -> {
         });
         binding.buttonSwitchCam.setOnClickListener(v -> {
@@ -399,13 +406,45 @@ public class CameraxActivity extends AppCompatActivity {
     private void saveImgPreview() {
         if (file == null) return;
         imageFileName = file.getName();
+        String fullPath = String.valueOf(file);
 
-        Intent mIntent = new Intent(this, FileUploadService.class);
-        mIntent.putExtra("mFilePath", String.valueOf(file));
-        mIntent.putExtra("SF", UserDetails.getString("Sfcode", ""));
-        mIntent.putExtra("FileName", imageFileName);
-        mIntent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
-        FileUploadService.enqueueWork(this, mIntent);
+        if (mMode.equalsIgnoreCase("secondaryEventCapture")) {
+            com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, imageFileName, "SecondaryEventCapture", new com.saneforce.godairy.Common_Class.Common_Class.ImageUploadListener() {
+                @Override
+                public void onSuccess() {
+                    Intent intent = new Intent();
+                    intent.putExtra("eventCaptureImageName", imageFileName);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
+
+                @Override
+                public void onFail() {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if (mMode.equalsIgnoreCase("primaryEventCapture")) {
+            com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, imageFileName, "PrimaryEventCapture", new com.saneforce.godairy.Common_Class.Common_Class.ImageUploadListener() {
+                @Override
+                public void onSuccess() {
+                    Intent intent = new Intent();
+                    intent.putExtra("eventCaptureImageName", imageFileName);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
+
+                @Override
+                public void onFail() {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Intent mIntent = new Intent(this, FileUploadService.class);
+            mIntent.putExtra("mFilePath", String.valueOf(file));
+            mIntent.putExtra("SF", UserDetails.getString("Sfcode", ""));
+            mIntent.putExtra("FileName", imageFileName);
+            mIntent.putExtra("Mode", (mMode.equalsIgnoreCase("PF") ? "PROF" : "ATTN"));
+            FileUploadService.enqueueWork(this, mIntent);
 
             assistantClass.showProgressDialog("Getting location...", false);
             assistantClass.getLocation(new LocationResponse() {
@@ -424,6 +463,8 @@ public class CameraxActivity extends AppCompatActivity {
                     showError("Location error. try again");
                 }
             });
+        }
+
     }
 
     private void initSubmitProgressDialog(String messge) {
@@ -935,5 +976,26 @@ public class CameraxActivity extends AppCompatActivity {
         super.onDestroy();
         Shared_Common_Pref.Outletlat = 0.0;
         Shared_Common_Pref.Outletlong = 0.0;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getIntent().hasExtra("mandatory")) {
+            if (mandatory != 1) {
+                assistantClass.showAlertDialog("", "Do you want to continue without photo capture?", true, "CANCEL", "OK", new AlertDialogClickListener() {
+                    @Override
+                    public void onPositiveButtonClick(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNegativeButtonClick(DialogInterface dialog) {
+                        finish();
+                    }
+                });
+            }
+        } else {
+            super.onBackPressed();
+        }
     }
 }
