@@ -44,6 +44,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,6 +62,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.saneforce.godairy.Activity_Hap.CameraxActivity;
 import com.saneforce.godairy.Activity_Hap.Dashboard;
 import com.saneforce.godairy.Activity_Hap.MainActivity;
 import com.saneforce.godairy.Activity_Hap.SFA_Activity;
@@ -180,6 +182,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     private Toolbar mToolbar;
     private DistributerAdapter distributerAdapter;
     private String ordersViewMode = "";
+    String eventCaptureImageName = "";
 
     String _id = "", _title = "", _erpCode = "", _stateCode = "", _pincode = "";
     JSONArray addressArray;
@@ -336,6 +339,26 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
         getLastOrderedQty();
         getOutStandingBalance();
         loadDistributer(common_class.getDistList(), 2);
+
+        if (ordersViewMode != null && ordersViewMode.equalsIgnoreCase("order_view")) {
+            prepareEventCapture();
+        }
+    }
+
+    private void prepareEventCapture() {
+        int eventCapture = assistantClass.getIntFromLocal("eventCapturePrimary");
+        int eventCaptureMandatory = assistantClass.getIntFromLocal("eventCapturePrimaryMandatory");
+        if (eventCapture == 1) {
+            Intent intent = new Intent(context, CameraxActivity.class);
+            intent.putExtra("Mode", "primaryEventCapture");
+            intent.putExtra("mandatory", eventCaptureMandatory);
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    eventCaptureImageName = result.getData().getStringExtra("eventCaptureImageName");
+                    assistantClass.log("eventCaptureImageName: " + eventCaptureImageName);
+                }
+            }).launch(intent);
+        }
     }
 
     private void getOutStandingBalance() {
@@ -1151,6 +1174,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                             OutletItem.put("stockist_code", sharedCommonPref.getvalue(Constants.Distributor_Id));
                             OutletItem.put("stockist_name", sharedCommonPref.getvalue(Constants.Distributor_name));
                             OutletItem.put("orderValue", formatter.format(totalvalues));
+                            OutletItem.put("eventCaptureImageName", eventCaptureImageName);
                             OutletItem.put("CashDiscount", cashDiscount);
                             OutletItem.put("NetAmount", formatter.format(totalvalues));
                             OutletItem.put("No_Of_items", tvBillTotItem.getText().toString());

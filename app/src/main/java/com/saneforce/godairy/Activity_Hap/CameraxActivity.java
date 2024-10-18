@@ -412,6 +412,7 @@ public class CameraxActivity extends AppCompatActivity {
             com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, imageFileName, "SecondaryEventCapture", new com.saneforce.godairy.Common_Class.Common_Class.ImageUploadListener() {
                 @Override
                 public void onSuccess() {
+                    Toast.makeText(context, "Image captured successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
                     intent.putExtra("eventCaptureImageName", imageFileName);
                     setResult(Activity.RESULT_OK, intent);
@@ -427,6 +428,7 @@ public class CameraxActivity extends AppCompatActivity {
             com.saneforce.godairy.Common_Class.Common_Class.uploadToS3Bucket(context, fullPath, imageFileName, "PrimaryEventCapture", new com.saneforce.godairy.Common_Class.Common_Class.ImageUploadListener() {
                 @Override
                 public void onSuccess() {
+                    Toast.makeText(context, "Image captured successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
                     intent.putExtra("eventCaptureImageName", imageFileName);
                     setResult(Activity.RESULT_OK, intent);
