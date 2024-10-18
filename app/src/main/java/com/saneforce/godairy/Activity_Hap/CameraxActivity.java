@@ -752,14 +752,16 @@ public class CameraxActivity extends AppCompatActivity {
                     modelCall.enqueue(new Callback<JsonObject>() {
                         @Override
                         public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                            submitProgressDialog.dismiss();
+                            if (submitProgressDialog != null) {
+                                submitProgressDialog.dismiss();
+                            }
                             if (response.isSuccessful()) {
                                 JsonObject itm = response.body().getAsJsonObject();
                                 SharedPreferences.Editor editor = CheckInDetails.edit();
                                 editor.putInt("Type", 1);
                                 editor.putBoolean("CheckIn", true);
                                 editor.apply();
-                                String mMessage = "Your Extended Submitted Successfully";
+                                String mMessage = "Your Extended Shift Submitted Successfully";
                                 try {
                                     mMessage = itm.get("Msg").getAsString();
                                 } catch (Exception ignored) {

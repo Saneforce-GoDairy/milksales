@@ -98,7 +98,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             R.drawable.users_gear_ic,
             R.drawable.gate_ic,
             R.drawable.gate_out_ic,
-            R.drawable.calendar_pjp));
+            R.drawable.calendar_pjp,
+            R.drawable.gate_ic));
 
     ArrayList<String> exploreName = new ArrayList<>(Arrays.asList(
             "Request & status",
@@ -106,7 +107,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             "Activity",
             "Gate IN",
             "Gate OUT",
-            "PJP"));
+            "PJP",
+            "Extended Shift"));
     TextView update_text;
     LinearLayout lnupdate_text;
     private AppUpdateManager appUpdateManager;
@@ -398,6 +400,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                         break;
 
                     case 6:
+                        validateExtened("ValidateExtended");
+                        break;
+
+                    case 7:
                         Shared_Common_Pref.TravelAllowance = 1;
                         startActivity(new Intent(context, Approvals.class));
                         break;
@@ -739,7 +745,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void PositiveMethod(DialogInterface dialog, int id) {
                                 dialog.dismiss();
-                                common_class.CommonIntentwithoutFinishputextra(Checkin.class, "Mode", "extended");
+                                Intent intent = new Intent(context, Checkin.class);
+                                intent.putExtra("Mode", "extended");
+                                startActivity(intent);
                             }
 
                             @Override

@@ -39,6 +39,7 @@ import com.saneforce.godairy.Common_Class.Common_Class;
 import com.saneforce.godairy.Common_Class.Common_Model;
 import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
+import com.saneforce.godairy.Interface.APIResult;
 import com.saneforce.godairy.Interface.AdapterOnClick;
 import com.saneforce.godairy.Interface.AlertBox;
 import com.saneforce.godairy.Interface.ApiClient;
@@ -50,6 +51,7 @@ import com.saneforce.godairy.R;
 import com.saneforce.godairy.SFA_Adapter.Invoice_History_Adapter;
 import com.saneforce.godairy.SFA_Model_Class.OutletReport_View_Modal;
 import com.saneforce.godairy.SFA_Model_Class.Product_Details_Modal;
+import com.saneforce.godairy.assistantClass.AssistantClass;
 import com.saneforce.godairy.common.DatabaseHandler;
 import com.saneforce.godairy.common.LocationFinder;
 import com.saneforce.godairy.procurement.custom_form.CustomFormDashboardActivity;
@@ -66,7 +68,9 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -107,6 +111,11 @@ public class Invoice_History extends AppCompatActivity implements Master_Interfa
     TextView tv_no_data;
     CardView card_date;
 int approveFlagValue=-1;
+
+    AssistantClass assistantClass;
+    Context context = this;
+    int eventCapture = 0, eventCaptureMandatory = 0;
+
     //Updateed
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +126,8 @@ int approveFlagValue=-1;
             gson = new Gson();
             sharedCommonPref = new Shared_Common_Pref(Invoice_History.this);
             common_class = new Common_Class(this);
+
+            assistantClass = new AssistantClass(context);
 
             new LocationFinder(getApplication(), new LocationEvents() {
                 @Override
@@ -297,10 +308,28 @@ int approveFlagValue=-1;
             if (Shared_Common_Pref.Freezer_Required.equalsIgnoreCase("yes"))
                 tvCoolerInfo.setVisibility(View.VISIBLE);
 
+            getEventCaptureInfo();
         } catch (Exception e) {
             Log.v(TAG, e.getMessage());
         }
 
+    }
+
+    private void getEventCaptureInfo() {
+        Map<String, String> params = new HashMap<>();
+        params.put("axn", "getEventCaptureInfo");
+        assistantClass.makeApiCall(params, "", new APIResult() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                eventCapture = jsonObject.optInt("eventCapture");
+                eventCaptureMandatory = jsonObject.optInt("eventCaptureMandatory");
+            }
+
+            @Override
+            public void onFailure(String error) {
+                assistantClass.showAlertDialogWithDismiss("Event capture API error: " + error);
+            }
+        });
     }
 
     @SuppressLint("ClickableViewAccessibility")
