@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -239,6 +240,12 @@ public class ReportDetailsActivity extends AppCompatActivity {
         queryParams.put("moduleId", mModuleId);
         queryParams.put("fromDate", currentDateFrom);
         queryParams.put("toDate", currentDateTo);
+
+        SharedPreferences UserDetails = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref(context);
+        queryParams.put("diC", sharedCommonPref.getvalue(Constants.Distributor_Id));
+        queryParams.put("sfC", UserDetails.getString("Sfcode", ""));
+        queryParams.put("reC", Shared_Common_Pref.OutletCode.equals("OutletCode") ? "" : Shared_Common_Pref.OutletCode);
 
         Call<ResponseBody> call = apiInterface.getCustomFormReportsModuleList(queryParams);
 

@@ -148,6 +148,7 @@ public class AssistantClass extends AppCompatActivity {
         params.put("stk", sharedCommonPref.getvalue(Constants.Distributor_Id));
         params.put("sfc", UserDetails.getString("Sfcode", ""));
         params.put("div", UserDetails.getString("Divcode", ""));
+        params.put("drCode", Shared_Common_Pref.OutletCode);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseBody> call = apiInterface.getUniversalData(params, data);
         log("Request: " + call.request());

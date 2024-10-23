@@ -85,7 +85,7 @@ public class CustomFormDashboardActivity extends AppCompatActivity {
                         binding.recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
                         binding.recyclerView.setHasFixedSize(true);
                         binding.recyclerView.setItemViewCacheSize(20);
-                        ModuleAdapter moduleAdapter = new ModuleAdapter(context, moduleArrayList);
+                        ModuleAdapter moduleAdapter = new ModuleAdapter(context, moduleArrayList, isPrimary);
                         binding.recyclerView.setAdapter(moduleAdapter);
                     } catch (IOException | JSONException e) {
                         // throw new RuntimeException(e);

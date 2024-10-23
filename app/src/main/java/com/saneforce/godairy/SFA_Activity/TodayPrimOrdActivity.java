@@ -122,6 +122,7 @@ public class TodayPrimOrdActivity extends AppCompatActivity implements Master_In
             primaryNoOrderListsMain = new ArrayList<>();
             navbtns=findViewById(R.id.navbtns);
             navbtns.setVisibility(View.VISIBLE);
+            Shared_Common_Pref.OutletCode = "OutletCode";
             if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.DISTRIBUTER_TYPE)){
                navbtns.setVisibility(View.GONE);
            }

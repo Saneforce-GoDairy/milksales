@@ -264,6 +264,14 @@ int approveFlagValue=-1;
 
             getOutstanding();
 
+            if(sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equalsIgnoreCase(Constants.CHECKIN_TYPE)){
+                marketingActivityLayout.setVisibility(View.VISIBLE);
+                activityViewLayout.setVisibility(View.VISIBLE);
+            } else {
+                marketingActivityLayout.setVisibility(View.GONE);
+                activityViewLayout.setVisibility(View.GONE);
+            }
+
 //            if (sharedCommonPref.getvalue(Constants.LOGIN_TYPE).equals(Constants.DISTRIBUTER_TYPE))
 //                findViewById(R.id.orderTypesLayout).setVisibility(View.GONE);
 

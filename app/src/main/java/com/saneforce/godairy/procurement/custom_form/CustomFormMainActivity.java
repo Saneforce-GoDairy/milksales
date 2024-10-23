@@ -71,6 +71,7 @@ import com.saneforce.godairy.Activity.Util.ImageFilePath;
 import com.saneforce.godairy.Activity.Util.SelectionModel;
 import com.saneforce.godairy.Activity_Hap.AllowancCapture;
 import com.saneforce.godairy.Common_Class.Common_Class;
+import com.saneforce.godairy.Common_Class.Constants;
 import com.saneforce.godairy.Common_Class.Shared_Common_Pref;
 import com.saneforce.godairy.Interface.ApiClient;
 import com.saneforce.godairy.Interface.ApiInterface;
@@ -153,6 +154,7 @@ public class CustomFormMainActivity extends AppCompatActivity {
     List<MultipleImage> fileEncodedList;
 
     private int IMAGE_SELECTION_ID = 0;
+    int isPrimary = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +164,10 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
         util = new Util();
         transferUtility = util.getTransferUtility(getApplicationContext());
+
+        if (getIntent().hasExtra("isPrimary")) {
+            isPrimary = getIntent().getIntExtra("isPrimary", 0);
+        }
 
         master_list=new ArrayList<>();
         group_list=new ArrayList<>();
@@ -292,6 +298,14 @@ public class CustomFormMainActivity extends AppCompatActivity {
 
         JsonObject jsonObject3 = new JsonObject();
         jsonObject3.add("dynamic_data_detail", dynamicDataDetailJsonArray);
+
+        SharedPreferences UserDetails = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        Shared_Common_Pref sharedCommonPref = new Shared_Common_Pref(context);
+        jsonObject3.addProperty("diC", sharedCommonPref.getvalue(Constants.Distributor_Id));
+        jsonObject3.addProperty("sfC", UserDetails.getString("Sfcode", ""));
+        jsonObject3.addProperty("reC", Shared_Common_Pref.OutletCode.equals("OutletCode") ? "" : Shared_Common_Pref.OutletCode);
+        jsonObject3.addProperty("isPrimary", isPrimary);
+
         commonDynamicJsonArray.add(jsonObject3);
 
         if (Constant.isNetworkAvailable(getApplicationContext())) {
@@ -313,11 +327,11 @@ public class CustomFormMainActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(res);
 
                             boolean isSuccess = jsonObject.getBoolean("success");
+                            String msg = jsonObject.getString("msg");
+                            showToast(msg);
                             if (isSuccess) {
-                                showToast("Form Submit Success");
                                 finish();
-                            } else
-                                showToast("Response : null");
+                            }
                         }
                     } catch (JSONException | IOException ex) {
                         showToast("Exception error" + ex.getLocalizedMessage());

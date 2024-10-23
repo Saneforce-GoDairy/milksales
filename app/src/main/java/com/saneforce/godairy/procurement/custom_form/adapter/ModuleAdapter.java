@@ -18,10 +18,12 @@ import java.util.List;
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder> {
     List<ModuleList> moduleLists;
     Context context;
+    int isPrimary;
 
-    public ModuleAdapter(Context context, List<ModuleList> moduleLists) {
+    public ModuleAdapter(Context context, List<ModuleList> moduleLists, int isPrimary) {
         this.moduleLists = moduleLists;
         this.context = context;
+        this.isPrimary = isPrimary;
     }
 
     @NonNull
@@ -48,6 +50,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ViewHolder
                 intent.putExtra("title", moduleList.getModuleName());
                 intent.putExtra("moduleId",moduleList.getModuleId());
                 intent.putExtra("moduleName",moduleList.getModuleName());
+                intent.putExtra("isPrimary",isPrimary);
                 context.startActivity(intent);
             }
         });
