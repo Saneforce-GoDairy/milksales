@@ -17,8 +17,10 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -1704,9 +1706,14 @@ public class Dashboard_Two extends AppCompatActivity implements View.OnClickList
                     (this, 0, intent, PendingIntent.FLAG_MUTABLE);
         } else {
             pIntent = PendingIntent.getBroadcast
-                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, AlmTm, pIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !((AlarmManager) getSystemService(AlarmManager.class)).canScheduleExactAlarms()) {
+            Intent intents = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        } else {
+            AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, AlmTm, pIntent);
+        }
     }
 }

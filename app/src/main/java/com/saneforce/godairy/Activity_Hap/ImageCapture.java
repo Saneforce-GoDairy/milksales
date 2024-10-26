@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -1243,8 +1244,13 @@ public class ImageCapture extends AppCompatActivity implements CameraActivity.Ca
                     (this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
 
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, AlmTm, pIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !((AlarmManager) getSystemService(AlarmManager.class)).canScheduleExactAlarms()) {
+            Intent intents = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        } else {
+            AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, AlmTm, pIntent);
+        }
     }
 
     private final ServiceConnection mServiceConection = new ServiceConnection() {
