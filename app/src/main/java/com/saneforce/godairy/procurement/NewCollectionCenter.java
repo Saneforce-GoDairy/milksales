@@ -159,6 +159,17 @@ public class NewCollectionCenter extends AppCompatActivity implements OnMapReady
 
         onClick();
         loadPlant();
+        deleteExistingImage();
+    }
+
+    private void deleteExistingImage() {
+        try {
+            File fileFat = new File(getExternalFilesDir(null), "/procurement/" + "CENP_123.jpg");
+            if (fileFat.exists()) {
+                fileFat.delete();
+                assistantClass.log("Existing image deleted");
+            }
+        } catch (Exception ignored) { }
     }
 
     private void loadDistricts(String mStateCode) {
