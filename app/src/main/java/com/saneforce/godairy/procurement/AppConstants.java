@@ -8,7 +8,8 @@ public class AppConstants {
  public static final String INTENT_PROCUREMENT_USER_DOC_MODE = "proc_doc";
  public static final String PROCUREMENT_GET_PLANT2 = "proc_get_plant2";
  public static final String PROCUREMENT_GET_PLANT = "proc_get_plant";
- public static final String PROCUREMENT_GET_CENTER = "proc_get_center";
+// public static final String PROCUREMENT_GET_CENTER = "proc_get_center";
+ public static final String PROCUREMENT_GET_CENTER = "get_collection_centres";
  public static final String PROCUREMENT_SUBMIT_COLL_CENTER_LOCATION = "save/proc_coll_center";
  public static final String PROCUREMENT_SUBMIT_FARMER_CREATION = "save/proc_farmer_creation";
  public static final String PROCUREMENT_SUBMIT_AGRONOMIST = "save/proc_agronomist";

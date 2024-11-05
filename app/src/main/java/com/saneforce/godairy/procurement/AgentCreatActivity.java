@@ -112,7 +112,7 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            String plantName = object.optString("sap_center_name");
+                            String plantName = object.optString("title");
 
                             binding.spinnerCollectionCe.setPrompt(plantName);
                             list.add(plantName);
@@ -136,6 +136,10 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
     }
 
     private void loadStates() {
+        if (selectionsLists != null && !selectionsLists.isEmpty()){
+            selectionsLists.clear();
+        }
+
         Call<ResponseBody> call =
                 apiInterface.getStates(MAS_GET_STATES);
 
@@ -144,6 +148,7 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     binding.shimmerLayout.setVisibility(View.GONE);
+                    binding.selectionCon.setVisibility(View.VISIBLE);
                     String stateList = "";
 
                     try {
@@ -196,6 +201,7 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     binding.shimmerLayout.setVisibility(View.GONE);
+                    binding.selectionCon.setVisibility(View.VISIBLE);
                     String districtList = "";
                     try {
                         districtList = response.body().string();
@@ -272,14 +278,16 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
             loadStates();
             binding.scrollView1.setVisibility(View.GONE);
             binding.selectionCon.setVisibility(View.VISIBLE);
+            binding.shimmerLayout.setVisibility(View.VISIBLE);
             mSelect = 1;
         });
 
         binding.edDistrict.setOnClickListener(v -> {
             binding.title.setText("Select District");
-         //   loadDistricts(mSelectedCode);
+            loadDistricts(mSelectedCode);
             binding.scrollView1.setVisibility(View.GONE);
             binding.selectionCon.setVisibility(View.VISIBLE);
+            binding.shimmerLayout.setVisibility(View.VISIBLE);
             mSelect = 1;
 
             String mState = binding.edState.getText().toString();
@@ -307,16 +315,7 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
             startActivity(intent);
         });
 
-        binding.back.setOnClickListener(v -> {
-            if (mSelect == 1){
-                binding.scrollView1.setVisibility(View.VISIBLE);
-                binding.title.setText("Agent creation");
-                binding.selectionCon.setVisibility(View.GONE);
-                mSelect = 0;
-                return;
-            }
-            finish();
-        });
+        binding.back.setOnClickListener(v -> onBackPressed());
 
         binding.edState.addTextChangedListener(new TextWatcher() {
             @Override
@@ -692,10 +691,11 @@ public class AgentCreatActivity extends AppCompatActivity implements SelectionAd
 
     @Override
     public void onBackPressed() {
-        if (mSelect == 1){
+        if (binding.scrollView1.getVisibility() == View.GONE){
             binding.scrollView1.setVisibility(View.VISIBLE);
-            binding.title.setText("Agent creation");
             binding.selectionCon.setVisibility(View.GONE);
+            binding.shimmerLayout.setVisibility(View.GONE);
+            binding.title.setText("Agent creation");
             mSelect = 0;
             return;
         }

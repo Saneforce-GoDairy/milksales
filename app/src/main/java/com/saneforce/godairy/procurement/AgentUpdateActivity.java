@@ -245,14 +245,16 @@ public class AgentUpdateActivity extends AppCompatActivity implements SelectionA
             loadStates();
             binding.scrollView1.setVisibility(View.GONE);
             binding.selectionCon.setVisibility(View.VISIBLE);
+            binding.shimmerLayout.setVisibility(View.VISIBLE);
             mSelect = 1;
         });
 
         binding.edDistrict.setOnClickListener(v -> {
             binding.title.setText("Select District");
-            //   loadDistricts(mSelectedCode);
+            loadDistricts(mSelectedCode);
             binding.scrollView1.setVisibility(View.GONE);
             binding.selectionCon.setVisibility(View.VISIBLE);
+            binding.shimmerLayout.setVisibility(View.VISIBLE);
             mSelect = 1;
 
             String mState = binding.edState.getText().toString();
@@ -280,16 +282,7 @@ public class AgentUpdateActivity extends AppCompatActivity implements SelectionA
             startActivity(intent);
         });
 
-        binding.back.setOnClickListener(v -> {
-            if (mSelect == 1){
-                binding.scrollView1.setVisibility(View.VISIBLE);
-                binding.title.setText("Agent creation");
-                binding.selectionCon.setVisibility(View.GONE);
-                mSelect = 0;
-                return;
-            }
-            finish();
-        });
+        binding.back.setOnClickListener(v -> onBackPressed());
 
         binding.edState.addTextChangedListener(new TextWatcher() {
             @Override
@@ -667,7 +660,7 @@ public class AgentUpdateActivity extends AppCompatActivity implements SelectionA
 
                         runOnUiThread(() -> {
                             loadAgentImage();
-                            Toast.makeText(context, "Download success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, "Download success", Toast.LENGTH_SHORT).show();
                         });
 
                 } catch (IOException e) {
@@ -696,6 +689,10 @@ public class AgentUpdateActivity extends AppCompatActivity implements SelectionA
     }
 
     private void loadStates() {
+        if (selectionsLists != null && !selectionsLists.isEmpty()){
+            selectionsLists.clear();
+        }
+
         Call<ResponseBody> call =
                 apiInterface.getStates(MAS_GET_STATES);
 
@@ -704,6 +701,7 @@ public class AgentUpdateActivity extends AppCompatActivity implements SelectionA
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     binding.shimmerLayout.setVisibility(View.GONE);
+                    binding.selectionCon.setVisibility(View.VISIBLE);
                     String stateList = "";
 
                     try {
@@ -756,6 +754,7 @@ public class AgentUpdateActivity extends AppCompatActivity implements SelectionA
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     binding.shimmerLayout.setVisibility(View.GONE);
+                    binding.selectionCon.setVisibility(View.VISIBLE);
                     String districtList = "";
                     try {
                         districtList = response.body().string();
@@ -844,7 +843,7 @@ public class AgentUpdateActivity extends AppCompatActivity implements SelectionA
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            String plantName = object.optString("sap_center_name");
+                            String plantName = object.optString("title");
 
                             binding.spinnerCollectionCe.setPrompt(plantName);
                             list.add(plantName);
@@ -892,5 +891,18 @@ public class AgentUpdateActivity extends AppCompatActivity implements SelectionA
             binding.txtAgentImageNotValid.setVisibility(View.GONE);
             binding.txtErrorFound.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (binding.scrollView1.getVisibility() == View.GONE){
+            binding.scrollView1.setVisibility(View.VISIBLE);
+            binding.selectionCon.setVisibility(View.GONE);
+            binding.shimmerLayout.setVisibility(View.GONE);
+            binding.title.setText("Agent Update");
+            mSelect = 0;
+            return;
+        }
+        finish();
     }
 }

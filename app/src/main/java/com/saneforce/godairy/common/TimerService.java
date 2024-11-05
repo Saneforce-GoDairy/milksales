@@ -409,7 +409,7 @@ public class TimerService extends Service {
                 btn.setTextColor(Color.WHITE);
                 btn.setBackgroundResource(R.drawable.button_blueg);
 
-                btn.setText("Open Setting");
+                btn.setText("OPEN SETTINGS");
                 btn.setAllCaps(false);
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override

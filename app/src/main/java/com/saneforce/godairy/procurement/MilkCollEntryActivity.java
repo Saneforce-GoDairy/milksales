@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -201,7 +202,7 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
     private void onClick() {
         binding.save.setOnClickListener(v -> {
             if (validateInputs()) {
-                // saveNow();
+                 saveNow();
                 printDialog.show();
             }
         });
@@ -286,7 +287,11 @@ public class  MilkCollEntryActivity extends AppCompatActivity implements Selecti
         // TODO Auto-generated method stub
         if (id == 999)
         {
-            return new DatePickerDialog(this, myDateListener, year, month, day);
+            final Calendar calendar = Calendar.getInstance();
+            int YEAR = calendar.get(Calendar.YEAR);
+            int MONTH = calendar.get(Calendar.MONTH);
+            int DAY = calendar.get(Calendar.DAY_OF_MONTH);
+            return new DatePickerDialog(this, myDateListener, YEAR, MONTH, DAY);
         }
         return null;
     }

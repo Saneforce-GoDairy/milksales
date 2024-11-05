@@ -1056,8 +1056,7 @@ public class Login extends AppCompatActivity {
                                     Intent intent = new Intent();
                                     intent.setAction(
                                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                    Uri uri = Uri.fromParts("package",
-                                            BuildConfig.LIBRARY_PACKAGE_NAME, null);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
                                     intent.setData(uri);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
