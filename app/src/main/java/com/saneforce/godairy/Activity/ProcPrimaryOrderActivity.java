@@ -1300,7 +1300,7 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
             Log.v(TAG + "DivERP:", sharedCommonPref.getvalue(Constants.DivERP));
             if (sharedCommonPref.getvalue(Constants.DivERP).equalsIgnoreCase("21") && !isEditOrder) {
                 if (Getorder_Array_List.size() == 0)
-                    grplistItems.notify(ProdGroups, this, "", new onListItemClick() {
+                    grplistItems.notify(ProdGroups, this, "");/*, new onListItemClick() {
                         @Override
                         public void onItemClick(JSONObject item) {
                             try {
@@ -1316,7 +1316,7 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
                             }
 
                         }
-                    });
+                    },false);*/
                 else {
                     grpCode = "" + Getorder_Array_List.get(0).getProduct_Grp_Code();
 
@@ -1326,12 +1326,7 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
                         }
                     }
 
-                    grplistItems.notify(ProdGroups, this, "" + grpCode, new onListItemClick() {
-                        @Override
-                        public void onItemClick(JSONObject item) {
-
-                        }
-                    });
+                    grplistItems.notify(ProdGroups, this, "" + grpCode);
                 }
 
             }
@@ -1466,7 +1461,7 @@ public class ProcPrimaryOrderActivity extends AppCompatActivity implements View.
                         e.printStackTrace();
                     }
                 }
-            });
+            },false);
             Grpgrid.setAdapter(grplistItems);
 
             FilterTypes(saveProductname.equalsIgnoreCase("") ? ProdGroups.getJSONObject(0).getString("id") : "" + id);

@@ -23,6 +23,7 @@
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
@@ -1002,6 +1003,7 @@
         <service
             android:name=".common.SANGPSTracker"
             android:enabled="true"
+            android:foregroundServiceType="location"
             android:exported="true" />
         <service
             android:name=".common.TimerService"
@@ -1142,7 +1144,9 @@
 
         <service
             android:name=".common.FileUploadService2"
-            android:exported="false" />
+            android:foregroundServiceType="location"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

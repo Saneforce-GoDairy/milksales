@@ -26,22 +26,25 @@ public class RyclGrpListItemAdb extends RecyclerView.Adapter<RyclGrpListItemAdb.
     private static final String TAG = "RecycleItem";
     private JSONArray mlist = new JSONArray();
     private Context mContext;
+    private boolean isItemSelect;
     static onListItemClick itemClick;
     Common_Class common_class;
 
     String id = "";
 
-    public RyclGrpListItemAdb(JSONArray mlist, Context mContext, onListItemClick mItemClick) {
+    public RyclGrpListItemAdb(JSONArray mlist, Context mContext, onListItemClick mItemClick,boolean mIsItemSelect) {
         this.mlist = mlist;
+        this.isItemSelect=mIsItemSelect;
         this.mContext = mContext;
-        this.itemClick = mItemClick;
+        itemClick = mItemClick;
         common_class = new Common_Class(mContext);
     }
-
-    public void notify(JSONArray mlist, Context mContext, String id, onListItemClick mItemClick) {
+    public void DisableGroup(boolean mIsItemSelect) {
+        this.isItemSelect=mIsItemSelect;
+    }
+    public void notify(JSONArray mlist, Context mContext, String id) {
         this.mlist = mlist;
         this.mContext = mContext;
-        this.itemClick = mItemClick;
         common_class = new Common_Class(mContext);
         this.id = id;
         notifyDataSetChanged();
@@ -69,7 +72,7 @@ public class RyclGrpListItemAdb extends RecyclerView.Adapter<RyclGrpListItemAdb.
                 @Override
                 public void onClick(View view) {
                     try {
-
+                        if(isItemSelect) return;
                         JSONObject itm = null;
                         try {
                             itm = mlist.getJSONObject(holder.getBindingAdapterPosition());

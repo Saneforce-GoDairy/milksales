@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -1084,8 +1085,12 @@ public class CustomerOnBoarding extends AppCompatActivity implements OnMapReadyC
         PrepareDropdownLists();
 
         downloadReceiver = new DownloadReceiver();
-        registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_NOT_EXPORTED);
+        }else {
+            registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        }
         binding.clearBank.setOnClickListener(v -> {
             bankDetailsStr = "";
             BankImgList.clear();

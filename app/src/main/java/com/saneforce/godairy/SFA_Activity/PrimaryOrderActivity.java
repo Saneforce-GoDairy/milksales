@@ -124,7 +124,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
     List<Category_Universe_Modal> Category_Modal = new ArrayList<>();
     List<Product_Details_Modal> Product_Modal;
     List<Product_Details_Modal> Product_ModalSetAdapter;
-    List<Product_Details_Modal> Getorder_Array_List;
+    List<Product_Details_Modal> Getorder_Array_List=new ArrayList<>();
     List<Product_Details_Modal> freeQty_Array_List;
     List<Category_Universe_Modal> listt;
     Type userType;
@@ -283,7 +283,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                     _erpCode = arrayList.optJSONObject(position).optString("erpCode");
                     _stateCode = arrayList.optJSONObject(position).optString("stateCode");
                     _pincode = arrayList.optJSONObject(position).optString("pincode");
+                    String Cutoff = arrayList.optJSONObject(position).optString("Cutoff");
+                    if(!Cutoff.equalsIgnoreCase("")) sharedCommonPref.save(Constants.CUTOFF_TIME,Cutoff);
                     selectDeliveryAddress.setText(_title);
+
                     dialog.dismiss();
                 });
                 recyclerView.setAdapter(adapter);
@@ -319,9 +322,10 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             }
 
             common_class.getDb_310Data(Constants.PRIMARY_SCHEME, this);
+
+            findNearCutOfftime();
             handler.postDelayed(new Runnable() {
                 public void run() {
-                    findNearCutOfftime();
                     tvTimer.setText(Common_Class.GetTime() + "   /   " + sharedCommonPref.getvalue(Constants.CUTOFF_TIME));
                     handler.postDelayed(this, 1000);
                 }
@@ -736,13 +740,15 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
 
             if (Product_Modal.get(pm).getQty() > 0) {
                 Getorder_Array_List.add(Product_Modal.get(pm));
+
             }
         }
 
         if (Getorder_Array_List.size() == 0)
             Toast.makeText(getApplicationContext(), "Order is empty", Toast.LENGTH_SHORT).show();
-        else
+        else{
             FilterProduct();
+        }
     }
 
     void findNearCutOfftime() {
@@ -1428,6 +1434,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                 }
             }
 
+            grplistItems.DisableGroup(!Getorder_Array_List.isEmpty());
+
             totTax = 0;
             try {
                 String totAmtTax = sharedCommonPref.getvalue(Constants.POS_NETAMT_TAX);
@@ -1451,7 +1459,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             tvTotalAmount.setText(CurrencySymbol+" " + formatter.format(totalvalues));
 
             if (isEditOrder) {
-                isEditOrder = false;
+             //   isEditOrder = false;
                 editTotValues = totalvalues;
             }
 
@@ -1630,35 +1638,16 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
             }
 
             tvTaxableAmt.setText(CurrencySymbol+" " + String.valueOf(formatter.format(txblamt)));
-            if (sharedCommonPref.getvalue(Constants.DivERP).equalsIgnoreCase("21") && !isEditOrder) {
-                if (Getorder_Array_List.size() == 0)
-                    grplistItems.notify(ProdGroups, this, "", new onListItemClick() {
-                        @Override
-                        public void onItemClick(JSONObject item) {
-                            try {
-                                grpName = "";
-                                grpCode = "";
-                                FilterTypes(item.getString("id"));
-                                common_class.brandPos = 0;
-
-                                tvGrpName.setText("" + item.getString("name"));
-                                getSlotTimes(item.getString("id"));
-                            } catch (Exception ignored) {}
-                        }
-                    });
-                else {
+            if (isEditOrder) {
+                if (!Getorder_Array_List.isEmpty()) {
                     grpCode = "" + Getorder_Array_List.get(0).getProduct_Grp_Code();
                     for (int i = 0; i < ProdGroups.length(); i++) {
                         if (grpCode.equalsIgnoreCase(ProdGroups.getJSONObject(i).getString("id"))) {
                             grpName = ProdGroups.getJSONObject(i).getString("name");
                         }
                     }
-                    grplistItems.notify(ProdGroups, this, "" + grpCode, new onListItemClick() {
-                        @Override
-                        public void onItemClick(JSONObject item) {
 
-                        }
-                    });
+                    grplistItems.notify(ProdGroups, this, "" + grpCode);
                 }
             }
             if (orderId.equalsIgnoreCase("")) {
@@ -1783,7 +1772,7 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                         e.printStackTrace();
                     }
                 }
-            });
+            },!Getorder_Array_List.isEmpty());
             Grpgrid.setAdapter(grplistItems);
 
             FilterTypes(saveProductname.equalsIgnoreCase("") ? ProdGroups.getJSONObject(0).getString("id") : "" + id);
@@ -1929,6 +1918,8 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                         sharedCommonPref.clear_pref(Constants.SlotTime);
 
                     }
+
+                    findNearCutOfftime();
                     break;
 
                 case Constants.REPEAT_PRIMARY_ORDER:
@@ -2555,7 +2546,9 @@ public class PrimaryOrderActivity extends AppCompatActivity implements View.OnCl
                                 holder.lblFreeNm.setText("" + Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getOff_Pro_name());
                                 holder.Disc.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getDiscount()));
                                 if (!(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getOff_Pro_name().equalsIgnoreCase(pna)))
-                                holder.llFreeProd.setVisibility(View.VISIBLE);
+                                {
+                                    holder.llFreeProd.setVisibility(View.VISIBLE);
+                                }
                                 holder.Amount.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getAmount()));
                                 if (CategoryType >= 0) holder.QtyAmt.setText(CurrencySymbol+" " + formatter.format(Product_Details_Modalitem.get(holder.getBindingAdapterPosition()).getTaxableAmt()));
 

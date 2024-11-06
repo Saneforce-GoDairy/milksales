@@ -1,5 +1,7 @@
 package com.saneforce.godairy.common;
 
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -254,7 +256,11 @@ public class SANGPSTracker extends Service {
             } else {
                 startForeground(NOTIFICATION_ID, getNotification());
             }*/
-            startForeground(NOTIFICATION_ID, getNotification());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(NOTIFICATION_ID, getNotification(), FOREGROUND_SERVICE_TYPE_LOCATION);
+            }else{
+                startForeground(NOTIFICATION_ID, getNotification());
+            }
         }
         return true; // Ensures onRebind() is called when a client re-binds.
     }
@@ -318,7 +324,7 @@ public class SANGPSTracker extends Service {
         else
         {
             activityPendingIntent = PendingIntent.getActivity
-                    (this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_ONE_SHOT);
+                    (this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
 
 
